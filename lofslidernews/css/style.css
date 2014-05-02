@@ -1,0 +1,149 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* slider layout */
+.lof-slidecontent { position:relative;	overflow:hidden;	border:#F4F4F4 solid 1px;}
+.lof-slidecontent .preload{	height:100%;	width:100%;	position:absolute;	top:0;	left:0;	z-index:100000;	text-align:center;	background:#FFF}
+.lof-slidecontent .preload div{	height:100%;	width:100%;	background:transparent url(../images/load-indicator.gif) no-repeat scroll 50% 50%;}
+
+.lof-slidecontent  .sliders-wrapper{	position:relative;	height:100%;	width:900px;	z-index:3px;	overflow:hidden; }
+.lof-slidecontent  ul.sliders-wrap-inner{overflow:hidden;	background:transparent url(../images/load-indicator.gif) no-repeat scroll 50% 50%;	padding:0px;	margin:0;	position:absolute;	overflow:hidden;}
+.lof-slidecontent  ul.sliders-wrap-inner li{overflow:hidden;	padding:0px;margin:0px;	float:left;	position:relative;}
+.lof-slidecontent  .lof-opacity  li{position:absolute;	top:0;	left:0;	float:inherit; }
+
+
+.lof-slidecontent  .navigator-content { position:absolute;
+  background: none repeat scroll 0 0 #000000;
+    border-radius: 5px 5px 5px 5px;
+    bottom: 10px;
+    padding: 5px 15px;
+    position: absolute;
+    right: 10px;
+}
+.lof-slidecontent  .navigator-wrapper{	position:relative;	z-index:10;
+	height:180px;
+	width:310px;
+	overflow:hidden;
+	color:#FFF;
+	float:left
+}
+.lof-slidecontent  ul.navigator-wrap-inner{	top:0;	padding:0;	margin:0;	position:absolute;	width:100%; }
+.lof-slidecontent  ul.navigator-wrap-inner li{ cursor:hand; 	cursor:pointer;	list-style:none;	padding:0;	margin-left:0px;	overflow:hidden;	float:left;	display:block;	text-align:center;}
+
+/*******************************************************/
+ 
+ul.sliders-wrap-inner li img{	padding:0px;	}
+
+.lof-slidecontent .slider-description a.readmore{color:#58B1EA; font-size:95%; }
+.lof-slidecontent .slider-description a{ color:#FFF; }
+.lof-slidecontent .slider-description{
+	z-index:100px;
+	position:absolute;
+	bottom:15px;
+	left:20px;
+	width:350px;
+	background:url(../images/bg_trans.png);
+	height:100px;
+	padding:10px;
+	color:#FFFFFF;
+}
+
+.lof-slidecontent .slider-description h4 {    font-size: 14px;    margin: 10px 0;    padding: 0; }
+.lof-slidecontent .slider-description .slider-meta a{	
+	margin:0;
+	font-size:11pt;
+	padding:2px 3px;
+	font-family:"Trebuchet MS", Trebuchet, Arial, Verdana, sans-serif;
+	text-transform:uppercase;
+	text-decoration:none;
+	background-color: #666;
+	color: rgb(51,204,255);
+	font-weight: bold;
+}
+.lof-slidecontent  .item-meta a:hover{	text-decoration:underline;}
+.lof-slidecontent  .item-meta i {	font-size:70%; }
+
+/* item navigator */
+ 
+.navigator-wrapper{
+	 color: #FFFFFF;
+    float: left;
+    height: 180px;
+    overflow: hidden;
+    position: relative;
+    width: 310px;
+    z-index: 100;
+}
+.navigator-wrap-inner{
+	top:0;
+	padding:0;
+	margin:0;
+	position:absolute;
+	width:100%;
+}
+
+.lof-slidecontent ul.navigator-wrap-inner li {
+	cursor:hand; 
+	cursor:pointer;
+	list-style:none;
+	padding:0;
+	margin-left:0px;
+	overflow:hidden;
+	float:left;
+	display:block;
+	text-align:center;
+}
+.lof-slidecontent ul.navigator-wrap-inner li span{
+	display:block; padding:11px; position:relative; line-height:0.5em  }
+
+.lof-slidecontent ul.navigator-wrap-inner li.active ,
+.lof-slidecontent ul.navigator-wrap-inner li:hover  {
+	background:#FFF;
+	color:#000;
+	display:block;
+	-moz-transition:background-color  0.8s
+}
+
+
+
+.lof-slidecontent  .button-next, 
+.lof-slidecontent .button-previous{
+	display:block;
+	width:20px;
+	color:#FFF;
+	cursor:pointer;
+	position:absolute;
+	height:100%;
+	z-index:40;
+	top:0;
+	text-indent:-999px;
+
+}
+.lof-slidecontent   .button-next {
+	right:0px;
+	background:url(../images/next.png) no-repeat right center;
+}
+.lof-slidecontent  .button-previous {
+	left:0px;
+	background:url(../images/previous.png) no-repeat left center;
+}
+
+.lof-slidecontent .button-control {
+    float: left;
+    height: 30px;
+    width: 28px;
+	cursor:hand; cursor:pointer
+}
+.lof-slidecontent .action-start  {
+	background:url(../images/play.png) no-repeat center center #FFF;
+}
+.lof-slidecontent .action-stop  {
+	background:url(../images/pause.png) no-repeat center center #FFF;
+}
+
+.lof-slidecontent .slider-content{
+  color:#ffffff;
+  font-size:12px;
+  margin-top:3px;
+  line-height:180%;
+}

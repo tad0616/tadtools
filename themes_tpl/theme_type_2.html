@@ -1,0 +1,29 @@
+<div id="xoops_theme_content_zone" class="row-fluid" style="<{$content_zone}>">
+
+  <{if $xoBlocks.canvas_left or $xoBlocks.canvas_right}>
+
+    <div id="xoops_theme_center_zone" class="<{if $theme_kind=="bootstrap"}>span<{/if}><{$center_width}>" style="<{$centerBlocks}>">
+      <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/centerZone.html"}>
+    </div>
+
+    <div id="xoops_theme_right_zone" class="<{if $theme_kind=="bootstrap"}>span<{/if}><{$rb_width}>" style="<{if $theme_kind=="html"}>float:right;border-left:1px dashed #999;<{/if}>background-color:<{$rb_color}>;">
+      <div id="xoops_theme_right"  style="<{$rightBlocks}>">
+        <{if $xoBlocks.canvas_left}>
+          <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/leftBlock.html"}>
+        <{/if}>
+
+        <{if $xoBlocks.canvas_right}>
+          <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/rightBlock.html"}>
+        <{/if}>
+      </div>
+    </div>
+
+  <{else}>
+
+    <div id="xoops_theme_center_zone" class="span12" style="<{$centerBlocks}>">
+      <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/centerZone.html"}>
+    </div>
+
+  <{/if}>
+
+</div>

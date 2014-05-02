@@ -1,0 +1,21 @@
+CKEDITOR.plugins.setLang( 'syntaxhighlight', 'zh', {
+  title:'新增或更新的原始碼',
+  contextTitle:'編輯原始碼',
+  sourceTab:'原始碼',
+  langLbl:'選擇語言',
+  sourceTextareaEmptyError:'沒有原始碼',
+  advancedTab:'進階',
+  hideGutter:'隱藏行號',
+  hideGutterLbl:'隱藏側欄及行號',
+  hideControls:'隱藏工具列',
+  hideControlsLbl:'隱藏右上方的工具列',
+  collapse:'闔起',
+  collapseLbl:'將程式碼預設為闔起狀態（需啟動工具列）',
+  showColumns:'顯示欄',
+  showColumnsLbl:'在第一行顯示欄',
+  lineWrap:'自動換行',
+  lineWrapLbl:'設定換行模式',
+  lineCount:'起始行號',
+  highlight:'高亮度列',
+  highlightLbl:'直接輸入欲以高亮度呈現的行號，如 <em>3,10,15</em>.'
+});

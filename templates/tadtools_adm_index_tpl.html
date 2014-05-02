@@ -1,0 +1,41 @@
+<!--TadNews Start-->
+<link rel="stylesheet" type="text/css" media="screen" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap-responsive.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="<{$xoops_url}>/modules/tadtools/css/xoops_adm.css" />
+
+<div class="row-fluid">
+  <h2><{$version}></h2>
+  <form action="main.php" method="post">
+    <table class="table">
+    <tr>
+      <th><{$smarty.const._MA_TT_THEMES}></th>
+      <th><{$smarty.const._MA_TT_NEED_BOOTSTRAP}></th>
+      <th><{$smarty.const._MA_TT_BOOTSTRAP_COLOR}></th>
+    </tr>
+    <{foreach item=theme from=$themes}>
+      <tr>
+        <td <{$theme.color}>>
+          <{$theme.theme_name}>
+        </td>
+        <td>
+          <select name="tt_use_bootstrap[<{$theme.theme_name}>]">
+            <option value="" <{if $theme.use_bootstrap==""}>selected<{/if}>><{$smarty.const._MA_TT_EMPTY_CONFIG}></option>
+            <option value="1" <{if $theme.use_bootstrap=="1"}>selected<{/if}>><{$smarty.const._YES}></option>
+            <option value="0" <{if $theme.use_bootstrap=="0"}>selected<{/if}>><{$smarty.const._NO}></option>
+          </select>
+        </td>
+        <td>
+          <label class="radio inline">
+            <input type="radio" name="tt_bootstrap_color[<{$theme.theme_name}>]" id="bootstrap_color_normal" value="bootstrap" <{if $theme.bootstrap_color=="bootstrap"}>checked<{/if}>> <{$smarty.const._TT_COLOR_NORMAL}>
+          </label>
+          <label class="radio inline">
+            <input type="radio" name="tt_bootstrap_color[<{$theme.theme_name}>]" id="bootstrap_color_dark" value="darkstrap" <{if $theme.bootstrap_color=="darkstrap"}>checked<{/if}>> <{$smarty.const._TT_COLOR_DARK}>
+          </label>
+        </td>
+      </tr>
+    <{/foreach}>
+    </table>
+    <input type="hidden" name="op" value="save">
+    <input type="submit" value="<{$smarty.const._MA_TT_SAVE}>">
+  </form>
+</div>

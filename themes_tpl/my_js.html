@@ -1,0 +1,63 @@
+
+
+<!-- font-awesome -->
+<link href="<{xoAppUrl modules/tadtools/css/font-awesome/css/font-awesome.css}>" rel="stylesheet">
+
+<!-- Buttons -->
+<link rel="stylesheet" href="<{xoAppUrl modules/tadtools/css/Buttons/css/buttons.css}>">
+<script type="text/javascript" src="<{xoAppUrl modules/tadtools/css/Buttons/js/buttons.js}>"></script>
+
+<!-- iCheck -->
+<!--link href="<{xoAppUrl modules/tadtools/css/iCheck/skins/all.css}>" rel="stylesheet">
+<script src="<{xoAppUrl modules/tadtools/css/iCheck/icheck.min.js}>"></script-->
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("select[name='xoops_theme_select']").addClass("span12");
+    $("input[name='query']").addClass("span12");
+
+    <{php}>
+      if(file_exists(XOOPS_ROOT_PATH."/modules/tadtools/mobile_device_detect.php")){
+        include_once XOOPS_ROOT_PATH."/modules/tadtools/mobile_device_detect.php";
+        $device=mobile_device_detect(true,false,true,true,true,true,true);
+        echo "var mobile_device='{$device[0]}';";
+      }else{
+        echo "var mobile_device='';";
+      }
+    <{/php}>
+
+    if(mobile_device==''){
+      var leftBlock=$("#xoops_theme_left_zone").height();
+      var centerBlock=$("#xoops_theme_center_zone").height();
+      var rightBlock=$("#xoops_theme_right_zone").height();
+      var maxheight=leftBlock;
+
+      if(rightBlock > maxheight){
+        maxheight=rightBlock;
+      }
+
+      if(centerBlock > maxheight){
+        maxheight=centerBlock;
+      }
+
+      <{if $theme_type=="theme_type_5" || $theme_type=="theme_type_6" || $theme_type=="theme_type_7"}>
+        $("#xoops_theme_left_zone").height(maxheight);
+        $("#xoops_theme_right_zone").height(maxheight);
+      <{elseif $theme_type=="theme_type_3" || $theme_type=="theme_type_4"}>
+        $("#xoops_theme_left_zone").height(maxheight);
+      <{elseif $theme_type=="theme_type_1"}>
+        $("#xoops_theme_left_zone").height(maxheight);
+      <{elseif $theme_type=="theme_type_2"}>
+        $("#xoops_theme_right_zone").height(maxheight);
+      <{/if}>
+    }
+    /*
+    $('input').iCheck({
+      checkboxClass: 'icheckbox_square-purple',
+      radioClass: 'iradio_square-purple',
+      increaseArea: '20%'
+    });
+    */
+
+  });
+</script>

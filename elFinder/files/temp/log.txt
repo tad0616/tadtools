@@ -1,0 +1,75 @@
+[Wed, 22 May 2013 15:14:23 +0800] UPLOAD: array (
+  'added' => 
+  array (
+    0 => 
+    array (
+      'mime' => 'image/png',
+      'ts' => 1369206863,
+      'read' => 1,
+      'write' => 1,
+      'size' => 253608,
+      'hash' => 'l1_aW1hZ2VcY2xvdWQyLnBuZw',
+      'name' => 'cloud2.png',
+      'phash' => 'l1_aW1hZ2U',
+      'tmb' => 1,
+    ),
+  ),
+  'header' => false,
+) 
+[Mon, 27 May 2013 22:44:59 +0800] UPLOAD: array (
+  'added' => 
+  array (
+    0 => 
+    array (
+      'mime' => 'image/jpeg',
+      'ts' => 1369665899,
+      'read' => 1,
+      'write' => 1,
+      'size' => 777835,
+      'hash' => 'l1_Y2F0ZVxQZW5ndWlucy5qcGc',
+      'name' => 'Penguins.jpg',
+      'phash' => 'l1_Y2F0ZQ',
+      'tmb' => 1,
+    ),
+  ),
+  'header' => false,
+) 
+[Mon, 27 May 2013 22:46:00 +0800] UPLOAD: array (
+  'added' => 
+  array (
+  ),
+  'header' => false,
+  'warning' => 
+  array (
+    0 => 'errUploadFile',
+    1 => '101年度兒童節模範兒童表揚大會模範兒童名單.odt',
+  ),
+) 
+[Mon, 27 May 2013 22:46:12 +0800] UPLOAD: array (
+  'added' => 
+  array (
+  ),
+  'header' => false,
+  'warning' => 
+  array (
+    0 => 'errUploadFile',
+    1 => 'VDR1000韌體更新流程說明.doc',
+  ),
+) 
+[Mon, 27 May 2013 22:46:30 +0800] UPLOAD: array (
+  'added' => 
+  array (
+    0 => 
+    array (
+      'mime' => 'application/pdf',
+      'ts' => 1369665990,
+      'read' => 1,
+      'write' => 1,
+      'size' => 558256,
+      'hash' => 'l1_Y2F0ZVxwYXBlcl9tb3RvLnBkZg',
+      'name' => 'paper_moto.pdf',
+      'phash' => 'l1_Y2F0ZQ',
+    ),
+  ),
+  'header' => false,
+) 

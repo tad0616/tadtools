@@ -1,0 +1,12 @@
+.navbar .nav > li {
+  list-style:none;
+}
+
+table th{
+  background-repeat:repeat;
+  background-size: contain ;
+}
+
+select{
+  width:100%;
+}

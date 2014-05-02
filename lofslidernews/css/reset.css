@@ -1,0 +1,22 @@
+.lof-slidecontent dl,.lof-slidecontent dt,.lof-slidecontent dd,.lof-slidecontent ul,.lof-slidecontent ol,.lof-slidecontent li {
+	margin: 0;
+	padding: 0;
+}
+
+.lof-slidecontent dl,.lof-slidecontent dt,.lof-slidecontent dd,.lof-slidecontent ul,.lof-slidecontent ol,.lof-slidecontent li{
+	line-height:100%;
+}
+
+.lof-slidecontent ul ,.lof-slidecontent ul li ,.lof-slidecontent  li ul li{
+	list-style: disc outside none;
+}
+.lof-slidecontent ol ,.lof-slidecontent  ol li  ,.lof-slidecontent  li ol li {
+	list-style: decimal outside none;
+}
+.lof-slidecontent li {
+	margin-left: 2em;
+	color:rgb(80,80,80);
+}
+.lof-slidecontent li ul,.lof-slidecontent  li ol {
+	margin-bottom: 0;
+}

@@ -1,0 +1,193 @@
+/* Iconize 0.5 */
+
+/* websites (pictures and movies) */
+a.iconize[href *="youtube.com/watch?"], a.iconize[href *="sevenload.com/videos/"], a.iconize[href *="metacafe.com/watch/"] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/icon_film.gif) no-repeat center left;
+}
+
+a.iconize[href *="flickr.com/photos/"], a.iconize[href *="zooomr.com"], a.iconize[href *="imageshack.us"], a.iconize[href *="bubbleshare.com"], a.iconize[href *="sevenload.com/bilder/"] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/icon_pic.gif) no-repeat center left;
+}
+
+/* extensions */
+
+a.iconize[href$='.doc'], a.iconize[href$='.rtf'], a.iconize[href$='.docx'] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/icon_doc.gif) no-repeat center left;
+}
+
+a.iconize[href$='.txt'] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/icon_txt.gif) no-repeat center left;
+}
+
+a.iconize[href$='.xls'],a.iconize[href$='.xlsx'] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/icon_xls.gif) no-repeat center left;
+}
+
+a.iconize[href$='.rss'], a.iconize[href$='.atom'] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/icon_feed.gif) no-repeat center left;
+}
+
+a.iconize[href$='.opml'] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/icon_opml.gif) no-repeat center left;
+}
+
+a.iconize[href$='.phps'] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/icon_phps.gif) no-repeat center left;
+}
+
+a.iconize[href$='.phps'] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/icon_phps.gif) no-repeat center left;
+}
+
+a.iconize[href$='.torrent'] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/icon_torrent.gif) no-repeat center left;
+}
+
+a.iconize[href$='.vcard'] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/icon_vcard.gif) no-repeat center left;
+}
+
+a.iconize[href$='.exe'] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/icon_exe.gif) no-repeat center left;
+}
+
+a.iconize[href$='.dmg'], a.iconize[href$='.app'] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/icon_dmg.gif) no-repeat center left;
+}
+
+a.iconize[href$='.pps'],a.iconize[href$='.ppt'],a.iconize[href$='.pptx'] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/icon_pps.gif) no-repeat center left;
+}
+
+a.iconize[href$='.pdf'] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/icon_pdf.gif) no-repeat center left;
+}
+
+a.iconize[href$='.xpi'] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/icon_plugin.gif) no-repeat center left;
+}
+
+a.iconize[href$='.fla'], a.iconize[href$='.swf'] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/icon_flash.gif) no-repeat center left;
+}
+
+a.iconize[href$='.zip'], a.iconize[href$='.rar'], a.iconize[href$='.gzip'], a.iconize[href$='.bzip'], a.iconize[href$='.ace'], a.iconize[href$='.7z'] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/icon_archive.gif) no-repeat center left;
+}
+
+a.iconize[href$='.ical'] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/icon_ical.gif) no-repeat center left;
+}
+
+a.iconize[href$='.css'] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/icon_css.gif) no-repeat center left;
+}
+
+a.iconize[href$='.ttf'] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/icon_ttf.gif) no-repeat center left;
+}
+
+a.iconize[href$='.jpg'], a.iconize[href$='.gif'], a.iconize[href$='.png'], a.iconize[href$='.bmp'], a.iconize[href$='.jpeg'], a.iconize[href$='.svg'], a.iconize[href$='.eps'] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/icon_pic.gif) no-repeat center left;
+}
+
+a.iconize[href$='.mov'], a.iconize[href$='.wmv'], a.iconize[href$='.mp4'], a.iconize[href$='.3gp'], a.iconize[href$='.avi'], a.iconize[href$='.mpg'] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/icon_film.gif) no-repeat center left;
+}
+
+a.iconize[href$='.mp3'], a.iconize[href$='.wav'], a.iconize[href$='.ogg'], a.iconize[href$='.wma'], a.iconize[href$='.m4a'] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/icon_music.gif) no-repeat center left;
+}
+
+/* messenger */
+a.iconize[href ^="aim:"] {
+	padding: 5px 0px 5px 20px;
+    background: transparent url(../images/icons/icon_aim.gif) no-repeat center left;
+}
+
+a.iconize[href ^="msnim:"] {
+	padding: 5px 0px 5px 20px;
+    background: transparent url(../images/icons/icon_msn.gif) no-repeat center left;
+}
+
+a.iconize[href ^="xmpp:"] {
+	padding: 5px 0px 5px 20px;
+    background: transparent url(../images/icons/icon_jabber.gif) no-repeat center left;
+}
+
+a.iconize[href *="icq.com"] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/icon_icq.gif) no-repeat center left;
+}
+
+a.iconize[href *="edit.yahoo.com/config/send_webmesg?"] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/icon_yim.gif) no-repeat center left;
+}
+
+a.iconize[href ^="callto:"] {
+	padding: 5px 0px 5px 20px;
+    background: transparent url(../images/icons/icon_call.gif) no-repeat center left;
+}
+
+a.iconize[href ^="skype:"] {
+	padding: 5px 0px 5px 20px;
+    background: transparent url(../images/icons/icon_skype.gif) no-repeat center left;
+}
+
+a.iconize[href ^="gg:"] {
+	padding: 5px 0px 5px 20px;
+    background: transparent url(../images/icons/icon_gadugadu.gif) no-repeat center left;
+}
+
+/* email */
+a.iconize[href ^="mailto:"] {
+	padding: 5px 0px 5px 20px;
+    background: transparent url(../images/icons/icon_mailto.gif) no-repeat center left;
+}
+
+/* use this class to make sure that images won't get iconized */
+
+.imageLink {
+	padding-right: 0px !important;
+	background: none !important;
+}
+
+a.iconize[href$='.ods'],a.iconize[href$='.sxc'] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/ooo_calc.gif) no-repeat center left;
+}
+
+a.iconize[href$='.odt'],a.iconize[href$='.sxw'] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/ooo_writer.gif) no-repeat center left;
+}
+
+a.iconize[href$='.odp'],a.iconize[href$='.sxi'] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url(../images/icons/ooo_impress.gif) no-repeat center left;
+}

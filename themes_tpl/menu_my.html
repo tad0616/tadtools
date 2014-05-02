@@ -1,0 +1,52 @@
+<{php}>
+  global $xoopsDB,$mid;
+  //自訂選單
+  //if($mid){
+    $sql="select menuid,itemname,itemurl,target,icon from ".$xoopsDB->prefix("tad_themes_menu")." where of_level=0 and status='1'  order by	position";
+    $result = $xoopsDB->query($sql);
+
+    if($result){
+      while(list($menuid,$itemname,$itemurl,$menu_target,$menu_icon)=$xoopsDB->fetchRow($result)){
+
+        $option=get_theme_menu_options($menuid);
+
+        $menu_target=!empty($menu_target)?"target='$menu_target'":"";
+        $menu_icon=empty($menu_icon)?"icon-th-list":$menu_icon;
+
+        if(empty($option)){
+          echo "<li><a href=\"{$itemurl}\" $menu_target>{$itemname}</a></li>";
+        }else{
+          echo "
+          <li class=\"dropdown\">
+            <a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"$itemurl\" $menu_target>$itemname <b class=\"caret\"></b></a>
+
+            <ul class=\"dropdown-menu\" id=\"swatch-menu\">
+              $option
+            </ul>
+          </li>
+          ";
+        }
+      }
+    }
+  //}
+
+  //取得選單選項
+  function get_theme_menu_options($id=""){
+    global $xoopsDB;
+    $sql="select `menuid`,`itemname`,`itemurl`,`target`,`icon` from ".$xoopsDB->prefix("tad_themes_menu")." where of_level='{$id}' and status='1' order by	position";
+    $result = $xoopsDB->query($sql);
+    $option="";
+    while(list($menuid,$name,$url,$target,$icon)=$xoopsDB->fetchRow($result)){
+      $target=!empty($target)?"target='$target'":"";
+      $icon=empty($icon)?"icon-th-list":$icon;
+      $option2=get_theme_menu_options($menuid);
+      $submenu_class=($option2)?'class="dropdown-submenu"':'';
+      $dropdown=($option2)?'<ul class="dropdown-menu">'.$option2.'</ul>':'';
+      $tabindex=($option2)?'tabindex="-1"':'';
+      $url=($option2)?'#':$url;
+      $target=($option2)?'':$target;
+      $option.= "\t\t\t<li $submenu_class><a $tabindex href=\"$url\" $target><i class=\"{$icon}\"></i> {$name}</a>{$dropdown}</li>\n";
+    }
+    return $option;
+  }
+<{/php}>
