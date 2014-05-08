@@ -2,9 +2,9 @@
 
   <{if $xoBlocks.canvas_left or $xoBlocks.canvas_right}>
 
-    <div id="xoops_theme_left_zone" class="<{if $theme_kind=="bootstrap"}>span<{/if}><{$lb_width}>" style="<{if $theme_kind=="html"}>float:left;border-right:1px dashed #999;<{/if}>background-color:<{$lb_color}>;">
+    <div id="xoops_theme_left_zone" class="<{if $theme_kind=="bootstrap"}>span<{/if}><{$lb_width}>" style="<{if $theme_kind=="html"}>float:left;<{/if}>background-color:<{$lb_color}>;">
 
-      <div id="xoops_theme_left"  style="<{$leftBlocks}>">
+      <div id="xoops_theme_left" style="<{$leftBlocks}>">
         <{if $xoBlocks.canvas_left}>
           <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/leftBlock.html"}>
         <{/if}>

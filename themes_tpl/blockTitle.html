@@ -7,7 +7,7 @@
       <img src="<{$xoops_imageurl}><{$block.title|regex_replace:"/.*\[pic\]/":""}>" alt="<{$block.title|regex_replace:"/\[pic\].*/":""}>" title="<{$block.title|regex_replace:"/\[pic\].*/":""}>" align="absmiddle" hspace=2 />
     </div>
 	<{else}>
-    <div class="blockTitle" style="border:none;height:40px;line-height:40px;margin-bottom:10px;">
+    <div class="blockTitle">
       <{if $xoops_isadmin}>
         <a href="<{$xoops_url}>/modules/system/admin.php?fct=blocksadmin&op=edit&bid=<{$block.id}>" class="block_config"></a>
       <{/if}>
@@ -23,8 +23,9 @@
     </div>
 	<{/if}>
 <{else}>
-  <div class="blockTitle" style="border:none;">
+  <div>
     <{if $xoops_isadmin}>
       <a href="<{$xoops_url}>/modules/system/admin.php?fct=blocksadmin&op=edit&bid=<{$block.id}>" class="block_config"></a>
-    <{/if}></div>
+    <{/if}>
+  </div>
 <{/if}>

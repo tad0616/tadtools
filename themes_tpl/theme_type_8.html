@@ -2,8 +2,8 @@
 
   <{if $xoBlocks.canvas_left}>
 
-    <div id="xoops_theme_left_zone"  class="row-fluid">
-      <div class="<{if $theme_kind=="bootstrap"}>span<{/if}><{$lb_width}>" style="<{$leftBlocks2}>">
+    <div id="xoops_theme_left_zone"  class="row-fluid" style="background-color:<{$lb_color}>;">
+      <div class="<{if $theme_kind=="bootstrap"}>span<{/if}><{$lb_width}>">
         <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/leftBottom.html"}>
       </div>
     </div>
@@ -18,8 +18,8 @@
 
   <{if $xoBlocks.canvas_right}>
 
-    <div id="xoops_theme_right_zone" class="row-fluid">
-      <div class="<{if $theme_kind=="bootstrap"}>span<{/if}><{$rb_width}>" style="<{$rightBlocks2}>">
+    <div id="xoops_theme_right_zone" class="row-fluid" style="background-color:<{$rb_color}>;">
+      <div class="<{if $theme_kind=="bootstrap"}>span<{/if}><{$rb_width}>">
         <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/rightBottom.html"}>
       </div>
     </div>

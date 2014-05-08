@@ -124,9 +124,9 @@ if($theme_type=='theme_type_1'){
     }else{
       $center_width=$theme_width-$lb_width-24;
     }
-    $left_block.="float:left;  width:{$lb_width}px;border-right:1px dashed #999;";
+    $left_block.="float:left;  width:{$lb_width}px;";
     $center_block.="float:right;  width:{$center_width}px;";
-    $right_block.="float:none;  width:{$theme_width}px; clear:both;border-top:1px dashed #999;";
+    $right_block.="float:none;  width:{$theme_width}px; clear:both;";
     $left_block2="";
     $right_block2.="float:left;";
   }else{
@@ -140,11 +140,11 @@ if($theme_type=='theme_type_1'){
     if(!$xoops_showrblock){
       $center_width=$theme_width;
     }else{
-      $center_width=$theme_width-$rb_width-24;
+      $center_width=$theme_width-$lb_width-24;
     }
-    $left_block.="float:right;  width:{$lb_width}px;border-left:1px dashed #999;";
-    $center_block.="float:left;  width:{$center_width}px;";
-    $right_block.="float:none;  width:{$theme_width}px; clear:both;border-top:1px dashed #999;";
+    $left_block.="float:right; width:{$lb_width}px;";
+    $center_block.="float:left; width:{$center_width}px;";
+    $right_block.="float:none; width:{$theme_width}px; clear:both;";
     $left_block2="";
     $right_block2.="float:left;";
   }else{
@@ -166,9 +166,9 @@ if($theme_type=='theme_type_1'){
       $center_width=$theme_width-$lb_width-$rb_width-2;
     }
 
-    $left_block.="float:left;  width:{$lb_width}px;border-right:1px dashed #999;";
+    $left_block.="float:left;  width:{$lb_width}px;";
     $center_block.="float:left;  width:{$center_width}px;";
-    $right_block.="float:right;  width:{$rb_width}px;border-left:1px dashed #999;";
+    $right_block.="float:right;  width:{$rb_width}px;";
     $left_block2=$right_block2="";
   }else{
     $center_width=$theme_width-$lb_width-$rb_width;
@@ -186,9 +186,9 @@ if($theme_type=='theme_type_1'){
     }else{
       $center_width=$theme_width-$lb_width-$rb_width-2;
     }
-    $left_block.="float:left;  width:{$lb_width}px;border-right:1px dashed #999;";
+    $left_block.="float:left;  width:{$lb_width}px;";
     $center_block.="float:right;  width:{$center_width}px;";
-    $right_block.="float:left;  width:{$rb_width}px;border-right:1px dashed #999;";
+    $right_block.="float:left;  width:{$rb_width}px;";
     $left_block2=$right_block2="";
 
   }else{
@@ -207,9 +207,9 @@ if($theme_type=='theme_type_1'){
     }else{
       $center_width=$theme_width-$lb_width-$rb_width-2;
     }
-    $left_block.="float:right;  width:{$lb_width}px;border-left:1px dashed #999;";
+    $left_block.="float:right;  width:{$lb_width}px;";
     $center_block.="float:left;  width:{$center_width}px;";
-    $right_block.="float:right;  width:{$rb_width}px;border-left:1px dashed #999;";
+    $right_block.="float:right;  width:{$rb_width}px;";
     $left_block2=$right_block2="";
 
   }else{
@@ -220,9 +220,9 @@ if($theme_type=='theme_type_1'){
 }elseif($theme_type=='theme_type_8'){
   if($theme_kind!="bootstrap"){
     $center_width=$theme_width;
-    $left_block.="float:none;  width:{$lb_width}px;border-bottom:1px dashed #999;";
+    $left_block.="float:none;  width:{$lb_width}px;";
     $center_block.="float:none;  width:{$center_width}px;";
-    $right_block.="float:none;  width:{$theme_width}px; clear:both;border-top:1px dashed #999;";
+    $right_block.="float:none;  width:{$theme_width}px; clear:both;";
     $left_block2.="";
     $right_block2.="";
   }else{
@@ -310,6 +310,9 @@ foreach( $block_position as $position){
   $positions[$i]['bt_bg_img']=$use_default_config?$bt_bg_img:$db[$position]['bt_bg_img'];
   $positions[$i]['bt_bg_repeat']=$use_default_config?$bt_bg_repeat:$db[$position]['bt_bg_repeat'];
   $positions[$i]['bt_radius']=$use_default_config?$bt_radius:$db[$position]['bt_radius'];
+  $positions[$i]['block_style']=$use_default_config?$block_style:$db[$position]['block_style'];
+  $positions[$i]['block_title_style']=$use_default_config?$block_title_style:$db[$position]['block_title_style'];
+  $positions[$i]['block_content_style']=$use_default_config?$block_content_style:$db[$position]['block_content_style'];
 
   $this->assign($position,$positions[$i]);
   $i++;

@@ -6,12 +6,16 @@
       <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/centerZone.html"}>
     </div>
 
-    <div id="xoops_theme_left_zone" class="<{if $theme_kind=="bootstrap"}>span<{/if}><{$lb_width}>" style="<{$leftBlocks}>">
-      <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/leftBlock.html"}>
+    <div id="xoops_theme_left_zone" class="<{if $theme_kind=="bootstrap"}>span<{/if}><{$lb_width}>" style="<{if $theme_kind=="html"}>float:left;<{/if}>background-color:<{$lb_color}>;">
+      <div id="xoops_theme_left" style="<{$leftBlocks}>">
+        <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/leftBlock.html"}>
+      </div>
     </div>
 
-    <div id="xoops_theme_right_zone" class="<{if $theme_kind=="bootstrap"}>span<{/if}><{$rb_width}>" style="<{$rightBlocks}>">
-      <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/rightBlock.html"}>
+    <div id="xoops_theme_right_zone" class="<{if $theme_kind=="bootstrap"}>span<{/if}><{$rb_width}>" style="<{if $theme_kind=="html"}>float:left;<{/if}>background-color:<{$rb_color}>;">
+      <div id="xoops_theme_right" style="<{$rightBlocks}>">
+        <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/rightBlock.html"}>
+      </div>
     </div>
 
   <{elseif $xoBlocks.canvas_left and !$xoBlocks.canvas_right}>
@@ -20,8 +24,10 @@
       <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/centerZone.html"}>
     </div>
 
-    <div id="xoops_theme_left_zone" class="span3" style="<{$leftBlocks}>">
-      <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/leftBlock.html"}>
+    <div id="xoops_theme_left_zone" class="span3" style="<{if $theme_kind=="html"}>float:left;<{/if}>background-color:<{$lb_color}>;">
+      <div id="xoops_theme_left" style="<{$leftBlocks}>">
+        <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/leftBlock.html"}>
+      </div>
     </div>
 
   <{elseif !$xoBlocks.canvas_left and $xoBlocks.canvas_right}>
@@ -30,8 +36,10 @@
       <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/centerZone.html"}>
     </div>
 
-    <div id="xoops_theme_right_zone" class="span3" style="<{$rightBlocks}>">
-      <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/rightBlock.html"}>
+    <div id="xoops_theme_right_zone" class="span3" style="<{if $theme_kind=="html"}>float:left;<{/if}>background-color:<{$rb_color}>;">
+      <div id="xoops_theme_right" style="<{$rightBlocks}>">
+        <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/rightBlock.html"}>
+      </div>
     </div>
 
    <{else}>

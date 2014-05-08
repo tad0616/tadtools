@@ -6,8 +6,10 @@
       <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/centerZone.html"}>
     </div>
 
-    <div id="xoops_theme_left_zone" class="<{if $theme_kind=="bootstrap"}>span<{/if}><{$lb_width}>" style="<{$leftBlocks}>">
-      <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/leftBlock.html"}>
+    <div id="xoops_theme_left_zone" class="<{if $theme_kind=="bootstrap"}>span<{/if}><{$lb_width}>" style="<{if $theme_kind=="html"}>float:right;;<{/if}>background-color:<{$lb_color}>;">
+      <div id="xoops_theme_right"  style="<{$leftBlocks}>">
+        <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/leftBlock.html"}>
+      </div>
     </div>
 
   <{else}>
