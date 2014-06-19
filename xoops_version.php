@@ -4,7 +4,7 @@ $modversion = array();
 
 //---模組基本資訊---//
 $modversion['name'] = _MI_TADTOOLS_NAME;
-$modversion['version']	= '2.3';
+$modversion['version']	= '2.4';
 $modversion['description'] = _MI_TADTOOLS_DESC;
 $modversion['author'] = 'Tad (tad0616@gmail.com)';
 $modversion['credits']	= "Tad (http://tad0616.net)";
@@ -16,7 +16,7 @@ $modversion['dirname'] = basename(dirname(__FILE__));
 
 
 //---模組狀態資訊---//
-$modversion['release_date'] = '2014/04/09';
+$modversion['release_date'] = '2014/05/17';
 $modversion['module_website_url'] = 'http://tad0616.net/';
 $modversion['module_website_name'] = _MI_TAD_WEB;
 $modversion['module_status'] = 'release';
@@ -76,5 +76,26 @@ $modversion['config'][2]['formtype'] = 'yesno';
 $modversion['config'][2]['valuetype'] = 'int';
 $modversion['config'][2]['default'] = '1';
 
+$modversion['config'][3]['name'] = 'openid_logo';
+$modversion['config'][3]['title'] = '_MI_TADTOOLS_TITLE3';
+$modversion['config'][3]['description'] = '_MI_TADTOOLS_DESC3';
+$modversion['config'][3]['formtype'] = 'select';
+$modversion['config'][3]['valuetype'] = 'int';
+$modversion['config'][3]['default'] = '1';
+$modversion['config'][3]['options'] = array(1=>'1' , 2=>'2' , 3=>'3' , 4=>'4' , 5=>'5' , 6=>'6');
 
+$modversion['config'][4]['name'] = 'use_pin';
+$modversion['config'][4]['title'] = '_MI_TADTOOLS_TITLE4';
+$modversion['config'][4]['description'] = '_MI_TADTOOLS_DESC4';
+$modversion['config'][4]['formtype'] = 'yesno';
+$modversion['config'][4]['valuetype'] = 'int';
+$modversion['config'][4]['default'] = '1';
+
+
+$modversion['config'][5]['name'] = 'auto_charset';
+$modversion['config'][5]['title'] = '_MI_TADTOOLS_TITLE5';
+$modversion['config'][5]['description'] = '_MI_TADTOOLS_DESC5';
+$modversion['config'][5]['formtype'] = 'yesno';
+$modversion['config'][5]['valuetype'] = 'int';
+$modversion['config'][5]['default'] = '1';
 ?>

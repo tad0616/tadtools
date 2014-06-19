@@ -6,7 +6,6 @@ include_once "modinfo_common.php";
 define("_MI_TADTOOLS_ADMENU1" , "ªì©l³]©w");
 define("_MI_TADTOOLS_ADMENU1_DESC" , "§G´º¬O§_¤Þ¤Jbootstrapªº³]©w");
 
-
 define("_MI_TADTOOLS_NAME","Tad Tools ¤u¨ã¥]");
 define("_MI_TADTOOLS_DESC","Tad Tools ¤u¨ã¥]¥u¬O¤@­Ó±`¥Î¤u¨ãªº¶°¦X¡A¥i¥HÅý¨ä¥Lªº¼Ò²Õ¤Þ¥Î¬Û¦P¤u¨ã");
 
@@ -18,4 +17,10 @@ define("_MI_TADTOOLS_TITLE1_OPT3","Ãö³¬ jquery ¥\¯à¡]»Ý¦Û¤v¤â°Ê¥[¦Ü§G´º¡A°O±o¤]­
 
 define("_MI_TADTOOLS_TITLE2","¬O§_®r¤J§Ö³tµn¤J¨ìµn¤J¿ï³æ¤¤");
 define("_MI_TADTOOLS_DESC2","¿ï¡u¬O¡v·|±Ntad_login¤¤¥i¨Ï¥ÎªºOpenIDµn¤J¤è¦¡¾ã¦X¦Üµn¤J¿ï³æ¤¤¡C");
+define("_MI_TADTOOLS_TITLE3","µn¤J¿ï³æ¤¤ªº§Ö³tµn¤J¹Ï¥Ü¤@±Æ´X­Ó");
+define("_MI_TADTOOLS_DESC3","­Y¡u¬O§_®r¤J§Ö³tµn¤J¨ìµn¤J¿ï³æ¤¤¡v¬°¡u¬O¡v®É¡A¿ï¤@­Ó·|¥X²{¹Ï¥Ü¤Î¤å¦r¡A¿ï¨â­Ó¥H¤W´N¥u³Ñ¹Ï¥Ü¡C");
+define("_MI_TADTOOLS_TITLE4","¬O§_¨Ï¥Î¾ÉÄý¦Cªº°v¦í¥\¯à");
+define("_MI_TADTOOLS_DESC4","¿ï¡u¬O¡v®É¡A¦bµe­±©¹¤U²¾°Ê®É¡A¾ÉÄý¦C·|¦Û°Êºû«ù¦b³Ì¤W¤è¡C");
+define("_MI_TADTOOLS_TITLE5","¤U¸üÀÉ®×ªº¸ô®|¬O§_®Ú¾Ú¥D¾÷Àô¹Ò¦Û°ÊÂà½X");
+define("_MI_TADTOOLS_DESC5","­Y¬O¤¤¤åÀÉ¦WµLªk¤U¸üªº®É­Ô¡A¸Õ¸Õ§ïÅÜ¦¹³]©w­È¡C");
 ?>

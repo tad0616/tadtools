@@ -379,7 +379,7 @@ if(!function_exists("is_utf8")){
 }
 
 
-//轉換編碼 （_CHARSET在後面時，$OS2Web為true，預設）
+//轉換編碼 （_CHARSET 在後面時，$OS2Web 為 true，預設）
 if(!function_exists('auto_charset')){
   function auto_charset($str='',$OS_or_Web='web'){
     $os_charset=(PATH_SEPARATOR==':')?"UTF-8":"Big5";

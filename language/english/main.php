@@ -48,4 +48,5 @@ define("_TAD_SORTABLE","Drag to sort.");
 define("_TAD_ADMIN","\"%s\" Admin");
 define("_TAD_CONFIG","\"%s\" Preferences");
 define("_TAD_BLOCKS","\"%s\" Blocks");
+define("_TAD_TF_USER_LOGIN","Login");
 ?>

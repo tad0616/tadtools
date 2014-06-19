@@ -1,0 +1,19 @@
+<script src="<{xoAppUrl modules/tadtools/themes_tpl/slider/sliderengine/amazingslider.js}>"></script>
+<script src="<{xoAppUrl modules/tadtools/themes_tpl/slider/sliderengine/initslider-1.js}>"></script>
+
+<!-- Insert to your webpage where you want to display the slider -->
+<div id="amazingslider-1" style="display:block;position:relative;">
+    <ul class="amazingslider-slides" style="display:none;">
+      <{foreach from=$slider_var item=slide key=i}>
+        <li><img src="<{$slide.file_url}>" alt="<{$slide.description}>" data-description="" /></li>
+      <{/foreach}>
+    </ul>
+    <ul class="amazingslider-thumbnails" style="display:none;">
+      <{foreach from=$slider_var item=slide key=i}>
+        <li><img src="<{$slide.file_thumb_url}>" /></li>
+      <{/foreach}>
+    </ul>
+    <div class="amazingslider-engine" style="display:none;"><a href="http://amazingslider.com">JavaScript Slider</a></div>
+</div>
+<!-- End of body section HTML codes -->
+

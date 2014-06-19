@@ -47,8 +47,14 @@ class slider{
       $caption=($content)?"
       <div class='caption'>
         <div style='font-size:11pt;color:#33CCFF;font-weight:bold;'>{$title}</div>
-        <div style='font-size:11px;'>{$content}</div>
-      </div>":"";
+          <div>{$content}</div>
+      </div>
+        <div class='caption_txt'>
+        <div style='font-size:11pt;color:#33CCFF;font-weight:bold;'>{$title}</div>
+          <div>{$content}</div>
+        </div>
+     
+      ":"";
 
       if(strtolower(substr($image,-3))=="swf"){
         //exactfit,default

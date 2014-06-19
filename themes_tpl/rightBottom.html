@@ -2,7 +2,7 @@
   <{assign var="i" value=0}>
   <{assign var="total" value=1}>
 
-  <div class="rightBlock" style="<{$rightBlocks2}>;width:100%;">
+  <div class="rightBlock" style="<{if $rightBlocks2}><{$rightBlocks2}>;<{/if}>width:100%;">
     <{foreach item=block from=$xoBlocks.canvas_right}>
       <{if $i==0}>
         <div class="row-fluid">
@@ -18,11 +18,11 @@
       <{/if}>
 
       <{assign var="i" value=$i+1}>
-      <{assign var="total" value=$total+1}>
-      <{if $i == 5 || $total==5}>
+      <{if $i == 5 || $total==$right_count}>
         </div>
         <{assign var="i" value=0}>
       <{/if}>
+      <{assign var="total" value=$total+1}>
     <{/foreach}>
     <div class="clearfix"></div>
   </div>

@@ -47,4 +47,21 @@ define("_TAD_SORTABLE","可直接拉動排序");
 define("_TAD_ADMIN","「%s」管理後台");
 define("_TAD_CONFIG","「%s」偏好設定");
 define("_TAD_BLOCKS","「%s」區塊管理");
+
+define("_TAD_TF_BLOCK_CONFIG", "設定本區塊");
+define("_TAD_TF_SYSTEM_CONFIG",  "系統偏好設定");
+define("_TAD_TF_SYSTEM_MODADM",  "線上安裝更新");
+define("_TAD_TF_MODULE_CONFIG",  "模組管理區");
+define("_TAD_TF_USER_ADMIN","管理");
+define("_TAD_TF_USER_BLOCK","區塊");
+define("_TAD_TF_THEME_ADMIN","佈景");
+define("_TAD_TF_THEME_DEBUG",  "開除錯");
+define("_TAD_TF_THEME_UNDEBUG",  "關除錯");
+define("_TAD_TF_MYMENU",  "我的選單");
+define("_TAD_TF_USER_PROFILE","帳號");
+define("_TAD_TF_USER_NOTICE","通知");
+define("_TAD_TF_USER_NEWMSG","您有 %s 封信");
+define("_TAD_TF_USER_MSG","信件");
+define("_TAD_TF_USER_EXIT","登出");
+define("_TAD_TF_USER_LOGIN","登入");
 ?>

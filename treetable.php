@@ -82,6 +82,17 @@ class treetable{
           drop: function(e, ui) {
             var droppedEl = ui.draggable.parents('tr');
             $('{$this->tbl_id}').treetable('move', droppedEl.data('ttId'), $(this).data('ttId'));
+            //alert(droppedEl.data('ttId'));
+
+            $.ajax({
+              type:   'POST',
+              url:    '{$this->post_url}',
+              data:   { {$this->of_sn}: $(this).data('ttId'), {$this->sn}: droppedEl.data('ttId') },
+              success: function(msg) {
+                $('{$this->msg}').html(msg);
+              }
+            });
+
           },
           hoverClass: 'accept',
           over: function(e, ui) {

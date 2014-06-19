@@ -2,7 +2,7 @@
   <{assign var="i" value=0}>
   <{assign var="total" value=1}>
 
-  <div class="leftBlock">
+  <div class="leftBlock" style="<{if $leftBlocks2}><{$leftBlocks2}>;<{/if}>width:100%;">
     <{foreach item=block from=$xoBlocks.canvas_left}>
       <{if $i==0}>
         <div class="row-fluid">
@@ -18,11 +18,11 @@
       <{/if}>
 
       <{assign var="i" value=$i+1}>
-      <{assign var="total" value=$total+1}>
-      <{if $i == 4 || $total==$count}>
+      <{if $i == 4 || $total==$left_count}>
         </div>
         <{assign var="i" value=0}>
       <{/if}>
+      <{assign var="total" value=$total+1}>
     <{/foreach}>
     <div class="clearfix"></div>
   </div>

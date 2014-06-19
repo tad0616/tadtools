@@ -26,14 +26,12 @@
     </form>
   </li>
 
-  <{php}>
-  global $xoopsConfig;
-  $modhandler = &xoops_gethandler('module');
-  $xoopsModule = &$modhandler->getByDirname("tadtools");
-  $config_handler =& xoops_gethandler('config');
-  $tadToolsConfig =& $config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
+  <{if $openid_login=="1"}>
+    <{php}>
 
-  if($tadToolsConfig['openid_login']=='1'){
+    global $xoopsConfig,$xoopsTpl;
+    $modhandler = &xoops_gethandler('module');
+    $config_handler =& xoops_gethandler('config');
 
     $TadLoginXoopsModule = &$modhandler->getByDirname("tad_login");
     if($TadLoginXoopsModule){
@@ -45,21 +43,47 @@
       $modConfig= & $config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
 
       $auth_method=$modConfig['auth_method'];
+      $i=0;
+
       foreach($auth_method as $method){
         $method_const="_".strtoupper($method);
         $loginTitle=sprintf(_TAD_LOGIN_BY,constant($method_const));
 
-        echo "<li>";
-          if($method=="facebook"){
-            echo "<a href='{$tad_login['facebook']}' ><img src='".XOOPS_URL."/modules/tad_login/images/{$method}.png' alt='{$loginTitle}' title='{$loginTitle}'>{$loginTitle}</a>";
-          }else{
-            echo "<a href='".XOOPS_URL."/modules/tad_login/index.php?login&op={$method}' ><img src='".XOOPS_URL."/modules/tad_login/images/{$method}.png' alt='{$loginTitle}' title='{$loginTitle}'>{$loginTitle}</a>";
-          }
-        echo "</li>";
+        if($method=="facebook"){
+          $tlogin[$i]['link']=$tad_login['facebook'];
+        }else{
+          $tlogin[$i]['link']=XOOPS_URL."/modules/tad_login/index.php?login&op={$method}";
+        }
+        $tlogin[$i]['img']=XOOPS_URL."/modules/tad_login/images/{$method}.png";
+        $tlogin[$i]['text']=$loginTitle;
+
+        $i++;
       }
+      $xoopsTpl->assign('tlogin',$tlogin);
     }
-  }
-  <{/php}>
+    <{/php}>
+
+    <{assign var="i" value=0}>
+    <{assign var="total" value=1}>
+    <{foreach from=$tlogin item=login}>
+      <{if $i==0}>
+      <li style="white-space: nowrap">
+      <{/if}>
+
+      <a href="<{$login.link}>" class="btn" <{if $openid_logo!=1}>style="display:inline-block;width:32px;height:32px;padding:2px;margin:2px;"<{/if}>>
+        <img src="<{$login.img}>" alt="<{$login.text}>" title="<{$login.text}>" <{if $openid_logo!=1}>style="width:32px;height:32px;"<{/if}>>
+        <{if $openid_logo==1}><{$login.text}><{/if}>
+      </a>
+
+      <{assign var="i" value=$i+1}>
+      <{assign var="total" value=$total+1}>
+
+      <{if $i == $openid_logo || $total==$count}>
+        </li>
+        <{assign var="i" value=0}>
+      <{/if}>
+    <{/foreach}>
+  <{/if}>
 
 
   <li>

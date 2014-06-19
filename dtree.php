@@ -39,13 +39,9 @@ class dtree{
       $opt.="{$this->name}.add($ncsn , {$this->cate_opt[$ncsn]} , '{$title}' , '{$this->url_opt[$ncsn]}');\n";
     }
 
-    $dtree="";
-    if(!defined("_TAD_HAVE_DTREE")){
-      $dtree="<link rel='StyleSheet' href='".TADTOOLS_URL."/dtree/dtree.css' type='text/css' />
-      <script type='text/javascript' src='".TADTOOLS_URL."/dtree/dtree.php'></script>";
+    $dtree="<link rel='StyleSheet' href='".TADTOOLS_URL."/dtree/dtree.css' type='text/css' />
+    <script type='text/javascript' src='".TADTOOLS_URL."/dtree/dtree.php'></script>";
 
-      define("_TAD_HAVE_DTREE",true);
-    }
     $dtree.="
     <style>
       .dtree {

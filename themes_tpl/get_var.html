@@ -1,10 +1,13 @@
 <{php}>
 
 global $xoopsDB,$xoopsConfig,$xoopsModule,$aggreg;
+$left_count=count($aggreg->blocks['canvas_left']);
+$right_count=count($aggreg->blocks['canvas_right']);
+$xoops_showlblock=empty($left_count)?false:true;
+$xoops_showrblock=empty($right_count)?false:true;
 
-$xoops_showlblock=empty($aggreg->blocks['canvas_left'])?false:true;
-$xoops_showrblock=empty($aggreg->blocks['canvas_right'])?false:true;
-
+$this->assign('left_count',$left_count);
+$this->assign('right_count',$right_count);
 
 /****取得Tad Themes偏好設定****/
 $modhandler = &xoops_gethandler('module');
@@ -14,9 +17,55 @@ $mid=($xoopsModule)?$xoopsModule->getVar('mid'):0;
 $this->assign('mid',$mid);
 
 $use_default_config=false;
+
+/****取得Tad Tools偏好設定****/
+$TadtoolsModule = &$modhandler->getByDirname("tadtools");
+$Tadtoolsmid=($TadtoolsModule)?$TadtoolsModule->getVar('mid'):0;
+
+$config_handler =& xoops_gethandler('config');
+$tadToolsConfig =& $config_handler->getConfigsByCat(0, $Tadtoolsmid);
+
+$this->assign('openid_login',$tadToolsConfig['openid_login']);
+$this->assign('openid_logo',$tadToolsConfig['openid_logo']);
+$this->assign('use_pin',$tadToolsConfig['use_pin']);
+
+
+/****檔案預設值****/
+
+$theme_name=$xoopsConfig['theme_set'];
+include_once XOOPS_ROOT_PATH."/themes/{$theme_name}/config.php";
+
+foreach($config_enable as $k=>$v){
+  $$k=$v['default'];
+  $this->assign($k,$$k);
+}
+//模擬偏好設定預設值
+$default['auto_mainmenu']='1';
+$default['show_sitename']='1';
+
+//模擬Tad Themes的設定值
+$default['theme_id']='0';
+$default['theme_kind']=$theme_kind;
+$default['theme_change']=$theme_change;
+$default['menu_var_kind']=empty($menu_var_kind)?'my_menu':$menu_var_kind;
+
+$_SESSION['menu_var_kind']=$default['menu_var_kind'];
+
+$default['bg_img']=!empty($bg_img)?XOOPS_URL."/themes/{$theme_name}/images/bg/{$bg_img}":"";
+$default['logo_img']=!empty($logo_img)?XOOPS_URL."/themes/{$theme_name}/images/logo/{$logo_img}":"";
+$default['navlogo_img']=!empty($navlogo_img)?XOOPS_URL."/themes/tad_themes/images/navlogo/{$navlogo_img}":"";
+$default['navbar_img']=!empty($navbar_img)?XOOPS_URL."/themes/{$theme_name}/images/nav_bg/{$navbar_img}":"";
+$default['bt_bg_img']=!empty($bt_bg_img)?XOOPS_URL."/themes/{$theme_name}/images/bt_bg/{$bt_bg_img}":"";
+
+
+foreach($default as $k=>$v){
+  $$k=$v;
+  $this->assign($k,$$k);
+}
+
+
 if($mid){
 
-  $config_handler = & xoops_gethandler('config');
   $xoopsModuleConfig = & $config_handler->getConfigsByCat(0, $mid);
 
   $this->assign('auto_mainmenu',$xoopsModuleConfig['auto_mainmenu']);
@@ -44,38 +93,6 @@ if($mid){
   $use_default_config=true;
 }
 
-
-/****若無Tad Themes的設定值，採用檔案預設值****/
-if($use_default_config){
-  $theme_name=$xoopsConfig['theme_set'];
-  include_once XOOPS_ROOT_PATH."/themes/{$theme_name}/config.php";
-
-  foreach($config_enable as $k=>$v){
-    $$k=$v['default'];
-    $this->assign($k,$$k);
-  }
-  //模擬偏好設定預設值
-  $default['auto_mainmenu']='1';
-  $default['show_sitename']='1';
-
-  //模擬Tad Themes的設定值
-  $default['theme_id']='0';
-  $default['theme_kind']=$theme_kind;
-  $default['theme_change']=$theme_change;
-
-  $default['bg_img']=!empty($bg_img)?XOOPS_URL."/themes/{$theme_name}/images/bg/{$bg_img}":"";
-  $default['logo_img']=!empty($logo_img)?XOOPS_URL."/themes/{$theme_name}/images/logo/{$logo_img}":"";
-  $default['navlogo_img']=!empty($navlogo_img)?XOOPS_URL."/themes/tad_themes/images/navlogo/{$navlogo_img}":"";
-  $default['navbar_img']=!empty($navbar_img)?XOOPS_URL."/themes/{$theme_name}/images/nav_bg/{$navbar_img}":"";
-  $default['bt_bg_img']=!empty($bt_bg_img)?XOOPS_URL."/themes/{$theme_name}/images/bt_bg/{$bt_bg_img}":"";
-
-
-  foreach($default as $k=>$v){
-    $$k=$v;
-    $this->assign($k,$$k);
-  }
-}
-
 /****設定各個區域的底色****/
 $left_block=$left_block2="";
 $center_block="background-color:{$cb_color};";
@@ -84,9 +101,13 @@ $right_block=$right_block2="";
 
 /****設定各個區域的寬度****/
 
+if($theme_kind=='mix')$theme_width=12;
+
 //TYPE1:二欄式（左右區域皆在左邊）
 if($theme_type=='theme_type_1'){
-  if($theme_kind!="bootstrap"){
+  if($theme_kind!="html"){
+    $center_width=$theme_width-$lb_width;
+  }else{
     if(!$xoops_showlblock and !$xoops_showrblock){
       $center_width=$theme_width;
     }else{
@@ -96,13 +117,13 @@ if($theme_type=='theme_type_1'){
     $left_block.="width:{$lb_width}px;";
     $center_block.="float:right; width:{$center_width}px;";
     $right_block.=" width:{$rb_width}px;";
-  }else{
-    $center_width=$theme_width-$lb_width;
   }
 
 //TYPE2:二欄式（左右區域皆在右邊）
 }elseif($theme_type=='theme_type_2'){
-  if($theme_kind!="bootstrap"){
+  if($theme_kind!="html"){
+    $center_width=$theme_width-$lb_width;
+  }else{
     if(!$xoops_showlblock and !$xoops_showrblock){
       $center_width=$theme_width;
     }else{
@@ -112,13 +133,14 @@ if($theme_type=='theme_type_1'){
     $left_block.="width:{$lb_width}px;";
     $center_block.="float:left;  width:{$center_width}px;";
     $right_block.="width:{$rb_width}px;";
-  }else{
-    $center_width=$theme_width-$lb_width;
   }
 
 //TYPE3:二欄式（左區域在左邊，右區域在下方）
 }elseif($theme_type=='theme_type_3'){
-  if($theme_kind!="bootstrap"){
+  if($theme_kind!="html"){
+    $rb_width="12";
+    $center_width=$theme_width-$lb_width;
+  }else{
     if(!$xoops_showlblock){
       $center_width=$theme_width;
     }else{
@@ -129,14 +151,14 @@ if($theme_type=='theme_type_1'){
     $right_block.="float:none;  width:{$theme_width}px; clear:both;";
     $left_block2="";
     $right_block2.="float:left;";
-  }else{
-    $rb_width="12";
-    $center_width=$theme_width-$lb_width;
   }
 
 //TYPE4:二欄式（左區域在右邊，右區域在下方）
 }elseif($theme_type=='theme_type_4'){
-  if($theme_kind!="bootstrap"){
+  if($theme_kind!="html"){
+    $rb_width="12";
+    $center_width=$theme_width-$lb_width;
+  }else{
     if(!$xoops_showrblock){
       $center_width=$theme_width;
     }else{
@@ -147,15 +169,13 @@ if($theme_type=='theme_type_1'){
     $right_block.="float:none; width:{$theme_width}px; clear:both;";
     $left_block2="";
     $right_block2.="float:left;";
-  }else{
-    $rb_width="12";
-    $center_width=$theme_width-$lb_width;
   }
 
 //TYPE5:三欄式標準配置
 }elseif($theme_type=='theme_type_5'){
-  if($theme_kind!="bootstrap"){
-
+  if($theme_kind!="html"){
+    $center_width=$theme_width-$lb_width-$rb_width;
+  }else{
     if(!$xoops_showlblock and !$xoops_showrblock){
       $center_width=$theme_width;
     }elseif(!$xoops_showlblock){
@@ -170,13 +190,13 @@ if($theme_type=='theme_type_1'){
     $center_block.="float:left;  width:{$center_width}px;";
     $right_block.="float:right;  width:{$rb_width}px;";
     $left_block2=$right_block2="";
-  }else{
-    $center_width=$theme_width-$lb_width-$rb_width;
   }
 
 //TYPE6:三欄式（左右區域皆在左邊）
 }elseif($theme_type=='theme_type_6'){
-  if($theme_kind!="bootstrap"){
+  if($theme_kind!="html"){
+    $center_width=$theme_width-$lb_width-$rb_width;
+  }else{
     if(!$xoops_showlblock and !$xoops_showrblock){
       $center_width=$theme_width;
     }elseif(!$xoops_showlblock){
@@ -190,14 +210,13 @@ if($theme_type=='theme_type_1'){
     $center_block.="float:right;  width:{$center_width}px;";
     $right_block.="float:left;  width:{$rb_width}px;";
     $left_block2=$right_block2="";
-
-  }else{
-    $center_width=$theme_width-$lb_width-$rb_width;
   }
 
 //TYPE7:三欄式（左右區域皆在右邊）
 }elseif($theme_type=='theme_type_7'){
-  if($theme_kind!="bootstrap"){
+  if($theme_kind!="html"){
+    $center_width=$theme_width-$lb_width-$rb_width;
+  }else{
     if(!$xoops_showlblock and !$xoops_showrblock){
       $center_width=$theme_width;
     }elseif(!$xoops_showlblock){
@@ -211,22 +230,19 @@ if($theme_type=='theme_type_1'){
     $center_block.="float:left;  width:{$center_width}px;";
     $right_block.="float:right;  width:{$rb_width}px;";
     $left_block2=$right_block2="";
-
-  }else{
-    $center_width=$theme_width-$lb_width-$rb_width;
   }
 
 //TYPE8:單欄式（左區域在上方，右區域在下方）
 }elseif($theme_type=='theme_type_8'){
-  if($theme_kind!="bootstrap"){
+  if($theme_kind!="html"){
+    $lb_width=$center_width=$rb_width="12";
+  }else{
     $center_width=$theme_width;
     $left_block.="float:none;  width:{$lb_width}px;";
     $center_block.="float:none;  width:{$center_width}px;";
     $right_block.="float:none;  width:{$theme_width}px; clear:both;";
     $left_block2.="";
     $right_block2.="";
-  }else{
-    $lb_width=$center_width=$rb_width="12";
   }
 }
 
@@ -336,9 +352,17 @@ if(file_exists(XOOPS_ROOT_PATH."/themes/{$theme_name}/config2.php")){
   foreach($theme_config as $k=>$config){
     $name=$config['name'];
     $value=is_null($config2[$name])?$config['default']:$config2[$name];
+    if($config['type']=="array"){
+      $value=str_replace("{XOOPS_URL}",XOOPS_URL,$value);
+      $value=json_decode($value,true);
+    }
     $this->assign($name,$value);
   }
 }
 
 
 <{/php}>
+
+
+<{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/get_menu_var.html"}>
+<{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/get_slider_var.html"}>

@@ -47,4 +47,5 @@ define("_TAD_SORTABLE","可直接拉動排序");
 define("_TAD_ADMIN","「%s」管理後台");
 define("_TAD_CONFIG","「%s」偏好設定");
 define("_TAD_BLOCKS","「%s」區塊管理");
+define("_TAD_TF_USER_LOGIN","登入");
 ?>

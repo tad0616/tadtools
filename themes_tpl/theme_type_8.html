@@ -3,7 +3,7 @@
   <{if $xoBlocks.canvas_left}>
 
     <div id="xoops_theme_left_zone"  class="row-fluid" style="background-color:<{$lb_color}>;">
-      <div class="<{if $theme_kind=="bootstrap"}>span<{/if}><{$lb_width}>">
+      <div class="<{if $theme_kind!="html"}>span<{/if}><{$lb_width}>">
         <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/leftBottom.html"}>
       </div>
     </div>
@@ -11,7 +11,7 @@
   <{/if}>
 
   <div id="xoops_theme_center_zone" class="row-fluid">
-    <div class="<{if $theme_kind=="bootstrap"}>span<{/if}><{$center_width}>" style="<{$centerBlocks}>">
+    <div class="<{if $theme_kind!="html"}>span<{/if}><{$center_width}>" style="<{$centerBlocks}>">
       <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/centerZone.html"}>
     </div>
   </div>
@@ -19,7 +19,7 @@
   <{if $xoBlocks.canvas_right}>
 
     <div id="xoops_theme_right_zone" class="row-fluid" style="background-color:<{$rb_color}>;">
-      <div class="<{if $theme_kind=="bootstrap"}>span<{/if}><{$rb_width}>">
+      <div class="<{if $theme_kind!="html"}>span<{/if}><{$rb_width}>">
         <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/rightBottom.html"}>
       </div>
     </div>

@@ -24,4 +24,10 @@ define("_MI_TADTOOLS_DESC2","Please check 'Yes' if the site theme is not bootstr
 
 define("_MI_TADTOOLS_TITLE2","Does display openid login options in login menu?");
 define("_MI_TADTOOLS_DESC2","\"yes\" will display openid login options in login menu.");
+define("_MI_TADTOOLS_TITLE3","How many icons displayed in a row?");
+define("_MI_TADTOOLS_DESC3","if icon more than two it will only display icon without text.");
+define("_MI_TADTOOLS_TITLE4","Pin navbar to top?");
+define("_MI_TADTOOLS_DESC4","if yes navbar will stick on top.");
+define("_MI_TADTOOLS_TITLE5","Auto change charset of download url?");
+define("_MI_TADTOOLS_DESC5","Only for Chinese file name.");
 ?>

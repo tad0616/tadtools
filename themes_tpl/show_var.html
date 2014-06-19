@@ -6,7 +6,7 @@
       <tr><th>佈景種類</th><th>$theme_kind</th><td><{$theme_kind}></td></tr>
       <tr><th>佈景編號</th><th>$theme_id</th><td><{$theme_id}></td></tr>
       <tr><th>佈景名稱</th><th>$theme_name</th><td><{$theme_name}></td></tr>
-      <tr><th>啟用佈景</th><th>$theme_enable</th><td><{$theme_enable}></td></tr>
+      <tr><th>載入選單種類</th><th>$menu_var_kind</th><td><{$menu_var_kind}></td></tr>
       <tr><th>開除錯</th><th>$debug</th><td><{$debug}></td></tr>
       <tr><th>顯示搜尋工具</th><th>$use_search</th><td><{$use_search}></td></tr>
       <tr><th>內容區設定</th><th>$content_zone</th><td><{$content_zone}></td></tr>
@@ -17,10 +17,20 @@
       <tr><th>第二右區域設定</th><th>$rightBlocks2</th><td><{$rightBlocks2}></td></tr>
       <tr><th>樣板設定檔</th><th>$xoops_themecss</th><td><{$xoops_themecss}></td></tr>
 
-    <tr><th colspan=3><h2>偏好設定</h2></th></tr>
+    <tr><th colspan=3><h2>Tad Themes 偏好設定</h2></th></tr>
       <tr><th>是否在工具列顯示網站標題文字</th><th>$auto_mainmenu</th><td><{$auto_mainmenu}></td></tr>
       <tr><th>顯示主選單下拉選單</th><th>$show_sitename</th><td><{$show_sitename}></td></tr>
 
+    <tr><th colspan=3><h2>Tad Tools 偏好設定</h2></th></tr>
+      <tr><th>是否在登入選單整合OpenID？</th><th>$openid_login</th><td><{$openid_login}></td></tr>
+      <tr><th>登入選單一排要呈現幾個OpenID圖示</th><th>$openid_logo</th><td><{$openid_logo}></td></tr>
+      <tr><th>是否釘選住導覽列？</th><th>$use_pin</th><td><{$use_pin}></td></tr>
+
+      <tr><th colspan=3><h2>其他設定</h2></th></tr>
+        <tr><th>左邊區塊數</th><th>$left_count</th><td><{$left_count}></td></tr>
+        <tr><th>右邊區塊數</th><th>$right_count</th><td><{$right_count}></td></tr>
+        <tr><th>選單是否有用到 popup 模式</th><th>$have_popup</th><td><{$have_popup}></td></tr>
+        <tr><th>popup 語法</th><th>$tad_themes_popup_code</th><td><{$tad_themes_popup_code}></td></tr>
 
     <tr><th colspan=3><h2>網頁布局設定</h2></th></tr>
       <tr><th>版面類型</th><th>$theme_type</th><td><{$theme_type}></td></tr>
@@ -53,6 +63,7 @@
     <tr><th colspan=3><h2>滑動圖片設定</h2></th></tr>
       <tr><th>滑動圖片寬度</th><th>$slide_width</th><td><{$slide_width}></td></tr>
       <tr><th>滑動圖片高度</th><th>$slide_height</th><td><{$slide_height}></td></tr>
+      <tr><th>是否可上傳滑動圖片</th><th>$use_slide</th><td><{$use_slide}></td></tr>
 
 
     <tr><th colspan=3><h2>logo 圖設定</h2></th></tr>
@@ -95,7 +106,25 @@
       <tr><th>導覽列圖示(舊)</th><th>$navbar_logo_img</th><td><{$navbar_logo_img}></td></tr>
       <tr><th>導覽列 logo 圖</th><th>$logo_img</th><td><{$logo_img}></td></tr>
 
+    <tr><th colspan=3><h2>自訂選單 $menu_var</h2></th></tr>
+      <{foreach from=$menu_var item=m}>
+        <tr><th><{$m.title}></th><th>$menu_var[<{$m.id}>]</th><td>array('id'=><{$m.id}> , 'title'=><{$m.title}> , 'url'=><{$m.url}>, 'target'=><{$m.target}>, 'icon'=><{$m.icon}>, 'submenu'=><{$m.submenu}>)</td></tr>
+        <{if $m.submenu}>
+          <{foreach from=$m.submenu item=m2}>
+            <tr><th><{$m2.title}></th><th>$menu_var[<{$m.id}>]['submenu'][<{$m2.id}>]</th><td>array('id'=><{$m2.id}> , 'title'=><{$m2.title}> , 'url'=><{$m2.url}>, 'target'=><{$m2.target}>, 'icon'=><{$m2.icon}>, 'submenu'=><{$m2.submenu}>)</td></tr>
+              <{if $m2.submenu}>
+                <{foreach from=$m2.submenu item=m3}>
+                  <tr><th><{$m3.title}></th><th>$menu_var[<{$m.id}>]['submenu'][<{$m2.id}>]['submenu'][<{$m3.id}>]</th><td>array('id'=><{$m3.id}> , 'title'=><{$m3.title}> , 'url'=><{$m3.url}>, 'target'=><{$m3.target}>, 'icon'=><{$m3.icon}>, 'submenu'=><{$m3.submenu}>)</td></tr>
+                <{/foreach}>
+              <{/if}>
+          <{/foreach}>
+        <{/if}>
+      <{/foreach}>
 
+    <tr><th colspan=3><h2>滑動圖文 $slider_var</h2></th></tr>
+      <{foreach from=$slider_var item=slide}>
+        <tr><th><img src="<{$slide.file_thumb_url}>" alt="<{$slide.file_name}>" title="<{$slide.file_name}>"></th><th>$slider_var[<{$slide.files_sn}>]</th><td>array('files_sn'=><{$slide.files_sn}> , 'sort'=><{$slide.sort}> , 'file_name'=><{$slide.file_name}> , 'description'=><{$slide.description}> , 'text_description'=><{$slide.text_description}> , 'original_filename'=><{$slide.original_filename}> , 'sub_dir'=><{$slide.sub_dir}> , 'file_url'=><{$slide.file_url}>, 'file_thumb_url'=><{$slide.file_thumb_url}>)</td></tr>
+      <{/foreach}>
 <{php}>
 
 /****佈景額外設定****/
@@ -123,6 +152,22 @@ if(file_exists(XOOPS_ROOT_PATH."/themes/{$theme_name}/config2.php")){
   foreach($theme_config as $k=>$config){
     $name=$config['name'];
     $value=is_null($config2[$name])?$config['default']:$config2[$name];
+     if($config['type']=="array"){
+      $value_arr=json_decode($value,true);
+      $value="";
+      foreach($value_arr as $i=>$items){
+        if(is_array($items)){
+          foreach($items as $key=>$val){
+            $val=str_replace("{XOOPS_URL}",XOOPS_URL,$val);
+            $value.="<div>\${$name}[$i]['$key']=\"{$val}\";</div>";
+          }
+        }else{
+          $items=str_replace("{XOOPS_URL}",XOOPS_URL,$items);
+          $value.="<div>\${$name}[$i]=\"{$items}\";</div>";
+        }
+      }
+    }
+
     echo "<tr><th>{$config['text']}</th><th>\${$name}</th><td>{$value}</td></tr>";
   }
 }

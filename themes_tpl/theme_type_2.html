@@ -2,11 +2,11 @@
 
   <{if $xoBlocks.canvas_left or $xoBlocks.canvas_right}>
 
-    <div id="xoops_theme_center_zone" class="<{if $theme_kind=="bootstrap"}>span<{/if}><{$center_width}>" style="<{$centerBlocks}>">
+    <div id="xoops_theme_center_zone" class="<{if $theme_kind!="html"}>span<{/if}><{$center_width}>" style="<{$centerBlocks}>">
       <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/centerZone.html"}>
     </div>
 
-    <div id="xoops_theme_right_zone" class="<{if $theme_kind=="bootstrap"}>span<{/if}><{$rb_width}>" style="<{if $theme_kind=="html"}>float:right;<{/if}>background-color:<{$rb_color}>;">
+    <div id="xoops_theme_right_zone" class="<{if $theme_kind!="html"}>span<{/if}><{$rb_width}>" style="<{if $theme_kind=="html"}>float:right;<{/if}>background-color:<{$rb_color}>;">
       <div id="xoops_theme_right"  style="<{$rightBlocks}>">
         <{if $xoBlocks.canvas_left}>
           <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/leftBlock.html"}>
