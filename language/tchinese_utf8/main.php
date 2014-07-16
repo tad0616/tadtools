@@ -37,7 +37,7 @@ define("_TAD_STAR_RATING_DATE_SAVE","已於 %s 評為 %s 分");
 
 define("_TAD_SELECT_TO_DEL","選擇欲刪除的檔案");
 
-define("_TAD_DEL_INSTALL_CHK","「".XOOPS_VAR_PATH."/data/install_chk.php 」自動安裝檔仍存在，請重新整理本頁，系統會自動刪除之。若仍出現此訊息，建議手動刪除之以策安全。（本訊息僅管理員看得見）");
+define("_TAD_DEL_INSTALL_CHK","安裝程式已將自動安裝檔「".XOOPS_VAR_PATH."/data/install_chk.php 」刪除。若仍持續出現此訊息，建議手動刪除之以策安全。（本訊息僅管理員看得見）");
 
 define("_TAD_LOGIN_BY","使用 %s 快速登入");
 define("_TAD_SORTED","排序完成！");

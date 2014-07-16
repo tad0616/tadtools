@@ -24,7 +24,7 @@ if(!function_exists('get_jquery')){
       $jquery_path="
       <script type='text/javascript'>
         if(typeof jQuery == 'undefined') {
-          document.write(\"<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js'><\/script>\");
+          document.write(\"<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js'><\/script>\");
         }
       </script>
       $jquery_ui

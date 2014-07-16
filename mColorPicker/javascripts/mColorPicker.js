@@ -543,8 +543,9 @@
       $.fn.mColorPicker.liveEvents();
     }
 
-    $('.mColorPicker').live('keyup', function () {
+    //$('.mColorPicker').live('keyup', function () {
 
+    $(document).on('keyup','.mColorPicker', function () {
       try {
 
         $(this).css({
@@ -555,7 +556,8 @@
       } catch (r) {}
     });
 
-    $('.mColorPickerTrigger').live('click', function () {
+    //$('.mColorPickerTrigger').live('click', function () {
+    $(document).on('click','.mColorPickerTrigger', function () {
 
       $.fn.mColorPicker.colorShow($(this).attr('id').replace('icp_', ''));
     });

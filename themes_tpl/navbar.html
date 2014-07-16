@@ -1,6 +1,8 @@
 <{if $xoops_isadmin}>
   <{php}>
   if(file_exists(XOOPS_VAR_PATH."/data/install_chk.php")){
+    global $xoopsConfig;
+    include_once XOOPS_ROOT_PATH."/modules/tadtools/language/{$xoopsConfig['language']}/main.php";
     echo "
     <div class='alert alert-error'>
       "._TAD_DEL_INSTALL_CHK."

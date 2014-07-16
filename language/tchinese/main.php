@@ -1,6 +1,6 @@
 <?php
 define("_TAD_HOME","回首頁");
-define("_TAD_NO_DIRNAME"," 無目錄名稱");
+define("_TAD_NO_DIRNAME","無目錄名稱");
 define("_TAD_MKDIR_ERROR"," 無法建立 %s 目錄，請手動建立，並開啟匿名寫入權限（777）");
 define("_TAD_TO_MOD","回模組首頁");
 define("_TAD_TO_ADMIN","管理介面");
@@ -37,7 +37,7 @@ define("_TAD_STAR_RATING_DATE_SAVE","已於 %s 評為 %s 分");
 
 define("_TAD_SELECT_TO_DEL","選擇欲刪除的檔案");
 
-define("_TAD_DEL_INSTALL_CHK","「".XOOPS_VAR_PATH."/data/install_chk.php 」自動安裝檔仍存在，請重新整理本頁，系統會自動刪除之。若仍出現此訊息，建議手動刪除之以策安全。（本訊息僅管理員看得見）");
+define("_TAD_DEL_INSTALL_CHK","安裝程式已將自動安裝檔「".XOOPS_VAR_PATH."/data/install_chk.php 」刪除。若仍持續出現此訊息，建議手動刪除之以策安全。（本訊息僅管理員看得見）");
 
 define("_TAD_LOGIN_BY","使用 %s 快速登入");
 define("_TAD_SORTED","排序完成！");
@@ -47,5 +47,21 @@ define("_TAD_SORTABLE","可直接拉動排序");
 define("_TAD_ADMIN","「%s」管理後台");
 define("_TAD_CONFIG","「%s」偏好設定");
 define("_TAD_BLOCKS","「%s」區塊管理");
+
+define("_TAD_TF_BLOCK_CONFIG", "設定本區塊");
+define("_TAD_TF_SYSTEM_CONFIG",  "系統偏好設定");
+define("_TAD_TF_SYSTEM_MODADM",  "線上安裝更新");
+define("_TAD_TF_MODULE_CONFIG",  "模組管理區");
+define("_TAD_TF_USER_ADMIN","管理");
+define("_TAD_TF_USER_BLOCK","區塊");
+define("_TAD_TF_THEME_ADMIN","佈景");
+define("_TAD_TF_THEME_DEBUG",  "開除錯");
+define("_TAD_TF_THEME_UNDEBUG",  "關除錯");
+define("_TAD_TF_MYMENU",  "我的選單");
+define("_TAD_TF_USER_PROFILE","帳號");
+define("_TAD_TF_USER_NOTICE","通知");
+define("_TAD_TF_USER_NEWMSG","您有 %s 封信");
+define("_TAD_TF_USER_MSG","信件");
+define("_TAD_TF_USER_EXIT","登出");
 define("_TAD_TF_USER_LOGIN","登入");
 ?>

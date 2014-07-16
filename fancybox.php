@@ -10,6 +10,7 @@ $xoopsTpl->assign('fancybox_code',$fancybox_code);
 加在連結中：class="edit_dropdown" rel="group"（圖） data-fancybox-type="iframe"（HTML）
 */
 include_once "tadtools_header.php";
+include_once "jquery.php";
 
 
 class fancybox{
@@ -18,11 +19,12 @@ class fancybox{
   var $height;
 
   //建構函數
-  function fancybox($name="",$width='90%',$height='100%'){
+  function fancybox($name="",$width='90%',$height='100%',$show_jquery=true){
     //$this->name=randStr();
     $this->name=$name;
     $this->width=$width;
     $this->height=$height;
+    $this->show_jquery = $show_jquery;
   }
 
   //產生語法
@@ -34,8 +36,10 @@ class fancybox{
           window.location.reload();
         }":"";
 
+    $jquery=$this->show_jquery?get_jquery():"";
 
     $fancybox="
+    {$jquery}
     <script type='text/javascript' src='".TADTOOLS_URL."/fancyBox/lib/jquery.mousewheel-3.0.6.pack.js'></script>
     <script type='text/javascript' language='javascript' src='".TADTOOLS_URL."/fancyBox/source/jquery.fancybox.js?v=2.1.4'></script>
     <link rel='stylesheet' href='".TADTOOLS_URL."/fancyBox/source/jquery.fancybox.css?v=2.1.4' type='text/css' media='screen' />

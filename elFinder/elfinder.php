@@ -1,5 +1,6 @@
 <?php
 include_once "../../../mainfile.php";
+if(!$xoopsUser)exit;
 include_once "../jquery.php";
 $jquery=get_jquery(true);
 $LANGCODE=str_replace("-","_",_LANGCODE);
