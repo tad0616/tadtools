@@ -19,6 +19,13 @@ function get_theme_slide_items(){
         $$k=$v;
       }
       //`files_sn`, `col_name`, `col_sn`, `sort`, `kind`, `file_name`, `file_type`, `file_size`, `description`, `counter`, `original_filename`, `hash_filename`, `sub_dir`
+
+
+      preg_match_all("/\](.*)\[/", $description, $matches);
+      $url=$matches[1][0];
+      if(empty($url))$url=XOOPS_URL;
+      $description=str_replace("[url]{$url}[/url]", "", $description);
+
       $slider_var[$i]['files_sn']=$files_sn;
       $slider_var[$i]['sort']=$sort;
       $slider_var[$i]['file_name']=$file_name;
@@ -28,6 +35,7 @@ function get_theme_slide_items(){
       $slider_var[$i]['sub_dir']=$sub_dir;
       $slider_var[$i]['file_url']= XOOPS_URL."/uploads/tad_themes{$sub_dir}/{$file_name}";
       $slider_var[$i]['file_thumb_url']= XOOPS_URL."/uploads/tad_themes{$sub_dir}/thumbs/{$file_name}";
+      $slider_var[$i]['slide_url']=$url;
       $i++;
     }
   }

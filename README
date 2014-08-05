@@ -5,6 +5,10 @@
  3.更新 jquery ui為1.11.0版
  4.修正 slideshow_responsive.html 佈景選單的專屬橫幅功能無法正確顯示的問題
  5.更新 jquery cookie 為 1.4.1 版
+ 6.佈景變數加入 slide_url，以支援加入網址功能
+ 7.修正 amazingslider1.html 使之支援滑動圖片網址功能
+ 8.更新滑動圖文預設文字內容
+ 9.fancybox2新增避免點擊外圍而關閉的參數
 
 
 《TadTools 2.5 版 2014-06-25 釋出》

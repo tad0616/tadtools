@@ -28,13 +28,19 @@ class fancybox{
   }
 
   //²£¥Í»yªk
-  function render($reload=true){
+  function render($reload=true,$prevent_closed_outside=false){
 
 
     $reload_code=$reload?",
         afterClose  :function () {
           window.location.reload();
         }":"";
+
+    $prevent_closed_outside_code=$prevent_closed_outside?",
+        helpers   : {
+         overlay : {closeClick: false}
+        }":"";
+
 
     $jquery=$this->show_jquery?get_jquery():"";
 
@@ -58,6 +64,7 @@ class fancybox{
         closeClick  : false,
         openEffect  : 'none',
         closeEffect : 'none'
+        {$prevent_closed_outside_code}
         {$reload_code}
       });
     });
