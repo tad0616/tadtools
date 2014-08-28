@@ -19,12 +19,13 @@ class fancybox{
   var $height;
 
   //建構函數
-  function fancybox($name="",$width='90%',$height='100%',$show_jquery=true){
+  function fancybox($name="",$width='90%',$height='100%',$show_jquery=true,$show_js=true){
     //$this->name=randStr();
     $this->name=$name;
     $this->width=$width;
     $this->height=$height;
     $this->show_jquery = $show_jquery;
+    $this->show_js = $show_js;
   }
 
   //產生語法
@@ -44,16 +45,18 @@ class fancybox{
 
     $jquery=$this->show_jquery?get_jquery():"";
 
-    $fancybox="
-    {$jquery}
-    <script type='text/javascript' src='".TADTOOLS_URL."/fancyBox/lib/jquery.mousewheel-3.0.6.pack.js'></script>
+    $js=$this->show_js?"<script type='text/javascript' src='".TADTOOLS_URL."/fancyBox/lib/jquery.mousewheel-3.0.6.pack.js'></script>
     <script type='text/javascript' language='javascript' src='".TADTOOLS_URL."/fancyBox/source/jquery.fancybox.js?v=2.1.4'></script>
     <link rel='stylesheet' href='".TADTOOLS_URL."/fancyBox/source/jquery.fancybox.css?v=2.1.4' type='text/css' media='screen' />
     <link rel='stylesheet' type='text/css' href='".TADTOOLS_URL."/fancyBox/source/helpers/jquery.fancybox-buttons.css?v=1.0.5' />
     <script type='text/javascript' src='".TADTOOLS_URL."/fancyBox/source/helpers/jquery.fancybox-buttons.js?v=1.0.5'></script>
     <link rel='stylesheet' type='text/css' href='".TADTOOLS_URL."/fancyBox/source/helpers/jquery.fancybox-thumbs.css?v=1.0.7' />
     <script type='text/javascript' src='".TADTOOLS_URL."/fancyBox/source/helpers/jquery.fancybox-thumbs.js?v=1.0.7'></script>
-    <script type='text/javascript' src='".TADTOOLS_URL."/fancyBox/source/helpers/jquery.fancybox-media.js?v=1.0.5'></script>
+    <script type='text/javascript' src='".TADTOOLS_URL."/fancyBox/source/helpers/jquery.fancybox-media.js?v=1.0.5'></script>":"";
+
+    $fancybox="
+    {$jquery}
+    {$js}
     <script type='text/javascript'>
     $(document).ready(function(){
       $('{$this->name}').fancybox({

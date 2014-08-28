@@ -2,6 +2,10 @@
 
 @import url(normalize.css);
 
+body ,div , a , li ,td ,th{
+  font-size: 12px;
+}
+
 .tooltip {
   opacity: 100;
   position: relative;

@@ -51,6 +51,7 @@ define("_TAD_BLOCKS","\"%s\" Blocks");
 define("_TAD_TF_BLOCK_CONFIG", "Block config");
 define("_TAD_TF_SYSTEM_CONFIG",  "System config");
 define("_TAD_TF_SYSTEM_MODADM",  "Online install/update");
+define("_TAD_TF_SYSTEM_DBADM",  "Adminer");
 define("_TAD_TF_MODULE_CONFIG",  "Module config");
 define("_TAD_TF_USER_ADMIN","Admin");
 define("_TAD_TF_USER_BLOCK","Blocks");

@@ -18,11 +18,16 @@
           <{$theme.theme_name}>
         </td>
         <td>
-          <select name="tt_use_bootstrap[<{$theme.theme_name}>]">
-            <option value="" <{if $theme.use_bootstrap==""}>selected<{/if}>><{$smarty.const._MA_TT_EMPTY_CONFIG}></option>
-            <option value="1" <{if $theme.use_bootstrap=="1"}>selected<{/if}>><{$smarty.const._YES}></option>
-            <option value="0" <{if $theme.use_bootstrap=="0"}>selected<{/if}>><{$smarty.const._NO}></option>
-          </select>
+          <{if $theme.tad_theme==1}>
+            <{$smarty.const._NO}>
+            <input type="hidden" name="tt_use_bootstrap[<{$theme.theme_name}>]" value="0">
+          <{else}>
+            <select name="tt_use_bootstrap[<{$theme.theme_name}>]">
+              <option value="" <{if $theme.use_bootstrap==""}>selected<{/if}>><{$smarty.const._MA_TT_EMPTY_CONFIG}></option>
+              <option value="1" <{if $theme.use_bootstrap=="1"}>selected<{/if}>><{$smarty.const._YES}></option>
+              <option value="0" <{if $theme.use_bootstrap=="0"}>selected<{/if}>><{$smarty.const._NO}></option>
+            </select>
+          <{/if}>
         </td>
         <td>
           <label class="radio inline">

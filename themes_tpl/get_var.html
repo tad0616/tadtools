@@ -34,6 +34,7 @@ $this->assign('use_pin',$tadToolsConfig['use_pin']);
 
 $theme_name=$xoopsConfig['theme_set'];
 include_once XOOPS_ROOT_PATH."/themes/{$theme_name}/config.php";
+include_once XOOPS_ROOT_PATH."/modules/tadtools/language/{$xoopsConfig['language']}/main.php";
 
 foreach($config_enable as $k=>$v){
   $$k=$v['default'];

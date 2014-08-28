@@ -14,9 +14,9 @@ xoops_cp_header();
 /*-----------function區--------------*/
 function tadtools_setup(){
   global $xoopsModule,$xoopsConfig,$xoopsTpl,$xoopsDB;
-  
+
   $use_bootstrap=$bootstrap_color="";
-  
+
   $sql="select * from `".$xoopsDB->prefix("tadtools_setup")."`";
   $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
   //$tt_theme,$tt_use_bootstrap,$tt_bootstrap_color
@@ -24,7 +24,7 @@ function tadtools_setup(){
     $use_bootstrap[$tt_theme]=$tt_use_bootstrap;
     $bootstrap_color[$tt_theme]=$tt_bootstrap_color;
   }
-  
+
   $version=_MA_TT_VERSION.$xoopsModule->getVar("version");
 
   $i=0;
@@ -34,8 +34,22 @@ function tadtools_setup(){
 
     $themes[$i]['color']=$color;
     $themes[$i]['theme_name']=$theme;
-    $themes[$i]['use_bootstrap']=$use_bootstrap[$theme];
-    $themes[$i]['bootstrap_color']=$bootstrap_color[$theme];
+
+    if(file_exists(XOOPS_ROOT_PATH."/themes/{$theme}/config.php")){
+      $sql = "INSERT INTO `".$xoopsDB->prefix("tadtools_setup")."` (`tt_theme` , `tt_use_bootstrap`,`tt_bootstrap_color`) values('{$theme}', '0', 'bootstrap' ) ON DUPLICATE KEY UPDATE `tt_use_bootstrap` = '0',`tt_bootstrap_color`='bootstrap'";
+
+      $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+
+      $themes[$i]['use_bootstrap']='0';
+      $themes[$i]['bootstrap_color']=$bootstrap_color[$theme];
+      $themes[$i]['tad_theme']='1';
+    }else{
+      $themes[$i]['use_bootstrap']=$use_bootstrap[$theme]===""?1:$use_bootstrap[$theme];
+      $themes[$i]['bootstrap_color']=$bootstrap_color[$theme];
+      $themes[$i]['tad_theme']='0';
+    }
+
+
     $i++;
   }
 

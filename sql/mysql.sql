@@ -6,3 +6,4 @@ CREATE TABLE `tadtools_setup` (
   PRIMARY KEY  (`tt_sn`),
   UNIQUE KEY `tt_theme` (`tt_theme`)
 ) ENGINE = MYISAM;
+
