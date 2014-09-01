@@ -22,8 +22,15 @@ define("_MI_TADTOOLS_TITLE1_OPT3","Don't use jquery");
 define("_MI_TADTOOLS_TITLE2","use bootstrap ?");
 define("_MI_TADTOOLS_DESC2","Please check 'Yes' if the site theme is not bootstrap theme.");
 
-define("_MI_TADTOOLS_TITLE2","Does display openid login options in login menu?");
-define("_MI_TADTOOLS_DESC2","\"yes\" will display openid login options in login menu.");
+define("_MI_TADTOOLS_TITLE2","login options in navbar");
+define("_MI_TADTOOLS_DESC2","Does display login options in navbar?");
+define('_MI_TADTOOLS_TITLE2_OPT0','Only XOOPS login');
+define('_MI_TADTOOLS_TITLE2_OPT1','XOOPS login and OpenID');
+define('_MI_TADTOOLS_TITLE2_OPT2','Only OpenID');
+define('_MI_TADTOOLS_TITLE2_OPT3','None');
+
+
+
 define("_MI_TADTOOLS_TITLE3","How many icons displayed in a row?");
 define("_MI_TADTOOLS_DESC3","if icon more than two it will only display icon without text.");
 define("_MI_TADTOOLS_TITLE4","Pin navbar to top?");

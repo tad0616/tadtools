@@ -6,7 +6,7 @@ include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
 $TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="file",$image="image",$thumbs="image/.thumbs");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn); //若 $show_list_del_file ==true 時一定要有
-$upform=$TadUpFiles->upform($show_edit,$upname,$maxlength,$show_list_del_file,$only_type);
+$upform=$TadUpFiles->upform($show_edit,$upname,$maxlength,$show_list_del_file,$only_type,$thumb);
 
 
 //儲存：
@@ -35,7 +35,7 @@ include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
 $TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="file",$image="image",$thumbs="image/.thumbs");
 $TadUpFiles->set_col($col_name,$col_sn,$sort);
 $TadUpFiles->set_thumb($thumb_width="120px",$thumb_height="70px",$thumb_bg_color="#000");
-$list_del_file=$TadUpFiles->list_del_file($show_edit=false);
+$list_del_file=$TadUpFiles->list_del_file($show_edit=false,$mode);
 
 //顯示：
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
@@ -259,10 +259,10 @@ class TadUpFiles{
   }
 
   //上傳元件
-  public function upform($show_edit=false,$upname='upfile',$maxlength="",$show_list_del_file=true,$only_type=""){
+  public function upform($show_edit=false,$upname='upfile',$maxlength="",$show_list_del_file=true,$only_type="",$thumb=true){
     $maxlength=empty($maxlength)?"":"maxlength='{$maxlength}'";
     $accept=($only_type)?"accept='{$only_type}'":"";
-    $list_del_file=($show_list_del_file)?$this->list_del_file($show_edit):"";
+    $list_del_file=($show_list_del_file)?$this->list_del_file($show_edit,$thumb):"";
     $jquery=get_jquery();
 
     $main="
@@ -275,7 +275,7 @@ class TadUpFiles{
 
 
   //列出可刪除檔案
-  public function list_del_file($show_edit=false){
+  public function list_del_file($show_edit=false,$thumb=true){
     global $xoopsDB,$xoopsUser;
 
     $all_file="";
@@ -291,19 +291,31 @@ class TadUpFiles{
 
       $fileidname=str_replace('.','',$file_name);
 
-      if($kind=="file"){
-        $thumb_pic=TADTOOLS_URL."/multiple-file-upload/downloads.png";
+      if($thumb){
+        if($kind=="file"){
+          $thumb_pic=TADTOOLS_URL."/multiple-file-upload/downloads.png";
+        }else{
+          $thumb_pic="{$this->TadUpFilesThumbUrl}/{$file_name}";
+        }
+        $thumb_style="<a class='thumbnail' style='width:{$this->thumb_width};height:{$this->thumb_height};overflow:background-color:{$this->thumb_bg_color};hidden;background-image:url({$thumb_pic});background-position:{$this->thumb_position};background-repeat:{$this->thumb_repeat};background-size:{$this->thumb_size};' title='{$description}'></a>";
+        $thumb_style2="<a class='thumbnail' style='width:{$this->thumb_width};height:{$this->thumb_height};overflow:hidden;background-color:{$this->thumb_bg_color};background-image:url({$thumb_pic});background-position:{$this->thumb_position};background-repeat:{$this->thumb_repeat};background-size:{$this->thumb_size};' title='{$description}'></a>";
+        $w="width:130px;word-break:break-all;";
+        $w2="width:{$this->thumb_width};float:left;";
       }else{
-        $thumb_pic="{$this->TadUpFilesThumbUrl}/{$file_name}";
+        $thumb_style="";
+        $thumb_style2="";
+        $thumb_pic="";
+        $w="";
+        $w2="list-style-position: outside;";
       }
 
 
       if($show_edit){
         $all_file.="
         <tr id='fdtr_{$files_sn}'>
-          <td style='width:130px;word-break:break-all;'>
+          <td style='{$w}'>
             <label class='checkbox inline'>
-            <a class='thumbnail' style='width:{$this->thumb_width};height:{$this->thumb_height};overflow:background-color:{$this->thumb_bg_color};hidden;background-image:url({$thumb_pic});background-position:{$this->thumb_position};background-repeat:{$this->thumb_repeat};background-size:{$this->thumb_size};' title='{$description}'></a>
+            $thumb_style
             <input type='checkbox' name='del_file[$files_sn]' value='{$files_sn}'>
             {$original_filename}
             </label>
@@ -314,9 +326,9 @@ class TadUpFiles{
         </tr>";
       }else{
         $all_file.="
-        <li style='list-style-type:none;width:{$this->thumb_width};float:left;'>
+        <li style='list-style-type:none;{$w2}'>
           <label class='checkbox inline'>
-            <a class='thumbnail' style='width:{$this->thumb_width};height:{$this->thumb_height};overflow:hidden;background-color:{$this->thumb_bg_color};background-image:url({$thumb_pic});background-position:{$this->thumb_position};background-repeat:{$this->thumb_repeat};background-size:{$this->thumb_size};' title='{$description}'></a>
+            $thumb_style2
             <input type='checkbox' name='del_file[]' value='{$files_sn}'>{$original_filename}
           </label>
         </li>

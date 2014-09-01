@@ -15,8 +15,15 @@ define("_MI_TADTOOLS_TITLE1_OPT1","使用 Google 的 jquery API（推薦，最能避免衝突
 define("_MI_TADTOOLS_TITLE1_OPT2","使用 TadTools 內建的 jquery（或許會和其他非Tad系列模組相衝突）");
 define("_MI_TADTOOLS_TITLE1_OPT3","關閉 jquery 功能（需自己手動加至佈景，記得也要加入 jquery ui）");
 
-define("_MI_TADTOOLS_TITLE2","是否崁入快速登入到登入選單中");
-define("_MI_TADTOOLS_DESC2","選「是」會將tad_login中可使用的OpenID登入方式整合至登入選單中。");
+define("_MI_TADTOOLS_TITLE2","導覽列的登入選項");
+define("_MI_TADTOOLS_DESC2","請選擇預設導覽列中登入選項的呈現方式");
+define('_MI_TADTOOLS_TITLE2_OPT0','僅顯示XOOPS的登入界面');
+define('_MI_TADTOOLS_TITLE2_OPT1','同時顯示XOOPS的登入界面和OpenID的按鈕');
+define('_MI_TADTOOLS_TITLE2_OPT2','僅顯示OpenID的按鈕');
+define('_MI_TADTOOLS_TITLE2_OPT3','不顯示登入選項');
+
+
+
 define("_MI_TADTOOLS_TITLE3","登入選單中的快速登入圖示一排幾個");
 define("_MI_TADTOOLS_DESC3","若「是否崁入快速登入到登入選單中」為「是」時，選一個會出現圖示及文字，選兩個以上就只剩圖示。");
 define("_MI_TADTOOLS_TITLE4","是否使用導覽列的釘住功能");

@@ -61,41 +61,48 @@ $modversion['templates'][1]['file'] = 'tadtools_adm_index_tpl.html';
 $modversion['templates'][1]['description'] = 'tadtools_adm_index_tpl.html';
 
 //---偏好設定---//
-$modversion['config'][1]['name'] = 'jquery_mode';
-$modversion['config'][1]['title'] = '_MI_TADTOOLS_TITLE1';
-$modversion['config'][1]['description'] = '_MI_TADTOOLS_DESC1';
-$modversion['config'][1]['formtype'] = 'select';
-$modversion['config'][1]['valuetype'] = 'text';
-$modversion['config'][1]['default'] = 'local';
-$modversion['config'][1]['options'] = array(_MI_TADTOOLS_TITLE1_OPT1=>'google' , _MI_TADTOOLS_TITLE1_OPT2=>'local' , _MI_TADTOOLS_TITLE1_OPT3=>'none');
+$i=1;
+$modversion['config'][$i]['name'] = 'jquery_mode';
+$modversion['config'][$i]['title'] = '_MI_TADTOOLS_TITLE1';
+$modversion['config'][$i]['description'] = '_MI_TADTOOLS_DESC1';
+$modversion['config'][$i]['formtype'] = 'select';
+$modversion['config'][$i]['valuetype'] = 'text';
+$modversion['config'][$i]['default'] = 'local';
+$modversion['config'][$i]['options'] = array(_MI_TADTOOLS_TITLE1_OPT1=>'google' , _MI_TADTOOLS_TITLE1_OPT2=>'local' , _MI_TADTOOLS_TITLE1_OPT3=>'none');
 
-$modversion['config'][2]['name'] = 'openid_login';
-$modversion['config'][2]['title'] = '_MI_TADTOOLS_TITLE2';
-$modversion['config'][2]['description'] = '_MI_TADTOOLS_DESC2';
-$modversion['config'][2]['formtype'] = 'yesno';
-$modversion['config'][2]['valuetype'] = 'int';
-$modversion['config'][2]['default'] = '1';
+$i++;
+$modversion['config'][$i]['name'] = 'openid_login';
+$modversion['config'][$i]['title'] = '_MI_TADTOOLS_TITLE2';
+$modversion['config'][$i]['description'] = '_MI_TADTOOLS_DESC2';
+$modversion['config'][$i]['formtype'] = 'select';
+$modversion['config'][$i]['valuetype'] = 'int';
+$modversion['config'][$i]['default'] = '1';
+$modversion['config'][$i]['options'] = array(_MI_TADTOOLS_TITLE2_OPT0=>'0' , _MI_TADTOOLS_TITLE2_OPT1=>'1' , _MI_TADTOOLS_TITLE2_OPT2=>'2' , _MI_TADTOOLS_TITLE2_OPT3=>'3');
 
-$modversion['config'][3]['name'] = 'openid_logo';
-$modversion['config'][3]['title'] = '_MI_TADTOOLS_TITLE3';
-$modversion['config'][3]['description'] = '_MI_TADTOOLS_DESC3';
-$modversion['config'][3]['formtype'] = 'select';
-$modversion['config'][3]['valuetype'] = 'int';
-$modversion['config'][3]['default'] = '1';
-$modversion['config'][3]['options'] = array(1=>'1' , 2=>'2' , 3=>'3' , 4=>'4' , 5=>'5' , 6=>'6');
-
-$modversion['config'][4]['name'] = 'use_pin';
-$modversion['config'][4]['title'] = '_MI_TADTOOLS_TITLE4';
-$modversion['config'][4]['description'] = '_MI_TADTOOLS_DESC4';
-$modversion['config'][4]['formtype'] = 'yesno';
-$modversion['config'][4]['valuetype'] = 'int';
-$modversion['config'][4]['default'] = '1';
+$i++;
+$modversion['config'][$i]['name'] = 'openid_logo';
+$modversion['config'][$i]['title'] = '_MI_TADTOOLS_TITLE3';
+$modversion['config'][$i]['description'] = '_MI_TADTOOLS_DESC3';
+$modversion['config'][$i]['formtype'] = 'select';
+$modversion['config'][$i]['valuetype'] = 'int';
+$modversion['config'][$i]['default'] = '1';
+$modversion['config'][$i]['options'] = array(1=>'1' , 2=>'2' , 3=>'3' , 4=>'4' , 5=>'5' , 6=>'6');
 
 
-$modversion['config'][5]['name'] = 'auto_charset';
-$modversion['config'][5]['title'] = '_MI_TADTOOLS_TITLE5';
-$modversion['config'][5]['description'] = '_MI_TADTOOLS_DESC5';
-$modversion['config'][5]['formtype'] = 'yesno';
-$modversion['config'][5]['valuetype'] = 'int';
-$modversion['config'][5]['default'] = '1';
+$i++;
+$modversion['config'][$i]['name'] = 'use_pin';
+$modversion['config'][$i]['title'] = '_MI_TADTOOLS_TITLE4';
+$modversion['config'][$i]['description'] = '_MI_TADTOOLS_DESC4';
+$modversion['config'][$i]['formtype'] = 'yesno';
+$modversion['config'][$i]['valuetype'] = 'int';
+$modversion['config'][$i]['default'] = '1';
+
+
+$i++;
+$modversion['config'][$i]['name'] = 'auto_charset';
+$modversion['config'][$i]['title'] = '_MI_TADTOOLS_TITLE5';
+$modversion['config'][$i]['description'] = '_MI_TADTOOLS_DESC5';
+$modversion['config'][$i]['formtype'] = 'yesno';
+$modversion['config'][$i]['valuetype'] = 'int';
+$modversion['config'][$i]['default'] = '1';
 ?>
