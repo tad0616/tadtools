@@ -1219,16 +1219,16 @@ class TadUpFiles{
 
             if(strtolower(substr($file_info['path'], -3))=="mp4"){
               $thumb_pic=TADTOOLS_URL."/images/video.png";
-              $fancybox="fancybox_{$this->col_name}_{$this->col_sn}";
+              $fancyboxset="fancybox_{$this->col_name}_{$this->col_sn}";
               $rel="data-fancybox-type='iframe'";
               $linkto=TADTOOLS_URL."/video.php?file_name={$file_info['original_file_path']}";
             }else{
               $thumb_pic=TADTOOLS_URL."/multiple-file-upload/downloads.png";
-              $fancybox= $rel="";
+              $fancyboxset= $rel="";
             }
           }else{
             $thumb_pic=($thumb)?$file_info['tb_path']:$file_info['path'];
-            $fancybox="fancybox_{$this->col_name}_{$this->col_sn}";
+            $fancyboxset="fancybox_{$this->col_name}_{$this->col_sn}";
             $rel="rel='f{$this->col_name}_{$this->col_sn}'";
             //將附檔強制轉小寫
             $thumb_pic_ext=strtolower(substr($thumb_pic, -3));
@@ -1244,9 +1244,9 @@ class TadUpFiles{
           //描述顯示
           $show_description_txt=($show_description)?"<div style='font-weight:normal;font-size:11px;word-break:break-all;line-height:1.2;margin-top:4px;'>$i) {$description} {$show_dl_txt}</div>":"{$show_dl_txt}";
 
-          $all_files.=($show_mode=="small")?"<a href='{$linkto}' class='iconize {$fancybox}' {$rel}  title='{$description}'></a>":"
+          $all_files.=($show_mode=="small")?"<a href='{$linkto}' class='iconize {$fancyboxset}' {$rel}  title='{$description}'></a>":"
           <li style='width:120px;float:left;list-style:none;'>
-            <a href='{$linkto}' class='thumbnail {$fancybox}' {$rel} style=\"width:110px;height:70px;overflow:hidden;background-image:url('{$thumb_pic}');background-repeat:no-repeat;background-position:center center;\" title='{$description}'></a>
+            <a href='{$linkto}' class='thumbnail {$fancyboxset}' {$rel} style=\"width:110px;height:70px;overflow:hidden;background-image:url('{$thumb_pic}');background-repeat:no-repeat;background-position:center center;\" title='{$description}'></a>
 
             {$show_description_txt}
           </li>";

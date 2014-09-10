@@ -5,7 +5,12 @@
 <div id="amazingslider-1" style="display:block;position:relative;">
     <ul class="amazingslider-slides" style="display:none;">
       <{foreach from=$slider_var item=slide key=i}>
-        <li><img src="<{$slide.file_url}>" alt="<{$slide.description}>" data-description="" /></li>
+
+        <{if $slide.slide_url}>
+          <li><a href="<{$slide.slide_url}>"><img src="<{$slide.file_url}>" alt="<{$slide.description}>" data-description="" /></a></li>
+        <{else}>
+          <li><img src="<{$slide.file_url}>" alt="<{$slide.description}>" data-description="" /></li>
+        <{/if}>
       <{/foreach}>
     </ul>
     <ul class="amazingslider-thumbnails" style="display:none;">

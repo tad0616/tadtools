@@ -28,6 +28,19 @@
           </fieldset>
         </form>
       </li>
+
+      <li>
+        <a href="<{$xoops_url}>/register.php">
+          <i class="icon-pencil"></i>
+          <{$smarty.const.TF_USER_REGIST}>
+        </a>
+      </li>
+      <li>
+        <a href="<{$xoops_url}>/user.php#lost">
+          <i class="icon-search"></i>
+          <{$smarty.const.TF_USER_FORGET_PASS}>
+        </a>
+      </li>
     <{/if}>
 
     <{if $openid_login=="1" or $openid_login=="2"}>
@@ -90,17 +103,5 @@
     <{/if}>
 
 
-    <li>
-      <a href="<{$xoops_url}>/register.php">
-        <i class="icon-pencil"></i>
-        <{$smarty.const.TF_USER_REGIST}>
-      </a>
-    </li>
-    <li>
-      <a href="<{$xoops_url}>/user.php#lost">
-        <i class="icon-search"></i>
-        <{$smarty.const.TF_USER_FORGET_PASS}>
-      </a>
-    </li>
   </ul>
 <{/if}>

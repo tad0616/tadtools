@@ -108,13 +108,34 @@
 
     <tr><th colspan=3><h2>自訂選單 $menu_var</h2></th></tr>
       <{foreach from=$menu_var item=m}>
-        <tr><th><{$m.title}></th><th>$menu_var[<{$m.id}>]</th><td>array('id'=><{$m.id}> , 'title'=><{$m.title}> , 'url'=><{$m.url}>, 'target'=><{$m.target}>, 'icon'=><{$m.icon}>, 'submenu'=><{$m.submenu}>)</td></tr>
+        <tr><th><{$m.title}></th><th>$menu_var[<{$m.id}>]</th><td>
+          $menu_var[<{$m.id}>]['id'] = <{$m.id}>;<br>
+          $menu_var[<{$m.id}>]['title'] = "<{$m.title}>";<br>
+          $menu_var[<{$m.id}>]['url'] = "<{$m.url}>";<br>
+          $menu_var[<{$m.id}>]['target'] = "<{$m.target}>";<br>
+          $menu_var[<{$m.id}>]['icon'] = "<{$m.icon}>";<br>
+          $menu_var[<{$m.id}>]['submenu'] = "<{$m.submenu}>";
+        </td></tr>
         <{if $m.submenu}>
           <{foreach from=$m.submenu item=m2}>
-            <tr><th><{$m2.title}></th><th>$menu_var[<{$m.id}>]['submenu'][<{$m2.id}>]</th><td>array('id'=><{$m2.id}> , 'title'=><{$m2.title}> , 'url'=><{$m2.url}>, 'target'=><{$m2.target}>, 'icon'=><{$m2.icon}>, 'submenu'=><{$m2.submenu}>)</td></tr>
+            <tr><th><{$m2.title}></th><th>$menu_var[<{$m.id}>]['submenu'][<{$m2.id}>]</th><td>
+              $menu_var[<{$m.id}>]['submenu'][<{$m2.id}>]['id'] = <{$m2.id}>;<br>
+              $menu_var[<{$m.id}>]['submenu'][<{$m2.id}>]['title'] = "<{$m2.title}>";<br>
+              $menu_var[<{$m.id}>]['submenu'][<{$m2.id}>]['url'] = "<{$m2.url}>";<br>
+              $menu_var[<{$m.id}>]['submenu'][<{$m2.id}>]['target'] = "<{$m2.target}>";<br>
+              $menu_var[<{$m.id}>]['submenu'][<{$m2.id}>]['icon'] = "<{$m2.icon}>";<br>
+              $menu_var[<{$m.id}>]['submenu'][<{$m2.id}>]['submenu'] = "<{$m2.submenu}>";
+            </td></tr>
               <{if $m2.submenu}>
                 <{foreach from=$m2.submenu item=m3}>
-                  <tr><th><{$m3.title}></th><th>$menu_var[<{$m.id}>]['submenu'][<{$m2.id}>]['submenu'][<{$m3.id}>]</th><td>array('id'=><{$m3.id}> , 'title'=><{$m3.title}> , 'url'=><{$m3.url}>, 'target'=><{$m3.target}>, 'icon'=><{$m3.icon}>, 'submenu'=><{$m3.submenu}>)</td></tr>
+                  <tr><th><{$m3.title}></th><th>$menu_var[<{$m.id}>]['submenu'][<{$m2.id}>]['submenu'][<{$m3.id}>]</th><td>
+                    $menu_var[<{$m.id}>]['submenu'][<{$m2.id}>]['submenu'][<{$m3.id}>]['id'] = <{$m3.id}>;<br>
+                    $menu_var[<{$m.id}>]['submenu'][<{$m2.id}>]['submenu'][<{$m3.id}>]['title'] = "<{$m3.title}>";<br>
+                    $menu_var[<{$m.id}>]['submenu'][<{$m2.id}>]['submenu'][<{$m3.id}>]['url'] = "<{$m3.url}>";<br>
+                    $menu_var[<{$m.id}>]['submenu'][<{$m2.id}>]['submenu'][<{$m3.id}>]['target'] = "<{$m3.target}>";<br>
+                    $menu_var[<{$m.id}>]['submenu'][<{$m2.id}>]['submenu'][<{$m3.id}>]['icon'] = "<{$m3.icon}>";<br>
+                    $menu_var[<{$m.id}>]['submenu'][<{$m2.id}>]['submenu'][<{$m3.id}>]['submenu'] = "<{$m3.submenu}>";
+                  </td></tr>
                 <{/foreach}>
               <{/if}>
           <{/foreach}>
@@ -123,7 +144,18 @@
 
     <tr><th colspan=3><h2>滑動圖文 $slider_var</h2></th></tr>
       <{foreach from=$slider_var item=slide}>
-        <tr><th><img src="<{$slide.file_thumb_url}>" alt="<{$slide.file_name}>" title="<{$slide.file_name}>"></th><th>$slider_var[<{$slide.files_sn}>]</th><td>array('files_sn'=><{$slide.files_sn}> , 'sort'=><{$slide.sort}> , 'file_name'=><{$slide.file_name}> , 'description'=><{$slide.description}> , 'text_description'=><{$slide.text_description}> , 'original_filename'=><{$slide.original_filename}> , 'sub_dir'=><{$slide.sub_dir}> , 'file_url'=><{$slide.file_url}>, 'file_thumb_url'=><{$slide.file_thumb_url}>)</td></tr>
+        <tr><th><img src="<{$slide.file_thumb_url}>" alt="<{$slide.file_name}>" title="<{$slide.file_name}>"></th><th>$slider_var[<{$slide.files_sn}>]</th><td>
+          $slider_var[<{$slide.files_sn}>]['files_sn'] = <{$slide.files_sn}>;<br>
+          $slider_var[<{$slide.files_sn}>]['sort'] = <{$slide.sort}>;<br>
+          $slider_var[<{$slide.files_sn}>]['file_name'] = "<{$slide.file_name}>";<br>
+          $slider_var[<{$slide.files_sn}>]['description'] = "<{$slide.description}>";<br>
+          $slider_var[<{$slide.files_sn}>]['text_description'] = "<{$slide.text_description}>";<br>
+          $slider_var[<{$slide.files_sn}>]['original_filename'] = "<{$slide.original_filename}>";<br>
+          $slider_var[<{$slide.files_sn}>]['sub_dir'] = "<{$slide.sub_dir}>";<br>
+          $slider_var[<{$slide.files_sn}>]['file_url'] = "<{$slide.file_url}>";<br>
+          $slider_var[<{$slide.files_sn}>]['file_thumb_url'] = "<{$slide.file_thumb_url}>";<br>
+          $slider_var[<{$slide.files_sn}>]['slide_url'] = "<{$slide.slide_url}>";
+        </td></tr>
       <{/foreach}>
 <{php}>
 
@@ -159,11 +191,11 @@ if(file_exists(XOOPS_ROOT_PATH."/themes/{$theme_name}/config2.php")){
         if(is_array($items)){
           foreach($items as $key=>$val){
             $val=str_replace("{XOOPS_URL}",XOOPS_URL,$val);
-            $value.="<div>\${$name}[$i]['$key']=\"{$val}\";</div>";
+            $value.="<div>\${$name}[$i]['$key'] = \"{$val}\";</div>";
           }
         }else{
           $items=str_replace("{XOOPS_URL}",XOOPS_URL,$items);
-          $value.="<div>\${$name}[$i]=\"{$items}\";</div>";
+          $value.="<div>\${$name}[$i] = \"{$items}\";</div>";
         }
       }
     }
