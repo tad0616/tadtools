@@ -1,0 +1,44 @@
+<link rel="stylesheet" type="text/css" href="<{xoAppUrl modules/tadtools/themes_tpl/menu/cssmenu/styles.css}>" />
+<script src="<{xoAppUrl modules/tadtools/themes_tpl/menu/cssmenu/menu_jquery.js}>"></script>
+<style type="text/css">
+  #cssmenu > ul > li > a {
+    color:<{$navbar_color}>;
+  }
+  #cssmenu > ul > li > a:hover {
+    color:<{$navbar_color_hover}>;
+  }
+</style>
+<div id="cssmenu">
+  <ul>
+    <{foreach from=$menu_var item=menu}>
+      <li <{if $menu.submenu}>class='has-sub'<{/if}>>
+        <a href='<{$menu.url}>' target="<{$menu.target}>">
+          <span><i class="<{$menu.icon}> <{$navbar_icon}>"></i> <{$menu.title}></span>
+        </a>
+        <{if $menu.submenu}>
+          <ul>
+            <{foreach from=$menu.submenu item=menu2}>
+              <li <{if $menu2.submenu}>class='has-sub'<{/if}>>
+                <a href='<{$menu2.url}>' target="<{$menu2.target}>">
+                  <span><i class="<{$menu2.icon}>"></i> <{$menu2.title}></span>
+                </a>
+                <{if $menu2.submenu}>
+                  <ul>
+                    <{foreach from=$menu2.submenu item=menu3}>
+                      <li>
+                        <a href='<{$menu3.url}>' target="<{$menu3.target}>">
+                          <span><i class="<{$menu3.icon}>"></i> <{$menu3.title}></span>
+                        </a>
+                      </li>
+                     <{/foreach}>
+                  </ul>
+                <{/if}>
+              </li>
+             <{/foreach}>
+          </ul>
+        <{/if}>
+      </li>
+     <{/foreach}>
+  </ul>
+</div>
+<div style="clear:both;"></div>

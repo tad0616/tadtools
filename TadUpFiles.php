@@ -159,6 +159,8 @@ class TadUpFiles{
   var $thumb_position='center center';
   var $thumb_repeat='no-repeat';
   var $thumb_size='contain';
+  var $showFancyBox=true;
+  var $download_url="";
 
   public function TadUpFiles($prefix="",$subdir="",$file="/file",$image="/image",$thumbs="/image/.thumbs"){
     global $xoopsDB;
@@ -257,6 +259,18 @@ class TadUpFiles{
     $this->col_sn = $col_sn;
     $this->sort = $sort;
   }
+
+  //是否套用fancybox
+  public function set_fancybox($show=true){
+    $this->showFancyBox = $show;
+  }
+
+
+  //自己設定檔案下載路徑
+  public function set_download_url($url=""){
+    $this->download_url = $url;
+  }
+
 
   //上傳元件
   public function upform($show_edit=false,$upname='upfile',$maxlength="",$show_list_del_file=true,$only_type="",$thumb=true){
@@ -994,7 +1008,7 @@ class TadUpFiles{
 
 
   //取得檔案
-  public function get_file($files_sn="",$limit=NULL,$path=NULL,$hash=false){
+  public function get_file($files_sn="",$limit=NULL,$path=NULL,$hash=false,$desc_as_name=false){
       global $xoopsDB,$xoopsUser;
       $files="";
       $os_charset=(PATH_SEPARATOR==':')?"UTF-8":"Big5";
@@ -1032,22 +1046,28 @@ class TadUpFiles{
         $files[$files_sn]['original_filename']=$original_filename;
         $files[$files_sn]['hash_filename']=$hash_filename;
 
+        $files[$files_sn]['show_file_name']=$show_file_name=($desc_as_name and !empty($description))?$description:$original_filename;
+
+
+        $dl_url=empty($this->download_url)?"{$link_path}?op=tufdl&files_sn=$files_sn":$this->download_url."&files_sn=$files_sn";
+
         if($kind=="img"){
           $file_name=($hash)?$hash_filename:$file_name;
           $pic_name=$this->TadUpFilesImgUrl."/{$file_name}";
           $thumb_pic=$this->TadUpFilesThumbUrl."/{$file_name}";
 
-          $files[$files_sn]['link']="<a href='{$link_path}?op=tufdl&files_sn=$files_sn' title='{$description}' rel='lytebox'><img src='{$pic_name}' alt='{$description}' title='{$description}' rel='lytebox'></a>";
+          $files[$files_sn]['link']="<a href='{$dl_url}' title='{$description}' rel='lytebox'><img src='{$pic_name}' alt='{$description}' title='{$description}' rel='lytebox'></a>";
           $files[$files_sn]['path']=$pic_name;
-          $files[$files_sn]['url']="<a href='{$link_path}?op=tufdl&files_sn=$files_sn' title='{$description}' target='_blank'>{$description}</a>";
+          $files[$files_sn]['url']="<a href='{$dl_url}' title='{$description}' target='_blank'>{$description}</a>";
 
-          $files[$files_sn]['tb_link']="<a href='{$link_path}?op=tufdl&files_sn=$files_sn' title='{$description}' rel='lytebox'><img src='$thumb_pic' alt='{$description}' title='{$description}'></a>";
+          $files[$files_sn]['tb_link']="<a href='{$dl_url}' title='{$description}' rel='lytebox'><img src='$thumb_pic' alt='{$description}' title='{$description}'></a>";
           $files[$files_sn]['tb_path']=$thumb_pic;
-          $files[$files_sn]['tb_url']="<a href='{$link_path}?op=tufdl&files_sn=$files_sn' title='{$description}' rel='lytebox'>{$description}</a>";
+          $files[$files_sn]['tb_url']="<a href='{$dl_url}' title='{$description}' rel='lytebox'>{$description}</a>";
         }else{
-          $files[$files_sn]['link']="<a href='{$link_path}?op=tufdl&files_sn=$files_sn#{$original_filename}'>{$original_filename}</a>";
-          $files[$files_sn]['path']="{$link_path}?op=tufdl&files_sn=$files_sn#{$original_filename}";
+          $files[$files_sn]['link']="<a href='{$dl_url}#{$original_filename}'>{$show_file_name}</a>";
+          $files[$files_sn]['path']="{$dl_url}#{$original_filename}";
           $files[$files_sn]['original_file_path']=$this->TadUpFilesUrl."/{$file_name}";
+          $files[$files_sn]['physical_file_path']=$this->TadUpFilesDir."/{$file_name}";
         }
       }
       return $files;
@@ -1094,33 +1114,35 @@ class TadUpFiles{
         $files[$i]['description']=$description;
         $files[$i]['original_filename']=$original_filename;
 
+        $dl_url=empty($this->download_url)?"{$link_path}?op=tufdl&files_sn=$files_sn":$this->download_url."&files_sn=$files_sn";
+
         if($kind=="img"){
 
           $pic_name=$this->TadUpFilesImgUrl."/{$file_name}";
           $thumb_pic=$this->TadUpFilesThumbUrl."/{$file_name}";
 
-          $files[$i]['link']="<a href='{$link_path}?op=tufdl&files_sn=$files_sn' title='{$description}' rel='lytebox'><img src='{$pic_name}' alt='{$description}' title='{$description}' rel='lytebox'></a>";
+          $files[$i]['link']="<a href='{$dl_url}' title='{$description}' rel='lytebox'><img src='{$pic_name}' alt='{$description}' title='{$description}' rel='lytebox'></a>";
           $files[$i]['path']=$pic_name;
-          $files[$i]['url']="<a href='{$link_path}?op=tufdl&files_sn=$files_sn' title='{$description}' target='_blank'>{$description}</a>";
+          $files[$i]['url']="<a href='{$dl_url}' title='{$description}' target='_blank'>{$description}</a>";
 
-          $files[$i]['tb_link']="<a href='{$link_path}?op=tufdl&files_sn=$files_sn' title='{$description}' rel='lytebox'><img src='$thumb_pic' alt='{$description}' title='{$description}'></a>";
+          $files[$i]['tb_link']="<a href='{$dl_url}' title='{$description}' rel='lytebox'><img src='$thumb_pic' alt='{$description}' title='{$description}'></a>";
           $files[$i]['tb_path']=$thumb_pic;
-          $files[$i]['tb_url']="<a href='{$link_path}?op=tufdl&files_sn=$files_sn' title='{$description}' rel='lytebox'>{$description}</a>";
+          $files[$i]['tb_url']="<a href='{$dl_url}' title='{$description}' rel='lytebox'>{$description}</a>";
         }elseif(strtolower(substr($file_name, -3))=="swf"){
           $pic_name=$this->TadUpFilesImgUrl."/{$file_name}";
           $thumb_pic=$this->TadUpFilesThumbUrl."/{$file_name}";
 
-          $files[$i]['link']="<a href='{$link_path}?op=tufdl&files_sn=$files_sn' title='{$description}' rel='lytebox'><img src='{$pic_name}' alt='{$description}' title='{$description}' rel='lytebox'></a>";
+          $files[$i]['link']="<a href='{$dl_url}' title='{$description}' rel='lytebox'><img src='{$pic_name}' alt='{$description}' title='{$description}' rel='lytebox'></a>";
           $files[$i]['path']=$pic_name;
-          $files[$i]['url']="<a href='{$link_path}?op=tufdl&files_sn=$files_sn' title='{$description}' target='_blank'>{$description}</a>";
+          $files[$i]['url']="<a href='{$dl_url}' title='{$description}' target='_blank'>{$description}</a>";
 
-          $files[$i]['tb_link']="<a href='{$link_path}?op=tufdl&files_sn=$files_sn' title='{$description}' rel='lytebox'><img src='$thumb_pic' alt='{$description}' title='{$description}'></a>";
+          $files[$i]['tb_link']="<a href='{$dl_url}' title='{$description}' rel='lytebox'><img src='$thumb_pic' alt='{$description}' title='{$description}'></a>";
           $files[$i]['tb_path']=$thumb_pic;
-          $files[$i]['tb_url']="<a href='{$link_path}?op=tufdl&files_sn=$files_sn' title='{$description}' rel='lytebox'>{$description}</a>";
+          $files[$i]['tb_url']="<a href='{$dl_url}' title='{$description}' rel='lytebox'>{$description}</a>";
 
         }else{
-          $files[$i]['link']="<a href='{$link_path}?op=tufdl&files_sn=$files_sn#{$original_filename}'>{$original_filename}</a>";
-          $files[$i]['path']="{$link_path}?op=tufdl&files_sn=$files_sn#{$original_filename}";
+          $files[$i]['link']="<a href='{$dl_url}#{$original_filename}'>{$original_filename}</a>";
+          $files[$i]['path']="{$dl_url}#{$original_filename}";
         }
         $i++;
       }
@@ -1176,7 +1198,7 @@ class TadUpFiles{
 
 
   //取得附檔或附圖 $show_mode=filename , small,playSpeed=3000 or 0
-  public function show_files($upname="",$thumb=true,$show_mode="",$show_description=false,$show_dl=false,$limit=NULL,$path=NULL,$hash=false,$playSpeed=5000){
+  public function show_files($upname="",$thumb=true,$show_mode="",$show_description=false,$show_dl=false,$limit=NULL,$path=NULL,$hash=false,$playSpeed=5000,$desc_as_name=false){
 
     if($show_mode=="small"){
       $all_files="<link rel='stylesheet' type='text/css' href='".XOOPS_URL."/modules/tadtools/css/iconize.css' />";
@@ -1187,16 +1209,17 @@ class TadUpFiles{
     $autoplay=empty($playSpeed)?'false':'true';
     $playSpeed=empty($playSpeed)?0:$playSpeed;
 
-    if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/fancybox.php")){
-       redirect_header("index.php",3, _MA_NEED_TADTOOLS);
-      }
-    include_once XOOPS_ROOT_PATH."/modules/tadtools/fancybox.php";
-    $fancybox=new fancybox(".fancybox_{$this->col_name}_{$this->col_sn}",640,480);
-    $all_files.=$fancybox->render(false);
-
+    if($this->showFancyBox){
+      if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/fancybox.php")){
+         redirect_header("index.php",3, _MA_NEED_TADTOOLS);
+        }
+      include_once XOOPS_ROOT_PATH."/modules/tadtools/fancybox.php";
+      $fancybox=new fancybox(".fancybox_{$this->col_name}_{$this->col_sn}",640,480);
+      $all_files.=$fancybox->render(false);
+    }
 
     $file_arr="";
-    $file_arr=$this->get_file(NULL,$limit,$path,$hash);
+    $file_arr=$this->get_file(NULL,$limit,$path,$hash,$desc_as_name);
 
     if(empty($file_arr))return;
 
@@ -1216,11 +1239,15 @@ class TadUpFiles{
           $linkto=$file_info['path'];
           $description=empty($file_info['description'])?$file_info['original_filename']:$file_info['description'];
           if($file_info['kind']=="file"){
-
-            if(strtolower(substr($file_info['path'], -3))=="mp4"){
+            $fext=strtolower(substr($file_info['path'], -3));
+            if($fext=="mp4" or $fext=="flv" or $fext=="3gp"){
               $thumb_pic=TADTOOLS_URL."/images/video.png";
-              $fancyboxset="fancybox_{$this->col_name}_{$this->col_sn}";
-              $rel="data-fancybox-type='iframe'";
+              if($this->showFancyBox){
+                $fancyboxset="fancybox_{$this->col_name}_{$this->col_sn}";
+                $rel="data-fancybox-type='iframe'";
+              }else{
+                $fancyboxset=$rel="";
+              }
               $linkto=TADTOOLS_URL."/video.php?file_name={$file_info['original_file_path']}";
             }else{
               $thumb_pic=TADTOOLS_URL."/multiple-file-upload/downloads.png";
@@ -1228,8 +1255,12 @@ class TadUpFiles{
             }
           }else{
             $thumb_pic=($thumb)?$file_info['tb_path']:$file_info['path'];
-            $fancyboxset="fancybox_{$this->col_name}_{$this->col_sn}";
-            $rel="rel='f{$this->col_name}_{$this->col_sn}'";
+            if($this->showFancyBox){
+              $fancyboxset="fancybox_{$this->col_name}_{$this->col_sn}";
+              $rel="rel='f{$this->col_name}_{$this->col_sn}'";
+            }else{
+              $fancyboxset=$rel="";
+            }
             //將附檔強制轉小寫
             $thumb_pic_ext=strtolower(substr($thumb_pic, -3));
             $thumb_pic=substr($thumb_pic, 0,-3).$thumb_pic_ext;
