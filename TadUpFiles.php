@@ -1206,7 +1206,7 @@ class TadUpFiles{
       $all_files="";
     }
 
-    $autoplay=empty($playSpeed)?'false':'true';
+    $autoPlay=empty($playSpeed)?false:true;
     $playSpeed=empty($playSpeed)?0:$playSpeed;
 
     if($this->showFancyBox){
@@ -1215,7 +1215,7 @@ class TadUpFiles{
         }
       include_once XOOPS_ROOT_PATH."/modules/tadtools/fancybox.php";
       $fancybox=new fancybox(".fancybox_{$this->col_name}_{$this->col_sn}",640,480);
-      $all_files.=$fancybox->render(false);
+      $all_files.=$fancybox->render(false,NULL,$autoPlay,$playSpeed);
     }
 
     $file_arr="";

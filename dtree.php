@@ -10,7 +10,6 @@ $url_arr[$sn]=$url;
 */
 include_once "tadtools_header.php";
 
-
 class dtree{
   var $name;
   var $title_arr;
@@ -29,6 +28,7 @@ class dtree{
 
   //產生選單
   function render($fontsize="12px"){
+
     if(empty($this->home)){
       $opt="{$this->name}.add(0,-1,'','javascript: void(0);');\n";
     }else{
@@ -40,7 +40,7 @@ class dtree{
     }
 
     $dtree="<link rel='StyleSheet' href='".TADTOOLS_URL."/dtree/dtree.css' type='text/css' />
-    <script type='text/javascript' src='".TADTOOLS_URL."/dtree/dtree.php'></script>";
+    <script type='text/javascript' src='".TADTOOLS_URL."/dtree/dtree.js'></script>";
 
     $dtree.="
     <style>
@@ -51,7 +51,7 @@ class dtree{
 
     <div id='tree_{$this->name}'></div>
     <script type='text/javascript' defer='defer'>
-      {$this->name} = new dTree('{$this->name}');
+      {$this->name} = new dTree('{$this->name}', '".TADTOOLS_URL."/dtree');
       {$this->name}.config.useCookies=true;
       {$opt}
       document.getElementById('tree_{$this->name}').innerHTML={$this->name};

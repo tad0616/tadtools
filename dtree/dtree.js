@@ -26,7 +26,7 @@ function Node(id, pid, name, url, title, target, icon, iconOpen, open) {
 	this._p;
 };
 // Tree object
-function dTree(objName) {
+function dTree(objName,new_path) {
 	this.config = {
 		target					: null,
 		folderLinks			: true,
@@ -38,21 +38,24 @@ function dTree(objName) {
 		closeSameLevel	: false,
 		inOrder					: false
 	}
+	// var xoops_path= (new Error).fileName;
+	// var new_path=xoops_path.replace(/\\/g,'/').replace(/\/[^\/]*$/, '');
+	// alert(new_path);
 	this.icon = {
-		root				: 'dtree/img/base.gif',
-		folder			: 'dtree/img/folder.gif',
-		folderOpen	: 'dtree/img/folderopen.gif',
-		node				: 'dtree/img/page.gif',
-		empty				: 'dtree/img/empty.gif',
-		line				: 'dtree/img/line.gif',
-		join				: 'dtree/img/join.gif',
-		joinBottom	: 'dtree/img/joinbottom.gif',
-		plus				: 'dtree/img/plus.gif',
-		plusBottom	: 'dtree/img/plusbottom.gif',
-		minus				: 'dtree/img/minus.gif',
-		minusBottom	: 'dtree/img/minusbottom.gif',
-		nlPlus			: 'dtree/img/nolines_plus.gif',
-		nlMinus			: 'dtree/img/nolines_minus.gif'
+		root				: new_path+'/img/base.gif',
+		folder			: new_path+'/img/folder.gif',
+		folderOpen	: new_path+'/img/folderopen.gif',
+		node				: new_path+'/img/page.gif',
+		empty				: new_path+'/img/empty.gif',
+		line				: new_path+'/img/line.gif',
+		join				: new_path+'/img/join.gif',
+		joinBottom	: new_path+'/img/joinbottom.gif',
+		plus				: new_path+'/img/plus.gif',
+		plusBottom	: new_path+'/img/plusbottom.gif',
+		minus				: new_path+'/img/minus.gif',
+		minusBottom	: new_path+'/img/minusbottom.gif',
+		nlPlus			: new_path+'/img/nolines_plus.gif',
+		nlMinus			: new_path+'/img/nolines_minus.gif'
 	};
 	this.obj = objName;
 	this.aNodes = [];
@@ -321,3 +324,4 @@ if (!Array.prototype.pop) {
 		return lastElement;
 	}
 };
+

@@ -53,7 +53,7 @@ class slider{
         <div style='font-size:11pt;color:#33CCFF;font-weight:bold;'>{$title}</div>
           <div>{$content}</div>
         </div>
-     
+
       ":"";
 
       if(strtolower(substr($image,-3))=="swf"){
@@ -73,9 +73,11 @@ class slider{
           </li>
         ";
       }else{
+        $alt=empty($title)?'slider image':$title;
+        $show_title=empty($title)?"longdesc='{$image}'":"title='{$title}'";
         $all.="
           <li>
-            <a href='{$item_content['url']}'><img src='$image' alt='{$title}' title='{$title}' /></a>
+            <a href='{$item_content['url']}'><img src='$image' alt='{$alt}' {$show_title}></a>
             $caption
           </li>
         ";

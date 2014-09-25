@@ -29,7 +29,7 @@ class fancybox{
   }
 
   //²£¥Í»yªk
-  function render($reload=true,$prevent_closed_outside=false){
+  function render($reload=true,$prevent_closed_outside=false,$autoPlay=false,$playSpeed=0){
 
 
     $reload_code=$reload?",
@@ -54,6 +54,9 @@ class fancybox{
     <script type='text/javascript' src='".TADTOOLS_URL."/fancyBox/source/helpers/jquery.fancybox-thumbs.js?v=1.0.7'></script>
     <script type='text/javascript' src='".TADTOOLS_URL."/fancyBox/source/helpers/jquery.fancybox-media.js?v=1.0.5'></script>":"";
 
+    $autoPlay=$autoPlay?"autoPlay: true,":"";
+    $playSpeed=$playSpeed?"playSpeed: {$playSpeed},":"";
+
     $fancybox="
     {$jquery}
     {$js}
@@ -63,12 +66,14 @@ class fancybox{
         fitToView : true,
         width   : '{$this->width}',
         height    : '{$this->height}',
+        {$autoPlay}
+        {$playSpeed}
         autoSize  : true,
         closeClick  : false,
         openEffect  : 'none',
         closeEffect : 'none'
-        {$prevent_closed_outside_code}
         {$reload_code}
+        {$prevent_closed_outside_code}
       });
     });
     </script>

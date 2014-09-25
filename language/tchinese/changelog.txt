@@ -1,3 +1,36 @@
+《TadTools 2.61 版 2014-09-25 釋出》
+ 1.修正 lofslidernews.php 使之符合無障礙規範
+ 2.修正 dtree 使之符合無障礙規範
+
+
+《TadTools 2.6 版  2014-09-23 釋出》
+====================================
+ 1.降版 jquery 為 1.8.3，以增加對舊版jquery相容性
+ 2.修正 StickyTableHeaders路徑大小寫錯誤的bug
+ 3.更新 jquery ui為1.11.0版
+ 4.修正 slideshow_responsive.html 佈景選單的專屬橫幅功能無法正確顯示的問題
+ 5.更新 jquery cookie 為 1.4.1 版
+ 6.佈景變數加入 slide_url，以支援加入網址功能
+ 7.修正 amazingslider1.html 使之支援滑動圖片網址功能
+ 8.更新滑動圖文預設文字內容
+ 9.fancybox2新增避免點擊外圍而關閉的參數
+10.後台字型大小設為12px
+11.選單新增資料庫連結
+12.安裝佈景時，自動判別是否需載入bootstrap
+13.修正選單語系有時後會抓不到的問題
+14.新增導覽列是否顯示登入選項的偏好設定
+15.開啟TadTools前台功能（為了可以播放上傳的影片檔）
+16.調整佈景變數呈現頁面，使之更容易閱讀
+17.$TadUpFiles 加入 set_fancybox()，可決定是否套用fancybox
+18.$TadUpFiles 加入 set_download_url()，可在下載時載入自己想要的路徑
+19.增加三套滑動圖文共同樣板
+20.修改menu.html位置，使之和其他選單較為一致
+21.新增superfish選單功能
+22.fancybox 加入自動播放功能
+23.$TadUpFiles 加入圖片自動播放功能
+24.增加slideman滑動圖文樣板
+
+
 《TadTools 2.5 版 2014-06-25 釋出》
 ====================================
  1.新增兩個和佈景相關的偏好設定（可調整登入選單中的OpenID呈現方式以及是否釘選住導覽列）

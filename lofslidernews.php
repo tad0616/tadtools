@@ -30,21 +30,21 @@ class lofslidernews{
     $utf8_word_num = $this->word_num * 3;
     if(empty($utf8_word_num))$utf8_word_num=90;
     $jquery=($this->show_jquery)?get_jquery():"";
-    
+
     $all=$nav="";
     $i=1;
     foreach($this->item as $sn => $item_content){
       //避免截掉半個中文字
       $title=xoops_substr(strip_tags($item_content['title']), 0, 45);
       $content=xoops_substr(strip_tags($item_content['content']), 0, $utf8_word_num);
-      
+
       $pi=($i%2)?"1":"2";
       $image=empty($item_content['image'])?TADTOOLS_URL."/lofslidernews/images/demo{$pi}.jpg":$item_content['image'];
-      
+
       $all.="
         <li>
             <div style='background:#000000 url($image) no-repeat scroll center top; width:{$this->width}px; height:{$this->height}px;'>
-            <a href='{$item_content['url']}'><img src='".TADTOOLS_URL."/lofslidernews/images/blank.gif' title='{$item_content['title']}' style='width:{$this->width}px; height:{$this->height}px;'></a>
+              <a href='{$item_content['url']}'><img src='".TADTOOLS_URL."/lofslidernews/images/blank.gif' title='{$item_content['title']}' alt='{$item_content['title']}' style='width:{$this->width}px; height:{$this->height}px;'></a>
             </div>
             <div class='slider-description'>
               <div class='slider-meta'><a target='_parent' title='{$item_content['title']}' href='{$item_content['url']}'>{$title}</a></div>
@@ -54,7 +54,7 @@ class lofslidernews{
            </div>
         </li>
       ";
-      
+
       $nav.="<li><span>{$i}</span></li>";
       $i++;
     }
@@ -65,7 +65,7 @@ class lofslidernews{
     $jquery
     <script language='javascript' type='text/javascript' src='".TADTOOLS_URL."/lofslidernews/js/jquery.easing.js'></script>
     <script language='javascript' type='text/javascript' src='".TADTOOLS_URL."/lofslidernews/js/script.js'></script>
-    
+
 
     <script type='text/javascript'>
      $(document).ready( function(){

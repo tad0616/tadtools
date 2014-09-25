@@ -43,4 +43,8 @@ class formValidator{
 
 }
 
+
+// include_once XOOPS_ROOT_PATH."/modules/tadtools/formValidator.php";
+// $formValidator= new formValidator("#myForm",false);
+// $formValidator_code=$formValidator->render('topLeft');
 ?>

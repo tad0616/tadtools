@@ -1,4 +1,9 @@
-《TadTools 2.6 版 尚未釋出》
+《TadTools 2.61 版 2014-09-25 釋出》
+ 1.修正 lofslidernews.php 使之符合無障礙規範
+ 2.修正 dtree 使之符合無障礙規範
+
+
+《TadTools 2.6 版  2014-09-23 釋出》
 ====================================
  1.降版 jquery 為 1.8.3，以增加對舊版jquery相容性
  2.修正 StickyTableHeaders路徑大小寫錯誤的bug
@@ -21,8 +26,9 @@
 19.增加三套滑動圖文共同樣板
 20.修改menu.html位置，使之和其他選單較為一致
 21.新增superfish選單功能
-
-
+22.fancybox 加入自動播放功能
+23.$TadUpFiles 加入圖片自動播放功能
+24.增加slideman滑動圖文樣板
 
 
 《TadTools 2.5 版 2014-06-25 釋出》
