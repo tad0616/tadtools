@@ -76,6 +76,15 @@ if($mid){
   if(file_exists(XOOPS_ROOT_PATH."/modules/tad_themes/xoops_version.php")){
     $sql="select * from ".$xoopsDB->prefix("tad_themes")." where `theme_name`='{$xoopsConfig['theme_set']}'";
     $result = $xoopsDB->query($sql);
+    $theme_exist=$xoopsDB->getRowsNum($result);
+
+    if(!$theme_exist and file_exists(XOOPS_ROOT_PATH."/modules/tad_themes/auto_import_theme.php")){
+      include_once XOOPS_ROOT_PATH."/modules/tad_themes/auto_import_theme.php";
+      auto_import_theme();
+      $sql="select * from ".$xoopsDB->prefix("tad_themes")." where `theme_name`='{$xoopsConfig['theme_set']}'";
+      $result = $xoopsDB->query($sql);
+    }
+
     $data=$xoopsDB->fetchArray($result);
     if(!empty($data)){
       foreach($data as $k=>$v){

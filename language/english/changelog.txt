@@ -1,4 +1,4 @@
-《TadTools 2.61 版 2014-09-25 釋出》
+《TadTools 2.61 版 尚未釋出》
  1.修正 lofslidernews.php 使之符合無障礙規範
  2.修正 dtree 使之符合無障礙規範
 
