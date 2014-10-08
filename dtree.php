@@ -27,7 +27,7 @@ class dtree{
   }
 
   //產生選單
-  function render($fontsize="12px"){
+  function render($fontsize="12px",$open=false,$useLines=true){
 
     if(empty($this->home)){
       $opt="{$this->name}.add(0,-1,'','javascript: void(0);');\n";
@@ -35,8 +35,12 @@ class dtree{
       $opt="{$this->name}.add({$this->home['sn']},-1,'{$this->home['title']}','{$this->home['url']}');\n";
     }
 
+    if($open=='' or is_null($open)){
+      $open=false;
+    }
+
     foreach($this->title_opt as $ncsn => $title){
-      $opt.="{$this->name}.add($ncsn , {$this->cate_opt[$ncsn]} , '{$title}' , '{$this->url_opt[$ncsn]}');\n";
+      $opt.="{$this->name}.add($ncsn , {$this->cate_opt[$ncsn]} , '{$title}' , '{$this->url_opt[$ncsn]}', null, null, null, null, '$open');\n";
     }
 
     $dtree="<link rel='StyleSheet' href='".TADTOOLS_URL."/dtree/dtree.css' type='text/css' />
@@ -53,6 +57,8 @@ class dtree{
     <script type='text/javascript' defer='defer'>
       {$this->name} = new dTree('{$this->name}', '".TADTOOLS_URL."/dtree');
       {$this->name}.config.useCookies=true;
+      {$this->name}.config.useLines=$useLines;
+
       {$opt}
       document.getElementById('tree_{$this->name}').innerHTML={$this->name};
     </script>
