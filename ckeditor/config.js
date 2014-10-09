@@ -10,7 +10,7 @@ CKEDITOR.editorConfig = function( config ) {
     [
       { name: 'bar1', items : ['Source'] },
       { name: 'bar1_1', items : ['Cut','Copy','Paste','PasteFromWord','Undo','Redo'] },
-      { name: 'bar1_2', items : ['Image','oembed','mathedit','Flash','Table','HorizontalRule','Smiley','Link','Unlink'] },
+      { name: 'bar1_2', items : ['Image','oembed','mathedit','jwplayer','Flash','Table','HorizontalRule','Smiley','Link','Unlink'] },
       { name: 'bar1_3', items : ['NumberedList','BulletedList','summary','RemoveFormat','Syntaxhighlight'] },
       '/',
       { name: 'bar2', items : [ 'Format','FontSize','TextColor','BGColor','Bold','Italic','Underline','Strike'] },
