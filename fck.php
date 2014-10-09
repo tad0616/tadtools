@@ -58,7 +58,7 @@ class FCKEditor264{
       skin : 'moono' ,
       language : '"._LANGCODE."' ,
       toolbar : '{$this->ToolbarSet}' ,
-      extraPlugins: 'autogrow,syntaxhighlight,summary,oembed,mathedit',
+      extraPlugins: 'autogrow,syntaxhighlight,summary,oembed,mathedit,jwplayer',
       filebrowserBrowseUrl : '".TADTOOLS_URL."/elFinder/elfinder.php?type=file',
       filebrowserImageBrowseUrl : '".TADTOOLS_URL."/elFinder/elfinder.php?type=image',
       filebrowserFlashBrowseUrl : '".TADTOOLS_URL."/elFinder/elfinder.php?type=flash',
