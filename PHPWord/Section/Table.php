@@ -34,46 +34,46 @@
  * @copyright  Copyright (c) 2011 PHPWord
  */
 class PHPWord_Section_Table {
-	
+
 	/**
 	 * Table style
 	 *
 	 * @var PHPWord_Style_Table
 	 */
 	private $_style;
-	
+
 	/**
 	 * Table rows
 	 *
 	 * @var array
 	 */
 	private $_rows = array();
-	
+
 	/**
 	 * Row heights
 	 *
 	 * @var array
 	 */
 	private $_rowHeights = array();
-	
+
 	/**
 	 * Table holder
 	 *
 	 * @var string
 	 */
 	private $_insideOf = null;
-	
+
 	/**
 	 * Table holder count
 	 *
 	 * @var array
 	 */
 	private $_pCount;
-	
-	
+
+
 	/**
 	 * Create a new table
-	 * 
+	 *
 	 * @param string $insideOf
 	 * @param int $pCount
 	 * @param mixed $style
@@ -81,11 +81,11 @@ class PHPWord_Section_Table {
 	public function __construct($insideOf, $pCount, $style = null) {
 		$this->_insideOf = $insideOf;
 		$this->_pCount = $pCount;
-		
+
 		if(!is_null($style)) {
 			if(is_array($style)) {
 				$this->_style = new PHPWord_Style_Table();
-				
+
 				foreach($style as $key => $value) {
 					if(substr($key, 0, 1) != '_') {
 						$key = '_'.$key;
@@ -97,7 +97,7 @@ class PHPWord_Section_Table {
 			}
 		}
 	}
-	
+
 	/**
 	* Add a row
 	*
@@ -107,7 +107,7 @@ class PHPWord_Section_Table {
 		$this->_rows[] = array();
 		$this->_rowHeights[] = $height;
 	}
-	
+
 	/**
 	* Add a cell
 	*
@@ -121,28 +121,28 @@ class PHPWord_Section_Table {
 		$this->_rows[$i][] = $cell;
 		return $cell;
 	}
-	
+
 	/**
 	 * Get all rows
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getRows() {
 		return $this->_rows;
 	}
-	
+
 	/**
 	 * Get all row heights
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getRowHeights() {
 		return $this->_rowHeights;
 	}
-	
+
 	/**
 	 * Get table style
-	 * 
+	 *
 	 * @return PHPWord_Style_Table
 	 */
 	public function getStyle() {
