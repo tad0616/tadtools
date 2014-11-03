@@ -1,52 +1,76 @@
 /**
  * SyntaxHighlighter
- * http://alexgorbatchev.com/
+ * http://alexgorbatchev.com/SyntaxHighlighter
  *
  * SyntaxHighlighter is donationware. If you are using it, please donate.
- * http://alexgorbatchev.com/wiki/SyntaxHighlighter:Donate
+ * http://alexgorbatchev.com/SyntaxHighlighter/donate.html
  *
  * @version
- * 2.0.320 (May 03 2009)
+ * 3.0.83 (July 02 2010)
  * 
  * @copyright
- * Copyright (C) 2004-2009 Alex Gorbatchev.
+ * Copyright (C) 2004-2010 Alex Gorbatchev.
  *
  * @license
- * This file is part of SyntaxHighlighter.
- * 
- * SyntaxHighlighter is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * SyntaxHighlighter is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with SyntaxHighlighter.  If not, see <http://www.gnu.org/copyleft/lesser.html>.
+ * Dual licensed under the MIT and GPL licenses.
  */
-SyntaxHighlighter.brushes.JScript = function()
+;(function()
 {
-	var keywords =	'break case catch continue ' +
-					'default delete do else false  ' +
-					'for function if in instanceof ' +
-					'new null return super switch ' +
-					'this throw true try typeof var while with'
-					;
+	// CommonJS
+	typeof(require) != 'undefined' ? SyntaxHighlighter = require('shCore').SyntaxHighlighter : null;
 
-	this.regexList = [
-		{ regex: SyntaxHighlighter.regexLib.singleLineCComments,	css: 'comments' },			// one line comments
-		{ regex: SyntaxHighlighter.regexLib.multiLineCComments,		css: 'comments' },			// multiline comments
-		{ regex: SyntaxHighlighter.regexLib.doubleQuotedString,		css: 'string' },			// double quoted strings
-		{ regex: SyntaxHighlighter.regexLib.singleQuotedString,		css: 'string' },			// single quoted strings
-		{ regex: /\s*#.*/gm,										css: 'preprocessor' },		// preprocessor tags like #region and #endregion
-		{ regex: new RegExp(this.getKeywords(keywords), 'gm'),		css: 'keyword' }			// keywords
-		];
+	function Brush()
+	{
+		var keywords =	'document break case catch continue ' +
+						'default delete do else false  ' +
+						'for function if in instanceof ' +
+						'new null return super switch ' +
+						'this throw true try typeof var while with ' +
+						'';
+						
+		var dom 	= 	'getElementById getElementByTagName getElementByClassName ' + 
+						'appendChild removeChild replaceChild insertBefore createAttribute createElement createTextNode ' + 
+						'getAttribute setAttribute style ' +
+						'';
+						
+		var methods = 	'addEventListener addEvent removeEvent removeEventListener ';
+		var properties = 	'ascent azimuth backgroundAttachment backgroundColor backgroundImage backgroundPosition ' +
+							'backgroundRepeat background baseline bbox borderCollapse borderColor borderSpacing borderStyle borderTop ' +
+							'borderRight borderBottom borderLeft borderTopColor borderRightColor borderBottomColor borderLeftColor ' +
+							'borderTopStyle borderRightStyle borderBottomStyle borderLeftStyle borderTopWidth borderRightWidth ' +
+							'borderBottomWidth borderLeftWidth borderWidth border bottom capHeight captionSide centerline clear clip color ' +
+							'content counterIncrement counterReset cueAfter cueBefore cue cursor definitionSrc descent direction display ' +
+							'elevation emptyCells float fontSizeAdjust fontFamily fontSize fontStretch fontStyle fontVariant fontWeight font ' +
+							'height left letterSpacing lineHeight listStyleImage listStylePosition listStyleType listStyle ' +
+							'marginTop marginRight marginBottom marginLeft margin markerOffset marks mathline maxHeight maxWidth minHeight minWidth orphans ' +
+							'outlineColor outlineStyle outlineWidth outline overflow paddingTop paddingRight paddingBottom paddingLeft padding page ' +
+							'pageBreakAfter pageBreakBefore pageBreakInside pause pauseAfter pauseBefore pitch pitchRange playDuring position ' +
+							'quotes right richness size slope src speakHeader speakNumeral speakPunctuation speak speechRate stemh stemv stress ' +
+							'tableLayout textAlign top textDecoration textIndent textShadow textTransform unicodeBidi unicodeRange unitsPerEm ' +
+							'verticalAlign visibility voiceFamily volume whiteSpace widows width widths wordSpacing xHeight zIndex';
+
+		var r = SyntaxHighlighter.regexLib;
+		
+		this.regexList = [
+			{ regex: r.multiLineDoubleQuotedString,					css: 'string' },			// double quoted strings
+			{ regex: r.multiLineSingleQuotedString,					css: 'string' },			// single quoted strings
+			{ regex: r.singleLineCComments,							css: 'comments' },			// one line comments
+			{ regex: r.multiLineCComments,							css: 'comments' },			// multiline comments
+			{ regex: /\s*#.*/gm,									css: 'preprocessor' },		// preprocessor tags like #region and #endregion
+			{ regex: new RegExp(this.getKeywords(dom), 'gm'),		css: 'dom' },				// dom
+			{ regex: new RegExp(this.getKeywords(methods), 'gm'),	css: 'methods' },				// methods
+			{ regex: new RegExp(this.getKeywords(properties), 'gm'),css: 'prop' },				// properties
+			{ regex: new RegExp(this.getKeywords(keywords), 'gm'),	css: 'keyword' }			// keywords
+			];
 	
-	this.forHtmlScript(SyntaxHighlighter.regexLib.scriptScriptTags);
-};
+		this.forHtmlScript(r.scriptScriptTags);
+	};
 
-SyntaxHighlighter.brushes.JScript.prototype	= new SyntaxHighlighter.Highlighter();
-SyntaxHighlighter.brushes.JScript.aliases	= ['js', 'jscript', 'javascript'];
+	Brush.prototype	= new SyntaxHighlighter.Highlighter();
+	Brush.aliases	= ['js', 'jscript', 'javascript'];
+
+	SyntaxHighlighter.brushes.JScript = Brush;
+
+	// CommonJS
+	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+})();

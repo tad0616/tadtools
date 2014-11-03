@@ -30,4 +30,10 @@ define("_MI_TADTOOLS_TITLE4","是否使用導覽列的釘住功能");
 define("_MI_TADTOOLS_DESC4","選「是」時，在畫面往下移動時，導覽列會自動維持在最上方。");
 define("_MI_TADTOOLS_TITLE5","下載檔案的路徑是否根據主機環境自動轉碼");
 define("_MI_TADTOOLS_DESC5","若是中文檔名無法下載的時候，試試改變此設定值。");
+
+define("_MI_TADTOOLS_TITLE6","設定 SyntaxHighlighter 佈景");
+define("_MI_TADTOOLS_DESC6","請選擇想要的高亮度語法佈景");
+
+define("_MI_TADTOOLS_TITLE7","選擇 SyntaxHighlighter 版本");
+define("_MI_TADTOOLS_DESC7","SyntaxHighlighter2 適用程式碼常會換行的情況，SyntaxHighlighter3則是可以直接選取複製");
 ?>

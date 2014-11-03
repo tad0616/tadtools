@@ -16,7 +16,7 @@ $modversion['dirname'] = basename(dirname(__FILE__));
 
 
 //---模組狀態資訊---//
-$modversion['release_date'] = '2014/09/25';
+$modversion['release_date'] = '2014/10/24';
 $modversion['module_website_url'] = 'http://tad0616.net/';
 $modversion['module_website_name'] = _MI_TAD_WEB;
 $modversion['module_status'] = 'release';
@@ -105,4 +105,23 @@ $modversion['config'][$i]['description'] = '_MI_TADTOOLS_DESC5';
 $modversion['config'][$i]['formtype'] = 'yesno';
 $modversion['config'][$i]['valuetype'] = 'int';
 $modversion['config'][$i]['default'] = '1';
+
+$i++;
+$modversion['config'][$i]['name'] = 'syntaxhighlighter_themes';
+$modversion['config'][$i]['title'] = '_MI_TADTOOLS_TITLE6';
+$modversion['config'][$i]['description'] = '_MI_TADTOOLS_DESC6';
+$modversion['config'][$i]['formtype'] = 'select';
+$modversion['config'][$i]['valuetype'] = 'text';
+$modversion['config'][$i]['default'] = 'shThemeMonokai';
+$modversion['config'][$i]['options'] = array('shThemeDefault'=>'shThemeDefault' , 'shThemeDjango'=>'shThemeDjango' , 'shThemeEclipse'=>'shThemeEclipse' , 'shThemeEmacs'=>'shThemeEmacs' , 'shThemeFadeToGrey'=>'shThemeFadeToGrey' , 'shThemeMDUltra'=>'shThemeMDUltra' , 'shThemeMidnight'=>'shThemeMidnight' , 'shThemeRDark'=>'shThemeRDark' , 'shThemeMonokai'=>'shThemeMonokai');
+
+$i++;
+$modversion['config'][$i]['name'] = 'syntaxhighlighter_version';
+$modversion['config'][$i]['title'] = '_MI_TADTOOLS_TITLE7';
+$modversion['config'][$i]['description'] = '_MI_TADTOOLS_DESC7';
+$modversion['config'][$i]['formtype'] = 'select';
+$modversion['config'][$i]['valuetype'] = 'text';
+$modversion['config'][$i]['default'] = 'syntaxhighlighter';
+$modversion['config'][$i]['options'] = array('syntaxhighlighter 2'=>'syntaxhighlighter_2' , 'syntaxhighlighter 3'=>'syntaxhighlighter');
+
 ?>

@@ -1,9 +1,13 @@
-《TadTools 2.61 版 尚未釋出》
+《TadTools 2.61 版 2014-10-24 釋出》
  1.修正 lofslidernews.php 使之符合無障礙規範
  2.修正 dtree 使之符合無障礙規範
+ 3.新增 phpWord 合併儲存格功能
+ 4.修正 my_js.html，避免對其他按鈕造成影響
+ 5.更新 syntaxhighlighter 為 2.1.382 版，並補齊之前刪除的語言
+ 6.加入 syntaxhighlighter 偏好設定
 
 
-《TadTools 2.6 版  2014-09-23 釋出》
+《TadTools 2.6 版 2014-09-23 釋出》
 ====================================
  1.降版 jquery 為 1.8.3，以增加對舊版jquery相容性
  2.修正 StickyTableHeaders路徑大小寫錯誤的bug

@@ -6,7 +6,7 @@
  * http://alexgorbatchev.com/wiki/SyntaxHighlighter:Donate
  *
  * @version
- * 2.0.320 (May 03 2009)
+ * 2.1.364 (October 15 2009)
  * 
  * @copyright
  * Copyright (C) 2004-2009 Alex Gorbatchev.
@@ -31,7 +31,7 @@ SyntaxHighlighter.brushes.AS3 = function()
 {
 	// Created by Peter Atoria @ http://iAtoria.com
 	
-	var inits 	 =  'class interface function package';
+	var inits 	 =  'class interface package';
 	
 	var keywords =	'-Infinity ...rest Array as AS3 Boolean break case catch const continue Date decodeURI ' + 
 					'decodeURIComponent default delete do dynamic each else encodeURI encodeURIComponent escape ' + 
@@ -41,6 +41,16 @@ SyntaxHighlighter.brushes.AS3 = function()
 					'return set static String super switch this throw true try typeof uint undefined unescape ' + 
 					'use void while with'
 					;
+	var methods =   'addEventListener MouseEvent Event ProgressEvent IOErrorEvent SecurityEvent' +
+					'CLICK MOUSE_OVER MOUSE_OUT MOUSE_DOWN MOUSE_UP MOUSE_MOVE DOUBLE_CLICK CONTEXT_MENU ' + 
+					'ENTER_FRAME IO_ERROR COMPLETE PROGRESS ' + 
+					'onRelease onPress onRollOver onRollOut onEnterFrame onClipEvent ' + 
+					'gotoAndPlay gotoAndStop play stop currentFrame _currentframe totalFrames _totalFrame ' + 
+					'attachMovie duplicateMovieClip createEmptyMovieClip MovieClip Sprite ';
+					
+	var props	=   'x _x y _y alpha _alpha visible _visible scaleX _xscale scaleY _yscale rotation _rotation z _z ' +
+	 				'rotationX rotationY rotationZ width height _width _height';
+	                
 	
 	this.regexList = [
 		{ regex: SyntaxHighlighter.regexLib.singleLineCComments,	css: 'comments' },		// one line comments
@@ -48,9 +58,14 @@ SyntaxHighlighter.brushes.AS3 = function()
 		{ regex: SyntaxHighlighter.regexLib.doubleQuotedString,		css: 'string' },		// double quoted strings
 		{ regex: SyntaxHighlighter.regexLib.singleQuotedString,		css: 'string' },		// single quoted strings
 		{ regex: /\b([\d]+(\.[\d]+)?|0x[a-f0-9]+)\b/gi,				css: 'value' },			// numbers
+		{ regex: /\s*#.*/gm,										css: 'preprocessor' },	// preprocessor tags like #region and #endregion
 		{ regex: new RegExp(this.getKeywords(inits), 'gm'),			css: 'color3' },		// initializations
 		{ regex: new RegExp(this.getKeywords(keywords), 'gm'),		css: 'keyword' },		// keywords
+		{ regex: new RegExp(this.getKeywords(methods), 'gm'),		css: 'methods' },		// methods
+		{ regex: new RegExp(this.getKeywords(props), 'gm'),			css: 'prop' },			// properties
 		{ regex: new RegExp('var', 'gm'),							css: 'variable' },		// variable
+		{ regex: new RegExp('function', 'gm'),						css: 'function' },		// function
+		{ regex: new RegExp('new', 'gm'),							css: 'function' },		// new
 		{ regex: new RegExp('trace', 'gm'),							css: 'color1' }			// trace
 		];
 	
