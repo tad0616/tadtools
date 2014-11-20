@@ -133,33 +133,27 @@ if(!function_exists('push_url')){
     $jquery=get_jquery();
 
     $main="
-    <link rel='stylesheet' href='".XOOPS_URL."/modules/tadtools/social-likes/social-likes.css'>
+    <link rel='stylesheet' href='".XOOPS_URL."/modules/tadtools/social-likes/social-likes_birman.css'>
     $jquery
     <script src='".XOOPS_URL."/modules/tadtools/social-likes/social-likes.min.js'></script>
-
-    <ul class='social-likes' data-url='http://{$_SERVER["HTTP_HOST"]}{$_SERVER['REQUEST_URI']}' data-title='{$xoopsConfig['sitename']}'>
-      <li class='facebook' title='Share link on Facebook'>Facebook</li>
-      <li class='twitter' title='Share link on Twitter'>Twitter</li>
-      <li class='plusone' title='Share link on Google+'>Google+</li>
-    </ul>
-    ";
-
-    /*
-    $main="
-    $jquery
-    <script src='".XOOPS_URL."/modules/tadtools/iatek-jquery-share/jquery.share.js' type='text/javascript' language='JavaScript'></script>
-    <link rel='stylesheet' href='".XOOPS_URL."/modules/tadtools/iatek-jquery-share/jquery.share.css' type='text/css' />
-
     <script type='text/javascript'>
-    $(document).ready(function(){
-      $('#push_url').share({
-          networks: ['facebook','googleplus','twitter','email'],
-          theme: 'square'
+    $().ready(function() {
+      $('.social-likes').socialLikes({
+        url: 'http://{$_SERVER["HTTP_HOST"]}{$_SERVER['REQUEST_URI']}',
+        title: '{$xoopsConfig['sitename']}',
+        counters: true,
+        singleTitle: 'Share it!'
       });
     });
     </script>
-    <div id='push_url'></div>";
-    */
+    <ul class='social-likes'>
+      <li class='facebook' title='Share link on Facebook'>Facebook</li>
+      <li class='twitter' title='Share link on Twitter'>Twitter</li>
+      <li class='plusone' title='Share link on Google+'>Google+</li>
+      <div class='pinterest' title='Share image on Pinterest' data-media=''>Pinterest</div>
+    </ul>
+    ";
+
     return $main;
   }
 }

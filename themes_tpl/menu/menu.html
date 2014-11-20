@@ -1,11 +1,35 @@
-<link rel="stylesheet" type="text/css" href="<{xoAppUrl modules/tadtools/themes_tpl/menu/styles.css}>" />
-<script src="<{xoAppUrl modules/tadtools/themes_tpl/menu/menu_jquery.js}>"></script>
+<link rel="stylesheet" type="text/css" href="<{xoAppUrl modules/tadtools/themes_tpl/menu/cssmenu/styles.css}>" />
+<script src="<{xoAppUrl modules/tadtools/themes_tpl/menu/cssmenu/menu_jquery.js}>"></script>
 <style type="text/css">
+  #cssmenu{
+    background: <{$navbar_bg_top}>;
+    /* background: transparent; */
+  }
+  #cssmenu > ul{
+    background: <{$navbar_bg_top}>;
+    /* background: transparent; */
+  }
+  #cssmenu ul ul li a {
+    background: <{$navbar_bg_bottom}>;
+    color:<{$navbar_color}>;
+    /* color: #6e6265; */
+    /* background: #fff; */
+  }
+  #cssmenu ul ul li:hover > a {
+    background: <{$navbar_hover}>;
+    color:<{$navbar_color_hover}>;
+    /* color: #8c9195; */
+    /* background: #f6f6f6; */
+  }
+
   #cssmenu > ul > li > a {
     color:<{$navbar_color}>;
+    /* color: #ffffff; */
   }
-  #cssmenu > ul > li > a:hover {
+
+  #cssmenu > ul > li:hover > a {
     color:<{$navbar_color_hover}>;
+    /* color: #ffffff; */
   }
 </style>
 <div id="cssmenu">

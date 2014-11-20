@@ -1,7 +1,6 @@
 #cssmenu {
   position: relative;
   height: 44px;
-  background: transparent;
   width: auto;
 }
 #cssmenu ul {
@@ -13,7 +12,6 @@
 #cssmenu > ul {
   position: relative;
   display: block;
-  background: transparent;
   height: 32px;
   width: 100%;
   z-index: 500;
@@ -37,7 +35,6 @@
   font-size: 14px;
   font-weight: bold;
   padding: 15px 20px;
-  color: #ffffff;
   text-transform: uppercase;
   -webkit-transition: color 0.25s ease-out;
   -moz-transition: color 0.25s ease-out;
@@ -49,7 +46,7 @@
   padding-right: 32px;
 }
 #cssmenu > ul > li:hover > a {
-  color: #ffffff;
+
 }
 #cssmenu li.has-sub::after {
   display: block;
@@ -132,8 +129,6 @@
   border-bottom: 1px solid #eee;
   padding: 10px 20px;
   font-size: 11pt;
-  color: #6e6265;
-  background: #fff;
   -webkit-transition: all .35s ease;
   -moz-transition: all .35s ease;
   -ms-transition: all .35s ease;
@@ -141,8 +136,7 @@
   transition: all .35s ease;
 }
 #cssmenu ul ul li:hover > a {
-  background: #f6f6f6;
-  color: #8c9195;
+
 }
 #cssmenu ul ul li:last-child > a,
 #cssmenu ul ul li.last > a {

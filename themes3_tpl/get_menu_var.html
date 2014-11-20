@@ -1,0 +1,203 @@
+<{php}>
+  global $xoopsDB,$xoopsTpl;
+
+  $my_menu=get_theme_menu_items(0);
+  $xoopsTpl->assign('menu_var',$my_menu);
+
+  //取得選單選項
+  function get_theme_menu_items($id="",$other_menu=true){
+    global $xoopsDB,$xoopsTpl;
+
+    $my_menu=array();
+    if(strpos($_SESSION['menu_var_kind'],'all')!==false or strpos($_SESSION['menu_var_kind'],'my_menu')!==false){
+      $sql="select menuid,itemname,itemurl,target,icon from ".$xoopsDB->prefix("tad_themes_menu")." where of_level='{$id}' and status='1' order by position";
+      $result = $xoopsDB->query($sql);
+
+      if($result){
+        $i=0;
+        while(list($menuid,$itemname,$itemurl,$target,$icon)=$xoopsDB->fetchRow($result)){
+          $my_menu[$i]['id']=$menuid;
+          $my_menu[$i]['title']=$itemname;
+          $my_menu[$i]['url']=$itemurl;
+          $my_menu[$i]['target']=$target;
+          $my_menu[$i]['icon']=$icon;
+          $my_menu[$i]['submenu']=get_theme_menu_items($menuid,false);
+          $i++;
+        }
+      }
+    }
+
+
+    if($other_menu){
+      $user_menu=array();
+      if(strpos($_SESSION['menu_var_kind'],'all')!==false or strpos($_SESSION['menu_var_kind'],'user')!==false){
+        $user_menu=get_user_menu_item($i);
+      }
+
+      $admin_menu=array();
+      if(strpos($_SESSION['menu_var_kind'],'all')!==false or strpos($_SESSION['menu_var_kind'],'admin')!==false){
+        $i++;
+        $admin_menu=get_admin_menu_item($i);
+      }
+      $all_menu=array_merge($my_menu,$user_menu,$admin_menu);
+    }else{
+      $all_menu=$my_menu;
+    }
+    return $all_menu;
+  }
+
+
+  //取得管理員選單
+  function get_admin_menu_item($i){
+    if(!isWebAdmin())return array();
+    $my_menu[$i]['id']=$i;
+    $my_menu[$i]['title']=_TAD_TO_ADMIN;
+    $my_menu[$i]['url']=XOOPS_URL."/admin.php";
+    $my_menu[$i]['target']="_self";
+    $my_menu[$i]['icon']="";
+    $my_menu[$i]['submenu']=get_admin_submenu_item();
+    return $my_menu;
+  }
+
+  //取得管理員選單子項目
+  function get_admin_submenu_item(){
+    global $xoopsDB;
+    $sql = "select conf_value from ".$xoopsDB->prefix("config")." where conf_title ='_MD_AM_DEBUGMODE'";
+    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+    list($debug)=$xoopsDB->fetchRow($result);
+    if($debug==0){
+      $debug=1;
+    }else{
+      $debug=0;
+    }
+
+    $i=0;
+    $my_menu[$i]['id']=$i;
+    $my_menu[$i]['title']=_TAD_TF_SYSTEM_CONFIG;
+    $my_menu[$i]['url']=XOOPS_URL."/modules/system/admin.php?fct=preferences&op=show&confcat_id=1";
+    $my_menu[$i]['target']="_self";
+    $my_menu[$i]['icon']="glyphicon glyphicon-cog";
+    $my_menu[$i]['submenu']="";
+
+    $i++;
+    $my_menu[$i]['id']=$i;
+    $my_menu[$i]['title']=TF_SYSTEM_MODADM;
+    $my_menu[$i]['url']=XOOPS_URL."/modules/tad_adm/admin/main.php";
+    $my_menu[$i]['target']="_self";
+    $my_menu[$i]['icon']="glyphicon glyphicon-wrench";
+    $my_menu[$i]['submenu']="";
+
+    $i++;
+    $my_menu[$i]['id']=$i;
+    $my_menu[$i]['title']=_TAD_TF_SYSTEM_DBADM;
+    $my_menu[$i]['url']=XOOPS_URL."/modules/tad_adm/pma.php";
+    $my_menu[$i]['target']="_blank";
+    $my_menu[$i]['icon']="glyphicon glyphicon-hdd";
+    $my_menu[$i]['submenu']="";
+
+    $i++;
+    $my_menu[$i]['id']=$i;
+    $my_menu[$i]['title']=_TAD_TF_THEME_ADMIN;
+    $my_menu[$i]['url']=XOOPS_URL."/modules/tad_themes/admin/main.php";
+    $my_menu[$i]['target']="_self";
+    $my_menu[$i]['icon']="glyphicon glyphicon-list-alt";
+    $my_menu[$i]['submenu']="";
+
+    $i++;
+    $my_menu[$i]['id']=$i;
+    $my_menu[$i]['title']=($debug==1)?_TAD_TF_THEME_DEBUG:_TAD_TF_THEME_UNDEBUG;
+    $my_menu[$i]['url']=XOOPS_URL."/modules/tadtools/themes3_tpl/tools/debug.php?op=debug&v={$debug}";
+    $my_menu[$i]['target']="_self";
+    $my_menu[$i]['icon']="glyphicon glyphicon-warning-sign";
+    $my_menu[$i]['submenu']="";
+
+    $i++;
+    $my_menu[$i]['id']=$i;
+    $my_menu[$i]['title']=_TAD_TF_USER_BLOCK;
+    $my_menu[$i]['url']=XOOPS_URL."/modules/system/admin.php?fct=blocksadmin";
+    $my_menu[$i]['target']="_self";
+    $my_menu[$i]['icon']="glyphicon glyphicon-th";
+    $my_menu[$i]['submenu']="";
+
+    return $my_menu;
+  }
+
+  //判斷是否為管理員
+  function isWebAdmin(){
+    global $xoopsUser,$xoopsModule;
+    $isWebAdmin=false;
+    if ($xoopsUser) {
+      $isWebAdmin=$xoopsUser->isAdmin(1);
+    }
+    return $isWebAdmin;
+  }
+
+
+  //取得使用者選單
+  function get_user_menu_item($i){
+    global $xoopsUser;
+    if($xoopsUser){
+      $my_menu[$i]['id']=$i;
+      $my_menu[$i]['title']=_TAD_TF_MYMENU;
+      $my_menu[$i]['url']="#";
+      $my_menu[$i]['target']="_self";
+      $my_menu[$i]['icon']="";
+      $my_menu[$i]['submenu']=get_user_submenu_item();
+    }else{
+      $my_menu[$i]['id']=$i;
+      $my_menu[$i]['title']=_TAD_TF_USER_LOGIN;
+      $my_menu[$i]['url']=XOOPS_URL."/user.php";
+      $my_menu[$i]['target']="_self";
+      $my_menu[$i]['icon']="";
+      $my_menu[$i]['submenu']="";
+    }
+
+    return $my_menu;
+  }
+
+  //取得使用者選單子項目
+  function get_user_submenu_item(){
+    $i=0;
+    $pmcount=$_SESSION['xoops_inbox_count'];
+    $my_menu[$i]['id']=$i;
+    $my_menu[$i]['title']=!empty($pmcount)?sprintf(_TAD_TF_USER_NEWMSG,$pmcount):_TAD_TF_USER_MSG;
+    $my_menu[$i]['url']=XOOPS_URL."/viewpmsg.php";
+    $my_menu[$i]['target']="_self";
+    $my_menu[$i]['icon']="glyphicon glyphicon-envelope";
+    $my_menu[$i]['submenu']="";
+
+    $i++;
+    $my_menu[$i]['id']=$i;
+    $my_menu[$i]['title']=_TAD_TF_USER_NOTICE;
+    $my_menu[$i]['url']=XOOPS_URL."/notifications.php";
+    $my_menu[$i]['target']="_self";
+    $my_menu[$i]['icon']="glyphicon glyphicon-info-sign";
+    $my_menu[$i]['submenu']="";
+
+    $i++;
+    $my_menu[$i]['id']=$i;
+    $my_menu[$i]['title']=_TAD_TF_THEME_ADMIN;
+    $my_menu[$i]['url']=XOOPS_URL."/modules/tad_themes/admin/main.php";
+    $my_menu[$i]['target']="_self";
+    $my_menu[$i]['icon']="glyphicon glyphicon-list-alt";
+    $my_menu[$i]['submenu']="";
+
+    $i++;
+    $my_menu[$i]['id']=$i;
+    $my_menu[$i]['title']=_TAD_TF_USER_PROFILE;
+    $my_menu[$i]['url']=XOOPS_URL."/user.php";
+    $my_menu[$i]['target']="_self";
+    $my_menu[$i]['icon']="glyphicon glyphicon-user";
+    $my_menu[$i]['submenu']="";
+
+    $i++;
+    $my_menu[$i]['id']=$i;
+    $my_menu[$i]['title']=_TAD_TF_USER_EXIT;
+    $my_menu[$i]['url']=XOOPS_URL."/user.php?op=logout";
+    $my_menu[$i]['target']="_self";
+    $my_menu[$i]['icon']="glyphicon glyphicon-share";
+    $my_menu[$i]['submenu']="";
+
+    return $my_menu;
+  }
+<{/php}>

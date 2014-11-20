@@ -1,8 +1,20 @@
-《TadTools 2.62 版 尚未釋出》
+《TadTools 2.63 版 尚未釋出》
+====================================
+ 1.更新 social-likes 套件為 3.0.7
+ 2.加入 BootStrap3
+ 3.針對 BootStrap3 新增theme3_tpl共同樣板
+ 4.新增smartmenus-0.9.7以解決 BootStrap3 下拉選單僅兩層的問題
+
+
+
+《TadTools 2.62 版 2014-11-11 釋出》
 ====================================
  1.加入 syntaxhighlighter 2.1.382
  2.加入 syntaxhighlighter 的版本選偏好設定
  3.新增 sweet-alert 套件
+ 4.修正 cssmenu 共同樣板，使之可套用後台導覽列顏色設定
+ 5.修正樹狀目錄圖示消失的問題
+ 6.新增 nav-pills 選單共同樣板
 
 
 

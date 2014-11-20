@@ -108,7 +108,7 @@ class slider{
     </script>
     <!-- Place somewhere in the <body> of your page -->
 
-    <div class='row-fluid callbacks'>
+    <div class='row callbacks'>
       <ul class='rslides' id='{$id}' style='margin-top:{$margin_top}px;'>
         $all
       </ul>
