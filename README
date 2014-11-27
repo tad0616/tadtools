@@ -4,6 +4,7 @@
  2.加入 BootStrap3
  3.針對 BootStrap3 新增theme3_tpl共同樣板
  4.新增smartmenus-0.9.7以解決 BootStrap3 下拉選單僅兩層的問題
+ 5.修正 facebook留言框寬度無法 100% 的問題
 
 
 

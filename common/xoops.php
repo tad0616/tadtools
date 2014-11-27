@@ -134,10 +134,10 @@ if(!function_exists('toolbar_bootstrap')){
     /* styles for mobile */
     @media screen and (max-width: 600px) {
       .tinynav { display: block }
-      #nav { display: none }
+      #toolbar_bootstrap { display: none }
     }
 
-    #nav {
+    #toolbar_bootstrap {
       padding: 6px 0 6px 6px;
       list-style: none;
       float: left;
@@ -150,15 +150,15 @@ if(!function_exists('toolbar_bootstrap')){
       border-radius: 5px;
     }
 
-    #nav li {
+    #toolbar_bootstrap li {
       display: block;
       float: left;
       margin-right: 2px;
       color: #000;
     }
 
-    #nav a,
-    #nav a:hover {
+    #toolbar_bootstrap a,
+    #toolbar_bootstrap a:hover {
       padding: 0 15px;
       line-height: 24px;
       display: block;
@@ -171,14 +171,14 @@ if(!function_exists('toolbar_bootstrap')){
       color: gray;
     }
 
-    #nav a:hover {
+    #toolbar_bootstrap a:hover {
       color: #fff;
       background: rgb(140,140,140);
       background: rgba(0,0,0,.5);
     }
 
-    #nav .selected a,
-    #nav .selected a:hover {
+    #toolbar_bootstrap .selected a,
+    #toolbar_bootstrap .selected a:hover {
       background: #4d4d4d;
       background: rgb(190,190,190);
       background: rgba(0,0,0,.2);
@@ -190,7 +190,7 @@ if(!function_exists('toolbar_bootstrap')){
     <script src='".XOOPS_URL."/modules/tadtools/TinyNav/tinynav.min.js'></script>
     <script>
     $(function () {
-      $('#nav').tinyNav({
+      $('#toolbar_bootstrap').tinyNav({
         active: 'selected', // String: Set the 'active' class
         header: '', // String: Specify text for 'header' and show header instead of the active item
         indent: '- ', // String: Specify text for indenting sub-items
@@ -200,7 +200,7 @@ if(!function_exists('toolbar_bootstrap')){
     </script>
 
     <div class='row-fluid'>
-      <ul id='nav' class='span12'>
+      <ul id='toolbar_bootstrap' class='span12'>
         $options
       </ul>
     </div>";

@@ -166,10 +166,6 @@ if(!function_exists('facebook_comments')){
     $url=(empty($page) and empty($col_name) and empty($col_sn))?"http://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}":XOOPS_URL."/modules/{$modules}/{$page}?{$col_name}={$col_sn}";
 
     $main="
-    <style>.fb-comments, .fb-comments iframe[style], .fb-like-box, .fb-like-box iframe[style] {width: 100% !important;}
-    .fb-comments span, .fb-comments iframe span[style], .fb-like-box span, .fb-like-box iframe span[style] {width: 100% !important;}
-    </style>
-
     <div id='fb-root'></div>
     <script>(function(d, s, id) {
       var js, fjs = d.getElementsByTagName(s)[0];
@@ -178,7 +174,7 @@ if(!function_exists('facebook_comments')){
       js.src = '//connect.facebook.net/zh_TW/all.js#xfbml=1&appId=199288920104939';
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));</script>
-    <div class='fb-comments' data-href='{$url}' data-num-posts='10'></div>
+    <div class='fb-comments' data-href='{$url}' data-num-posts='10' data-width='100%'></div>
     ";
 
     return $main;
