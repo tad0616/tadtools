@@ -16,6 +16,7 @@
       if($result){
         $i=0;
         while(list($menuid,$itemname,$itemurl,$target,$icon)=$xoopsDB->fetchRow($result)){
+          $icon=str_replace('fa-','fa-',$icon);
           $my_menu[$i]['id']=$menuid;
           $my_menu[$i]['title']=$itemname;
           $my_menu[$i]['url']=$itemurl;
@@ -76,7 +77,7 @@
     $my_menu[$i]['title']=_TAD_TF_SYSTEM_CONFIG;
     $my_menu[$i]['url']=XOOPS_URL."/modules/system/admin.php?fct=preferences&op=show&confcat_id=1";
     $my_menu[$i]['target']="_self";
-    $my_menu[$i]['icon']="icon-cog";
+    $my_menu[$i]['icon']="fa-cog";
     $my_menu[$i]['submenu']="";
 
     $i++;
@@ -84,7 +85,7 @@
     $my_menu[$i]['title']=TF_SYSTEM_MODADM;
     $my_menu[$i]['url']=XOOPS_URL."/modules/tad_adm/admin/main.php";
     $my_menu[$i]['target']="_self";
-    $my_menu[$i]['icon']="icon-wrench";
+    $my_menu[$i]['icon']="fa-wrench";
     $my_menu[$i]['submenu']="";
 
     $i++;
@@ -92,7 +93,7 @@
     $my_menu[$i]['title']=_TAD_TF_SYSTEM_DBADM;
     $my_menu[$i]['url']=XOOPS_URL."/modules/tad_adm/pma.php";
     $my_menu[$i]['target']="_blank";
-    $my_menu[$i]['icon']="icon-hdd";
+    $my_menu[$i]['icon']="fa-database";
     $my_menu[$i]['submenu']="";
 
     $i++;
@@ -100,7 +101,7 @@
     $my_menu[$i]['title']=_TAD_TF_THEME_ADMIN;
     $my_menu[$i]['url']=XOOPS_URL."/modules/tad_themes/admin/main.php";
     $my_menu[$i]['target']="_self";
-    $my_menu[$i]['icon']="icon-list-alt";
+    $my_menu[$i]['icon']="fa-list-alt";
     $my_menu[$i]['submenu']="";
 
     $i++;
@@ -108,7 +109,7 @@
     $my_menu[$i]['title']=($debug==1)?_TAD_TF_THEME_DEBUG:_TAD_TF_THEME_UNDEBUG;
     $my_menu[$i]['url']=XOOPS_URL."/modules/tadtools/themes_tpl/tools/debug.php?op=debug&v={$debug}";
     $my_menu[$i]['target']="_self";
-    $my_menu[$i]['icon']="icon-warning-sign";
+    $my_menu[$i]['icon']="fa-warning";
     $my_menu[$i]['submenu']="";
 
     $i++;
@@ -116,7 +117,7 @@
     $my_menu[$i]['title']=_TAD_TF_USER_BLOCK;
     $my_menu[$i]['url']=XOOPS_URL."/modules/system/admin.php?fct=blocksadmin";
     $my_menu[$i]['target']="_self";
-    $my_menu[$i]['icon']="icon-th";
+    $my_menu[$i]['icon']="fa-th";
     $my_menu[$i]['submenu']="";
 
     return $my_menu;
@@ -163,7 +164,7 @@
     $my_menu[$i]['title']=!empty($pmcount)?sprintf(_TAD_TF_USER_NEWMSG,$pmcount):_TAD_TF_USER_MSG;
     $my_menu[$i]['url']=XOOPS_URL."/viewpmsg.php";
     $my_menu[$i]['target']="_self";
-    $my_menu[$i]['icon']="icon-envelope";
+    $my_menu[$i]['icon']="fa-envelope";
     $my_menu[$i]['submenu']="";
 
     $i++;
@@ -171,7 +172,7 @@
     $my_menu[$i]['title']=_TAD_TF_USER_NOTICE;
     $my_menu[$i]['url']=XOOPS_URL."/notifications.php";
     $my_menu[$i]['target']="_self";
-    $my_menu[$i]['icon']="icon-info-sign";
+    $my_menu[$i]['icon']="fa-bell";
     $my_menu[$i]['submenu']="";
 
     $i++;
@@ -179,7 +180,7 @@
     $my_menu[$i]['title']=_TAD_TF_THEME_ADMIN;
     $my_menu[$i]['url']=XOOPS_URL."/modules/tad_themes/admin/main.php";
     $my_menu[$i]['target']="_self";
-    $my_menu[$i]['icon']="icon-list-alt";
+    $my_menu[$i]['icon']="fa-list-alt";
     $my_menu[$i]['submenu']="";
 
     $i++;
@@ -187,7 +188,7 @@
     $my_menu[$i]['title']=_TAD_TF_USER_PROFILE;
     $my_menu[$i]['url']=XOOPS_URL."/user.php";
     $my_menu[$i]['target']="_self";
-    $my_menu[$i]['icon']="icon-user";
+    $my_menu[$i]['icon']="fa-user";
     $my_menu[$i]['submenu']="";
 
     $i++;
@@ -195,7 +196,7 @@
     $my_menu[$i]['title']=_TAD_TF_USER_EXIT;
     $my_menu[$i]['url']=XOOPS_URL."/user.php?op=logout";
     $my_menu[$i]['target']="_self";
-    $my_menu[$i]['icon']="icon-share";
+    $my_menu[$i]['icon']="fa-share";
     $my_menu[$i]['submenu']="";
 
     return $my_menu;

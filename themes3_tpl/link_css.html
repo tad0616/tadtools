@@ -9,8 +9,12 @@
 
 
 <!-- Bootstrap3 -->
-<link href="<{xoAppUrl modules/tadtools/bootstrap3/css/bootstrap.css}>" rel="stylesheet" media="screen">
-<link href="<{xoAppUrl modules/tadtools/bootstrap3/css/bootstrap-theme.css}>" rel="stylesheet" media="screen">
+<{if $theme_color}>
+  <link href="<{$xoops_url}>/modules/tadtools/<{$theme_color}>/bootstrap.min.css" rel="stylesheet" media="screen">
+<{else}>
+  <link href="<{xoAppUrl modules/tadtools/bootstrap3/css/bootstrap.css}>" rel="stylesheet" media="screen">
+<{/if}>
+
 <!-- SmartMenus jQuery Bootstrap Addon CSS -->
 <link href="<{xoAppUrl modules/tadtools/smartmenus/addons/bootstrap/jquery.smartmenus.bootstrap.css}>" rel="stylesheet">
 

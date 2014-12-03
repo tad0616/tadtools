@@ -5,6 +5,10 @@
  3.針對 BootStrap3 新增theme3_tpl共同樣板
  4.新增smartmenus-0.9.7以解決 BootStrap3 下拉選單僅兩層的問題
  5.修正 facebook留言框寬度無法 100% 的問題
+ 6.將 darkstrap 搬移至\bootstrap\themes\dark\darkstrap
+ 7.新增 BootStrap3 許多佈景
+ 8.font-awesome更新為 4.2.0
+ 9.移除 Buttons 及 iCheck
 
 
 

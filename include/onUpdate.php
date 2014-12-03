@@ -11,6 +11,8 @@ function xoops_module_update_tadtools(&$module, $old_version) {
     if(!chk_chk1()) go_update1();
     if(!chk_chk2()) go_update2();
     if(chk_chk3()) go_update3();
+    if(chk_chk4()) go_update4();
+    if(chk_chk5()) go_update5();
     /*
 
     $old_fckeditor=XOOPS_ROOT_PATH."/modules/tadtools/fckeditor";
@@ -89,6 +91,45 @@ function go_update3(){
   }else{
     return false;
   }
+}
+
+
+//刪除索引
+function chk_chk4(){
+  global $xoopsDB;
+  $sql="select count(`tt_sn`) from ".$xoopsDB->prefix("tadtools_setup");
+  $result=$xoopsDB->query($sql);
+  if(empty($result)) return false;
+  return true;
+}
+
+function go_update4(){
+  global $xoopsDB;
+
+  $sql="ALTER TABLE ".$xoopsDB->prefix("tadtools_setup")." DROP INDEX `tt_theme`";
+  $xoopsDB->queryF($sql);
+  $sql="ALTER TABLE ".$xoopsDB->prefix("tadtools_setup")." DROP `tt_sn`";
+  $xoopsDB->queryF($sql);
+  $sql="ALTER TABLE ".$xoopsDB->prefix("tadtools_setup")." ADD PRIMARY KEY ( `tt_theme` )";
+  $xoopsDB->queryF($sql);
+
+}
+
+
+//新增佈景種類
+function chk_chk5(){
+  global $xoopsDB;
+  $sql="select count(`tt_theme_kind`) from ".$xoopsDB->prefix("tadtools_setup");
+  $result=$xoopsDB->query($sql);
+  if(!empty($result)) return false;
+  return true;
+}
+
+function go_update5(){
+  global $xoopsDB;
+  $sql="ALTER TABLE ".$xoopsDB->prefix("tadtools_setup")." ADD `tt_theme_kind` varchar(255) NOT NULL  default ''";
+  $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL."/modules/system/admin.php?fct=modulesadmin",30,  mysql_error());
+  return true;
 }
 
 //建立目錄

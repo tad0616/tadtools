@@ -28,4 +28,8 @@ define("_MA_TT_THEMES","目前允許使用的佈景（紅色為預設佈景）")
 define("_MA_TT_BOOTSTRAP_COLOR","套用BootStrap顏色");
 define("_TT_COLOR_NORMAL","正常");
 define("_TT_COLOR_DARK","深色");
+define("_TT_COLOR_DEFAULT","預設");
+define("_MA_TT_THEMES_KIND","佈景種類");
+define("_MA_TT_TAD_THEMES","支援 tad themes，已內建 BootStrap");
+
 ?>

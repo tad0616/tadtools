@@ -3,41 +3,48 @@
 
     <{if $openid_login=="0" or $openid_login=="1"}>
       <li>
-        <form action="<{$xoops_url}>/user.php" method="post">
-          <fieldset>
-            <legend>
+        <form action="<{$xoops_url}>/user.php" method="post" class="form-horizontal" role="form">
+            <h3>
               <{$smarty.const.TF_USER_ENTER}>
-            </legend>
-
-            <div class="row">
-              <label class="col-md-4"><{$smarty.const.TF_USER_S_ID}></label>
-              <input type="text" name="uname"  id="uname" placeholder="<{$smarty.const.TF_USER_ID}>"  class="col-md-8 input-small" />
+            </h3>
+            <div class="form-group">
+              <label class="col-md-4 control-label">
+                <{$smarty.const.TF_USER_S_ID}>
+              </label>
+              <div class="col-md-8">
+                <input type="text" name="uname"  id="uname" placeholder="<{$smarty.const.TF_USER_ID}>"  class="form-control" />
+              </div>
             </div>
 
-            <div class="row">
-              <label class="col-md-4"><{$smarty.const.TF_USER_S_PASS}></label>
-              <input type="password" name="pass" id="pass" placeholder="<{$smarty.const.TF_USER_PASS}>" class="col-md-8 input-small" />
+            <div class="form-group">
+              <label class="col-md-4 control-label">
+                <{$smarty.const.TF_USER_S_PASS}>
+              </label>
+              <div class="col-md-8">
+              <input type="password" name="pass" id="pass" placeholder="<{$smarty.const.TF_USER_PASS}>" class="form-control" />
+              </div>
             </div>
 
-            <div class="row" style="text-align:center;">
-              <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>" />
-              <input type="hidden" name="rememberme" value="On" />
-              <input type="hidden" name="op" value="login" />
-              <button type="submit" class="btn btn-primary"><{$smarty.const.TF_USER_ENTER}></button>
+            <div class="form-group">
+              <div class="col-md-12">
+                <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>" />
+                <input type="hidden" name="rememberme" value="On" />
+                <input type="hidden" name="op" value="login" />
+                <button type="submit" class="btn btn-primary"><{$smarty.const.TF_USER_ENTER}></button>
+              </div>
             </div>
-          </fieldset>
         </form>
       </li>
 
       <li>
         <a href="<{$xoops_url}>/register.php">
-          <span class="glyphicon glyphicon-pencil"></span>
+          <span class="fa fa-pencil"></span>
           <{$smarty.const.TF_USER_REGIST}>
         </a>
       </li>
       <li>
         <a href="<{$xoops_url}>/user.php#lost">
-          <span class="glyphicon glyphicon-search"></span>
+          <span class="fa fa-search"></span>
           <{$smarty.const.TF_USER_FORGET_PASS}>
         </a>
       </li>

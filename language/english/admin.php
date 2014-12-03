@@ -30,4 +30,7 @@ define("_MA_TT_THEMES","All themes");
 define("_MA_TT_BOOTSTRAP_COLOR","BootStrap Color");
 define("_TT_COLOR_NORMAL","Normal");
 define("_TT_COLOR_DARK","Dark");
+define("_TT_COLOR_DEFAULT","Default");
+define("_MA_TT_THEMES_KIND","Theme kind");
+define("_MA_TT_TAD_THEMES","bootstrap inside");
 ?>

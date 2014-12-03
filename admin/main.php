@@ -18,11 +18,12 @@ function tadtools_setup(){
   $use_bootstrap=$bootstrap_color="";
 
   $sql="select * from `".$xoopsDB->prefix("tadtools_setup")."`";
-  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error()."<hr>".$sql);
   //$tt_theme,$tt_use_bootstrap,$tt_bootstrap_color
-  while(list($tt_sn,$tt_theme,$tt_use_bootstrap,$tt_bootstrap_color)=$xoopsDB->fetchRow($result)){
+  while(list($tt_theme,$tt_use_bootstrap,$tt_bootstrap_color,$tt_theme_kind)=$xoopsDB->fetchRow($result)){
     $use_bootstrap[$tt_theme]=$tt_use_bootstrap;
     $bootstrap_color[$tt_theme]=$tt_bootstrap_color;
+    $tt_theme_kind[$tt_theme]=$tt_theme_kind;
   }
 
   $version=_MA_TT_VERSION.$xoopsModule->getVar("version");
@@ -30,25 +31,38 @@ function tadtools_setup(){
   $i=0;
   $themes="";
   foreach($xoopsConfig['theme_set_allowed'] as $theme){
-    $color=$xoopsConfig['theme_set']==$theme?"style='background-color:#990000'":"";
+    $color=$xoopsConfig['theme_set']==$theme?"style='background-color:#E2EDAD'":"";
 
     $themes[$i]['color']=$color;
     $themes[$i]['theme_name']=$theme;
 
     if(file_exists(XOOPS_ROOT_PATH."/themes/{$theme}/config.php")){
-      $sql = "INSERT INTO `".$xoopsDB->prefix("tadtools_setup")."` (`tt_theme` , `tt_use_bootstrap`,`tt_bootstrap_color`) values('{$theme}', '0', 'bootstrap' ) ON DUPLICATE KEY UPDATE `tt_use_bootstrap` = '0',`tt_bootstrap_color`='bootstrap'";
+      $theme_kind="";
+      include_once XOOPS_ROOT_PATH."/themes/{$theme}/config.php";
+      if(!empty($theme_kind)){
+        if(!isset($use_bootstrap[$theme])){
+          $sql = "replace into `".$xoopsDB->prefix("tadtools_setup")."` (`tt_theme` , `tt_use_bootstrap`,`tt_bootstrap_color` , `tt_theme_kind`) values('{$theme}', '0', '{$theme_kind}', '{$theme_kind}')";
 
-      $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-
-      $themes[$i]['use_bootstrap']='0';
-      $themes[$i]['bootstrap_color']=$bootstrap_color[$theme];
-      $themes[$i]['tad_theme']='1';
+          $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error()."<hr>".$sql);
+        }
+        $themes[$i]['theme_kind']=$theme_kind;
+        $themes[$i]['use_bootstrap']='0';
+        $themes[$i]['tad_theme']='1';
+        $themes[$i]['bootstrap_theme']=$bootstrap_color[$theme];
+      }else{
+        $themes[$i]['theme_kind']="html";
+        $themes[$i]['use_bootstrap']=$use_bootstrap[$theme]===""?1:$use_bootstrap[$theme];
+        $themes[$i]['tad_theme']='0';
+        $themes[$i]['bootstrap_theme']=mk_bootstrap_menu($theme_kind);
+      }
     }else{
+      $theme_kind=search_bootstrap(XOOPS_ROOT_PATH."/themes/{$theme}");
+      $themes[$i]['theme_kind']=$theme_kind;
       $themes[$i]['use_bootstrap']=$use_bootstrap[$theme]===""?1:$use_bootstrap[$theme];
-      $themes[$i]['bootstrap_color']=$bootstrap_color[$theme];
       $themes[$i]['tad_theme']='0';
+      $themes[$i]['bootstrap_theme']=mk_bootstrap_menu($theme_kind);
     }
-
+    $themes[$i]['bootstrap_color']=basename($bootstrap_color[$theme]);
 
     $i++;
   }
@@ -57,14 +71,98 @@ function tadtools_setup(){
   $xoopsTpl->assign( "version" , $version) ;
 }
 
+function search_bootstrap($path=""){
+  $allfile=directory_list($path);
+  $file_str= json_encode($allfile);
+  if(strpos($file_str, "glyphicons")!==false){
+    return "bootstrap3";
+  }elseif(strpos($file_str, "bootstrap")!==false){
+    return "bootstrap";
+  }else{
+    return "html";
+  }
+}
+
+function mk_bootstrap_menu($theme_kind=""){
+
+  if($theme_kind=="html" or $theme_kind=="mix"){
+    $theme_array1=mk_bootstrap_menu_options('bootstrap',"light");
+    $theme_array2=mk_bootstrap_menu_options('bootstrap',"dark");
+    $theme_array3=mk_bootstrap_menu_options('bootstrap3',"light");
+    $theme_array4=mk_bootstrap_menu_options('bootstrap3',"dark");
+    $theme_array=array_merge($theme_array1,$theme_array2,$theme_array3,$theme_array4);
+  }else{
+    $theme_array1=mk_bootstrap_menu_options($theme_kind,"light");
+    $theme_array2=mk_bootstrap_menu_options($theme_kind,"dark");
+    $theme_array=array_merge($theme_array1,$theme_array2);
+  }
+  return $theme_array;
+}
+
+function mk_bootstrap_menu_options($theme_kind="",$mode="light"){
+  if(empty($theme_kind))$theme_kind="bootstrap";
+  $dir=XOOPS_ROOT_PATH."/modules/tadtools/{$theme_kind}/themes/{$mode}/";
+  if (is_dir($dir)) {
+    if ($dh = opendir($dir)) {
+      $theme_array[$theme_kind]['kind']=$theme_kind;
+      $theme_array[$theme_kind]['theme_path']="{$theme_kind}";
+      $theme_array[$theme_kind]['theme']=$theme_kind;
+      $theme_array[$theme_kind]['color']=_TT_COLOR_DEFAULT;
+      while (($file = readdir($dh)) !== false) {
+        if($file=='.' or $file=='..' or filetype($dir . $file)!='dir')continue;
+        $theme_array[$file]['kind']=$theme_kind;
+        $theme_array[$file]['theme_path']="{$theme_kind}/themes/{$mode}/{$file}";
+        $theme_array[$file]['theme']=$file;
+        $theme_array[$file]['color']=($mode=='dark')?_TT_COLOR_DARK:_TT_COLOR_NORMAL;
+      }
+      closedir($dh);
+    }
+  }
+  return $theme_array;
+}
+
+//列出目錄檔案
+function directory_list($directory_base_path=""){
+
+  $myts =& MyTextSanitizer::getInstance();
+
+  $directory_base_path=$myts->addSlashes($directory_base_path);
+
+  $directory_base_path = rtrim($directory_base_path, "/") . "/";
+
+  $result_list = array();
+
+  $allfile=glob($directory_base_path."*");
+
+  foreach($allfile as $filename) {
+    $filename=$myts->addSlashes($filename);
+    $basefilename=str_replace($directory_base_path, '', $filename);
+
+    if(is_dir($filename)) {
+      $result_list[$basefilename] = directory_list($filename);
+    }else{
+
+      $ext = strtolower(array_pop(explode('.',$filename)));
+      $len=strlen($ext);
+      if($len > 0 and $len <=4 ){
+        $result_list[] = $basefilename;
+      }else{
+        $result_list[$basefilename] = directory_list($filename);
+      }
+    }
+  }
+
+  return $result_list;
+
+}
+
 
 
 function save(){
   global $xoopsDB;
   foreach($_POST['tt_use_bootstrap'] as $tt_theme=>$tt_use_bootstrap){
-    $sql = "INSERT INTO `".$xoopsDB->prefix("tadtools_setup")."` (`tt_theme` , `tt_use_bootstrap`,`tt_bootstrap_color`) values('{$tt_theme}', '{$tt_use_bootstrap}', '{$_POST['tt_bootstrap_color'][$tt_theme]}' ) ON DUPLICATE KEY UPDATE `tt_use_bootstrap` = '{$tt_use_bootstrap}',`tt_bootstrap_color`='{$_POST['tt_bootstrap_color'][$tt_theme]}'";
-//die($sql);
-    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+    $sql = "replace into `".$xoopsDB->prefix("tadtools_setup")."` (`tt_theme` , `tt_use_bootstrap`,`tt_bootstrap_color` , `tt_theme_kind`) values('{$tt_theme}', '{$tt_use_bootstrap}', '{$_POST['tt_bootstrap_color'][$tt_theme]}', '{$_POST['tt_theme_kind'][$tt_theme]}')";
+    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error()."<hr>".$sql);
   }
 }
 /*-----------執行動作判斷區----------*/

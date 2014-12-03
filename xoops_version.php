@@ -4,7 +4,7 @@ $modversion = array();
 
 //---模組基本資訊---//
 $modversion['name'] = _MI_TADTOOLS_NAME;
-$modversion['version']	= '2.61';
+$modversion['version']	= '2.63';
 $modversion['description'] = _MI_TADTOOLS_DESC;
 $modversion['author'] = 'Tad (tad0616@gmail.com)';
 $modversion['credits']	= "Tad (http://tad0616.net)";

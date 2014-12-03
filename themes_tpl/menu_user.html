@@ -2,28 +2,28 @@
   <{if $xoops_isadmin}>
     <li>
       <a href="<{$xoops_url}>/admin.php">
-        <i class="icon-lock"></i>
+        <i class="fa fa-lock"></i>
         <{$smarty.const.TF_USER_ADMIN}>
       </a>
     </li>
 
     <li>
       <a rel="tooltip" href="<{$xoops_url}>/modules/system/admin.php?fct=preferences&op=show&confcat_id=1" title="<{$smarty.const.TF_SYSTEM_CONFIG}>">
-        <i class="icon-cog"></i>
+        <i class="fa fa-cog"></i>
         <{$smarty.const.TF_SYSTEM_CONFIG}>
       </a>
     </li>
 
     <li>
       <a rel="tooltip" href="<{$xoops_url}>/modules/tad_adm/admin/main.php" title="<{$smarty.const.TF_SYSTEM_MODADM}>">
-        <i class="icon-wrench"></i>
+        <i class="fa fa-wrench"></i>
         <{$smarty.const.TF_SYSTEM_MODADM}>
       </a>
     </li>
 
     <li>
       <a rel="tooltip" href="<{$xoops_url}>/modules/tad_adm/pma.php" title="<{$smarty.const.TF_SYSTEM_DBADM}>" target="_blank">
-        <i class="icon-hdd"></i>
+        <i class="fa fa-database"></i>
         <{$smarty.const._TAD_TF_SYSTEM_DBADM}>
       </a>
     </li>
@@ -31,7 +31,7 @@
     <{if $mid}>
       <li>
         <a href="<{$xoops_url}>/modules/tad_themes/admin/main.php">
-          <i class="icon-list-alt"></i>
+          <i class="fa fa-list-alt"></i>
           <{$smarty.const.TF_THEME_ADMIN}>
         </a>
       </li>
@@ -39,7 +39,7 @@
 
     <li>
       <a href="<{$xoops_imageurl}>tools/debug.php?op=debug&v=<{$debug}>">
-        <i class="icon-warning-sign"></i>
+        <i class="fa fa-warning"></i>
         <{if $debug=='1'}>
           <{$smarty.const.TF_THEME_DEBUG}>
         <{else}>
@@ -50,7 +50,7 @@
 
     <li>
       <a href="<{$xoops_url}>/modules/system/admin.php?fct=blocksadmin">
-        <i class="icon-th"></i>
+        <i class="fa fa-th"></i>
         <{$smarty.const.TF_USER_BLOCK}>
       </a>
     </li>
@@ -60,7 +60,7 @@
   <li>
     <{xoInboxCount assign=pmcount}>
     <a href="<{$xoops_url}>/viewpmsg.php">
-      <i class="icon-envelope"></i>
+      <i class="fa fa-envelope"></i>
       <{if $pmcount}>
         <{$smarty.const.TF_USER_NEWMSG}>
       <{else}>
@@ -71,19 +71,19 @@
 
   <li>
     <a href="<{$xoops_url}>/notifications.php">
-      <i class="icon-info-sign"></i>
+      <i class="fa fa-bell"></i>
       <{$smarty.const.TF_USER_NOTICE}>
     </a>
   </li>
   <li>
     <a href="<{$xoops_url}>/user.php">
-      <i class="icon-user"></i>
+      <i class="fa fa-user"></i>
       <{$smarty.const.TF_USER_PROFILE}>
     </a>
   </li>
   <li>
     <a href="<{$xoops_url}>/user.php?op=logout">
-      <i class="icon-share"></i>
+      <i class="fa fa-share"></i>
       <{$smarty.const.TF_USER_EXIT}>
     </a>
   </li>

@@ -98,7 +98,11 @@ if(!function_exists('toolbar_bootstrap')){
     if(empty($interface_menu))return;
     $jquery=get_jquery();
 
-    $options="<li {$active}><a href='index.php' title='"._TAD_HOME."'><i class='icon-home'></i></a></li>";
+    $row=($_SESSION['bootstrap']=='3')? 'row':'row-fluid';
+    $col=($_SESSION['bootstrap']=='3')? 'col-md-12':'span12';
+    $home=($_SESSION['bootstrap']=='3')? 'fa fa-home':'icon-home';
+
+    $options="<li {$active}><a href='index.php' title='"._TAD_HOME."'><i class='{$home}'></i></a></li>";
     if(is_array($interface_menu)){
 
       $basename=basename($_SERVER['SCRIPT_NAME']);
@@ -199,15 +203,14 @@ if(!function_exists('toolbar_bootstrap')){
     });
     </script>
 
-    <div class='row-fluid'>
-      <ul id='toolbar_bootstrap' class='span12'>
+    <div class='{$row}'>
+      <ul id='toolbar_bootstrap' class='{$col}'>
         $options
       </ul>
     </div>";
     return $main;
   }
 }
-
 
 
 ?>

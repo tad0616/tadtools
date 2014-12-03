@@ -7,7 +7,7 @@
     $result = $xoopsDB->query($sql);
     $option="";
     while(list($name,$dirname)=$xoopsDB->fetchRow($result)){
-      $option.= "\t\t\t<li><a href=\"".XOOPS_URL."/modules/{$dirname}\"><span class=\"glyphicon glyphicon-th-list\"></span> {$name}</a></li>\n";
+      $option.= "\t\t\t<li><a href=\"".XOOPS_URL."/modules/{$dirname}\"><span class=\"fa fa-th-list\"></span> {$name}</a></li>\n";
     }
     $itemurl=empty($itemurl)?"#":$itemurl;
     echo "

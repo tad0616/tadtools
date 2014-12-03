@@ -33,7 +33,7 @@
 <{$tad_themes_popup_code}>
 <{if $navbar_pos!="not-use"}>
 
-  <nav class="navbar navbar-default <{$navbar_pos}>" role="navigation">
+  <nav class="navbar navbar-default <{$navbar_pos}>" role="navigation" style="background-color:<{$navbar_bg_top}>;<{if $navbar_img}>background-image: url(<{$navbar_img}>);<{/if}>">
     <div class="container-fluid">
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
@@ -65,9 +65,9 @@
         <{if $xoops_isuser}>
           <{if $xoops_isadmin}>
             <{if $xoops_dirname=="" || $xoops_dirname=="system"}>
-              <li><a rel="tooltip" href="<{$xoops_url}>/admin.php" title="<{$smarty.const.TF_MODULE_CONFIG}>"><span class="glyphicon glyphicon-th-large" style="color:white;"></span></a></li>
+              <li><a rel="tooltip" href="<{$xoops_url}>/admin.php" title="<{$smarty.const.TF_MODULE_CONFIG}>"><span class="fa fa-th-large" style="color:white;"></span></a></li>
             <{else}>
-              <li><a rel="tooltip" href="<{$xoops_url}>/modules/<{$xoops_dirname}>/admin/index.php" title="<{$smarty.const.TF_MODULE_CONFIG}>"><span class="glyphicon glyphicon-th-large" style="color:white;"></span></a></li>
+              <li><a rel="tooltip" href="<{$xoops_url}>/modules/<{$xoops_dirname}>/admin/index.php" title="<{$smarty.const.TF_MODULE_CONFIG}>"><span class="fa fa-th-large" style="color:white;"></span></a></li>
             <{/if}>
           <{/if}>
 

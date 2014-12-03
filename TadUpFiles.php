@@ -279,9 +279,10 @@ class TadUpFiles{
     $list_del_file=($show_list_del_file)?$this->list_del_file($show_edit,$thumb):"";
     $jquery=get_jquery();
 
+    $col =($_SESSION['bootstrap']=='3')? "col-md-12":"span12";
     $main="
     $jquery
-    <input type='file' name='{$upname}[]' id='{$upname}' $maxlength multiple='multiple' $accept class='span12'>
+    <input type='file' name='{$upname}[]' id='{$upname}' $maxlength multiple='multiple' $accept class='{$col}'>
     {$list_del_file}
     ";
     return $main;
@@ -324,24 +325,27 @@ class TadUpFiles{
       }
 
 
+      $col =($_SESSION['bootstrap']=='3')? "col-md-":"span";
+      $checkbox_inline =($_SESSION['bootstrap']=='3')? "checkbox-inline":"checkbox inline";
+
       if($show_edit){
         $all_file.="
         <tr id='fdtr_{$files_sn}'>
           <td style='{$w}'>
-            <label class='checkbox inline'>
+            <label class='$checkbox_inline >
             $thumb_style
             <input type='checkbox' name='del_file[$files_sn]' value='{$files_sn}'>
             {$original_filename}
             </label>
           </td>
           <td>
-            <textarea name='save_description[$files_sn]'class='span12'>$description</textarea>
+            <textarea name='save_description[$files_sn]' class='{$col}12 form-control'>$description</textarea>
           </td>
         </tr>";
       }else{
         $all_file.="
         <li style='list-style-type:none;{$w2}'>
-          <label class='checkbox inline'>
+          <label class='$checkbox_inline '>
             $thumb_style2
             <input type='checkbox' name='del_file[]' value='{$files_sn}'>{$original_filename}
           </label>
@@ -351,6 +355,7 @@ class TadUpFiles{
     }
 
     if(empty($all_file))return;
+
 
     if($show_edit){
       $files="

@@ -6,8 +6,8 @@
       <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/centerZone.html"}>
     </div>
 
-    <div id="xoops_theme_right_zone" class="<{if $theme_kind!="html"}>col-md-<{/if}><{$rb_width}>" style="<{if $theme_kind=="html"}>float:right;<{/if}>">
-      <div id="xoops_theme_right"  style="<{$rightBlocks}>background-color:<{$rb_color}>;">
+    <div id="xoops_theme_right_zone" class="<{if $theme_kind!="html"}>col-md-<{/if}><{$rb_width}>" style="background-color:<{$rb_color}>;<{if $theme_kind=="html"}>float:right;<{/if}>">
+      <div id="xoops_theme_right"  style="<{$rightBlocks}>">
         <{if $xoBlocks.canvas_left}>
           <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/leftBlock.html"}>
         <{/if}>
