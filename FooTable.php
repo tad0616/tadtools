@@ -31,6 +31,7 @@ if(file_exists(XOOPS_ROOT_PATH."/modules/tadtools/FooTable.php")){
 
   $FooTable = new FooTable();
   $FooTableJS=$FooTable->render();
+  $xoopsTpl->assign('FooTableJS' , $FooTableJS);
 }
 把 $FooTableJS 加到表格前
 table 需加上 class='footable' 以及 <thead></thead>

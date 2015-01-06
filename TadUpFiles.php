@@ -405,7 +405,7 @@ class TadUpFiles{
     //取消上傳時間限制
     set_time_limit(0);
     //設置上傳大小
-    ini_set('memory_limit', '80M');
+    ini_set('memory_limit', '180M');
 
     //儲存檔案描述
     if(!empty($_POST['save_description'])){
@@ -451,7 +451,9 @@ class TadUpFiles{
 
       if ($file_handle->uploaded) {
         //取得副檔名
-        $ext=strtolower($file_handle->file_src_name_ext);
+        $file_ext=$file_handle->file_src_name_ext;
+        $ext=strtolower($file_ext);
+
         //判斷檔案種類
         if($ext=="jpg" or $ext=="jpeg" or $ext=="png" or $ext=="gif"){
           $kind="img";
@@ -525,8 +527,6 @@ class TadUpFiles{
             fwrite($fp, $file['name']);
             fclose($fp);
           }
-
-          $file_name = ($safe_name)?"{$this->col_name}_{$this->col_sn}_{$this->sort}.{$ext}":$file['name'];
 
           $description=is_null($desc)?$file['name']:$desc;
 
@@ -1244,7 +1244,8 @@ class TadUpFiles{
           $linkto=$file_info['path'];
           $description=empty($file_info['description'])?$file_info['original_filename']:$file_info['description'];
           if($file_info['kind']=="file"){
-            $fext=strtolower(substr($file_info['path'], -3));
+            $fext = pathinfo($file_info['path'], PATHINFO_EXTENSION);
+            //$fext=strtolower(substr($file_info['path'], -3));
             if($fext=="mp4" or $fext=="flv" or $fext=="3gp"){
               $thumb_pic=TADTOOLS_URL."/images/video.png";
               if($this->showFancyBox){

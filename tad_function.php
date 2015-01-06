@@ -8,11 +8,11 @@ get_bootstrap_version();
 //if(!function_exists('get_bootstrap_version')){
   function get_bootstrap_version(){
     global $xoopsConfig,$xoopsDB;
+    $theme_set = $xoopsConfig['theme_set'];
     if(isset($_SESSION[$theme_set]['bootstrap_version'])){
       return;
     }
 
-    $theme_set = $xoopsConfig['theme_set'];
     $sql="select tt_bootstrap_color from `".$xoopsDB->prefix("tadtools_setup")."` where tt_theme='{$theme_set}'";
     $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
     list($tt_bootstrap_color)=$xoopsDB->fetchRow($result);
@@ -473,10 +473,11 @@ if(!function_exists('rrmdir')){
 }
 //取得分頁工具
 if(!function_exists('getPageBar')){
-  function getPageBar($sql="",$show_num=20,$page_list=10,$to_page="",$url_other=""){
+  function getPageBar($sql="",$show_num=20,$page_list=10,$to_page="",$url_other="",$bootstrap=""){
     global $xoopsDB;
     if(empty($show_num))$show_num=20;
     if(empty($page_list))$page_list=10;
+    if(empty($bootstrap))$bootstrap=$_SESSION['bootstrap'];
     $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],10, mysql_error()."<br>$sql");
     $total=$xoopsDB->getRowsNum($result);
 
@@ -489,11 +490,9 @@ if(!function_exists('getPageBar')){
     if(!empty($url_other)){
       $navbar->set_url_other($url_other);
     }
-    if($_SESSION['bootstrap']=='3'){
+    if($bootstrap=='3'){
       $mybar = $navbar->makeBootStrap3Bar();
       $main['bar']= "
-
-
       <div class='row'>
         <div class='col-md-12'>
           <div class='text-center'>
@@ -757,7 +756,7 @@ if(!class_exists('PageBar')){
           $bar_center .= "
           <li>
             <a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='{$i}'>{$i}</a>
-          </li> ";
+          </li>";
         }
         $i++;
       }
@@ -770,8 +769,8 @@ if(!class_exists('PageBar')){
         $bar_first = "<li class='disabled'><a href='#'>&laquo;</a></li>";
       } else{
         $i = $this->current-1;
-        $bar_left = "<li><a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='"._TAD_BACK_PAGE."'>&lsaquo;</a></li> ";
-        $bar_first = "<li><a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}=1{$loadtime}' title='"._TAD_FIRST_PAGE."' >&laquo;</a></li> ";
+        $bar_left = "<li><a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='"._TAD_BACK_PAGE."'>&lsaquo;</a></li>";
+        $bar_first = "<li><a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}=1{$loadtime}' title='"._TAD_FIRST_PAGE."' >&laquo;</a></li>";
       }
 
       // 往後跳一頁
@@ -781,7 +780,7 @@ if(!class_exists('PageBar')){
         $bar_last = "<li class='disabled'><a href='#'>&raquo;</a></li>";
       } else{
         $i = $this->current + 1;
-        $bar_right = "<li><a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='"._TAD_NEXT_PAGE."'>&rsaquo;</a></li> ";
+        $bar_right = "<li><a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='"._TAD_NEXT_PAGE."'>&rsaquo;</a></li>";
         $bar_last = "<li><a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$this->pTotal}{$loadtime}' title='"._TAD_LAST_PAGE."' >&raquo;</a></li>";
       }
 
