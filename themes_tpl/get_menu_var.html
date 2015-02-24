@@ -4,8 +4,10 @@
   $my_menu=get_theme_menu_items(0);
   $i=sizeof($my_menu);
   $mod_menu=get_module_menu_item($i);
-  $my_menu=array_merge($my_menu,$mod_menu);
-
+  if(!empty($mod_menu)){
+    $my_menu=array_merge($my_menu,$mod_menu);
+  }
+  
   $xoopsTpl->assign('menu_var',$my_menu);
 
   //取得選單選項

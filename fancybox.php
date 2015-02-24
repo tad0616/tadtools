@@ -17,13 +17,22 @@ class fancybox{
   var $name;
   var $width;
   var $height;
+  var $autoSize;
 
   //建構函數
-  function fancybox($name="",$width='90%',$height='100%',$show_jquery=true,$show_js=true){
+  function fancybox($name="",$width='90%',$height=NULL,$show_jquery=true,$show_js=true){
     //$this->name=randStr();
     $this->name=$name;
     $this->width=$width;
-    $this->height=$height;
+
+    if(is_null($height)){
+      $this->autoSize='true';
+      $this->height='100%';
+    }else{
+      $this->autoSize='false';
+      $this->height=$height;
+    }
+
     $this->show_jquery = $show_jquery;
     $this->show_js = $show_js;
   }
@@ -68,12 +77,77 @@ class fancybox{
         height    : '{$this->height}',
         {$autoPlay}
         {$playSpeed}
-        autoSize  : true,
+        autoSize  : {$this->autoSize},
         closeClick  : false,
         openEffect  : 'none',
         closeEffect : 'none'
         {$reload_code}
         {$prevent_closed_outside_code}
+      });
+    });
+    </script>
+    ";
+    return $fancybox;
+  }
+
+
+
+  //產生表單語法
+  function renderForm($url="",$reload=true,$prevent_closed_outside=false,$autoPlay=false,$playSpeed=0){
+    $jquery=$this->show_jquery?get_jquery():"";
+
+    $reload_code=$reload?",
+        afterClose  :function () {
+          window.location.reload();
+        }":"";
+
+    $prevent_closed_outside_code=$prevent_closed_outside?",
+        helpers   : {
+         overlay : {closeClick: false}
+        }":"";
+
+    $js=$this->show_js?"<script type='text/javascript' src='".TADTOOLS_URL."/fancyBox/lib/jquery.mousewheel-3.0.6.pack.js'></script>
+    <script type='text/javascript' language='javascript' src='".TADTOOLS_URL."/fancyBox/source/jquery.fancybox.js?v=2.1.4'></script>
+    <link rel='stylesheet' href='".TADTOOLS_URL."/fancyBox/source/jquery.fancybox.css?v=2.1.4' type='text/css' media='screen' />
+    <link rel='stylesheet' type='text/css' href='".TADTOOLS_URL."/fancyBox/source/helpers/jquery.fancybox-buttons.css?v=1.0.5' />
+    <script type='text/javascript' src='".TADTOOLS_URL."/fancyBox/source/helpers/jquery.fancybox-buttons.js?v=1.0.5'></script>
+    <link rel='stylesheet' type='text/css' href='".TADTOOLS_URL."/fancyBox/source/helpers/jquery.fancybox-thumbs.css?v=1.0.7' />
+    <script type='text/javascript' src='".TADTOOLS_URL."/fancyBox/source/helpers/jquery.fancybox-thumbs.js?v=1.0.7'></script>
+    <script type='text/javascript' src='".TADTOOLS_URL."/fancyBox/source/helpers/jquery.fancybox-media.js?v=1.0.5'></script>":"";
+
+    $autoPlay=$autoPlay?"autoPlay: true,":"";
+    $playSpeed=$playSpeed?"playSpeed: {$playSpeed},":"";
+
+    $fancybox="
+    {$jquery}
+    {$js}
+    <script type='text/javascript'>
+    $(document).ready(function(){
+      $('{$this->name}').bind('submit', function() {
+        $.ajax({
+          type        : 'POST',
+          cache       : false,
+          url         : '{$url}',
+          data        : $(this).serializeArray(),
+          success: function(data) {
+            $.fancybox({
+              fitToView : true,
+              width   : '{$this->width}',
+              height    : '{$this->height}',
+              {$autoPlay}
+              {$playSpeed}
+              autoSize  : {$this->autoSize},
+              closeClick  : false,
+              openEffect  : 'none',
+              closeEffect : 'none',
+              content : data
+              {$reload_code}
+              {$prevent_closed_outside_code}
+            });
+          }
+        });
+
+        return false;
       });
     });
     </script>

@@ -5,29 +5,24 @@ get_bootstrap_version();
 
 
 //找出目前狀態
-//if(!function_exists('get_bootstrap_version')){
-  function get_bootstrap_version(){
-    global $xoopsConfig,$xoopsDB;
-    $theme_set = $xoopsConfig['theme_set'];
-    if(isset($_SESSION[$theme_set]['bootstrap_version'])){
-      return;
-    }
+function get_bootstrap_version(){
+  global $xoopsConfig,$xoopsDB;
+  $theme_set = $xoopsConfig['theme_set'];
 
-    $sql="select tt_bootstrap_color from `".$xoopsDB->prefix("tadtools_setup")."` where tt_theme='{$theme_set}'";
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-    list($tt_bootstrap_color)=$xoopsDB->fetchRow($result);
-    if(strpos($tt_bootstrap_color, 'bootstrap3')!==false){
-      $_SESSION[$theme_set]['bootstrap_version']='bootstrap3';
-      $_SESSION['bootstrap']='3';
-      return 'bootstrap3';
-    }else{
-      $_SESSION[$theme_set]['bootstrap_version']='bootstrap';
-      $_SESSION['bootstrap']='2';
-      return 'bootstrap';
-    }
-
+  $sql="select tt_bootstrap_color from `".$xoopsDB->prefix("tadtools_setup")."` where tt_theme='{$theme_set}'";
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  list($tt_bootstrap_color)=$xoopsDB->fetchRow($result);
+  if(strpos($tt_bootstrap_color, 'bootstrap3')!==false){
+    $_SESSION[$theme_set]['bootstrap_version']='bootstrap3';
+    $_SESSION['bootstrap']='3';
+    return 'bootstrap3';
+  }else{
+    $_SESSION[$theme_set]['bootstrap_version']='bootstrap';
+    $_SESSION['bootstrap']='2';
+    return 'bootstrap';
   }
-//}
+
+}
 
 //解決 basename 抓不到中文檔名的問題
 if(!function_exists('get_basename')){
@@ -475,6 +470,7 @@ if(!function_exists('rrmdir')){
 if(!function_exists('getPageBar')){
   function getPageBar($sql="",$show_num=20,$page_list=10,$to_page="",$url_other="",$bootstrap=""){
     global $xoopsDB;
+    //die('PHP_SELF:'.$_SERVER['PHP_SELF']);
     if(empty($show_num))$show_num=20;
     if(empty($page_list))$page_list=10;
     if(empty($bootstrap))$bootstrap=$_SESSION['bootstrap'];
@@ -490,6 +486,7 @@ if(!function_exists('getPageBar')){
     if(!empty($url_other)){
       $navbar->set_url_other($url_other);
     }
+
     if($bootstrap=='3'){
       $mybar = $navbar->makeBootStrap3Bar();
       $main['bar']= "

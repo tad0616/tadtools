@@ -44,4 +44,3 @@ define("_MI_TADTOOLS_DESC6","Setup SyntaxHighlighter theme.");
 define("_MI_TADTOOLS_TITLE7","SyntaxHighlighter version");
 define("_MI_TADTOOLS_DESC7","SyntaxHighlighter2.x or SyntaxHighlighter3.x");
 ?>
-?>

@@ -161,6 +161,7 @@ class TadUpFiles{
   var $thumb_size='contain';
   var $showFancyBox=true;
   var $download_url="";
+  var $bootstrap;
 
   public function TadUpFiles($prefix="",$subdir="",$file="/file",$image="/image",$thumbs="/image/.thumbs"){
     global $xoopsDB;
@@ -171,6 +172,7 @@ class TadUpFiles{
     $this->set_dir('thumbs',$thumbs);
 
     $this->TadUpFilesTblName=$xoopsDB->prefix("{$this->prefix}_files_center");
+    $this->bootstrap=$_SESSION['bootstrap'];
   }
 
   //設定路徑
@@ -277,9 +279,9 @@ class TadUpFiles{
     $maxlength=empty($maxlength)?"":"maxlength='{$maxlength}'";
     $accept=($only_type)?"accept='{$only_type}'":"";
     $list_del_file=($show_list_del_file)?$this->list_del_file($show_edit,$thumb):"";
-    $jquery=get_jquery();
+    $jquery=get_jquery(true);
 
-    $col =($_SESSION['bootstrap']=='3')? "col-md-12":"span12";
+    $col =($this->bootstrap=='3')? "col-md-12":"span12";
     $main="
     $jquery
     <input type='file' name='{$upname}[]' id='{$upname}' $maxlength multiple='multiple' $accept class='{$col}'>
@@ -312,7 +314,11 @@ class TadUpFiles{
         }else{
           $thumb_pic="{$this->TadUpFilesThumbUrl}/{$file_name}";
         }
-        $thumb_style="<a class='thumbnail' style='width:{$this->thumb_width};height:{$this->thumb_height};overflow:background-color:{$this->thumb_bg_color};hidden;background-image:url({$thumb_pic});background-position:{$this->thumb_position};background-repeat:{$this->thumb_repeat};background-size:{$this->thumb_size};' title='{$description}'></a>";
+        //$thumb_style="<a class='thumbnail' style='width:{$this->thumb_width};height:{$this->thumb_height};overflow:background-color:{$this->thumb_bg_color};hidden;background-image:url({$thumb_pic});background-position:{$this->thumb_position};background-repeat:{$this->thumb_repeat};background-size:{$this->thumb_size};display:block;' title='{$description}'></a>";
+
+        $img_class =($this->bootstrap=='3')? "img-thumbnail":"img-polaroid";
+        $thumb_style="<img src='{$thumb_pic}' class='{$img_class}'>";
+
         $thumb_style2="<a class='thumbnail' style='width:{$this->thumb_width};height:{$this->thumb_height};overflow:hidden;background-color:{$this->thumb_bg_color};background-image:url({$thumb_pic});background-position:{$this->thumb_position};background-repeat:{$this->thumb_repeat};background-size:{$this->thumb_size};' title='{$description}'></a>";
         $w="width:130px;word-break:break-all;";
         $w2="width:{$this->thumb_width};float:left;";
@@ -325,21 +331,25 @@ class TadUpFiles{
       }
 
 
-      $col =($_SESSION['bootstrap']=='3')? "col-md-":"span";
-      $checkbox_inline =($_SESSION['bootstrap']=='3')? "checkbox-inline":"checkbox inline";
+      $col =($this->bootstrap=='3')? "col-md-":"span";
+      $row =($this->bootstrap=='3')? "row":"row-fluid";
+      $class =($this->bootstrap=='3')? "form-control":"span12";
+      $checkbox_inline =($this->bootstrap=='3')? "checkbox-inline":"checkbox inline";
 
       if($show_edit){
         $all_file.="
         <tr id='fdtr_{$files_sn}'>
           <td style='{$w}'>
-            <label class='$checkbox_inline >
-            $thumb_style
-            <input type='checkbox' name='del_file[$files_sn]' value='{$files_sn}'>
-            {$original_filename}
-            </label>
-          </td>
-          <td>
-            <textarea name='save_description[$files_sn]' class='{$col}12 form-control'>$description</textarea>
+            <div class='{$row}'>
+              <div class='{$col}1'>$thumb_style</div>
+              <div class='{$col}11'>
+                <label class='$checkbox_inline'>
+                  <input type='checkbox' name='del_file[$files_sn]' value='{$files_sn}'>
+                  {$original_filename}
+                </label>
+                <textarea name='save_description[$files_sn]' rows=1 class='{$class}'>$description</textarea>
+              </div>
+            </div>
           </td>
         </tr>";
       }else{
@@ -465,7 +475,7 @@ class TadUpFiles{
         $file_handle->file_overwrite = true;
         $file_handle->no_script = false;
 
-        $hash_name=md5(rand(0,1000).$name);
+        $hash_name=md5(rand(0,1000).$file['name']);
 
         if($hash){
           $new_filename   = $hash_name;
@@ -528,6 +538,7 @@ class TadUpFiles{
             fclose($fp);
           }
 
+          $file_name = ($safe_name)?"{$this->col_name}_{$this->col_sn}_{$this->sort}.{$ext}":$file['name'];
           $description=is_null($desc)?$file['name']:$desc;
 
 
@@ -1063,7 +1074,7 @@ class TadUpFiles{
 
           $files[$files_sn]['link']="<a href='{$dl_url}' title='{$description}' rel='lytebox'><img src='{$pic_name}' alt='{$description}' title='{$description}' rel='lytebox'></a>";
           $files[$files_sn]['path']=$pic_name;
-          $files[$files_sn]['url']="<a href='{$dl_url}' title='{$description}' target='_blank'>{$description}</a>";
+          $files[$files_sn]['url']="<a href='{$dl_url}' title='{$description}' target='_blank'>{$show_file_name}</a>";
 
           $files[$files_sn]['tb_link']="<a href='{$dl_url}' title='{$description}' rel='lytebox'><img src='$thumb_pic' alt='{$description}' title='{$description}'></a>";
           $files[$files_sn]['tb_path']=$thumb_pic;

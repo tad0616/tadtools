@@ -15,6 +15,9 @@ define("_TAD_EXPAND_ALL","展開");
 define("_TAD_CONTACT_ALL","闔起");
 
 define("_TAD_DEL_CONFIRM","確定要刪除此資料？");
+define("_TAD_DEL_CONFIRM_TITLE","確定要刪除此資料？");
+define("_TAD_DEL_CONFIRM_TEXT","相關資料通通都將會被移除！");
+define("_TAD_DEL_CONFIRM_BTN","確定刪除！");
 define("_TAD_FUNCTION","功能");
 define("_TAD_EDIT","編輯");
 define("_TAD_DEL","刪除");
@@ -27,6 +30,8 @@ define("_TAD_SAVE","儲存");
 define("_TAD_RESET","重設");
 define("_TAD_CANCEL","取消");
 define("_TAD_SUBMIT","送出");
+define("_TAD_SEARCH","搜尋");
+define("_TAD_PERMISSION_DENIED","您沒有執行此功能的權限。");
 
 define("_TAD_INPUT_FORM","輸入表單");
 

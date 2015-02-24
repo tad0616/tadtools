@@ -27,6 +27,8 @@ define("_TAD_SAVE","Save");
 define("_TAD_RESET","Reset");
 define("_TAD_CANCEL","Cancel");
 define("_TAD_SUBMIT","Submit");
+define("_TAD_SEARCH","Search");
+define("_TAD_PERMISSION_DENIED","You do not have permission to perform this function.");
 
 define("_TAD_INPUT_FORM","Form");
 
