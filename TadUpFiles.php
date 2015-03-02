@@ -474,6 +474,7 @@ class TadUpFiles{
         $file_handle->file_safe_name = false;
         $file_handle->file_overwrite = true;
         $file_handle->no_script = false;
+        $file_handle->file_new_name_ext = $ext;
 
         $hash_name=md5(rand(0,1000).$file['name']);
 
@@ -515,6 +516,7 @@ class TadUpFiles{
         if($kind=="img"){
           $file_handle->file_safe_name = false;
           $file_handle->file_overwrite = true;
+          $file_handle->file_new_name_ext = $ext;
 
           $file_handle->file_new_name_body   = $new_filename;
 
@@ -541,6 +543,10 @@ class TadUpFiles{
           $file_name = ($safe_name)?"{$this->col_name}_{$this->col_sn}_{$this->sort}.{$ext}":$file['name'];
           $description=is_null($desc)?$file['name']:$desc;
 
+          chmod("{$path}/{$file_name}",0755);
+          if($kind=="img"){
+            chmod("{$this->TadUpFilesThumbDir}/{$file_name}",0755);
+          }
 
           $hash_name=($hash)?"{$hash_name}.{$ext}":"";
 
@@ -856,6 +862,7 @@ class TadUpFiles{
 
       $file_handle->file_safe_name = false;
       $file_handle->file_overwrite = true;
+      $file_handle->file_new_name_ext = $ext;
       if($hash){
         $file_handle->file_new_name_body   = $hash_name;
       }else{
@@ -883,6 +890,7 @@ class TadUpFiles{
       if($kind=="img"){
         $file_handle->file_safe_name = false;
         $file_handle->file_overwrite = true;
+        $file_handle->file_new_name_ext = $ext;
         if($hash){
           $file_handle->file_new_name_body   = $hash_name;
         }else{
@@ -908,6 +916,11 @@ class TadUpFiles{
         }
 
         $file_name = ($safe_name)?"{$this->col_name}_{$this->col_sn}_{$this->sort}.{$ext}":$name;
+
+        chmod("{$path}/{$file_name}",0755);
+        if($kind=="img"){
+          chmod("{$this->TadUpFilesThumbDir}/{$file_name}",0755);
+        }
 
 
         $description=(empty($files_sn) or empty($desc))?$file['name']:$desc;

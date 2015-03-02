@@ -3,45 +3,33 @@ include_once "tadtools_header.php";
 
 //取得jquery路徑，$mode="google"、"none"、"local","link","none"
 //$theme=ui-lightness , base
+
 if(!function_exists('get_jquery')){
   function get_jquery($ui=false,$mode="local",$theme='base'){
-    $xoopsModuleConfig=TadToolsXoopsModuleConfig();
-    //die("jquery_mode:{$xoopsModuleConfig['jquery_mode']}");
-
-    switch($xoopsModuleConfig['jquery_mode']){
-      case "none":
-      $jquery_path="";
-      break;
-
-      case "google":
-      $jquery_ui=$ui_css="";
+    global $xoTheme;
+    //$xoopsModuleConfig=TadToolsXoopsModuleConfig();
+    if($xoTheme){
+      $xoTheme->addScript('modules/tadtools/jquery/jquery-1.11.1.min.js');
+      $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate.min.js');
       if($ui){
-        $jquery_ui="
-        <link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/themes/{$theme}/jquery.ui.all.css' rel='stylesheet' type='text/css'>
-        <script src='//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js'></script>";
+        $xoTheme->addStylesheet('modules/tadtools/jquery/themes/{$theme}/jquery.ui.all.css');
+        $xoTheme->addScript('modules/tadtools/jquery/ui/jquery-ui.js');
       }
+      $xoTheme->addScript('modules/tadtools/jquery/jquery.jgrowl.js');
+      /*
+      $xoTheme->addScript('', null, '
+        (function($){
+            $(document).ready(function(){
+                $.jGrowl("'.$_SESSION['redirect_message'].'", {position:"center"});
+            });
+        })(jQuery);
+      ');
+      */
+    }else{
 
-      $jquery_path="
-      <script type='text/javascript'>
-        if(typeof jQuery == 'undefined') {
-          document.write(\"<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js'><\/script>\");
-        }
-      </script>
-      $jquery_ui
-      ";
-      break;
-
-
-      case "local":
-      default:
       $jqueryui_path="";
       if($ui){
-        /*
-        $jqueryui_path="
-        if(typeof jQuery.ui == 'undefined'){
-        document.write(\"<link href='".TADTOOLS_URL."/jquery/themes/{$theme}/jquery.ui.all.css' rel='stylesheet' type='text/css'><script src='".TADTOOLS_URL."/jquery/ui/jquery-ui.js'><\/script>\");
-        }";
-        */
+
         $jqueryui_path="
         <link href='".TADTOOLS_URL."/jquery/themes/{$theme}/jquery.ui.all.css' rel='stylesheet' type='text/css'>
         <script src='".TADTOOLS_URL."/jquery/ui/jquery-ui.js'></script>";
@@ -50,47 +38,17 @@ if(!function_exists('get_jquery')){
       $jquery_path="
       <script type='text/javascript'>
         if(typeof jQuery == 'undefined') {
-        document.write(\"<script type='text/javascript' src='".TADTOOLS_URL."/jquery/jquery.js'><\/script>\");
+        document.write(\"<script type='text/javascript' src='".TADTOOLS_URL."/jquery/jquery-1.11.1.min.js'><\/script>\");
+        document.write(\"<script type='text/javascript' src='".TADTOOLS_URL."/jquery/jquery-migrate.min.js'><\/script>\");
+        document.write(\"<script type='text/javascript' src='".TADTOOLS_URL."/jquery/jquery.jgrowl.js'><\/script>\");
         }
       </script>
       $jqueryui_path
       ";
-
-      break;
-
-
-
     }
-
     return $jquery_path;
   }
 }
 
-
-if(!function_exists('get_jquery3')){
-  function get_jquery3($ui=false){
-    $xoopsModuleConfig=TadToolsXoopsModuleConfig();
-
-    $jqueryui_path="";
-    if($ui){
-
-      $jqueryui_path="
-      <link href='".TADTOOLS_URL."/jquery/themes/{$theme}/jquery.ui.all.css' rel='stylesheet' type='text/css'>
-      <script src='".TADTOOLS_URL."/jquery/ui/jquery-ui.js'></script>";
-    }
-
-    $jquery_path="
-    <script type='text/javascript'>
-      if(typeof jQuery == 'undefined') {
-      document.write(\"<script type='text/javascript' src='".TADTOOLS_URL."/jquery/jquery-1.11.1.min.js'><\/script>\");
-      document.write(\"<script type='text/javascript' src='".TADTOOLS_URL."/jquery/jquery-migrate.min.js'><\/script>\");
-      }
-    </script>
-    $jqueryui_path
-    ";
-
-    return $jquery_path;
-  }
-}
 
 ?>
