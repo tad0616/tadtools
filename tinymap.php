@@ -22,7 +22,7 @@ class tinymap{
 	}
 
 
-  
+
 	//產生路徑工具
 	function render(){
     $jquery=($this->show_jquery)?get_jquery():"";

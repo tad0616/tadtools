@@ -9,10 +9,10 @@ if(!function_exists('get_jquery')){
     global $xoTheme;
     //$xoopsModuleConfig=TadToolsXoopsModuleConfig();
     if($xoTheme){
-      $xoTheme->addScript('modules/tadtools/jquery/jquery-1.11.1.min.js');
+      $xoTheme->addScript('browse.php?Frameworks/jquery/jquery.js');
       $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate.min.js');
       if($ui){
-        $xoTheme->addStylesheet('modules/tadtools/jquery/themes/{$theme}/jquery.ui.all.css');
+        $xoTheme->addStylesheet("modules/tadtools/jquery/themes/{$theme}/jquery.ui.all.css");
         $xoTheme->addScript('modules/tadtools/jquery/ui/jquery-ui.js');
       }
       $xoTheme->addScript('modules/tadtools/jquery/jquery.jgrowl.js');

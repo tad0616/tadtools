@@ -41,6 +41,7 @@ class FCKEditor264{
 
   //產生編輯器
   function render(){
+    global $xoTheme;
     $_SESSION['xoops_mod_name']=$this->xoopsDirName;
 
 
@@ -48,26 +49,37 @@ class FCKEditor264{
     $content = str_replace('&', '&amp;', $this->Value);
     $content=str_replace('[','&#91;',$content);
 
-    $editor="
-    <link rel='stylesheet' type='text/css' href='".TADTOOLS_URL."/ckeditor/mathquill.css' />
-    <script src='".TADTOOLS_URL."/ckeditor/mathquill.js'></script>
-    <script type='text/javascript' src='".TADTOOLS_URL."/ckeditor/ckeditor.js'></script>
-    <textarea name='{$this->ColName}' style='width:{$this->Width};height:{$this->Height};' id='editor_{$this->ColName}' class='ckeditor_css'>{$content}</textarea>
-    <script type='text/javascript'>
-    CKEDITOR.replace('editor_{$this->ColName}' , {
-      skin : 'moono' ,
-      language : '"._LANGCODE."' ,
-      toolbar : '{$this->ToolbarSet}' ,
-      extraPlugins: 'autogrow,syntaxhighlight,summary,oembed,mathedit,jwplayer',
-      filebrowserBrowseUrl : '".TADTOOLS_URL."/elFinder/elfinder.php?type=file',
-      filebrowserImageBrowseUrl : '".TADTOOLS_URL."/elFinder/elfinder.php?type=image',
-      filebrowserFlashBrowseUrl : '".TADTOOLS_URL."/elFinder/elfinder.php?type=flash',
-      filebrowserUploadUrl : '".TADTOOLS_URL."/upload.php?type=file',
-      filebrowserImageUploadUrl : '".TADTOOLS_URL."/upload.php?type=image',
-      filebrowserFlashUploadUrl : '".TADTOOLS_URL."/upload.php?type=flash'
-    } );
-    </script>";
-    return $editor;
+    if($xoTheme){
+      $editor="";
+      $xoTheme->addStylesheet('modules/tadtools/ckeditor/mathquill.css');
+      $xoTheme->addScript('modules/tadtools/ckeditor/mathquill.js');
+      $xoTheme->addScript('modules/tadtools/ckeditor/ckeditor.js');
+    }else{
+      $editor="
+      <link rel='stylesheet' type='text/css' href='".TADTOOLS_URL."/ckeditor/mathquill.css' />
+      <script src='".TADTOOLS_URL."/ckeditor/mathquill.js'></script>
+      <script type='text/javascript' src='".TADTOOLS_URL."/ckeditor/ckeditor.js'></script>";
+    }
+
+    $editor.="
+      <textarea name='{$this->ColName}' style='width:{$this->Width};height:{$this->Height};' id='editor_{$this->ColName}' class='ckeditor_css'>{$content}</textarea>
+
+      <script type='text/javascript'>
+      CKEDITOR.replace('editor_{$this->ColName}' , {
+        skin : 'moono' ,
+        language : '"._LANGCODE."' ,
+        toolbar : '{$this->ToolbarSet}' ,
+        extraPlugins: 'autogrow,syntaxhighlight,summary,oembed,mathedit',
+        filebrowserBrowseUrl : '".TADTOOLS_URL."/elFinder/elfinder.php?type=file',
+        filebrowserImageBrowseUrl : '".TADTOOLS_URL."/elFinder/elfinder.php?type=image',
+        filebrowserFlashBrowseUrl : '".TADTOOLS_URL."/elFinder/elfinder.php?type=flash',
+        filebrowserUploadUrl : '".TADTOOLS_URL."/upload.php?type=file',
+        filebrowserImageUploadUrl : '".TADTOOLS_URL."/upload.php?type=image',
+        filebrowserFlashUploadUrl : '".TADTOOLS_URL."/upload.php?type=flash'
+      } );
+      </script>
+      ";
+      return $editor;
   }
 
 }

@@ -1,5 +1,6 @@
 <?php
 /*
+用來將任何元素，釘在畫面頂端
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/stickytableheaders.php")){
    redirect_header("index.php",3, _MA_NEED_TADTOOLS);
   }
@@ -24,20 +25,31 @@ class stickytableheaders{
 
   //產生語法
   function render($name="",$fixedOffset=""){
+    global $xoTheme;
     $showFixedOffset=empty($fixedOffset)?"":"{fixedOffset:$fixedOffset}";
     $jquery=$this->show_jquery?get_jquery():"";
 
-    $main="
-    {$jquery}
+    if($xoTheme){
+      $xoTheme->addScript('modules/tadtools/StickyTableHeaders/jquery.stickytableheaders.js');
 
-    <script src='".TADTOOLS_URL."/StickyTableHeaders/jquery.stickytableheaders.js'></script>
-    <script type='text/javascript'>
-      $(document).ready(function(){
-        $('{$name}').stickyTableHeaders($showFixedOffset);
-      });
-    </script>
-    ";
-    return $main;
+      $xoTheme->addScript('', null, "
+        \$(document).ready(function(){
+          \$('{$name}').stickyTableHeaders($showFixedOffset);
+        });
+      ");
+    }else{
+      $main="
+      {$jquery}
+
+      <script src='".TADTOOLS_URL."/StickyTableHeaders/jquery.stickytableheaders.js'></script>
+      <script type='text/javascript'>
+        $(document).ready(function(){
+          $('{$name}').stickyTableHeaders($showFixedOffset);
+        });
+      </script>
+      ";
+      return $main;
+    }
   }
 
 }

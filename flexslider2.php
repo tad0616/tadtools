@@ -23,6 +23,8 @@ class slider{
 
   //產生語法
   function render(){
+    global $xoTheme;
+
     $utf8_word_num = $this->word_num * 3;
     if(empty($utf8_word_num))$utf8_word_num=90;
     $jquery=($this->show_jquery)?get_jquery():"";
@@ -48,27 +50,45 @@ class slider{
       $i++;
     }
 
-    $main="
-    <link rel='stylesheet' type='text/css' href='".TADTOOLS_URL."/flexslider2/reset.css' />
-    <link rel='stylesheet' type='text/css' href='".TADTOOLS_URL."/flexslider2/flexslider.css' />
-    $jquery
-    <script language='javascript' type='text/javascript' src='".TADTOOLS_URL."/flexslider2/jquery.flexslider.js'></script>
+    if($xoTheme){
+      $xoTheme->addStylesheet('modules/tadtools/flexslider2/reset.css');
+      $xoTheme->addStylesheet('modules/tadtools/flexslider2/flexslider.css');
+      $xoTheme->addScript('modules/tadtools/flexslider2/jquery.flexslider.js');
+
+      $xoTheme->addScript('', null, "
+        (function(\$){
+          \$(document).ready(function(){
+            \$('.flexslider').flexslider({
+              animation: 'slide'
+            });
+          });
+        })(jQuery);
+      ");
+      $main="";
+    }else{
+      $main="
+      <link rel='stylesheet' type='text/css' href='".TADTOOLS_URL."/flexslider2/reset.css' />
+      <link rel='stylesheet' type='text/css' href='".TADTOOLS_URL."/flexslider2/flexslider.css' />
+      $jquery
+      <script language='javascript' type='text/javascript' src='".TADTOOLS_URL."/flexslider2/jquery.flexslider.js'></script>
 
 
-    <script type='text/javascript'>
-     $(document).ready( function(){
-        $('.flexslider').flexslider({
-          animation: 'slide'
+      <script type='text/javascript'>
+       $(document).ready( function(){
+          $('.flexslider').flexslider({
+            animation: 'slide'
+          });
         });
-      });
-    </script>
+      </script>";
+    }
+
+    $main.="
     <!-- Place somewhere in the <body> of your page -->
     <div class='flexslider'>
       <ul class='slides'>
         $all
       </ul>
     </div>
-
     ";
     return $main;
   }

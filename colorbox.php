@@ -17,7 +17,7 @@ class colorbox{
   var $width;
   var $height;
 
-  //建構函數
+  //
   function colorbox($name=".iframe",$width='80%',$height='90%',$show_jquery=true){
     $this->name=$name;
     $this->width=$width;
@@ -25,23 +25,38 @@ class colorbox{
     $this->show_jquery = $show_jquery;
   }
 
-  //產生語法
+  //
   function render(){
-    $data="";
-    $jquery=$this->show_jquery?get_jquery():"";
+    global $xoTheme;
 
-    $colorbox="
-    <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='".TADTOOLS_URL."/colorbox/colorbox.css' />
-    {$jquery}
-    <script type='text/javascript' src='".TADTOOLS_URL."/colorbox/jquery.colorbox.js'></script>
-    <script>
-      $(document).ready(function(){
-        $('".$this->name."').colorbox({iframe:true, width:'".$this->width."', height:'".$this->height."'});
-      });
-    </script>
+    if($xoTheme){
+      $xoTheme->addStylesheet('modules/tadtools/colorbox/colorbox.css');
+      get_jquery();
+      $xoTheme->addScript('modules/tadtools/colorbox/jquery.colorbox.js');
 
-    ";
-    return $colorbox;
+      $xoTheme->addScript('', null, "
+        (function(\$){
+          \$(document).ready(function(){
+            \$('".$this->name."').colorbox({iframe:true, width:'".$this->width."', height:'".$this->height."'});
+          });
+        })(jQuery);
+      ");
+    }else{
+
+      $jquery=get_jquery();
+      $colorbox="
+      <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='".TADTOOLS_URL."/colorbox/colorbox.css' />
+      {$jquery}
+      <script type='text/javascript' src='".TADTOOLS_URL."/colorbox/jquery.colorbox.js'></script>
+      <script>
+        $(document).ready(function(){
+          $('".$this->name."').colorbox({iframe:true, width:'".$this->width."', height:'".$this->height."'});
+        });
+      </script>
+
+      ";
+      return $colorbox;
+    }
   }
 }
 

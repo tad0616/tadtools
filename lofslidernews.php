@@ -9,13 +9,13 @@ class lofslidernews{
   var $word_num;
   var $item=array();
 
-	//建構函數
-	function lofslidernews($width='725',$height='300',$word_num=60,$show_jquery=true){
+  //建構函數
+  function lofslidernews($width='725',$height='300',$word_num=60,$show_jquery=true){
     $this->width = $width;
     $this->height = $height;
     $this->word_num = $word_num;
     $this->show_jquery = $show_jquery;
-	}
+  }
 
   function add_content($sn="",$title="",$content="",$image="",$date="",$url=""){
     $this->item[$sn]['title']=$title;
@@ -25,8 +25,11 @@ class lofslidernews{
     $this->item[$sn]['url']=$url;
   }
 
-	//產生語法
-	function render(){
+  //產生語法
+  function render(){
+    global $xoTheme;
+
+    $randStr=randStr($len=6);
     $utf8_word_num = $this->word_num * 3;
     if(empty($utf8_word_num))$utf8_word_num=90;
     $jquery=($this->show_jquery)?get_jquery():"";
@@ -59,34 +62,66 @@ class lofslidernews{
       $i++;
     }
 
-    $main="
-    <link rel='stylesheet' type='text/css' href='".TADTOOLS_URL."/lofslidernews/css/reset.css' />
-    <link rel='stylesheet' type='text/css' href='".TADTOOLS_URL."/lofslidernews/css/style.css' />
-    $jquery
-    <script language='javascript' type='text/javascript' src='".TADTOOLS_URL."/lofslidernews/js/jquery.easing.js'></script>
-    <script language='javascript' type='text/javascript' src='".TADTOOLS_URL."/lofslidernews/js/script.js'></script>
+    if($xoTheme){
+      $xoTheme->addStylesheet('modules/tadtools/lofslidernews/css/reset.css');
+      $xoTheme->addStylesheet('modules/tadtools/lofslidernews/css/style.css');
+      $xoTheme->addScript('modules/tadtools/lofslidernews/js/jquery.easing.js');
+      $xoTheme->addScript('modules/tadtools/lofslidernews/js/script.js');
+
+      $xoTheme->addScript('', null, "
+        (function(\$){
+          \$(document).ready(function(){
+            var buttons = { previous:$('#jslidernews_{$randStr} .button-previous') ,
+              next:$('#jslidernews_{$randStr} .button-next') };
+              \$obj = \$('#jslidernews_{$randStr}').lofJSidernews( {
+                interval : 6000,
+                easing      : 'easeInOutQuad',
+                duration    : 1600,
+                auto      : true,
+                maxItemDisplay  : 5,
+                startItem:$i,
+                navPosition     : 'horizontal', // horizontal
+                navigatorHeight : null,
+                navigatorWidth  : null,
+                mainWidth:{$this->width},
+                buttons:buttons} );
+          });
+        })(jQuery);
+      ");
+      $main="";
+    }else{
+
+      $main="
+      <link rel='stylesheet' type='text/css' href='".TADTOOLS_URL."/lofslidernews/css/reset.css' />
+      <link rel='stylesheet' type='text/css' href='".TADTOOLS_URL."/lofslidernews/css/style.css' />
+      $jquery
+      <script language='javascript' type='text/javascript' src='".TADTOOLS_URL."/lofslidernews/js/jquery.easing.js'></script>
+      <script language='javascript' type='text/javascript' src='".TADTOOLS_URL."/lofslidernews/js/script.js'></script>
 
 
-    <script type='text/javascript'>
-     $(document).ready( function(){
-    		var buttons = { previous:$('#tadnews_jslidernews .button-previous') ,
-    						next:$('#tadnews_jslidernews .button-next') };
-    		 \$obj = \$('#tadnews_jslidernews').lofJSidernews( { interval : 6000,
-    											 	easing			: 'easeInOutQuad',
-    												duration		: 1600,
-    												auto		 	: true,
-    												maxItemDisplay  : 5,
-    												startItem:$i,
-    												navPosition     : 'horizontal', // horizontal
-    												navigatorHeight : null,
-    												navigatorWidth  : null,
-													mainWidth:{$this->width},
-    												buttons:buttons} );
-    	});
-    </script>
+      <script type='text/javascript'>
+       $(document).ready( function(){
+          var buttons = { previous:$('#jslidernews_{$randStr} .button-previous') ,
+            next:$('#jslidernews_{$randStr} .button-next') };
+            \$obj = \$('#jslidernews_{$randStr}').lofJSidernews( {
+              interval : 6000,
+              easing      : 'easeInOutQuad',
+              duration    : 1600,
+              auto      : true,
+              maxItemDisplay  : 5,
+              startItem:$i,
+              navPosition     : 'horizontal', // horizontal
+              navigatorHeight : null,
+              navigatorWidth  : null,
+              mainWidth:{$this->width},
+              buttons:buttons} );
+        });
+      </script>
+      ";
+    }
 
-    <!------------------------------------- THE CONTENT ------------------------------------------------->
-    <div id='tadnews_jslidernews' class='lof-slidecontent' style='width:{$this->width}px; height:{$this->height}px;'>
+    $main.="
+    <div id='jslidernews_{$randStr}' class='lof-slidecontent' style='width:{$this->width}px; height:{$this->height}px;'>
       <div class='preload'><div></div></div>
       <div  class='button-previous'>Previous</div>
       <div  class='button-next'>Next</div>
@@ -96,9 +131,9 @@ class lofslidernews{
           $all
           </ul>
         </div>
-     	<!-- END MAIN CONTENT -->
+      <!-- END MAIN CONTENT -->
       <!-- NAVIGATOR -->
-       	<div class='navigator-content'>
+        <div class='navigator-content'>
           <div class='button-control'><span></span></div>
           <div class='navigator-wrapper'>
             <ul class='navigator-wrap-inner'>
@@ -107,11 +142,9 @@ class lofslidernews{
           </div>
          </div>
       <!----------------- END OF NAVIGATOR --------------------->
-     </div>
-     <!------------------------------------- END OF THE CONTENT ------------------------------------------------->
+    </div>
     ";
     return $main;
   }
-
 }
 ?>

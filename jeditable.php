@@ -62,21 +62,36 @@ class jeditable{
 
 	//產生路徑工具
 	function render(){
+    global $xoTheme;
+
     if(is_array($this->cols)){
       $all_col=implode("\n",$this->cols);
     }
     $jquery=($this->show_jquery)?get_jquery():"";
 
-    $main="
-    $jquery
-    <script src='".TADTOOLS_URL."/jeditable/jquery.jeditable.mini.js' type='text/javascript' language='JavaScript'></script>
-    <script type='text/javascript'>
-     $(document).ready(function()
-     {
-       $all_col
-     })
-    </script>";
-    return $main;
+    if($xoTheme){
+      $xoTheme->addScript('modules/tadtools/jeditable/jquery.jeditable.mini.js');
+
+      $xoTheme->addScript('', null, "
+        (function(\$){
+          \$(document).ready(function(){
+            {$all_col}
+          });
+        })(jQuery);
+      ");
+    }else{
+
+      $main="
+      $jquery
+      <script src='".TADTOOLS_URL."/jeditable/jquery.jeditable.mini.js' type='text/javascript' language='JavaScript'></script>
+      <script type='text/javascript'>
+       $(document).ready(function()
+       {
+         $all_col
+       })
+      </script>";
+      return $main;
+    }
   }
 }
 

@@ -58,6 +58,7 @@ class JwPlayer{
 
   //產生播放器
   function render(){
+    global $xoTheme;
     $playlistfile=$playlist_setup="";
 
     if($this->mode=="playlist"){
@@ -100,11 +101,16 @@ class JwPlayer{
     $repeat=empty($this->repeat)?"":"repeat: $this->repeat,";
     $autostart=empty($this->autostart)?"":"autostart: $this->autostart,";
 
-    $player="
-    <script type='text/javascript' src='".TADTOOLS_URL."/jwplayer/jwplayer.js'></script>
+    if($xoTheme){
+      $xoTheme->addScript('modules/tadtools/mediaplayer/jwplayer.js');
+      $player="";
+    }else{
 
+      $player="<script type='text/javascript' src='".TADTOOLS_URL."/jwplayer/jwplayer.js'></script>";
+    }
+
+    $player.="
     <div id='mediaspace{$this->id}'>Loading the player ...</div>
-
     <script type='text/javascript'>
       var screen_width= $('#mediaspace{$this->id}').width();
       var rate_height= screen_width * {$this->height} + {$this->play_list_height} ;
@@ -112,21 +118,32 @@ class JwPlayer{
       var playlist_size=screen_width * 0.25;
 
       jwplayer('mediaspace{$this->id}').setup({
-        width: $screen_width,
-        height: $rate_height,
-        $mode
+        'modes': [
+          { type: 'html5' } ,
+          { type: 'flash', src: '".TADTOOLS_URL."/mediaplayer/player.swf' }
+        ],
         $file
         $playlist_setup
-        $image
-        $repeat
-        $autostart
+        image:'{$this->image}',
+        width: $screen_width,
+        height: $rate_height,
+        skin: '{$this->skin}',
+        $backcolor
+        $frontcolor
+        $lightcolor
+        $screencolor
+        plugins: {
+          viral: { onpause: 'false' ,oncomplete:'false', functions:'embed' },
+          'hd-2': {state : true}
+        },
         $this->other_code
-        stretching: 'uniform'
+        stretching: 'uniform',
+        autostart: 'false'
       });
-    </script>";
-    //die($player);
+    </script>
+    ";
     return $player;
-  }
 
+  }
 }
 ?>

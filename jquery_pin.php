@@ -22,44 +22,36 @@ class jquery_pin{
 
   //產生語法
   function render($name="",$minWidth=940){
+    global $xoTheme;
     if(empty($minWidth))$minWidth=940;
     $jquery=$this->show_jquery?get_jquery():"";
 
-    $main="
-    {$jquery}
-    <script type='text/javascript' src='".TADTOOLS_URL."/jquery.pin/jquery.pin.js}>'></script>
-    <script type='text/javascript'>
-      $(document).ready(function(){
-        $('{$name}').pin({
-          minWidth: {$minWidth}
+    if($xoTheme){
+      $xoTheme->addScript('modules/tadtools/jquery.pin/jquery.pin.js');
+
+      $xoTheme->addScript('', null, "
+        (function(\$){
+          \$(document).ready(function(){
+            \$('{$name}').pin({
+              minWidth: {$minWidth}
+            });
+          });
+        })(jQuery);
+      ");
+    }else{
+      $main="
+      {$jquery}
+      <script type='text/javascript' src='".TADTOOLS_URL."/jquery.pin/jquery.pin.js}>'></script>
+      <script type='text/javascript'>
+        $(document).ready(function(){
+          $('{$name}').pin({
+            minWidth: {$minWidth}
+          });
         });
-      });
-    </script>
-
-
-    <link rel='stylesheet' type='text/css' href='".TADTOOLS_URL."/flexslider2/reset.css' />
-    <link rel='stylesheet' type='text/css' href='".TADTOOLS_URL."/flexslider2/flexslider.css' />
-    $jquery
-    <script language='javascript' type='text/javascript' src='".TADTOOLS_URL."/flexslider2/jquery.flexslider.js'></script>
-
-
-    <script type='text/javascript'>
-     $(document).ready( function(){
-        $('.flexslider').flexslider({
-          animation: 'slide'
-        });
-      });
-    </script>
-    <!-- Place somewhere in the <body> of your page -->
-    <div class='flexslider'>
-      <ul class='slides'>
-        $all
-      </ul>
-    </div>
-
-    ";
-    return $main;
+      </script>
+      ";
+      return $main;
+    }
   }
-
 }
 ?>

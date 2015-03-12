@@ -1,4 +1,5 @@
 <?php
+//給 TadUpFiles.php 用的，讓它可以直接播放影片
 include_once "tadtools_header.php";
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/jwplayer_new.php")){
     redirect_header("index.php",3, _MD_NEED_TADTOOLS);

@@ -16,6 +16,7 @@ CKEDITOR.editorConfig = function( config ) {
       { name: 'bar2', items : [ 'Format','FontSize','TextColor','BGColor','Bold','Italic','Underline','Strike'] },
       { name: 'bar2_1', items : [ 'JustifyLeft','JustifyCenter','JustifyRight','Outdent','Indent'] }
     ];
+
     CKEDITOR.config.autoGrow_maxHeight = 500;
     CKEDITOR.config.entities = false;
     CKEDITOR.config.htmlEncodeOutput = false;

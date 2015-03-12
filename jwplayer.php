@@ -62,6 +62,7 @@ class JwPlayer{
 
   //產生播放器
   function render(){
+    global $xoTheme;
     $playlistfile=$playlist_setup="";
     if($this->mode=="playlist"){
       $file="
@@ -94,11 +95,17 @@ class JwPlayer{
     $screen_width=empty($this->width)?"screen_width":"'{$this->width}'";
     $rate_height=substr($this->height,-1)=="%"?"'{$this->height}'":"rate_height";
 
-    $player="
-    <script type='text/javascript' src='".TADTOOLS_URL."/mediaplayer/jwplayer.js'></script>
+    if($xoTheme){
+      $xoTheme->addScript('modules/tadtools/mediaplayer/jwplayer.js');
 
+      $player="";
+    }else{
+
+      $player="<script type='text/javascript' src='".TADTOOLS_URL."/mediaplayer/jwplayer.js'></script>";
+    }
+
+    $player.="
     <div id='mediaspace{$this->id}'>Loading the player ...</div>
-
     <script type='text/javascript'>
       var screen_width= $('#mediaspace{$this->id}').width();
       var rate_height= screen_width * {$this->height} + {$this->play_list_height} ;
@@ -128,10 +135,10 @@ class JwPlayer{
         stretching: 'uniform',
         autostart: 'false'
       });
-    </script>";
-    //die($player);
+    </script>
+    ";
+
     return $player;
   }
-
 }
 ?>

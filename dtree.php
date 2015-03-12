@@ -28,6 +28,17 @@ class dtree{
 
   //產生選單
   function render($fontsize="12px",$open=false,$useLines=true){
+    global $xoTheme;
+
+    if($xoTheme){
+      $dtree="";
+      $xoTheme->addStylesheet('modules/tadtools/dtree/dtree.css');
+      $xoTheme->addScript('modules/tadtools/dtree/dtree.js');
+    }else{
+      $dtree="
+      <link rel='StyleSheet' href='".TADTOOLS_URL."/dtree/dtree.css' type='text/css' />
+      <script type='text/javascript' src='".TADTOOLS_URL."/dtree/dtree.js'></script>";
+    }
 
     if(empty($this->home)){
       $opt="{$this->name}.add(0,-1,'','javascript: void(0);');\n";
@@ -43,8 +54,6 @@ class dtree{
       $opt.="{$this->name}.add($ncsn , {$this->cate_opt[$ncsn]} , '{$title}' , '{$this->url_opt[$ncsn]}', null, null, null, null, '$open');\n";
     }
 
-    $dtree="<link rel='StyleSheet' href='".TADTOOLS_URL."/dtree/dtree.css' type='text/css' />
-    <script type='text/javascript' src='".TADTOOLS_URL."/dtree/dtree.js'></script>";
 
     $dtree.="
     <style>

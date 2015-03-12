@@ -1,4 +1,5 @@
 <?php
+//此檔案是給 ck.php 用的，勿刪
 include_once "../../mainfile.php";
 include_once "upload/class.upload.php";
 $mdir=$_SESSION['xoops_mod_name'];

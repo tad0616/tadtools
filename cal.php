@@ -3,15 +3,21 @@ include_once "tadtools_header.php";
 
 class My97DatePicker{
 
-	//«Øºc¨ç¼Æ
+	//å»ºæ§‹å‡½æ•¸
 	function My97DatePicker(){
 	
 	}
 
-	//²£¥Í¤ë¾ä
+	//ç”¢ç”Ÿæœˆæ›†
 	function render(){
-		$cal="<script type='text/javascript' src='".TADTOOLS_URL."/My97DatePicker/WdatePicker.php'></script>";
-    return $cal;
+    global $xoTheme;
+
+    if($xoTheme){
+      $xoTheme->addScript('modules/tadtools/My97DatePicker/WdatePicker.php');
+    }else{
+  		$cal="<script type='text/javascript' src='".TADTOOLS_URL."/My97DatePicker/WdatePicker.php'></script>";
+      return $cal;
+    }
   }
 }
 ?>

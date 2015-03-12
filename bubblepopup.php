@@ -17,20 +17,17 @@ class bubblepopup{
   //新增提示
   function add_tip($id="",$content="",$position="top",$align="left",$theme='all-black',$style="color:'#FFFFFF'"){
     $this->code[]="
-     $('{$id}').CreateBubblePopup({
-        position : '{$position}',
-        align  : '{$align}',
-        innerHtml: '{$content}',
-        innerHtmlStyle: {{$style}},
-        themeName:  '{$theme}',
-        themePath:  '".TADTOOLS_URL."/jQueryBubblePopup/jquerybubblepopup-theme'
+      \$('{$id}').qtip({
+        content:'$content'
       });
     ";
   }
 
 
+
   //產生路徑工具
   function render(){
+    global $xoTheme;
     $jquery=($this->show_jquery)?get_jquery(true):"";
 
     $all_code=implode("\n",$this->code);
@@ -39,40 +36,33 @@ class bubblepopup{
       return $all_code;
     }
 
-    $main="
-    $jquery
-    <link href='".TADTOOLS_URL."/jQueryBubblePopup/jquery.bubblepopup.v2.3.1.css' rel='stylesheet' type='text/css' />
-    <script src='".TADTOOLS_URL."/jQueryBubblePopup/jquery.bubblepopup.v2.3.1.min.js' type='text/javascript'></script>
+    if($xoTheme){
+      $xoTheme->addStylesheet('modules/tadtools/jquery.qtip/jquery.qtip.css');
+      $xoTheme->addScript('modules/tadtools/jquery.qtip/jquery.qtip.js');
+      $xoTheme->addScript('modules/tadtools/jquery.qtip/imagesloaded.pkg.min.js');
 
-    <script type='text/javascript'>
-    $(document).ready(function()  {
-      $all_code
-    });
+      $xoTheme->addScript('', null,"
+        (function(\$){
+          \$(document).ready(function(){
+            {$all_code}
+          });
+        })(jQuery);
+      ");
+    }else{
+      $main="
+      $jquery
+      <link href='".TADTOOLS_URL."/jquery.qtip/jquery.qtip.css' rel='stylesheet' type='text/css' />
+      <script src='".TADTOOLS_URL."/jquery.qtip/jquery.qtip.js' type='text/javascript'></script>
+      <script src='".TADTOOLS_URL."/jquery.qtip/imagesloaded.pkg.min.js' type='text/javascript'></script>
 
-    </script>";
+      <script type='text/javascript'>
+       $all_code
+      </script>";
 
-
-    return $main;
+      return $main;
+    }
   }
 
-  //產生
-  function render2($all_code=""){
-    $jquery=($this->show_jquery)?get_jquery(true):"";
 
-    $main="
-    $jquery
-    <link href='".TADTOOLS_URL."/jQueryBubblePopup/jquery.bubblepopup.v2.3.1.css' rel='stylesheet' type='text/css' />
-    <script src='".TADTOOLS_URL."/jQueryBubblePopup/jquery.bubblepopup.v2.3.1.min.js' type='text/javascript'></script>
-
-    <script type='text/javascript'>
-    $(document).ready(function()  {
-      $all_code
-    });
-
-    </script>";
-
-
-    return $main;
-  }
 }
 ?>

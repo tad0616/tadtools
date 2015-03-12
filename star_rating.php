@@ -147,6 +147,7 @@ class rating{
 
 	//產生路徑工具
 	function render($show_all=true){
+    global $xoTheme;
     $jquery=get_jquery();
 
     $all_code=implode("\n",$this->code);
@@ -155,19 +156,31 @@ class rating{
       return $all_code;
     }
 
-    $main="
-    $jquery
-    <script src='".TADTOOLS_URL."/jquery.raty/js/jquery.raty.js' type='text/javascript'></script>
+    if($xoTheme){
+      $xoTheme->addScript('modules/tadtools/jquery.raty/js/jquery.raty.js');
 
-    <script type='text/javascript'>
-    $(document).ready(function()  {
-      $all_code
-    });
+      $xoTheme->addScript('', null, "
+        (function(\$){
+          \$(document).ready(function(){
+            $all_code
+          });
+        })(jQuery);
+      ");
+    }else{
+      $main="
+      $jquery
+      <script src='".TADTOOLS_URL."/jquery.raty/js/jquery.raty.js' type='text/javascript'></script>
 
-  	</script>";
+      <script type='text/javascript'>
+      $(document).ready(function()  {
+        $all_code
+      });
+
+    	</script>";
 
 
-    return $main;
+      return $main;
+    }
   }
 
 }
