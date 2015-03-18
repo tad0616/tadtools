@@ -45,8 +45,8 @@ if(!function_exists('get_jquery')){
       </script>
       $jqueryui_path
       ";
+      return $jquery_path;
     }
-    return $jquery_path;
   }
 }
 
