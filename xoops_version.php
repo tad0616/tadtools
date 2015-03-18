@@ -4,7 +4,7 @@ $modversion = array();
 
 //---模組基本資訊---//
 $modversion['name'] = _MI_TADTOOLS_NAME;
-$modversion['version']	= '2.63';
+$modversion['version']	= '2.65';
 $modversion['description'] = _MI_TADTOOLS_DESC;
 $modversion['author'] = 'Tad (tad0616@gmail.com)';
 $modversion['credits']	= "Tad (http://tad0616.net)";
@@ -57,8 +57,12 @@ $modversion['onUninstall'] = "include/onUninstall.php";
 
 
 //---樣板設定---//
-$modversion['templates'][1]['file'] = 'tadtools_adm_index_tpl.html';
-$modversion['templates'][1]['description'] = 'tadtools_adm_index_tpl.html';
+$i=1;
+$modversion['templates'][$i]['file'] = 'tadtools_adm_index_tpl.html';
+$modversion['templates'][$i]['description'] = 'tadtools_adm_index_tpl.html';
+$i++;
+$modversion['templates'][$i]['file'] = 'tadtools_adm_index_tpl_b3.html';
+$modversion['templates'][$i]['description'] = 'tadtools_adm_index_tpl_b3.html';
 
 //---偏好設定---//
 $i=1;
@@ -123,5 +127,12 @@ $modversion['config'][$i]['formtype'] = 'select';
 $modversion['config'][$i]['valuetype'] = 'text';
 $modversion['config'][$i]['default'] = 'syntaxhighlighter';
 $modversion['config'][$i]['options'] = array('syntaxhighlighter 2'=>'syntaxhighlighter_2' , 'syntaxhighlighter 3'=>'syntaxhighlighter');
+
+$i++;
+$modversion['blocks'][$i]['file'] = 'tadtools_qrcode.php';
+$modversion['blocks'][$i]['name'] = _MI_TADTOOLS_QRCODE_BLOCK_NAME;
+$modversion['blocks'][$i]['description']  = _MI_TADTOOLS_QRCODE_BLOCK_DESC;
+$modversion['blocks'][$i]['show_func']  = 'tadtools_qrcode';
+$modversion['blocks'][$i]['template'] = 'tadtools_qrcode.html';
 
 ?>

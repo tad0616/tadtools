@@ -1,28 +1,9 @@
 <?php
 include_once "tadtools_header.php";
 include_once "jquery.php";
-get_bootstrap_version();
+get_bootstrap();
 
 
-//找出目前狀態
-function get_bootstrap_version(){
-  global $xoopsConfig,$xoopsDB;
-  $theme_set = $xoopsConfig['theme_set'];
-
-  $sql="select tt_bootstrap_color from `".$xoopsDB->prefix("tadtools_setup")."` where tt_theme='{$theme_set}'";
-  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-  list($tt_bootstrap_color)=$xoopsDB->fetchRow($result);
-  if(strpos($tt_bootstrap_color, 'bootstrap3')!==false){
-    $_SESSION[$theme_set]['bootstrap_version']='bootstrap3';
-    $_SESSION['bootstrap']='3';
-    return 'bootstrap3';
-  }else{
-    $_SESSION[$theme_set]['bootstrap_version']='bootstrap';
-    $_SESSION['bootstrap']='2';
-    return 'bootstrap';
-  }
-
-}
 
 //解決 basename 抓不到中文檔名的問題
 if(!function_exists('get_basename')){
@@ -34,39 +15,52 @@ if(!function_exists('get_basename')){
 }
 
 //載入 bootstrap
-if(!function_exists('get_bootstrap')){
-  function get_bootstrap(){
-    global $xoopsConfig,$xoopsDB;
-    $sql="select `tt_use_bootstrap`,`tt_bootstrap_color`,`tt_theme_kind` from `".$xoopsDB->prefix("tadtools_setup")."`  where `tt_theme`='{$xoopsConfig['theme_set']}'";
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-    list($tt_use_bootstrap,$tt_bootstrap_color,$tt_theme_kind)=$xoopsDB->fetchRow($result);
+function get_bootstrap(){
+  global $xoopsConfig,$xoopsDB,$xoTheme;
+  $theme_set=$xoopsConfig['theme_set'];
 
-    $main='';
-    if($tt_use_bootstrap==1){
-      if($tt_bootstrap_color=="bootstrap3"){
-        $main='
-        <link rel="stylesheet" type="text/css" media="screen" href="'.XOOPS_URL.'/modules/tadtools/bootstrap3/css/bootstrap.css" />';
-      }elseif($tt_bootstrap_color=="bootstrap"){
-        $main='
-        <link rel="stylesheet" type="text/css" media="screen" href="'.XOOPS_URL.'/modules/tadtools/bootstrap/css/bootstrap.css" />
-        <link rel="stylesheet" type="text/css" media="screen" href="'.XOOPS_URL.'/modules/tadtools/bootstrap/css/bootstrap-responsive.css" />';
-      }else{
-        $c=explode('/',$tt_bootstrap_color);
-        if($c[0]=="bootstrap3"){
-         $main='<link rel="stylesheet" type="text/css" media="screen" href="'.XOOPS_URL.'/modules/tadtools/'.$tt_bootstrap_color.'/bootstrap.min.css" />';
-        }elseif($c[0]=="bootstrap"){
-          $main='
-          <link rel="stylesheet" type="text/css" media="screen" href="'.XOOPS_URL.'/modules/tadtools/bootstrap/css/bootstrap.css" />
-          <link rel="stylesheet" type="text/css" media="screen" href="'.XOOPS_URL.'/modules/tadtools/bootstrap/css/bootstrap-responsive.css" />
-          <link rel="stylesheet" type="text/css" media="screen" href="'.XOOPS_URL.'/modules/tadtools/'.$tt_bootstrap_color.'/bootstrap.min.css" />';
-        }
+  $sql="select `tt_use_bootstrap`,`tt_bootstrap_color`,`tt_theme_kind` from `".$xoopsDB->prefix("tadtools_setup")."`  where `tt_theme`='{$theme_set}'";
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  list($tt_use_bootstrap,$tt_bootstrap_color,$tt_theme_kind)=$xoopsDB->fetchRow($result);
 
-      }
-      $main.='<link rel="stylesheet" type="text/css" media="screen" href="'.XOOPS_URL.'/modules/tadtools/css/fix-bootstrap.css" />';
-    }
-    return $main;
+  $_SESSION['theme_kind']=$tt_theme_kind;
+  if(strpos($tt_bootstrap_color, 'bootstrap3')!==false){
+    $_SESSION[$theme_set]['bootstrap_version']='bootstrap3';
+    $_SESSION['bootstrap']='3';
+    $bootstrap='bootstrap3';
+  }else{
+    $_SESSION[$theme_set]['bootstrap_version']='bootstrap';
+    $_SESSION['bootstrap']='2';
+    $bootstrap='bootstrap';
   }
+
+  if($xoTheme){
+    if($tt_bootstrap_color=="bootstrap3"){
+      $xoTheme->addStylesheet(XOOPS_URL.'/modules/tadtools/bootstrap3/css/bootstrap.css');
+      //if($tpl)$tpl=str_replace(".html", "{$b3}.html", $tpl);
+    }elseif($tt_bootstrap_color=="bootstrap"){
+      $xoTheme->addStylesheet(XOOPS_URL.'/modules/tadtools/bootstrap/css/bootstrap.css');
+      $xoTheme->addStylesheet(XOOPS_URL.'/modules/tadtools/bootstrap/css/bootstrap-responsive.css');
+    }else{
+      $c=explode('/',$tt_bootstrap_color);
+      if($c[0]=="bootstrap3"){
+        //$xoTheme->addStylesheet(XOOPS_URL.'/modules/tadtools/bootstrap3/css/bootstrap.css');
+        $xoTheme->addStylesheet(XOOPS_URL.'/modules/tadtools/'.$tt_bootstrap_color.'/bootstrap.min.css');
+        //if($tpl)$tpl=str_replace(".html", "{$b3}.html", $tpl);
+      }elseif($c[0]=="bootstrap"){
+        $xoTheme->addStylesheet(XOOPS_URL.'/modules/tadtools/bootstrap/css/bootstrap.css');
+        $xoTheme->addStylesheet(XOOPS_URL.'/modules/tadtools/bootstrap/css/bootstrap-responsive.css');
+        $xoTheme->addStylesheet(XOOPS_URL.'/modules/tadtools/'.$tt_bootstrap_color.'/bootstrap.min.css');
+      }
+
+    }
+    $xoTheme->addStylesheet(XOOPS_URL.'/modules/tadtools/css/fix-bootstrap.css');
+  }
+  return $bootstrap;
 }
+
+
+
 
 //自動取得網址
 if(!function_exists('get_xoops_url')){

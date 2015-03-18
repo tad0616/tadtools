@@ -42,26 +42,36 @@ class CKEditor{
   //產生編輯器
   function render(){
     global $xoTheme;
-    $_SESSION['xoops_mod_name']=$this->xoopsDirName;
 
+    include_once XOOPS_ROOT_PATH."/modules/tadtools/mobile_device_detect.php";
+    $mobile=mobile_device_detect(true,false,true,true,true,true,true,false,false);
 
-    // before being fed to the textarea of CKEditor
-    $content = str_replace('&', '&amp;', $this->Value);
-    $content=str_replace('[','&#91;',$content);
-
-    if($xoTheme){
-      $editor="";
-      $xoTheme->addStylesheet('modules/tadtools/ckeditor/mathquill.css');
-      $xoTheme->addScript('modules/tadtools/ckeditor/mathquill.js');
-      $xoTheme->addScript('modules/tadtools/ckeditor/ckeditor.js');
+    if($mobile){
+      include_once XOOPS_ROOT_PATH."/modules/tadtools/summernote.php";
+      $summernote=new summernote($this->ColName,$this->Value);
+      $editor=$summernote->render();
     }else{
-      $editor="
-      <link rel='stylesheet' type='text/css' href='".TADTOOLS_URL."/ckeditor/mathquill.css' />
-      <script src='".TADTOOLS_URL."/ckeditor/mathquill.js'></script>
-      <script type='text/javascript' src='".TADTOOLS_URL."/ckeditor/ckeditor.js'></script>";
-    }
 
-    $editor.="
+      $_SESSION['xoops_mod_name']=$this->xoopsDirName;
+
+
+      // before being fed to the textarea of CKEditor
+      $content = str_replace('&', '&amp;', $this->Value);
+      $content=str_replace('[','&#91;',$content);
+
+      if($xoTheme){
+        $editor="";
+        $xoTheme->addStylesheet('modules/tadtools/ckeditor/mathquill.css');
+        $xoTheme->addScript('modules/tadtools/ckeditor/mathquill.js');
+        $xoTheme->addScript('modules/tadtools/ckeditor/ckeditor.js');
+      }else{
+        $editor="
+        <link rel='stylesheet' type='text/css' href='".TADTOOLS_URL."/ckeditor/mathquill.css' />
+        <script src='".TADTOOLS_URL."/ckeditor/mathquill.js'></script>
+        <script type='text/javascript' src='".TADTOOLS_URL."/ckeditor/ckeditor.js'></script>";
+      }
+
+      $editor.="
       <textarea name='{$this->ColName}' style='width:{$this->Width};height:{$this->Height};' id='editor_{$this->ColName}' class='ckeditor_css'>{$content}</textarea>
 
       <script type='text/javascript'>
@@ -79,7 +89,8 @@ class CKEditor{
       } );
       </script>
       ";
-      return $editor;
+    }
+    return $editor;
   }
 
 }

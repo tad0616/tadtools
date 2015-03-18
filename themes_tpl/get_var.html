@@ -44,6 +44,10 @@ foreach($config_enable as $k=>$v){
 $default['auto_mainmenu']='1';
 $default['show_sitename']='1';
 
+$sql="select `tt_bootstrap_color` from ".$xoopsDB->prefix("tadtools_setup")." where `tt_theme`='{$xoopsConfig['theme_set']}'";
+$result = $xoopsDB->query($sql);
+list($theme_color)=$xoopsDB->fetchRow($result);
+
 //模擬Tad Themes的設定值
 $default['theme_id']='0';
 $default['theme_kind']=$theme_kind;

@@ -1,0 +1,66 @@
+<?php
+include_once "tadtools_header.php";
+
+class summernote{
+  var $ColName;
+  var $Value;
+  var $Height=300;
+
+  //建構函數
+  function summernote($ColName="",$Value=""){
+    $this->ColName=$ColName;
+    $this->Value=$Value;
+  }
+
+
+  //設定自定義設高度
+  function setHeight($Height=""){
+    $this->Height=$Height;
+  }
+
+
+  //產生編輯器
+  function render(){
+    global $xoTheme;
+    $editor="";
+    if($xoTheme){
+      $xoTheme->addStylesheet('modules/tadtools/summernote/summernote.css');
+      $xoTheme->addScript('modules/tadtools/summernote/summernote.min.js');
+      $xoTheme->addScript('modules/tadtools/summernote/summernote-"._LANGCODE.".js');
+      $xoTheme->addScript('', null, "
+        (function(\$){
+          \$(document).ready(function(){
+            \$('#editor_{$this->ColName}').summernote({
+              height: '{$this->Height}' ,
+              lang: '"._LANGCODE."'
+            });
+          });
+        })(jQuery);
+      ");
+
+    }else{
+      $editor="
+      <link href='".TADTOOLS_URL."/summernote/summernote.css' rel='stylesheet'>
+      <script src='".TADTOOLS_URL."/summernote/summernote.min.js'></script>
+      <script src='".TADTOOLS_URL."/summernote/summernote-"._LANGCODE.".js'></script>
+      <script>
+      $(document).ready(function() {
+        $('#editor_{$this->ColName}').summernote({
+          height: '{$this->Height}' ,
+          lang: '"._LANGCODE."'
+        });
+      });
+      </script>
+      ";
+    }
+
+
+    $content = str_replace('&', '&amp;', $this->Value);
+    $content=str_replace('[','&#91;',$content);
+    $editor.="<textarea name='{$this->ColName}' id='editor_{$this->ColName}'>{$content}</textarea>";
+
+    return $editor;
+  }
+
+}
+?>

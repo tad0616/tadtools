@@ -36,4 +36,9 @@ define("_MI_TADTOOLS_DESC6","請選擇想要的高亮度語法佈景");
 
 define("_MI_TADTOOLS_TITLE7","選擇 SyntaxHighlighter 版本");
 define("_MI_TADTOOLS_DESC7","SyntaxHighlighter2 適用程式碼常會換行的情況，SyntaxHighlighter3則是可以直接選取複製");
+
+define('_MI_TADTOOLS_QRCODE_BLOCK_NAME' , 'QR Code 區塊');
+define('_MI_TADTOOLS_QRCODE_BLOCK_DESC' , 'QR Code 區塊區塊 (tadtools_qrcode)');
+
+
 ?>

@@ -9,7 +9,7 @@
 
 
 <!-- Bootstrap3 -->
-<{if $theme_color}>
+<{if $theme_color and $theme_color!="bootstrap3"}>
   <link href="<{$xoops_url}>/modules/tadtools/<{$theme_color}>/bootstrap.min.css" rel="stylesheet" media="screen">
 <{else}>
   <link href="<{xoAppUrl modules/tadtools/bootstrap3/css/bootstrap.css}>" rel="stylesheet" media="screen">

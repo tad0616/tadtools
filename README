@@ -5,7 +5,12 @@
  3.bubblepopup 改用qtip2取代之，以支援新版的 jquery
  4.修改 bubblepopup.php、ckcal.php、ck.php、dtree.php、elrte.php、fancybox.php、fck.php、flexslider2.php、FooTable.php、formValidator.php、jBreadCrumb.php、jeditable.php、jquery.php、jquery_pin.php、jwplayer.php、jwplayer_new.php、lofslidernews.php、star_rating.php、stickytableheaders.php、sweet_alert.php、syntaxhighlighter.php、treetable.php 將裡頭的 CSS 及 JavaScript 引入方式，改為XOOPS標準引入方式，可有效減少語法，避免程式互相衝突。
  5.刪除 TinyNav、jquery.form、jquery.qrcode、ztree 等無用套件
-
+ 6.新增 QR Code 區塊，可用在所有頁面。
+ 7.新增 summernote 編輯器（for 行動裝置）
+ 8.CKeditor 現在會自動判斷是否為行動裝置，若是，則自動切換為 Summernote 編輯器（CKeditor 目前無法在行動裝置下使用）
+ 9.將後台佈景設定界面，使每個佈景都可以套用不同BootStrap顏色
+ 10.刪除 bsie 套件
+ 11.tadtools完成bootstrap3界面
 
 
 

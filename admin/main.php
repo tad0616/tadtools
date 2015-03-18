@@ -1,15 +1,8 @@
 <?php
-//  ------------------------------------------------------------------------ //
-// 本模組由 tad 製作
-// 製作日期：2010-11-16
-// $Id: $
-// ------------------------------------------------------------------------- //
-
 /*-----------引入檔案區--------------*/
-include "../../../include/cp_header.php";
+$xoopsOption['template_main']="tadtools_adm_index_tpl.html" ;
+include_once "header.php";
 include_once "../tad_function.php";
-$xoopsOption['template_main'] = "tadtools_adm_index_tpl.html";
-xoops_cp_header();
 
 /*-----------function區--------------*/
 function tadtools_setup(){
@@ -23,7 +16,7 @@ function tadtools_setup(){
   while(list($tt_theme,$tt_use_bootstrap,$tt_bootstrap_color,$tt_theme_kind)=$xoopsDB->fetchRow($result)){
     $use_bootstrap[$tt_theme]=$tt_use_bootstrap;
     $bootstrap_color[$tt_theme]=$tt_bootstrap_color;
-    $tt_theme_kind[$tt_theme]=$tt_theme_kind;
+    //$tt_theme_kind[$tt_theme]=$tt_theme_kind;
   }
 
   $version=_MA_TT_VERSION.$xoopsModule->getVar("version");
@@ -42,13 +35,12 @@ function tadtools_setup(){
       if(!empty($theme_kind)){
         if(!isset($use_bootstrap[$theme])){
           $sql = "replace into `".$xoopsDB->prefix("tadtools_setup")."` (`tt_theme` , `tt_use_bootstrap`,`tt_bootstrap_color` , `tt_theme_kind`) values('{$theme}', '0', '{$theme_kind}', '{$theme_kind}')";
-
           $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error()."<hr>".$sql);
         }
         $themes[$i]['theme_kind']=$theme_kind;
         $themes[$i]['use_bootstrap']='0';
         $themes[$i]['tad_theme']='1';
-        $themes[$i]['bootstrap_theme']=$bootstrap_color[$theme];
+        $themes[$i]['bootstrap_theme']=mk_bootstrap_menu($theme_kind);;
       }else{
         $themes[$i]['theme_kind']="html";
         $themes[$i]['use_bootstrap']=$use_bootstrap[$theme]===""?1:$use_bootstrap[$theme];
@@ -183,8 +175,7 @@ switch($op){
 
 
 /*-----------秀出結果區--------------*/
-admin_toolbar(0);
 
-xoops_cp_footer();
-
+$xoTheme->addStylesheet(XOOPS_URL.'/modules/tadtools/css/xoops_adm.css');
+include_once 'footer.php';
 ?>

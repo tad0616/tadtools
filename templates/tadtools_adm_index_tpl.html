@@ -1,55 +1,45 @@
-<!--TadNews Start-->
-<link rel="stylesheet" type="text/css" media="screen" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap.css" />
-<link rel="stylesheet" type="text/css" media="screen" href="<{$xoops_url}>/modules/tadtools/bootstrap/css/bootstrap-responsive.css" />
-<link rel="stylesheet" type="text/css" media="screen" href="<{$xoops_url}>/modules/tadtools/css/xoops_adm.css" />
-
-<div class="row-fluid">
-  <h2><{$version}></h2>
-  <form action="main.php" method="post">
-    <table class="table">
+<h2><{$version}></h2>
+<form action="main.php" method="post">
+  <table class="table">
+  <tr>
+    <th><{$smarty.const._MA_TT_THEMES}></th>
+    <th><{$smarty.const._MA_TT_THEMES_KIND}></th>
+    <th><{$smarty.const._MA_TT_NEED_BOOTSTRAP}></th>
+    <th><{$smarty.const._MA_TT_BOOTSTRAP_COLOR}></th>
+  </tr>
+  <{foreach item=theme from=$themes}>
     <tr>
-      <th><{$smarty.const._MA_TT_THEMES}></th>
-      <th><{$smarty.const._MA_TT_THEMES_KIND}></th>
-      <th><{$smarty.const._MA_TT_NEED_BOOTSTRAP}></th>
-      <th><{$smarty.const._MA_TT_BOOTSTRAP_COLOR}></th>
+      <td <{$theme.color}>>
+        <{$theme.theme_name}>
+      </td>
+      <td <{$theme.color}>>
+        <{$theme.theme_kind}>
+          <input type="hidden" name="tt_theme_kind[<{$theme.theme_name}>]" value="<{$theme.theme_kind}>">
+      </td>
+      <td <{$theme.color}>>
+        <{if $theme.tad_theme==1}>
+          <{$smarty.const._MA_TT_TAD_THEMES}>
+          <input type="hidden" name="tt_use_bootstrap[<{$theme.theme_name}>]" value="0">
+        <{else}>
+          <select name="tt_use_bootstrap[<{$theme.theme_name}>]" class="span2">
+            <option value="" <{if $theme.use_bootstrap==""}>selected<{/if}>><{$smarty.const._MA_TT_EMPTY_CONFIG}></option>
+            <option value="1" <{if $theme.use_bootstrap=="1"}>selected<{/if}>><{$smarty.const._YES}></option>
+            <option value="0" <{if $theme.use_bootstrap=="0"}>selected<{/if}>><{$smarty.const._NO}></option>
+          </select>
+        <{/if}>
+      </td>
+      <td <{$theme.color}>>
+          <select name="tt_bootstrap_color[<{$theme.theme_name}>]" class="span4">
+            <{foreach from=$theme.bootstrap_theme item=color}>
+              <option value="<{$color.theme_path}>" <{if $theme.bootstrap_color==$color.theme}>selected<{/if}>><{$color.theme}> (<{if $color.kind}><{$color.kind}>-<{/if}><{$color.color}>)</option>
+            <{/foreach}>
+          </select>
+      </td>
     </tr>
-    <{foreach item=theme from=$themes}>
-      <tr>
-        <td <{$theme.color}> class="span3">
-          <{$theme.theme_name}>
-        </td>
-        <td <{$theme.color}> class="span2">
-          <{$theme.theme_kind}>
-            <input type="hidden" name="tt_theme_kind[<{$theme.theme_name}>]" value="<{$theme.theme_kind}>">
-        </td>
-        <td <{$theme.color}> class="span3">
-          <{if $theme.tad_theme==1}>
-            <{$smarty.const._MA_TT_TAD_THEMES}>
-            <input type="hidden" name="tt_use_bootstrap[<{$theme.theme_name}>]" value="0">
-          <{else}>
-            <select name="tt_use_bootstrap[<{$theme.theme_name}>]" class="span6">
-              <option value="" <{if $theme.use_bootstrap==""}>selected<{/if}>><{$smarty.const._MA_TT_EMPTY_CONFIG}></option>
-              <option value="1" <{if $theme.use_bootstrap=="1"}>selected<{/if}>><{$smarty.const._YES}></option>
-              <option value="0" <{if $theme.use_bootstrap=="0"}>selected<{/if}>><{$smarty.const._NO}></option>
-            </select>
-          <{/if}>
-        </td>
-        <td <{$theme.color}> class="span4">
-          <{if $theme.tad_theme==0}>
-            <select name="tt_bootstrap_color[<{$theme.theme_name}>]" class="span6">
-              <{foreach from=$theme.bootstrap_theme item=color}>
-                <option value="<{$color.theme_path}>" <{if $theme.bootstrap_color==$color.theme}>selected<{/if}>><{$color.theme}> (<{if $color.kind}><{$color.kind}>-<{/if}><{$color.color}>)</option>
-              <{/foreach}>
-            </select>
-          <{else}>
-            <{$theme.bootstrap_theme}>
-            <input type="hidden" name="tt_bootstrap_color[<{$theme.theme_name}>]" value="<{$theme.bootstrap_theme}>">
-          <{/if}>
-        </td>
-      </tr>
-    <{/foreach}>
-    </table>
+  <{/foreach}>
+  </table>
+  <p class="text-center">
     <input type="hidden" name="op" value="save">
-    <input type="submit" value="<{$smarty.const._MA_TT_SAVE}>">
-  </form>
-</div>
+    <button type="submit" class="btn btn-primary"><{$smarty.const._MA_TT_SAVE}></button>
+  </p>
+</form>
