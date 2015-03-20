@@ -36,31 +36,7 @@ class lofslidernews{
 
     $all=$nav="";
     $i=1;
-    foreach($this->item as $sn => $item_content){
-      //避免截掉半個中文字
-      $title=xoops_substr(strip_tags($item_content['title']), 0, 45);
-      $content=xoops_substr(strip_tags($item_content['content']), 0, $utf8_word_num);
 
-      $pi=($i%2)?"1":"2";
-      $image=empty($item_content['image'])?TADTOOLS_URL."/lofslidernews/images/demo{$pi}.jpg":$item_content['image'];
-
-      $all.="
-        <li>
-            <div style='background:#000000 url($image) no-repeat scroll center top; width:{$this->width}px; height:{$this->height}px;'>
-              <a href='{$item_content['url']}'><img src='".TADTOOLS_URL."/lofslidernews/images/blank.gif' title='{$item_content['title']}' alt='{$item_content['title']}' style='width:{$this->width}px; height:{$this->height}px;'></a>
-            </div>
-            <div class='slider-description'>
-              <div class='slider-meta'><a target='_parent' title='{$item_content['title']}' href='{$item_content['url']}'>{$title}</a></div>
-              <div class='slider-content'>$content
-              <a class='readmore' href='{$item_content['url']}'>more...</a>
-              </div>
-           </div>
-        </li>
-      ";
-
-      $nav.="<li><span>{$i}</span></li>";
-      $i++;
-    }
 
     if($xoTheme){
       $xoTheme->addStylesheet('modules/tadtools/lofslidernews/css/reset.css');
@@ -118,6 +94,33 @@ class lofslidernews{
         });
       </script>
       ";
+    }
+
+
+    foreach($this->item as $sn => $item_content){
+      //避免截掉半個中文字
+      $title=xoops_substr(strip_tags($item_content['title']), 0, 45);
+      $content=xoops_substr(strip_tags($item_content['content']), 0, $utf8_word_num);
+
+      $pi=($i%2)?"1":"2";
+      $image=empty($item_content['image'])?TADTOOLS_URL."/lofslidernews/images/demo{$pi}.jpg":$item_content['image'];
+
+      $all.="
+        <li>
+            <div style='background:#000000 url($image) no-repeat scroll center top; width:{$this->width}px; height:{$this->height}px;'>
+              <a href='{$item_content['url']}'><img src='".TADTOOLS_URL."/lofslidernews/images/blank.gif' title='{$item_content['title']}' alt='{$item_content['title']}' style='width:{$this->width}px; height:{$this->height}px;'></a>
+            </div>
+            <div class='slider-description'>
+              <div class='slider-meta'><a target='_parent' title='{$item_content['title']}' href='{$item_content['url']}'>{$title}</a></div>
+              <div class='slider-content'>$content
+              <a class='readmore' href='{$item_content['url']}'>more...</a>
+              </div>
+           </div>
+        </li>
+      ";
+
+      $nav.="<li><span>{$i}</span></li>";
+      $i++;
     }
 
     $main.="

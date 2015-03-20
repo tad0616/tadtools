@@ -1,6 +1,7 @@
 <?php
 include_once "tadtools_header.php";
 include_once "jquery.php";
+include_once "include/beforeheader.php";
 get_bootstrap();
 
 
@@ -16,7 +17,7 @@ if(!function_exists('get_basename')){
 
 //載入 bootstrap
 function get_bootstrap(){
-  global $xoopsConfig,$xoopsDB,$xoTheme;
+  global $xoopsConfig,$xoopsDB,$xoTheme,$xoopsTpl;
   $theme_set=$xoopsConfig['theme_set'];
 
   $sql="select `tt_use_bootstrap`,`tt_bootstrap_color`,`tt_theme_kind` from `".$xoopsDB->prefix("tadtools_setup")."`  where `tt_theme`='{$theme_set}'";
@@ -27,26 +28,27 @@ function get_bootstrap(){
   if(strpos($tt_bootstrap_color, 'bootstrap3')!==false){
     $_SESSION[$theme_set]['bootstrap_version']='bootstrap3';
     $_SESSION['bootstrap']='3';
-    $bootstrap='bootstrap3';
   }else{
     $_SESSION[$theme_set]['bootstrap_version']='bootstrap';
     $_SESSION['bootstrap']='2';
-    $bootstrap='bootstrap';
   }
 
-  if($xoTheme){
+  if($xoopsTpl){
+    $xoopsTpl->assign( "bootstrap_version" , $_SESSION['bootstrap']) ;
+  }
+
+  $in_admin=(strpos($_SERVER['PHP_SELF'],"/admin/")!==false)?true:false;
+
+  if($xoTheme and ($tt_use_bootstrap or $in_admin)){
     if($tt_bootstrap_color=="bootstrap3"){
       $xoTheme->addStylesheet(XOOPS_URL.'/modules/tadtools/bootstrap3/css/bootstrap.css');
-      //if($tpl)$tpl=str_replace(".html", "{$b3}.html", $tpl);
     }elseif($tt_bootstrap_color=="bootstrap"){
       $xoTheme->addStylesheet(XOOPS_URL.'/modules/tadtools/bootstrap/css/bootstrap.css');
       $xoTheme->addStylesheet(XOOPS_URL.'/modules/tadtools/bootstrap/css/bootstrap-responsive.css');
     }else{
       $c=explode('/',$tt_bootstrap_color);
       if($c[0]=="bootstrap3"){
-        //$xoTheme->addStylesheet(XOOPS_URL.'/modules/tadtools/bootstrap3/css/bootstrap.css');
         $xoTheme->addStylesheet(XOOPS_URL.'/modules/tadtools/'.$tt_bootstrap_color.'/bootstrap.min.css');
-        //if($tpl)$tpl=str_replace(".html", "{$b3}.html", $tpl);
       }elseif($c[0]=="bootstrap"){
         $xoTheme->addStylesheet(XOOPS_URL.'/modules/tadtools/bootstrap/css/bootstrap.css');
         $xoTheme->addStylesheet(XOOPS_URL.'/modules/tadtools/bootstrap/css/bootstrap-responsive.css');
@@ -55,8 +57,11 @@ function get_bootstrap(){
 
     }
     $xoTheme->addStylesheet(XOOPS_URL.'/modules/tadtools/css/fix-bootstrap.css');
+    if($in_admin){
+      $xoTheme->addStylesheet(XOOPS_URL.'/modules/tadtools/css/xoops_adm.css');
+    }
   }
-  return $bootstrap;
+  //return $bootstrap;
 }
 
 

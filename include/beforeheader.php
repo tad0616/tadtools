@@ -1,9 +1,10 @@
 <?php
 //自動判斷該載入哪個樣板檔
-function set_bootstrap($b3="_b3"){
+function set_bootstrap($tpl="",$b3="_b3"){
   global $xoopsConfig,$xoopsDB,$xoTheme,$xoopsOption,$xoopsModule;
 
-  $tpl=$xoopsOption['template_main'];
+  $tpl=empty($tpl)?$xoopsOption['template_main']:$tpl;
+
   $new_tpl=str_replace(".html", "{$b3}.html", $tpl);
   if(file_exists(XOOPS_ROOT_PATH.'/modules/'.$xoopsModule->getVar("dirname") .'/templates/'.$new_tpl)){
     $sql="select `tt_use_bootstrap`,`tt_bootstrap_color`,`tt_theme_kind` from `".$xoopsDB->prefix("tadtools_setup")."`  where `tt_theme`='{$xoopsConfig['theme_set']}'";

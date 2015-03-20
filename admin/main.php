@@ -175,7 +175,6 @@ switch($op){
 
 
 /*-----------秀出結果區--------------*/
-
 $xoTheme->addStylesheet(XOOPS_URL.'/modules/tadtools/css/xoops_adm.css');
 include_once 'footer.php';
 ?>

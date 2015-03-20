@@ -28,10 +28,10 @@ class colorbox{
   //
   function render(){
     global $xoTheme;
+    $jquery=get_jquery();
 
     if($xoTheme){
       $xoTheme->addStylesheet('modules/tadtools/colorbox/colorbox.css');
-      get_jquery();
       $xoTheme->addScript('modules/tadtools/colorbox/jquery.colorbox.js');
 
       $xoTheme->addScript('', null, "
@@ -42,8 +42,6 @@ class colorbox{
         })(jQuery);
       ");
     }else{
-
-      $jquery=get_jquery();
       $colorbox="
       <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='".TADTOOLS_URL."/colorbox/colorbox.css' />
       {$jquery}
