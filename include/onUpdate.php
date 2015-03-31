@@ -13,6 +13,7 @@ function xoops_module_update_tadtools(&$module, $old_version) {
     if(chk_chk3()) go_update3();
     if(chk_chk4()) go_update4();
     if(chk_chk5()) go_update5();
+    go_update6();
     /*
 
     $old_fckeditor=XOOPS_ROOT_PATH."/modules/tadtools/fckeditor";
@@ -131,6 +132,14 @@ function go_update5(){
   $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL."/modules/system/admin.php?fct=modulesadmin",30,  mysql_error());
   return true;
 }
+
+function go_update6(){
+  global $xoopsDB;
+  $sql="update ".$xoopsDB->prefix("tadtools_setup")." set `tt_bootstrap_color`='bootstrap' where `tt_bootstrap_color`=''";
+  $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL."/modules/system/admin.php?fct=modulesadmin",30,  mysql_error());
+  return true;
+}
+
 
 //«Ø¥ß¥Ø¿ý
 function mk_dir($dir=""){

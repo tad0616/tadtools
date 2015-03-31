@@ -94,12 +94,12 @@ function mk_bootstrap_menu($theme_kind=""){
 function mk_bootstrap_menu_options($theme_kind="",$mode="light"){
   if(empty($theme_kind))$theme_kind="bootstrap";
   $dir=XOOPS_ROOT_PATH."/modules/tadtools/{$theme_kind}/themes/{$mode}/";
+  $theme_array[$theme_kind]['kind']=$theme_kind;
+  $theme_array[$theme_kind]['theme_path']="{$theme_kind}";
+  $theme_array[$theme_kind]['theme']=$theme_kind;
+  $theme_array[$theme_kind]['color']=_TT_COLOR_DEFAULT;
   if (is_dir($dir)) {
     if ($dh = opendir($dir)) {
-      $theme_array[$theme_kind]['kind']=$theme_kind;
-      $theme_array[$theme_kind]['theme_path']="{$theme_kind}";
-      $theme_array[$theme_kind]['theme']=$theme_kind;
-      $theme_array[$theme_kind]['color']=_TT_COLOR_DEFAULT;
       while (($file = readdir($dh)) !== false) {
         if($file=='.' or $file=='..' or filetype($dir . $file)!='dir')continue;
         $theme_array[$file]['kind']=$theme_kind;

@@ -61,7 +61,6 @@ function get_bootstrap(){
       $xoTheme->addStylesheet(XOOPS_URL.'/modules/tadtools/css/xoops_adm.css');
     }
   }
-  //return $bootstrap;
 }
 
 

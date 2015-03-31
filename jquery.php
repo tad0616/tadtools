@@ -7,7 +7,6 @@ include_once "tadtools_header.php";
 if(!function_exists('get_jquery')){
   function get_jquery($ui=false,$mode="local",$theme='base'){
     global $xoTheme;
-    //$xoopsModuleConfig=TadToolsXoopsModuleConfig();
     if($xoTheme){
       $xoTheme->addScript('browse.php?Frameworks/jquery/jquery.js');
       $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate.min.js');
@@ -16,17 +15,7 @@ if(!function_exists('get_jquery')){
         $xoTheme->addScript('modules/tadtools/jquery/ui/jquery-ui.js');
       }
       $xoTheme->addScript('modules/tadtools/jquery/jquery.jgrowl.js');
-      /*
-      $xoTheme->addScript('', null, '
-        (function($){
-            $(document).ready(function(){
-                $.jGrowl("'.$_SESSION['redirect_message'].'", {position:"center"});
-            });
-        })(jQuery);
-      ');
-      */
     }else{
-
       $jqueryui_path="";
       if($ui){
 
