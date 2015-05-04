@@ -17,7 +17,7 @@ class colorbox{
   var $width;
   var $height;
 
-  //
+  //$width='auto' ,,$height='auto'
   function colorbox($name=".iframe",$width='80%',$height='90%',$show_jquery=true){
     $this->name=$name;
     $this->width=$width;
@@ -29,6 +29,9 @@ class colorbox{
   function render(){
     global $xoTheme;
     $jquery=get_jquery();
+    $width_setup=($width=="auto")?"":", width:'".$this->width."'";
+    $height_setup=($height=="auto")?"":", height:'".$this->height."'";
+
 
     if($xoTheme){
       $xoTheme->addStylesheet('modules/tadtools/colorbox/colorbox.css');
@@ -37,7 +40,7 @@ class colorbox{
       $xoTheme->addScript('', null, "
         (function(\$){
           \$(document).ready(function(){
-            \$('".$this->name."').colorbox({iframe:true, width:'".$this->width."', height:'".$this->height."'});
+            \$('".$this->name."').colorbox({iframe:true {width_setup} {$height_setup}});
           });
         })(jQuery);
       ");
@@ -48,7 +51,7 @@ class colorbox{
       <script type='text/javascript' src='".TADTOOLS_URL."/colorbox/jquery.colorbox.js'></script>
       <script>
         $(document).ready(function(){
-          $('".$this->name."').colorbox({iframe:true, width:'".$this->width."', height:'".$this->height."'});
+          $('".$this->name."').colorbox({iframe:true {width_setup} {$height_setup}});
         });
       </script>
 

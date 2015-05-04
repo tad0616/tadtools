@@ -2802,12 +2802,13 @@ fieldset[disabled] .btn {
           box-shadow: none;
   opacity: .65;
 }
-.btn-default {
+.btn-default, {
   color: #333;
   background-color: #fff;
   border-color: #ccc;
 }
 .btn-default:hover,
+.btn-default:link,
 .btn-default:focus,
 .btn-default.focus,
 .btn-default:active,
@@ -2853,6 +2854,7 @@ fieldset[disabled] .btn-default.active {
   border-color: #2e6da4;
 }
 .btn-primary:hover,
+.btn-primary:link,
 .btn-primary:focus,
 .btn-primary.focus,
 .btn-primary:active,
@@ -2898,6 +2900,7 @@ fieldset[disabled] .btn-primary.active {
   border-color: #4cae4c;
 }
 .btn-success:hover,
+.btn-success:link,
 .btn-success:focus,
 .btn-success.focus,
 .btn-success:active,
@@ -2943,6 +2946,7 @@ fieldset[disabled] .btn-success.active {
   border-color: #46b8da;
 }
 .btn-info:hover,
+.btn-info:link,
 .btn-info:focus,
 .btn-info.focus,
 .btn-info:active,
@@ -2988,6 +2992,7 @@ fieldset[disabled] .btn-info.active {
   border-color: #eea236;
 }
 .btn-warning:hover,
+.btn-warning:link,
 .btn-warning:focus,
 .btn-warning.focus,
 .btn-warning:active,
@@ -3033,6 +3038,7 @@ fieldset[disabled] .btn-warning.active {
   border-color: #d43f3a;
 }
 .btn-danger:hover,
+.btn-danger:link,
 .btn-danger:focus,
 .btn-danger.focus,
 .btn-danger:active,
@@ -3088,6 +3094,7 @@ fieldset[disabled] .btn-link {
 }
 .btn-link,
 .btn-link:hover,
+.btn-link:link,
 .btn-link:focus,
 .btn-link:active {
   border-color: transparent;

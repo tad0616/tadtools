@@ -79,8 +79,8 @@ function del_table(mssn){
 轉換為
 
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/sweet_alert.php")){
-  redirect_header("index.php",3, _MA_NEED_TADTOOLS);
-}
+   redirect_header("index.php",3, _MA_NEED_TADTOOLS);
+  }
 include_once XOOPS_ROOT_PATH."/modules/tadtools/sweet_alert.php";
 $sweet_alert=new sweet_alert();
 $sweet_alert_code=$sweet_alert->render("del_table","ajax_mk_tbl.php?op=del&modsn=$modsn&mssn=",'mssn');

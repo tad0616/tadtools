@@ -21,26 +21,15 @@ $use_default_config=false;
 
 /****取得Tad Tools偏好設定****/
 $TadtoolsModule = &$modhandler->getByDirname("tadtools");
-if($TadtoolsModule){
-  $Tadtoolsmid=($TadtoolsModule)?$TadtoolsModule->getVar('mid'):0;
+$Tadtoolsmid=($TadtoolsModule)?$TadtoolsModule->getVar('mid'):0;
 
-  $config_handler =& xoops_gethandler('config');
-  $tadToolsConfig =& $config_handler->getConfigsByCat(0, $Tadtoolsmid);
+$config_handler =& xoops_gethandler('config');
+$tadToolsConfig =& $config_handler->getConfigsByCat(0, $Tadtoolsmid);
 
-  $this->assign('use_pin',$tadToolsConfig['use_pin']);
-}
+$this->assign('openid_login',$tadToolsConfig['openid_login']);
+$this->assign('openid_logo',$tadToolsConfig['openid_logo']);
+$this->assign('use_pin',$tadToolsConfig['use_pin']);
 
-/****取得Tad login偏好設定****/
-$TadLoginModule = &$modhandler->getByDirname("tad_login");
-if($TadLoginModule){
-  $TadLoginmid=($TadLoginModule)?$TadLoginModule->getVar('mid'):0;
-
-  $config_handler =& xoops_gethandler('config');
-  $TadLoginConfig =& $config_handler->getConfigsByCat(0, $TadLoginmid);
-
-  $this->assign('openid_login',$TadLoginConfig['openid_login']);
-  $this->assign('openid_logo',$TadLoginConfig['openid_logo']);
-}
 
 /****檔案預設值****/
 

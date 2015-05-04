@@ -1,4 +1,58 @@
+《TadTools 2.66 版 2015-03-23釋出》
+====================================
+ 1.修改後台初始設定，在部份情況下無法選擇「套用BootStrap顏色」選項的問題。
+
+
+
+《TadTools 2.65 版 2015-03-21釋出》
+====================================
+ 1.新增 mColorPicker.php 顏色挑選器
+ 2.引入 jquery.jgrowl.js 1.4.2 取代官方舊版本使之可用於 jquery 1.9.x
+ 3.bubblepopup 改用qtip2取代之，以支援新版的 jquery
+ 4.修改 bubblepopup.php、ckcal.php、ck.php、dtree.php、elrte.php、fancybox.php、fck.php、flexslider2.php、FooTable.php、formValidator.php、jBreadCrumb.php、jeditable.php、jquery.php、jquery_pin.php、jwplayer.php、jwplayer_new.php、lofslidernews.php、star_rating.php、stickytableheaders.php、sweet_alert.php、syntaxhighlighter.php、treetable.php 將裡頭的 CSS 及 JavaScript 引入方式，改為XOOPS標準引入方式，可有效減少語法，避免程式互相衝突。
+ 5.刪除 TinyNav、jquery.form、jquery.qrcode、ztree 等無用套件
+ 6.新增 QR Code 區塊，可用在所有頁面。
+ 7.新增 summernote 編輯器（for 行動裝置）
+ 8.CKeditor 現在會自動判斷是否為行動裝置，若是，則自動切換為 Summernote 編輯器（CKeditor 目前無法在行動裝置下使用）
+ 9.將後台佈景設定界面，使每個佈景都可以套用不同BootStrap顏色
+ 10.刪除 bsie 套件
+ 11.tadtools完成bootstrap3界面
+
+
+
+《TadTools 2.64 版 2015-02-25 釋出》
+====================================
+ 1.font-awesome更新為 4.3.0
+ 2.修正$TadUpFiles無法下載的問題
+
+
+《TadTools 2.63 版 2015-01-22 釋出》
+====================================
+ 1.更新 social-likes 套件為 3.0.7
+ 2.加入 BootStrap3
+ 3.針對 BootStrap3 新增theme3_tpl共同樣板
+ 4.新增 smartmenus-0.9.7以解決 BootStrap3 下拉選單僅兩層的問題
+ 5.修正 facebook留言框寬度無法 100% 的問題
+ 6.將 darkstrap 搬移至\bootstrap\themes\dark\darkstrap
+ 7.新增 BootStrap3 許多佈景
+ 8.font-awesome更新為 4.2.0
+ 9.移除 Buttons 及 iCheck
+ 10.新增 sweet-alert 功能
+
+
+《TadTools 2.62 版 2014-11-11 釋出》
+====================================
+ 1.加入 syntaxhighlighter 2.1.382
+ 2.加入 syntaxhighlighter 的版本選偏好設定
+ 3.新增 sweet-alert 套件
+ 4.修正 cssmenu 共同樣板，使之可套用後台導覽列顏色設定
+ 5.修正樹狀目錄圖示消失的問題
+ 6.新增 nav-pills 選單共同樣板
+
+
+
 《TadTools 2.61 版 2014-10-24 釋出》
+====================================
  1.修正 lofslidernews.php 使之符合無障礙規範
  2.修正 dtree 使之符合無障礙規範
  3.新增 phpWord 合併儲存格功能

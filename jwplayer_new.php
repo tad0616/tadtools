@@ -102,7 +102,7 @@ class JwPlayer{
     $autostart=empty($this->autostart)?"":"autostart: $this->autostart,";
 
     if($xoTheme){
-      $xoTheme->addScript('modules/tadtools/mediaplayer/jwplayer.js');
+      $xoTheme->addScript('modules/tadtools/jwplayer/jwplayer.js');
       $player="";
     }else{
 
@@ -120,7 +120,7 @@ class JwPlayer{
       jwplayer('mediaspace{$this->id}').setup({
         'modes': [
           { type: 'html5' } ,
-          { type: 'flash', src: '".TADTOOLS_URL."/mediaplayer/player.swf' }
+          { type: 'flash', src: '".TADTOOLS_URL."/jwplayer/player.swf' }
         ],
         $file
         $playlist_setup

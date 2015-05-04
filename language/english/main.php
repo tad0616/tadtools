@@ -67,4 +67,8 @@ define("_TAD_TF_USER_NEWMSG","You got %s message.");
 define("_TAD_TF_USER_MSG","Message");
 define("_TAD_TF_USER_EXIT","Logout");
 define("_TAD_TF_USER_LOGIN","Login");
+
+define("_TAD_CENTER_ZONE","Center Zone");
+define("_TAD_LEFT_ZONE","Left Zone");
+define("_TAD_RIGHT_ZONE","Right Zone");
 ?>

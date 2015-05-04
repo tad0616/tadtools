@@ -199,16 +199,17 @@ if(!function_exists('facebook_comments')){
     if(empty($facebook_comments_width))return;
     $url=(empty($page) and empty($col_name) and empty($col_sn))?"http://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}":XOOPS_URL."/modules/{$modules}/{$page}?{$col_name}={$col_sn}";
 
+
     $main="
     <div id='fb-root'></div>
     <script>(function(d, s, id) {
       var js, fjs = d.getElementsByTagName(s)[0];
       if (d.getElementById(id)) return;
       js = d.createElement(s); js.id = id;
-      js.src = '//connect.facebook.net/zh_TW/all.js#xfbml=1&appId=199288920104939';
+      js.src = '//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.3&appId=199288920104939';
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));</script>
-    <div class='fb-comments' data-href='{$url}' data-num-posts='10' data-width='100%'></div>
+    <div class='fb-comments' data-href='{$url}' data-width='100%' data-numposts='10' data-colorscheme='light' data-order-by='reverse_time'></div>
     ";
 
     return $main;

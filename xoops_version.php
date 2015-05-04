@@ -4,7 +4,7 @@ $modversion = array();
 
 //---模組基本資訊---//
 $modversion['name'] = _MI_TADTOOLS_NAME;
-$modversion['version']	= '2.67';
+$modversion['version']	= '2.66';
 $modversion['description'] = _MI_TADTOOLS_DESC;
 $modversion['author'] = 'Tad (tad0616@gmail.com)';
 $modversion['credits']	= "Tad (http://tad0616.net)";
@@ -16,7 +16,7 @@ $modversion['dirname'] = basename(dirname(__FILE__));
 
 
 //---模組狀態資訊---//
-$modversion['release_date'] = '2015/03/30';
+$modversion['release_date'] = '2015/03/23';
 $modversion['module_website_url'] = 'http://tad0616.net/';
 $modversion['module_website_name'] = _MI_TAD_WEB;
 $modversion['module_status'] = 'release';
@@ -66,6 +66,34 @@ $modversion['templates'][$i]['description'] = 'tadtools_adm_index_tpl_b3.html';
 
 //---偏好設定---//
 $i=1;
+$modversion['config'][$i]['name'] = 'jquery_mode';
+$modversion['config'][$i]['title'] = '_MI_TADTOOLS_TITLE1';
+$modversion['config'][$i]['description'] = '_MI_TADTOOLS_DESC1';
+$modversion['config'][$i]['formtype'] = 'select';
+$modversion['config'][$i]['valuetype'] = 'text';
+$modversion['config'][$i]['default'] = 'local';
+$modversion['config'][$i]['options'] = array(_MI_TADTOOLS_TITLE1_OPT1=>'google' , _MI_TADTOOLS_TITLE1_OPT2=>'local' , _MI_TADTOOLS_TITLE1_OPT3=>'none');
+
+$i++;
+$modversion['config'][$i]['name'] = 'openid_login';
+$modversion['config'][$i]['title'] = '_MI_TADTOOLS_TITLE2';
+$modversion['config'][$i]['description'] = '_MI_TADTOOLS_DESC2';
+$modversion['config'][$i]['formtype'] = 'select';
+$modversion['config'][$i]['valuetype'] = 'int';
+$modversion['config'][$i]['default'] = '1';
+$modversion['config'][$i]['options'] = array(_MI_TADTOOLS_TITLE2_OPT0=>'0' , _MI_TADTOOLS_TITLE2_OPT1=>'1' , _MI_TADTOOLS_TITLE2_OPT2=>'2' , _MI_TADTOOLS_TITLE2_OPT3=>'3');
+
+$i++;
+$modversion['config'][$i]['name'] = 'openid_logo';
+$modversion['config'][$i]['title'] = '_MI_TADTOOLS_TITLE3';
+$modversion['config'][$i]['description'] = '_MI_TADTOOLS_DESC3';
+$modversion['config'][$i]['formtype'] = 'select';
+$modversion['config'][$i]['valuetype'] = 'int';
+$modversion['config'][$i]['default'] = '1';
+$modversion['config'][$i]['options'] = array(1=>'1' , 2=>'2' , 3=>'3' , 4=>'4' , 5=>'5' , 6=>'6');
+
+
+$i++;
 $modversion['config'][$i]['name'] = 'use_pin';
 $modversion['config'][$i]['title'] = '_MI_TADTOOLS_TITLE4';
 $modversion['config'][$i]['description'] = '_MI_TADTOOLS_DESC4';

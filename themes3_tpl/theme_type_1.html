@@ -3,6 +3,7 @@
   <{if $xoBlocks.canvas_left or $xoBlocks.canvas_right}>
 
     <div id="xoops_theme_left_zone" class="<{if $theme_kind!="html"}>col-md-<{/if}><{$lb_width}>" style="<{if $theme_kind=="html"}>float:left;<{/if}>background-color:<{$lb_color}>;">
+      <a accesskey="L" href="#xoops_theme_left_zone_key" title="<{$smarty.const._TAD_LEFT_ZONE}>" id="xoops_theme_left_zone_key" style="color: transparent; font-size: 10px;">:::</a>
 
       <div id="xoops_theme_left" style="<{$leftBlocks}>">
         <{if $xoBlocks.canvas_left}>
