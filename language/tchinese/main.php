@@ -71,6 +71,7 @@ define("_TAD_TF_USER_MSG","信件");
 define("_TAD_TF_USER_EXIT","登出");
 define("_TAD_TF_USER_LOGIN","登入");
 
+define("_TAD_ZAV_ZONE","上方導覽工具列");
 define("_TAD_CENTER_ZONE","中間區域（包含中間區塊及主內容）");
 define("_TAD_LEFT_ZONE","左邊區域（視佈景版型不同可能包含左右兩側之區塊）");
 define("_TAD_RIGHT_ZONE","右邊區域（視佈景版型不同可能包含左右兩側之區塊）");

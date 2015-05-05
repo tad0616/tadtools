@@ -18,10 +18,28 @@ if(!function_exists('toolbar')){
   //$interface_menu[工具列名稱]="網址";
   //$interface_logo[工具列名稱]="圖檔名稱";（圖檔一律放到模組的images下）
   function toolbar($interface_menu=array(),$interface_logo=array(),$id="id='menu'",$li="",$moduleName=""){
+    global $xoopsUser,$xoopsModule;
+
+    if($xoopsModule){
+      $module_id = $xoopsModule->mid();
+      $mod_name=$xoopsModule->name();
+      $moduleName=$xoopsModule->dirname();
+    }else{
+      $mod_name=$moduleName="";
+    }
+
+    if ($xoopsUser) {
+      $isAdmin=$xoopsUser->isAdmin($module_id);
+    }else{
+      $isAdmin=false;
+    }
+
     if(empty($interface_menu))return;
+    make_menu_json($interface_menu,$moduleName);
     $td="";
 
     if(is_array($interface_menu)){
+
       $basename=basename($_SERVER['SCRIPT_NAME']);
 
       if(sizeof($interface_menu)==1 and substr($_SERVER['REQUEST_URI'],-9)=="index.php")return;
@@ -86,16 +104,24 @@ if(!function_exists('toolbar_bootstrap')){
   function toolbar_bootstrap($interface_menu=array()){
     global $xoopsUser,$xoopsModule;
 
+    if($xoopsModule){
+      $module_id = $xoopsModule->mid();
+      $mod_name=$xoopsModule->name();
+      $moduleName=$xoopsModule->dirname();
+    }else{
+      $mod_name=$moduleName="";
+    }
+
     if ($xoopsUser) {
-      $module_id = $xoopsModule->getVar('mid');
       $isAdmin=$xoopsUser->isAdmin($module_id);
-      $mod_name=$xoopsModule->getVar('name');
     }else{
       $isAdmin=false;
-      $mod_name="";
     }
 
     if(empty($interface_menu))return;
+
+    make_menu_json($interface_menu,$moduleName);
+
     $jquery=get_jquery();
 
     $row=($_SESSION['bootstrap']=='3')? 'row':'row-fluid';
@@ -179,5 +205,11 @@ if(!function_exists('toolbar_bootstrap')){
   }
 }
 
-
+if(!function_exists('make_menu_json')){
+  function make_menu_json($interface_menu=array(),$moduleName=""){
+    $json=json_encode($interface_menu);
+    $filename=XOOPS_ROOT_PATH."/uploads/menu_{$moduleName}.txt";
+    file_put_contents($filename, $json);
+  }
+}
 ?>

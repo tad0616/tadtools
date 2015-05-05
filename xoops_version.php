@@ -4,7 +4,7 @@ $modversion = array();
 
 //---模組基本資訊---//
 $modversion['name'] = _MI_TADTOOLS_NAME;
-$modversion['version']	= '2.66';
+$modversion['version']	= '2.67';
 $modversion['description'] = _MI_TADTOOLS_DESC;
 $modversion['author'] = 'Tad (tad0616@gmail.com)';
 $modversion['credits']	= "Tad (http://tad0616.net)";
@@ -16,7 +16,7 @@ $modversion['dirname'] = basename(dirname(__FILE__));
 
 
 //---模組狀態資訊---//
-$modversion['release_date'] = '2015/03/23';
+$modversion['release_date'] = '2015/05/05';
 $modversion['module_website_url'] = 'http://tad0616.net/';
 $modversion['module_website_name'] = _MI_TAD_WEB;
 $modversion['module_status'] = 'release';
