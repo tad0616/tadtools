@@ -26,36 +26,43 @@ class colorbox{
   }
 
   //
-  function render(){
+  function render($ready_config=true){
     global $xoTheme;
     $jquery=get_jquery();
-    $width_setup=($width=="auto")?"":", width:'".$this->width."'";
-    $height_setup=($height=="auto")?"":", height:'".$this->height."'";
+    $width_setup=($this->width=="auto")?"":", width:'".$this->width."'";
+    $height_setup=($this->height=="auto")?"":", height:'".$this->height."'";
 
 
     if($xoTheme){
       $xoTheme->addStylesheet('modules/tadtools/colorbox/colorbox.css');
       $xoTheme->addScript('modules/tadtools/colorbox/jquery.colorbox.js');
 
-      $xoTheme->addScript('', null, "
-        (function(\$){
-          \$(document).ready(function(){
-            \$('".$this->name."').colorbox({iframe:true {width_setup} {$height_setup}});
-          });
-        })(jQuery);
-      ");
+      if($ready_config){
+        $xoTheme->addScript('', null, "
+          (function(\$){
+            \$(document).ready(function(){
+              \$('".$this->name."').colorbox({iframe:true {$width_setup} {$height_setup}});
+            });
+          })(jQuery);
+        ");
+      }
     }else{
       $colorbox="
       <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='".TADTOOLS_URL."/colorbox/colorbox.css' />
       {$jquery}
       <script type='text/javascript' src='".TADTOOLS_URL."/colorbox/jquery.colorbox.js'></script>
-      <script>
-        $(document).ready(function(){
-          $('".$this->name."').colorbox({iframe:true {width_setup} {$height_setup}});
-        });
-      </script>
-
       ";
+
+
+      if($ready_config){
+        $colorbox.="
+        <script>
+          $(document).ready(function(){
+            $('".$this->name."').colorbox({iframe:true {$width_setup} {$height_setup}});
+          });
+        </script>
+        ";
+      }
       return $colorbox;
     }
   }

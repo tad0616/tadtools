@@ -1,12 +1,13 @@
 <{if $openid_login!="3"}>
-  <ul class="dropdown-menu">
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 
     <{if $openid_login=="0" or $openid_login=="1"}>
       <li>
         <form action="<{$xoops_url}>/user.php" method="post" class="form-horizontal" role="form">
-            <h3>
+          <fieldset style="min-width: 200px; margin: 10px;">
+            <legend>
               <{$smarty.const.TF_USER_ENTER}>
-            </h3>
+            </legend>
             <div class="form-group">
               <label class="col-md-4 control-label">
                 <{$smarty.const.TF_USER_S_ID}>
@@ -26,13 +27,16 @@
             </div>
 
             <div class="form-group">
-              <div class="col-md-12">
+              <label class="col-md-4 control-label">
+              </label>
+              <div class="col-md-8">
                 <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>" />
                 <input type="hidden" name="rememberme" value="On" />
                 <input type="hidden" name="op" value="login" />
-                <button type="submit" class="btn btn-primary"><{$smarty.const.TF_USER_ENTER}></button>
+                <button type="submit" class="btn btn-primary btn-block"><{$smarty.const.TF_USER_ENTER}></button>
               </div>
             </div>
+          </fieldset>
         </form>
       </li>
 

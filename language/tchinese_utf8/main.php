@@ -30,6 +30,7 @@ define("_TAD_SAVE","儲存");
 define("_TAD_RESET","重設");
 define("_TAD_CANCEL","取消");
 define("_TAD_SUBMIT","送出");
+define("_TAD_PERMISSION_DENIED","您沒有執行此功能的權限。");
 
 define("_TAD_INPUT_FORM","輸入表單");
 

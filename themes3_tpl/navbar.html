@@ -66,9 +66,9 @@
         <{if $xoops_isuser}>
           <{if $xoops_isadmin}>
             <{if $xoops_dirname=="" || $xoops_dirname=="system"}>
-              <li><a rel="tooltip" href="<{$xoops_url}>/admin.php" title="<{$smarty.const.TF_MODULE_CONFIG}>"><span class="fa fa-th-large" style="color:white;"></span></a></li>
+              <li><a rel="tooltip" href="<{$xoops_url}>/admin.php" title="<{$smarty.const.TF_MODULE_CONFIG}>"><span class="fa fa-th-large"></span></a></li>
             <{else}>
-              <li><a rel="tooltip" href="<{$xoops_url}>/modules/<{$xoops_dirname}>/admin/index.php" title="<{$smarty.const.TF_MODULE_CONFIG}>"><span class="fa fa-th-large" style="color:white;"></span></a></li>
+              <li><a rel="tooltip" href="<{$xoops_url}>/modules/<{$xoops_dirname}>/admin/index.php" title="<{$smarty.const.TF_MODULE_CONFIG}>"><span class="fa fa-th-large"></span></a></li>
             <{/if}>
           <{/if}>
 

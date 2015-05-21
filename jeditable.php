@@ -29,7 +29,7 @@ class jeditable{
   }
 
   //設定大量文字欄位 $submitdata="{'sn':$the_sn}
-  function setTextAreaCol($selector,$file,$width='100%',$height='12px',$submitdata="",$tooltip=""){
+  function setTextAreaCol($selector,$file,$width='100%',$height='50px',$submitdata="",$tooltip=""){
     $submitdata_set=(empty($submitdata))?"":"submitdata:$submitdata,";
     $this->cols[]="
     $('$selector').editable('$file', {
