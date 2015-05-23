@@ -12,14 +12,14 @@ CREATE TABLE `xx_tad_player_rank` (
   `uid` smallint(5) unsigned NOT NULL,
   `rank_date` datetime NOT NULL,
   PRIMARY KEY (`col_name`,`col_sn`,`uid`)
-	)
+    )
 
 //票選
   include_once XOOPS_ROOT_PATH."/modules/tadtools/star_rating.php";
   $rating=new rating("tad_player","10",'','simple');
   $rating->add_rating("psn",$get_psn);
-	$all['star_rating']=$rating->render();
-	$all['star_rating'].="<div id='rating_psn_{$get_psn}'></div>";
+    $all['star_rating']=$rating->render();
+    $all['star_rating'].="<div id='rating_psn_{$get_psn}'></div>";
 
 //顯示
   include_once XOOPS_ROOT_PATH."/modules/tadtools/star_rating.php";
@@ -29,14 +29,12 @@ CREATE TABLE `xx_tad_player_rank` (
     <div id='rating_psn_{$psn}'></div>
     <div id='rating_result_{$col_name}_{$col_sn}'></div>
   }
-	$rating_js=$rating->render();
+    $rating_js=$rating->render();
 */
-
 
 if(isset($_POST['op']) and $_POST['op']=='save_rating'){
   save_rating($_POST['mod_name'] , $_POST['col_name'] , $_POST['col_sn'] , $_POST['rank']);
 }
-
 
 //儲存分數
 function save_rating($mod_name="",$col_name="",$col_sn="",$rank=""){
@@ -52,7 +50,6 @@ function save_rating($mod_name="",$col_name="",$col_sn="",$rank=""){
   die(sprintf(_TAD_STAR_RATING_SAVE,$rank));
 }
 
-
 class rating{
   var $code=array();
   var $rank_total;
@@ -61,18 +58,17 @@ class rating{
   var $rate_mode;
   var $mod_name;
 
-	//建構函數
-	function rating($mod_name="",$rank_total="10",$mode='',$show_mode='',$rate_mode=''){
+    //建構函數
+    function rating($mod_name="",$rank_total="10",$mode='',$show_mode='',$rate_mode=''){
     $this->rank_total=$rank_total;
     $this->mode=$mode;
     $this->show_mode=$show_mode;
     $this->rate_mode=$rate_mode;
     $this->mod_name=$mod_name;
-	}
+    }
 
-
-	//新增提示
-	function add_rating($col_name="",$col_sn=""){
+    //新增提示
+    function add_rating($col_name="",$col_sn=""){
     global $xoopsUser;
 
     if($xoopsUser and $this->mode!='show'){
@@ -141,12 +137,12 @@ class rating{
     $result=$xoopsDB->queryF($sql) or die(mysql_error());
     list($main)=$xoopsDB->fetchRow($result);
     $main=round($main,0);
+
     return $main;
   }
 
-
-	//產生路徑工具
-	function render($show_all=true){
+    //產生路徑工具
+    function render($show_all=true){
     global $xoTheme;
     $jquery=get_jquery();
 
@@ -178,10 +174,8 @@ class rating{
 
     	</script>";
 
-
       return $main;
     }
   }
 
 }
-?>

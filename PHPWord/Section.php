@@ -368,4 +368,3 @@ class PHPWord_Section {
 		return $this->_footer;
 	}
 }
-?>

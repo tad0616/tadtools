@@ -327,4 +327,3 @@ class PHPWord_DocumentProperties {
 		return $this;
 	}
 }
-?>

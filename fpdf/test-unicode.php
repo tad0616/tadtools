@@ -25,5 +25,3 @@ $htmlcontent = "<table border=\"0\"><tr><td width=\"150\">&nbsp;</td>
 <table border=\"1\"><tr><td width=\"500\">123123123123</td></tr></table>";
 $pdf->writeHTML($htmlcontent, true, 0);
 $pdf->Output();
-
-?>

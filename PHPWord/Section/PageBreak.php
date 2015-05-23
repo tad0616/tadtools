@@ -42,4 +42,3 @@ class PHPWord_Section_PageBreak {
 		// nothing
 	}
 }
-?>

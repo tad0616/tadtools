@@ -439,4 +439,3 @@ class PHPWord_Style_TableFull {
 		return array($this->_cellMarginTop, $this->_cellMarginLeft, $this->_cellMarginRight, $this->_cellMarginBottom);
 	}
 }
-?>

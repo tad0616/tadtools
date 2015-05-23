@@ -12,12 +12,10 @@ class summernote{
     $this->Value=$Value;
   }
 
-
   //設定自定義設高度
   function setHeight($Height=""){
     $this->Height=$Height;
   }
-
 
   //產生編輯器
   function render(){
@@ -54,7 +52,6 @@ class summernote{
       ";
     }
 
-
     $content = str_replace('&', '&amp;', $this->Value);
     $content=str_replace('[','&#91;',$content);
     $editor.="<textarea name='{$this->ColName}' id='editor_{$this->ColName}'>{$content}</textarea>";
@@ -63,4 +60,3 @@ class summernote{
   }
 
 }
-?>

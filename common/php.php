@@ -53,5 +53,3 @@ if(!function_exists('toolbar')){
     return $main;
   }
 }
-
-?>

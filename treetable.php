@@ -2,7 +2,6 @@
 include_once "tadtools_header.php";
 include_once "jquery.php";
 
-
 class treetable{
   var $tbl_id;
   var $show_jquery;
@@ -30,7 +29,6 @@ class treetable{
     $this->sort_msg=$sort_msg;
     $this->expanded=$expanded;
   }
-
 
   //產生路徑工具
   function render(){
@@ -144,8 +142,8 @@ class treetable{
       });
 
       </script>";
+
       return $main;
     }
   }
 }
-?>

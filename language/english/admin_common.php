@@ -25,4 +25,3 @@ define("_MA_TREETABLE_SORT_PIC","Drag up or down to set the sort of categories")
 define("_MA_TREETABLE_MOVE_ERROR1","Move fail! Source and destination category can not be the same.");
 define("_MA_TREETABLE_MOVE_ERROR2","Move fail! Destination category can not be under the source category.");
 define("_MA_TREETABLE_MOVE_OK","Move completed!");
-?>

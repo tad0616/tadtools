@@ -42,4 +42,3 @@ class PHPWord_Section_TextBreak  {
 		// nothing
 	}
 }
-?>

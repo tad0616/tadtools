@@ -141,4 +141,3 @@ class JwPlayer{
     return $player;
   }
 }
-?>

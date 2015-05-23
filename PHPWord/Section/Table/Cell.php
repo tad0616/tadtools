@@ -316,4 +316,3 @@ class PHPWord_Section_Table_Cell {
 		return $this->_width;
 	}
 }
-?>

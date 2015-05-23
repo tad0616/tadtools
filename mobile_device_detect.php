@@ -102,7 +102,7 @@ function mobile_device_detect($iphone=true,$ipad=true,$android=true,$opera=true,
       $status = 'Opera';
       if(substr($opera,0,4)=='http'){ // does the value of opera resemble a rul
         $mobileredirect = $opera; // set the mobile redirect url to the url value stored in the opera value
-      } // ends the if for opera being a url 
+      } // ends the if for opera being a url
     break; // break out and skip the rest if we've had a match on opera
 
     case (preg_match('/blackberry/i',$user_agent)); // we find blackberry in the user agent
@@ -110,7 +110,7 @@ function mobile_device_detect($iphone=true,$ipad=true,$android=true,$opera=true,
       $status = 'Blackberry';
       if(substr($blackberry,0,4)=='http'){ // does the value of blackberry resemble a rul
         $mobileredirect = $blackberry; // set the mobile redirect url to the url value stored in the blackberry value
-      } // ends the if for blackberry being a url 
+      } // ends the if for blackberry being a url
     break; // break out and skip the rest if we've had a match on blackberry
 
     case (preg_match('/(pre\/|palm os|palm|hiptop|avantgo|plucker|xiino|blazer|elaine)/i',$user_agent)); // we find palm os in the user agent - the i at the end makes it case insensitive
@@ -118,7 +118,7 @@ function mobile_device_detect($iphone=true,$ipad=true,$android=true,$opera=true,
       $status = 'Palm';
       if(substr($palm,0,4)=='http'){ // does the value of palm resemble a rul
         $mobileredirect = $palm; // set the mobile redirect url to the url value stored in the palm value
-      } // ends the if for palm being a url 
+      } // ends the if for palm being a url
     break; // break out and skip the rest if we've had a match on palm os
 
     case (preg_match('/(iris|3g_t|windows ce|opera mobi|windows ce; smartphone;|windows ce; iemobile)/i',$user_agent)); // we find windows mobile in the user agent - the i at the end makes it case insensitive
@@ -126,13 +126,13 @@ function mobile_device_detect($iphone=true,$ipad=true,$android=true,$opera=true,
       $status = 'Windows Smartphone';
       if(substr($windows,0,4)=='http'){ // does the value of windows resemble a rul
         $mobileredirect = $windows; // set the mobile redirect url to the url value stored in the windows value
-      } // ends the if for windows being a url 
+      } // ends the if for windows being a url
     break; // break out and skip the rest if we've had a match on windows
 
     case (preg_match('/(mini 9.5|vx1000|lge |m800|e860|u940|ux840|compal|wireless| mobi|ahong|lg380|lgku|lgu900|lg210|lg47|lg920|lg840|lg370|sam-r|mg50|s55|g83|t66|vx400|mk99|d615|d763|el370|sl900|mp500|samu3|samu4|vx10|xda_|samu5|samu6|samu7|samu9|a615|b832|m881|s920|n210|s700|c-810|_h797|mob-x|sk16d|848b|mowser|s580|r800|471x|v120|rim8|c500foma:|160x|x160|480x|x640|t503|w839|i250|sprint|w398samr810|m5252|c7100|mt126|x225|s5330|s820|htil-g1|fly v71|s302|-x113|novarra|k610i|-three|8325rc|8352rc|sanyo|vx54|c888|nx250|n120|mtk |c5588|s710|t880|c5005|i;458x|p404i|s210|c5100|teleca|s940|c500|s590|foma|samsu|vx8|vx9|a1000|_mms|myx|a700|gu1100|bc831|e300|ems100|me701|me702m-three|sd588|s800|8325rc|ac831|mw200|brew |d88|htc\/|htc_touch|355x|m50|km100|d736|p-9521|telco|sl74|ktouch|m4u\/|me702|8325rc|kddi|phone|lg |sonyericsson|samsung|240x|x320|vx10|nokia|sony cmd|motorola|up.browser|up.link|mmp|symbian|smartphone|midp|wap|vodafone|o2|pocket|kindle|mobile|psp|treo)/i',$user_agent)); // check if any of the values listed create a match on the user agent - these are some of the most common terms used in agents to identify them as being mobile devices - the i at the end makes it case insensitive
       $mobile_browser = true; // set mobile browser to true
       $status = 'Mobile matched on piped preg_match';
-    break; // break out and skip the rest if we've preg_match on the user agent returned true 
+    break; // break out and skip the rest if we've preg_match on the user agent returned true
 
     case ((strpos($accept,'text/vnd.wap.wml')>0)||(strpos($accept,'application/vnd.wap.xhtml+xml')>0)); // is the device showing signs of support for text/vnd.wap.wml or application/vnd.wap.xhtml+xml
       $mobile_browser = true; // set mobile browser to true
@@ -154,25 +154,24 @@ function mobile_device_detect($iphone=true,$ipad=true,$android=true,$opera=true,
       $status = 'Desktop / full capability browser';
     break; // break even though it's the last statement in the switch so there's nothing to break away from but it seems better to include it than exclude it
 
-  } // ends the switch 
+  } // ends the switch
 
   // tell adaptation services (transcoders and proxies) to not alter the content based on user agent as it's already being managed by this script, some of them suck though and will disregard this....
-	// header('Cache-Control: no-transform'); // http://mobiforge.com/developing/story/setting-http-headers-advise-transcoding-proxies
-	// header('Vary: User-Agent, Accept'); // http://mobiforge.com/developing/story/setting-http-headers-advise-transcoding-proxies
+    // header('Cache-Control: no-transform'); // http://mobiforge.com/developing/story/setting-http-headers-advise-transcoding-proxies
+    // header('Vary: User-Agent, Accept'); // http://mobiforge.com/developing/story/setting-http-headers-advise-transcoding-proxies
 
   // if redirect (either the value of the mobile or desktop redirect depending on the value of $mobile_browser) is true redirect else we return the status of $mobile_browser
   if($redirect = ($mobile_browser==true) ? $mobileredirect : $desktopredirect){
     header('Location: '.$redirect); // redirect to the right url for this device
     exit;
-  }else{ 
-		// a couple of folkas have asked about the status - that's there to help you debug and understand what the script is doing
-		if($mobile_browser==''){
-			return $mobile_browser; // will return either true or false 
-		}else{
-			return array($mobile_browser,$status); // is a mobile so we are returning an array ['0'] is true ['1'] is the $status value
-		}
-	}
+  }else{
+        // a couple of folkas have asked about the status - that's there to help you debug and understand what the script is doing
+        if($mobile_browser==''){
+            return $mobile_browser; // will return either true or false
+        }else{
+            return array($mobile_browser,$status); // is a mobile so we are returning an array ['0'] is true ['1'] is the $status value
+        }
+    }
 
 } // ends function mobile_device_detect
-
-?>
+;

@@ -54,4 +54,3 @@ table 需加上 class='footable' 以及 <thead></thead>
 要加入擴展符號的格子在  th 加上  data-class='expand'
 要藏起來的格子在  th 加上  data-hide='phone,tablet' 或 data-hide='phone'
 */
-?>

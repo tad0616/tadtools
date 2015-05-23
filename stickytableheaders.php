@@ -22,7 +22,6 @@ class stickytableheaders{
     $this->show_jquery = $show_jquery;
   }
 
-
   //產生語法
   function render($name="",$fixedOffset=""){
     global $xoTheme;
@@ -48,9 +47,9 @@ class stickytableheaders{
         });
       </script>
       ";
+
       return $main;
     }
   }
 
 }
-?>

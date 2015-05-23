@@ -36,4 +36,3 @@ echo $index_admin->renderIndex();
 
 include "footer.php";
 xoops_cp_footer();
-?>

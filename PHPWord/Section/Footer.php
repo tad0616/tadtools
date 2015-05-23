@@ -198,4 +198,3 @@ class PHPWord_Section_Footer {
 		return $this->_footerCount;
 	}
 }
-?>

@@ -310,4 +310,3 @@ class PHPWord_Style_Cell {
 	   return $this->_vMerge;
 	}
 }
-?>

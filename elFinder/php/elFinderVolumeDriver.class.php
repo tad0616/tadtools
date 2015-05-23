@@ -698,10 +698,10 @@ abstract class elFinderVolumeDriver {
 			$file = false;
 			if (!empty($this->options['mimefile']) && file_exists($this->options['mimefile'])) {
 				$file = $this->options['mimefile'];
-			} elseif (file_exists(dirname(__FILE__).DIRECTORY_SEPARATOR.'mime.types')) {
-				$file = dirname(__FILE__).DIRECTORY_SEPARATOR.'mime.types';
-			} elseif (file_exists(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'mime.types')) {
-				$file = dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'mime.types';
+			} elseif (file_exists( __DIR__ .DIRECTORY_SEPARATOR.'mime.types')) {
+				$file = __DIR__.DIRECTORY_SEPARATOR.'mime.types';
+			} elseif (file_exists(dirname(__DIR__).DIRECTORY_SEPARATOR.'mime.types')) {
+				$file = dirname(__DIR__).DIRECTORY_SEPARATOR.'mime.types';
 			}
 
 			if ($file && file_exists($file)) {

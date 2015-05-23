@@ -80,4 +80,3 @@ class PHPWord_Writer_Word2007_Header extends PHPWord_Writer_Word2007_Base {
 		return $objWriter->getData();
 	}
 }
-?>

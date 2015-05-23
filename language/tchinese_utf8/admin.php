@@ -31,5 +31,3 @@ define("_TT_COLOR_DARK","深色");
 define("_TT_COLOR_DEFAULT","預設");
 define("_MA_TT_THEMES_KIND","佈景種類");
 define("_MA_TT_TAD_THEMES","支援 tad themes，已內建 BootStrap");
-
-?>

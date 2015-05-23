@@ -49,6 +49,3 @@ if(!function_exists('get_jquery')){
     }
   }
 }
-
-
-?>

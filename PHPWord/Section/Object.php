@@ -172,4 +172,3 @@ class PHPWord_Section_Object {
 		$this->_objId = $objId;
 	}
 }
-?>

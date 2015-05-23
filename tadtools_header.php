@@ -20,9 +20,10 @@ if(!function_exists('TadToolsXoopsModuleConfig')){
     if(is_object($xoopsModule)){
       $config_handler = xoops_gethandler('config');
       $xoopsModuleConfig = $config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
+
       return $xoopsModuleConfig;
     }
+
     return false;
   }
 }
-?>

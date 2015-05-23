@@ -258,4 +258,3 @@ class PHPWord_Style_Font {
 		return $this->_paragraphStyle;
 	}
 }
-?>

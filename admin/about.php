@@ -43,5 +43,3 @@ echo $about_admin->addNavigation('about.php');
 echo $about_admin->renderabout();
 echo "<div class='center smallsmall italic pad5'><b>" . $xoopsModule->getVar("name") . "</b> is maintained by the <a class='tooltip' rel='external' href='http://www.xoops.org/' title='Visit XOOPS Community'>XOOPS Community</a></div>";
 xoops_cp_footer();
-
-?>

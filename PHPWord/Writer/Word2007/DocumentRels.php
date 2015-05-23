@@ -174,4 +174,3 @@ class PHPWord_Writer_Word2007_DocumentRels extends PHPWord_Writer_Word2007_Write
 		}
 	}
 }
-?>

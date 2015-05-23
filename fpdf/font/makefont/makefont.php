@@ -8,7 +8,7 @@
 function ReadMap($enc)
 {
 	//Read a map file
-	$file=dirname(__FILE__).'/'.strtolower($enc).'.map';
+	$file= __DIR__ .'/'.strtolower($enc).'.map';
 	$a=file($file);
 	if(empty($a))
 		die('<B>Error:</B> encoding not found: '.$enc);
@@ -413,4 +413,3 @@ function MakeFont($fontfile,$afmfile,$enc='cp1252',$patch=array(),$type='TrueTyp
 	SaveToFile($basename.'.php',$s);
 	echo 'Font definition file generated ('.$basename.'.php'.')<BR>';
 }
-?>

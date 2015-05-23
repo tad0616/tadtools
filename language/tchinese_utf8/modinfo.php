@@ -2,7 +2,6 @@
 
 include_once "modinfo_common.php";
 
-
 define("_MI_TADTOOLS_ADMENU1" , "初始設定");
 define("_MI_TADTOOLS_ADMENU1_DESC" , "佈景是否引入bootstrap的設定");
 
@@ -39,6 +38,3 @@ define("_MI_TADTOOLS_DESC7","SyntaxHighlighter2 適用程式碼常會換行的�
 
 define('_MI_TADTOOLS_QRCODE_BLOCK_NAME' , 'QR Code 區塊');
 define('_MI_TADTOOLS_QRCODE_BLOCK_DESC' , 'QR Code 區塊區塊 (tadtools_qrcode)');
-
-
-?>

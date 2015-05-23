@@ -126,4 +126,3 @@ class PHPWord_Section_TextRun {
 		return $this->_styleParagraph;
 	}
 }
-?>

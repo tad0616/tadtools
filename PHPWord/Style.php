@@ -148,4 +148,3 @@ class PHPWord_Style {
 		return self::$_styleElements;
 	}
 }
-?>

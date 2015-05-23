@@ -338,4 +338,3 @@ class ModuleAdmin
         return $ret;
     }
 }
-?>

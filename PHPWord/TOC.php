@@ -152,4 +152,3 @@ class PHPWord_TOC {
 		return self::$_styleFont;
 	}
 }
-?>

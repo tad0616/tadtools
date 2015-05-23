@@ -124,4 +124,3 @@ class PHPWord_Section_Text {
 		return $this->_text;
 	}
 }
-?>

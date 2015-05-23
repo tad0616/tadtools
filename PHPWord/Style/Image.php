@@ -127,4 +127,3 @@ class PHPWord_Style_Image {
 		return $this;
 	}
 }
-?>

@@ -12,4 +12,3 @@ foreach ($_POST['fdtr'] as $files_sn) {
 }
 
 echo _TAD_SORTED." (".date("Y-m-d H:i:s").")";
-?>
