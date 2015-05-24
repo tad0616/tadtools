@@ -4,9 +4,21 @@ $home['sn']=$home_sn;
 $home['title']=$home_title;
 $home['url']=$home_url;
 
-$title_arr[$sn]=$title;
-$cate_arr[$sn]=$of_sn;
-$url_arr[$sn]=$url;
+$sql = "select csn,of_csn,title from ".$xoopsDB->prefix("tad_gallery_cate")." order by sort";
+$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+while(list($csn,$of_csn,$title)=$xoopsDB->fetchRow($result)){
+  $title_arr[$csn]=$title;
+  $cate_arr[$csn]=$of_csn;
+  $url_arr[$csn]="cate.php?csn={$csn}";
+}
+if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/dtree.php")){
+  redirect_header("index.php",3, _MA_NEED_TADTOOLS);
+}
+include_once XOOPS_ROOT_PATH."/modules/tadtools/dtree.php";
+$dtree=new dtree("album_tree","",$title_arr,$cate_arr,$url_arr);
+$dtree_code=$dtree->render("11pt",true);
+$xoopsTpl->assign('dtree_code',$dtree_code);
+
 */
 include_once "tadtools_header.php";
 

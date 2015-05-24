@@ -70,6 +70,7 @@ class CKEditor{
         <script src='".TADTOOLS_URL."/ckeditor/mathquill.js'></script>
         <script type='text/javascript' src='".TADTOOLS_URL."/ckeditor/ckeditor.js'></script>";
       }
+      $bootstrap=$_SESSION['bootstrap']==3?"bootstrap3":"bootstrap";
 
       $editor.="
       <textarea name='{$this->ColName}' style='width:{$this->Width};height:{$this->Height};' id='editor_{$this->ColName}' class='ckeditor_css'>{$content}</textarea>
@@ -79,6 +80,7 @@ class CKEditor{
         skin : 'moono' ,
         language : '"._LANGCODE."' ,
         toolbar : '{$this->ToolbarSet}' ,
+        contentsCss : ['".TADTOOLS_URL."/{$bootstrap}/css/bootstrap.css'],
         extraPlugins: 'autogrow,syntaxhighlight,summary,oembed,mathedit',
         filebrowserBrowseUrl : '".TADTOOLS_URL."/elFinder/elfinder.php?type=file',
         filebrowserImageBrowseUrl : '".TADTOOLS_URL."/elFinder/elfinder.php?type=image',
