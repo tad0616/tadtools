@@ -24,4 +24,3 @@ function isAdmin(){
   }
   return $isAdmin;
 }
-?>

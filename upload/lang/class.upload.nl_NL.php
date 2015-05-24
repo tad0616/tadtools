@@ -80,5 +80,3 @@
     $translation['no_conversion_type']          = 'Geen conversie soort gedefinieeerd.';
     $translation['copy_failed']                 = 'Fout bij het kopieren op de server. De opdracht copy() is mislukt.';
     $translation['reading_failed']              = 'Bestand is niet leesbaar. Kan de verwerking niet afmaken.';
-
-?>

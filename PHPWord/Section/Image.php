@@ -165,4 +165,3 @@ class PHPWord_Section_Image {
 		$this->_isWatermark = $pValue;
 	}
 }
-?>

@@ -36,4 +36,3 @@ interface PHPWord_Writer_IWriter
 	 */
 	public function save($pFilename = null);
 }
-?>

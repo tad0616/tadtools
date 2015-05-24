@@ -80,4 +80,3 @@ class PHPWord_Style_Table {
 		return array($this->_cellMarginTop, $this->_cellMarginLeft, $this->_cellMarginRight, $this->_cellMarginBottom);
 	}
 }
-?>

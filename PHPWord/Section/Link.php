@@ -168,4 +168,3 @@ class PHPWord_Section_Link {
 		return $this->_styleParagraph;
 	}
 }
-?>

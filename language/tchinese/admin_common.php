@@ -26,4 +26,3 @@ define("_MA_TREETABLE_SORT_PIC","用來調整此分類的排序，請上下拖曳之即可。");
 define("_MA_TREETABLE_MOVE_ERROR1","搬移失敗！來源和目的分類不可相同。");
 define("_MA_TREETABLE_MOVE_ERROR2","搬移失敗！目的分類不可在來源資料夾之下。");
 define("_MA_TREETABLE_MOVE_OK","搬移完成！");
-?>

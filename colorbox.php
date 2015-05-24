@@ -79,4 +79,3 @@ $("a.gallery").colorbox({rel: 'gal', title: function(){
   return '<a href="' + url + '" target="_blank">Open In New Window</a>';
 }});
  */
-?>

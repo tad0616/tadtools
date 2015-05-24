@@ -3,7 +3,7 @@ define('_MI_TAD_ADMIN_HOME',"Home");
 define("_MI_TAD_ADMIN_HOME_DESC","Back to Home");
 define("_MI_TAD_ADMIN_ABOUT" , "About");
 define("_MI_TAD_ADMIN_ABOUT_DESC" , "About this module");
-define("_MI_TAD_WEB","Tad 教材網");
+define("_MI_TAD_WEB","Tad Textbook Network");
 
 define("_MI_QRCODE_BLOCKNAME","QR Code");
 define("_MI_QRCODE_BLOCKDESC","QR Code for mobile device");
@@ -15,4 +15,3 @@ define("_MI_USE_PDA_TITLE","Does use pda.php ?");
 define("_MI_USE_PDA_TITLE_DESC","if yes, website will use pda.php for mobile device.");
 define("_MI_STAR_RATING_TITLE","Does use star rating?");
 define("_MI_STAR_RATING_DESC","");
-?>

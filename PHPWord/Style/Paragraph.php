@@ -171,4 +171,3 @@ class PHPWord_Style_Paragraph {
 	   return $this;
 	}
 }
-?>

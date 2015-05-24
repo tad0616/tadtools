@@ -125,4 +125,3 @@ class PHPWord_Section_Footer_PreserveText {
 		return $this->_text;
 	}
 }
-?>

@@ -104,4 +104,3 @@ $fck=new CKEditor("tadnews","news_content",$news_content);
 $fck->setHeight(350);
 $editor=$fck->render();
 */
-?>

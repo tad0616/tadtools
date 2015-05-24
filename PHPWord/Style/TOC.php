@@ -135,4 +135,3 @@ class PHPWord_Style_TOC {
 		$this->$key = $value;
 	}
 }
-?>

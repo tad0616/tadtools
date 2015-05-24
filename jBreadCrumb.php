@@ -68,4 +68,3 @@ class jBreadCrumb{
     return $main;
   }
 }
-?>

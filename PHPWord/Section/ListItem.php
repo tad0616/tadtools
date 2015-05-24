@@ -101,4 +101,3 @@ class PHPWord_Section_ListItem {
 		return $this->_depth;
 	}
 }
-?>

@@ -45,4 +45,3 @@ class PHPWord_Autoloader
 		require($strObjectFilePath);
 	}
 }
-?>

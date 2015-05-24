@@ -15,7 +15,6 @@ $xoopsTpl->assign('mColorPicker_code',$mColorPicker_code);
 include_once "tadtools_header.php";
 include_once "jquery.php";
 
-
 class mColorPicker{
   var $name;
 
@@ -48,8 +47,8 @@ class mColorPicker{
         });
       </script>
       ";
+
       return $mColorPicker;
     }
   }
 }
-?>

@@ -78,4 +78,3 @@ if(!function_exists("jsonencode")){
     }
   }
 }
-?>

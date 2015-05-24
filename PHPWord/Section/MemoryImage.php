@@ -228,4 +228,3 @@ class PHPWord_Section_MemoryImage {
 		return $this->_imageExtension;
 	}
 }
-?>

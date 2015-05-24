@@ -198,11 +198,11 @@ class syntaxhighlighter{
 
         </script>";
       }
+
       return $syntaxhighlighter;
     }
   }
 }
-
 
 /*
 $syntaxhighlighter_code="";
@@ -218,5 +218,4 @@ if(file_exists(XOOPS_ROOT_PATH."/modules/tadtools/syntaxhighlighter.php")){
 </pre>
 
 
- */
-?>
+ */;

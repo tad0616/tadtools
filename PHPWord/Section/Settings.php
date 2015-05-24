@@ -512,4 +512,3 @@ class PHPWord_Section_Settings {
 		return $this->_borderBottomColor;
 	}
 }
-?>

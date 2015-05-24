@@ -219,4 +219,3 @@ class PHPWord_Section_Header {
 		return $this->_headerCount;
 	}
 }
-?>

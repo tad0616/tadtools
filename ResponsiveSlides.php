@@ -134,7 +134,7 @@ class slider{
     </div>
     <div class=\"clearfix\"></div>
       ";
+
     return $main;
   }
 }
-?>

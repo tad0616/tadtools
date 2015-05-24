@@ -51,4 +51,3 @@ function full_copy( $source="", $target=""){
 		copy( $source, $target );
 	}
 }
-?>

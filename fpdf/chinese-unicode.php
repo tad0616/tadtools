@@ -414,4 +414,3 @@ class PDF_Unicode extends PDF_Chinese
   }
 
 }
-?>

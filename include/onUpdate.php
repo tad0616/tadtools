@@ -242,4 +242,3 @@ function thumbnail($filename="",$thumb_name="",$type="image/jpeg",$width="120"){
   return;
   exit;
 }
-?>

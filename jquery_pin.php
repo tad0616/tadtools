@@ -19,7 +19,6 @@ class jquery_pin{
     $this->show_jquery = $show_jquery;
   }
 
-
   //產生語法
   function render($name="",$minWidth=940){
     global $xoTheme;
@@ -50,8 +49,8 @@ class jquery_pin{
         });
       </script>
       ";
+
       return $main;
     }
   }
 }
-?>

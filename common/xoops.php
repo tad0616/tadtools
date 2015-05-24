@@ -212,4 +212,3 @@ if(!function_exists('make_menu_json')){
     file_put_contents($filename, $json);
   }
 }
-?>

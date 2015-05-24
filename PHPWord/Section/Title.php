@@ -142,4 +142,3 @@ class PHPWord_Section_Title {
 		return $this->_style;
 	}
 }
-?>

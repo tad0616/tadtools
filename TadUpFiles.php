@@ -135,7 +135,6 @@ CREATE TABLE `模組名稱_files_center` (
 ) ENGINE=MyISAM;
 */
 
-
 class TadUpFiles{
   var $TadUpFilesTblName;
   var $TadUpFilesDir;
@@ -223,9 +222,9 @@ class TadUpFiles{
       $path['thumb']['dir']=$this->TadUpFilesThumbDir;
       $path['thumb']['url']=$this->TadUpFilesThumbUrl;
     }
+
     return $path;
   }
-
 
   //設定縮圖背景
   public function set_thumb($width="",$height="",$bg_color="",$position="",$repeat="",$size=""){
@@ -267,12 +266,10 @@ class TadUpFiles{
     $this->showFancyBox = $show;
   }
 
-
   //自己設定檔案下載路徑
   public function set_download_url($url=""){
     $this->download_url = $url;
   }
-
 
   //上傳元件
   public function upform($show_edit=false,$upname='upfile',$maxlength="",$show_list_del_file=true,$only_type="",$thumb=true){
@@ -287,9 +284,9 @@ class TadUpFiles{
     <input type='file' name='{$upname}[]' id='{$upname}' $maxlength multiple='multiple' $accept class='{$col}'>
     {$list_del_file}
     ";
+
     return $main;
   }
-
 
   //列出可刪除檔案
   public function list_del_file($show_edit=false,$thumb=true){
@@ -330,7 +327,6 @@ class TadUpFiles{
         $w2="list-style-position: outside;";
       }
 
-
       $col =($this->bootstrap=='3')? "col-md-":"span";
       $row =($this->bootstrap=='3')? "row":"row-fluid";
       $class =($this->bootstrap=='3')? "form-control":"span12";
@@ -366,7 +362,6 @@ class TadUpFiles{
 
     if(empty($all_file))return;
 
-
     if($show_edit){
       $files="
       <script type='text/javascript'>
@@ -398,12 +393,9 @@ class TadUpFiles{
     return $files;
   }
 
-
-
   //上傳圖檔，$this->col_name=對應欄位名稱,$col_sn=對應欄位編號,$種類：img,file,$sort=圖片排序,$files_sn="更新編號"
   public function upload_file($upname='upfile',$main_width="1280",$thumb_width="120",$files_sn="",$desc=NULL,$safe_name=false,$hash=false){
     global $xoopsDB,$xoopsUser;
-
 
     if(empty($main_width))$main_width="1280";
     if(empty($thumb_width))$thumb_width="120";
@@ -457,8 +449,6 @@ class TadUpFiles{
       //取得檔案
       $file_handle = new upload($file,"zh_TW");
 
-
-
       if ($file_handle->uploaded) {
         //取得副檔名
         $file_ext=$file_handle->file_src_name_ext;
@@ -492,8 +482,6 @@ class TadUpFiles{
         }
         $file_handle->file_new_name_body   = $new_filename;
 
-
-
         //若是圖片才縮圖
         if($kind=="img" and !empty($main_width)){
           if($file_handle->image_src_x > $main_width){
@@ -504,9 +492,7 @@ class TadUpFiles{
         }
         $path=($kind=="img")?$this->TadUpFilesImgDir:$this->TadUpFilesDir;
 
-
         $readme=($hash)?"{$path}/{$hash_name}_info.txt":"";
-
 
         //die($path);
         $file_handle->process($path);
@@ -532,7 +518,6 @@ class TadUpFiles{
         //上傳檔案
         if ($file_handle->processed) {
           $file_handle->clean();
-
 
           if($hash){
             $fp = fopen($readme, 'w');
@@ -573,6 +558,7 @@ class TadUpFiles{
   private function get_basename($filename){
     $filename=preg_replace('/^.+[\\\\\\/]/', '', $filename);
     $filename=rtrim($filename, '/');
+
     return $filename;
   }
 
@@ -618,7 +604,6 @@ class TadUpFiles{
 
     $path=($kind=="img")?$this->TadUpFilesImgDir:$this->TadUpFilesDir;
     $new_filename = ($safe_name)?"{$this->col_name}_{$this->col_sn}_{$this->sort}.{$ext}":$filename;
-
 
     $readme="";
     $hash_name=md5(rand(0,1000).$filename);
@@ -688,7 +673,6 @@ class TadUpFiles{
     return $files_sn;
   }
 
-
   //檔案格式
   private function mime_content_type($filename) {
 
@@ -756,13 +740,13 @@ class TadUpFiles{
       $finfo = finfo_open(FILEINFO_MIME);
       $mimetype = finfo_file($finfo, $filename);
       finfo_close($finfo);
+
       return $mimetype;
     }
     else {
       return 'application/octet-stream';
     }
   }
-
 
   //做縮圖
   private function thumbnail($filename="",$thumb_name="",$type="image/jpeg",$width="120"){
@@ -800,19 +784,19 @@ class TadUpFiles{
       }elseif($type=="image/gif"){
        imagegif($thumb,$thumb_name);
       }
+
       return;
       exit;
     }else{
       copy($filename,$thumb_name);
+
       return;
       exit;
     }
+
     return;
     exit;
   }
-
-
-
 
   //上傳單一檔案，$this->col_name=對應欄位名稱,$col_sn=對應欄位編號,$種類：img,file,$sort=圖片排序,$files_sn="更新編號"
   public function upload_one_file($name="",$tmp_name="",$type="",$size="",$main_width="1280",$thumb_width="120",$files_sn="" ,$desc="" ,$safe_name=false ,$hash=false){
@@ -878,9 +862,7 @@ class TadUpFiles{
       }
       $path=($kind=="img")?$this->TadUpFilesImgDir:$this->TadUpFilesDir;
 
-
       $readme=($hash)?"{$path}/{$hash_name}_info.txt":"";
-
 
       //die($path);
       $file_handle->process($path);
@@ -922,7 +904,6 @@ class TadUpFiles{
           chmod("{$this->TadUpFilesThumbDir}/{$file_name}",0755);
         }
 
-
         $description=(empty($files_sn) or empty($desc))?$file['name']:$desc;
 
         if(empty($files_sn)){
@@ -944,6 +925,7 @@ class TadUpFiles{
     if(!is_null($desc)){
       $this->update_col_val($files_sn,'description',$desc);
     }
+
     return $files_sn;
   }
 
@@ -955,10 +937,9 @@ class TadUpFiles{
 
      $result=$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
      list($max)=$xoopsDB->fetchRow($result);
+
     return ++$max;
   }
-
-
 
   //更新某個欄位值
   private function update_col_val($files_sn="",$col="",$val=""){
@@ -1035,7 +1016,6 @@ class TadUpFiles{
     $this->update_col_val($files_sn,'file_name',$new_name);
   }
 
-
   //取得檔案
   public function get_file($files_sn="",$limit=NULL,$path=NULL,$hash=false,$desc_as_name=false){
       global $xoopsDB,$xoopsUser;
@@ -1050,7 +1030,6 @@ class TadUpFiles{
 
       $where=($files_sn)?"where `files_sn`='{$files_sn}'":"where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' $and_sort order by sort $andLimit";
 
-
       $sql = "select * from `{$this->TadUpFilesTblName}` $where";
 
       $result=$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
@@ -1064,7 +1043,6 @@ class TadUpFiles{
           $file_name=iconv($os_charset, _CHARSET, $file_name);
         }
 
-
         $files[$files_sn]['kind']=$kind;
         $files[$files_sn]['sort']=$sort;
         $files[$files_sn]['file_name']=$file_name;
@@ -1076,7 +1054,6 @@ class TadUpFiles{
         $files[$files_sn]['hash_filename']=$hash_filename;
 
         $files[$files_sn]['show_file_name']=$show_file_name=($desc_as_name and !empty($description))?$description:$original_filename;
-
 
         $dl_url=empty($this->download_url)?"{$link_path}?op=tufdl&files_sn=$files_sn":$this->download_url."&files_sn=$files_sn";
 
@@ -1099,9 +1076,9 @@ class TadUpFiles{
           $files[$files_sn]['physical_file_path']=$this->TadUpFilesDir."/{$file_name}";
         }
       }
+
       return $files;
   }
-
 
   //取得smarty用的檔案陣列
   public function get_file_for_smarty($files_sn="",$limit=NULL,$path=NULL){
@@ -1117,7 +1094,6 @@ class TadUpFiles{
 
       $where=($files_sn)?"where `files_sn`='{$files_sn}'":"where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' $and_sort order by sort $andLimit";
 
-
       $sql = "select * from `{$this->TadUpFilesTblName}` $where";
       $result=$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
       $i=0;
@@ -1131,7 +1107,6 @@ class TadUpFiles{
         if($os_charset != _CHARSET){
           $file_name=iconv($os_charset, _CHARSET, $file_name);
         }
-
 
         $files[$i]['files_sn']=$files_sn;
         $files[$i]['kind']=$kind;
@@ -1175,9 +1150,9 @@ class TadUpFiles{
         }
         $i++;
       }
+
       return $files;
   }
-
 
   //取得單一圖片 $kind=images（大圖）,thumb（小圖）,file（檔案）$kind="url","dir"
   public function get_pic_file($showkind="images",$show_kind="url",$files_sn=""){
@@ -1213,7 +1188,6 @@ class TadUpFiles{
     return $files;
   }
 
-
   //取得檔案數
   public function get_file_amount(){
     global $xoopsDB;
@@ -1222,9 +1196,9 @@ class TadUpFiles{
 
     $result=$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
     list($amount)=$xoopsDB->fetchRow($result);
+
     return $amount;
   }
-
 
   //取得附檔或附圖 $show_mode=filename , small,playSpeed=3000 or 0
   public function show_files($upname="",$thumb=true,$show_mode="",$show_description=false,$show_dl=false,$limit=NULL,$path=NULL,$hash=false,$playSpeed=5000,$desc_as_name=false){
@@ -1251,7 +1225,6 @@ class TadUpFiles{
     $file_arr=$this->get_file(NULL,$limit,$path,$hash,$desc_as_name);
 
     if(empty($file_arr))return;
-
 
     if($file_arr){
       $i=1;
@@ -1298,7 +1271,6 @@ class TadUpFiles{
             $linkto=substr($linkto, 0,-3).$linkto_ext;
           }
 
-
           //下載次數顯示
           $show_dl_txt=($show_dl)?"<span class='label label-info'>{$file_info['counter']}</span>":"";
 
@@ -1321,11 +1293,9 @@ class TadUpFiles{
     }
 
     $all_files.="<div style='clear:both;'></div>";
+
     return $all_files;
   }
-
-
-
 
   //下載並新增計數器
   public function add_file_counter($files_sn="",$hash=false,$force=false){
@@ -1342,7 +1312,6 @@ class TadUpFiles{
     $sql = "update `{$this->TadUpFilesTblName}` set `counter`=`counter`+1 where `files_sn`='{$files_sn}'";
     $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 
-
     if($file['kind']=="img"){
       $file_saved="{$this->TadUpFilesImgUrl}/{$dl_name}";
       $file_hd_saved="{$this->TadUpFilesImgDir}/{$dl_name}";
@@ -1354,7 +1323,6 @@ class TadUpFiles{
 
 
     $os_charset=(PATH_SEPARATOR==':')?"UTF-8":"Big5";
-
 
     $mimetype = $file_type;
     if (function_exists('mb_http_output')) {
@@ -1384,7 +1352,6 @@ class TadUpFiles{
       header("Content-Transfer-Encoding: binary");
       header('Content-Length: ' . filesize($file_hd_saved));
 
-
       ob_clean();
       $handle = fopen($file_hd_saved, "rb");
 
@@ -1403,7 +1370,6 @@ class TadUpFiles{
       }else{
         $file_display=$real_filename;
       }
-
 
       mk_dir(XOOPS_ROOT_PATH."/uploads/{$this->prefix}");
       mk_dir(XOOPS_ROOT_PATH."/uploads/{$this->prefix}/tmp");
@@ -1441,6 +1407,7 @@ class TadUpFiles{
 
     $result=$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
     $all=$xoopsDB->fetchArray($result);
+
     return $all;
   }
 
@@ -1482,10 +1449,8 @@ class TadUpFiles{
     }
     closedir($dir_handle);
     rmdir($dirname);
+
     return true;
   }
 
 }
-
-
-?>

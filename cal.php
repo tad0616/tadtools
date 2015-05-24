@@ -28,4 +28,3 @@ if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/cal.php")){
 include_once XOOPS_ROOT_PATH."/modules/tadtools/cal.php";
 $cal=new My97DatePicker();
 */
-?>

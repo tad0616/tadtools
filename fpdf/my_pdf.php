@@ -144,4 +144,3 @@ function NbLines($w,$txt)
     return $nl;
 }
 }
-?>

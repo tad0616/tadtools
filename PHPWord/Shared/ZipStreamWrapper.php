@@ -173,4 +173,3 @@ class PHPWord_Shared_ZipStreamWrapper {
 		}
 	}
 }
-?>

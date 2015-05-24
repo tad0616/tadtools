@@ -808,6 +808,3 @@ if(!class_exists('PageBar')){
     }
   }
 }
-
-
-?>

@@ -727,4 +727,3 @@ class PHPWord_Writer_Word2007_Base extends PHPWord_Writer_Word2007_WriterPart {
 		$objWriter->endElement();
 	}
 }
-?>

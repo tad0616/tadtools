@@ -15,4 +15,3 @@ define("_MI_USE_PDA_TITLE","是否使用pda.php");
 define("_MI_USE_PDA_TITLE_DESC","若選是，若是以手機開啟會自動進入手機專用界面");
 define("_MI_STAR_RATING_TITLE","是否使用評分工具");
 define("_MI_STAR_RATING_DESC","若選是，將會出現星星評分工具");
-?>

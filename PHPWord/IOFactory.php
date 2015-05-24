@@ -117,4 +117,3 @@ class PHPWord_IOFactory {
 		throw new Exception("No $searchType found for type $writerType");
 	}
 }
-?>

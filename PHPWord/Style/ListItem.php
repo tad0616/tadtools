@@ -79,4 +79,3 @@ class PHPWord_Style_ListItem {
 		return $this->_listType;
 	}
 }
-?>

@@ -2,7 +2,6 @@
 include_once "tadtools_header.php";
 include_once "jquery.php";
 
-
 class tinymap{
   var $id;
   var $x;
@@ -11,20 +10,18 @@ class tinymap{
   var $zoom;
   var $show_jquery;
 
-	//建構函數
-	function tinymap($id,$x,$y,$title,$zoom=15,$show_jquery=true){
+    //建構函數
+    function tinymap($id,$x,$y,$title,$zoom=15,$show_jquery=true){
     $this->id=$id;
     $this->x=$x;
     $this->y=$y;
     $this->zoom=$zoom;
     $this->title=$title;
     $this->show_jquery=$show_jquery;
-	}
+    }
 
-
-
-	//產生路徑工具
-	function render(){
+    //產生路徑工具
+    function render(){
     $jquery=($this->show_jquery)?get_jquery():"";
 
     $main="
@@ -44,7 +41,7 @@ class tinymap{
       });
      })
     </script>";
+
     return $main;
   }
 }
-?>

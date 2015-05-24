@@ -12,6 +12,3 @@ function tadtools_qrcode($options){
   $block['bootstrap_version']=$_SESSION['bootstrap'];
   return $block;
 }
-
-
-?>

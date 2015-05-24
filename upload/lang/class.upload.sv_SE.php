@@ -80,5 +80,3 @@
     $translation['no_conversion_type']          = 'Ingen förvandlings typ bestämd.';
     $translation['copy_failed']                 = 'Fel vid kopieringen utav filen. copy() misslyckades.';
     $translation['reading_failed']              = 'Fel vid inläsningen utav filen.';   
-        
-?>

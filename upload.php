@@ -15,7 +15,6 @@ $fn=$_GET['CKEditorFuncNum'];
 if(!in_array($_GET['type'],$type_arr))
 mkhtml(1,"","error");
 
-
 $foo = new Upload($_FILES['upload']);
 if ($foo->uploaded) {
   // save uploaded image with no changes
@@ -29,9 +28,7 @@ if ($foo->uploaded) {
   }
 }
 
-
 function mkhtml($fn,$fileurl,$message) {
   $str='<script type="text/javascript">window.parent.CKEDITOR.tools.callFunction('.$fn.', \''.$fileurl.'\', \''.$message.'\');</script>';
   exit($str);
 }
-?>

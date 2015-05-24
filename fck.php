@@ -83,4 +83,3 @@ class FCKEditor264{
   }
 
 }
-?>

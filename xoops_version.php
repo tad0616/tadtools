@@ -12,7 +12,7 @@ $modversion['help'] = 'page=help';
 $modversion['license'] = 'GNU GPL 2.0';
 $modversion['license_url'] = 'www.gnu.org/licenses/gpl-2.0.html/';
 $modversion['image'] = "images/logo_{$xoopsConfig['language']}.png";
-$modversion['dirname'] = basename(dirname(__FILE__));
+$modversion['dirname'] = basename( __DIR__ );
 
 
 //---模組狀態資訊---//
@@ -126,5 +126,3 @@ $modversion['blocks'][$i]['name'] = _MI_TADTOOLS_QRCODE_BLOCK_NAME;
 $modversion['blocks'][$i]['description']  = _MI_TADTOOLS_QRCODE_BLOCK_DESC;
 $modversion['blocks'][$i]['show_func']  = 'tadtools_qrcode';
 $modversion['blocks'][$i]['template'] = 'tadtools_qrcode.html';
-
-?>

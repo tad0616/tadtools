@@ -23,4 +23,3 @@ function set_bootstrap($tpl="",$b3="_b3"){
   }
   return $tpl;
 }
-?>
