@@ -74,10 +74,9 @@ class slider{
         ";
       }else{
         $alt=empty($title)?'slider image':$title;
-        $show_title=empty($title)?"longdesc='{$image}'":"title='{$title}'";
         $all.="
           <li>
-            <a href='{$item_content['url']}'><img src='$image' alt='{$alt}' {$show_title}></a>
+            <a href='{$item_content['url']}'><img src='$image' alt='{$alt}' title='{$alt}'></a>
             $caption
           </li>
         ";
