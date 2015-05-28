@@ -376,7 +376,7 @@ class TadUpFiles{
       });
       </script>
       <div style='margin-bottom:7px;'>"._TAD_SELECT_TO_DEL."</div>
-      <div class='row-fluid'>
+      <div class='{$row}'>
         <div id='df_save_msg'></div>
         <table class='table table-striped table-hover'>
         <tbody id='list_del_file_sort' >
@@ -387,7 +387,7 @@ class TadUpFiles{
       </div>";
     }else{
       $files="<div style='margin-bottom:7px;'>"._TAD_SELECT_TO_DEL."</div>
-      <div class='row-fluid'><ul class='thumbnails'>$all_file</ul></div>";
+      <div class='{$row}'><ul class='thumbnails'>$all_file</ul></div>";
     }
 
     return $files;

@@ -16,7 +16,7 @@ $modversion['dirname'] = basename( __DIR__ );
 
 
 //---模組狀態資訊---//
-$modversion['release_date'] = '2015/05/12';
+$modversion['release_date'] = '2015/05/26';
 $modversion['module_website_url'] = 'http://tad0616.net/';
 $modversion['module_website_name'] = _MI_TAD_WEB;
 $modversion['module_status'] = 'release';
