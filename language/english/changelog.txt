@@ -1,438 +1,438 @@
-《TadTools 2.68 版 2015-05-26釋出》
+"TadTools Version 2.68 released 2015-05-26"
 ====================================
- 1.修正登入登出時，bootstrap版本判斷失準的問題。
- 2.修正colorbox寬度設定不正確的問題。
- 3.欄位驗證多加一個「中英文數字」的規則
- 4.CKEditor加入bootstrap支援
- 5.加入ztree 3.5樹狀目錄套件
+ 1. Amend login logout, bootstrap version determining misalignment problems.
+ 2. Fixed colorbox width not set correctly.
+ 3. Verify that one more field "in the alphanumeric" rule
+ 4.CKEditor added bootstrap support
+ 5. Add ztree 3.5 tree kit
 
 
-《TadTools 2.67 版 2015-05-05釋出》
+"TadTools Version 2.67 released 2015-05-05"
 ====================================
- 1.修正 jwplayer_new.php 解決影片無法清單播放的問題。
- 2.colorbox 加入長寬自動調整功能
- 3.修正bootstrap3後台按鈕底色會變透明的問題
- 4.更新 jquery-ui 為 1.11.4
- 5.更新facebook留言簿為最新版，並以時間順序排序
- 6.佈景加入導盲磚、accesskey等無障礙網頁機制
- 7.工具列函數加入產生該模組選單的json檔以供網站地圖模組讀取
+ 1. Fixed jwplayer_new.php playlist movie can not solve the problem.
+ 2.colorbox added length and width auto adjustment function
+ 3. Fix bootstrap3 button background will become transparent background problem
+ 4. Update jquery-ui to 1.11.4
+ 5. Update facebook Guestbook to the latest version, and in chronological order
+ 6. Composition Join guide brick, accesskey and other Web Accessibility mechanism
+ 7. Toolbar menu function added to produce the module's json file for site map module reads
 
 
-《TadTools 2.66 版 2015-03-23釋出》
+"TadTools Version 2.66 released 2015-03-23"
 ====================================
- 1.修改後台初始設定，在部份情況下無法選擇「套用BootStrap顏色」選項的問題。
+ 1. Modify the initial set back, in most cases you can not select "Apply BootStrap color" issue options.
 
 
 
-《TadTools 2.65 版 2015-03-21釋出》
+"TadTools Version 2.65 released 2015-03-21"
 ====================================
- 1.新增 mColorPicker.php 顏色挑選器
- 2.引入 jquery.jgrowl.js 1.4.2 取代官方舊版本使之可用於 jquery 1.9.x
- 3.bubblepopup 改用qtip2取代之，以支援新版的 jquery
- 4.修改 bubblepopup.php、ckcal.php、ck.php、dtree.php、elrte.php、fancybox.php、fck.php、flexslider2.php、FooTable.php、formValidator.php、jBreadCrumb.php、jeditable.php、jquery.php、jquery_pin.php、jwplayer.php、jwplayer_new.php、lofslidernews.php、star_rating.php、stickytableheaders.php、sweet_alert.php、syntaxhighlighter.php、treetable.php 將裡頭的 CSS 及 JavaScript 引入方式，改為XOOPS標準引入方式，可有效減少語法，避免程式互相衝突。
- 5.刪除 TinyNav、jquery.form、jquery.qrcode、ztree 等無用套件
- 6.新增 QR Code 區塊，可用在所有頁面。
- 7.新增 summernote 編輯器（for 行動裝置）
- 8.CKeditor 現在會自動判斷是否為行動裝置，若是，則自動切換為 Summernote 編輯器（CKeditor 目前無法在行動裝置下使用）
- 9.將後台佈景設定界面，使每個佈景都可以套用不同BootStrap顏色
- 10.刪除 bsie 套件
- 11.tadtools完成bootstrap3界面
+ 1. Add mColorPicker.php color picker
+ 2. Introduction jquery.jgrowl.js 1.4.2 replace the old version to make it official that can be used jquery 1.9.x
+ 3.bubblepopup qtip2 instead replace it, to support the new version of jquery
+ 4. Modify bubblepopup.php, ckcal.php, ck.php, dtree.php, elrte.php, fancybox.php, fck.php, flexslider2.php, FooTable.php, formValidator.php, jBreadCrumb.php, jeditable.php , jquery.php, jquery_pin.php, jwplayer.php, jwplayer_new.php, lofslidernews.php, star_rating.php, stickytableheaders.php, sweet_alert.php, syntaxhighlighter.php, treetable.php be introduced inside the CSS and JavaScript the way, change XOOPS standard introduces a way, which can effectively reduce the grammar and avoid conflicting programs.
+ 5. Remove TinyNav, jquery.form, jquery.qrcode, ztree and other useless packages
+ 6. New QR Code blocks can be used in all pages.
+ 7. New summernote editor (for mobile devices)
+ 8.CKeditor now automatically determine whether the mobile device, and if so, then automatically switch to Summernote editor (CKeditor currently not available in mobile devices)
+ 9. The background scenery setting interface, so that each can apply different sets BootStrap color
+ 10. Delete bsie Kit
+ 11.tadtools complete bootstrap3 interface
 
 
 
-《TadTools 2.64 版 2015-02-25 釋出》
+"TadTools Version 2.64 released 2015-02-25"
 ====================================
- 1.font-awesome更新為 4.3.0
- 2.修正$TadUpFiles無法下載的問題
+ 1.font-awesome updated to 4.3.0
+ 2. Fix $ TadUpFiles problem can not be downloaded
 
 
-《TadTools 2.63 版 2015-01-22 釋出》
+"TadTools Version 2.63 released 2015-01-22"
 ====================================
- 1.更新 social-likes 套件為 3.0.7
- 2.加入 BootStrap3
- 3.針對 BootStrap3 新增theme3_tpl共同樣板
- 4.新增 smartmenus-0.9.7以解決 BootStrap3 下拉選單僅兩層的問題
- 5.修正 facebook留言框寬度無法 100% 的問題
- 6.將 darkstrap 搬移至\bootstrap\themes\dark\darkstrap
- 7.新增 BootStrap3 許多佈景
- 8.font-awesome更新為 4.2.0
- 9.移除 Buttons 及 iCheck
- 10.新增 sweet-alert 功能
+ 1. Update the social-likes kit 3.0.7
+ 2. Add BootStrap3
+ 3. For BootStrap3 new common template theme3_tpl
+ 4. New smartmenus-0.9.7 to resolve the issue only two of BootStrap3 drop-down menu
+ 5. Fixed facebook message box width can not be 100% of the issue
+ 6. darkstrap move to \ bootstrap \ themes \ dark \ darkstrap
+ 7. New BootStrap3 many sets
+ 8.font-awesome updated to 4.2.0
+ 9. Remove Buttons and iCheck
+ 10. The new sweet-alert feature
 
 
-《TadTools 2.62 版 2014-11-11 釋出》
+"TadTools Version 2.62 released 2014-11-11"
 ====================================
- 1.加入 syntaxhighlighter 2.1.382
- 2.加入 syntaxhighlighter 的版本選偏好設定
- 3.新增 sweet-alert 套件
- 4.修正 cssmenu 共同樣板，使之可套用後台導覽列顏色設定
- 5.修正樹狀目錄圖示消失的問題
- 6.新增 nav-pills 選單共同樣板
+ 1. Add syntaxhighlighter 2.1.382
+ 2. Add syntaxhighlighter versions election preferences
+ 3. Add sweet-alert kit
+ 4. Fixed cssmenu common template, so that can be applied to set the background color of the navigation bar
+ 5. fixed the problem tree icon disappears
+ 6. New nav-pills common template menu
 
 
 
-《TadTools 2.61 版 2014-10-24 釋出》
+"TadTools Version 2.61 released 2014-10-24"
 ====================================
- 1.修正 lofslidernews.php 使之符合無障礙規範
- 2.修正 dtree 使之符合無障礙規範
- 3.新增 phpWord 合併儲存格功能
- 4.修正 my_js.html，避免對其他按鈕造成影響
- 5.更新 syntaxhighlighter 為 2.1.382 版，並補齊之前刪除的語言
- 6.加入 syntaxhighlighter 偏好設定
+ 1. Fixed lofslidernews.php to conform to accessibility specifications
+ 2. Amendments to conform to accessibility specifications dtree
+ 3. Add phpWord merged cell function
+ 4. Fixed my_js.html, to avoid the impact of the other buttons
+ 5. Update syntaxhighlighter to version 2.1.382, language and padded deleted before
+ 6. Add syntaxhighlighter Preferences
 
 
-《TadTools 2.6 版 2014-09-23 釋出》
+"TadTools Version 2.6 released 2014-09-23"
 ====================================
- 1.降版 jquery 為 1.8.3，以增加對舊版jquery相容性
- 2.修正 StickyTableHeaders路徑大小寫錯誤的bug
- 3.更新 jquery ui為1.11.0版
- 4.修正 slideshow_responsive.html 佈景選單的專屬橫幅功能無法正確顯示的問題
- 5.更新 jquery cookie 為 1.4.1 版
- 6.佈景變數加入 slide_url，以支援加入網址功能
- 7.修正 amazingslider1.html 使之支援滑動圖片網址功能
- 8.更新滑動圖文預設文字內容
- 9.fancybox2新增避免點擊外圍而關閉的參數
-10.後台字型大小設為12px
-11.選單新增資料庫連結
-12.安裝佈景時，自動判別是否需載入bootstrap
-13.修正選單語系有時後會抓不到的問題
-14.新增導覽列是否顯示登入選項的偏好設定
-15.開啟TadTools前台功能（為了可以播放上傳的影片檔）
-16.調整佈景變數呈現頁面，使之更容易閱讀
-17.$TadUpFiles 加入 set_fancybox()，可決定是否套用fancybox
-18.$TadUpFiles 加入 set_download_url()，可在下載時載入自己想要的路徑
-19.增加三套滑動圖文共同樣板
-20.修改menu.html位置，使之和其他選單較為一致
-21.新增superfish選單功能
-22.fancybox 加入自動播放功能
-23.$TadUpFiles 加入圖片自動播放功能
-24.增加slideman滑動圖文樣板
+ 1. jquery down version is 1.8.3, in order to increase the compatibility of the old jquery
+ 2. Fixed the bug StickyTableHeaders path capitalization errors
+ 3. Update to version 1.11.0 jquery ui
+ Question 4. amendments slideshow_responsive.html exclusive setting menu function can not be correctly displayed banners
+ 5. Update jquery cookie to version 1.4.1
+ 6. setting variables added slide_url, to support the added site functionality
+ 7. Fixed amazingslider1.html make support slide image URL function
+ 8. Update slide graphic preset text
+ 9.fancybox2 new peripheral avoid clicking shutdown parameters
+10. The background font size to 12px
+11. New Database menu link
+12. When the installation sets, automatically determine whether the required load bootstrap
+13. Fixed menu language will not catch the problem Sometimes
+14. A new navigation bar is displayed login option Preferences
+15. Open TadTools Front office features (in order to play video files uploaded)
+16. adjust the set of variables to render the page, making it easier to read
+$ 17. TadUpFiles added set_fancybox (), may decide whether to apply fancybox
+$ 18. TadUpFiles added set_download_url (), can be loaded at the path they want to download
+19. The increase in three graphic slide common template
+20. Modify menu.html position to make more consistent with other menu
+21. New superfish menu function
+22.fancybox join AutoPlay feature
+23. $ TadUpFiles add images Autoplay feature
+24. The increase slideman slide graphic model
 
 
-《TadTools 2.5 版 2014-06-25 釋出》
+"TadTools version 2.5 release 2014-06-25"
 ====================================
- 1.新增兩個和佈景相關的偏好設定（可調整登入選單中的OpenID呈現方式以及是否釘選住導覽列）
- 2.新增新的滑動圖文共同樣板，以提高相容性，並供更多佈景開發的選擇
- 3.修正left_bottom.html及right_bottom.html共同樣板，避免樣板錯位。
- 4.新增cssmenu下拉選單共同樣板公佈景開發套用
- 5.佈景中的$menu_var選單樣板變數加入管理員選單及使用者選單兩部份
- 6.修正get_menu_var.html中部份函數會相衝的問題（例如導致聯絡我們模組變成空白）
- 7.新增佈景可自由選擇是否調用管理員、使用者選單的機制
- 8.加入中文檔案下載路徑自動編碼的設定（臺南市飛番雲端主機請設成「否」。）
- 9.修正 $TadUpFiles 遇到有子目錄的情形會無法下載的問題
-10.修正共同樣板，加入登入登出功能。
-11.更新jquery為1.11.1
-12.修正mColorPicker.js中的無效語法
-13.修復elFinder嚴重安全性漏洞
+ 1. Two new preferences and scenery related (adjustable OpenID login menu of presentation and whether nail choose to live in the navigation bar)
+ 2. Add a new graphic slide common template in order to improve compatibility, and sets development for more choices
+ 3. Fix left_bottom.html and right_bottom.html common model, to avoid dislocation model.
+ 4. New cssmenu dropdown King announced the development of a common template to apply
+ 5. scenery of $ menu_var menu template variables and join the two parts of the Administrator menu User Menu
+ 6. Fixed get_menu_var.html function in part of the clash of issues (such as causing contact us module becomes blank)
+ 7. The new setting mechanism may freely choose whether to call the administrator, the user Menu
+ 8. Join Chinese file download path automatic coding set (Tainan flying Fan cloud host requested to "no.")
+ 9. Fixed $ TadUpFiles encounter situations subdirectories will be unable to download problems
+10. amend the common model, Join Log logout function.
+11. Update jquery to 1.11.1
+12. Fixed mColorPicker.js Invalid syntax
+13. Repair elFinder serious security vulnerabilities
 
 
 
-《TadTools 2.4 版 2014-05-17 釋出》
+"TadTools Version 2.4 released 2014-05-17"
 ====================================
- 1.因應tad_theme新增區塊樣式設定功能，修改共同樣板以支援該功能。
- 2.重新優化導覽列語法，將選單變數獨立為get_menu_var.html，使之更彈性應用並更易於管理。
- 3.將滑動圖文變數獨立為 get_slider_var.html，讓套用其他滑動圖文工具更方便。
- 4.共同樣板my_js.html加入登入框欄位會自動調整大小避免破版的功能
- 5.CKEditor新增一個簡易編輯模式
- 6.修正Windows下中文檔名下載不正確的問題
- 7.修正匯入圖檔時無法寫入圖片說明的問題
- 8.滑動圖片的文字說明將80%的透明度改為50%並支援IE8（感謝王聖閔老師提供），並取消字型大小設定
- 9.新增ztree樹狀目錄工具
-10.修復樹狀表格拖曳搬移無作用的bug
-11.共同樣板加入額外設定array類型的支援
-12.新增colorbox燈箱效果
+ 1. In response to tad_theme new style setting function block, modify common template to support this feature.
+ 2. Re-optimized navigation bar syntax, the menu variable independently get_menu_var.html, making it more flexible and easier to manage applications.
+ 3. Slide the graphic variables independently get_slider_var.html, let slip to apply other graphic tools more convenient.
+ The common model my_js.html Join Log box fields will be automatically resized to avoid breaking the version of the function
+ 5.CKEditor Added a simple edit mode
+ 6. Fixed Windows under the file name to download is not the right questions
+ Unable to write to 7. Fixed problem importing drawing Caption
+ 8. Sliding Picture caption 80% of opacity to 50% and support IE8 (thank Sheng-Min teacher available), and cancel the font size setting
+ 9. New ztree tree tool
+10. Fixing the tree form of bug boxes to move no effect
+11. A common template to add extra set of array type support
+12. New colorbox lightbox effect
 
 
 
-《TadTools 2.3 版 2014-05-02 釋出》
+"TadTools Version 2.3 released 2014-05-02"
 ====================================
- 1.修正 TadUpFiles 使之欲說明時，若無說明則以檔名替代之。
- 2.加入 TadUpFiles 自動播放檔案時間之設定。
- 3.工具列新增模組管理工具，並以圖形方式加上
- 4.修正樣板以避免使用者沒有安裝 tad_themes 模組時會造成系統無法運作的狀況
- 5.新增 mColorPicker 顏色選擇器
- 6.升級 JWPlayer為 6.8（解決 Tad Player 在手機上無法播放影片的問題）
+ 1. To make amendments TadUpFiles explanation, without explanation places the file name instead.
+ 2. Add TadUpFiles Autoplay set the file time.
+ 3. Toolbar new module management tool, and graphically plus
+ 4. Fixed template to avoid when the user does not tad_themes module installation will cause the status of the system can not operate
+ 5. New mColorPicker Color Picker
+ 6. Upgrade JWPlayer 6.8 (solve Tad Player can not play movies on mobile phones problem)
 
 
-《TadTools 2.2 版 2014-04-09 釋出》
+"TadTools version 2.2 release 2014-04-09"
 ====================================
- 1.讓佈景更聰明，沒有左欄或右欄時可以自動填滿版面
- 2.修正 TadUpFiles 使之在下載時在某些windows中文檔名無法正確下載的問題
- 3.修正 TadUpFiles 使之可排序附件順序
- 4.responsiveslides滑動圖片及logo可支援flash
- 5.內建更大量的佈景預設樣板
- 6.新增 font-awesome 圖示 CSS
- 7.新增 Buttons 按鈕 CSS
- 8.新增 iCheck 單選複選 CSS
- 9.預設佈景導覽列會釘在頂部
-10.修正佈景在行動裝置下會有大量空白的區域產生情形
-11.修正樣板提昇IE相容性
-12.新增「是否崁入快速登入到登入選單中」的偏好設定
-13.新增TinyNav自適應工具列
-14.改用新版模組工具列，除了更美觀外，在行動裝置上會有更好的體驗
-15.移除fckeditor編輯器目錄
+ 1. Let scenery smarter, no left column or right column automatically fills forum
+ 2. Fixed TadUpFiles make certain windows when downloading the document name can not be downloaded right questions
+ 3. Fix TadUpFiles make sortable attachment order
+ 4.responsiveslides slide image and logo can support flash
+ 5. scenery a lot more pre-built templates
+ 6. New icon CSS font-awesome
+ 7. Add button CSS Buttons
+ 8. New iCheck radio check CSS
+ 9. default setting will be the nail in the top navigation bar
+10. The amendment sets will produce a blank area of ​​a large number of circumstances at mobile devices
+11. Correction model to enhance the compatibility of IE
+12. Add "Are embed Quick Access to Login menu" preferences
+13. New TinyNav adaptive Toolbar
+14. The switch to the new version of the module toolbar, in addition to more beautiful, but there will be a better experience on your mobile device
+15. remove fckeditor editor directory
 
 
-《TadTools 2.10 版 2014-03-13 釋出》
+"TadTools Version 2.10 released 2014-03-13"
 ====================================
-1.加入特定頁面專屬橫功能
-2.佈景標籤多一個 logo_position
-3.共同樣板中，導覽列不顯示網站名稱時，改為顯示回首頁
-4.修正共同樣板中區塊標題無法顯示圓角以及無法不重複標題背景圖的bug
-5.取消共同樣板中HTML模式的佈景個區域margin設定，以避免內容被裁切。
-6.修正二欄式右區域在下方時，若滑動圖文取消，下方區域也會消失的bug
+1. Add a specific page dedicated cross-functional
+2. Composition label one more logo_position
+3. common template, the navigation bar does not display the site name, instead display Home
+4. Fixed common template title block does not appear round and was unable to repeat the title background image bug
+5. Cancellation common template in HTML mode setting regional margin settings to avoid content is cropped.
+6. Fixed two-column at the bottom right area, if the slide graphic canceled, the area below the bug will disappear
 
 
-《TadTools 2.09 版 2014-03-05 釋出》
+"TadTools Version 2.09 released 2014-03-05"
 ====================================
-1.微調工具列，使之在首頁不出現，僅出現在次頁，以維持畫面美觀
-2.加入自動刪除輕鬆架安裝檔install_chk.php，以增加系統安全性。
-3.修正若同一頁面有兩個以上的responsiveslides滑動圖片，只有一個能運作的bug
-4.修改 TadUpFiles 物件，修正附檔名為大寫時無法讀到正確圖檔的問題
-5.修正在手機上，下拉選單無效的問題
-6.將快速登入整合到佈景中
+1. The fine-tuning the toolbar, so as not to appear on the first page, only in the second page, in order to maintain beautiful pictures
+2. Add automatically deleted easily rack installation file install_chk.php, in order to increase system security.
+3. Fixed the same page if there are more than two responsiveslides sliding picture, there is only one functioning of bug
+4. Modify TadUpFiles objects attached file correction can not read the correct drawing problems when called capital
+5. fixed on the phone, pull-down menus invalid question
+6. Quick Access into sets in
 
-《TadTools 2.08 版 2014-02-17 釋出》
+"TadTools Version 2.08 released 2014-02-17"
 ====================================
-1.微調樹狀目錄
-2.修正樹狀表格的無法拖曳和縮放的問題
-3.修正responsiveslides.css將滑動圖片的下邊距取消間隙。
-4.新增randStr()，請同步更新 tadnews、tad_login、tad_uploader
-5.修正修正responsiveslides無法顯示文字內容的問題
+1. trimming tree
+2. Unable to drag and zoom the problem corrected tree form
+3. Slide image correction responsiveslides.css canceled bottom margin gap.
+4. New randStr (), please synchronized tadnews, tad_login, tad_uploader
+5. Fixes Fixed problem responsiveslides not display textual content
 
 
-《TadTools 2.07 版 2014-01-25 釋出》
+"TadTools Version 2.07 released 2014-01-25"
 ====================================
-1.更新 treeTable 為 3.1.0 版，解決和 bootstrap 某些功能相衝的問題。
+1. Update treeTable to version 3.1.0 to address some of the features and bootstrap clash problem.
 
 
-《TadTools 2.06 版 2014-01-20 釋出》
+"TadTools Version 2.06 released 2014-01-20"
 ====================================
-1.若工具列只有一個回首頁時，則自動隱藏工具列。
-2.新增 txt_to_group_name()、get_all_groups()、get_basename()、to_utf8()、is_utf8()、auto_charset()等共同函數。
-3.修改 TadUpFiles 物件，使之匯入檔案時也可以支援中文檔名。
+1. If the toolbar is only one back home, then automatically hide the toolbar.
+2. New txt_to_group_name (), get_all_groups (), get_basename (), to_utf8 (), is_utf8 (), auto_charset () and other common functions.
+3. Modify TadUpFiles object, so that it can also support the document name when importing files.
 
-《TadTools 2.05 版 2014-01-16 釋出》
+"TadTools Version 2.05 released 2014-01-16"
 ====================================
-1.加強 PHP 語法格式，避免開除錯時產生通知訊息。
-2.關閉 TadUpFiles 的 jQuery UI（避免影響pda.php頁面）
-3.修改 TadUpFiles 使之可以上傳CSV檔
-4.共同佈景中加入抓取導覽列logo圖的功能
+1. Strengthen the PHP syntax, to avoid dismissal notification message wrong.
+2. Close TadUpFiles of jQuery UI (to avoid affecting pda.php page)
+3. Modify TadUpFiles makes it possible to upload CSV file
+The common navigation bar crawl scenery added logo function diagram
 
 
-《TadTools 2.04 版 2014-01-02 釋出》
+"TadTools Version 2.04 released 2014-01-02"
 ====================================
-1.刪除FCK的上傳測試頁面，強化安全性
-2.新增TadUpFiles的檔案複製匯入方法 import_one_file();
-3.新增佈景共同樣板檔元件（供開發佈景用）
-3.更新ResponsiveSlides為1.54版
+1. Remove FCK uploaded test page, and strengthen security
+2. Copy the new file import method TadUpFiles import_one_file ();
+3. The new setting common template file elements (for developers decorations)
+3. Update ResponsiveSlides to version 1.54
 
-《TadTools 2.03 版 2013-12-19 釋出》
+"TadTools Version 2.03 released 2013-12-19"
 ====================================
-1.修改 TadUpFiles ，加入 get_file_for_smarty()的方法
-2.修改 TadUpFiles ，修正刪除時，無法刪掉實體檔案的bug
-3.加入BSIE（鄙視IE），有限度的提昇 bootstrap 對 ie6 的支援
+1. Modify TadUpFiles, added get_file_for_smarty () method
+2. Modify TadUpFiles, amendments deleted, files can not be deleted entity bug
+3. Add BSIE (contempt IE), limited lifting of bootstrap support for ie6
 
-《TadTools 2.02 版 2013-11-14 釋出》
+"TadTools Version 2.02 released 2013-11-14"
 ====================================
-1.針對 MySQL的嚴格模式做最佳化
-2.修改 TadUpFiles 整合上傳物件使之支援各種編碼語系及平台，並強化下載效率（避免CPU衝高）。
-3.新增轉碼工具函數，讓windows或linux都可以正確使用中文檔名
-4.更新JW Player播放器為6.7版，並使用新的JW Player物件檔
+1. strict mode for MySQL to make the best of
+2. Modify TadUpFiles integration upload objects so that support various coding languages ​​and platforms, and to strengthen the efficiency of loading (avoid CPU spikes).
+3. Add transcoding utility functions, so windows or linux can properly use the document name
+4. Update the JW Player Player to version 6.7, and use the new JW Player object file
 
-《TadTools 2.01 版 2013-10-24 釋出》
+"TadTools Version 2.01 released 2013-10-24"
 ====================================
-1.修正iconize.css，新增更多格式支援
-2.修改 JwPlayer 播放器，使之並支援自訂寬度。
+1. Fixed iconize.css, add more format support
+2. Modify JwPlayer players to make and support custom width.
 
-《TadTools 2.0 版 2013-10-16 釋出》
+"TadTools version 2.0 release 2013-10-16"
 ====================================
-1.更新 bootstrap 為 2.3.2，並使用更完整的 bootstrap （之前的bootstrap有精簡）
-2.調整模組後台管理介面CSS，使表格標題列底色及文字顏色更為清楚，並解決IE看不到部份按鈕的bug。
-3.新增 TadUpFiles 整合上傳物件
-4.更新jquery.tinyMap為2.5.2版
-5.移除 plupload 套件
-6.加入 darkstrap，並新增佈景顏色（正常或深色）設定
+1. Update the bootstrap is 2.3.2, and the use of more complete bootstrap (bootstrap before have streamlined)
+2. Adjust the background management interface module CSS, so that the table header row background and text color more clearly and solve most of the buttons see IE bug.
+3. Add TadUpFiles integration upload objects
+4. Update jquery.tinyMap to version 2.5.2
+5. Remove plupload Kit
+6. Add darkstrap, and sets new color (normal or dark) is set
 
-《TadTools 1.19 版 2013-07-29 釋出》
+"TadTools Version 1.19 released 2013-07-29"
 ====================================
-1.由於 projekktor 播放器的不再支援youtube，故移除之。
-2.修改 JwPlayer 播放器，改用HTML5播放，並支援自動寬度偵測。
-3.修改 phpWord，使之可在表格中利用 \n 換行。
+1. Since projekktor player no longer support youtube, so remove it.
+2. Modify JwPlayer player, use HTML5 playback, and support for automatic width detection.
+3. Modify phpWord, so that can be used \ n new line in the table.
 
-《TadTools 1.18 版 2013-07-01 釋出》
+"TadTools Version 1.18 released 2013-07-01"
 ====================================
-1.新增jquery.sharrre-1.3.4推文工具
-2.升級 phpExcel 為 1.7.9 版
-3.修改JwPlayer播放器設定，支援自動偵測影片寬度，自動依比例設定高度
+1. New jquery.sharrre-1.3.4 Tweets tool
+2. phpExcel upgrade to version 1.7.9
+3. Modify JwPlayer player settings, support for automatic detection of film width, height is automatically set to scale
 
-《TadTools 1.17 版 2013-06-06 釋出》
+"TadTools Version 1.17 released 2013-06-06"
 ====================================
-1.抽出共用語系檔
-2.更新驗證套件formValidator為2.6
-3.取消對一般PHP程式的支援（僅支援XOOPS）
-4.新增get_xoops_url()及get_xoops_path()兩個函數
-5.更新 CKEditor 為4.1.1版
-6.加入oembed多媒體崁入器及數學編輯工具等CKEditor外掛
+1. extract the common language file
+2. Update Verification Suite 2.6 formValidator
+3. Cancel PHP program of support for the general (Support only XOOPS)
+4. New get_xoops_url () and get_xoops_path () two functions
+5. Update CKEditor to version 4.1.1
+6. Add oembed embed multimedia editing tools, such as device and mathematics CKEditor plug
 
 
-《TadTools 1.16 版 2013-05-24 釋出》
+"TadTools Version 1.16 released 2013-05-24"
 ====================================
-1.修正後台表格標題文字變白色的問題
-2.修改 facebook 留言框在第二層目錄下網站不正常的問題
-3.修正lofslidernews滑動效果位置bug（感謝許若書提供修正檔）。
-4.更新class.upload.php為0.32
-5.修正MySQL ENGINE = MYISAM的情況下索引超過1000 bytes導致無法安裝的問題。
-6.加入elrte編輯器，以便在行動裝置上使用。
-7.將elFinder獨立出來，供CKEditor及elrte編輯器使用
-8.修正ResponsiveSlides滑動下方空白過大的問題
-9.修正編輯器語系可隨XOOPS語系變化
-10.修正CKEdit中「上傳」按鈕失效的問題
-11.解決編輯器不支援 xlanguage 的問題
+1. Amend the title text becomes white background form a problem
+2. Modify the facebook message frame in the second layer of the directory site is not working properly
+3. Fix lofslidernews sliding effect position bug (thanks promises, the book provides correction file).
+4. Update class.upload.php 0.32
+5. Under amendments MySQL ENGINE = MYISAM the index has more than 1000 bytes result can not be installed.
+6. Add elrte editor for use on mobile devices.
+7. elFinder independent, for CKEditor and elrte Editor
+8. Blank slide downward correction ResponsiveSlides problem of excessive
+9. Correction Editor language may vary with XOOPS Languages
+10. Fixed CKEdit the "Upload" button failure problem
+11. The editor does not support xlanguage solve problems
 
-《TadTools 1.15 版 2013-05-08 釋出》
+"TadTools 1.15 Version 2013-05-08 release"
 ====================================
-1.加入fancyBox響應式燈箱工具
-2.更新 bootstrap 為 2.3.1，並移除掉裡頭的 navbar 相關設定以避免影響原有的 bootstrap 設定。
-3.新增tadtools的佈景是否欲使用額外的bootstrap設定。
-4.將 tadtools 改為 XOOPS 2.5.5模組架構
+1. Add fancyBox responsive tool boxes
+2. bootstrap the 2.3.1 update, and remove navbar related settings inside out in order to avoid the effects of the original bootstrap settings.
+3. Add tadtools scenery whether he wishes to use additional bootstrap settings.
+4. The modular architecture tadtools changed XOOPS 2.5.5
 
-《TadTools 1.14 版 2013-03-03 釋出》
+"TadTools Version 1.14 released 2013-03-03"
 ====================================
-1.更新 projekktor 播放器為 1.2.19r188 版，解決播放工具列不會自動浮現的問題
-2.新增 footable 響應式表格工具
-3.新增 PHPWord word文件產生物件
-4.修正若從評論區塊連至有 FB 留言的頁面，其留言內容無法顯示的問題。
+1. Update projekktor Player to version 1.2.19r188, playing Toolbar does not automatically solve the problem emerge
+2. New footable Responsive Table Tools
+3. Add PHPWord word file generation thing
+The amendments even if there are pages from FB comment block to the message, the message could not be displayed issue.
 
 
-《TadTools 1.13 版 2012-12-17 釋出》
+"TadTools Version 1.13 released 2012-12-17"
 ====================================
-1.調整 facebook 留言框寬度為 100%
-2.加入 projekktor 自由軟體播放器
-3.加入 phpExcel 1.7.8 Excel物件（產生報表用）
-4.加入 fpdf 製作 PDF 的物件
-5.加入 jquery.raty-2.4.5 評分套件
+1. Adjust facebook message box width 100%
+2. Add projekktor free software player
+3. Add phpExcel 1.7.8 Excel object (with report generation)
+4. Add fpdf make PDF objects
+5. Add jquery.raty-2.4.5 score Kits
 
 
-《TadTools 1.12 版 2012-11-23釋出》
+"TadTools Version 1.12 released 2012-11-23"
 ====================================
-1.加入 flexslider 響應式滑動工具
-2.加入 ResponsiveSlides 響應式滑動工具
-3.移除 fckeditor 改用 ckeditor 3.6.5（因為fckeditor在firfox 17無法正常運作）
+1. Add flexslider response sliding tool
+2. Add ResponsiveSlides response sliding tool
+3. Remove fckeditor switch ckeditor 3.6.5 (because fckeditor not work in firfox 17)
 
 
-《TadTools 1.11 版 2012-10-15釋出》
+"TadTools 1.11 Version 2012-10-15 release"
 ====================================
-1.取消 Google API 金鑰之後台偏好設定
-2.取消 facebook 之後台偏好設定
-3.更新 jquery 為1.8.2 版
-4.更新 jquery-ui 為1.9.0 版
-5.加入 jquery-mobile 1.2.0 版
-6.更新引入jquery函數使用Google API模式的版本更新至jquery 1.8.2版及jqueryui 1.8.23
-7.移除 jquery.qrcode 改用PHP方式產生圖檔，以解決部份瀏覽器無法正確看到QR Code的問題，並且可以在FB使用之。
-8.更新fb留言框語法，使之寬度可以自動放大到全螢幕
-9.更新換頁工具，使之顯示更正確，不會累加一堆g2p參數
-10.更新 multiple-file-upload 為 1.48
-11.更新FCKeditor為2.6.8版
-12.修改分頁樣式
-13.加入bootstrap 2.1.1
+1. After cancel Google API key station Preferences
+2. After cancellations facebook station Preferences
+3. Update jquery to version 1.8.2
+4. Update jquery-ui to version 1.9.0
+5. Add jquery-mobile 1.2.0 version
+6. The update introduces jquery function uses the Google API mode versions update to jquery 1.8.2 version and jqueryui 1.8.23
+7. Remove jquery.qrcode PHP mode switch generated drawing to solve Most browsers can not see the correct QR Code issues, and you can use it on FB.
+8. Update fb message box grammar, so that the width can be automatically enlarged to full screen
+9. Update paging tool that displays more correctly, does not accumulate a bunch g2p parameters
+10. Update the multiple-file-upload 1.48
+11. Update FCKeditor to version 2.6.8
+12. Modify Page Styles
+13. Join bootstrap 2.1.1
 
 
-《TadTools 1.10 版 2012-7-14釋出》
+"TadTools release version 1.10 2012-7-14"
 ====================================
-1.取消google API 金鑰之偏好設定
-2.jquery預設以local模式運作
-3.新增TinyMap2.23地圖工具
-4.更新引入jquery函數使用Google API模式的版本更新至jquery 1.7.2及jqueryui 1.8.21
+1. Cancel the google API key of Preferences
+2.jquery preset in local mode of operation
+3. Add TinyMap2.23 Map Tools
+The update introduces jquery function uses the Google API mode versions update to jquery 1.7.2 and jqueryui 1.8.21
 
 
-《TadTools 1.9 版 2012-06-12釋出》
+"TadTools Version 1.9 released 2012-06-12"
 ====================================
-1.更新FCKeditor為2.6.7版
-2.更新KCFinder為2.5.1版
-3.更新class.upload.php為3.1版
-4.更新JW Player為5.9版
-5.更新jquery為1.7.2版
-6.更新jquery-ui為1.8.20版
-7.新增lofslidernews工具
+1. Update FCKeditor to version 2.6.7
+2. Update KCFinder to version 2.5.1
+3. Update class.upload.php to version 3.1
+4. JW Player update to version 5.9
+5. Update jquery to version 1.7.2
+6. Update jquery-ui to version 1.8.20
+7. New lofslidernews Tools
 
-《TadTools 1.8 版 2011-12-29 釋出》
+"TadTools Version 1.8 released 2011-12-29"
 ====================================
-1.更新JW Player物件，修正播放清單顯示問題。
-2.更推文工具，改使用AddThis服務。
-3.加入JW Player的高清支援
+1. Update the JW Player objects, correction playlist display problems.
+2. More Tweets tool change using AddThis service.
+3. Add the JW Player HD support
 
-《TadTools 1.7 版 2011-12-08 釋出》
+"TadTools Version 1.7 released 2011-12-08"
 ====================================
-1.修正推文工具在IE下顯示問題。
-2.更新JW Player 為 5.8 版，並支援 ipad 等裝置。
-3.微幅修改樹狀表格功能。
-4.加入高亮度語法支援。
-5.加入手持裝置判斷功能。
-6.加入QR Code功能
+1. Fixed Tweets tool display problems in IE.
+2. JW Player update to version 5.8, and support ipad other devices.
+3. The tree forms a slight modification function.
+4. Add high brightness syntax support.
+5. Add the handheld device to determine the function.
+6. Add QR Code function
 
-《TadTools 1.6 版 2011-11-12 釋出》
+"TadTools 2011-11-12 Version 1.6 release."
 ====================================
-1. 更新 jw player 為 5.6 版
-2. 更新驗證套件formValidator 1.4 為 2.2
-3. 修正 chk2() 函數
-4. 更新 jquery 版本為 1.6.4，jquery ui 版本為 1.8.16
-5. 將 jquery 使用模式加入偏好設定中，以便從後台進行設定
-6. 改善本地端 jquery 重複載入問題
-7. fck 編輯器加入高亮度支援
-8. 修改推文工具，加入Google+
+1. Update jw player to version 5.6
+2. Update Verification Suite formValidator 1.4 2.2
+3. Fix chk2 () function
+4. Update jquery version 1.6.4, jquery ui version 1.8.16
+5. jquery usage patterns added preferences in order to be set from the background
+6. Improving the local side jquery duplicate Loading issues
+7. fck editor added support for high-brightness
+8. Modify tweets tool, join Google+
 
 
-《TadTools 1.5 版 2011-03-24 釋出》
+"TadTools 1.5 version released 2011-03-24"
 ====================================
-1. 調整 jw player 5.3 物件
-2. 加入表格樹 treeTable 的 jquery
-3. 加入拖曳、排序功能
-4. 加入 bubblepopup 提示套件
-5. push_url 加入 $css 參數，可自訂推文工具列位置
-6. 修正 chk2() 函數錯誤問題
-7. 加強分頁物件功能
-8. 加入自動轉連結 autolink() 函數
-9. 新增jquery cookie
-10.新增formValidator表單驗證工具
-11.新增facebook留言函數
+1. Adjust jw player 5.3 object
+2. Add a table of jquery tree treeTable
+3. Add boxes, sorting function
+4. Add bubblepopup Tip Kit
+5. push_url added $ css parameters, customizable toolbar position tweets
+6. Fixed chk2 () function error issue
+7. Strengthening paging feature article
+8. added automatically transferred Quick autolink () function
+9. Add jquery cookie
+10. New formValidator form validation tool
+11. A new message function facebook
 
-《TadTools 1.4 版 2010-11-25 釋出》
+"TadTools Version 1.4 released 2010-11-25"
 ====================================
-1. 加入 Jupload 上傳 java applet
-2. 調整 jw player 5.3 物件
-3. 加入 rrmdir 刪除目錄樹函數
+1. Add Jupload upload java applet
+2. Adjust jw player 5.3 object
+3. Add rrmdir remove a directory tree function
 
-《TadTools 1.3 版 2010-11-16 釋出》
+"TadTools Version 1.3 released 2010-11-16"
 ====================================
-1. 取消jBreadCrumb路徑工具的白色底色
-2. 避免函數重複引入問題
-3. 獨立jquery引入函數
+1. Cancel jBreadCrumb path tool white background
+2. Avoid introducing problem repeat function
+3. imported functions independent jquery
 
-《TadTools 1.2 版 2010-11-04 釋出》
+"TadTools Version 1.2 released 2010-11-04"
 ====================================
-1. 加入後台選單函數 admin_toolbar()
-2. 加入水平路徑工具 jBreadCrumb
-3. 加入影片播放套件 jw player 5.3
-4. 修正引入mainfile.php 路徑
-5. 加入取得 jquery 函數 get_jquery()
-6. 加入jeditable，點擊編輯功能
+1. Add background menu function admin_toolbar ()
+2. Add a horizontal path tool jBreadCrumb
+3. Add movie playback kit jw player 5.3
+The amendments introduced mainfile.php path
+5. Add obtain jquery function get_jquery ()
+6. Add jeditable, click Edit function
 
 
-《TadTools 1.1 版 2010-10-05 釋出》
+"TadTools 2010-10-05 released version 1.1"
 ====================================
-1. 加入jquerychained 連動選單套件
-2. 加入FCK編輯器的KCFinder套件。
-3. FCK編輯器加入「減少縮排」及「取消連結」的按鈕，並開放tab鍵功能
+1. Add jquerychained linked menu Kit
+2. Add FCK editor KCFinder kit.
+3. FCK editor added "reduce indent" and "unlink" button, and open the tab key function
 
 
-《TadTools 1.0 版 2010-10-05 釋出》
+"TadTools 2010-10-05 released version 1.0"
 ====================================
-1. FCKeditor 2.6.4所見即所得編輯器
-2. dtree 樹狀目錄套件
-3. Jquery 1.4.2 及 Jquery UI 1.8.4
-4. lytebox 燈箱效果套件
-5. multiple-file-upload 多檔上傳套件
-6. My97DatePicker 月曆套件
-7. upload 上傳套件
-8. tad_function.php 常用函數檔
+1. FCKeditor 2.6.4 WYSIWYG editor
+2. dtree tree kit
+3. Jquery 1.4.2 and Jquery UI 1.8.4
+4. lytebox Lightbox effect Kits
+5. multiple-file-upload multiple files to upload Kits
+6. My97DatePicker Calendar Kit
+7. upload Upload Kit
+8. tad_function.php commonly used functions file
