@@ -1,7 +1,7 @@
 <?php
 /*
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/mColorPicker.php")){
-  redirect_header("index.php",3, _MA_NEED_TADTOOLS);
+redirect_header("index.php",3, _MA_NEED_TADTOOLS);
 }
 include_once XOOPS_ROOT_PATH."/modules/tadtools/mColorPicker.php";
 $mColorPicker=new mColorPicker('.color');
@@ -11,44 +11,47 @@ $xoopsTpl->assign('mColorPicker_code',$mColorPicker_code);
 //data-hex='true' 一定要有
 <input type='text' name='color' class='color' value='{$act['color']}' data-text='hidden' data-hex='true' style='height:20px;width:20px;' />
 
-*/
+ */
 include_once "tadtools_header.php";
 include_once "jquery.php";
 
-class mColorPicker{
-  var $name;
+class mColorPicker
+{
+    public $name;
 
-  //
-  function mColorPicker($name=".color",$show_jquery=true){
-    $this->name=$name;
-    $this->show_jquery = $show_jquery;
-  }
+    //
+    public function mColorPicker($name = ".color", $show_jquery = true)
+    {
+        $this->name        = $name;
+        $this->show_jquery = $show_jquery;
+    }
 
-  //
-  function render(){
-    global $xoTheme;
-    $jquery=$this->show_jquery?get_jquery():"";
+    //
+    public function render()
+    {
+        global $xoTheme;
+        $jquery = $this->show_jquery ? get_jquery() : "";
 
-    if($xoTheme){
-      $xoTheme->addScript('modules/tadtools/mColorPicker/javascripts/mColorPicker.js');
+        if ($xoTheme) {
+            $xoTheme->addScript('modules/tadtools/mColorPicker/javascripts/mColorPicker.js');
 
-      $xoTheme->addScript('', null, "
+            $xoTheme->addScript('', null, "
         \$('{$this->name}').mColorPicker({
-          imageFolder: '".TADTOOLS_URL."/mColorPicker/images/'
+          imageFolder: '" . TADTOOLS_URL . "/mColorPicker/images/'
         });
       ");
-    }else{
-      $mColorPicker="
+        } else {
+            $mColorPicker = "
       {$jquery}
-      <script type='text/javascript' src='".TADTOOLS_URL."/mColorPicker/javascripts/mColorPicker.js'></script>
+      <script type='text/javascript' src='" . TADTOOLS_URL . "/mColorPicker/javascripts/mColorPicker.js'></script>
       <script>
         \$('{$this->name}').mColorPicker({
-          imageFolder: '".TADTOOLS_URL."/mColorPicker/images/'
+          imageFolder: '" . TADTOOLS_URL . "/mColorPicker/images/'
         });
       </script>
       ";
 
-      return $mColorPicker;
+            return $mColorPicker;
+        }
     }
-  }
 }

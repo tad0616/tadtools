@@ -2,45 +2,48 @@
 include_once "tadtools_header.php";
 include_once "jquery.php";
 
-class treetable{
-  var $tbl_id;
-  var $show_jquery;
-  var $post_url;
-  var $folder_class;
-  var $sn;
-  var $of_sn;
-  var $msg;
-  var $sort_id;
-  var $sort_url;
-  var $sort_msg;
-  var $expanded;
+class treetable
+{
+    public $tbl_id;
+    public $show_jquery;
+    public $post_url;
+    public $folder_class;
+    public $sn;
+    public $of_sn;
+    public $msg;
+    public $sort_id;
+    public $sort_url;
+    public $sort_msg;
+    public $expanded;
 
-  //建構函數
-  function treetable($show_jquery=true,$sn="cat_sn",$of_sn="of_cat_sn",$tbl_id="#tbl",$post_url="",$folder_class=".folder",$msg="#save_msg",$expanded=true,$sort_id="",$sort_url="save_sort.php",$sort_msg="#save_msg2"){
-    $this->show_jquery=$show_jquery;
-    $this->tbl_id=$tbl_id;
-    $this->post_url=$post_url;
-    $this->folder_class=$folder_class;
-    $this->sn=$sn;
-    $this->of_sn=$of_sn;
-    $this->msg=$msg;
-    $this->sort_id=$sort_id;
-    $this->sort_url=$sort_url;
-    $this->sort_msg=$sort_msg;
-    $this->expanded=$expanded;
-  }
+    //建構函數
+    public function treetable($show_jquery = true, $sn = "cat_sn", $of_sn = "of_cat_sn", $tbl_id = "#tbl", $post_url = "", $folder_class = ".folder", $msg = "#save_msg", $expanded = true, $sort_id = "", $sort_url = "save_sort.php", $sort_msg = "#save_msg2")
+    {
+        $this->show_jquery  = $show_jquery;
+        $this->tbl_id       = $tbl_id;
+        $this->post_url     = $post_url;
+        $this->folder_class = $folder_class;
+        $this->sn           = $sn;
+        $this->of_sn        = $of_sn;
+        $this->msg          = $msg;
+        $this->sort_id      = $sort_id;
+        $this->sort_url     = $sort_url;
+        $this->sort_msg     = $sort_msg;
+        $this->expanded     = $expanded;
+    }
 
-  //產生路徑工具
-  function render(){
-    global $xoTheme;
+    //產生路徑工具
+    public function render()
+    {
+        global $xoTheme;
 
-    $jquery=($this->show_jquery)?get_jquery(true):"";
+        $jquery = ($this->show_jquery) ? get_jquery(true) : "";
 
-    $expanded=($this->expanded)?",initialState: 'expanded'":"";
+        $expanded = ($this->expanded) ? ",initialState: 'expanded'" : "";
 
-    $sort_code="";
-    if(!empty($this->sort_id)){
-      $sort_code="
+        $sort_code = "";
+        if (!empty($this->sort_id)) {
+            $sort_code = "
       $('{$this->sort_id}').sortable({
         opacity: 0.6,
         cursor: 'move',
@@ -59,11 +62,11 @@ class treetable{
           });
         }
       });";
-    }
+        }
 
-    $drag_code="";
-    if(!empty($this->post_url)){
-      $drag_code="
+        $drag_code = "";
+        if (!empty($this->post_url)) {
+            $drag_code = "
       // Configure draggable nodes
       $('{$this->tbl_id} {$this->folder_class}').draggable({
         helper: 'clone',
@@ -102,14 +105,14 @@ class treetable{
           }
         });
       });";
-    }
+        }
 
-    if($xoTheme){
-      $xoTheme->addStylesheet('modules/tadtools/treeTable/stylesheets/jquery.treetable.css');
-      $xoTheme->addStylesheet('modules/tadtools/treeTable/stylesheets/jquery.treetable.theme.default.css');
-      $xoTheme->addScript('modules/tadtools/treeTable/javascripts/src/jquery.treetable.js');
+        if ($xoTheme) {
+            $xoTheme->addStylesheet('modules/tadtools/treeTable/stylesheets/jquery.treetable.css');
+            $xoTheme->addStylesheet('modules/tadtools/treeTable/stylesheets/jquery.treetable.theme.default.css');
+            $xoTheme->addScript('modules/tadtools/treeTable/javascripts/src/jquery.treetable.js');
 
-      $xoTheme->addScript('', null, "
+            $xoTheme->addScript('', null, "
         (function(\$){
           \$(document).ready(function(){
             \$('{$this->tbl_id}').treetable({ expandable: true $expanded });
@@ -122,14 +125,14 @@ class treetable{
           });
         })(jQuery);
       ");
-    }else{
+        } else {
 
-      $main="
+            $main = "
       $jquery
-      <link href='".TADTOOLS_URL."/treeTable/stylesheets/jquery.treetable.css' rel='stylesheet'  />
-      <link href='".TADTOOLS_URL."/treeTable/stylesheets/jquery.treetable.theme.default.css' rel='stylesheet' />
+      <link href='" . TADTOOLS_URL . "/treeTable/stylesheets/jquery.treetable.css' rel='stylesheet'  />
+      <link href='" . TADTOOLS_URL . "/treeTable/stylesheets/jquery.treetable.theme.default.css' rel='stylesheet' />
 
-      <script type='text/javascript' src='".TADTOOLS_URL."/treeTable/javascripts/src/jquery.treetable.js'></script>
+      <script type='text/javascript' src='" . TADTOOLS_URL . "/treeTable/javascripts/src/jquery.treetable.js'></script>
       <script type='text/javascript'>
       $(document).ready(function()  {
         $('{$this->tbl_id}').treetable({ expandable: true $expanded });
@@ -143,7 +146,7 @@ class treetable{
 
       </script>";
 
-      return $main;
+            return $main;
+        }
     }
-  }
 }

@@ -32,13 +32,11 @@ define('_TAD_PERMISSION_DENIED', 'You do not have permission to perform this fun
 
 define('_TAD_INPUT_FORM', 'Form');
 
-
 define('_TAD_STAR_RATING_AVG', 'Avarage: %s');
 define('_TAD_STAR_RATING_SAVE', 'Saved: %s');
 define('_TAD_STAR_RATING_DATE_SAVE', '%s: %s');
 
 define('_TAD_SELECT_TO_DEL', 'Select files to delete:');
-
 
 define('_TAD_DEL_INSTALL_CHK', '\'' . XOOPS_VAR_PATH . '/data/install_chk.php \' existed! Please reload this page to delete it.');
 

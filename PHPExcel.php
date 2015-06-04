@@ -27,8 +27,8 @@
 
 /** PHPExcel root directory */
 if (!defined('PHPEXCEL_ROOT')) {
-    define('PHPEXCEL_ROOT',  __DIR__  . '/');
-    require(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
+    define('PHPEXCEL_ROOT', __DIR__ . '/');
+    require PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php';
 }
 
 /**
@@ -73,7 +73,7 @@ class PHPExcel
      *
      * @var PHPExcel_Calculation
      */
-    private $_calculationEngine = NULL;
+    private $_calculationEngine = null;
 
     /**
      * Active sheet index
@@ -115,13 +115,13 @@ class PHPExcel
      */
     public function __construct()
     {
-        $this->_uniqueID = uniqid();
-        $this->_calculationEngine    = PHPExcel_Calculation::getInstance($this);
+        $this->_uniqueID          = uniqid();
+        $this->_calculationEngine = PHPExcel_Calculation::getInstance($this);
 
         // Initialise worksheet collection and add one worksheet
-        $this->_workSheetCollection = array();
+        $this->_workSheetCollection   = array();
         $this->_workSheetCollection[] = new PHPExcel_Worksheet($this);
-        $this->_activeSheetIndex = 0;
+        $this->_activeSheetIndex      = 0;
 
         // Create document properties
         $this->_properties = new PHPExcel_DocumentProperties();
@@ -145,10 +145,11 @@ class PHPExcel
      * Code to execute when this worksheet is unset()
      *
      */
-    public function __destruct() {
+    public function __destruct()
+    {
         PHPExcel_Calculation::unsetInstance($this);
         $this->disconnectWorksheets();
-    }    //    function __destruct()
+    } //    function __destruct()
 
     /**
      * Disconnect all worksheets from this PHPExcel workbook object,
@@ -157,8 +158,8 @@ class PHPExcel
      */
     public function disconnectWorksheets()
     {
-        $worksheet = NULL;
-        foreach($this->_workSheetCollection as $k => &$worksheet) {
+        $worksheet = null;
+        foreach ($this->_workSheetCollection as $k => &$worksheet) {
             $worksheet->disconnectCells();
             $this->_workSheetCollection[$k] = null;
         }
@@ -174,7 +175,7 @@ class PHPExcel
     public function getCalculationEngine()
     {
         return $this->_calculationEngine;
-    }    //	function getCellCacheController()
+    } //    function getCellCacheController()
 
     /**
      * Get properties
@@ -233,7 +234,7 @@ class PHPExcel
      * @return PHPExcel_Worksheet
      * @throws PHPExcel_Exception
      */
-    public function createSheet($iSheetIndex = NULL)
+    public function createSheet($iSheetIndex = null)
     {
         $newSheet = new PHPExcel_Worksheet($this);
         $this->addSheet($newSheet, $iSheetIndex);
@@ -249,7 +250,7 @@ class PHPExcel
      */
     public function sheetNameExists($pSheetName)
     {
-        return ($this->getSheetByName($pSheetName) !== NULL);
+        return ($this->getSheetByName($pSheetName) !== null);
     }
 
     /**
@@ -260,7 +261,7 @@ class PHPExcel
      * @return PHPExcel_Worksheet
      * @throws PHPExcel_Exception
      */
-    public function addSheet(PHPExcel_Worksheet $pSheet, $iSheetIndex = NULL)
+    public function addSheet(PHPExcel_Worksheet $pSheet, $iSheetIndex = null)
     {
         if ($this->sheetNameExists($pSheet->getTitle())) {
             throw new PHPExcel_Exception(
@@ -268,7 +269,7 @@ class PHPExcel
             );
         }
 
-        if($iSheetIndex === NULL) {
+        if ($iSheetIndex === null) {
             if ($this->_activeSheetIndex < 0) {
                 $this->_activeSheetIndex = 0;
             }
@@ -280,7 +281,7 @@ class PHPExcel
                 $iSheetIndex,
                 0,
                 array($pSheet)
-                );
+            );
 
             // Adjust active sheet index if necessary
             if ($this->_activeSheetIndex >= $iSheetIndex) {
@@ -332,7 +333,7 @@ class PHPExcel
         if ($pIndex > $numSheets - 1) {
             throw new PHPExcel_Exception(
                 "Your requested sheet index: {$pIndex} is out of bounds. The actual number of sheets is {$numSheets}."
-               );
+            );
         } else {
             return $this->_workSheetCollection[$pIndex];
         }
@@ -363,7 +364,7 @@ class PHPExcel
             }
         }
 
-        return NULL;
+        return null;
     }
 
     /**
@@ -395,7 +396,7 @@ class PHPExcel
     public function setIndexByName($sheetName, $newIndex)
     {
         $oldIndex = $this->getIndex($this->getSheetByName($sheetName));
-        $pSheet = array_splice(
+        $pSheet   = array_splice(
             $this->_workSheetCollection,
             $oldIndex,
             1
@@ -439,7 +440,7 @@ class PHPExcel
      */
     public function setActiveSheetIndex($pIndex = 0)
     {
-            $numSheets = count($this->_workSheetCollection);
+        $numSheets = count($this->_workSheetCollection);
 
         if ($pIndex > $numSheets - 1) {
             throw new PHPExcel_Exception(
@@ -477,7 +478,7 @@ class PHPExcel
      */
     public function getSheetNames()
     {
-        $returnValue = array();
+        $returnValue    = array();
         $worksheetCount = $this->getSheetCount();
         for ($i = 0; $i < $worksheetCount; ++$i) {
             $returnValue[] = $this->getSheet($i)->getTitle();
@@ -494,7 +495,8 @@ class PHPExcel
      * @throws PHPExcel_Exception
      * @return PHPExcel_Worksheet
      */
-    public function addExternalSheet(PHPExcel_Worksheet $pSheet, $iSheetIndex = null) {
+    public function addExternalSheet(PHPExcel_Worksheet $pSheet, $iSheetIndex = null)
+    {
         if ($this->sheetNameExists($pSheet->getTitle())) {
             throw new PHPExcel_Exception("Workbook already contains a worksheet named '{$pSheet->getTitle()}'. Rename the external sheet first.");
         }
@@ -513,7 +515,7 @@ class PHPExcel
         // update the cellXfs
         foreach ($pSheet->getCellCollection(false) as $cellID) {
             $cell = $pSheet->getCell($cellID);
-            $cell->setXfIndex( $cell->getXfIndex() + $countCellXfs );
+            $cell->setXfIndex($cell->getXfIndex() + $countCellXfs);
         }
 
         return $this->addSheet($pSheet, $iSheetIndex);
@@ -524,7 +526,8 @@ class PHPExcel
      *
      * @return PHPExcel_NamedRange[]
      */
-    public function getNamedRanges() {
+    public function getNamedRanges()
+    {
         return $this->_namedRanges;
     }
 
@@ -534,13 +537,14 @@ class PHPExcel
      * @param  PHPExcel_NamedRange $namedRange
      * @return PHPExcel
      */
-    public function addNamedRange(PHPExcel_NamedRange $namedRange) {
+    public function addNamedRange(PHPExcel_NamedRange $namedRange)
+    {
         if ($namedRange->getScope() == null) {
             // global scope
             $this->_namedRanges[$namedRange->getName()] = $namedRange;
         } else {
             // local scope
-            $this->_namedRanges[$namedRange->getScope()->getTitle().'!'.$namedRange->getName()] = $namedRange;
+            $this->_namedRanges[$namedRange->getScope()->getTitle() . '!' . $namedRange->getName()] = $namedRange;
         }
 
         return true;
@@ -553,17 +557,18 @@ class PHPExcel
      * @param  PHPExcel_Worksheet|null  $pSheet     Scope. Use null for global scope
      * @return PHPExcel_NamedRange|null
      */
-    public function getNamedRange($namedRange, PHPExcel_Worksheet $pSheet = null) {
+    public function getNamedRange($namedRange, PHPExcel_Worksheet $pSheet = null)
+    {
         $returnValue = null;
 
-        if ($namedRange != '' && ($namedRange !== NULL)) {
+        if ($namedRange != '' && ($namedRange !== null)) {
             // first look for global defined name
             if (isset($this->_namedRanges[$namedRange])) {
                 $returnValue = $this->_namedRanges[$namedRange];
             }
 
             // then look for local defined name (has priority over global defined name if both names exist)
-            if (($pSheet !== NULL) && isset($this->_namedRanges[$pSheet->getTitle() . '!' . $namedRange])) {
+            if (($pSheet !== null) && isset($this->_namedRanges[$pSheet->getTitle() . '!' . $namedRange])) {
                 $returnValue = $this->_namedRanges[$pSheet->getTitle() . '!' . $namedRange];
             }
         }
@@ -578,8 +583,9 @@ class PHPExcel
      * @param  PHPExcel_Worksheet|null $pSheet     Scope: use null for global scope.
      * @return PHPExcel
      */
-    public function removeNamedRange($namedRange, PHPExcel_Worksheet $pSheet = null) {
-        if ($pSheet === NULL) {
+    public function removeNamedRange($namedRange, PHPExcel_Worksheet $pSheet = null)
+    {
+        if ($pSheet === null) {
             if (isset($this->_namedRanges[$namedRange])) {
                 unset($this->_namedRanges[$namedRange]);
             }
@@ -597,7 +603,8 @@ class PHPExcel
      *
      * @return PHPExcel_WorksheetIterator
      */
-    public function getWorksheetIterator() {
+    public function getWorksheetIterator()
+    {
         return new PHPExcel_WorksheetIterator($this);
     }
 
@@ -606,7 +613,8 @@ class PHPExcel
      *
      * @return PHPExcel
      */
-    public function copy() {
+    public function copy()
+    {
         $copied = clone $this;
 
         $worksheetCount = count($this->_workSheetCollection);
@@ -621,8 +629,9 @@ class PHPExcel
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
-        foreach($this as $key => $val) {
+    public function __clone()
+    {
+        foreach ($this as $key => $val) {
             if (is_object($val) || (is_array($val))) {
                 $this->{$key} = unserialize(serialize($val));
             }
@@ -720,9 +729,9 @@ class PHPExcel
             // then update cellXf indexes for cells
             foreach ($this->_workSheetCollection as $worksheet) {
                 foreach ($worksheet->getCellCollection(false) as $cellID) {
-                    $cell = $worksheet->getCell($cellID);
+                    $cell    = $worksheet->getCell($cellID);
                     $xfIndex = $cell->getXfIndex();
-                    if ($xfIndex > $pIndex ) {
+                    if ($xfIndex > $pIndex) {
                         // decrease xf index by 1
                         $cell->setXfIndex($xfIndex - 1);
                     } else if ($xfIndex == $pIndex) {
@@ -845,7 +854,8 @@ class PHPExcel
         // for all cells and columns
         $countNeededCellXfs = 0;
         foreach ($this->_cellXfCollection as $index => $cellXf) {
-            if ($countReferencesCellXf[$index] > 0 || $index == 0) { // we must never remove the first cellXf
+            if ($countReferencesCellXf[$index] > 0 || $index == 0) {
+                // we must never remove the first cellXf
                 ++$countNeededCellXfs;
             } else {
                 unset($this->_cellXfCollection[$index]);
@@ -870,19 +880,19 @@ class PHPExcel
             // for all cells
             foreach ($sheet->getCellCollection(false) as $cellID) {
                 $cell = $sheet->getCell($cellID);
-                $cell->setXfIndex( $map[$cell->getXfIndex()] );
+                $cell->setXfIndex($map[$cell->getXfIndex()]);
             }
 
             // for all row dimensions
             foreach ($sheet->getRowDimensions() as $rowDimension) {
                 if ($rowDimension->getXfIndex() !== null) {
-                    $rowDimension->setXfIndex( $map[$rowDimension->getXfIndex()] );
+                    $rowDimension->setXfIndex($map[$rowDimension->getXfIndex()]);
                 }
             }
 
             // for all column dimensions
             foreach ($sheet->getColumnDimensions() as $columnDimension) {
-                $columnDimension->setXfIndex( $map[$columnDimension->getXfIndex()] );
+                $columnDimension->setXfIndex($map[$columnDimension->getXfIndex()]);
             }
 
             // also do garbage collection for all the sheets
@@ -895,7 +905,8 @@ class PHPExcel
      *
      * @return string
      */
-    public function getID() {
+    public function getID()
+    {
         return $this->_uniqueID;
     }
 

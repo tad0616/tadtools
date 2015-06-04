@@ -3,24 +3,27 @@
 include_once "tadtools_header.php";
 include_once "jquery.php";
 
-class sweet_alert{
-  var $show_jquery;
+class sweet_alert
+{
+    public $show_jquery;
 
-  //建構函數
-  function sweet_alert($show_jquery=true){
-    $this->show_jquery = $show_jquery;
-  }
+    //建構函數
+    public function sweet_alert($show_jquery = true)
+    {
+        $this->show_jquery = $show_jquery;
+    }
 
-  //產生語法 $type=error,warning,info,success
-  function render($func_name="",$url="",$var="",$title=_TAD_DEL_CONFIRM_TITLE,$text=_TAD_DEL_CONFIRM_TEXT,$confirmButtonText=_TAD_DEL_CONFIRM_BTN,$type="warning",$showCancelButton=true){
-    global $xoTheme;
-    $jquery=$this->show_jquery?get_jquery():"";
+    //產生語法 $type=error,warning,info,success
+    public function render($func_name = "", $url = "", $var = "", $title = _TAD_DEL_CONFIRM_TITLE, $text = _TAD_DEL_CONFIRM_TEXT, $confirmButtonText = _TAD_DEL_CONFIRM_BTN, $type = "warning", $showCancelButton = true)
+    {
+        global $xoTheme;
+        $jquery = $this->show_jquery ? get_jquery() : "";
 
-    if($xoTheme){
-      $xoTheme->addStylesheet('modules/tadtools/sweet-alert/sweet-alert.css');
-      $xoTheme->addScript('modules/tadtools/sweet-alert/sweet-alert.js');
+        if ($xoTheme) {
+            $xoTheme->addStylesheet('modules/tadtools/sweet-alert/sweet-alert.css');
+            $xoTheme->addScript('modules/tadtools/sweet-alert/sweet-alert.js');
 
-      $xoTheme->addScript('', null, "
+            $xoTheme->addScript('', null, "
         function {$func_name}($var){
           swal({
             title: '$title',
@@ -37,11 +40,11 @@ class sweet_alert{
           });
         }
       ");
-    }else{
-      $main="
+        } else {
+            $main = "
       {$jquery}
-      <link rel='stylesheet' type='text/css' href='".TADTOOLS_URL."/sweet-alert/sweet-alert.css' />
-      <script type='text/javascript' src='".TADTOOLS_URL."/sweet-alert/sweet-alert.js'></script>
+      <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/sweet-alert/sweet-alert.css' />
+      <script type='text/javascript' src='" . TADTOOLS_URL . "/sweet-alert/sweet-alert.js'></script>
       <script type='text/javascript'>
         function {$func_name}($var){
           swal({
@@ -63,26 +66,26 @@ class sweet_alert{
 
       ";
 
-      return $main;
+            return $main;
+        }
     }
-  }
 
 }
 /*
 
 function del_table(mssn){
-  var sure = window.confirm('"._TAD_DEL_CONFIRM."');
-  if (!sure)  return;
-  location.href="ajax_mk_tbl.php?op=del&modsn=$modsn&mssn=" + mssn;
+var sure = window.confirm('"._TAD_DEL_CONFIRM."');
+if (!sure)  return;
+location.href="ajax_mk_tbl.php?op=del&modsn=$modsn&mssn=" + mssn;
 }
 
 轉換為
 
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/sweet_alert.php")){
-  redirect_header("index.php",3, _MA_NEED_TADTOOLS);
+redirect_header("index.php",3, _MA_NEED_TADTOOLS);
 }
 include_once XOOPS_ROOT_PATH."/modules/tadtools/sweet_alert.php";
 $sweet_alert=new sweet_alert();
 $sweet_alert_code=$sweet_alert->render("del_table","ajax_mk_tbl.php?op=del&modsn=$modsn&mssn=",'mssn');
 $xoopsTpl->assign('sweet_alert_code',$sweet_alert_code);
-*/;
+ */;

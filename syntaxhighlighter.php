@@ -1,64 +1,67 @@
 <?php
 include_once "tadtools_header.php";
 
-class syntaxhighlighter{
+class syntaxhighlighter
+{
 
-  //建構函數
-  function syntaxhighlighter(){
+    //建構函數
+    public function syntaxhighlighter()
+    {
 
-  }
+    }
 
-  //產生語法
-  function render(){
-    global $xoTheme;
-    $xoopsModuleConfig=TadToolsXoopsModuleConfig();
-    $syntaxhighlighter_themes=!empty($xoopsModuleConfig['syntaxhighlighter_themes'])?$xoopsModuleConfig['syntaxhighlighter_themes']:'shThemeDefault';
+    //產生語法
+    public function render()
+    {
+        global $xoTheme;
+        $xoopsModuleConfig        = TadToolsXoopsModuleConfig();
+        $syntaxhighlighter_themes = !empty($xoopsModuleConfig['syntaxhighlighter_themes']) ? $xoopsModuleConfig['syntaxhighlighter_themes'] : 'shThemeDefault';
 
-    if($xoTheme){
+        if ($xoTheme) {
 
-      $dir=!empty($xoopsModuleConfig['syntaxhighlighter_version'])?"modules/tadtools/".$xoopsModuleConfig['syntaxhighlighter_version']:"modules/tadtools/syntaxhighlighter";
+            $dir = !empty($xoopsModuleConfig['syntaxhighlighter_version']) ? "modules/tadtools/" . $xoopsModuleConfig['syntaxhighlighter_version'] : "modules/tadtools/syntaxhighlighter";
 
-      $dir2=!empty($xoopsModuleConfig['syntaxhighlighter_version'])?TADTOOLS_URL."/".$xoopsModuleConfig['syntaxhighlighter_version']:TADTOOLS_URL."/syntaxhighlighter";
+            $dir2 = !empty($xoopsModuleConfig['syntaxhighlighter_version']) ? TADTOOLS_URL . "/" . $xoopsModuleConfig['syntaxhighlighter_version'] : TADTOOLS_URL . "/syntaxhighlighter";
 
-      $xoTheme->addStylesheet("$dir/styles/shCore.css");
-      $xoTheme->addStylesheet("$dir/styles/{$syntaxhighlighter_themes}.css");
+            $xoTheme->addStylesheet("$dir/styles/shCore.css");
+            $xoTheme->addStylesheet("$dir/styles/{$syntaxhighlighter_themes}.css");
 
-      if($xoopsModuleConfig['syntaxhighlighter_version']=="syntaxhighlighter_2"){
-        $xoTheme->addScript("$dir/scripts/shCore.js");
-        $xoTheme->addScript("$dir/scripts/shBrushAS3.js");
-        $xoTheme->addScript("$dir/scripts/shBrushBash.js");
-        $xoTheme->addScript("$dir/scripts/shBrushColdFusion.js");
-        $xoTheme->addScript("$dir/scripts/shBrushCpp.js");
-        $xoTheme->addScript("$dir/scripts/shBrushCSharp.js");
-        $xoTheme->addScript("$dir/scripts/shBrushCss.js");
-        $xoTheme->addScript("$dir/scripts/shBrushDelphi.js");
-        $xoTheme->addScript("$dir/scripts/shBrushDiff.js");
-        $xoTheme->addScript("$dir/scripts/shBrushErlang.js");
-        $xoTheme->addScript("$dir/scripts/shBrushGroovy.js");
-        $xoTheme->addScript("$dir/scripts/shBrushJava.js");
-        $xoTheme->addScript("$dir/scripts/shBrushDelphi.js");
-        $xoTheme->addScript("$dir/scripts/shBrushJScript.js");
-        $xoTheme->addScript("$dir/scripts/shBrushPerl.js");
-        $xoTheme->addScript("$dir/scripts/shBrushPhp.js");
-        $xoTheme->addScript("$dir/scripts/shBrushPlain.js");
-        $xoTheme->addScript("$dir/scripts/shBrushPowerShell.js");
-        $xoTheme->addScript("$dir/scripts/shBrushPython.js");
-        $xoTheme->addScript("$dir/scripts/shBrushRuby.js");
-        $xoTheme->addScript("$dir/scripts/shBrushScala.js");
-        $xoTheme->addScript("$dir/scripts/shBrushSql.js");
-        $xoTheme->addScript("$dir/scripts/shBrushVb.js");
-        $xoTheme->addScript("$dir/scripts/shBrushXml.js");
+            if ($xoopsModuleConfig['syntaxhighlighter_version'] == "syntaxhighlighter_2") {
+                $xoTheme->addScript("$dir/scripts/shCore.js");
+                $xoTheme->addScript("$dir/scripts/shBrushAS3.js");
+                $xoTheme->addScript("$dir/scripts/shBrushBash.js");
+                $xoTheme->addScript("$dir/scripts/shBrushColdFusion.js");
+                $xoTheme->addScript("$dir/scripts/shBrushCpp.js");
+                $xoTheme->addScript("$dir/scripts/shBrushCSharp.js");
+                $xoTheme->addScript("$dir/scripts/shBrushCss.js");
+                $xoTheme->addScript("$dir/scripts/shBrushDelphi.js");
+                $xoTheme->addScript("$dir/scripts/shBrushDiff.js");
+                $xoTheme->addScript("$dir/scripts/shBrushErlang.js");
+                $xoTheme->addScript("$dir/scripts/shBrushGroovy.js");
+                $xoTheme->addScript("$dir/scripts/shBrushJava.js");
+                $xoTheme->addScript("$dir/scripts/shBrushDelphi.js");
+                $xoTheme->addScript("$dir/scripts/shBrushJScript.js");
+                $xoTheme->addScript("$dir/scripts/shBrushPerl.js");
+                $xoTheme->addScript("$dir/scripts/shBrushPhp.js");
+                $xoTheme->addScript("$dir/scripts/shBrushPlain.js");
+                $xoTheme->addScript("$dir/scripts/shBrushPowerShell.js");
+                $xoTheme->addScript("$dir/scripts/shBrushPython.js");
+                $xoTheme->addScript("$dir/scripts/shBrushRuby.js");
+                $xoTheme->addScript("$dir/scripts/shBrushScala.js");
+                $xoTheme->addScript("$dir/scripts/shBrushSql.js");
+                $xoTheme->addScript("$dir/scripts/shBrushVb.js");
+                $xoTheme->addScript("$dir/scripts/shBrushXml.js");
 
-        $xoTheme->addScript('', null, "
+                $xoTheme->addScript('', null, "
           SyntaxHighlighter.config.clipboardSwf = '{$dir2}/scripts/clipboard.swf';
           SyntaxHighlighter.all();
         ");
-      }else{
+            } else {
 
-        $xoTheme->addScript("$dir/scripts/shCore.js");
-        $xoTheme->addScript("$dir/scripts/shAutoloader.js");
+                $xoTheme->addScript("$dir/scripts/shCore.js");
+                $xoTheme->addScript("$dir/scripts/shAutoloader.js");
 
-        $xoTheme->addScript('', null, "
+                $xoTheme->addScript('', null, "
           function path()
           {
             var args = arguments,
@@ -104,17 +107,17 @@ class syntaxhighlighter{
 
         ");
 
-      }
-    }else{
-      $dir=!empty($xoopsModuleConfig['syntaxhighlighter_version'])?TADTOOLS_URL."/".$xoopsModuleConfig['syntaxhighlighter_version']:TADTOOLS_URL."/syntaxhighlighter";
+            }
+        } else {
+            $dir = !empty($xoopsModuleConfig['syntaxhighlighter_version']) ? TADTOOLS_URL . "/" . $xoopsModuleConfig['syntaxhighlighter_version'] : TADTOOLS_URL . "/syntaxhighlighter";
 
-      $syntaxhighlighter="
+            $syntaxhighlighter = "
       <link type='text/css' rel='stylesheet' href='{$dir}/styles/shCore.css'/>
       <link type='text/css' rel='stylesheet' href='{$dir}/styles/{$syntaxhighlighter_themes}.css'/>
       ";
 
-      if($xoopsModuleConfig['syntaxhighlighter_version']=="syntaxhighlighter_2"){
-        $syntaxhighlighter.="
+            if ($xoopsModuleConfig['syntaxhighlighter_version'] == "syntaxhighlighter_2") {
+                $syntaxhighlighter .= "
         <script type='text/javascript' src='{$dir}/scripts/shCore.js'></script>
         <script type='text/javascript' src='{$dir}/scripts/shBrushAS3.js'></script>
         <script type='text/javascript' src='{$dir}/scripts/shBrushBash.js'></script>
@@ -143,8 +146,8 @@ class syntaxhighlighter{
           SyntaxHighlighter.config.clipboardSwf = '{$dir}/scripts/clipboard.swf';
           SyntaxHighlighter.all();
         </script>";
-      }else{
-        $syntaxhighlighter.="
+            } else {
+                $syntaxhighlighter .= "
         <script type='text/javascript' src='{$dir}/scripts/shCore.js'></script>
         <script type='text/javascript' src='{$dir}/scripts/shAutoloader.js'></script>
         <style>
@@ -197,20 +200,20 @@ class syntaxhighlighter{
           });
 
         </script>";
-      }
+            }
 
-      return $syntaxhighlighter;
+            return $syntaxhighlighter;
+        }
     }
-  }
 }
 
 /*
 $syntaxhighlighter_code="";
 if(file_exists(XOOPS_ROOT_PATH."/modules/tadtools/syntaxhighlighter.php")){
-  include_once XOOPS_ROOT_PATH."/modules/tadtools/syntaxhighlighter.php";
-  $syntaxhighlighter = new syntaxhighlighter();
-  $syntaxhighlighter_code=$syntaxhighlighter->render();
-  $xoopsTpl->assign('syntaxhighlighter_code',$syntaxhighlighter_code);
+include_once XOOPS_ROOT_PATH."/modules/tadtools/syntaxhighlighter.php";
+$syntaxhighlighter = new syntaxhighlighter();
+$syntaxhighlighter_code=$syntaxhighlighter->render();
+$xoopsTpl->assign('syntaxhighlighter_code',$syntaxhighlighter_code);
 }
 
 

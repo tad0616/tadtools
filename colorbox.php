@@ -1,71 +1,71 @@
 <?php
 /*
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/colorbox.php")){
-  redirect_header("index.php",3, _MA_NEED_TADTOOLS);
+redirect_header("index.php",3, _MA_NEED_TADTOOLS);
 }
 include_once XOOPS_ROOT_PATH."/modules/tadtools/colorbox.php";
 $colorbox=new colorbox('.iframe');
 $colorbox_code=$colorbox->render();
 $xoopsTpl->assign('colorbox_code',$colorbox_code);
-*/
+ */
 include_once "tadtools_header.php";
 include_once "jquery.php";
 
+class colorbox
+{
+    public $name;
+    public $width;
+    public $height;
 
-class colorbox{
-  var $name;
-  var $width;
-  var $height;
+    //$width='auto' ,,$height='auto'
+    public function colorbox($name = ".iframe", $width = '80%', $height = '90%', $show_jquery = true)
+    {
+        $this->name        = $name;
+        $this->width       = $width;
+        $this->height      = $height;
+        $this->show_jquery = $show_jquery;
+    }
 
-  //$width='auto' ,,$height='auto'
-  function colorbox($name=".iframe",$width='80%',$height='90%',$show_jquery=true){
-    $this->name=$name;
-    $this->width=$width;
-    $this->height=$height;
-    $this->show_jquery = $show_jquery;
-  }
+    //
+    public function render($ready_config = true)
+    {
+        global $xoTheme;
+        $jquery       = get_jquery();
+        $width_setup  = ($this->width == "auto") ? "" : ", width:'" . $this->width . "'";
+        $height_setup = ($this->height == "auto") ? "" : ", height:'" . $this->height . "'";
 
-  //
-  function render($ready_config=true){
-    global $xoTheme;
-    $jquery=get_jquery();
-    $width_setup=($this->width=="auto")?"":", width:'".$this->width."'";
-    $height_setup=($this->height=="auto")?"":", height:'".$this->height."'";
+        if ($xoTheme) {
+            $xoTheme->addStylesheet('modules/tadtools/colorbox/colorbox.css');
+            $xoTheme->addScript('modules/tadtools/colorbox/jquery.colorbox.js');
 
-
-    if($xoTheme){
-      $xoTheme->addStylesheet('modules/tadtools/colorbox/colorbox.css');
-      $xoTheme->addScript('modules/tadtools/colorbox/jquery.colorbox.js');
-
-      if($ready_config){
-        $xoTheme->addScript('', null, "
+            if ($ready_config) {
+                $xoTheme->addScript('', null, "
           (function(\$){
             \$(document).ready(function(){
-              \$('".$this->name."').colorbox({iframe:true {$width_setup} {$height_setup}});
+              \$('" . $this->name . "').colorbox({iframe:true {$width_setup} {$height_setup}});
             });
           })(jQuery);
         ");
-      }
-    }else{
-      $colorbox="
-      <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='".TADTOOLS_URL."/colorbox/colorbox.css' />
+            }
+        } else {
+            $colorbox = "
+      <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='" . TADTOOLS_URL . "/colorbox/colorbox.css' />
       {$jquery}
-      <script type='text/javascript' src='".TADTOOLS_URL."/colorbox/jquery.colorbox.js'></script>
+      <script type='text/javascript' src='" . TADTOOLS_URL . "/colorbox/jquery.colorbox.js'></script>
       ";
 
-
-      if($ready_config){
-        $colorbox.="
+            if ($ready_config) {
+                $colorbox .= "
         <script>
           $(document).ready(function(){
-            $('".$this->name."').colorbox({iframe:true {$width_setup} {$height_setup}});
+            $('" . $this->name . "').colorbox({iframe:true {$width_setup} {$height_setup}});
           });
         </script>
         ";
-      }
-      return $colorbox;
+            }
+            return $colorbox;
+        }
     }
-  }
 }
 
 /*
@@ -75,7 +75,7 @@ $('a#login').colorbox();
 $.colorbox({href:"thankyou.html"});
 $.colorbox({html:"<h1>Welcome</h1>"});
 $("a.gallery").colorbox({rel: 'gal', title: function(){
-  var url = $(this).attr('href');
-  return '<a href="' + url + '" target="_blank">Open In New Window</a>';
+var url = $(this).attr('href');
+return '<a href="' + url + '" target="_blank">Open In New Window</a>';
 }});
  */
