@@ -31,9 +31,10 @@ class ztree
     public $save_sort_file;
     public $of_sn_col;
     public $sn_col;
+    public $menu_name;
 
     //建構函數
-    public function ztree($name = "", $json = "", $save_drag_file = "", $save_sort_file = "", $of_sn_col = "", $sn_col = "")
+    public function ztree($name = "", $json = "", $save_drag_file = "", $save_sort_file = "", $of_sn_col = "", $sn_col = "", $menu_name = "")
     {
         $this->name           = $name;
         $this->json           = $json;
@@ -41,10 +42,11 @@ class ztree
         $this->save_sort_file = $save_sort_file;
         $this->of_sn_col      = $of_sn_col;
         $this->sn_col         = $sn_col;
+        $this->menu_name      = $menu_name;
     }
 
     //產生選單
-    public function render()
+    public function render($drop_menu = false)
     {
         global $xoTheme;
 
@@ -63,82 +65,151 @@ class ztree
             $drag_js_file = ($this->save_drag_file) ? "<script type='text/javascript' src='" . TADTOOLS_URL . "/ztree/js/jquery.ztree.exedit-3.5.js'></script>" : "";
 
             $ztree = "
-      {$jquery}
-      <link rel='StyleSheet' href='" . TADTOOLS_URL . "/ztree/css/zTreeStyle/zTreeStyle.css' type='text/css' />
-      <script type='text/javascript' src='" . TADTOOLS_URL . "/ztree/js/jquery.ztree.core-3.5.js'></script>
-      <script type='text/javascript' src='" . TADTOOLS_URL . "/ztree/js/jquery.ztree.excheck-3.5.js'></script>
-      $drag_js_file
-      ";
+            {$jquery}
+            <link rel='StyleSheet' href='" . TADTOOLS_URL . "/ztree/css/zTreeStyle/zTreeStyle.css' type='text/css' />
+            <script type='text/javascript' src='" . TADTOOLS_URL . "/ztree/js/jquery.ztree.core-3.5.js'></script>
+            <script type='text/javascript' src='" . TADTOOLS_URL . "/ztree/js/jquery.ztree.excheck-3.5.js'></script>
+            $drag_js_file
+            ";
         }
 
         if ($this->save_drag_file) {
             $onDrop    = "onDrop: onDrop,";
             $drag_code = "
-      function onDrop(event, treeId, treeNodes, targetNode, moveType) {
-        var treeObj = $.fn.zTree.getZTreeObj('{$this->name}');
-        var nodes = treeObj.transformToArray(treeObj.getNodes());
-        //alert(nodes);
+              function onDrop(event, treeId, treeNodes, targetNode, moveType) {
+                var treeObj = $.fn.zTree.getZTreeObj('{$this->name}');
+                var nodes = treeObj.transformToArray(treeObj.getNodes());
 
-        for (var i=0,l=nodes.length; i<l; i++) {
-          $.post('{$this->save_sort_file}', { {$this->sn_col}: nodes[0].id, sort: i },
-            function(data) {
-              $('#save_msg').html(data);
-            });
-        }
+                for (var i=0,l=nodes.length; i<l; i++) {
+                  $.post('{$this->save_sort_file}', { {$this->sn_col}: nodes[0].id, sort: i },
+                    function(data) {
+                      $('#save_msg').html(data);
+                    });
+                }
 
+                $.post('{$this->save_drag_file}', { {$this->of_sn_col}: treeNodes[0].pId, {$this->sn_col}: treeNodes[0].id },
+                  function(data) {
+                      $('#save_msg').html(data);
+                  });
 
-        //alert(treeNodes[0].id + ' - ' + treeNodes[0].pId + ' - ' + treeNodes[0].name + ' to ' + targetNode.id + ' - ' + targetNode.pId + ' - ' + targetNode.name);
-
-        $.post('{$this->save_drag_file}', { {$this->of_sn_col}: treeNodes[0].pId, {$this->sn_col}: treeNodes[0].id },
-          function(data) {
-              $('#save_msg').html(data);
-          });
-
-        return true;
-      }
-      ";
+                return true;
+              }
+              ";
         } else {
             $onDrop    = "";
             $drag_code = "";
         }
 
-        $ztree .= "
-    <SCRIPT type='text/javascript'>
-      <!--
-      var setting = {
-        edit: {
-          enable: true,
-          showRemoveBtn: false,
-          showRenameBtn: false
-        },
-        data: {
-          simpleData: {
-            enable: true
-          }
-        },
-        callback: {
-          {$onDrop}
-          onClick: linkto
+        $style            = "";
+        $style2           = "";
+        $drop_menu_script = "";
+        if ($drop_menu) {
+            $drop_menu_script = '
+              function beforeClick(treeId, treeNode) {
+                var check = (treeNode && !treeNode.isParent);
+                if (!check) alert("請選擇");
+                return check;
+              }
+              function onClick(e, treeId, treeNode) {
+                var zTree = $.fn.zTree.getZTreeObj("' . $this->name . '"),
+                nodes = zTree.getSelectedNodes(),
+                v = "";
+                display_v = "";
+                nodes.sort(function compare(a,b){return a.id-b.id;});
+                for (var i=0, l=nodes.length; i<l; i++) {
+                  v += nodes[i].id + ",";
+                  display_v += nodes[i].name + ",";
+                }
+                if (v.length > 0 ) v = v.substring(0, v.length-1);
+                if (display_v.length > 0 ) display_v = display_v.substring(0, display_v.length-1);
+                var tObj = $("#' . $this->menu_name . '_show");
+                tObj.attr("value", display_v);
+                var ttObj = $("#' . $this->menu_name . '");
+                ttObj.attr("value", v);
+              }
+
+              function showMenu() {
+                var tObj = $("#' . $this->menu_name . '_show");
+                var menuOffset = $("#' . $this->menu_name . '_show").offset();
+                $("#' . $this->name . '_menuContent").css({left:menuOffset.left + "px", top:menuOffset.top + tObj.outerHeight() + "px"}).slideDown("fast");
+
+                $("body").bind("mousedown", onBodyDown);
+              }
+              function hideMenu() {
+                $("#' . $this->name . '_menuContent").fadeOut("fast");
+                $("body").unbind("mousedown", onBodyDown);
+              }
+              function onBodyDown(event) {
+                if (!(event.target.id == "' . $this->name . '_menuContent" || $(event.target).parents("#' . $this->name . '_menuContent").length>0)) {
+                  hideMenu();
+                }
+              }
+            ';
+            $style = "display:none; position: absolute;z-index: 1000; background: #ffffff;";
+            //$onMenu = "beforeClick: beforeClick,";
+            $mode = "
+              view: {
+                dblClickExpand: false,
+                fontCss: getFont
+              },
+            ";
+            $onClick = "onClick";
+        } else {
+            $mode = "
+              view: {
+                fontCss: getFont
+              },
+              edit: {
+                enable: true,
+                showRemoveBtn: false,
+                showRenameBtn: false
+              },
+            ";
+            $onClick = "linkto";
         }
-      };
 
-      var zNodes =[{$this->json}];
+        $ztree .= "
+        <SCRIPT type='text/javascript'>
+          <!--
+          var setting = {
+            {$mode}
+            data: {
+              simpleData: {
+                enable: true
+              }
+            },
 
-      function linkto(event, treeId, treeNode) {
-        location.href = treeNode.url;
-      }
+            callback: {
+              {$onDrop}
+              {$onMenu}
+              onClick: {$onClick}
+            }
+          };
 
+          var zNodes =[{$this->json}];
 
-      {$drag_code}
+          function linkto(event, treeId, treeNode) {
+            location.href = treeNode.url;
+          }
 
-      $(document).ready(function(){
-        $.fn.zTree.init($('#{$this->name}'), setting, zNodes);
-      });
-      //-->
-    </SCRIPT>
+          function getFont(treeId, node) {
+            return node.font ? node.font : {};
+          }
 
-    <ul id='{$this->name}' class='ztree'></ul>
-    ";
+          {$drop_menu_script}
+
+          {$drag_code}
+
+          $(document).ready(function(){
+            $.fn.zTree.init($('#{$this->name}'), setting, zNodes);
+          });
+          //-->
+        </SCRIPT>
+
+        <div id='{$this->name}_menuContent' class='menuContent' style='$style'>
+          <ul id='{$this->name}' class='ztree' style='$style2'></ul>
+        </div>
+        ";
         return $ztree;
     }
 }
