@@ -134,10 +134,6 @@ class JwPlayer
         width: $screen_width,
         height: $rate_height,
         skin: '{$this->skin}',
-        $backcolor
-        $frontcolor
-        $lightcolor
-        $screencolor
         plugins: {
           viral: { onpause: 'false' ,oncomplete:'false', functions:'embed' },
           'hd-2': {state : true}

@@ -1,65 +1,72 @@
 <?php
 //後台的選單
-if(!function_exists('admin_toolbar')){
-  //xoops_version.php記得加上 $modversion['system_menu'] = 1; （for 2.5）
-  function admin_toolbar($n="0"){
-    $version=floatval(substr(XOOPS_VERSION,6,3));
-    if($version < 2.5){
-      include_once XOOPS_ROOT_PATH."/Frameworks/art/functions.php";
-      include_once XOOPS_ROOT_PATH."/Frameworks/art/functions.admin.php";
-      loadModuleAdminMenu($n);
+if (!function_exists('admin_toolbar')) {
+    //xoops_version.php記得加上 $modversion['system_menu'] = 1; （for 2.5）
+    function admin_toolbar($n = "0")
+    {
+        $version = floatval(substr(XOOPS_VERSION, 6, 3));
+        if ($version < 2.5) {
+            include_once XOOPS_ROOT_PATH . "/Frameworks/art/functions.php";
+            include_once XOOPS_ROOT_PATH . "/Frameworks/art/functions.admin.php";
+            loadModuleAdminMenu($n);
+        }
     }
-  }
 }
 
 //$moduleName用於當該工具列是整合到佈景，而非模組的時候使用。
 //首頁的連結工具
-if(!function_exists('toolbar')){
-  //$interface_menu[工具列名稱]="網址";
-  //$interface_logo[工具列名稱]="圖檔名稱";（圖檔一律放到模組的images下）
-  function toolbar($interface_menu=array(),$interface_logo=array(),$id="id='menu'",$li="",$moduleName=""){
-    global $xoopsUser,$xoopsModule;
+if (!function_exists('toolbar')) {
+    //$interface_menu[工具列名稱]="網址";
+    //$interface_logo[工具列名稱]="圖檔名稱";（圖檔一律放到模組的images下）
+    function toolbar($interface_menu = array(), $interface_logo = array(), $id = "id='menu'", $li = "", $moduleName = "")
+    {
+        global $xoopsUser, $xoopsModule;
 
-    if($xoopsModule){
-      $module_id = $xoopsModule->mid();
-      $mod_name=$xoopsModule->name();
-      $moduleName=$xoopsModule->dirname();
-    }else{
-      $mod_name=$moduleName="";
-    }
+        if ($xoopsModule) {
+            $module_id  = $xoopsModule->mid();
+            $mod_name   = $xoopsModule->name();
+            $moduleName = $xoopsModule->dirname();
+        } else {
+            $mod_name = $moduleName = "";
+        }
 
-    if ($xoopsUser) {
-      $isAdmin=$xoopsUser->isAdmin($module_id);
-    }else{
-      $isAdmin=false;
-    }
+        if ($xoopsUser) {
+            $isAdmin = $xoopsUser->isAdmin($module_id);
+        } else {
+            $isAdmin = false;
+        }
 
-    if(empty($interface_menu))return;
-    make_menu_json($interface_menu,$moduleName);
-    $td="";
+        if (empty($interface_menu)) {
+            return;
+        }
 
-    if(is_array($interface_menu)){
+        make_menu_json($interface_menu, $moduleName);
+        $td = "";
 
-      $basename=basename($_SERVER['SCRIPT_NAME']);
+        if (is_array($interface_menu)) {
 
-      if(sizeof($interface_menu)==1 and substr($_SERVER['REQUEST_URI'],-9)=="index.php")return;
+            $basename = basename($_SERVER['SCRIPT_NAME']);
 
-      foreach($interface_menu as $title => $url){
-        $urlPath=(empty($moduleName) or substr($url,0,7)=="http://")?$url:XOOPS_URL."/modules/{$moduleName}/{$url}";
-        $baseurl=basename($url);
+            if (sizeof($interface_menu) == 1 and substr($_SERVER['REQUEST_URI'], -9) == "index.php") {
+                return;
+            }
 
-        $li_class=preg_match("/^{$basename}/",$baseurl)?$li:"";
-        $selected=preg_match("/^{$basename}/",$baseurl)?"selected":"";
-        $td.="<li $li_class><a href='{$urlPath}' class='$selected'>{$title}</a></li>\n";
-      }
-    }else{
-      return;
-    }
+            foreach ($interface_menu as $title => $url) {
+                $urlPath = (empty($moduleName) or substr($url, 0, 7) == "http://") ? $url : XOOPS_URL . "/modules/{$moduleName}/{$url}";
+                $baseurl = basename($url);
 
-    $cssCode="";
-    if(empty($moduleName)){
-      $id="id='toolbar'";
-      $cssCode="<style type='text/css'>
+                $li_class = preg_match("/^{$basename}/", $baseurl) ? $li : "";
+                $selected = preg_match("/^{$basename}/", $baseurl) ? "selected" : "";
+                $td .= "<li $li_class><a href='{$urlPath}' class='$selected'>{$title}</a></li>\n";
+            }
+        } else {
+            return;
+        }
+
+        $cssCode = "";
+        if (empty($moduleName)) {
+            $id      = "id='toolbar'";
+            $cssCode = "<style type='text/css'>
         #toolbar{
           margin:10px 0px 10px;
         }
@@ -84,9 +91,9 @@ if(!function_exists('toolbar')){
             border: 1px solid #505050;
           }
         </style>";
-    }
+        }
 
-    $main="
+        $main = "
     $cssCode
     <div $id>
     <ul>
@@ -95,71 +102,76 @@ if(!function_exists('toolbar')){
     </div>
     <div style='clear:both;'></div>
     ";
-    return $main;
-  }
+        return $main;
+    }
 }
 
+if (!function_exists('toolbar_bootstrap')) {
+    function toolbar_bootstrap($interface_menu = array())
+    {
+        global $xoopsUser, $xoopsModule;
 
-if(!function_exists('toolbar_bootstrap')){
-  function toolbar_bootstrap($interface_menu=array()){
-    global $xoopsUser,$xoopsModule;
+        if ($xoopsModule) {
+            $module_id  = $xoopsModule->mid();
+            $mod_name   = $xoopsModule->name();
+            $moduleName = $xoopsModule->dirname();
+        } else {
+            $mod_name = $moduleName = "";
+        }
 
-    if($xoopsModule){
-      $module_id = $xoopsModule->mid();
-      $mod_name=$xoopsModule->name();
-      $moduleName=$xoopsModule->dirname();
-    }else{
-      $mod_name=$moduleName="";
-    }
+        if ($xoopsUser) {
+            $isAdmin = $xoopsUser->isAdmin($module_id);
+        } else {
+            $isAdmin = false;
+        }
 
-    if ($xoopsUser) {
-      $isAdmin=$xoopsUser->isAdmin($module_id);
-    }else{
-      $isAdmin=false;
-    }
+        if (empty($interface_menu)) {
+            return;
+        }
 
-    if(empty($interface_menu))return;
+        make_menu_json($interface_menu, $moduleName);
 
-    make_menu_json($interface_menu,$moduleName);
+        $jquery = get_jquery();
 
-    $jquery=get_jquery();
+        $row    = ($_SESSION['bootstrap'] == '3') ? 'row' : 'row-fluid';
+        $col    = ($_SESSION['bootstrap'] == '3') ? 'col-md-12' : 'span12';
+        $home   = ($_SESSION['bootstrap'] == '3') ? 'fa fa-home' : 'icon-home';
+        $wrench = ($_SESSION['bootstrap'] == '3') ? 'fa fa-wrench' : 'icon-wrench';
+        $edit   = ($_SESSION['bootstrap'] == '3') ? 'fa fa-edit' : 'icon-edit';
+        $th     = ($_SESSION['bootstrap'] == '3') ? 'fa fa-th' : 'icon-th';
 
-    $row=($_SESSION['bootstrap']=='3')? 'row':'row-fluid';
-    $col=($_SESSION['bootstrap']=='3')? 'col-md-12':'span12';
-    $home=($_SESSION['bootstrap']=='3')? 'fa fa-home':'icon-home';
-    $wrench=($_SESSION['bootstrap']=='3')? 'fa fa-wrench':'icon-wrench';
-    $edit=($_SESSION['bootstrap']=='3')? 'fa fa-edit':'icon-edit';
-    $th=($_SESSION['bootstrap']=='3')? 'fa fa-th':'icon-th';
+        $options = "<li><a href='index.php' title='" . _TAD_HOME . "'><i class='{$home}'></i></a></li>";
+        if (is_array($interface_menu)) {
 
-    $options="<li {$active}><a href='index.php' title='"._TAD_HOME."'><i class='{$home}'></i></a></li>";
-    if(is_array($interface_menu)){
+            $basename = basename($_SERVER['SCRIPT_NAME']);
+            if (sizeof($interface_menu) == 1 and substr($_SERVER['REQUEST_URI'], -9) == "index.php") {
+                return;
+            }
 
-      $basename=basename($_SERVER['SCRIPT_NAME']);
-      if(sizeof($interface_menu)==1 and substr($_SERVER['REQUEST_URI'],-9)=="index.php")return;
+            foreach ($interface_menu as $title => $url) {
+                if (substr($url, -15) == "admin/index.php" or substr($url, -14) == "admin/main.php") {
+                    continue;
+                }
 
-      foreach($interface_menu as $title => $url){
-        if(substr($url,-15)=="admin/index.php" or substr($url,-14)=="admin/main.php")continue;
-
-        $urlPath=(empty($moduleName) or substr($url,0,7)=="http://")?$url:XOOPS_URL."/modules/{$moduleName}/{$url}";
-        $baseurl=basename($url);
-        //if($baseurl=="index.php" and !preg_match("/admin/", $url))continue;
-        $active=strpos($_SERVER['SCRIPT_NAME'], $url)!==false?"class='current'":"";
-        $options.="
+                $urlPath = (empty($moduleName) or substr($url, 0, 7) == "http://") ? $url : XOOPS_URL . "/modules/{$moduleName}/{$url}";
+                $baseurl = basename($url);
+                //if($baseurl=="index.php" and !preg_match("/admin/", $url))continue;
+                $active = strpos($_SERVER['SCRIPT_NAME'], $url) !== false ? "class='current'" : "";
+                $options .= "
           <li {$active}><a href='{$urlPath}'>{$title}</a></li>
         ";
-      }
+            }
 
-      if($isAdmin and $module_id){
-        $options.="<li {$active}><a href='admin/index.php' title='".sprintf(_TAD_ADMIN,$mod_name)."'><i class='{$wrench}'></i></a></li>";
-        $options.="<li {$active}><a href='".XOOPS_URL."/modules/system/admin.php?fct=preferences&op=showmod&mod={$module_id}' title='".sprintf(_TAD_CONFIG,$mod_name)."'><i class='{$edit}'></i></a></li>";
-        $options.="<li {$active}><a href='".XOOPS_URL."/modules/system/admin.php?fct=blocksadmin&op=list&filter=1&selgen={$module_id}&selmod=-2&selgrp=-1&selvis=-1' title='".sprintf(_TAD_BLOCKS,$mod_name)."'><i class='{$th}'></i></a></li>";
-      }
-    }else{
-      return;
-    }
+            if ($isAdmin and $module_id) {
+                $options .= "<li {$active}><a href='admin/index.php' title='" . sprintf(_TAD_ADMIN, $mod_name) . "'><i class='{$wrench}'></i></a></li>";
+                $options .= "<li {$active}><a href='" . XOOPS_URL . "/modules/system/admin.php?fct=preferences&op=showmod&mod={$module_id}' title='" . sprintf(_TAD_CONFIG, $mod_name) . "'><i class='{$edit}'></i></a></li>";
+                $options .= "<li {$active}><a href='" . XOOPS_URL . "/modules/system/admin.php?fct=blocksadmin&op=list&filter=1&selgen={$module_id}&selmod=-2&selgrp=-1&selvis=-1' title='" . sprintf(_TAD_BLOCKS, $mod_name) . "'><i class='{$th}'></i></a></li>";
+            }
+        } else {
+            return;
+        }
 
-
-    $main="
+        $main = "
     <style>
     .toolbar_bootstrap_nav {
       position: relative;
@@ -201,14 +213,15 @@ if(!function_exists('toolbar_bootstrap')){
         </nav>
       </div>
     </div>";
-    return $main;
-  }
+        return $main;
+    }
 }
 
-if(!function_exists('make_menu_json')){
-  function make_menu_json($interface_menu=array(),$moduleName=""){
-    $json=json_encode($interface_menu);
-    $filename=XOOPS_ROOT_PATH."/uploads/menu_{$moduleName}.txt";
-    file_put_contents($filename, $json);
-  }
+if (!function_exists('make_menu_json')) {
+    function make_menu_json($interface_menu = array(), $moduleName = "")
+    {
+        $json     = json_encode($interface_menu);
+        $filename = XOOPS_ROOT_PATH . "/uploads/menu_{$moduleName}.txt";
+        file_put_contents($filename, $json);
+    }
 }

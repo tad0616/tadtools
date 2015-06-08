@@ -146,8 +146,7 @@ class ztree
               }
             ';
             $style = "display:none; position: absolute;z-index: 1000; background: #ffffff;";
-            //$onMenu = "beforeClick: beforeClick,";
-            $mode = "
+            $mode  = "
               view: {
                 dblClickExpand: false,
                 fontCss: getFont
@@ -181,7 +180,6 @@ class ztree
 
             callback: {
               {$onDrop}
-              {$onMenu}
               onClick: {$onClick}
             }
           };
