@@ -81,7 +81,8 @@ class ztree
                 var nodes = treeObj.transformToArray(treeObj.getNodes());
 
                 for (var i=0,l=nodes.length; i<l; i++) {
-                  $.post('{$this->save_sort_file}', { {$this->sn_col}: nodes[0].id, sort: i },
+                  //alert(nodes[i].id+'='+i);
+                  $.post('{$this->save_sort_file}', { {$this->sn_col}: nodes[i].id, sort: i },
                     function(data) {
                       $('#save_msg').html(data);
                     });
