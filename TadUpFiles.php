@@ -692,10 +692,9 @@ class TadUpFiles
                 }
                 $this->sort = "";
                 //echo "copy \"$from\" to  \"$path/$hash_filename\" OK!<br>";
+            } else {
+                die("copy \"$from\" to  \"$path/$hash_filename\" fail!");
             }
-            //else{
-            //  die("copy \"$from\" to  \"$path/$hash_filename\" fail!");
-            //}
 
             //複製檔案
             $this->thumbnail($from, $new_thumb, $type, $thumb_width);
@@ -826,8 +825,8 @@ class TadUpFiles
 
             // Resize
             imagecopyresampled($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $old_width, $old_height);
-
-            header("Content-type: $type");
+            //ob_start();
+            //header("Content-type: $type");
             if ($type == "image/jpeg") {
                 imagejpeg($thumb, $thumb_name);
             } elseif ($type == "image/png") {
@@ -835,7 +834,9 @@ class TadUpFiles
             } elseif ($type == "image/gif") {
                 imagegif($thumb, $thumb_name);
             }
+            imagedestroy($thumb);
 
+            //ob_end_clean();
             return;
             exit;
         } else {

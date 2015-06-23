@@ -70,3 +70,5 @@ define('_TAD_ZAV_ZONE', 'Nav Bar');
 define('_TAD_CENTER_ZONE', 'Center Zone');
 define('_TAD_LEFT_ZONE', 'Left Zone');
 define('_TAD_RIGHT_ZONE', 'Right Zone');
+
+define("_TAD_SLIDE_DEFAULT_DESCRIPT", "You can upload slider images from tad_theme admin. You can edit descript for images with HTML tag.");

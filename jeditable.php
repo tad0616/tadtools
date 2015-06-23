@@ -18,16 +18,17 @@ class jeditable
     {
         $submitdata_set = (empty($submitdata)) ? "" : "submitdata:$submitdata,";
         $this->cols[]   = "
-    $('$selector').editable('$file', {
-      type : 'text',
-      indicator : 'Saving...',
-      width: '$width',
-      height: '$height',
-      $submitdata_set
-      onblur:'submit',
-      event: 'click',
-      placeholder : '{$tooltip}'
-    });";
+        $('$selector').editable('$file', {
+          type : 'text',
+          indicator : 'Saving...',
+          width: '$width',
+          height: '$height',
+          $submitdata_set
+          onblur:'submit',
+          event: 'click',
+          style   : 'display: inline',
+          placeholder : '{$tooltip}'
+        });";
     }
 
     //設定大量文字欄位 $submitdata="{'sn':$the_sn}
@@ -35,16 +36,17 @@ class jeditable
     {
         $submitdata_set = (empty($submitdata)) ? "" : "submitdata:$submitdata,";
         $this->cols[]   = "
-    $('$selector').editable('$file', {
-      type : 'textarea',
-      indicator : 'Saving...',
-      width: '$width',
-      height: '$height',
-      $submitdata_set
-      onblur:'submit',
-      event: 'click',
-      placeholder : '{$tooltip}'
-    });";
+        $('$selector').editable('$file', {
+          type : 'textarea',
+          indicator : 'Saving...',
+          width: '$width',
+          height: '$height',
+          $submitdata_set
+          onblur:'submit',
+          event: 'click',
+          style   : 'display: inline',
+          placeholder : '{$tooltip}'
+        });";
     }
 
     //設定下拉欄位 $submitdata="{'sn':$the_sn},$data="{'男生':'男生' , '女生':'女生'}";
@@ -52,15 +54,16 @@ class jeditable
     {
         $submitdata_set = (empty($submitdata)) ? "" : "submitdata:$submitdata,";
         $this->cols[]   = "
-    $('$selector').editable('$file', {
-      type : 'select',
-      indicator : 'Saving...',
-      data   : \"{$data}\",
-      $submitdata_set
-      onblur:'submit',
-      event: 'click',
-      placeholder : '{$tooltip}'
-    });";
+        $('$selector').editable('$file', {
+          type : 'select',
+          indicator : 'Saving...',
+          data   : \"{$data}\",
+          $submitdata_set
+          onblur:'submit',
+          event: 'click',
+          style   : 'display: inline',
+          placeholder : '{$tooltip}'
+        });";
     }
 
     //產生路徑工具
@@ -77,23 +80,23 @@ class jeditable
             $xoTheme->addScript('modules/tadtools/jeditable/jquery.jeditable.mini.js');
 
             $xoTheme->addScript('', null, "
-        (function(\$){
-          \$(document).ready(function(){
-            {$all_col}
-          });
-        })(jQuery);
-      ");
+              (function(\$){
+                \$(document).ready(function(){
+                  {$all_col}
+                });
+              })(jQuery);
+            ");
         } else {
 
             $main = "
-      $jquery
-      <script src='" . TADTOOLS_URL . "/jeditable/jquery.jeditable.mini.js' type='text/javascript' language='JavaScript'></script>
-      <script type='text/javascript'>
-       $(document).ready(function()
-       {
-         $all_col
-       })
-      </script>";
+            $jquery
+            <script src='" . TADTOOLS_URL . "/jeditable/jquery.jeditable.mini.js' type='text/javascript' language='JavaScript'></script>
+            <script type='text/javascript'>
+             $(document).ready(function()
+             {
+               $all_col
+             })
+            </script>";
             return $main;
         }
     }

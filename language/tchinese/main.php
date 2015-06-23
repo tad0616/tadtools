@@ -73,3 +73,5 @@ define('_TAD_ZAV_ZONE', '上方導覽工具列');
 define('_TAD_CENTER_ZONE', '中間區域（包含中間區塊及主內容）');
 define('_TAD_LEFT_ZONE', '左邊區域（視佈景版型不同可能包含左右兩側之區塊）');
 define('_TAD_RIGHT_ZONE', '右邊區域（視佈景版型不同可能包含左右兩側之區塊）');
+
+define("_TAD_SLIDE_DEFAULT_DESCRIPT", "您可以從<b>佈景管理的後台設定畫面</b>修改這部份內容，除了可以上傳滑動圖片外，也可以自己輸入圖片說明內容。部份佈景都支援HTML語法。");
