@@ -168,13 +168,15 @@ function save()
     }
 }
 /*-----------執行動作判斷區----------*/
-$op = empty($_REQUEST['op']) ? "" : $_REQUEST['op'];
+include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+$op = system_CleanVars($_REQUEST, 'op', '', 'string');
 
 switch ($op) {
 
     case "save":
         save();
         header("location:{$_SERVER['PHP_SELF']}");
+        exit;
         break;
 
     default:

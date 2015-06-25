@@ -693,7 +693,7 @@ class TadUpFiles
                 $this->sort = "";
                 //echo "copy \"$from\" to  \"$path/$hash_filename\" OK!<br>";
             } else {
-                die("copy \"$from\" to  \"$path/$hash_filename\" fail!");
+                //die("copy \"$from\" to  \"$path/$hash_filename\" fail!");
             }
 
             //複製檔案
@@ -1025,6 +1025,10 @@ class TadUpFiles
             $del_what = "`col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' $and_sort";
         }
 
+        if (empty($del_what)) {
+            return;
+        }
+
         $sql = "select * from `{$this->TadUpFilesTblName}`  where $del_what";
         //die($sql);
         $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error() . "<br>" . $sql);
@@ -1099,7 +1103,7 @@ class TadUpFiles
 
         $sql = "select * from `{$this->TadUpFilesTblName}` $where";
 
-        $result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error() . "<br>" . $sql);
         while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $files_sn, $col_name, $col_sn, $sort, $kind, $file_name, $file_type, $file_size, $description
             foreach ($all as $k => $v) {
@@ -1163,7 +1167,7 @@ class TadUpFiles
         $where = ($files_sn) ? "where `files_sn`='{$files_sn}'" : "where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' $and_sort order by sort $andLimit";
 
         $sql    = "select * from `{$this->TadUpFilesTblName}` $where";
-        $result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error() . "<br>" . $sql);
         $i      = 0;
         $files  = '';
         while ($all = $xoopsDB->fetchArray($result)) {
@@ -1236,7 +1240,7 @@ class TadUpFiles
 
         $sql = "select * from `{$this->TadUpFilesTblName}` $where";
 
-        $result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error() . "<br>" . $sql);
         $files  = "";
         while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $files_sn, $col_name, $col_sn, $sort, $kind, $file_name, $file_type, $file_size, $description
@@ -1487,7 +1491,7 @@ class TadUpFiles
 
         $sql = "select * from `{$this->TadUpFilesTblName}`  where `files_sn`='{$files_sn}'";
 
-        $result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error() . "<br>" . $sql);
         $all    = $xoopsDB->fetchArray($result);
 
         return $all;
