@@ -15,10 +15,11 @@ function tadtools_setup()
     $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error() . "<hr>" . $sql);
     //$tt_theme,$tt_use_bootstrap,$tt_bootstrap_color
     while (list($tt_theme, $tt_use_bootstrap, $tt_bootstrap_color, $tt_theme_kind) = $xoopsDB->fetchRow($result)) {
-        $use_bootstrap[$tt_theme]   = $tt_use_bootstrap;
-        $bootstrap_color[$tt_theme] = $tt_bootstrap_color;
-        //$tt_theme_kind[$tt_theme]=$tt_theme_kind;
+        $use_bootstrap[$tt_theme]     = $tt_use_bootstrap;
+        $bootstrap_color[$tt_theme]   = $tt_bootstrap_color;
+        $tt_theme_kind_arr[$tt_theme] = $tt_theme_kind;
     }
+    //die(var_export($tt_theme_kind_arr));
 
     $version = _MA_TT_VERSION . $xoopsModule->getVar("version");
 
@@ -34,14 +35,21 @@ function tadtools_setup()
             $theme_kind = "";
             include_once XOOPS_ROOT_PATH . "/themes/{$theme}/config.php";
             if (!empty($theme_kind)) {
-                if (!isset($use_bootstrap[$theme])) {
+                if (empty($tt_theme_kind_arr[$theme])) {
                     $sql = "replace into `" . $xoopsDB->prefix("tadtools_setup") . "` (`tt_theme` , `tt_use_bootstrap`,`tt_bootstrap_color` , `tt_theme_kind`) values('{$theme}', '0', '{$theme_kind}', '{$theme_kind}')";
+                    //die($sql);
                     $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error() . "<hr>" . $sql);
+
+                    $themes[$i]['theme_kind']      = $theme_kind;
+                    $themes[$i]['use_bootstrap']   = '0';
+                    $themes[$i]['tad_theme']       = '1';
+                    $themes[$i]['bootstrap_theme'] = mk_bootstrap_menu($theme_kind);
+                } else {
+                    $themes[$i]['theme_kind']      = $tt_theme_kind_arr[$theme];
+                    $themes[$i]['use_bootstrap']   = $bootstrap_color[$theme];
+                    $themes[$i]['tad_theme']       = '1';
+                    $themes[$i]['bootstrap_theme'] = mk_bootstrap_menu($tt_theme_kind_arr[$theme]);
                 }
-                $themes[$i]['theme_kind']      = $theme_kind;
-                $themes[$i]['use_bootstrap']   = '0';
-                $themes[$i]['tad_theme']       = '1';
-                $themes[$i]['bootstrap_theme'] = mk_bootstrap_menu($theme_kind);
             } else {
                 $themes[$i]['theme_kind']      = "html";
                 $themes[$i]['use_bootstrap']   = $use_bootstrap[$theme] === "" ? 1 : $use_bootstrap[$theme];
