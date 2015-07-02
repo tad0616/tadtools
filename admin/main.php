@@ -36,25 +36,25 @@ function tadtools_setup()
             include_once XOOPS_ROOT_PATH . "/themes/{$theme}/config.php";
             if (!empty($theme_kind)) {
                 if (empty($tt_theme_kind_arr[$theme])) {
-                    $sql = "replace into `" . $xoopsDB->prefix("tadtools_setup") . "` (`tt_theme` , `tt_use_bootstrap`,`tt_bootstrap_color` , `tt_theme_kind`) values('{$theme}', '0', '{$theme_kind}', '{$theme_kind}')";
+                    $sql = "replace into `" . $xoopsDB->prefix("tadtools_setup") . "` (`tt_theme` , `tt_use_bootstrap`,`tt_bootstrap_color` , `tt_theme_kind`) values('{$theme}', '0', '{$theme_color}', '{$theme_kind}')";
                     //die($sql);
                     $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error() . "<hr>" . $sql);
 
                     $themes[$i]['theme_kind']      = $theme_kind;
                     $themes[$i]['use_bootstrap']   = '0';
                     $themes[$i]['tad_theme']       = '1';
-                    $themes[$i]['bootstrap_theme'] = mk_bootstrap_menu($theme_kind);
+                    $themes[$i]['bootstrap_theme'] = mk_bootstrap_menu($theme_kind, $theme_color);
                 } else {
                     $themes[$i]['theme_kind']      = $tt_theme_kind_arr[$theme];
                     $themes[$i]['use_bootstrap']   = $bootstrap_color[$theme];
                     $themes[$i]['tad_theme']       = '1';
-                    $themes[$i]['bootstrap_theme'] = mk_bootstrap_menu($tt_theme_kind_arr[$theme]);
+                    $themes[$i]['bootstrap_theme'] = mk_bootstrap_menu($tt_theme_kind_arr[$theme], $bootstrap_color[$theme]);
                 }
             } else {
                 $themes[$i]['theme_kind']      = "html";
                 $themes[$i]['use_bootstrap']   = $use_bootstrap[$theme] === "" ? 1 : $use_bootstrap[$theme];
                 $themes[$i]['tad_theme']       = '0';
-                $themes[$i]['bootstrap_theme'] = mk_bootstrap_menu($theme_kind);
+                $themes[$i]['bootstrap_theme'] = mk_bootstrap_menu($theme_kind, $theme_color);
             }
         } else {
             $theme_kind                    = search_bootstrap(XOOPS_ROOT_PATH . "/themes/{$theme}");
@@ -85,15 +85,24 @@ function search_bootstrap($path = "")
     }
 }
 
-function mk_bootstrap_menu($theme_kind = "")
+function mk_bootstrap_menu($theme_kind = "", $theme_color = "")
 {
-
     if ($theme_kind == "html" or $theme_kind == "mix") {
-        $theme_array1 = mk_bootstrap_menu_options('bootstrap', "light");
-        $theme_array2 = mk_bootstrap_menu_options('bootstrap', "dark");
-        $theme_array3 = mk_bootstrap_menu_options('bootstrap3', "light");
-        $theme_array4 = mk_bootstrap_menu_options('bootstrap3', "dark");
-        $theme_array  = array_merge($theme_array1, $theme_array2, $theme_array3, $theme_array4);
+        if (strpos($theme_color, "bootstrap3") !== false) {
+            $theme_array3 = mk_bootstrap_menu_options('bootstrap3', "light");
+            $theme_array4 = mk_bootstrap_menu_options('bootstrap3', "dark");
+            $theme_array  = array_merge($theme_array3, $theme_array4);
+        } elseif (substr($theme_color, 0, 9) == "bootstrap") {
+            $theme_array1 = mk_bootstrap_menu_options('bootstrap', "light");
+            $theme_array2 = mk_bootstrap_menu_options('bootstrap', "dark");
+            $theme_array  = array_merge($theme_array1, $theme_array2);
+        } else {
+            $theme_array1 = mk_bootstrap_menu_options('bootstrap', "light");
+            $theme_array2 = mk_bootstrap_menu_options('bootstrap', "dark");
+            $theme_array3 = mk_bootstrap_menu_options('bootstrap3', "light");
+            $theme_array4 = mk_bootstrap_menu_options('bootstrap3', "dark");
+            $theme_array  = array_merge($theme_array1, $theme_array2, $theme_array3, $theme_array4);
+        }
     } else {
         $theme_array1 = mk_bootstrap_menu_options($theme_kind, "light");
         $theme_array2 = mk_bootstrap_menu_options($theme_kind, "dark");

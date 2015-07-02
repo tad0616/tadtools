@@ -1,16 +1,26 @@
+"TadTools Version 2.69 released 2015-06-30"
+====================================
+ 1.Fixed some bug.
+ 2.Fixed theme kind issue.
+ 3.Adjust accesskey position.
+ 4.Fixed PHP code style
+ 5.Fixed ztree srag to sort issue
+ 6.Added template_common folder.
+
+
 "TadTools Version 2.68 released 2015-05-26"
 ====================================
  1. Amend login logout, bootstrap version determining misalignment problems.
  2. Fixed colorbox width not set correctly.
  3. Verify that one more field "in the alphanumeric" rule
- 4.CKEditor added bootstrap support
+ 4. CKEditor added bootstrap support
  5. Add ztree 3.5 tree kit
 
 
 "TadTools Version 2.67 released 2015-05-05"
 ====================================
  1. Fixed jwplayer_new.php playlist movie can not solve the problem.
- 2.colorbox added length and width auto adjustment function
+ 2. colorbox added length and width auto adjustment function
  3. Fix bootstrap3 button background will become transparent background problem
  4. Update jquery-ui to 1.11.4
  5. Update facebook Guestbook to the latest version, and in chronological order

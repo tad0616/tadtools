@@ -2,45 +2,45 @@
 
   <{if $xoBlocks.canvas_left and $xoBlocks.canvas_right}>
 
-    <div id="xoops_theme_left_zone" class="<{if $theme_kind!="html"}>span<{/if}><{$lb_width}>" style="<{if $theme_kind=="html"}>float:left;<{/if}>background-color:<{$lb_color}>;">
+    <div id="xoops_theme_left_zone" <{if $theme_kind!="html"}>class="span<{$lb_width}>"<{/if}> style="<{if $theme_kind=="html"}>float:left;<{/if}>background-color:<{$lb_color}>;">
       <div id="xoops_theme_left" style="<{$leftBlocks}>">
         <a accesskey="L" href="#xoops_theme_left_zone_key" title="<{$smarty.const._TAD_LEFT_ZONE}>" id="xoops_theme_left_zone_key" style="color: transparent; font-size: 10px;">:::</a>
         <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/leftBlock.html"}>
       </div>
     </div>
 
-    <div id="xoops_theme_center_zone" class="<{if $theme_kind!="html"}>span<{/if}><{$center_width}>" style="<{$centerBlocks}>">
+    <div id="xoops_theme_center_zone" <{if $theme_kind!="html"}>class="span<{$center_width}>"<{/if}> style="<{$centerBlocks}>">
       <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/centerZone.html"}>
     </div>
 
-    <div id="xoops_theme_right_zone" class="<{if $theme_kind!="html"}>span<{/if}><{$rb_width}>" style="<{if $theme_kind=="html"}>float:right;<{/if}>background-color:<{$rb_color}>;">
-      <a accesskey="R" href="#xoops_theme_right_zone_key" title="<{$smarty.const._TAD_RIGHT_ZONE}>" id="xoops_theme_right_zone_key" style="color: transparent; font-size: 10px;">:::</a>
+    <div id="xoops_theme_right_zone" <{if $theme_kind!="html"}>class="span<{$rb_width}>"<{/if}> style="<{if $theme_kind=="html"}>float:right;<{/if}>background-color:<{$rb_color}>;">
       <div id="xoops_theme_right"  style="<{$rightBlocks}>">
+        <a accesskey="R" href="#xoops_theme_right_zone_key" title="<{$smarty.const._TAD_RIGHT_ZONE}>" id="xoops_theme_right_zone_key" style="color: transparent; font-size: 10px;">:::</a>
         <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/rightBlock.html"}>
       </div>
     </div>
 
   <{elseif $xoBlocks.canvas_left and !$xoBlocks.canvas_right}>
-    <div id="xoops_theme_left_zone" class="span3" style="<{if $theme_kind=="html"}>float:left;<{/if}>background-color:<{$lb_color}>;">
+    <div id="xoops_theme_left_zone" <{if $theme_kind!="html"}>class="span3"<{/if}> style="<{if $theme_kind=="html"}>float:left;<{/if}>background-color:<{$lb_color}>;">
       <div id="xoops_theme_left" style="<{$leftBlocks}>">
         <a accesskey="L" href="#xoops_theme_left_zone_key" title="<{$smarty.const._TAD_LEFT_ZONE}>" id="xoops_theme_left_zone_key" style="color: transparent; font-size: 10px;">:::</a>
         <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/leftBlock.html"}>
       </div>
     </div>
 
-    <div id="xoops_theme_center_zone" class="span9" style="<{$centerBlocks}>">
+    <div id="xoops_theme_center_zone" <{if $theme_kind!="html"}>class="span9"<{/if}> style="<{$centerBlocks}>">
       <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/centerZone.html"}>
     </div>
 
   <{elseif !$xoBlocks.canvas_left and $xoBlocks.canvas_right}>
 
-    <div id="xoops_theme_center_zone" class="span9" style="<{$centerBlocks}>">
+    <div id="xoops_theme_center_zone" <{if $theme_kind!="html"}>class="span9"<{/if}> style="<{$centerBlocks}>">
       <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/centerZone.html"}>
     </div>
 
-    <div id="xoops_theme_right_zone" class="span3" style="<{if $theme_kind=="html"}>float:right;<{/if}>background-color:<{$rb_color}>;">
-      <a accesskey="R" href="#xoops_theme_right_zone_key" title="<{$smarty.const._TAD_RIGHT_ZONE}>" id="xoops_theme_right_zone_key" style="color: transparent; font-size: 10px;">:::</a>
+    <div id="xoops_theme_right_zone" <{if $theme_kind!="html"}>class="span3"<{/if}> style="<{if $theme_kind=="html"}>float:right;<{/if}>background-color:<{$rb_color}>;">
       <div id="xoops_theme_right"  style="<{$rightBlocks}>">
+      <a accesskey="R" href="#xoops_theme_right_zone_key" title="<{$smarty.const._TAD_RIGHT_ZONE}>" id="xoops_theme_right_zone_key" style="color: transparent; font-size: 10px;">:::</a>
         <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/rightBlock.html"}>
       </div>
     </div>

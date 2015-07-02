@@ -104,8 +104,6 @@ class ztree
                   function(data) {
                       $('#save_msg').html(data);
                   });
-
-                }
               ";
             }
 

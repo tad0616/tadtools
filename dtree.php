@@ -51,8 +51,8 @@ class dtree
             $xoTheme->addScript('modules/tadtools/dtree/dtree.js');
         } else {
             $dtree = "
-      <link rel='StyleSheet' href='" . TADTOOLS_URL . "/dtree/dtree.css' type='text/css' />
-      <script type='text/javascript' src='" . TADTOOLS_URL . "/dtree/dtree.js'></script>";
+              <link rel='StyleSheet' href='" . TADTOOLS_URL . "/dtree/dtree.css' type='text/css' />
+              <script type='text/javascript' src='" . TADTOOLS_URL . "/dtree/dtree.js'></script>";
         }
 
         if (empty($this->home)) {
@@ -70,24 +70,24 @@ class dtree
         }
 
         $dtree .= "
-    <style>
-      .dtree {
-        font-size: {$fontsize};
-      }
-    </style>
+        <style>
+          .dtree {
+            font-size: {$fontsize};
+          }
+        </style>
 
-    <div id='tree_{$this->name}'></div>
-    <script type='text/javascript' defer='defer'>
-      {$this->name} = new dTree('{$this->name}', '" . TADTOOLS_URL . "/dtree');
-      {$this->name}.config.useCookies=true;
-      {$this->name}.config.useLines=$useLines;
+        <div id='tree_{$this->name}'></div>
+        <script type='text/javascript' defer='defer'>
+          {$this->name} = new dTree('{$this->name}', '" . TADTOOLS_URL . "/dtree');
+          {$this->name}.config.useCookies=true;
+          {$this->name}.config.useLines=$useLines;
 
-      {$opt}
-      document.getElementById('tree_{$this->name}').innerHTML={$this->name};
-    </script>
+          {$opt}
+          document.getElementById('tree_{$this->name}').innerHTML={$this->name};
+        </script>
 
-    <a href='javascript: {$this->name}.openAll();' style='font-size:11px;'>" . _TAD_EXPAND_ALL . "</a> | <a href='javascript: {$this->name}.closeAll();' style='font-size:11px;'>" . _TAD_CONTACT_ALL . "</a>
-    ";
+        <a href='javascript: {$this->name}.openAll();' style='font-size:11px;'>" . _TAD_EXPAND_ALL . "</a> | <a href='javascript: {$this->name}.closeAll();' style='font-size:11px;'>" . _TAD_CONTACT_ALL . "</a>
+        ";
         return $dtree;
     }
 }
