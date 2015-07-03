@@ -2,7 +2,6 @@
   <li <{if $m.submenu}>class="dropdown"<{/if}>>
     <a <{if $m.submenu}>class="dropdown-toggle" data-toggle="dropdown" <{/if}> href="<{if $m.target=="popup"}>javascript:tad_themes_popup('<{$m.url}>');<{else}><{$m.url}><{/if}>" <{if $m.target!="popup"}>target="<{$m.target}>"<{/if}>>
       <i class="fa <{$m.icon}>"></i> <{$m.title}> <{if $m.submenu}><{/if}>
-      <b class="caret"></b>
     </a>
     <{if $m.submenu}>
       <ul class="dropdown-menu" id="swatch-menu" role="menu">
