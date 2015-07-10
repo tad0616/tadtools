@@ -10,24 +10,29 @@ $xoops_showrblock=empty($right_count)?false:true;
 $this->assign('left_count',$left_count);
 $this->assign('right_count',$right_count);
 
-/****取得Tad Themes偏好設定****/
-$modhandler = &xoops_gethandler('module');
-$xoopsModule = &$modhandler->getByDirname("tad_themes");
+/**** 取得 Tad Themes 偏好設定****/
+$modhandler = xoops_gethandler('module');
+$xoopsModule = $modhandler->getByDirname("tad_themes");
 $mid=($xoopsModule)?$xoopsModule->getVar('mid'):0;
-
 $this->assign('mid',$mid);
-
 $use_default_config=false;
 
-/****取得Tad Tools偏好設定****/
-$TadtoolsModule = &$modhandler->getByDirname("tadtools");
+/**** 取得 Tad Login 偏好設定****/
+$TadLoginXoopsModule = $modhandler->getByDirname("tad_login");
+$TadLoginmid=($TadLoginXoopsModule)?$xoops_gethandler->getVar('mid'):0;
+
+$config_handler =xoops_gethandler('config');
+$TadLoginConfig =$config_handler->getConfigsByCat(0, $TadLoginmid);
+if(empty($TadLoginConfig['openid_login']))$TadLoginConfig['openid_login']='0';
+if(empty($TadLoginConfig['openid_logo']))$TadLoginConfig['openid_login']='1';
+$this->assign('openid_login',$TadLoginConfig['openid_login']);
+$this->assign('openid_logo',$TadLoginConfig['openid_logo']);
+
+/**** 取得 Tad Tools 偏好設定****/
+$TadtoolsModule = $modhandler->getByDirname("tadtools");
 $Tadtoolsmid=($TadtoolsModule)?$TadtoolsModule->getVar('mid'):0;
 
-$config_handler =& xoops_gethandler('config');
-$tadToolsConfig =& $config_handler->getConfigsByCat(0, $Tadtoolsmid);
-
-$this->assign('openid_login',$tadToolsConfig['openid_login']);
-$this->assign('openid_logo',$tadToolsConfig['openid_logo']);
+$tadToolsConfig = $config_handler->getConfigsByCat(0, $Tadtoolsmid);
 $this->assign('use_pin',$tadToolsConfig['use_pin']);
 
 
@@ -73,7 +78,7 @@ foreach($default as $k=>$v){
 
 if($mid){
 
-  $xoopsModuleConfig = & $config_handler->getConfigsByCat(0, $mid);
+  $xoopsModuleConfig = $config_handler->getConfigsByCat(0, $mid);
 
   $this->assign('auto_mainmenu',$xoopsModuleConfig['auto_mainmenu']);
   $this->assign('show_sitename',$xoopsModuleConfig['show_sitename']);

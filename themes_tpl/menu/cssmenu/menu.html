@@ -40,26 +40,30 @@
           <span><i class="fa <{$menu.icon}> <{$navbar_icon}>"></i> <{$menu.title}></span>
         </a>
         <{if $menu.submenu}>
-          <ul>
-            <{foreach from=$menu.submenu item=menu2}>
-              <li <{if $menu2.submenu}>class='has-sub'<{/if}>>
-                <a href='<{$menu2.url}>' target="<{$menu2.target}>">
-                  <span><i class="fa <{$menu2.icon}>"></i> <{$menu2.title}></span>
-                </a>
-                <{if $menu2.submenu}>
-                  <ul>
-                    <{foreach from=$menu2.submenu item=menu3}>
-                      <li>
-                        <a href='<{$menu3.url}>' target="<{$menu3.target}>">
-                          <span><i class="fa <{$menu3.icon}>"></i> <{$menu3.title}></span>
-                        </a>
-                      </li>
-                     <{/foreach}>
-                  </ul>
-                <{/if}>
-              </li>
-             <{/foreach}>
-          </ul>
+          <{if $menu.submenu=='1'}>
+            <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/menu/cssmenu/login.html"}>
+          <{else}>
+            <ul>
+              <{foreach from=$menu.submenu item=menu2}>
+                  <li <{if $menu2.submenu}>class='has-sub'<{/if}>>
+                    <a href='<{$menu2.url}>' target="<{$menu2.target}>">
+                      <span><i class="fa <{$menu2.icon}>"></i> <{$menu2.title}></span>
+                    </a>
+                    <{if $menu2.submenu}>
+                      <ul>
+                        <{foreach from=$menu2.submenu item=menu3}>
+                          <li>
+                            <a href='<{$menu3.url}>' target="<{$menu3.target}>">
+                              <span><i class="fa <{$menu3.icon}>"></i> <{$menu3.title}></span>
+                            </a>
+                          </li>
+                         <{/foreach}>
+                      </ul>
+                    <{/if}>
+                  </li>
+               <{/foreach}>
+            </ul>
+          <{/if}>
         <{/if}>
       </li>
      <{/foreach}>

@@ -180,14 +180,15 @@
     }else{
       $my_menu[$i]['id']=$i;
       $my_menu[$i]['title']=_TAD_TF_USER_LOGIN;
-      $my_menu[$i]['url']=XOOPS_URL."/user.php";
+      $my_menu[$i]['url']='#';
       $my_menu[$i]['target']="_self";
-      $my_menu[$i]['icon']="";
-      $my_menu[$i]['submenu']="";
+      $my_menu[$i]['icon']="login";
+      $my_menu[$i]['submenu']='1';
     }
 
     return $my_menu;
   }
+
 
   //取得使用者選單子項目
   function get_user_submenu_item(){

@@ -14,20 +14,6 @@ define('_MI_TADTOOLS_TITLE1_OPT1', '¨Ï¥Î Google ªº jquery API¡]±ÀÂË¡A³Ì¯àÁ×§K½Ä¬
 define('_MI_TADTOOLS_TITLE1_OPT2', '¨Ï¥Î TadTools ¤º«Øªº jquery¡]©Î³\·|©M¨ä¥L«DTad¨t¦C¼Ò²Õ¬Û½Ä¬ð¡^');
 define('_MI_TADTOOLS_TITLE1_OPT3', 'Ãö³¬ jquery ¥\¯à¡]»Ý¦Û¤v¤â°Ê¥[¦Ü§G´º¡A°O±o¤]­n¥[¤J jquery ui¡^');
 
-define('_MI_TADTOOLS_TITLE2', '¾ÉÄý¦Cªºµn¤J¿ï¶µ');
-define('_MI_TADTOOLS_DESC2', '½Ð¿ï¾Ü¹w³]¾ÉÄý¦C¤¤µn¤J¿ï¶µªº§e²{¤è¦¡');
-define('_MI_TADTOOLS_TITLE2_OPT0', '¶ÈÅã¥ÜXOOPSªºµn¤J¬É­±');
-define('_MI_TADTOOLS_TITLE2_OPT1', '¦P®ÉÅã¥ÜXOOPSªºµn¤J¬É­±©MOpenIDªº«ö¶s');
-define('_MI_TADTOOLS_TITLE2_OPT2', '¶ÈÅã¥ÜOpenIDªº«ö¶s');
-define('_MI_TADTOOLS_TITLE2_OPT3', '¤£Åã¥Üµn¤J¿ï¶µ');
-
-define('_MI_TADTOOLS_TITLE3', 'µn¤J¿ï³æ¤¤ªº§Ö³tµn¤J¹Ï¥Ü¤@±Æ´X­Ó');
-define('_MI_TADTOOLS_DESC3', '­Y¡u¬O§_®r¤J§Ö³tµn¤J¨ìµn¤J¿ï³æ¤¤¡v¬°¡u¬O¡v®É¡A¿ï¤@­Ó·|¥X²{¹Ï¥Ü¤Î¤å¦r¡A¿ï¨â­Ó¥H¤W´N¥u³Ñ¹Ï¥Ü¡C');
-define('_MI_TADTOOLS_TITLE4', '¬O§_¨Ï¥Î¾ÉÄý¦Cªº°v¦í¥\¯à');
-define('_MI_TADTOOLS_DESC4', '¿ï¡u¬O¡v®É¡A¦bµe­±©¹¤U²¾°Ê®É¡A¾ÉÄý¦C·|¦Û°Êºû«ù¦b³Ì¤W¤è¡C');
-define('_MI_TADTOOLS_TITLE5', '¤U¸üÀÉ®×ªº¸ô®|¬O§_®Ú¾Ú¥D¾÷Àô¹Ò¦Û°ÊÂà½X');
-define('_MI_TADTOOLS_DESC5', '­Y¬O¤¤¤åÀÉ¦WµLªk¤U¸üªº®É­Ô¡A¸Õ¸Õ§ïÅÜ¦¹³]©w­È¡C');
-
 define('_MI_TADTOOLS_TITLE6', '³]©w SyntaxHighlighter §G´º');
 define('_MI_TADTOOLS_DESC6', '½Ð¿ï¾Ü·Q­nªº°ª«G«×»yªk§G´º');
 
