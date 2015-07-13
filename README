@@ -6,6 +6,7 @@
  4.修正英文語系
  5.將 OpenID 登入的兩個偏好設定移至 tad_login 模組的偏好設定
  6.cssmenu 及 nav-pills 導覽列加入登入表單
+ 7.精簡 fancy_box 的 js 語法
 
 
 《TadTools 2.69 版 2015-06-30 釋出》

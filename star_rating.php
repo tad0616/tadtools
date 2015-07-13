@@ -84,13 +84,13 @@ class rating
 
             $save_js =
             "
-        click: function(score, evt) {
-          score = score * 2;
-          $.post('" . XOOPS_URL . "/modules/tadtools/star_rating.php', {op:'save_rating',mod_name: '{$this->mod_name}', col_name: '$col_name', col_sn: '$col_sn',rank: score }, function(msg) {
-            $('#rating_result_{$col_name}_{$col_sn}').html(msg);
-          });
-        },
-      ";
+                click: function(score, evt) {
+                  score = score * 2;
+                  $.post('" . XOOPS_URL . "/modules/tadtools/star_rating.php', {op:'save_rating',mod_name: '{$this->mod_name}', col_name: '$col_name', col_sn: '$col_sn',rank: score }, function(msg) {
+                    $('#rating_result_{$col_name}_{$col_sn}').html(msg);
+                  });
+                },
+              ";
 
             $disabled = "";
         } else {
@@ -106,18 +106,19 @@ class rating
 
         $show_score   = empty($score) ? "" : "score : $score,";
         $this->code[] = "
-	   $('#rating_{$col_name}_{$col_sn}').raty({
-        $save_js
-				$show_score
-				$disabled
-				hints   : ['2', '4','6', '8', '10'],
-        number: 5,
-        half  : true,
-        space : false,
-        path  : '" . TADTOOLS_URL . "/jquery.raty/img'
-			});
-			$msg_js
-    ";
+        //module:{$this->mod_name}
+        $('#rating_{$col_name}_{$col_sn}').raty({
+            $save_js
+            $show_score
+            $disabled
+            hints   : ['2','4','6','8','10'],
+            number: 5,
+            half  : true,
+            space : false,
+            path  : '" . TADTOOLS_URL . "/jquery.raty/img'
+        });
+        $msg_js
+        ";
     }
 
     //取得某人分數
@@ -169,23 +170,22 @@ class rating
             $xoTheme->addScript('modules/tadtools/jquery.raty/js/jquery.raty.js');
 
             $xoTheme->addScript('', null, "
-        (function(\$){
-          \$(document).ready(function(){
-            $all_code
-          });
-        })(jQuery);
-      ");
+            (function(\$){
+              \$(document).ready(function(){
+                $all_code
+              });
+            })(jQuery);
+          ");
         } else {
             $main = "
-      $jquery
-      <script src='" . TADTOOLS_URL . "/jquery.raty/js/jquery.raty.js' type='text/javascript'></script>
+            $jquery
+            <script src='" . TADTOOLS_URL . "/jquery.raty/js/jquery.raty.js' type='text/javascript'></script>
 
-      <script type='text/javascript'>
-      $(document).ready(function()  {
-        $all_code
-      });
-
-    	</script>";
+            <script type='text/javascript'>
+              $(document).ready(function()  {
+                $all_code
+              });
+            </script>";
 
             return $main;
         }

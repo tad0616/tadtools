@@ -1294,7 +1294,7 @@ class TadUpFiles
                 redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
             }
             include_once XOOPS_ROOT_PATH . "/modules/tadtools/fancybox.php";
-            $fancybox = new fancybox(".fancybox_{$this->col_name}_{$this->col_sn}", 640, 480);
+            $fancybox = new fancybox(".fancybox_{$this->col_name}", 640, 480);
             $all_files .= $fancybox->render(false, null, $autoPlay, $playSpeed);
         }
 
@@ -1328,7 +1328,7 @@ class TadUpFiles
                         if ($fext == "mp4" or $fext == "flv" or $fext == "3gp") {
                             $thumb_pic = TADTOOLS_URL . "/images/video.png";
                             if ($this->showFancyBox) {
-                                $fancyboxset = "fancybox_{$this->col_name}_{$this->col_sn}";
+                                $fancyboxset = "fancybox_{$this->col_name}";
                                 $rel         = "data-fancybox-type='iframe'";
                             } else {
                                 $fancyboxset = $rel = "";
@@ -1341,8 +1341,8 @@ class TadUpFiles
                     } else {
                         $thumb_pic = ($thumb) ? $file_info['tb_path'] : $file_info['path'];
                         if ($this->showFancyBox) {
-                            $fancyboxset = "fancybox_{$this->col_name}_{$this->col_sn}";
-                            $rel         = "rel='f{$this->col_name}_{$this->col_sn}'";
+                            $fancyboxset = "fancybox_{$this->col_name}";
+                            $rel         = "rel='f{$this->col_name}'";
                         } else {
                             $fancyboxset = $rel = "";
                         }

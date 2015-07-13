@@ -69,56 +69,56 @@ class fancybox
             $xoTheme->addScript('modules/tadtools/fancyBox/source/helpers/jquery.fancybox-media.js?v=1.0.5');
 
             $xoTheme->addScript('', null, "
-        (function(\$){
-          \$(document).ready(function(){
-            \$('{$this->name}').fancybox({
-              fitToView : true,
-              width   : '{$this->width}',
-              height    : '{$this->height}',
-              {$autoPlay}
-              {$playSpeed}
-              autoSize  : {$this->autoSize},
-              closeClick  : false,
-              openEffect  : 'none',
-              closeEffect : 'none'
-              {$reload_code}
-              {$prevent_closed_outside_code}
-            });
-          });
-        })(jQuery);
-      ");
+            (function(\$){
+              \$(document).ready(function(){
+                \$('{$this->name}').fancybox({
+                  fitToView : true,
+                  width   : '{$this->width}',
+                  height    : '{$this->height}',
+                  {$autoPlay}
+                  {$playSpeed}
+                  autoSize  : {$this->autoSize},
+                  closeClick  : false,
+                  openEffect  : 'none',
+                  closeEffect : 'none'
+                  {$reload_code}
+                  {$prevent_closed_outside_code}
+                });
+              });
+            })(jQuery);
+          ");
         } else {
 
             $js = $this->show_js ? "<script type='text/javascript' src='" . TADTOOLS_URL . "/fancyBox/lib/jquery.mousewheel-3.0.6.pack.js'></script>
-      <script type='text/javascript' language='javascript' src='" . TADTOOLS_URL . "/fancyBox/source/jquery.fancybox.js?v=2.1.4'></script>
-      <link rel='stylesheet' href='" . TADTOOLS_URL . "/fancyBox/source/jquery.fancybox.css?v=2.1.4' type='text/css' media='screen' />
-      <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-buttons.css?v=1.0.5' />
-      <script type='text/javascript' src='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-buttons.js?v=1.0.5'></script>
-      <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-thumbs.css?v=1.0.7' />
-      <script type='text/javascript' src='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-thumbs.js?v=1.0.7'></script>
-      <script type='text/javascript' src='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-media.js?v=1.0.5'></script>" : "";
+              <script type='text/javascript' language='javascript' src='" . TADTOOLS_URL . "/fancyBox/source/jquery.fancybox.js?v=2.1.4'></script>
+              <link rel='stylesheet' href='" . TADTOOLS_URL . "/fancyBox/source/jquery.fancybox.css?v=2.1.4' type='text/css' media='screen' />
+              <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-buttons.css?v=1.0.5' />
+              <script type='text/javascript' src='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-buttons.js?v=1.0.5'></script>
+              <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-thumbs.css?v=1.0.7' />
+              <script type='text/javascript' src='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-thumbs.js?v=1.0.7'></script>
+              <script type='text/javascript' src='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-media.js?v=1.0.5'></script>" : "";
 
             $fancybox = "
-      {$jquery}
-      {$js}
-      <script type='text/javascript'>
-      $(document).ready(function(){
-        $('{$this->name}').fancybox({
-          fitToView : true,
-          width   : '{$this->width}',
-          height    : '{$this->height}',
-          {$autoPlay}
-          {$playSpeed}
-          autoSize  : {$this->autoSize},
-          closeClick  : false,
-          openEffect  : 'none',
-          closeEffect : 'none'
-          {$reload_code}
-          {$prevent_closed_outside_code}
-        });
-      });
-      </script>
-      ";
+            {$jquery}
+            {$js}
+            <script type='text/javascript'>
+            $(document).ready(function(){
+              $('{$this->name}').fancybox({
+                fitToView : true,
+                width   : '{$this->width}',
+                height    : '{$this->height}',
+                {$autoPlay}
+                {$playSpeed}
+                autoSize  : {$this->autoSize},
+                closeClick  : false,
+                openEffect  : 'none',
+                closeEffect : 'none'
+                {$reload_code}
+                {$prevent_closed_outside_code}
+              });
+            });
+            </script>
+            ";
             return $fancybox;
         }
 
@@ -154,82 +154,82 @@ class fancybox
             $xoTheme->addScript('modules/tadtools/fancyBox/source/helpers/jquery.fancybox-media.js?v=1.0.5');
 
             $xoTheme->addScript('', null, "
-        (function(\$){
-          \$(document).ready(function(){
-            \$('{$this->name}').bind('submit', function() {
-              \$.ajax({
-                type        : 'POST',
-                cache       : false,
-                url         : '{$url}',
-                data        : \$(this).serializeArray(),
-                success: function(data) {
-                  \$.fancybox({
-                    fitToView : true,
-                    width   : '{$this->width}',
-                    height    : '{$this->height}',
-                    {$autoPlay}
-                    {$playSpeed}
-                    autoSize  : {$this->autoSize},
-                    closeClick  : false,
-                    openEffect  : 'none',
-                    closeEffect : 'none',
-                    content : data
-                    {$reload_code}
-                    {$prevent_closed_outside_code}
+            (function(\$){
+              \$(document).ready(function(){
+                \$('{$this->name}').bind('submit', function() {
+                  \$.ajax({
+                    type        : 'POST',
+                    cache       : false,
+                    url         : '{$url}',
+                    data        : \$(this).serializeArray(),
+                    success: function(data) {
+                      \$.fancybox({
+                        fitToView : true,
+                        width   : '{$this->width}',
+                        height    : '{$this->height}',
+                        {$autoPlay}
+                        {$playSpeed}
+                        autoSize  : {$this->autoSize},
+                        closeClick  : false,
+                        openEffect  : 'none',
+                        closeEffect : 'none',
+                        content : data
+                        {$reload_code}
+                        {$prevent_closed_outside_code}
+                      });
+                    }
                   });
-                }
-              });
 
-              return false;
-            });
-          });
-        })(jQuery);
-      ");
+                  return false;
+                });
+              });
+            })(jQuery);
+          ");
         } else {
 
             $js = $this->show_js ? "<script type='text/javascript' src='" . TADTOOLS_URL . "/fancyBox/lib/jquery.mousewheel-3.0.6.pack.js'></script>
-      <script type='text/javascript' language='javascript' src='" . TADTOOLS_URL . "/fancyBox/source/jquery.fancybox.js?v=2.1.4'></script>
-      <link rel='stylesheet' href='" . TADTOOLS_URL . "/fancyBox/source/jquery.fancybox.css?v=2.1.4' type='text/css' media='screen' />
-      <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-buttons.css?v=1.0.5' />
-      <script type='text/javascript' src='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-buttons.js?v=1.0.5'></script>
-      <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-thumbs.css?v=1.0.7' />
-      <script type='text/javascript' src='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-thumbs.js?v=1.0.7'></script>
-      <script type='text/javascript' src='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-media.js?v=1.0.5'></script>" : "";
+              <script type='text/javascript' language='javascript' src='" . TADTOOLS_URL . "/fancyBox/source/jquery.fancybox.js?v=2.1.4'></script>
+              <link rel='stylesheet' href='" . TADTOOLS_URL . "/fancyBox/source/jquery.fancybox.css?v=2.1.4' type='text/css' media='screen' />
+              <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-buttons.css?v=1.0.5' />
+              <script type='text/javascript' src='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-buttons.js?v=1.0.5'></script>
+              <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-thumbs.css?v=1.0.7' />
+              <script type='text/javascript' src='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-thumbs.js?v=1.0.7'></script>
+              <script type='text/javascript' src='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-media.js?v=1.0.5'></script>" : "";
 
             $fancybox = "
-      {$jquery}
-      {$js}
-      <script type='text/javascript'>
-      $(document).ready(function(){
-        $('{$this->name}').bind('submit', function() {
-          $.ajax({
-            type        : 'POST',
-            cache       : false,
-            url         : '{$url}',
-            data        : $(this).serializeArray(),
-            success: function(data) {
-              $.fancybox({
-                fitToView : true,
-                width   : '{$this->width}',
-                height    : '{$this->height}',
-                {$autoPlay}
-                {$playSpeed}
-                autoSize  : {$this->autoSize},
-                closeClick  : false,
-                openEffect  : 'none',
-                closeEffect : 'none',
-                content : data
-                {$reload_code}
-                {$prevent_closed_outside_code}
-              });
-            }
-          });
+            {$jquery}
+            {$js}
+            <script type='text/javascript'>
+            $(document).ready(function(){
+              $('{$this->name}').bind('submit', function() {
+                $.ajax({
+                  type        : 'POST',
+                  cache       : false,
+                  url         : '{$url}',
+                  data        : $(this).serializeArray(),
+                  success: function(data) {
+                    $.fancybox({
+                      fitToView : true,
+                      width   : '{$this->width}',
+                      height    : '{$this->height}',
+                      {$autoPlay}
+                      {$playSpeed}
+                      autoSize  : {$this->autoSize},
+                      closeClick  : false,
+                      openEffect  : 'none',
+                      closeEffect : 'none',
+                      content : data
+                      {$reload_code}
+                      {$prevent_closed_outside_code}
+                    });
+                  }
+                });
 
-          return false;
-        });
-      });
-      </script>
-      ";
+                return false;
+              });
+            });
+            </script>
+            ";
             return $fancybox;
         }
 
