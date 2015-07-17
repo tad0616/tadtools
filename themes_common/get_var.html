@@ -19,7 +19,7 @@ $use_default_config=false;
 
 /**** 取得 Tad Login 偏好設定****/
 $TadLoginXoopsModule = $modhandler->getByDirname("tad_login");
-$TadLoginmid=($TadLoginXoopsModule)?$xoops_gethandler->getVar('mid'):0;
+$TadLoginmid=($TadLoginXoopsModule)?$TadLoginXoopsModule->getVar('mid'):0;
 
 $config_handler =xoops_gethandler('config');
 $TadLoginConfig =$config_handler->getConfigsByCat(0, $TadLoginmid);

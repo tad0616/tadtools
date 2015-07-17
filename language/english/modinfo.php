@@ -8,11 +8,10 @@ define('_MI_TADTOOLS_ADMENU1_DESC', 'Bootstrap setup');
 define('_MI_TADTOOLS_NAME', 'Tad Tools Framework');
 define('_MI_TADTOOLS_DESC', 'Tad Tools is a set of common code used by Tad Modules.');
 
-define('_MI_TADTOOLS_TITLE1', 'About jQuery');
-define('_MI_TADTOOLS_DESC1', 'Please select jQuery');
-define('_MI_TADTOOLS_TITLE1_OPT1', 'Google jQuery API');
-define('_MI_TADTOOLS_TITLE1_OPT2', 'jQuery in TadTools module');
-define('_MI_TADTOOLS_TITLE1_OPT3', 'Don\'t use jQuery');
+define('_MI_TADTOOLS_TITLE4', 'Pin Navbar to top?');
+define('_MI_TADTOOLS_DESC4', 'If "Yes", Navbar will stick on top.');
+define('_MI_TADTOOLS_TITLE5', 'Auto change charset of download URL?');
+define('_MI_TADTOOLS_DESC5', 'Only for Chinese file names.');
 
 define('_MI_TADTOOLS_TITLE6', 'SyntaxHighlighter theme?');
 define('_MI_TADTOOLS_DESC6', 'Setup SyntaxHighlighter theme.');

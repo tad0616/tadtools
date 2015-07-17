@@ -1,9 +1,12 @@
-"TadTools Version 2.7 released 2015-07-03"
+"TadTools Version 2.7 released 2015-07-13"
 ====================================
  1.Fixed part of the common template layout in HTML mode will not correct situations occur
  2.Fixed logo.html more than a > symbol problem.
  3.Fixed when using bootstrap3, navigation bar will be more than an inverted triangle problem.
-
+ 4.Fixed the English language
+ 5.OpenID login move tad_login two preferences module preferences
+ 6.cssmenu and nav-pills navigation bar to join Login Form
+ 7.Fixed fancy_box js syntax
 
 "TadTools Version 2.69 released 2015-06-30"
 ====================================

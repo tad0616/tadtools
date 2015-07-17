@@ -96,7 +96,7 @@ $modversion['config'][$i]['valuetype']   = 'text';
 $modversion['config'][$i]['default']     = 'syntaxhighlighter';
 $modversion['config'][$i]['options']     = array('syntaxhighlighter 2' => 'syntaxhighlighter_2', 'syntaxhighlighter 3' => 'syntaxhighlighter');
 
-$i++;
+$i                                       = 0;
 $modversion['blocks'][$i]['file']        = 'tadtools_qrcode.php';
 $modversion['blocks'][$i]['name']        = _MI_TADTOOLS_QRCODE_BLOCK_NAME;
 $modversion['blocks'][$i]['description'] = _MI_TADTOOLS_QRCODE_BLOCK_DESC;
