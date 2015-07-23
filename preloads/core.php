@@ -19,7 +19,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
 
             $sql = "select `tt_theme`,`tt_use_bootstrap`,`tt_bootstrap_color`,`tt_theme_kind` from `" . $xoopsDB->prefix("tadtools_setup") . "`  where `tt_theme`='{$theme_set}'";
 
-            $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+            $result = $xoopsDB->query($sql);
 
             list($tt_theme, $tt_use_bootstrap, $tt_bootstrap_color, $tt_theme_kind) = $xoopsDB->fetchRow($result);
             if (empty($tt_theme_kind)) {
@@ -37,7 +37,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
                                 `tt_bootstrap_color`='{$tt_bootstrap_color}',
                                 `tt_theme_kind`='{$tt_theme_kind}' where `tt_theme`='{$theme_set}'";
                         }
-                        $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+                        $xoopsDB->queryF($sql);
                     }
                 } else {
                     $tt_theme_kind      = "html";

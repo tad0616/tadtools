@@ -1,3 +1,8 @@
+"TadTools Version 2.7.1 released 2015-07-19"
+====================================
+ 1.Fixed site is not working properly after the update module.
+ 2.Removed margin css in tadtools/themes3_tpl/centerZone.html.
+
 "TadTools Version 2.7 released 2015-07-13"
 ====================================
  1.Fixed part of the common template layout in HTML mode will not correct situations occur
