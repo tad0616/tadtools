@@ -1,9 +1,12 @@
 <?php
 include_once "../../../mainfile.php";
-if(!$xoopsUser)exit;
-include_once "../jquery.php";
-$jquery=get_jquery(true);
-$LANGCODE=str_replace("-","_",_LANGCODE);
+if (!$xoopsUser) {
+    exit;
+}
+
+// include_once "../jquery.php";
+// $jquery   = get_jquery(true);
+$LANGCODE = str_replace("-", "_", _LANGCODE);
 ?>
 <!DOCTYPE html>
 <html>
@@ -12,7 +15,10 @@ $LANGCODE=str_replace("-","_",_LANGCODE);
 		<title>elFinder 2.0</title>
 
 		<!-- jQuery and jQuery UI (REQUIRED) -->
-		<?php echo $jquery;?>
+
+        <link rel="stylesheet" type="text/css" href="<?php echo XOOPS_URL;?>/modules/tadtools/elFinder/jquery/ui-themes/smoothness/jquery-ui-1.8.23.custom.css">
+        <script src="<?php echo XOOPS_URL;?>/modules/tadtools/elFinder/jquery/jquery-1.8.1.min.js"></script>
+        <script src="<?php echo XOOPS_URL;?>/modules/tadtools/elFinder/jquery/jquery-ui-1.8.23.custom.min.js"></script>
 
 		<!-- elFinder CSS (REQUIRED) -->
 		<link rel="stylesheet" type="text/css" href="<?php echo XOOPS_URL;?>/modules/tadtools/elFinder/css/elfinder.min.css">

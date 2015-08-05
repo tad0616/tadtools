@@ -1,3 +1,16 @@
+"TadTools Version 2.7.3 released 2015-08-02"
+====================================
+ 1. Fix jquery load issue
+ 2. Fix stickytableheaders path
+
+
+"TadTools Version 2.7.2 released 2015-08-02"
+====================================
+ 1.Fixed the bug about elFinder can't delete file.
+ 2.Fixed the bug that boostrap3 navbar third layer option can't link.
+ 3.Remove jquery.js rom common template avoid duplication
+ 4.Solve the problem that the theme can not be automatically loaded bootstrap.
+
 "TadTools Version 2.7.1 released 2015-07-19"
 ====================================
  1.Fixed site is not working properly after the update module.

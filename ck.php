@@ -86,12 +86,12 @@ class CKEditor
                 toolbar : '{$this->ToolbarSet}' ,
                 contentsCss : ['" . TADTOOLS_URL . "/{$bootstrap}/css/bootstrap.css'],
                 extraPlugins: 'autogrow,syntaxhighlight,summary,oembed,mathedit',
-                filebrowserBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=file',
-                filebrowserImageBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=image',
-                filebrowserFlashBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=flash',
-                filebrowserUploadUrl : '" . TADTOOLS_URL . "/upload.php?type=file',
-                filebrowserImageUploadUrl : '" . TADTOOLS_URL . "/upload.php?type=image',
-                filebrowserFlashUploadUrl : '" . TADTOOLS_URL . "/upload.php?type=flash'
+                filebrowserBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=file&mod_dir=" . $this->xoopsDirName . "',
+                filebrowserImageBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=image&mod_dir=" . $this->xoopsDirName . "',
+                filebrowserFlashBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=flash&mod_dir=" . $this->xoopsDirName . "',
+                filebrowserUploadUrl : '" . TADTOOLS_URL . "/upload.php?type=file&mod_dir=" . $this->xoopsDirName . "',
+                filebrowserImageUploadUrl : '" . TADTOOLS_URL . "/upload.php?type=image&mod_dir=" . $this->xoopsDirName . "',
+                filebrowserFlashUploadUrl : '" . TADTOOLS_URL . "/upload.php?type=flash&mod_dir=" . $this->xoopsDirName . "'
               } );
               </script>
               ";

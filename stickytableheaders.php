@@ -32,7 +32,7 @@ class stickytableheaders
         $jquery          = $this->show_jquery ? get_jquery() : "";
 
         if ($xoTheme) {
-            $xoTheme->addScript('modules/tadtools/StickyTableHeaders/jquery.stickytableheaders.js');
+            $xoTheme->addScript('modules/tadtools/stickytableheaders/jquery.stickytableheaders.js');
 
             $xoTheme->addScript('', null, "
         \$(document).ready(function(){
@@ -43,7 +43,7 @@ class stickytableheaders
             $main = "
       {$jquery}
 
-      <script src='" . TADTOOLS_URL . "/StickyTableHeaders/jquery.stickytableheaders.js'></script>
+      <script src='" . TADTOOLS_URL . "/stickytableheaders/jquery.stickytableheaders.js'></script>
       <script type='text/javascript'>
         $(document).ready(function(){
           $('{$name}').stickyTableHeaders($showFixedOffset);
