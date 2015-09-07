@@ -1,22 +1,26 @@
 <link rel="stylesheet" type="text/css" href="<{xoAppUrl modules/tadtools/themes_tpl/menu/superfish/css/superfish.css}>" />
 <style type="text/css">
-.sf-menu a {
-  color: <{$navbar_color}>;
-}
-.sf-menu li {
-  background: <{$navbar_bg_top}>;
-}
-.sf-menu ul li {
-  background: <{$navbar_bg_bottom}>;
-}
-.sf-menu ul ul li {
-  background: <{$navbar_bg_bottom}>;
-}
-.sf-menu li:hover,
-.sf-menu li.sfHover {
-  background: <{$navbar_hover}>;
-}
+<style type="text/css">
+  .sf-menu a {
+    color: <{$navbar_color}>;
+  }
+  .sf-menu li {
+    background-color: <{$navbar_bg_top}>;
+  }
+  .sf-menu ul li {
+    background-color: <{$navbar_bg_bottom}>;
+  }
+  .sf-menu ul ul li {
+    background-color: <{$navbar_bg_bottom}>;
+  }
+  .sf-menu li:hover,.sf-menu li.sfHover {
+    background-color: <{$navbar_hover}>;
+  }
+  .sf-menu a:hover {
+    color: <{$navbar_color_hover}>;
+  }
 </style>
+
 <script type="text/javascript" src="<{xoAppUrl modules/tadtools/themes_tpl/menu/superfish/js/hoverIntent.js}>"></script>
 <script type="text/javascript" src="<{xoAppUrl modules/tadtools/themes_tpl/menu/superfish/js/superfish.js}>"></script>
 <script type="text/javascript">
@@ -34,7 +38,7 @@ $(document).ready(function(){
 
 </script>
 
-<ul class="sf-menu">
+<ul class="sf-menu"  id="tad_sf_menu">
   <{foreach from=$menu_var item=menu}>
     <li>
       <a href='<{$menu.url}>' target="<{$menu.target}>">

@@ -34,25 +34,25 @@ CKEDITOR.editorConfig = function( config ) {
     CKEDITOR.config.syntaxhighlight_lang = 'PHP';
 
 
-    config.pasteFromWordRemoveFontStyles = false;
+    // config.pasteFromWordRemoveFontStyles = false;
     config.toolbar = 'myBasic';
     config.toolbar_myBasic =
     [
         ['Source','Format','FontSize','TextColor','BGColor','Bold', 'Italic', '-', 'NumberedList', 'BulletedList','Outdent','Indent', '-', 'Link', 'Unlink','-','PasteText','PasteFromWord', '-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock', '-','Table','Undo','Redo']
     ];
-    CKEDITOR.config.autoGrow_maxHeight = 500;
-    CKEDITOR.config.entities = false;
-    CKEDITOR.config.htmlEncodeOutput = false;
-    CKEDITOR.config.allowedContent = true;
-    CKEDITOR.config.oembed_maxWidth = '560';
-    CKEDITOR.config.oembed_maxHeight = '315';
-    CKEDITOR.config.oembed_WrapperClass = 'embededContent';
-    CKEDITOR.config.syntaxhighlight_hideGutter = [true|false];
+    // CKEDITOR.config.autoGrow_maxHeight = 500;
+    // CKEDITOR.config.entities = false;
+    // CKEDITOR.config.htmlEncodeOutput = false;
+    // CKEDITOR.config.allowedContent = true;
+    // CKEDITOR.config.oembed_maxWidth = '560';
+    // CKEDITOR.config.oembed_maxHeight = '315';
+    // CKEDITOR.config.oembed_WrapperClass = 'embededContent';
+    // CKEDITOR.config.syntaxhighlight_hideGutter = [true|false];
 
-    CKEDITOR.config.syntaxhighlight_hideControls = true;
-    CKEDITOR.config.syntaxhighlight_collapse = true;
-    CKEDITOR.config.syntaxhighlight_showColumns = true;
-    CKEDITOR.config.syntaxhighlight_noWrap = false;
-    CKEDITOR.config.syntaxhighlight_firstLine =0;
-    CKEDITOR.config.syntaxhighlight_lang = 'PHP';
+    // CKEDITOR.config.syntaxhighlight_hideControls = true;
+    // CKEDITOR.config.syntaxhighlight_collapse = true;
+    // CKEDITOR.config.syntaxhighlight_showColumns = true;
+    // CKEDITOR.config.syntaxhighlight_noWrap = false;
+    // CKEDITOR.config.syntaxhighlight_firstLine =0;
+    // CKEDITOR.config.syntaxhighlight_lang = 'PHP';
 };

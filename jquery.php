@@ -16,7 +16,7 @@ if (!function_exists('get_jquery')) {
                 $xoTheme->addStylesheet("modules/tadtools/jquery/themes/{$theme}/jquery.ui.all.css");
                 $xoTheme->addScript('modules/tadtools/jquery/ui/jquery-ui.js');
             }
-            $xoTheme->addScript('modules/tadtools/jquery/jquery.jgrowl.js');
+            //$xoTheme->addScript('modules/tadtools/jquery/jquery.jgrowl.js');
             /*
         $xoTheme->addScript('', null, '
         (function($){

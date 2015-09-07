@@ -6,9 +6,11 @@ class TadtoolsCorePreload extends XoopsPreloadItem
     {
         global $xoopsConfig, $xoopsDB, $xoTheme, $xoopsTpl, $xoopsUser;
         $xoTheme->addScript('browse.php?Frameworks/jquery/jquery.js');
+        //$xoTheme->addScript('modules/tadtools/jquery/jquery/jquery.js');
         $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate.min.js');
         $xoTheme->addStylesheet("modules/tadtools/jquery/themes/base/jquery.ui.all.css");
         $xoTheme->addScript('modules/tadtools/jquery/ui/jquery-ui.js');
+        $xoTheme->addScript('modules/tadtools/jquery/jquery.jgrowl.js');
         $theme_set = $xoopsConfig['theme_set'];
 
         $_SESSION['now_theme_set'] = $theme_set;
@@ -61,7 +63,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
             $_SESSION[$theme_set]['bootstrap_version'] = 'bootstrap';
             $_SESSION['bootstrap']                     = '2';
         }
-
+        //die($_SESSION['bootstrap']);
         if ($xoopsTpl) {
             $xoopsTpl->assign("bootstrap_version", $_SESSION['bootstrap']);
         }

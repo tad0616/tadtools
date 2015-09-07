@@ -14,31 +14,31 @@ class FooTable
     public function render($need_jquery = true)
     {
         global $xoTheme;
-        $jquery = $need_jquery ? get_jquery() : "";
 
         if ($xoTheme) {
             $xoTheme->addStylesheet('modules/tadtools/FooTable/css/footable-0.1.css');
             $xoTheme->addScript('modules/tadtools/FooTable/js/footable-0.1.js');
 
             $xoTheme->addScript('', null, "
-        (function(\$){
-          \$(document).ready(function(){
-            \$('table').footable();
-          });
-        })(jQuery);
-      ");
+              (function(\$){
+                \$(document).ready(function(){
+                  \$('table').footable();
+                });
+              })(jQuery);
+            ");
         } else {
 
+            $jquery   = $need_jquery ? get_jquery() : "";
             $FooTable = "
-      <link href='" . TADTOOLS_URL . "/FooTable/css/footable-0.1.css' rel='stylesheet' type='text/css' />
-      $jquery
-      <script src='" . TADTOOLS_URL . "/FooTable/js/footable-0.1.js' type='text/javascript'></script>
-      <script type='text/javascript'>
-        $(function() {
-          $('table').footable();
-        });
-      </script>
-      ";
+            <link href='" . TADTOOLS_URL . "/FooTable/css/footable-0.1.css' rel='stylesheet' type='text/css' />
+            $jquery
+            <script src='" . TADTOOLS_URL . "/FooTable/js/footable-0.1.js' type='text/javascript'></script>
+            <script type='text/javascript'>
+              $(function() {
+                $('table').footable();
+              });
+            </script>
+            ";
             return $FooTable;
         }
     }

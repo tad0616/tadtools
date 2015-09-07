@@ -77,11 +77,13 @@ class CKEditor
             $bootstrap = $_SESSION['bootstrap'] == 3 ? "bootstrap3" : "bootstrap";
 
             $editor .= "
-              <textarea name='{$this->ColName}' style='width:{$this->Width};height:{$this->Height};' id='editor_{$this->ColName}' class='ckeditor_css'>{$content}</textarea>
+              <textarea name='{$this->ColName}' id='editor_{$this->ColName}' class='ckeditor_css'>{$content}</textarea>
 
               <script type='text/javascript'>
               CKEDITOR.replace('editor_{$this->ColName}' , {
                 skin : 'moono' ,
+                width : '{$this->Width}' ,
+                height : '{$this->Height}' ,
                 language : '" . _LANGCODE . "' ,
                 toolbar : '{$this->ToolbarSet}' ,
                 contentsCss : ['" . TADTOOLS_URL . "/{$bootstrap}/css/bootstrap.css'],

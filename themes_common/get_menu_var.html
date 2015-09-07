@@ -5,8 +5,10 @@
   $i=sizeof($my_menu);
   $mod_menu=get_module_menu_item($i);
   if(!empty($mod_menu)){
+    if(empty($my_menu))$my_menu=array();
     $my_menu=array_merge($my_menu,$mod_menu);
   }
+  //die(var_dump($mod_menu));
 
   $xoopsTpl->assign('menu_var',$my_menu);
 
@@ -58,8 +60,16 @@
   //取得模組選單
   function get_module_menu_item($i){
     global $xoopsDB,$xoopsTpl,$xoopsModule,$xoopsUser;
-    if(!isset($xoopsModule))return;
-    $dir=$xoopsModule->getVar('dirname');
+    $dir='';
+    $u=parse_url($_SERVER['REQUEST_URI']);
+    if(!empty($u['path']) and preg_match('/\/modules/',$u['path'])){
+      $XMUrl=explode("/",$u['path']);
+      $dir=$XMUrl[2];
+    }
+
+    if(empty($dir))return;
+
+    //$dir=$xoopsModule->getVar('dirname');
 
     if(file_exists(XOOPS_ROOT_PATH."/modules/{$dir}/interface_menu.php")){
       include XOOPS_ROOT_PATH."/modules/{$dir}/interface_menu.php";

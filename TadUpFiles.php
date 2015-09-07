@@ -8,7 +8,6 @@ $TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="file",$image="image",$t
 $TadUpFiles->set_col($col_name,$col_sn); //若 $show_list_del_file ==true 時一定要有
 $upform=$TadUpFiles->upform($show_edit,$upname,$maxlength,$show_list_del_file,$only_type,$thumb);
 
-
 //儲存：
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
 $TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="file",$image="image",$thumbs="image/.thumbs");
@@ -46,7 +45,6 @@ $show_files=$TadUpFiles->show_files($upname,true,NULL,false,false,NULL,NULL,fals
 //上傳表單name, 是否縮圖, 顯示模式 (filename、small), 顯示描述, 顯示下載次數, 數量限制, 自訂路徑, 加密, 自動播放時間(0 or 3000)
 //show_files($upname="",$thumb=true,$show_mode="",$show_description=false,$show_dl=false,$limit=NULL,$path=NULL,$hash=false,$playSpeed=5000)
 
-
 //下載檔案
 case "tufdl":
 $files_sn=isset($_GET['files_sn'])?intval($_GET['files_sn']):"";
@@ -54,14 +52,12 @@ $TadUpFiles->add_file_counter($files_sn,$hash=false,$force=false);
 exit;
 break;
 
-
 //刪除：
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
 $TadUpFiles=new TadUpFiles("模組名稱");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 //$TadUpFiles->set_col($col_name,$col_sn,$sort); //若要整個刪除
 $TadUpFiles->del_files($files_sn);
-
 
 //單一檔案真實路徑：
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
@@ -72,7 +68,6 @@ $TadUpFiles->get_pic_file($showkind[,$kind='url',$files_sn]); //thumb 小圖, im
 
 //改檔名
 $TadUpFiles->rename_file($files_sn,$new_name);
-
 
 檔案數量：
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
@@ -111,9 +106,6 @@ $TadUpFiles->get_file_for_smarty($files_sn="",$limit=NULL,$path,$hash);
 'tb_path' => 'http://localhost/x25/uploads/tad_themes/school2013/bg/thumbs/158.gif',
 'tb_url' => '<a href="/x25/modules/tad_themes/admin/main.php?op=tufdl&files_sn=116" title="158.gif" rel="lytebox">158.gif</a>',
 'original_file_path' => 'http://localhost/x25/uploads/tadnews/file/nsn_20_5.mp4'
-
-
-
 
 種類：img,file
 資料表：
@@ -191,7 +183,6 @@ class TadUpFiles
         $this->TadUpFilesImgUrl   = XOOPS_URL . "/uploads/{$this->prefix}{$this->subdir}{$this->image_dir}";
         $this->TadUpFilesThumbDir = XOOPS_ROOT_PATH . "/uploads/{$this->prefix}{$this->subdir}{$this->thumbs_dir}";
         $this->TadUpFilesThumbUrl = XOOPS_URL . "/uploads/{$this->prefix}{$this->subdir}{$this->thumbs_dir}";
-
     }
 
     //取得路徑
@@ -315,10 +306,10 @@ class TadUpFiles
 
         $col  = ($this->bootstrap == '3') ? "col-md-12" : "span12";
         $main = "
-    $jquery
-    <input type='file' name='{$upname}[]' id='{$upname}' $maxlength multiple='multiple' $accept class='{$col}'>
-    {$list_del_file}
-    ";
+        $jquery
+        <input type='file' name='{$upname}[]' id='{$upname}' $maxlength multiple='multiple' $accept class='{$col}'>
+        {$list_del_file}
+        ";
 
         return $main;
     }
@@ -370,29 +361,29 @@ class TadUpFiles
 
             if ($show_edit) {
                 $all_file .= "
-        <tr id='fdtr_{$files_sn}'>
-          <td style='{$w}'>
-            <div class='{$row}'>
-              <div class='{$col}1'>$thumb_style</div>
-              <div class='{$col}11'>
-                <label class='$checkbox_inline'>
-                  <input type='checkbox' name='del_file[$files_sn]' value='{$files_sn}'>
-                  {$original_filename}
-                </label>
-                <textarea name='save_description[$files_sn]' rows=1 class='{$class}'>$description</textarea>
-              </div>
-            </div>
-          </td>
-        </tr>";
+                <tr id='fdtr_{$files_sn}'>
+                  <td style='{$w}'>
+                    <div class='{$row}'>
+                      <div class='{$col}3'>$thumb_style</div>
+                      <div class='{$col}9'>
+                        <label class='$checkbox_inline'>
+                          <input type='checkbox' name='del_file[$files_sn]' value='{$files_sn}'>
+                          {$original_filename}
+                        </label>
+                        <textarea name='save_description[$files_sn]' rows=1 class='{$class}'>$description</textarea>
+                      </div>
+                    </div>
+                  </td>
+                </tr>";
             } else {
                 $all_file .= "
-        <li style='list-style-type:none;{$w2}'>
-          <label class='$checkbox_inline '>
-            $thumb_style2
-            <input type='checkbox' name='del_file[]' value='{$files_sn}'>{$original_filename}
-          </label>
-        </li>
-        ";
+                <li style='list-style-type:none;{$w2}'>
+                  <label class='$checkbox_inline '>
+                    $thumb_style2
+                    <input type='checkbox' name='del_file[]' value='{$files_sn}'>{$original_filename}
+                  </label>
+                </li>
+                ";
             }
         }
 
@@ -402,30 +393,30 @@ class TadUpFiles
 
         if ($show_edit) {
             $files = "
-      <script type='text/javascript'>
-      $(document).ready(function(){
-        $('#list_del_file_sort').sortable({ opacity: 0.6, cursor: 'move', update: function() {
-          var order = $(this).sortable('serialize');
-          $.post('" . XOOPS_URL . "/modules/tadtools/save_sort.php',order+'&col_name={$this->col_name}&col_sn={$this->col_sn}&tbl_name=" . $this->TadUpFilesTblName . "', function(theResponse){
-            $('#df_save_msg').html(theResponse);
-          });
-        }
-        });
-      });
-      </script>
-      <div style='margin-bottom:7px;'>" . _TAD_SELECT_TO_DEL . "</div>
-      <div class='{$row}'>
-        <div id='df_save_msg'></div>
-        <table class='table table-striped table-hover'>
-        <tbody id='list_del_file_sort' >
-        $all_file
-        </tbody>
-        </table>
-        <div class='alert'>" . _TAD_SORTABLE . "</div>
-      </div>";
+              <script type='text/javascript'>
+              $(document).ready(function(){
+                $('#list_del_file_sort').sortable({ opacity: 0.6, cursor: 'move', update: function() {
+                  var order = $(this).sortable('serialize');
+                  $.post('" . XOOPS_URL . "/modules/tadtools/save_sort.php',order+'&col_name={$this->col_name}&col_sn={$this->col_sn}&tbl_name=" . $this->TadUpFilesTblName . "', function(theResponse){
+                    $('#df_save_msg').html(theResponse);
+                  });
+                }
+                });
+              });
+              </script>
+              <div style='margin-bottom:7px;'>" . _TAD_SELECT_TO_DEL . "</div>
+              <div class='{$row}'>
+                <div id='df_save_msg'></div>
+                <table class='table table-striped table-hover'>
+                <tbody id='list_del_file_sort' >
+                $all_file
+                </tbody>
+                </table>
+                <div class='alert'>" . _TAD_SORTABLE . "</div>
+              </div>";
         } else {
             $files = "<div style='margin-bottom:7px;'>" . _TAD_SELECT_TO_DEL . "</div>
-      <div class='{$row}'><ul class='thumbnails'>$all_file</ul></div>";
+                <div class='{$row}'><ul class='thumbnails'>$all_file</ul></div>";
         }
 
         return $files;
