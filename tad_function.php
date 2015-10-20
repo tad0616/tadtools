@@ -520,20 +520,20 @@ if (!function_exists('getPageBar')) {
         if ($bootstrap == '3') {
             $mybar       = $navbar->makeBootStrap3Bar();
             $main['bar'] = "
-      <div class='row'>
-        <div class='col-md-12'>
-          <div class='text-center'>
-            <nav>
-              <ul class='pagination'>
-                {$mybar['left']}
-                {$mybar['center']}
-                {$mybar['right']}
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </div>
-      ";
+              <div class='row'>
+                <div class='col-md-12'>
+                  <div class='text-center'>
+                    <nav>
+                      <ul class='pagination'>
+                        {$mybar['left']}
+                        {$mybar['center']}
+                        {$mybar['right']}
+                      </ul>
+                    </nav>
+                  </div>
+                </div>
+              </div>
+              ";
         } else {
             $mybar       = $navbar->makeBar();
             $main['bar'] = "<div style='text-align:center;margin:4px;'>{$mybar['left']}{$mybar['center']}{$mybar['right']}<div style='zoom:1;clear:both;'></div></div>

@@ -1,3 +1,15 @@
+《TadTools 2.7.6 版 尚未釋出》
+====================================
+ 1.修正 get_menu_var.html 的內容
+ 2.修正 FooTable 無法載入 jquery 的情況
+
+《TadTools 2.7.5 版 2015-10-16 釋出》
+====================================
+ 1.CK編輯器新增設定CSS功能以及新增 uploadcare 元件
+ 2.修正會出現找不到 jquery 的問題
+ 3.加入新版FooTable-Bootstrap
+ 4.新增 uploadcare public key 的偏好設定（有設才能用）
+
 《TadTools 2.7.4 版 2015-09-02 釋出》
 ====================================
  1.font-awesome更新為 4.4.0

@@ -1,3 +1,15 @@
+"TadTools Version 2.7.5 released 2015-10-16"
+====================================
+  1.CK editor set new CSS features and new uploadcare element
+  2. Fixed jquery problem
+  3. Add the new FooTable-Bootstrap
+  4. New uploadcare public key preferences (there are set to use)
+
+"TadTools Version 2.7.4 released 2015-09-02"
+====================================
+ 1.font-awesome update to 4.4.0
+ 2.Modify menu template
+
 "TadTools Version 2.7.3 released 2015-08-02"
 ====================================
  1. Fix jquery load issue

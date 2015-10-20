@@ -32,20 +32,20 @@ if (!function_exists('get_jquery')) {
             if ($ui) {
 
                 $jqueryui_path = "
-        <link href='" . TADTOOLS_URL . "/jquery/themes/{$theme}/jquery.ui.all.css' rel='stylesheet' type='text/css'>
-        <script src='" . TADTOOLS_URL . "/jquery/ui/jquery-ui.js'></script>";
+                <link href='" . TADTOOLS_URL . "/jquery/themes/{$theme}/jquery.ui.all.css' rel='stylesheet' type='text/css'>
+                <script src='" . TADTOOLS_URL . "/jquery/ui/jquery-ui.js'></script>";
             }
 
             $jquery_path = "
-      <script type='text/javascript'>
-        if(typeof jQuery == 'undefined') {
-        document.write(\"<script type='text/javascript' src='" . TADTOOLS_URL . "/jquery/jquery-1.11.1.min.js'><\/script>\");
-        document.write(\"<script type='text/javascript' src='" . TADTOOLS_URL . "/jquery/jquery-migrate.min.js'><\/script>\");
-        document.write(\"<script type='text/javascript' src='" . TADTOOLS_URL . "/jquery/jquery.jgrowl.js'><\/script>\");
-        }
-      </script>
-      $jqueryui_path
-      ";
+              <script type='text/javascript'>
+                if(typeof jQuery == 'undefined') {
+                document.write(\"<script type='text/javascript' src='" . TADTOOLS_URL . "/jquery/jquery-1.11.1.min.js'><\/script>\");
+                document.write(\"<script type='text/javascript' src='" . TADTOOLS_URL . "/jquery/jquery-migrate.min.js'><\/script>\");
+                document.write(\"<script type='text/javascript' src='" . TADTOOLS_URL . "/jquery/jquery.jgrowl.js'><\/script>\");
+                }
+              </script>
+              $jqueryui_path
+              ";
             return $jquery_path;
         }
     }

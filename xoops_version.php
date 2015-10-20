@@ -4,7 +4,7 @@ $modversion = array();
 
 //---模組基本資訊---//
 $modversion['name']        = _MI_TADTOOLS_NAME;
-$modversion['version']     = '2.74';
+$modversion['version']     = '2.75';
 $modversion['description'] = _MI_TADTOOLS_DESC;
 $modversion['author']      = 'Tad (tad0616@gmail.com)';
 $modversion['credits']     = "Tad (http://tad0616.net)";
@@ -15,7 +15,7 @@ $modversion['image']       = "images/logo_{$xoopsConfig['language']}.png";
 $modversion['dirname']     = basename(__DIR__);
 
 //---模組狀態資訊---//
-$modversion['release_date']        = '2015/08/05';
+$modversion['release_date']        = '2015/10/16';
 $modversion['module_website_url']  = 'http://tad0616.net/';
 $modversion['module_website_name'] = _MI_TAD_WEB;
 $modversion['module_status']       = 'release';
@@ -95,6 +95,14 @@ $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'text';
 $modversion['config'][$i]['default']     = 'syntaxhighlighter';
 $modversion['config'][$i]['options']     = array('syntaxhighlighter 2' => 'syntaxhighlighter_2', 'syntaxhighlighter 3' => 'syntaxhighlighter');
+
+$i++;
+$modversion['config'][$i]['name']        = 'uploadcare_publickey';
+$modversion['config'][$i]['title']       = '_MI_TADTOOLS_TITLE8';
+$modversion['config'][$i]['description'] = '_MI_TADTOOLS_DESC8';
+$modversion['config'][$i]['formtype']    = 'textbox';
+$modversion['config'][$i]['valuetype']   = 'text';
+$modversion['config'][$i]['default']     = '';
 
 $i                                       = 0;
 $modversion['blocks'][$i]['file']        = 'tadtools_qrcode.php';

@@ -10,13 +10,19 @@ class CKEditor
     public $Width      = '100%';
     public $Height     = 300;
     public $Value;
+    public $ContentsCss   = array();
+    public $demopublickey = "";
 
     //建構函數
     public function CKEditor($xoopsDirName = "", $ColName = "", $Value = "")
     {
+        $xoopsModuleConfig  = TadToolsXoopsModuleConfig();
         $this->xoopsDirName = $xoopsDirName;
         $this->ColName      = $ColName;
         $this->Value        = $Value;
+        if (!empty($xoopsModuleConfig['uploadcare_publickey'])) {
+            $this->set_demopublickey($xoopsModuleConfig['uploadcare_publickey']);
+        }
     }
 
     //設定自定義設定檔
@@ -41,6 +47,16 @@ class CKEditor
     public function setHeight($Height = "")
     {
         $this->Height = $Height;
+    }
+
+    //新增樣式
+    public function setContentCss($ContentsCss = "")
+    {
+        $this->ContentsCss[] = $ContentsCss;
+    }
+    public function set_demopublickey($demopublickey = "")
+    {
+        $this->demopublickey = $demopublickey;
     }
 
     //產生編輯器
@@ -76,18 +92,35 @@ class CKEditor
             }
             $bootstrap = $_SESSION['bootstrap'] == 3 ? "bootstrap3" : "bootstrap";
 
+            $other_css = '';
+            if ($this->ContentsCss) {
+                $other_css = ",'" . implode("','", $this->ContentsCss) . "'";
+            }
+
+            $demopublickey_js = $extra_uploadcare = $uploadcare_setup = '';
+            if ($this->demopublickey) {
+                $demopublickey_js = "UPLOADCARE_PUBLIC_KEY = '{$this->demopublickey}',";
+                $extra_uploadcare = ",uploadcare";
+                $uploadcare_setup = "
+                uploadcare: {
+                    multiple: true
+                },";
+            }
+
             $editor .= "
               <textarea name='{$this->ColName}' id='editor_{$this->ColName}' class='ckeditor_css'>{$content}</textarea>
 
               <script type='text/javascript'>
+              {$demopublickey_js}
               CKEDITOR.replace('editor_{$this->ColName}' , {
                 skin : 'moono' ,
                 width : '{$this->Width}' ,
                 height : '{$this->Height}' ,
                 language : '" . _LANGCODE . "' ,
                 toolbar : '{$this->ToolbarSet}' ,
-                contentsCss : ['" . TADTOOLS_URL . "/{$bootstrap}/css/bootstrap.css'],
-                extraPlugins: 'autogrow,syntaxhighlight,summary,oembed,mathedit',
+                contentsCss : ['" . TADTOOLS_URL . "/{$bootstrap}/css/bootstrap.css'{$other_css}],
+                extraPlugins: 'autogrow,syntaxhighlight,summary,oembed,mathedit{$extra_uploadcare}',
+                {$uploadcare_setup}
                 filebrowserBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=file&mod_dir=" . $this->xoopsDirName . "',
                 filebrowserImageBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=image&mod_dir=" . $this->xoopsDirName . "',
                 filebrowserFlashBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=flash&mod_dir=" . $this->xoopsDirName . "',

@@ -15,6 +15,7 @@ class FooTable
     {
         global $xoTheme;
 
+        $jquery = $need_jquery ? get_jquery() : "";
         if ($xoTheme) {
             $xoTheme->addStylesheet('modules/tadtools/FooTable/css/footable-0.1.css');
             $xoTheme->addScript('modules/tadtools/FooTable/js/footable-0.1.js');
@@ -28,7 +29,6 @@ class FooTable
             ");
         } else {
 
-            $jquery   = $need_jquery ? get_jquery() : "";
             $FooTable = "
             <link href='" . TADTOOLS_URL . "/FooTable/css/footable-0.1.css' rel='stylesheet' type='text/css' />
             $jquery

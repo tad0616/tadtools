@@ -1230,7 +1230,7 @@ class TadUpFiles
         $where = $files_sn ? "where `files_sn`='{$files_sn}'" : "where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' $and_sort order by sort limit 0,1";
 
         $sql = "select * from `{$this->TadUpFilesTblName}` $where";
-
+        //die($sql);
         $result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error() . "<br>" . $sql);
         $files  = "";
         while ($all = $xoopsDB->fetchArray($result)) {
@@ -1351,11 +1351,9 @@ class TadUpFiles
                     $show_description_txt = ($show_description) ? "<div style='font-weight:normal;font-size:11px;word-break:break-all;line-height:1.2;margin-top:4px;'>$i) {$description} {$show_dl_txt}</div>" : "{$show_dl_txt}";
 
                     $all_files .= ($show_mode == "small") ? "<a href='{$linkto}' class='iconize {$fancyboxset}' {$rel}  title='{$description}'></a> " : "
-          <li style='width:120px;float:left;list-style:none;'>
-            <a href='{$linkto}' class='thumbnail {$fancyboxset}' {$rel} style=\"width:110px;height:70px;overflow:hidden;background-image:url('{$thumb_pic}');background-repeat:no-repeat;background-position:center center;\" title='{$description}'></a>
-
-            {$show_description_txt}
-          </li>";
+                      <li style='width:120px;float:left;list-style:none;'>
+                        <a href='{$linkto}' class='thumbnail {$fancyboxset}' {$rel} style=\"width:110px;height:70px;overflow:hidden;background-image:url('{$thumb_pic}');background-repeat:no-repeat;background-position:center center;\" title='{$description}'></a>{$show_description_txt}
+                      </li>";
                 }
 
                 $i++;

@@ -19,6 +19,9 @@ define('_MI_TADTOOLS_DESC6', 'Setup SyntaxHighlighter theme.');
 define('_MI_TADTOOLS_TITLE7', 'SyntaxHighlighter version');
 define('_MI_TADTOOLS_DESC7', 'SyntaxHighlighter2.x or SyntaxHighlighter3.x');
 
+define('_MI_TADTOOLS_TITLE8', 'uploadcare public key');
+define('_MI_TADTOOLS_DESC8', 'Please login <a href="https://uploadcare.com/" target="_blank">https://uploadcare.com/</a> and create a project to get public key.');
+
 define('_MI_TADTOOLS_QRCODE_BLOCK_NAME', 'QR Code');
 define('_MI_TADTOOLS_QRCODE_BLOCK_DESC', 'QR Code');
 
