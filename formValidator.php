@@ -28,35 +28,35 @@ class formValidator
             $xoTheme->addScript('modules/tadtools/formValidator/js/jquery.validationEngine.js');
 
             $xoTheme->addScript('', null, "
-        (function(\$){
-          \$(document).ready(function(){
-            \$('{$this->id}').validationEngine({
-              inlineValidation: true,
-              success :  false,
-              promptPosition: '$Position', //選項有：topLeft, topRight, bottomLeft,  centerRight, bottomRight
-              failure : function() {}
-            });
-          });
-        })(jQuery);
-      ");
+              (function(\$){
+                \$(document).ready(function(){
+                  \$('{$this->id}').validationEngine({
+                    inlineValidation: true,
+                    success :  false,
+                    promptPosition: '$Position', //選項有：topLeft, topRight, bottomLeft,  centerRight, bottomRight
+                    failure : function() {}
+                  });
+                });
+              })(jQuery);
+            ");
         } else {
 
             $main = "
-      <link rel='stylesheet' href='" . TADTOOLS_URL . "/formValidator/css/validationEngine.jquery.css' type='text/css' media='screen' charset='utf-8' />
+            <link rel='stylesheet' href='" . TADTOOLS_URL . "/formValidator/css/validationEngine.jquery.css' type='text/css' media='screen' charset='utf-8' />
 
-      $jquery
-      <script src='" . TADTOOLS_URL . "/formValidator/js/languages/jquery.validationEngine-{$LANGCODE}.js' type='text/javascript'></script>
-      <script src='" . TADTOOLS_URL . "/formValidator/js/jquery.validationEngine.js' type='text/javascript'></script>
-      <script type='text/javascript'>
-      $().ready(function() {
-        $('{$this->id}').validationEngine({
-          inlineValidation: true,
-          success :  false,
-          promptPosition: '$Position', //選項有：topLeft, topRight, bottomLeft,  centerRight, bottomRight
-          failure : function() {}
-        });
-      });
-      </script>";
+            $jquery
+            <script src='" . TADTOOLS_URL . "/formValidator/js/languages/jquery.validationEngine-{$LANGCODE}.js' type='text/javascript'></script>
+            <script src='" . TADTOOLS_URL . "/formValidator/js/jquery.validationEngine.js' type='text/javascript'></script>
+            <script type='text/javascript'>
+            $().ready(function() {
+              $('{$this->id}').validationEngine({
+                inlineValidation: true,
+                success :  false,
+                promptPosition: '$Position', //選項有：topLeft, topRight, bottomLeft,  centerRight, bottomRight
+                failure : function() {}
+              });
+            });
+            </script>";
 
             return $main;
         }

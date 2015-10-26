@@ -1,7 +1,23 @@
-《TadTools 2.7.6 版 尚未釋出》
+《TadTools 2.7.8 版 2015-10-26 釋出》
+====================================
+ 1.修改 fck.php 避免一些模組的編輯器出無法使用。
+ 2.更新 summernote 為 0.6.16 版
+
+
+《TadTools 2.7.7 版 2015-10-23 釋出》
+====================================
+ 1.tad_function.php 新增 html5() 及 web_error() 函數
+ 2.CKEditor 移除 autogrow、mathedit 並新增數學編輯器及quicktable
+ 3.新增 fullcalendar 月曆套件
+ 4.滑動圖文套件增加標題字數、連結調整其顏色
+
+
+《TadTools 2.7.6 版 2015-10-21 釋出》
 ====================================
  1.修正 get_menu_var.html 的內容
  2.修正 FooTable 無法載入 jquery 的情況
+ 3.CKeditor 升級為 4.5.4 版
+ 4.修正 video.php 的XSS弱點
 
 《TadTools 2.7.5 版 2015-10-16 釋出》
 ====================================

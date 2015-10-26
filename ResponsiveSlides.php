@@ -45,48 +45,47 @@ class slider
         $all = $nav = "";
         $i   = 1;
         foreach ($this->item as $sn => $item_content) {
-            $title   = xoops_substr(strip_tags($item_content['title']), 0, 45);
+            $title   = xoops_substr(strip_tags($item_content['title']), 0, 180);
             $content = xoops_substr(strip_tags($item_content['content']), 0, $utf8_word_num);
 
             $pi    = ($i % 2) ? "1" : "2";
             $image = empty($item_content['image']) ? TADTOOLS_URL . "/ResponsiveSlides/images/demo{$pi}.jpg" : $item_content['image'];
 
-            $caption = ($content) ? "
-      <div class='caption'>
-        <div style='font-size:11pt;color:#33CCFF;font-weight:bold;'>{$title}</div>
-          <div>{$content}</div>
-      </div>
-        <div class='caption_txt'>
-        <div style='font-size:11pt;color:#33CCFF;font-weight:bold;'>{$title}</div>
-          <div>{$content}</div>
-        </div>
-
-      " : "";
+            $content_div = $content ? "<div>{$content}</div>" : "";
+            $caption     = ($content or $title) ? "
+            <div class='caption'>
+              <div style='font-size:11pt;color:yellow;font-weight:bold;'>{$title}</div>
+              {$content_div}
+            </div>
+            <div class='caption_txt'>
+              <div style='font-size:11pt;color:yellow;font-weight:bold;'>{$title}</div>
+              {$content_div}
+            </div>" : "";
 
             if (strtolower(substr($image, -3)) == "swf") {
                 //exactfit,default
                 $all .= "
-          <li>
-          <object
-          type='application/x-shockwave-flash'
-          data='$image'
-          width='100%'
-          height='{$item_content['height']}'>
-          <param name='scale' value='default'>
-          <param name='movie'
-          value='$image' width='100%' height='{$item_content['height']}' scale='default' />
-          </object>
-          $caption
-          </li>
-        ";
+                <li>
+                <object
+                type='application/x-shockwave-flash'
+                data='$image'
+                width='100%'
+                height='{$item_content['height']}'>
+                <param name='scale' value='default'>
+                <param name='movie'
+                value='$image' width='100%' height='{$item_content['height']}' scale='default' />
+                </object>
+                $caption
+                </li>
+              ";
             } else {
                 $alt = empty($title) ? 'slider image' : $title;
                 $all .= "
-          <li>
-            <a href='{$item_content['url']}'><img src='$image' alt='{$alt}' title='{$alt}'></a>
-            $caption
-          </li>
-        ";
+                  <li>
+                    <a href='{$item_content['url']}'><img src='$image' alt='{$alt}' title='{$alt}'></a>
+                    <a href='{$item_content['url']}'>$caption</a>
+                  </li>
+                ";
             }
 
             $nav .= "<li><span>{$i}</span></li>";

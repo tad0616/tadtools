@@ -3,11 +3,12 @@ include_once "tadtools_header.php";
 
 class FooTable
 {
+    public $selector = '.footable';
 
     //建構函數
-    public function FooTable()
+    public function FooTable($selector = ".footable")
     {
-
+        $this->selector = $selector;
     }
 
     //產生語法
@@ -23,7 +24,7 @@ class FooTable
             $xoTheme->addScript('', null, "
               (function(\$){
                 \$(document).ready(function(){
-                  \$('table').footable();
+                  \$('{$this->selector}').footable();
                 });
               })(jQuery);
             ");
@@ -56,4 +57,7 @@ $xoopsTpl->assign('FooTableJS' , $FooTableJS);
 table 需加上 class='footable' 以及 <thead></thead>
 要加入擴展符號的格子在  th 加上  data-class='expand'
 要藏起來的格子在  th 加上  data-hide='phone,tablet' 或 data-hide='phone'
+加入排序 th 加上 data-sort-initial="true" （忽略排序  data-sort-ignore="true"） 資料類型  data-type="numeric"
+資料過濾 search:<input id="filter" type="text" />
+<table data-filter="#filter" class="footable">
  */

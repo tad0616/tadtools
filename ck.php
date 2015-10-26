@@ -80,14 +80,10 @@ class CKEditor
             $content = str_replace('[', '&#91;', $content);
 
             if ($xoTheme) {
-                $editor = "";
-                $xoTheme->addStylesheet('modules/tadtools/ckeditor/mathquill.css');
-                $xoTheme->addScript('modules/tadtools/ckeditor/mathquill.js');
+                // $editor = "";
                 $xoTheme->addScript('modules/tadtools/ckeditor/ckeditor.js');
             } else {
                 $editor = "
-                <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/ckeditor/mathquill.css' />
-                <script src='" . TADTOOLS_URL . "/ckeditor/mathquill.js'></script>
                 <script type='text/javascript' src='" . TADTOOLS_URL . "/ckeditor/ckeditor.js'></script>";
             }
             $bootstrap = $_SESSION['bootstrap'] == 3 ? "bootstrap3" : "bootstrap";
@@ -119,14 +115,25 @@ class CKEditor
                 language : '" . _LANGCODE . "' ,
                 toolbar : '{$this->ToolbarSet}' ,
                 contentsCss : ['" . TADTOOLS_URL . "/{$bootstrap}/css/bootstrap.css'{$other_css}],
-                extraPlugins: 'autogrow,syntaxhighlight,summary,oembed,mathedit{$extra_uploadcare}',
+                extraPlugins: 'syntaxhighlight,oembed,eqneditor,quicktable{$extra_uploadcare}',
                 {$uploadcare_setup}
                 filebrowserBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=file&mod_dir=" . $this->xoopsDirName . "',
                 filebrowserImageBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=image&mod_dir=" . $this->xoopsDirName . "',
                 filebrowserFlashBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=flash&mod_dir=" . $this->xoopsDirName . "',
                 filebrowserUploadUrl : '" . TADTOOLS_URL . "/upload.php?type=file&mod_dir=" . $this->xoopsDirName . "',
                 filebrowserImageUploadUrl : '" . TADTOOLS_URL . "/upload.php?type=image&mod_dir=" . $this->xoopsDirName . "',
-                filebrowserFlashUploadUrl : '" . TADTOOLS_URL . "/upload.php?type=flash&mod_dir=" . $this->xoopsDirName . "'
+                filebrowserFlashUploadUrl : '" . TADTOOLS_URL . "/upload.php?type=flash&mod_dir=" . $this->xoopsDirName . "',
+                qtRows: 10, // Count of rows
+                qtColumns: 10, // Count of columns
+                qtBorder: '1', // Border of inserted table
+                qtWidth: '100%', // Width of inserted table
+                qtStyle: { 'border-collapse' : 'collapse' },
+                qtClass: 'table table-bordered table-hover table-condensed', // Class of table
+                qtCellPadding: '0', // Cell padding table
+                qtCellSpacing: '0', // Cell spacing table
+                qtPreviewBorder: '1px double black', // preview table border
+                qtPreviewSize: '15px', // Preview table cell size
+                qtPreviewBackground: '#c8def4' // preview table background (hover)
               } );
               </script>
               ";

@@ -10,7 +10,7 @@ CKEDITOR.editorConfig = function( config ) {
     [
       { name: 'bar1', items : ['Source'] },
       { name: 'bar1_1', items : ['Cut','Copy','Paste','PasteFromWord','Undo','Redo'] },
-      { name: 'bar1_2', items : ['Image','oembed','mathedit','jwplayer','Flash','Table','HorizontalRule','Smiley','Link','Unlink'] },
+      { name: 'bar1_2', items : ['Image','oembed','EqnEditor','jwplayer','Flash','Table','HorizontalRule','Smiley','Link','Unlink'] },
       { name: 'bar1_3', items : ['NumberedList','BulletedList','summary','RemoveFormat','Syntaxhighlight'] },
       '/',
       { name: 'bar2', items : [ 'Format','FontSize','TextColor','BGColor','Bold','Italic','Underline','Strike'] },
@@ -18,7 +18,7 @@ CKEDITOR.editorConfig = function( config ) {
       { name: 'bar2_2', items : [ 'Uploadcare'] }
     ];
 
-    CKEDITOR.config.autoGrow_maxHeight = 500;
+    //CKEDITOR.config.autoGrow_maxHeight = 450;
     CKEDITOR.config.entities = false;
     CKEDITOR.config.htmlEncodeOutput = false;
     CKEDITOR.config.allowedContent = true;
@@ -41,19 +41,4 @@ CKEDITOR.editorConfig = function( config ) {
     [
         ['Source','Format','FontSize','TextColor','BGColor','Bold', 'Italic', '-', 'NumberedList', 'BulletedList','Outdent','Indent', '-', 'Link', 'Unlink','-','PasteText','PasteFromWord', '-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock', '-','Table','Undo','Redo']
     ];
-    // CKEDITOR.config.autoGrow_maxHeight = 500;
-    // CKEDITOR.config.entities = false;
-    // CKEDITOR.config.htmlEncodeOutput = false;
-    // CKEDITOR.config.allowedContent = true;
-    // CKEDITOR.config.oembed_maxWidth = '560';
-    // CKEDITOR.config.oembed_maxHeight = '315';
-    // CKEDITOR.config.oembed_WrapperClass = 'embededContent';
-    // CKEDITOR.config.syntaxhighlight_hideGutter = [true|false];
-
-    // CKEDITOR.config.syntaxhighlight_hideControls = true;
-    // CKEDITOR.config.syntaxhighlight_collapse = true;
-    // CKEDITOR.config.syntaxhighlight_showColumns = true;
-    // CKEDITOR.config.syntaxhighlight_noWrap = false;
-    // CKEDITOR.config.syntaxhighlight_firstLine =0;
-    // CKEDITOR.config.syntaxhighlight_lang = 'PHP';
 };

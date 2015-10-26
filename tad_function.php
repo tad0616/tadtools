@@ -14,6 +14,52 @@ if (!function_exists('get_basename')) {
     }
 }
 
+if (!function_exists('html5')) {
+    function html5($content = "", $ui = false, $bootstrap = true, $bootstrap_version = 3)
+    {
+        $jquery         = get_jquery($ui);
+        $bootstrap_path = $bootstrap_version == 2 ? "bootstrap" : "bootstrap3";
+        $bootstrap_link = $bootstrap ? "<link rel='stylesheet' type='text/css' media='screen' href='" . XOOPS_URL . "/modules/tadtools/{$bootstrap_path}/css/bootstrap.css' />" : "";
+
+        $row  = $bootstrap_version == 2 ? "row-fluid" : "row";
+        $span = $bootstrap_version == 2 ? "span" : "col-md-";
+
+        $main = "<!DOCTYPE html>\n";
+        $main .= "<html lang='zh-TW'>\n";
+        $main .= "<head>\n";
+        $main .= "  <meta charset='utf-8'>\n";
+        $main .= "  <title></title>\n";
+        $main .= "  <meta name='viewport' content='width=device-width, initial-scale=1.0'>\n";
+        $main .= "  $bootstrap_link\n";
+        $main .= "  {$jquery}\n";
+        $main .= "</head>\n";
+        $main .= "<body>\n";
+        $main .= "    <div class='contain'>\n";
+        $main .= "        <div class='{$row}'>\n";
+        $main .= "            <div class='{$span}12'>\n";
+        $main .= "                {$content}\n";
+        $main .= "            </div>\n";
+        $main .= "        </div>\n";
+        $main .= "    </div>\n";
+        $main .= "</body>\n";
+        $main .= "</html>\n";
+
+        return $main;
+    }
+}
+
+//自訂錯誤訊息
+if (!function_exists('web_error')) {
+    function web_error($sql)
+    {
+        global $isAdmin;
+        if ($isAdmin) {
+            die(html5("<div class='well'>$sql</div><div class='alert alert-danger'>" . mysql_error() . "</div>"));
+        } else {
+            web_error($sql);
+        }
+    }
+}
 //載入 bootstrap，目前僅後台用得到
 function get_bootstrap()
 {

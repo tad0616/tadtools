@@ -7,7 +7,8 @@ if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/jwplayer_new.php")) {
 include_once XOOPS_ROOT_PATH . "/modules/tadtools/tad_function.php";
 include_once XOOPS_ROOT_PATH . "/modules/tadtools/jwplayer_new.php";
 
-$media = $_GET['file_name'];
+include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+$media = system_CleanVars($_REQUEST, 'file_name', '', 'string');
 $image = XOOPS_URL . "/modules/tadtools/images/video.png";
 $jw    = new JwPlayer("video", $media, $image, '100%', null, null, null, null, true);
 //JwPlayer($id="",$file="",$image="",$width="",$height="",$skin="",$mode="",$display="",$autostart=false,$repeat=false, $other_code="")
