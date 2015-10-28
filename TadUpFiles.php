@@ -1316,7 +1316,7 @@ class TadUpFiles
                     if ($file_info['kind'] == "file") {
                         $fext = pathinfo($file_info['path'], PATHINFO_EXTENSION);
                         //$fext=strtolower(substr($file_info['path'], -3));
-                        if ($fext == "mp4" or $fext == "flv" or $fext == "3gp") {
+                        if ($fext == "mp4" or $fext == "flv" or $fext == "3gp" or $fext == "mp3") {
                             $thumb_pic = TADTOOLS_URL . "/images/video.png";
                             if ($this->showFancyBox) {
                                 $fancyboxset = "fancybox_{$this->col_name}";
