@@ -1,3 +1,8 @@
+"TadTools Version 2.7.9 released 2015-10-30"
+====================================
+ 1.Add mp3 online playback
+ 
+
 "TadTools Version 2.7.8 released 2015-10-26"
 ====================================
  1.Fixed fck.php
