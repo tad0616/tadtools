@@ -15,9 +15,12 @@ if (!function_exists('get_basename')) {
 }
 
 if (!function_exists('html5')) {
-    function html5($content = "", $ui = false, $bootstrap = true, $bootstrap_version = 3)
+    function html5($content = "", $ui = false, $bootstrap = true, $bootstrap_version = 3, $use_jquery = true)
     {
-        $jquery         = get_jquery($ui);
+        $jquery = '';
+        if ($use_jquery) {
+            $jquery = get_jquery($ui);
+        }
         $bootstrap_path = $bootstrap_version == 2 ? "bootstrap" : "bootstrap3";
         $bootstrap_link = $bootstrap ? "<link rel='stylesheet' type='text/css' media='screen' href='" . XOOPS_URL . "/modules/tadtools/{$bootstrap_path}/css/bootstrap.css' />" : "";
 
@@ -60,6 +63,7 @@ if (!function_exists('web_error')) {
         }
     }
 }
+
 //載入 bootstrap，目前僅後台用得到
 function get_bootstrap()
 {
@@ -88,7 +92,7 @@ function get_bootstrap()
         if ($xoopsTpl) {
             $xoopsTpl->assign("bootstrap_version", $_SESSION['bootstrap']);
         }
-
+        //die($tt_bootstrap_color);
         if ($xoTheme) {
             if ($tt_bootstrap_color == "bootstrap3") {
                 $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap3/css/bootstrap.css');

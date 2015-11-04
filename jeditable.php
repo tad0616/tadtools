@@ -67,7 +67,7 @@ class jeditable
     }
 
     //產生路徑工具
-    public function render()
+    public function render($mode = "")
     {
         global $xoTheme;
 
@@ -76,7 +76,7 @@ class jeditable
         }
         $jquery = ($this->show_jquery) ? get_jquery() : "";
 
-        if ($xoTheme) {
+        if ($xoTheme and $mode != 'force') {
             $xoTheme->addScript('modules/tadtools/jeditable/jquery.jeditable.mini.js');
 
             $xoTheme->addScript('', null, "

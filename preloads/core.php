@@ -10,7 +10,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate.min.js');
         $xoTheme->addStylesheet("modules/tadtools/jquery/themes/base/jquery.ui.all.css");
         $xoTheme->addScript('modules/tadtools/jquery/ui/jquery-ui.js');
-        $xoTheme->addScript('modules/tadtools/jquery/jquery.jgrowl.js');
+        //$xoTheme->addScript('modules/tadtools/jquery/jquery.jgrowl.js');
         $theme_set = $xoopsConfig['theme_set'];
 
         $_SESSION['now_theme_set'] = $theme_set;
@@ -27,7 +27,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         $_SESSION['old_theme_set'] = $theme_set;
 
         $sql = "select `tt_theme`,`tt_use_bootstrap`,`tt_bootstrap_color`,`tt_theme_kind` from `" . $xoopsDB->prefix("tadtools_setup") . "`  where `tt_theme`='{$theme_set}'";
-
+        //die($sql);
         $result = $xoopsDB->query($sql);
 
         list($tt_theme, $tt_use_bootstrap, $tt_bootstrap_color, $tt_theme_kind) = $xoopsDB->fetchRow($result);
@@ -68,7 +68,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
             $xoopsTpl->assign("bootstrap_version", $_SESSION['bootstrap']);
         }
         //}
-        //die($tt_use_bootstrap);
+        //die($tt_bootstrap_color);
         if ($xoTheme and $tt_use_bootstrap) {
             if ($tt_bootstrap_color == "bootstrap3") {
                 $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap3/css/bootstrap.css');
