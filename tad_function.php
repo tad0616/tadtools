@@ -606,7 +606,7 @@ if (!class_exists('PageBar')) {
         // 所有的資料數量 (rows)
         public $total;
         // 每頁顯示幾筆資料
-        public $limit;
+        public $limit = 10;
         // 目前在第幾層的頁數選項？
         public $pCurrent;
         // 總共分成幾頁？
@@ -636,8 +636,10 @@ if (!class_exists('PageBar')) {
         //其他連結參數
         public $url_other;
 
-        public function PageBar($total, $limit, $page_limit)
+        public function PageBar($total, $limit = 10, $page_limit)
         {
+            $limit = intval($limit);
+            //die(var_export($limit));
             $mydirname     = basename(dirname(__FILE__));
             $this->prev    = "<img src='" . TADTOOLS_URL . "/images/1leftarrow.png' alt='" . _TAD_BACK_PAGE . "' align='absmiddle' hspace=3>";
             $this->next    = "<img src='" . TADTOOLS_URL . "/images/1rightarrow.png' alt='" . _TAD_NEXT_PAGE . "' align='absmiddle' hspace=3>";

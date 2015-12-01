@@ -10,11 +10,14 @@
 <meta name="copyright" content="<{$xoops_meta_copyright}>" />
 <meta name="generator" content="XOOPS" />
 
-<{if !$xoops_module_header}>
 <meta property="og:title" content="<{$xoops_pagetitle}>"/>
 <meta property="og:type" content="website"/>
-<meta property="og:url" content="<{$xoAppUrl}>"/>
+<{php}>
+global $xoopsTpl;
+$url="http://".$_SERVER["HTTP_HOST"].$_SERVER['REQUEST_URI'];
+$xoopsTpl->assign('now_url',$url);
+<{/php}>
+<meta property="og:url" content="<{$now_url}>"/>
 <meta property="og:image" content="<{$logo_img}>"/>
 <meta property="og:site_name" content="<{$xoops_sitename}>"/>
-<meta property="og:description" content="<{$xoops_meta_description}>" />
-<{/if}>
+<meta property="og:description" content="<{$fb_description}>" />

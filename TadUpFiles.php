@@ -1299,7 +1299,7 @@ class TadUpFiles
         if ($file_arr) {
             $i = 1;
             if ($show_mode != "filename" and $show_mode != "small") {
-                $all_files .= "<ul class='thumbnails'>";
+                $all_files .= "<ul style='margin-left: -30px;'>";
             }
 
             foreach ($file_arr as $files_sn => $file_info) {
@@ -1348,11 +1348,11 @@ class TadUpFiles
                     $show_dl_txt = ($show_dl) ? "<span class='label label-info'>{$file_info['counter']}</span>" : "";
 
                     //描述顯示
-                    $show_description_txt = ($show_description) ? "<div style='font-weight:normal;font-size:11px;word-break:break-all;line-height:1.2;margin-top:4px;'>$i) {$description} {$show_dl_txt}</div>" : "{$show_dl_txt}";
+                    $show_description_txt = ($show_description) ? "<div style='font-weight: normal; font-size: 11px; word-break: break-all; line-height: 1.2; margin: 4px auto 4px 0px; text-align: left;'>{$i}) {$description} {$show_dl_txt}</div>" : "{$show_dl_txt}";
 
                     $all_files .= ($show_mode == "small") ? "<a href='{$linkto}' class='iconize {$fancyboxset}' {$rel}  title='{$description}'></a> " : "
-                      <li style='width:120px;float:left;list-style:none;'>
-                        <a href='{$linkto}' class='thumbnail {$fancyboxset}' {$rel} style=\"width:110px;height:70px;overflow:hidden;background-image:url('{$thumb_pic}');background-repeat:no-repeat;background-position:center center;\" title='{$description}'></a>{$show_description_txt}
+                      <li style='width:120px;height:120px;float:left;list-style:none;'>
+                        <a href='{$linkto}' class='thumbnail {$fancyboxset}' {$rel} style=\"width: 110px; height: 70px; overflow: hidden; background-image: url('{$thumb_pic}'); background-repeat: no-repeat; background-position: center center; margin-bottom: 4px;\" title='{$description}'></a>{$show_description_txt}
                       </li>";
                 }
 

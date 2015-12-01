@@ -24,47 +24,47 @@ class sweet_alert
             $xoTheme->addScript('modules/tadtools/sweet-alert/sweet-alert.js');
 
             $xoTheme->addScript('', null, "
-        function {$func_name}($var){
-          swal({
-            title: '$title',
-            text: '$text',
-            type: '$type',
-            showCancelButton: $showCancelButton,
-            confirmButtonColor: '#DD6B55',
-            confirmButtonText: '$confirmButtonText',
-            closeOnConfirm: false ,
-            allowOutsideClick: true
-          },
-          function(){
-            location.href='$url' + $var;
-          });
-        }
-      ");
+            function {$func_name}($var){
+              swal({
+                title: '$title',
+                text: '$text',
+                type: '$type',
+                showCancelButton: $showCancelButton,
+                confirmButtonColor: '#DD6B55',
+                confirmButtonText: '$confirmButtonText',
+                closeOnConfirm: false ,
+                allowOutsideClick: true
+              },
+              function(){
+                location.href='$url' + $var;
+              });
+            }
+          ");
         } else {
             $main = "
-      {$jquery}
-      <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/sweet-alert/sweet-alert.css' />
-      <script type='text/javascript' src='" . TADTOOLS_URL . "/sweet-alert/sweet-alert.js'></script>
-      <script type='text/javascript'>
-        function {$func_name}($var){
-          swal({
-            title: '$title',
-            text: '$text',
-            type: '$type',
-            showCancelButton: $showCancelButton,
-            confirmButtonColor: '#DD6B55',
-            confirmButtonText: '$confirmButtonText',
-            closeOnConfirm: false ,
-            allowOutsideClick: true
-          },
-          function(){
-            location.href='$url' + $var;
-            //swal('Deleted!', 'Your imaginary file has been deleted.', 'success');
-          });
-        }
-      </script>
+            {$jquery}
+            <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/sweet-alert/sweet-alert.css' />
+            <script type='text/javascript' src='" . TADTOOLS_URL . "/sweet-alert/sweet-alert.js'></script>
+            <script type='text/javascript'>
+              function {$func_name}($var){
+                swal({
+                  title: '$title',
+                  text: '$text',
+                  type: '$type',
+                  showCancelButton: $showCancelButton,
+                  confirmButtonColor: '#DD6B55',
+                  confirmButtonText: '$confirmButtonText',
+                  closeOnConfirm: false ,
+                  allowOutsideClick: true
+                },
+                function(){
+                  location.href='$url' + $var;
+                  //swal('Deleted!', 'Your imaginary file has been deleted.', 'success');
+                });
+              }
+            </script>
 
-      ";
+            ";
 
             return $main;
         }

@@ -15,6 +15,7 @@ class FooTable
     public function render($need_jquery = true)
     {
         global $xoTheme;
+        include_once "jquery.php";
 
         $jquery = $need_jquery ? get_jquery() : "";
         if ($xoTheme) {
