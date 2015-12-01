@@ -318,8 +318,21 @@ class TadUpFiles
     public function list_del_file($show_edit = false, $thumb = true)
     {
         global $xoopsDB, $xoopsUser;
-
-        $all_file = "";
+        if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/fancybox.php")) {
+            redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+        }
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/fancybox.php";
+        $fancybox = new fancybox(".fancybox_demo", 640, 480);
+        $all_file = $fancybox->render(false, null, false);
+        $all_file .= "
+        <script type=\"text/javascript\">
+          function rotate(op,files_sn,subdir,image_dir,thumbs_dir,filename,type){
+              $.post('" . XOOPS_URL . "/modules/tadtools/imagerotate.php', {op: op, files_sn:files_sn , subdir: subdir , image_dir: image_dir , thumbs_dir: thumbs_dir , filename:filename ,type:type}, function(data){
+                $('#thumb' + files_sn).css('background-image', 'url(\''+data+'?timestamp=' + new Date().getTime()+'\')' ).css('border', '1px solid red' );
+              });
+        }
+        </script>
+        ";
 
         $sql = "select * from `{$this->TadUpFilesTblName}`  where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' order by sort";
 
@@ -340,8 +353,10 @@ class TadUpFiles
                 }
                 //$thumb_style="<a class='thumbnail' style='width:{$this->thumb_width};height:{$this->thumb_height};overflow:background-color:{$this->thumb_bg_color};hidden;background-image:url({$thumb_pic});background-position:{$this->thumb_position};background-repeat:{$this->thumb_repeat};background-size:{$this->thumb_size};display:block;' title='{$description}'></a>";
 
-                $img_class   = ($this->bootstrap == '3') ? "img-thumbnail" : "img-polaroid";
-                $thumb_style = "<img src='{$thumb_pic}' class='{$img_class}'>";
+                $img_class = ($this->bootstrap == '3') ? "img-thumbnail" : "img-polaroid";
+                // $thumb_style = "<img src='{$thumb_pic}' class='img-rounded' style='width: 100%; border:1px solid #cfcfcf;'>";
+
+                $thumb_style = "<a name='{$files_sn}' id='thumb{$files_sn}' href='{$this->TadUpFilesImgUrl}/{$file_name}' style='display: block; width: 120px; height: 80px; overflow: hidden; background-color: {$this->thumb_bg_color}; background-image: url({$thumb_pic}); background-position: center center; background-repeat: no-repeat; background-size: contain; border: 1px solid gray; margin: 0px auto;' title='{$description}' class='fancybox_demo' rel='demo'></a>";
 
                 $thumb_style2 = "<a class='thumbnail' style='width:{$this->thumb_width};height:{$this->thumb_height};overflow:hidden;background-color:{$this->thumb_bg_color};background-image:url({$thumb_pic});background-position:{$this->thumb_position};background-repeat:{$this->thumb_repeat};background-size:{$this->thumb_size};' title='{$description}'></a>";
                 $w            = "width:130px;word-break:break-all;";
@@ -364,13 +379,24 @@ class TadUpFiles
                 <tr id='fdtr_{$files_sn}'>
                   <td style='{$w}'>
                     <div class='{$row}'>
-                      <div class='{$col}3'>$thumb_style</div>
+                      <div class='{$col}3'>
+                        {$thumb_style}
+                        <div class='{$row}'>
+                            <div class='{$col}3 text-left'>
+                                <a href=\"javascript:rotate('left','{$files_sn}','{$this->prefix}{$this->subdir}','{$this->image_dir}','{$this->thumbs_dir}','{$file_name}','{$file_type}')\" id='left90'><i class=\"fa fa-undo\" title='左轉90度'></i></a>
+                            </div>
+                            <div class='{$col}6 text-center' id='msg{$files_sn}'></div>
+                            <div class='{$col}3 text-right'>
+                                <a href=\"javascript:rotate('right','{$files_sn}','{$this->prefix}{$this->subdir}','{$this->image_dir}','{$this->thumbs_dir}','{$file_name}','{$file_type}')\" id='right90'><i class=\"fa fa-repeat\" title='右轉90度'></i></a>
+                            </div>
+                        </div>
+                      </div>
                       <div class='{$col}9'>
-                        <label class='$checkbox_inline'>
+                        <label class='checkbox' style='margin:5px 0px;'>
                           <input type='checkbox' name='del_file[$files_sn]' value='{$files_sn}'>
                           {$original_filename}
                         </label>
-                        <textarea name='save_description[$files_sn]' rows=1 class='{$class}'>$description</textarea>
+                        <textarea name='save_description[$files_sn]' rows=2 class='{$class}'>{$description}</textarea>
                       </div>
                     </div>
                   </td>
@@ -450,7 +476,7 @@ class TadUpFiles
                 $this->update_col_val($save_files_sn, 'description', $files_desc);
             }
         }
-//die(var_export($_POST['del_file']));
+        //die(var_export($_POST['del_file']));
         //刪除勾選檔案
         if (!empty($_POST['del_file'])) {
             foreach ($_POST['del_file'] as $del_files_sn) {
@@ -468,7 +494,7 @@ class TadUpFiles
             }
         }
 
-//die(var_dump($files));
+        //die(var_dump($files));
 
         foreach ($files as $file) {
             //先刪除舊檔

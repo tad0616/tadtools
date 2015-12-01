@@ -1,3 +1,11 @@
+"TadTools Version 2.8.1 released 2015-12-01"
+====================================
+1.Upgrade font-awesome to 4.5.0
+2.Modify File display layout
+3.Add facebook meta
+4.Add picture rotation function
+
+
 "TadTools Version 2.8 released 2015-11-04"
 ====================================
  1.Add tcpdf
