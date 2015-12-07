@@ -18,7 +18,7 @@ if(file_exists(XOOPS_ROOT_PATH."/modules/tadtools/ResponsiveSlides.php")){
 
       if(strpos($now_url,$patten_arr[0])!==false and (preg_match("/{$patten_arr[1]}&/",$now_url) or preg_match("/{$patten_arr[1]}$/",$now_url))){
         if(file_exists(XOOPS_ROOT_PATH."/uploads/tad_themes/menu_banner/{$menuid}.png")){
-          $ResponsiveSlides->add_content(1,$itemname,"",XOOPS_URL."/uploads/tad_themes/menu_banner/{$menuid}.png","",$itemurl);
+          $ResponsiveSlides->add_content(1,'',"",XOOPS_URL."/uploads/tad_themes/menu_banner/{$menuid}.png","",$itemurl);
           $no_item_slide_images=false;
         }
       }

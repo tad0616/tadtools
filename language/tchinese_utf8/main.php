@@ -79,3 +79,7 @@ define("_TAD_SLIDE_DEFAULT_DESCRIPT", "您可以從<b>佈景管理的後台設�
 define('TADTOOLS_CALENDAR_TODAY', '今天');
 define('TADTOOLS_CALENDAR_PREV_MONTH', '上個月');
 define('TADTOOLS_CALENDAR_NEXT_MONTH', '下個月');
+
+define('TADTOOLS_ROTATE_LEFT', '左轉 90 度');
+define('TADTOOLS_ROTATE_RIGHT', '右轉 90 度');
+define('TADTOOLS_CHECKBOX_TO_DEL', '欲刪除檔案請點擊勾選框。');

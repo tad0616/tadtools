@@ -76,3 +76,7 @@ define("_TAD_SLIDE_DEFAULT_DESCRIPT", "You can upload slider images from tad_the
 define('TADTOOLS_CALENDAR_TODAY', 'Today');
 define('TADTOOLS_CALENDAR_PREV_MONTH', 'Prev Month');
 define('TADTOOLS_CALENDAR_NEXT_MONTH', 'Next Month');
+
+define('TADTOOLS_ROTATE_LEFT', 'rotate 90 degrees left');
+define('TADTOOLS_ROTATE_RIGHT', 'rotate 90 degrees right');
+define('TADTOOLS_CHECKBOX_TO_DEL', 'To delete a file, please click on the check box.');
