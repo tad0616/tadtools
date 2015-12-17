@@ -27,6 +27,7 @@ define('_TAD_ADD', '新增資料');
 define('_TAD_FOR', '：');
 define('_TAD_GO', '執行');
 define('_TAD_SAVE', '儲存');
+define('_TAD_NEXT', '下一步');
 define('_TAD_RESET', '重設');
 define('_TAD_CANCEL', '取消');
 define('_TAD_SUBMIT', '送出');

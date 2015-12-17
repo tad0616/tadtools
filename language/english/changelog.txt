@@ -1,3 +1,11 @@
+"TadTools Version 2.8.2 released 2015-12-17"
+====================================
+1. Improved $TadUpFiles file editing and presentation interface
+2. Adjust the default error screen
+3. Add Easy-Responsive-Tabs
+
+
+
 "TadTools Version 2.8.1 released 2015-12-01"
 ====================================
 1.Upgrade font-awesome to 4.5.0

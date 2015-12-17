@@ -37,7 +37,7 @@ if (!function_exists('html5')) {
         $main .= "  {$jquery}\n";
         $main .= "</head>\n";
         $main .= "<body>\n";
-        $main .= "    <div class='contain'>\n";
+        $main .= "    <div class='container'>\n";
         $main .= "        <div class='{$row}'>\n";
         $main .= "            <div class='{$span}12'>\n";
         $main .= "                {$content}\n";
@@ -56,11 +56,16 @@ if (!function_exists('web_error')) {
     function web_error($sql)
     {
         global $isAdmin;
+
+        $main = "<h1>哎呀～資料庫有點問題呢～</h1>";
+
         if ($isAdmin) {
-            die(html5("<div class='well'>$sql</div><div class='alert alert-danger'>" . mysql_error() . "</div>"));
-        } else {
-            web_error($sql);
+            $main .= "<div class='well'>$sql</div>";
         }
+
+        $main .= "<div class='alert alert-danger'>" . mysql_error() . "</div>";
+
+        die(html5($main));
     }
 }
 

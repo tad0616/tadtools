@@ -304,7 +304,8 @@ class TadUpFiles
         $list_del_file = ($show_list_del_file) ? $this->list_del_file($show_edit, $thumb) : "";
         $jquery        = get_jquery(true);
 
-        $col  = ($this->bootstrap == '3') ? "col-md-12" : "span12";
+        //$col  = ($this->bootstrap == '3') ? "col-md-12" : "span12"; 加入 col-md-12 會歪一邊
+        $col  = ($this->bootstrap == '3') ? "" : "span12";
         $main = "
         $jquery
         <input type='file' name='{$upname}[]' id='{$upname}' $maxlength multiple='multiple' $accept class='{$col}'>
@@ -509,7 +510,7 @@ class TadUpFiles
             <div style='height:30px;'></div>
             <div class='{$row}' style='margin-top:10px;'>
                 <div class='{$span}12'>
-                <ol class='rectangle-list' style='counter-reset: li; list-style: none; *list-style: decimal; font: 15px 'trebuchet MS', 'lucida sans'; padding: 0; margin-bottom: 4em; text-shadow: 0 1px 0 rgba(255,255,255,.5);' id='list_del_file_sort'>
+                <ol class='rectangle-list' style=\"counter-reset: li; list-style: none; *list-style: decimal; font: 15px 'trebuchet MS', 'lucida sans'; padding: 0; margin-bottom: 4em; text-shadow: 0 1px 0 rgba(255,255,255,.5);\" id='list_del_file_sort'>
                             {$all_file}
                 </ol>
                 </div>
@@ -681,7 +682,8 @@ class TadUpFiles
                     $hash_name = ($hash) ? "{$hash_name}.{$ext}" : "";
 
                     if (empty($files_sn)) {
-                        $sql = "insert into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`counter`,`original_filename`,`sub_dir`,`hash_filename`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}',0,'{$file['name']}','{$this->subdir}','{$hash_name}')";
+
+                        $sql = "replace into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`counter`,`original_filename`,`sub_dir`,`hash_filename`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}',0,'{$file['name']}','{$this->subdir}','{$hash_name}')";
 
                         $xoopsDB->queryF($sql) or web_error($sql);
                     } else {
@@ -1417,7 +1419,7 @@ class TadUpFiles
             if ($show_mode != "filename" and $show_mode != "small") {
                 $all_files .= "<ul>";
             } elseif ($show_mode == "filename") {
-                $all_files .= "<ol class='rectangle-list' style='counter-reset: li; list-style: none; *list-style: decimal; font: 15px 'trebuchet MS', 'lucida sans'; padding: 0; margin-bottom: 4em; text-shadow: 0 1px 0 rgba(255,255,255,.5);'>";
+                $all_files .= "<ol class='rectangle-list' style=\"counter-reset: li; list-style: none; *list-style: decimal; font: 15px 'trebuchet MS', 'lucida sans'; padding: 0; margin-bottom: 4em; text-shadow: 0 1px 0 rgba(255,255,255,.5);\">";
             }
             foreach ($file_arr as $files_sn => $file_info) {
 

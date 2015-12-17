@@ -24,6 +24,7 @@ define('_TAD_ADD', 'Add');
 define('_TAD_FOR', ' : ');
 define('_TAD_GO', 'Go');
 define('_TAD_SAVE', 'Save');
+define('_TAD_NEXT', 'Next');
 define('_TAD_RESET', 'Reset');
 define('_TAD_CANCEL', 'Cancel');
 define('_TAD_SUBMIT', 'Submit');
