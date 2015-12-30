@@ -22,7 +22,7 @@ if (!function_exists('html5')) {
             $jquery = get_jquery($ui);
         }
         $bootstrap_path = $bootstrap_version == 2 ? "bootstrap" : "bootstrap3";
-        $bootstrap_link = $bootstrap ? "<link rel='stylesheet' type='text/css' media='screen' href='" . XOOPS_URL . "/modules/tadtools/{$bootstrap_path}/css/bootstrap.css' />" : "";
+        $bootstrap_link = $bootstrap ? "<link rel='stylesheet' type='text/css' media='all' href='" . XOOPS_URL . "/modules/tadtools/{$bootstrap_path}/css/bootstrap.css' />" : "";
 
         $row  = $bootstrap_version == 2 ? "row-fluid" : "row";
         $span = $bootstrap_version == 2 ? "span" : "col-md-";

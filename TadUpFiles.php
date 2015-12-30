@@ -154,6 +154,10 @@ class TadUpFiles
     public $showFancyBox   = true;
     public $download_url   = "";
     public $bootstrap;
+    public $col;
+    public $row;
+    public $class;
+    public $checkbox_inline;
 
     public function TadUpFiles($prefix = "", $subdir = "", $file = "/file", $image = "/image", $thumbs = "/image/.thumbs")
     {
@@ -172,6 +176,12 @@ class TadUpFiles
 
         $this->TadUpFilesTblName = $xoopsDB->prefix("{$this->prefix}_files_center");
         $this->bootstrap         = $_SESSION['bootstrap'];
+
+        $this->col             = ($this->bootstrap == '3') ? "col-md-" : "span";
+        $this->row             = ($this->bootstrap == '3') ? "row" : "row-fluid";
+        $this->class           = ($this->bootstrap == '3') ? "form-control" : "span12";
+        $this->checkbox_inline = ($this->bootstrap == '3') ? "checkbox-inline" : "checkbox inline";
+
     }
 
     //設定路徑
@@ -308,7 +318,7 @@ class TadUpFiles
         $col  = ($this->bootstrap == '3') ? "" : "span12";
         $main = "
         $jquery
-        <input type='file' name='{$upname}[]' id='{$upname}' $maxlength multiple='multiple' $accept class='{$col}'>
+        <input type='file' name='{$upname}[]' id='{$upname}' $maxlength multiple='multiple' $accept class='{$this->col}'>
 
         {$list_del_file}
         ";
@@ -344,14 +354,14 @@ class TadUpFiles
                         $thumb_pic = TADTOOLS_URL . "/multiple-file-upload/downloads.png";
                     }
                     $thumb_tool = "
-                    <div class='{$row}'>
-                        <div class='{$col}3 text-left'>
+                    <div class='{$this->row}'>
+                        <div class='{$this->col}3 text-left'>
                         </div>
-                        <div class='{$col}6 text-center'>
+                        <div class='{$this->col}6 text-center'>
                             <a href=\"javascript:remove_file('{$files_sn}');\" style='font-size: 12px;' class='text-danger'>
                                 <i class=\"fa fa-trash\"></i> " . _TAD_DEL . "
                             </a></div>
-                        <div class='{$col}3 text-right'>
+                        <div class='{$this->col}3 text-right'>
                         </div>
                     </div>";
 
@@ -363,17 +373,17 @@ class TadUpFiles
                     $thumb_pic = "{$this->TadUpFilesThumbUrl}/{$file_name}";
 
                     $thumb_tool = "
-                    <div class='{$row}'>
-                        <div class='{$col}3 text-left'>
-                            <a href=\"javascript:rotate('left','{$files_sn}','{$this->prefix}{$this->subdir}','{$this->image_dir}','{$this->thumbs_dir}','{$file_name}','{$file_type}')\" id='left90'><i class=\"fa fa-undo\" title='" . TADTOOLS_ROTATE_LEFT . "'></i></a>
+                    <div class='{$this->row}'>
+                        <div class='{$this->col}4 text-right'>
+                            <a href=\"javascript:rotate('left','{$files_sn}','{$this->prefix}{$this->subdir}','{$this->image_dir}','{$this->thumbs_dir}','{$file_name}','{$file_type}')\" id='left90'><i class=\"fa fa-undo text-success\" title='" . TADTOOLS_ROTATE_LEFT . "'></i></a>
                         </div>
-                        <div class='{$col}6 text-center'>
+                        <div class='{$this->col}4 text-center'>
                             <a href=\"javascript:remove_file('{$files_sn}');\" style='font-size: 12px;' class='text-danger'>
-                                <i class=\"fa fa-trash\"></i> " . _TAD_DEL . "
+                                <i class=\"fa fa-times text-danger\" title=\"" . _TAD_DEL . "\"></i>
                             </a>
                         </div>
-                        <div class='{$col}3 text-right'>
-                            <a href=\"javascript:rotate('right','{$files_sn}','{$this->prefix}{$this->subdir}','{$this->image_dir}','{$this->thumbs_dir}','{$file_name}','{$file_type}')\" id='right90'><i class=\"fa fa-repeat\" title='" . TADTOOLS_ROTATE_RIGHT . "'></i></a>
+                        <div class='{$this->col}4 text-left'>
+                            <a href=\"javascript:rotate('right','{$files_sn}','{$this->prefix}{$this->subdir}','{$this->image_dir}','{$this->thumbs_dir}','{$file_name}','{$file_type}')\" id='right90'><i class=\"fa fa-repeat text-info\" title='" . TADTOOLS_ROTATE_RIGHT . "'></i></a>
                         </div>
                     </div>";
 
@@ -386,7 +396,7 @@ class TadUpFiles
                 // $thumb_style = "<img src='{$thumb_pic}' class='img-rounded' style='width: 100%; border:1px solid #cfcfcf;'>";
 
                 $w  = "width:130px; word-break: break-word;";
-                $w2 = "width:{$this->thumb_width};float:left;";
+                $w2 = "width:{$this->thumb_width}; float:left; margin-right:10px;";
             } else {
                 $thumb_tool   = "";
                 $thumb_style  = "";
@@ -396,26 +406,21 @@ class TadUpFiles
                 $w2           = "list-style-position: outside;";
             }
 
-            $col             = ($this->bootstrap == '3') ? "col-md-" : "span";
-            $row             = ($this->bootstrap == '3') ? "row" : "row-fluid";
-            $class           = ($this->bootstrap == '3') ? "form-control" : "span12";
-            $checkbox_inline = ($this->bootstrap == '3') ? "checkbox-inline" : "checkbox inline";
-
             if ($show_edit === true or $show_edit == "full") {
                 $all_file .= "
                 <tr id='fdtr_{$files_sn}'>
                   <td style='{$w}'>
-                    <div class='{$row}'>
-                      <div class='{$col}3'>
+                    <div class='{$this->row}'>
+                      <div class='{$this->col}3'>
                         {$thumb_style}
                         {$thumb_tool}
                       </div>
-                      <div class='{$col}9'>
+                      <div class='{$this->col}9'>
                         <label class='checkbox' style='margin:5px 0px;'>
                           <!--input type='checkbox' name='del_file[$files_sn]' value='{$files_sn}'-->
                           {$original_filename}
                         </label>
-                        <textarea name='save_description[$files_sn]' rows=1 class='{$class}'>{$description}</textarea>
+                        <textarea name='save_description[$files_sn]' rows=1 class='{$this->class}'>{$description}</textarea>
                       </div>
                     </div>
                   </td>
@@ -437,7 +442,7 @@ class TadUpFiles
                 <li style='list-style-type:none;{$w2}' id='fdtr_{$files_sn}'>
                    {$thumb_style2}
                    {$thumb_tool}
-                  <label class='$checkbox_inline' style='width:{$this->thumb_width}; height: 100px;font-size: 12px;word-wrap: break-word;'>
+                  <label class='{$this->checkbox_inline}' style='width:{$this->thumb_width}; height: 100px;font-size: 12px;word-wrap: break-word;'>
                     <!--input type='checkbox' name='del_file[]' value='{$files_sn}'-->
                     {$original_filename}
                   </label>
@@ -493,7 +498,7 @@ class TadUpFiles
 
         if ($show_edit === true or $show_edit == "full") {
             $files .= "
-              <div class='{$row}' style='margin-top:10px;'>
+              <div class='{$this->row}' style='margin-top:10px;'>
                 <div class='{$span}12'>
                     <table class='table table-striped table-hover'>
                         <tbody id='list_del_file_sort' >
@@ -508,9 +513,9 @@ class TadUpFiles
             $files .= "
             <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/css/rounded-list.css' />
             <div style='height:30px;'></div>
-            <div class='{$row}' style='margin-top:10px;'>
+            <div class='{$this->row}' style='margin-top:10px;'>
                 <div class='{$span}12'>
-                <ol class='rectangle-list' style=\"counter-reset: li; list-style: none; *list-style: decimal; font: 15px 'trebuchet MS', 'lucida sans'; padding: 0; margin-bottom: 4em; text-shadow: 0 1px 0 rgba(255,255,255,.5);\" id='list_del_file_sort'>
+                <ol class='rectangle-list' style=\"counter-reset: li; list-style: none; *list-style: decimal; font: 15px 'trebuchet MS', 'lucida sans'; padding: 0; text-shadow: 0 1px 0 rgba(255,255,255,.5);\" id='list_del_file_sort'>
                             {$all_file}
                 </ol>
                 </div>
@@ -519,7 +524,7 @@ class TadUpFiles
         } else {
             $files .= "
                 <div style='height:30px;'></div>
-                <div class='{$row}' style='margin-top:10px;'>
+                <div class='{$this->row}' style='margin-top:10px;'>
                     <div class='{$span}12'>
                         <ul class='thumbnails' id='list_del_file_sort'>
                             {$all_file}
@@ -1191,7 +1196,7 @@ class TadUpFiles
     }
 
     //取得檔案
-    public function get_file($files_sn = "", $limit = null, $path = null, $hash = false, $desc_as_name = false)
+    public function get_file($files_sn = "", $limit = null, $path = null, $hash = false, $desc_as_name = false, $keyword = '')
     {
         global $xoopsDB, $xoopsUser;
         $files      = "";
@@ -1227,8 +1232,13 @@ class TadUpFiles
             $files[$files_sn]['description']       = $description;
             $files[$files_sn]['original_filename'] = $original_filename;
             $files[$files_sn]['hash_filename']     = $hash_filename;
-
-            $files[$files_sn]['show_file_name'] = $show_file_name = ($desc_as_name and !empty($description)) ? $description : $original_filename;
+            $show_file_name                        = ($desc_as_name and !empty($description)) ? $description : $original_filename;
+            if (!empty($keyword)) {
+                if (strrpos($show_file_name, $keyword) !== false) {
+                    $show_file_name = str_replace($keyword, "<span class='keyword'>{$keyword}</span>", $show_file_name);
+                }
+            }
+            $files[$files_sn]['show_file_name'] = $show_file_name;
 
             $dl_url = empty($this->download_url) ? "{$link_path}?op=tufdl&files_sn=$files_sn" : $this->download_url . "&files_sn=$files_sn";
 
@@ -1384,7 +1394,7 @@ class TadUpFiles
     }
 
     //取得附檔或附圖 $show_mode=filename , small,playSpeed=3000 or 0
-    public function show_files($upname = "", $thumb = true, $show_mode = "", $show_description = false, $show_dl = false, $limit = null, $path = null, $hash = false, $playSpeed = 5000, $desc_as_name = false)
+    public function show_files($upname = "", $thumb = true, $show_mode = "", $show_description = false, $show_dl = false, $limit = null, $path = null, $hash = false, $playSpeed = 5000, $desc_as_name = false, $keyword = '')
     {
 
         if ($show_mode == "small") {
@@ -1408,7 +1418,7 @@ class TadUpFiles
         }
 
         $file_arr = "";
-        $file_arr = $this->get_file(null, $limit, $path, $hash, $desc_as_name);
+        $file_arr = $this->get_file(null, $limit, $path, $hash, $desc_as_name, $keyword);
 
         if (empty($file_arr)) {
             return;
@@ -1419,7 +1429,7 @@ class TadUpFiles
             if ($show_mode != "filename" and $show_mode != "small") {
                 $all_files .= "<ul>";
             } elseif ($show_mode == "filename") {
-                $all_files .= "<ol class='rectangle-list' style=\"counter-reset: li; list-style: none; *list-style: decimal; font: 15px 'trebuchet MS', 'lucida sans'; padding: 0; margin-bottom: 4em; text-shadow: 0 1px 0 rgba(255,255,255,.5);\">";
+                $all_files .= "<ol class='rectangle-list' style=\"counter-reset: li; list-style: none; *list-style: decimal; font: 15px 'trebuchet MS', 'lucida sans'; padding: 0; text-shadow: 0 1px 0 rgba(255,255,255,.5);\">";
             }
             foreach ($file_arr as $files_sn => $file_info) {
 

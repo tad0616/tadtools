@@ -15,7 +15,7 @@ CKEDITOR.editorConfig = function( config ) {
       '/',
       { name: 'bar2', items : [ 'Format','FontSize','TextColor','BGColor','Bold','Italic','Underline','Strike'] },
       { name: 'bar2_1', items : [ 'JustifyLeft','JustifyCenter','JustifyRight','Outdent','Indent'] },
-      { name: 'bar2_2', items : [ 'Uploadcare'] }
+      { name: 'bar2_2', items : [ 'PageBreak','Uploadcare'] }
     ];
 
     //CKEDITOR.config.autoGrow_maxHeight = 450;
