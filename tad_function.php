@@ -117,6 +117,7 @@ function get_bootstrap()
             }
             $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/fix-bootstrap.css');
             $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm.css');
+            $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/font-awesome/css/font-awesome.css');
 
         }
     }
@@ -226,26 +227,26 @@ if (!function_exists('push_url')) {
         $jquery = get_jquery();
 
         $main = "
-    <link rel='stylesheet' href='" . XOOPS_URL . "/modules/tadtools/social-likes/social-likes_birman.css'>
-    $jquery
-    <script src='" . XOOPS_URL . "/modules/tadtools/social-likes/social-likes.min.js'></script>
-    <script type='text/javascript'>
-    $().ready(function() {
-      $('.social-likes').socialLikes({
-        url: 'http://{$_SERVER["HTTP_HOST"]}{$_SERVER['REQUEST_URI']}',
-        title: '{$xoopsConfig['sitename']}',
-        counters: true,
-        singleTitle: 'Share it!'
-      });
-    });
-    </script>
-    <ul class='social-likes'>
-      <li class='facebook' title='Share link on Facebook'>Facebook</li>
-      <li class='twitter' title='Share link on Twitter'>Twitter</li>
-      <li class='plusone' title='Share link on Google+'>Google+</li>
-      <div class='pinterest' title='Share image on Pinterest' data-media=''>Pinterest</div>
-    </ul>
-    ";
+        <link rel='stylesheet' href='" . XOOPS_URL . "/modules/tadtools/social-likes/social-likes_birman.css'>
+        $jquery
+        <script src='" . XOOPS_URL . "/modules/tadtools/social-likes/social-likes.min.js'></script>
+        <script type='text/javascript'>
+        $().ready(function() {
+          $('.social-likes').socialLikes({
+            url: 'http://{$_SERVER["HTTP_HOST"]}{$_SERVER['REQUEST_URI']}',
+            title: '{$xoopsConfig['sitename']}',
+            counters: true,
+            singleTitle: 'Share it!'
+          });
+        });
+        </script>
+        <ul class='social-likes'>
+          <li class='facebook' title='Share link on Facebook'>Facebook</li>
+          <li class='twitter' title='Share link on Twitter'>Twitter</li>
+          <li class='plusone' title='Share link on Google+'>Google+</li>
+          <div class='pinterest' title='Share image on Pinterest' data-media=''>Pinterest</div>
+        </ul>
+        ";
 
         return $main;
     }
@@ -262,15 +263,15 @@ if (!function_exists('facebook_comments')) {
         $url = (empty($page) and empty($col_name) and empty($col_sn)) ? "http://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}" : XOOPS_URL . "/modules/{$modules}/{$page}?{$col_name}={$col_sn}";
 
         $main = "
-    <div id='fb-root'></div>
-    <script>(function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = '//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.3&appId=199288920104939';
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));</script>
-    <div class='fb-comments' data-href='{$url}' data-width='100%' data-numposts='10' data-colorscheme='light' data-order-by='reverse_time'></div>
+        <div id='fb-root'></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = '//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.3&appId=199288920104939';
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+        <div class='fb-comments' data-href='{$url}' data-width='100%' data-numposts='10' data-colorscheme='light' data-order-by='reverse_time'></div>
     ";
 
         return $main;

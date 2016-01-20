@@ -40,28 +40,28 @@ class colorbox
 
             if ($ready_config) {
                 $xoTheme->addScript('', null, "
-          (function(\$){
-            \$(document).ready(function(){
-              \$('" . $this->name . "').colorbox({iframe:true {$width_setup} {$height_setup}});
-            });
-          })(jQuery);
-        ");
+                  (function(\$){
+                    \$(document).ready(function(){
+                      \$('" . $this->name . "').colorbox({iframe:true {$width_setup} {$height_setup}});
+                    });
+                  })(jQuery);
+                ");
             }
         } else {
             $colorbox = "
-      <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='" . TADTOOLS_URL . "/colorbox/colorbox.css' />
-      {$jquery}
-      <script type='text/javascript' src='" . TADTOOLS_URL . "/colorbox/jquery.colorbox.js'></script>
-      ";
+              <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='" . TADTOOLS_URL . "/colorbox/colorbox.css' />
+              {$jquery}
+              <script type='text/javascript' src='" . TADTOOLS_URL . "/colorbox/jquery.colorbox.js'></script>
+              ";
 
             if ($ready_config) {
                 $colorbox .= "
-        <script>
-          $(document).ready(function(){
-            $('" . $this->name . "').colorbox({iframe:true {$width_setup} {$height_setup}});
-          });
-        </script>
-        ";
+                <script>
+                  $(document).ready(function(){
+                    $('" . $this->name . "').colorbox({iframe:true {$width_setup} {$height_setup}});
+                  });
+                </script>
+                ";
             }
             return $colorbox;
         }

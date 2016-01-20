@@ -1,5 +1,8 @@
 <link rel="stylesheet" type="text/css" href="<{xoAppUrl modules/tadtools/themes_tpl/menu/superfish/css/superfish.css}>" />
-<style type="text/css">
+<{if $vertical}>
+<link rel="stylesheet" type="text/css" href="<{xoAppUrl modules/tadtools/themes3_tpl/menu/superfish/css/superfish-vertical.css}>" />
+<{/if}>
+
 <style type="text/css">
   .sf-menu a {
     color: <{$navbar_color}>;
@@ -38,7 +41,7 @@ $(document).ready(function(){
 
 </script>
 
-<ul class="sf-menu"  id="tad_sf_menu">
+<ul class="sf-menu<{if $vertical}> sf-vertical<{/if}>"  id="tad_sf_menu">
   <{foreach from=$menu_var item=menu}>
     <li>
       <a href='<{$menu.url}>' target="<{$menu.target}>">

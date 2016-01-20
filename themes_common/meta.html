@@ -17,7 +17,15 @@ global $xoopsTpl;
 $url="http://".$_SERVER["HTTP_HOST"].$_SERVER['REQUEST_URI'];
 $xoopsTpl->assign('now_url',$url);
 <{/php}>
+<{if $now_url}>
 <meta property="og:url" content="<{$now_url}>"/>
+<{/if}>
+<{if $logo_img}>
 <meta property="og:image" content="<{$logo_img}>"/>
+<{/if}>
+<{if $xoops_sitename}>
 <meta property="og:site_name" content="<{$xoops_sitename}>"/>
-<meta property="og:description" content="<{$fb_description}>" />
+<{/if}>
+<{if $fb_description}>
+<meta property="og:description" content="<{$fb_description}>"/>
+<{/if}>

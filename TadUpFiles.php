@@ -327,15 +327,20 @@ class TadUpFiles
     }
 
     //列出可刪除檔案，$show_edit=true(full),false(thumb),'list','none'
-    public function list_del_file($show_edit = false, $thumb = true)
+    public function list_del_file($show_edit = false, $thumb = true, $files_sn_arr = array(), $show_filename = true, $show_tip = true)
     {
         global $xoopsDB, $xoopsUser;
 
         $all_file = "";
+        if (!empty($files_sn_arr)) {
+            $all_files_sn = implode("','", $files_sn_arr);
+            $sql          = "select * from `{$this->TadUpFilesTblName}`  where `files_sn` in('$all_files_sn') order by sort";
 
-        $sql = "select * from `{$this->TadUpFilesTblName}`  where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' order by sort";
-
-        $result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error() . "<p>$sql</p>");
+        } else {
+            $sql = "select * from `{$this->TadUpFilesTblName}`  where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' order by sort";
+        }
+        // die($sql);
+        $result = $xoopsDB->queryF($sql) or web_error($sql);
         while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $files_sn, $col_name, $col_sn, $sort, $kind, $file_name, $file_type, $file_size, $description
             foreach ($all as $k => $v) {
@@ -405,8 +410,15 @@ class TadUpFiles
                 $w            = "";
                 $w2           = "list-style-position: outside;";
             }
-
+            $filename_label = "";
             if ($show_edit === true or $show_edit == "full") {
+                if ($show_filename) {
+                    $filename_label = "
+                    <label class='checkbox' style='margin:5px 0px;'>
+                    {$original_filename}
+                    </label>
+                   ";
+                }
                 $all_file .= "
                 <tr id='fdtr_{$files_sn}'>
                   <td style='{$w}'>
@@ -416,10 +428,7 @@ class TadUpFiles
                         {$thumb_tool}
                       </div>
                       <div class='{$this->col}9'>
-                        <label class='checkbox' style='margin:5px 0px;'>
-                          <!--input type='checkbox' name='del_file[$files_sn]' value='{$files_sn}'-->
-                          {$original_filename}
-                        </label>
+                        {$filename_label}
                         <textarea name='save_description[$files_sn]' rows=1 class='{$this->class}'>{$description}</textarea>
                       </div>
                     </div>
@@ -438,16 +447,23 @@ class TadUpFiles
                 ";
             } else {
                 //無編輯框，有圖示水平排列
-                $all_file .= "
-                <li style='list-style-type:none;{$w2}' id='fdtr_{$files_sn}'>
-                   {$thumb_style2}
-                   {$thumb_tool}
-                  <label class='{$this->checkbox_inline}' style='width:{$this->thumb_width}; height: 100px;font-size: 12px;word-wrap: break-word;'>
+
+                if ($show_filename) {
+                    $filename_label = "
+                    <label class='{$this->checkbox_inline}' style='width:{$this->thumb_width}; height: 100px;font-size: 12px;word-wrap: break-word;'>
                     <!--input type='checkbox' name='del_file[]' value='{$files_sn}'-->
                     {$original_filename}
-                  </label>
+                    </label>
+                   ";
+                }
+                $all_file .= "
+                <li style='list-style-type:none;{$w2}' id='fdtr_{$files_sn}'>
+                    {$thumb_style2}
+                    {$thumb_tool}
+                    {$filename_label}
                 </li>
                 ";
+
             }
         }
 
@@ -485,6 +501,7 @@ class TadUpFiles
                 } else{
                     $.post('" . XOOPS_URL . "/modules/tadtools/ajax_file.php', {op: 'remove_file', mod_name: '{$this->prefix}', files_sn: files_sn}, function(data){
                         if(data=='1'){
+                            $('#fdtr_' + files_sn).html('<li>已刪除</li>');
                             $('#fdtr_' + files_sn).remove();
                         }
                     });
@@ -494,12 +511,12 @@ class TadUpFiles
         </script>";
 
         $del_alert = ($show_edit == "list") ? TADTOOLS_CHECKBOX_TO_DEL : "";
-        $sort_able = "<div class='alert alert-info' id='df_save_msg'>{$del_alert}" . _TAD_SORTABLE . "</div>";
+        $sort_able = $show_tip ? "<div class='alert alert-info' id='df_save_msg'>{$del_alert}" . _TAD_SORTABLE . "</div>" : "";
 
         if ($show_edit === true or $show_edit == "full") {
             $files .= "
               <div class='{$this->row}' style='margin-top:10px;'>
-                <div class='{$span}12'>
+                <div class='{$this->col}12'>
                     <table class='table table-striped table-hover'>
                         <tbody id='list_del_file_sort' >
                             $all_file
@@ -514,9 +531,9 @@ class TadUpFiles
             <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/css/rounded-list.css' />
             <div style='height:30px;'></div>
             <div class='{$this->row}' style='margin-top:10px;'>
-                <div class='{$span}12'>
+                <div class='{$this->col}12'>
                 <ol class='rectangle-list' style=\"counter-reset: li; list-style: none; *list-style: decimal; font: 15px 'trebuchet MS', 'lucida sans'; padding: 0; text-shadow: 0 1px 0 rgba(255,255,255,.5);\" id='list_del_file_sort'>
-                            {$all_file}
+                    {$all_file}
                 </ol>
                 </div>
             </div>
@@ -525,7 +542,7 @@ class TadUpFiles
             $files .= "
                 <div style='height:30px;'></div>
                 <div class='{$this->row}' style='margin-top:10px;'>
-                    <div class='{$span}12'>
+                    <div class='{$this->col}12'>
                         <ul class='thumbnails' id='list_del_file_sort'>
                             {$all_file}
                         </ul>
@@ -539,7 +556,7 @@ class TadUpFiles
     }
 
     //上傳圖檔，$this->col_name=對應欄位名稱,$col_sn=對應欄位編號,$種類：img,file,$sort=圖片排序,$files_sn="更新編號"
-    public function upload_file($upname = 'upfile', $main_width = "1280", $thumb_width = "120", $files_sn = "", $desc = null, $safe_name = false, $hash = false)
+    public function upload_file($upname = 'upfile', $main_width = "1280", $thumb_width = "120", $files_sn = "", $desc = null, $safe_name = false, $hash = false, $return_col = "file_name")
     {
         global $xoopsDB, $xoopsUser;
 
@@ -584,8 +601,8 @@ class TadUpFiles
             }
         }
 
-        //die(var_dump($files));
-
+        // die(var_dump($files));
+        $all_files_sn = '';
         foreach ($files as $file) {
             //先刪除舊檔
             if (!empty($files_sn)) {
@@ -688,15 +705,20 @@ class TadUpFiles
 
                     if (empty($files_sn)) {
 
-                        $sql = "replace into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`counter`,`original_filename`,`sub_dir`,`hash_filename`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}',0,'{$file['name']}','{$this->subdir}','{$hash_name}')";
+                        $sql = "insert into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`counter`,`original_filename`,`sub_dir`,`hash_filename`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}',0,'{$file['name']}','{$this->subdir}','{$hash_name}')";
 
                         $xoopsDB->queryF($sql) or web_error($sql);
+                        //取得最後新增資料的流水編號
+                        $insert_files_sn = $xoopsDB->getInsertId();
                     } else {
                         $sql = "replace into `{$this->TadUpFilesTblName}` (`files_sn`,`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`) values('{$files_sn}','{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}','{$file['name']}','{$this->subdir}','{$hash_name}')";
 
                         $xoopsDB->queryF($sql) or web_error($sql);
                     }
-                    //die($sql);
+
+                    // if ($return_col == "files_sn") {
+                    $all_files_sn[] = $insert_files_sn;
+                    // }
                 } else {
                     redirect_header($_SERVER['PHP_SELF'], 3, "Error:" . $file_handle->error);
                 }
@@ -704,6 +726,12 @@ class TadUpFiles
             $this->sort = "";
         }
 
+        // die(var_dump($all_files_sn));
+        if ($return_col == "files_sn") {
+            return $all_files_sn;
+        } else {
+            return $file_name;
+        }
     }
 
     //解決 basename 抓不到中文檔名的問題
@@ -1196,7 +1224,7 @@ class TadUpFiles
     }
 
     //取得檔案
-    public function get_file($files_sn = "", $limit = null, $path = null, $hash = false, $desc_as_name = false, $keyword = '')
+    public function get_file($files_sn = "", $limit = null, $path = null, $hash = false, $desc_as_name = false, $keyword = '', $only_keyword = false)
     {
         global $xoopsDB, $xoopsUser;
         $files      = "";
@@ -1223,6 +1251,16 @@ class TadUpFiles
                 $file_name = iconv($os_charset, _CHARSET, $file_name);
             }
 
+            $show_file_name = ($desc_as_name and !empty($description)) ? $description : $original_filename;
+            if (!empty($keyword)) {
+                if (strrpos($show_file_name, $keyword) !== false) {
+                    $show_file_name = str_replace($keyword, "<span class='keyword'>{$keyword}</span>", $show_file_name);
+                } elseif ($only_keyword) {
+                    continue;
+                }
+            }
+            $files[$files_sn]['show_file_name'] = $show_file_name;
+
             $files[$files_sn]['kind']              = $kind;
             $files[$files_sn]['sort']              = $sort;
             $files[$files_sn]['file_name']         = $file_name;
@@ -1232,15 +1270,7 @@ class TadUpFiles
             $files[$files_sn]['description']       = $description;
             $files[$files_sn]['original_filename'] = $original_filename;
             $files[$files_sn]['hash_filename']     = $hash_filename;
-            $show_file_name                        = ($desc_as_name and !empty($description)) ? $description : $original_filename;
-            if (!empty($keyword)) {
-                if (strrpos($show_file_name, $keyword) !== false) {
-                    $show_file_name = str_replace($keyword, "<span class='keyword'>{$keyword}</span>", $show_file_name);
-                }
-            }
-            $files[$files_sn]['show_file_name'] = $show_file_name;
-
-            $dl_url = empty($this->download_url) ? "{$link_path}?op=tufdl&files_sn=$files_sn" : $this->download_url . "&files_sn=$files_sn";
+            $dl_url                                = empty($this->download_url) ? "{$link_path}?op=tufdl&files_sn=$files_sn" : $this->download_url . "&files_sn=$files_sn";
 
             if ($kind == "img") {
                 $fancyboxset = "fancybox_{$this->col_name}";
@@ -1283,7 +1313,8 @@ class TadUpFiles
 
         $where = ($files_sn) ? "where `files_sn`='{$files_sn}'" : "where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' $and_sort order by sort $andLimit";
 
-        $sql    = "select * from `{$this->TadUpFilesTblName}` $where";
+        $sql = "select * from `{$this->TadUpFilesTblName}` $where";
+        // die($sql);
         $result = $xoopsDB->queryF($sql) or web_error($sql);
         $i      = 0;
         $files  = '';
@@ -1394,7 +1425,7 @@ class TadUpFiles
     }
 
     //取得附檔或附圖 $show_mode=filename , small,playSpeed=3000 or 0
-    public function show_files($upname = "", $thumb = true, $show_mode = "", $show_description = false, $show_dl = false, $limit = null, $path = null, $hash = false, $playSpeed = 5000, $desc_as_name = false, $keyword = '')
+    public function show_files($upname = "", $thumb = true, $show_mode = "", $show_description = false, $show_dl = false, $limit = null, $path = null, $hash = false, $playSpeed = 5000, $desc_as_name = false, $keyword = '', $only_keyword = false)
     {
 
         if ($show_mode == "small") {
@@ -1418,7 +1449,7 @@ class TadUpFiles
         }
 
         $file_arr = "";
-        $file_arr = $this->get_file(null, $limit, $path, $hash, $desc_as_name, $keyword);
+        $file_arr = $this->get_file(null, $limit, $path, $hash, $desc_as_name, $keyword, $only_keyword);
 
         if (empty($file_arr)) {
             return;
