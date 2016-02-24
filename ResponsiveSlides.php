@@ -51,14 +51,14 @@ class slider
             $pi    = ($i % 2) ? "1" : "2";
             $image = empty($item_content['image']) ? TADTOOLS_URL . "/ResponsiveSlides/images/demo{$pi}.jpg" : $item_content['image'];
 
-            $content_div = $content ? "<div>{$content}</div>" : "";
+            $content_div = $content ? "<div style='font-size:1em;'>{$content}</div>" : "";
             $caption     = ($content or $title) ? "
             <div class='caption'>
-              <div style='font-size:11pt;color:yellow;font-weight:bold;'>{$title}</div>
+              <div style='font-size:1.2em;color:yellow;font-weight:bold;'>{$title}</div>
               {$content_div}
             </div>
             <div class='caption_txt'>
-              <div style='font-size:11pt;color:yellow;font-weight:bold;'>{$title}</div>
+              <div style='font-size:1.2em;color:yellow;font-weight:bold;'>{$title}</div>
               {$content_div}
             </div>" : "";
 

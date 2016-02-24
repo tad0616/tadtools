@@ -3,6 +3,9 @@
 function tadtools_qrcode($options)
 {
     global $xoopsDB;
+
+    include_once XOOPS_ROOT_PATH . "/modules/tadtools/tad_function.php";
+    get_jquery();
     $block['url']               = urlencode("http://" . $_SERVER["SERVER_NAME"] . $_SERVER['REQUEST_URI']);
     $block['bootstrap_version'] = $_SESSION['bootstrap'];
     return $block;

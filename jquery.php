@@ -9,23 +9,13 @@ if (!function_exists('get_jquery')) {
     {
         global $xoTheme;
         //$xoopsModuleConfig=TadToolsXoopsModuleConfig();
-        if ($xoTheme) {
+        if (isset($xoTheme)) {
             $xoTheme->addScript('browse.php?Frameworks/jquery/jquery.js');
             $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate.min.js');
             if ($ui) {
                 $xoTheme->addStylesheet("modules/tadtools/jquery/themes/{$theme}/jquery.ui.all.css");
                 $xoTheme->addScript('modules/tadtools/jquery/ui/jquery-ui.js');
             }
-            //$xoTheme->addScript('modules/tadtools/jquery/jquery.jgrowl.js');
-            /*
-        $xoTheme->addScript('', null, '
-        (function($){
-        $(document).ready(function(){
-        $.jGrowl("'.$_SESSION['redirect_message'].'", {position:"center"});
-        });
-        })(jQuery);
-        ');
-         */
         } else {
 
             $jqueryui_path = "";

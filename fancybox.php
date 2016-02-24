@@ -28,7 +28,7 @@ class fancybox
 
         if (is_null($height)) {
             $this->autoSize = 'true';
-            $this->height   = '100%';
+            $this->height   = '90%';
         } else {
             $this->autoSize = 'false';
             $this->height   = $height;

@@ -82,23 +82,23 @@ class JwPlayer
             }
 
             $playlist_setup = "
-      listbar: {
-        position: '{$this->display}',
-        size: {$playlist_size}
-      },
-      ";
+              listbar: {
+                position: '{$this->display}',
+                size: {$playlist_size}
+              },
+              ";
             $mode = "
-      'modes': [
-        { type: 'flash', src: '" . TADTOOLS_URL . "/jwplayer/player.swf' }
-      ],";
+              'modes': [
+                { type: 'flash', src: '" . TADTOOLS_URL . "/jwplayer/player.swf' }
+              ],";
         } else {
             $file  = "file:'{$this->file}',";
             $image = "image:'{$this->image}',";
             $mode  = "
-      'modes': [
-        { type: 'html5' } ,
-        { type: 'flash', src: '" . TADTOOLS_URL . "/jwplayer/player.swf' }
-      ],";
+              'modes': [
+                { type: 'html5' } ,
+                { type: 'flash', src: '" . TADTOOLS_URL . "/jwplayer/player.swf' }
+              ],";
         }
 
         $screen_width = empty($this->width) ? "screen_width" : "'{$this->width}'";
@@ -112,38 +112,40 @@ class JwPlayer
             $player = "";
         } else {
 
-            $player = "<script type='text/javascript' src='" . TADTOOLS_URL . "/jwplayer/jwplayer.js'></script>";
+            $player = "<script type='text/javascript' src='" . TADTOOLS_URL . "/jwplayer/jwplayer.js'></script>
+            ";
         }
 
         $player .= "
-    <div id='mediaspace{$this->id}'>Loading the player ...</div>
-    <script type='text/javascript'>
-      var screen_width= $('#mediaspace{$this->id}').width();
-      var rate_height= screen_width * {$this->height} + {$this->play_list_height} ;
+        <script>jwplayer.key='SBWKYdsRa2OtuUvmS4pHvZ7cPvjwzJ9x1qhOTw==';</script>
+        <div id='mediaspace{$this->id}'>Loading the player ...</div>
+        <script type='text/javascript'>
+          var screen_width= $('#mediaspace{$this->id}').width();
+          var rate_height= screen_width * {$this->height} + {$this->play_list_height} ;
 
-      var playlist_size=screen_width * 0.25;
+          var playlist_size=screen_width * 0.25;
 
-      jwplayer('mediaspace{$this->id}').setup({
-        'modes': [
-          { type: 'html5' } ,
-          { type: 'flash', src: '" . TADTOOLS_URL . "/jwplayer/player.swf' }
-        ],
-        $file
-        $playlist_setup
-        image:'{$this->image}',
-        width: $screen_width,
-        height: $rate_height,
-        skin: '{$this->skin}',
-        plugins: {
-          viral: { onpause: 'false' ,oncomplete:'false', functions:'embed' },
-          'hd-2': {state : true}
-        },
-        $this->other_code
-        stretching: 'uniform',
-        autostart: 'false'
-      });
-    </script>
-    ";
+          jwplayer('mediaspace{$this->id}').setup({
+            'modes': [
+              { type: 'html5' } ,
+              { type: 'flash', src: '" . TADTOOLS_URL . "/jwplayer/player.swf' }
+            ],
+            $file
+            $playlist_setup
+            image:'{$this->image}',
+            width: $screen_width,
+            height: $rate_height,
+            skin: '{$this->skin}',
+            plugins: {
+              viral: { onpause: 'false' ,oncomplete:'false', functions:'embed' },
+              'hd-2': {state : true}
+            },
+            $this->other_code
+            stretching: 'uniform',
+            autostart: 'false'
+          });
+        </script>
+        ";
         return $player;
 
     }

@@ -158,6 +158,7 @@ class TadUpFiles
     public $row;
     public $class;
     public $checkbox_inline;
+    public $files_sn;
 
     public function TadUpFiles($prefix = "", $subdir = "", $file = "/file", $image = "/image", $thumbs = "/image/.thumbs")
     {
@@ -292,6 +293,11 @@ class TadUpFiles
         $this->col_name = $col_name;
         $this->col_sn   = $col_sn;
         $this->sort     = $sort;
+    }
+
+    public function set_files_sn($files_sn = "")
+    {
+        $this->files_sn = $files_sn;
     }
 
     //是否套用fancybox
@@ -705,7 +711,7 @@ class TadUpFiles
 
                     if (empty($files_sn)) {
 
-                        $sql = "insert into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`counter`,`original_filename`,`sub_dir`,`hash_filename`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}',0,'{$file['name']}','{$this->subdir}','{$hash_name}')";
+                        $sql = "replace into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`counter`,`original_filename`,`sub_dir`,`hash_filename`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}',0,'{$file['name']}','{$this->subdir}','{$hash_name}')";
 
                         $xoopsDB->queryF($sql) or web_error($sql);
                         //取得最後新增資料的流水編號
@@ -1236,7 +1242,15 @@ class TadUpFiles
 
         $link_path = is_null($path) ? $_SERVER['PHP_SELF'] : $path;
 
-        $where = ($files_sn) ? "where `files_sn`='{$files_sn}'" : "where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' $and_sort order by sort $andLimit";
+        if (empty($files_sn) and !empty($this->files_sn)) {
+            $files_sn = $this->files_sn;
+        }
+        if (is_array($files_sn)) {
+            $where = "where `files_sn` in('" . implode("','", $files_sn) . "')";
+        } else {
+
+            $where = ($files_sn) ? "where `files_sn`='{$files_sn}'" : "where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' $and_sort order by sort $andLimit";
+        }
 
         $sql = "select * from `{$this->TadUpFilesTblName}` $where";
 
@@ -1311,7 +1325,15 @@ class TadUpFiles
 
         $link_path = is_null($path) ? $_SERVER['PHP_SELF'] : $path;
 
-        $where = ($files_sn) ? "where `files_sn`='{$files_sn}'" : "where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' $and_sort order by sort $andLimit";
+        if (empty($files_sn) and !empty($this->files_sn)) {
+            $files_sn = $this->files_sn;
+        }
+        if (is_array($files_sn)) {
+            $where = "where `files_sn` in('" . implode("','", $files_sn) . "')";
+        } else {
+
+            $where = ($files_sn) ? "where `files_sn`='{$files_sn}'" : "where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' $and_sort order by sort $andLimit";
+        }
 
         $sql = "select * from `{$this->TadUpFilesTblName}` $where";
         // die($sql);
