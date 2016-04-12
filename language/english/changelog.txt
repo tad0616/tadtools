@@ -1,7 +1,23 @@
-"TadTools 2.8.5 released 2016-01-21"
+"TadTools 2.8.8 released 2016-04-13"
+====================================
+1.Fixed site can not automatically determine the bootstrap version sometimes
+2.upgrade font-awesome to 4.6.1
+
+
+"TadTools 2.8.7 released 2016-04-08"
+====================================
+1.Fix $TadUpFiles can't update file information
+2.Upgrade bootstrap to 3.3.6
+3.Modify the slide text size
+4.Upgrade JWPlayer to 6.12
+5.Delete jwplayer.php and mediaplayer folder
+6.Add SPRUTO Player
+7.Incorrect toolbar permissions
+8.CKeditor add some new function
+
+"TadTools 2.8.6 released 2016-01-21"
 ====================================
 1.$TadUpFiles add set_diles_sn() function
-
 
 
 "TadTools 2.8.5 released 2016-01-20"
@@ -27,7 +43,6 @@
 1. Improved $TadUpFiles file editing and presentation interface
 2. Adjust the default error screen
 3. Add Easy-Responsive-Tabs
-
 
 
 "TadTools Version 2.8.1 released 2015-12-01"

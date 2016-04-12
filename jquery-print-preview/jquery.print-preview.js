@@ -82,6 +82,7 @@ jQuery.browser.msie = /msie/.test(navigator.userAgent.toLowerCase());
                         'display: none !important;' +
                     '}' +
                 '}' +
+                'body{background:none;}'+
                 '</style>'
             );
 

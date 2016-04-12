@@ -10,14 +10,14 @@
 
 <!-- Bootstrap3 -->
 <{if $theme_color and $theme_color!="bootstrap3"}>
-  <link href="<{$xoops_url}>/modules/tadtools/<{$theme_color}>/bootstrap.min.css" rel="stylesheet" media="screen">
+  <link href="<{$xoops_url}>/modules/tadtools/<{$theme_color}>/bootstrap.min.css" rel="stylesheet" media="all">
 <{else}>
-  <link href="<{xoAppUrl modules/tadtools/bootstrap3/css/bootstrap.css}>" rel="stylesheet" media="screen">
+  <link href="<{xoAppUrl modules/tadtools/bootstrap3/css/bootstrap.css}>" rel="stylesheet" media="all">
 <{/if}>
 
 
 <!-- SmartMenus jQuery Bootstrap Addon CSS -->
-<link href="<{xoAppUrl modules/tadtools/smartmenus/addons/bootstrap/jquery.smartmenus.bootstrap.css}>" rel="stylesheet">
+<link href="<{xoAppUrl modules/tadtools/smartmenus/addons/bootstrap/jquery.smartmenus.bootstrap.css}>" media="all" rel="stylesheet">
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -27,7 +27,8 @@
 <![endif]-->
 
 <!-- font-awesome -->
-<link href="<{xoAppUrl modules/tadtools/css/font-awesome/css/font-awesome.css}>" rel="stylesheet">
-
-<!-- Theme Sheet Css -->
-<link rel="stylesheet" type="text/css" media="all" href="<{$xoops_themecss}>" />
+<link href="<{xoAppUrl modules/tadtools/css/font-awesome/css/font-awesome.css}>" rel="stylesheet" media="all">
+<{if $xoops_themecss}>
+  <!-- Theme Sheet Css -->
+  <link rel="stylesheet" type="text/css" media="all" href="<{$xoops_themecss}>" />
+<{/if}>

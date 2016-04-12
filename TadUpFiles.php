@@ -324,7 +324,7 @@ class TadUpFiles
         $col  = ($this->bootstrap == '3') ? "" : "span12";
         $main = "
         $jquery
-        <input type='file' name='{$upname}[]' id='{$upname}' $maxlength multiple='multiple' $accept class='{$this->col}'>
+        <input type='file' name='{$upname}[]' id='{$upname}' $maxlength multiple='multiple' $accept class='span12'>
 
         {$list_del_file}
         ";
@@ -365,14 +365,14 @@ class TadUpFiles
                         $thumb_pic = TADTOOLS_URL . "/multiple-file-upload/downloads.png";
                     }
                     $thumb_tool = "
-                    <div class='{$this->row}'>
-                        <div class='{$this->col}3 text-left'>
+                    <div class='row'>
+                        <div class='col-md-3 span3 text-left'>
                         </div>
-                        <div class='{$this->col}6 text-center'>
+                        <div class='col-md-6 span6 text-center'>
                             <a href=\"javascript:remove_file('{$files_sn}');\" style='font-size: 12px;' class='text-danger'>
                                 <i class=\"fa fa-trash\"></i> " . _TAD_DEL . "
                             </a></div>
-                        <div class='{$this->col}3 text-right'>
+                        <div class='col-md-3 span3 text-right'>
                         </div>
                     </div>";
 
@@ -384,16 +384,16 @@ class TadUpFiles
                     $thumb_pic = "{$this->TadUpFilesThumbUrl}/{$file_name}";
 
                     $thumb_tool = "
-                    <div class='{$this->row}'>
-                        <div class='{$this->col}4 text-right'>
+                    <div class='row'>
+                        <div class='col-md-4 span4 text-right'>
                             <a href=\"javascript:rotate('left','{$files_sn}','{$this->prefix}{$this->subdir}','{$this->image_dir}','{$this->thumbs_dir}','{$file_name}','{$file_type}')\" id='left90'><i class=\"fa fa-undo text-success\" title='" . TADTOOLS_ROTATE_LEFT . "'></i></a>
                         </div>
-                        <div class='{$this->col}4 text-center'>
+                        <div class='col-md-4 span4 text-center'>
                             <a href=\"javascript:remove_file('{$files_sn}');\" style='font-size: 12px;' class='text-danger'>
                                 <i class=\"fa fa-times text-danger\" title=\"" . _TAD_DEL . "\"></i>
                             </a>
                         </div>
-                        <div class='{$this->col}4 text-left'>
+                        <div class='col-md-4 span4 text-left'>
                             <a href=\"javascript:rotate('right','{$files_sn}','{$this->prefix}{$this->subdir}','{$this->image_dir}','{$this->thumbs_dir}','{$file_name}','{$file_type}')\" id='right90'><i class=\"fa fa-repeat text-info\" title='" . TADTOOLS_ROTATE_RIGHT . "'></i></a>
                         </div>
                     </div>";
@@ -428,14 +428,14 @@ class TadUpFiles
                 $all_file .= "
                 <tr id='fdtr_{$files_sn}'>
                   <td style='{$w}'>
-                    <div class='{$this->row}'>
-                      <div class='{$this->col}3'>
+                    <div class='row'>
+                      <div class='col-md-3 span3'>
                         {$thumb_style}
                         {$thumb_tool}
                       </div>
-                      <div class='{$this->col}9'>
+                      <div class='col-md-9 span9'>
                         {$filename_label}
-                        <textarea name='save_description[$files_sn]' rows=1 class='{$this->class}'>{$description}</textarea>
+                        <textarea name='save_description[$files_sn]' rows=1 class='form-control span12'>{$description}</textarea>
                       </div>
                     </div>
                   </td>
@@ -521,8 +521,8 @@ class TadUpFiles
 
         if ($show_edit === true or $show_edit == "full") {
             $files .= "
-              <div class='{$this->row}' style='margin-top:10px;'>
-                <div class='{$this->col}12'>
+              <div class='row' style='margin-top:10px;'>
+                <div class='col-md-12 span12'>
                     <table class='table table-striped table-hover'>
                         <tbody id='list_del_file_sort' >
                             $all_file
@@ -536,8 +536,8 @@ class TadUpFiles
             $files .= "
             <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/css/rounded-list.css' />
             <div style='height:30px;'></div>
-            <div class='{$this->row}' style='margin-top:10px;'>
-                <div class='{$this->col}12'>
+            <div class='row' style='margin-top:10px;'>
+                <div class='col-md-12 span12'>
                 <ol class='rectangle-list' style=\"counter-reset: li; list-style: none; *list-style: decimal; font: 15px 'trebuchet MS', 'lucida sans'; padding: 0; text-shadow: 0 1px 0 rgba(255,255,255,.5);\" id='list_del_file_sort'>
                     {$all_file}
                 </ol>
@@ -547,8 +547,8 @@ class TadUpFiles
         } else {
             $files .= "
                 <div style='height:30px;'></div>
-                <div class='{$this->row}' style='margin-top:10px;'>
-                    <div class='{$this->col}12'>
+                <div class='row' style='margin-top:10px;'>
+                    <div class='col-md-12 span12'>
                         <ul class='thumbnails' id='list_del_file_sort'>
                             {$all_file}
                         </ul>
@@ -1230,7 +1230,7 @@ class TadUpFiles
     }
 
     //取得檔案
-    public function get_file($files_sn = "", $limit = null, $path = null, $hash = false, $desc_as_name = false, $keyword = '', $only_keyword = false)
+    public function get_file($files_sn = "", $limit = null, $path = null, $hash = false, $desc_as_name = false, $keyword = '', $only_keyword = false, $target = "_self")
     {
         global $xoopsDB, $xoopsUser;
         $files      = "";
@@ -1302,7 +1302,7 @@ class TadUpFiles
                 $files[$files_sn]['tb_path'] = $thumb_pic;
                 $files[$files_sn]['tb_url']  = "<a href='{$dl_url}' title='{$description}' {$rel} class='{$fancyboxset}'>{$description}</a>";
             } else {
-                $files[$files_sn]['link']               = "<a href='{$dl_url}#{$original_filename}'>{$show_file_name}</a>";
+                $files[$files_sn]['link']               = "<a href='{$dl_url}#{$original_filename}' target='{$target}'>{$show_file_name}</a>";
                 $files[$files_sn]['path']               = "{$dl_url}#{$original_filename}";
                 $files[$files_sn]['original_file_path'] = $this->TadUpFilesUrl . "/{$file_name}";
                 $files[$files_sn]['physical_file_path'] = $this->TadUpFilesDir . "/{$file_name}";
@@ -1447,7 +1447,7 @@ class TadUpFiles
     }
 
     //取得附檔或附圖 $show_mode=filename , small,playSpeed=3000 or 0
-    public function show_files($upname = "", $thumb = true, $show_mode = "", $show_description = false, $show_dl = false, $limit = null, $path = null, $hash = false, $playSpeed = 5000, $desc_as_name = false, $keyword = '', $only_keyword = false)
+    public function show_files($upname = "", $thumb = true, $show_mode = "", $show_description = false, $show_dl = false, $limit = null, $path = null, $hash = false, $playSpeed = 5000, $desc_as_name = false, $keyword = '', $only_keyword = false, $target = '_self')
     {
 
         if ($show_mode == "small") {
@@ -1471,7 +1471,7 @@ class TadUpFiles
         }
 
         $file_arr = "";
-        $file_arr = $this->get_file(null, $limit, $path, $hash, $desc_as_name, $keyword, $only_keyword);
+        $file_arr = $this->get_file(null, $limit, $path, $hash, $desc_as_name, $keyword, $only_keyword, $target);
 
         if (empty($file_arr)) {
             return;
@@ -1670,7 +1670,7 @@ class TadUpFiles
     }
 
     //取得單一檔案資料
-    private function get_one_file($files_sn = "")
+    public function get_one_file($files_sn = "")
     {
         global $xoopsDB, $xoopsUser;
 

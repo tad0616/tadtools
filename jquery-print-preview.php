@@ -37,11 +37,11 @@ class print_preview
             $xoTheme->addScript('modules/tadtools/jquery-print-preview/jquery.print-preview.js');
 
             $xoTheme->addScript('', null, "
-          (function(\$){
-            \$(document).ready(function(){
-              \$('{$this->name}').printPreview();
-            });
-          })(jQuery);
+              (function(\$){
+                \$(document).ready(function(){
+                  \$('{$this->name}').printPreview();
+                });
+              })(jQuery);
             ");
             $xoTheme->addStylesheet('modules/tadtools/jquery-print-preview/css/print-preview.css');
         } else {
