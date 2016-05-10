@@ -15,7 +15,7 @@ CKEDITOR.editorConfig = function( config ) {
       '/',
       { name: 'bar2', items : [ 'Styles','Format','FontSize','TextColor','BGColor','Bold','Italic','Underline','Strike'] },
       { name: 'bar2_1', items : [ 'JustifyLeft','JustifyCenter','JustifyRight', 'JustifyBlock','Outdent','Indent'] },
-      { name: 'bar2_2', items : [ 'Find', 'Replace', '-', 'SelectAll'] },
+      { name: 'bar2_2', items : [ 'Find', 'Replace', '-', 'SelectAll','FontAwesome'] },
       { name: 'bar2_3', items : [ ] }
     ];
 

@@ -132,26 +132,29 @@ if($theme_type=='theme_type_1'){
       $center_width=$theme_width;
     }else{
       $center_width=$theme_width-$lb_width-24;
+      $center_content_width=$center_width-24;
     }
 
     $left_block.="width:{$lb_width}px;";
     $center_block.="float:right; width:{$center_width}px;";
+    $center_block_content="width:{$center_content_width}px;";
     $right_block.=" width:{$rb_width}px;";
   }
 
 //TYPE2:二欄式（左右區域皆在右邊）
 }elseif($theme_type=='theme_type_2'){
   if($theme_kind!="html"){
-    $center_width=$theme_width-$lb_width;
+    $center_width=$theme_width-$rb_width;
   }else{
     if(!$xoops_showlblock and !$xoops_showrblock){
       $center_width=$theme_width;
     }else{
-      $center_width=$theme_width-$rb_width-24;
+      $center_width=$theme_width-$rb_width;
     }
 
     $left_block.="width:{$lb_width}px;";
-    $center_block.="float:left;  width:{$center_width}px;";
+    $center_block.="float:left;  width:{$center_width}px; padding-left: 20px;";
+    $center_block_content=$center_block;
     $right_block.="width:{$rb_width}px;";
   }
 
@@ -165,12 +168,14 @@ if($theme_type=='theme_type_1'){
       $center_width=$theme_width;
     }else{
       $center_width=$theme_width-$lb_width-24;
+      $center_content_width=$center_width-24;
     }
-    $left_block.="float:left;  width:{$lb_width}px;";
+    $left_block.="float:left; width:{$lb_width}px;";
     $center_block.="float:right;  width:{$center_width}px;";
+    $center_block_content="width:{$center_content_width}px;";
     $right_block.="float:none;  width:{$theme_width}px; clear:both;";
     $left_block2="";
-    $right_block2.="float:left;";
+    $right_block2.="float:left; padding-left: 15px;";
   }
 
 //TYPE4:二欄式（左區域在右邊，右區域在下方）
@@ -185,10 +190,11 @@ if($theme_type=='theme_type_1'){
       $center_width=$theme_width-$lb_width-24;
     }
     $left_block.="float:right; width:{$lb_width}px;";
-    $center_block.="float:left; width:{$center_width}px;";
+    $center_block.="float:left; width:{$center_width}px; padding-left: 10px;";
+    $center_block_content=$center_block;
     $right_block.="float:none; width:{$theme_width}px; clear:both;";
     $left_block2="";
-    $right_block2.="float:left;";
+    $right_block2.="float:left; padding-left: 15px;";
   }
 
 //TYPE5:三欄式標準配置
@@ -209,7 +215,7 @@ if($theme_type=='theme_type_1'){
     $left_block.="float:left;  width:{$lb_width}px;";
     $center_block.="float:left;  width:{$center_width}px;";
     $right_block.="float:right;  width:{$rb_width}px;";
-    $left_block2=$right_block2="";
+    $left_block2=$right_block2=$center_block_content="";
   }
 
 //TYPE6:三欄式（左右區域皆在左邊）
@@ -226,8 +232,10 @@ if($theme_type=='theme_type_1'){
     }else{
       $center_width=$theme_width-$lb_width-$rb_width-2;
     }
+    $center_content_width=$center_width-20;
     $left_block.="float:left;  width:{$lb_width}px;";
     $center_block.="float:right;  width:{$center_width}px;";
+    $center_block_content="width:{$center_content_width}px;";
     $right_block.="float:left;  width:{$rb_width}px;";
     $left_block2=$right_block2="";
   }
@@ -247,9 +255,9 @@ if($theme_type=='theme_type_1'){
       $center_width=$theme_width-$lb_width-$rb_width-2;
     }
     $left_block.="float:right;  width:{$lb_width}px;";
-    $center_block.="float:left;  width:{$center_width}px;";
+    $center_block.="float:left;  width:{$center_width}px; padding-left: 15px;";
     $right_block.="float:right;  width:{$rb_width}px;";
-    $left_block2=$right_block2="";
+    $left_block2=$right_block2=$center_block_content="";
   }
 
 //TYPE8:單欄式（左區域在上方，右區域在下方）
@@ -257,12 +265,13 @@ if($theme_type=='theme_type_1'){
   if($theme_kind!="html"){
     $lb_width=$center_width=$rb_width="12";
   }else{
-    $center_width=$theme_width;
-    $left_block.="float:none;  width:{$lb_width}px;";
-    $center_block.="float:none;  width:{$center_width}px;";
-    $right_block.="float:none;  width:{$theme_width}px; clear:both;";
+    $center_width=$lb_width=$rb_width=$theme_width-30;
+    $left_block.="float:none;  width:{$lb_width}px; padding-left: 10px;";
+    $center_block.="float:none;  width:{$center_width}px; padding-left: 10px;";
+    $right_block.="float:none;  width:{$rb_width}px; clear:both; padding-left: 10px;";
     $left_block2.="";
     $right_block2.="";
+    $center_block_content="";
   }
 }
 
@@ -272,6 +281,7 @@ $this->assign('base_color',$base_color);
 $this->assign('content_zone',"background-color:{$base_color};");
 $this->assign('leftBlocks',$left_block);
 $this->assign('centerBlocks',$center_block);
+$this->assign('centerBlocksContent',$center_block_content);
 $this->assign('rightBlocks',$right_block);
 $this->assign('leftBlocks2',$left_block2);
 $this->assign('rightBlocks2',$right_block2);

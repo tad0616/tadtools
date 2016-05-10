@@ -114,8 +114,8 @@ class CKEditor
                 height : '{$this->Height}' ,
                 language : '" . _LANGCODE . "' ,
                 toolbar : '{$this->ToolbarSet}' ,
-                contentsCss : ['" . TADTOOLS_URL . "/{$bootstrap}/css/bootstrap.css'{$other_css}],
-                extraPlugins: 'syntaxhighlight,oembed,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak{$extra_uploadcare}',
+                contentsCss : ['" . TADTOOLS_URL . "/{$bootstrap}/css/bootstrap.css','" . TADTOOLS_URL . "/css/font-awesome/css/font-awesome.css'{$other_css}],
+                extraPlugins: 'syntaxhighlight,oembed,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak,fontawesome{$extra_uploadcare}',
                 {$uploadcare_setup}
                 filebrowserBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=file&mod_dir=" . $this->xoopsDirName . "',
                 filebrowserImageBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=image&mod_dir=" . $this->xoopsDirName . "',
@@ -136,6 +136,7 @@ class CKEditor
                 qtPreviewBackground: '#c8def4' // preview table background (hover)
               } );
               </script>
+                <script>CKEDITOR.dtd.\$removeEmpty['span'] = false;</script>
               ";
         }
         return $editor;

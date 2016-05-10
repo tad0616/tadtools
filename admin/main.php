@@ -87,34 +87,17 @@ function search_bootstrap($path = "")
 
 function mk_bootstrap_menu($theme_kind = "", $theme_color = "")
 {
-    if ($theme_kind == "html" or $theme_kind == "mix") {
-        if (strpos($theme_color, "bootstrap3") !== false) {
-            $theme_array3 = mk_bootstrap_menu_options('bootstrap3', "light");
-            $theme_array4 = mk_bootstrap_menu_options('bootstrap3', "dark");
-            $theme_array  = array_merge($theme_array3, $theme_array4);
-        } elseif (substr($theme_color, 0, 9) == "bootstrap") {
-            $theme_array1 = mk_bootstrap_menu_options('bootstrap', "light");
-            $theme_array2 = mk_bootstrap_menu_options('bootstrap', "dark");
-            $theme_array  = array_merge($theme_array1, $theme_array2);
-        } else {
-            $theme_array1 = mk_bootstrap_menu_options('bootstrap', "light");
-            $theme_array2 = mk_bootstrap_menu_options('bootstrap', "dark");
-            $theme_array3 = mk_bootstrap_menu_options('bootstrap3', "light");
-            $theme_array4 = mk_bootstrap_menu_options('bootstrap3', "dark");
-            $theme_array  = array_merge($theme_array1, $theme_array2, $theme_array3, $theme_array4);
-        }
-    } else {
-        $theme_array1 = mk_bootstrap_menu_options($theme_kind, "light");
-        $theme_array2 = mk_bootstrap_menu_options($theme_kind, "dark");
-        $theme_array  = array_merge($theme_array1, $theme_array2);
-    }
+    $theme_array3 = mk_bootstrap_menu_options('bootstrap3', "light");
+    $theme_array4 = mk_bootstrap_menu_options('bootstrap3', "dark");
+    $theme_array  = array_merge($theme_array3, $theme_array4);
+
     return $theme_array;
 }
 
 function mk_bootstrap_menu_options($theme_kind = "", $mode = "light")
 {
     if (empty($theme_kind)) {
-        $theme_kind = "bootstrap";
+        $theme_kind = "bootstrap3";
     }
 
     $dir                                    = XOOPS_ROOT_PATH . "/modules/tadtools/{$theme_kind}/themes/{$mode}/";

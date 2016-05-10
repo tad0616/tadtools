@@ -37,7 +37,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
                 if (isset($theme_kind)) {
                     $tt_theme_kind      = $theme_kind;
                     $tt_use_bootstrap   = $theme_kind == "html" ? 1 : 0;
-                    $tt_bootstrap_color = $theme_kind == "bootstrap3" ? "bootstrap3" : "bootstrap";
+                    $tt_bootstrap_color = "bootstrap3";
                     if (empty($tt_theme)) {
                         $sql = "insert into `" . $xoopsDB->prefix("tadtools_setup") . "`  (`tt_theme`,`tt_use_bootstrap`,`tt_bootstrap_color`,`tt_theme_kind`) values('{$theme_set}','{$tt_use_bootstrap}','{$tt_bootstrap_color}','{$tt_theme_kind}')";
 
@@ -55,15 +55,10 @@ class TadtoolsCorePreload extends XoopsPreloadItem
             }
         }
 
-        $_SESSION['theme_kind'] = $tt_theme_kind;
-        if (strpos($tt_bootstrap_color, 'bootstrap3') !== false) {
-            $_SESSION[$theme_set]['bootstrap_version'] = 'bootstrap3';
-            $_SESSION['bootstrap']                     = '3';
-        } else {
-            $_SESSION[$theme_set]['bootstrap_version'] = 'bootstrap';
-            $_SESSION['bootstrap']                     = '2';
-        }
-        //die($_SESSION['bootstrap']);
+        $_SESSION['theme_kind']                    = $tt_theme_kind;
+        $_SESSION[$theme_set]['bootstrap_version'] = 'bootstrap3';
+        $_SESSION['bootstrap']                     = '3';
+
         if ($xoopsTpl) {
             $xoopsTpl->assign("bootstrap_version", $_SESSION['bootstrap']);
         }
@@ -72,18 +67,9 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         if ($xoTheme and $tt_use_bootstrap) {
             if ($tt_bootstrap_color == "bootstrap3") {
                 $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap3/css/bootstrap.css');
-            } elseif ($tt_bootstrap_color == "bootstrap") {
-                $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap/css/bootstrap.css');
-                $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap/css/bootstrap-responsive.css');
             } else {
                 $c = explode('/', $tt_bootstrap_color);
-                if ($c[0] == "bootstrap3") {
-                    $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/' . $tt_bootstrap_color . '/bootstrap.min.css');
-                } elseif ($c[0] == "bootstrap") {
-                    $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap/css/bootstrap.css');
-                    $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap/css/bootstrap-responsive.css');
-                    $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/' . $tt_bootstrap_color . '/bootstrap.min.css');
-                }
+                $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/' . $tt_bootstrap_color . '/bootstrap.min.css');
 
             }
             $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/fix-bootstrap.css');
