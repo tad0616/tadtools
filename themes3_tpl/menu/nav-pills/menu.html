@@ -62,7 +62,15 @@
         <{if $show_sitename==0}>
           <li role="presentation"><a href="<{$xoops_url}>" style="color:<{$navbar_color}>"><{$smarty.const._TAD_HOME}></a></li>
         <{/if}>
-        <{includeq file="$xoops_rootpath/modules/tadtools/$tpl_folder/menu_my.html"}>
+        <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_my.html"}>
+          <{if !$xoops_isuser}>
+            <li>
+              <a class="dropdown-toggle" data-toggle="dropdown">
+                <{$smarty.const._TAD_TF_USER_LOGIN}> <span class="caret"></span>
+              </a>
+              <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_login.html"}>
+            </li>
+          <{/if}>
       </ul>
     </div>
   </div>
