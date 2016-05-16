@@ -9,7 +9,7 @@ class fullcalendar
     public $quotation      = array();
 
     //建構函數
-    public function fullcalendar()
+    public function __construct()
     {
 
     }

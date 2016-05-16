@@ -6,7 +6,7 @@ class FooTable
     public $selector = '.footable';
 
     //建構函數
-    public function FooTable($selector = ".footable")
+    public function __construct($selector = ".footable")
     {
         $this->selector = $selector;
     }

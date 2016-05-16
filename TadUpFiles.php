@@ -160,7 +160,7 @@ class TadUpFiles
     public $checkbox_inline;
     public $files_sn;
 
-    public function TadUpFiles($prefix = "", $subdir = "", $file = "/file", $image = "/image", $thumbs = "/image/.thumbs")
+    public function __construct($prefix = "", $subdir = "", $file = "/file", $image = "/image", $thumbs = "/image/.thumbs")
     {
         global $xoopsDB;
         if (!empty($prefix)) {

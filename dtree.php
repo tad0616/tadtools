@@ -5,7 +5,7 @@ $home['title']=$home_title;
 $home['url']=$home_url;
 
 $sql = "select csn,of_csn,title from ".$xoopsDB->prefix("tad_gallery_cate")." order by sort";
-$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+$result = $xoopsDB->query($sql) or web_error($sql);
 while(list($csn,$of_csn,$title)=$xoopsDB->fetchRow($result)){
 $title_arr[$csn]=$title;
 $cate_arr[$csn]=$of_csn;
@@ -31,7 +31,7 @@ class dtree
     public $home;
 
     //«Øºc¨ç¼Æ
-    public function dTree($name = "", $home = "", $title_arr = "", $cate_arr = "", $url_arr = "")
+    public function __construct($name = "", $home = "", $title_arr = "", $cate_arr = "", $url_arr = "")
     {
         $this->name      = $name;
         $this->title_opt = $title_arr;

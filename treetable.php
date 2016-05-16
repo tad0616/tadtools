@@ -17,7 +17,7 @@ class treetable
     public $expanded;
 
     //«Øºc¨ç¼Æ
-    public function treetable($show_jquery = true, $sn = "cat_sn", $of_sn = "of_cat_sn", $tbl_id = "#tbl", $post_url = "", $folder_class = ".folder", $msg = "#save_msg", $expanded = true, $sort_id = "", $sort_url = "save_sort.php", $sort_msg = "#save_msg2")
+    public function __construct($show_jquery = true, $sn = "cat_sn", $of_sn = "of_cat_sn", $tbl_id = "#tbl", $post_url = "", $folder_class = ".folder", $msg = "#save_msg", $expanded = true, $sort_id = "", $sort_url = "save_sort.php", $sort_msg = "#save_msg2")
     {
         $this->show_jquery  = $show_jquery;
         $this->tbl_id       = $tbl_id;

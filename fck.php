@@ -14,7 +14,7 @@ class FCKEditor264
     public $demopublickey = "";
 
     //建構函數
-    public function FCKEditor264($xoopsDirName = "", $ColName = "", $Value = "")
+    public function __construct($xoopsDirName = "", $ColName = "", $Value = "")
     {
         $xoopsModuleConfig  = TadToolsXoopsModuleConfig();
         $this->xoopsDirName = $xoopsDirName;

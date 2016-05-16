@@ -8,7 +8,7 @@ class formValidator
     public $id;
 
     //建構函數
-    public function formValidator($id = "", $show_jquery = true)
+    public function __construct($id = "", $show_jquery = true)
     {
         $this->show_jquery = $show_jquery;
         $this->id          = $id;

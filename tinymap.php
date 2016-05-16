@@ -16,7 +16,7 @@ class tinymap
     public $mark_quotation;
     public $gmap_key;
 
-    public function tinymap($id, $x, $y, $title, $zoom = 15, $show_jquery = true)
+    public function __construct($id, $x, $y, $title, $zoom = 15, $show_jquery = true)
     {
         $this->id          = $id;
         $this->x           = $x;

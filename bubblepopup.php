@@ -9,7 +9,7 @@ class bubblepopup
     public $show_all;
 
     //建構函數
-    public function bubblepopup($show_jquery = true, $show_all = true)
+    public function __construct($show_jquery = true, $show_all = true)
     {
         $this->show_jquery = $show_jquery;
         $this->show_all    = $show_all;

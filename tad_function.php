@@ -21,8 +21,9 @@ if (!function_exists('html5')) {
         if ($use_jquery) {
             $jquery = get_jquery($ui);
         }
-        $bootstrap_path = $bootstrap_version == 2 ? "bootstrap" : "bootstrap3";
-        $bootstrap_link = $bootstrap ? "<link rel='stylesheet' type='text/css' media='all' href='" . XOOPS_URL . "/modules/tadtools/{$bootstrap_path}/css/bootstrap.css' />" : "";
+        $bootstrap_version = 3;
+        $bootstrap_path    = "bootstrap3";
+        $bootstrap_link    = $bootstrap ? "<link rel='stylesheet' type='text/css' media='all' href='" . XOOPS_URL . "/modules/tadtools/{$bootstrap_path}/css/bootstrap.css' />" : "";
 
         $row  = $bootstrap_version == 2 ? "row-fluid" : "row";
         $span = $bootstrap_version == 2 ? "span" : "col-md-";
@@ -63,7 +64,7 @@ if (!function_exists('web_error')) {
             $main .= "<div class='well'>$sql</div>";
         }
 
-        $main .= "<div class='alert alert-danger'>" . mysql_error() . "</div>";
+        $main .= "<div class='alert alert-danger'>" . $xoopsDB->error() . "</div>";
 
         die(html5($main));
     }
@@ -81,7 +82,7 @@ function get_bootstrap()
 
         $sql = "select `tt_use_bootstrap`,`tt_bootstrap_color`,`tt_theme_kind` from `" . $xoopsDB->prefix("tadtools_setup") . "`  where `tt_theme`='{$theme_set}'";
 
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error());
 
         list($tt_use_bootstrap, $tt_bootstrap_color, $tt_theme_kind) = $xoopsDB->fetchRow($result);
 
@@ -501,8 +502,10 @@ if (!function_exists("randStr")) {
                 $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
                 break;
         }
-
-        mt_srand((double) microtime() * 1000000 * getmypid());
+        list($usec, $sec) = explode(' ', microtime());
+        $seed             = (float) $sec + ((float) $usec * 100000);
+        // die('seed=' . $seed);
+        mt_srand($seed);
         $password = "";
         while (strlen($password) < $len) {
             $password .= substr($chars, (mt_rand() % strlen($chars)), 1);
@@ -560,7 +563,7 @@ if (!function_exists('getPageBar')) {
             $bootstrap = $_SESSION['bootstrap'];
         }
 
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 10, mysql_error() . "<br>$sql");
+        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 10, $xoopsDB->error() . "<br>$sql");
         $total  = $xoopsDB->getRowsNum($result);
 
         $navbar = new PageBar($total, $show_num, $page_list);
@@ -642,7 +645,7 @@ if (!class_exists('PageBar')) {
         //其他連結參數
         public $url_other;
 
-        public function PageBar($total, $limit = 10, $page_limit)
+        public function __construct($total, $limit = 10, $page_limit)
         {
             $limit = intval($limit);
             //die(var_export($limit));

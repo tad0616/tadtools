@@ -45,28 +45,41 @@
           <{else}>
             <ul>
               <{foreach from=$menu.submenu item=menu2}>
-                <li <{if $menu2.submenu}>class='has-sub'<{/if}>>
-                  <a href='<{$menu2.url}>' target="<{$menu2.target}>">
-                    <span><span class="fa <{$menu2.icon}>"></span> <{$menu2.title}></span>
-                  </a>
-                  <{if $menu2.submenu}>
-                    <ul>
-                      <{foreach from=$menu2.submenu item=menu3}>
-                        <li>
-                          <a href='<{$menu3.url}>' target="<{$menu3.target}>">
-                            <span><span class="fa <{$menu3.icon}>"></span> <{$menu3.title}></span>
-                          </a>
-                        </li>
-                       <{/foreach}>
-                    </ul>
-                  <{/if}>
-                </li>
+                <{if $menu2.title == 'separator'}>
+                  <li role="separator" class="divider"></li>
+                <{else}>
+                  <li <{if $menu2.submenu}>class='has-sub'<{/if}>>
+                    <a href='<{$menu2.url}>' target="<{$menu2.target}>">
+                      <span><span class="fa <{$menu2.icon}>"></span> <{$menu2.title}></span>
+                    </a>
+                    <{if $menu2.submenu}>
+                      <ul>
+                        <{foreach from=$menu2.submenu item=menu3}>
+                          <li>
+                            <a href='<{$menu3.url}>' target="<{$menu3.target}>">
+                              <span><span class="fa <{$menu3.icon}>"></span> <{$menu3.title}></span>
+                            </a>
+                          </li>
+                         <{/foreach}>
+                      </ul>
+                    <{/if}>
+                  </li>
+                <{/if}>
                <{/foreach}>
             </ul>
           <{/if}>
         <{/if}>
       </li>
-     <{/foreach}>
+    <{/foreach}>
+
+    <{if !$xoops_isuser}>
+      <li>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          <{$smarty.const._TAD_TF_USER_LOGIN}> <span class="caret"></span>
+        </a>
+        <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_login.html"}>
+      </li>
+    <{/if}>
   </ul>
 </div>
 <div style="clear:both;"></div>

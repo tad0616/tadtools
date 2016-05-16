@@ -14,7 +14,7 @@ class CKEditor
     public $demopublickey = "";
 
     //建構函數
-    public function CKEditor($xoopsDirName = "", $ColName = "", $Value = "")
+    public function __construct($xoopsDirName = "", $ColName = "", $Value = "")
     {
         $xoopsModuleConfig  = TadToolsXoopsModuleConfig();
         $this->xoopsDirName = $xoopsDirName;
@@ -80,7 +80,7 @@ class CKEditor
             $content = str_replace('[', '&#91;', $content);
 
             if ($xoTheme) {
-                // $editor = "";
+                $editor = "";
                 $xoTheme->addScript('modules/tadtools/ckeditor/ckeditor.js');
             } else {
                 $editor = "

@@ -12,7 +12,7 @@ class elrte
     public $Value;
 
     //建構函數
-    public function elrte($xoopsDirName = "", $ColName = "", $Value = "")
+    public function __construct($xoopsDirName = "", $ColName = "", $Value = "")
     {
         $this->xoopsDirName = $xoopsDirName;
         $this->ColName      = $ColName;

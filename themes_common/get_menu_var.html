@@ -42,13 +42,7 @@
       if(strpos($_SESSION['menu_var_kind'],'all')!==false or strpos($_SESSION['menu_var_kind'],'user')!==false){
         $user_menu=get_user_menu_item($i);
       }
-      /*
-      $admin_menu=array();
-      if(strpos($_SESSION['menu_var_kind'],'all')!==false or strpos($_SESSION['menu_var_kind'],'admin')!==false){
-        $i++;
-        $admin_menu=get_admin_menu_item($i);
-      }
-      */
+
       if(is_array($user_menu)){
         $all_menu=array_merge($my_menu,$user_menu);
       }else{
@@ -105,80 +99,6 @@
   }
 
 
-  //取得管理員選單
-  function get_admin_menu_item($i){
-    if(!isWebAdmin())return array();
-    $my_menu[$i]['id']=$i;
-    $my_menu[$i]['title']=_TAD_TO_ADMIN;
-    $my_menu[$i]['url']=XOOPS_URL."/admin.php";
-    $my_menu[$i]['target']="_self";
-    $my_menu[$i]['icon']="";
-    $my_menu[$i]['submenu']=get_admin_submenu_item();
-    return $my_menu;
-  }
-
-  //取得管理員選單子項目
-  function get_admin_submenu_item(){
-    global $xoopsDB;
-    $sql = "select conf_value from ".$xoopsDB->prefix("config")." where conf_title ='_MD_AM_DEBUGMODE'";
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-    list($debug)=$xoopsDB->fetchRow($result);
-    if($debug==0){
-      $debug=1;
-    }else{
-      $debug=0;
-    }
-
-    $i=0;
-    $my_menu[$i]['id']=$i;
-    $my_menu[$i]['title']=_TAD_TF_SYSTEM_CONFIG;
-    $my_menu[$i]['url']=XOOPS_URL."/modules/system/admin.php?fct=preferences&op=show&confcat_id=1";
-    $my_menu[$i]['target']="_self";
-    $my_menu[$i]['icon']="fa-cog";
-    $my_menu[$i]['submenu']="";
-
-    $i++;
-    $my_menu[$i]['id']=$i;
-    $my_menu[$i]['title']=TF_SYSTEM_MODADM;
-    $my_menu[$i]['url']=XOOPS_URL."/modules/tad_adm/admin/main.php";
-    $my_menu[$i]['target']="_self";
-    $my_menu[$i]['icon']="fa-wrench";
-    $my_menu[$i]['submenu']="";
-
-    $i++;
-    $my_menu[$i]['id']=$i;
-    $my_menu[$i]['title']=_TAD_TF_SYSTEM_DBADM;
-    $my_menu[$i]['url']=XOOPS_URL."/modules/tad_adm/pma.php";
-    $my_menu[$i]['target']="_blank";
-    $my_menu[$i]['icon']="fa-database";
-    $my_menu[$i]['submenu']="";
-
-    $i++;
-    $my_menu[$i]['id']=$i;
-    $my_menu[$i]['title']=_TAD_TF_THEME_ADMIN;
-    $my_menu[$i]['url']=XOOPS_URL."/modules/tad_themes/admin/main.php";
-    $my_menu[$i]['target']="_self";
-    $my_menu[$i]['icon']="fa-list-alt";
-    $my_menu[$i]['submenu']="";
-
-    $i++;
-    $my_menu[$i]['id']=$i;
-    $my_menu[$i]['title']=($debug==1)?_TAD_TF_THEME_DEBUG:_TAD_TF_THEME_UNDEBUG;
-    $my_menu[$i]['url']=XOOPS_URL."/modules/tadtools/themes_common/tools/debug.php?op=debug&v={$debug}";
-    $my_menu[$i]['target']="_self";
-    $my_menu[$i]['icon']="fa-warning";
-    $my_menu[$i]['submenu']="";
-
-    $i++;
-    $my_menu[$i]['id']=$i;
-    $my_menu[$i]['title']=_TAD_TF_USER_BLOCK;
-    $my_menu[$i]['url']=XOOPS_URL."/modules/system/admin.php?fct=blocksadmin";
-    $my_menu[$i]['target']="_self";
-    $my_menu[$i]['icon']="fa-th";
-    $my_menu[$i]['submenu']="";
-
-    return $my_menu;
-  }
 
   //判斷是否為管理員
   function isWebAdmin(){
@@ -215,13 +135,21 @@
     $i=0;
     if(isWebAdmin()){
         $sql = "select conf_value from ".$xoopsDB->prefix("config")." where conf_title ='_MD_AM_DEBUGMODE'";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error());
         list($debug)=$xoopsDB->fetchRow($result);
         if($debug==0){
           $debug=1;
         }else{
           $debug=0;
         }
+
+        $my_menu[$i]['id']=$i;
+        $my_menu[$i]['title']=_TAD_TF_USER_ADMIN;
+        $my_menu[$i]['url']=XOOPS_URL."/admin.php";
+        $my_menu[$i]['target']="_self";
+        $my_menu[$i]['icon']="fa-th-large";
+        $my_menu[$i]['submenu']="";
+        $i++;
 
         $my_menu[$i]['id']=$i;
         $my_menu[$i]['title']=_TAD_TF_SYSTEM_CONFIG;

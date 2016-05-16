@@ -12,7 +12,7 @@ function tadtools_setup()
     $use_bootstrap = $bootstrap_color = "";
 
     $sql    = "select * from `" . $xoopsDB->prefix("tadtools_setup") . "`";
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error() . "<hr>" . $sql);
+    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error() . "<hr>" . $sql);
     //$tt_theme,$tt_use_bootstrap,$tt_bootstrap_color
     while (list($tt_theme, $tt_use_bootstrap, $tt_bootstrap_color, $tt_theme_kind) = $xoopsDB->fetchRow($result)) {
         $use_bootstrap[$tt_theme]     = $tt_use_bootstrap;
@@ -38,7 +38,7 @@ function tadtools_setup()
                 if (empty($tt_theme_kind_arr[$theme])) {
                     $sql = "replace into `" . $xoopsDB->prefix("tadtools_setup") . "` (`tt_theme` , `tt_use_bootstrap`,`tt_bootstrap_color` , `tt_theme_kind`) values('{$theme}', '0', '{$theme_color}', '{$theme_kind}')";
                     //die($sql);
-                    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error() . "<hr>" . $sql);
+                    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error() . "<hr>" . $sql);
 
                     $themes[$i]['theme_kind']      = $theme_kind;
                     $themes[$i]['use_bootstrap']   = '0';
@@ -164,7 +164,7 @@ function save()
     global $xoopsDB;
     foreach ($_POST['tt_use_bootstrap'] as $tt_theme => $tt_use_bootstrap) {
         $sql = "replace into `" . $xoopsDB->prefix("tadtools_setup") . "` (`tt_theme` , `tt_use_bootstrap`,`tt_bootstrap_color` , `tt_theme_kind`) values('{$tt_theme}', '{$tt_use_bootstrap}', '{$_POST['tt_bootstrap_color'][$tt_theme]}', '{$_POST['tt_theme_kind'][$tt_theme]}')";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error() . "<hr>" . $sql);
+        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error() . "<hr>" . $sql);
     }
 }
 /*-----------執行動作判斷區----------*/

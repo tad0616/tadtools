@@ -4,7 +4,7 @@
 $path     = get_tad_link_cate_path($show_cate_sn);
 $path_arr = array_keys($path);
 $sql      = "select cate_sn,of_cate_sn,cate_title from " . $xoopsDB->prefix("tad_link_cate") . " order by cate_sort";
-$result   = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+$result   = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error());
 
 $count  = tad_link_cate_count();
 $data[] = "{ id:0, pId:0, name:'All', url:'index.php', target:'_self', open:true}";
@@ -38,7 +38,7 @@ class ztree
     public $menu_name;
 
     //建構函數
-    public function ztree($name = "", $json = "", $save_drag_file = "", $save_sort_file = "", $of_sn_col = "", $sn_col = "", $menu_name = "")
+    public function __construct($name = "", $json = "", $save_drag_file = "", $save_sort_file = "", $of_sn_col = "", $sn_col = "", $menu_name = "")
     {
         $this->name           = $name;
         $this->json           = $json;

@@ -5,7 +5,7 @@ class My97DatePicker
 {
 
     //建構函數
-    public function My97DatePicker()
+    public function __construct()
     {
 
     }

@@ -36,22 +36,26 @@
                 <button type="submit" class="btn btn-primary btn-block"><{$smarty.const.TF_USER_ENTER}></button>
               </div>
             </div>
+
+            <div class="form-group">
+              <div class="col-md-5">
+                <a href="<{$xoops_url}>/register.php" class="btn btn-xs btn-link" style="background: transparent; width: auto; color: #303030; font-size: 12px;">
+                  <span class="fa fa-pencil"></span>
+                  <{$smarty.const.TF_USER_REGIST}>
+                </a>
+              </div>
+              <div class="col-md-7">
+                <a href="<{$xoops_url}>/user.php#lost" class="btn btn-xs btn-link" style="background: transparent; width: auto; color: #303030; font-size: 12px;">
+                  <span class="fa fa-search"></span>
+                  <{$smarty.const.TF_USER_FORGET_PASS}>
+                </a>
+              </div>
+            </div>
           </fieldset>
         </form>
+
       </li>
 
-      <li>
-        <a href="<{$xoops_url}>/register.php">
-          <span class="fa fa-pencil"></span>
-          <{$smarty.const.TF_USER_REGIST}>
-        </a>
-      </li>
-      <li>
-        <a href="<{$xoops_url}>/user.php#lost">
-          <span class="fa fa-search"></span>
-          <{$smarty.const.TF_USER_FORGET_PASS}>
-        </a>
-      </li>
     <{/if}>
 
     <{if $openid_login=="1" or $openid_login=="2"}>
@@ -101,7 +105,7 @@
         <li style="white-space: nowrap">
         <{/if}>
 
-        <a href="<{$login.link}>" class="btn" <{if $openid_logo!=1}>style="display:inline-block;width:32px;height:32px;padding:2px;margin:2px;"<{/if}>>
+        <a href="<{$login.link}>" class="btn" <{if $openid_logo!=1}>style="display:inline-block;width:32px;height:32px;padding:2px;margin:2px;background-color:transparent;"<{/if}>>
           <img src="<{$login.img}>" alt="<{$login.text}>" title="<{$login.text}>" <{if $openid_logo!=1}>style="width:32px;height:32px;"<{/if}>>
           <{if $openid_logo==1}><{$login.text}><{/if}>
         </a>

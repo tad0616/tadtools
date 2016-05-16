@@ -9,7 +9,7 @@ class slider
     public $item = array();
 
     //建構函數
-    public function slider($word_num = 60, $show_jquery = true)
+    public function __construct($word_num = 60, $show_jquery = true)
     {
         $this->word_num    = $word_num;
         $this->show_jquery = $show_jquery;

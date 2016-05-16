@@ -16,7 +16,7 @@ class JwPlayer
     public $repeat;
 
     //建構函數
-    public function JwPlayer($id = "", $file = "", $image = "", $width = "", $height = "", $skin = "", $mode = "", $display = "", $autostart = false, $repeat = false, $other_code = "")
+    public function __construct($id = "", $file = "", $image = "", $width = "", $height = "", $skin = "", $mode = "", $display = "", $autostart = false, $repeat = false, $other_code = "")
     {
         $this->width            = (empty($width)) ? "" : $width;
         $this->play_list_height = ($mode == "playlist" and $display == "bottom") ? $height : 0;

@@ -5,7 +5,7 @@ class qrcode
 {
 
     //建構函數
-    public function qrcode()
+    public function __construct()
     {
 
     }

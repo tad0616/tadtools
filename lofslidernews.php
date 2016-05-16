@@ -11,7 +11,7 @@ class lofslidernews
     public $item = array();
 
     //建構函數
-    public function lofslidernews($width = '725', $height = '300', $word_num = 60, $show_jquery = true)
+    public function __construct($width = '725', $height = '300', $word_num = 60, $show_jquery = true)
     {
         $this->width       = $width;
         $this->height      = $height;

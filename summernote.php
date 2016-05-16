@@ -8,7 +8,7 @@ class summernote
     public $Height = 300;
 
     //建構函數
-    public function summernote($ColName = "", $Value = "")
+    public function __construct($ColName = "", $Value = "")
     {
         $this->ColName = $ColName;
         $this->Value   = $Value;

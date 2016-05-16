@@ -8,7 +8,7 @@ class jBreadCrumb
     public $show_jquery;
 
     //«Øºc¨ç¼Æ
-    public function jBreadCrumb($path = array(), $show_jquery = true)
+    public function __construct($path = array(), $show_jquery = true)
     {
         $this->path        = $path;
         $this->show_jquery = $show_jquery;

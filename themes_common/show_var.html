@@ -169,12 +169,12 @@ if(file_exists(XOOPS_ROOT_PATH."/themes/{$theme_name}/config2.php")){
   echo "<tr><th colspan=3><h2>佈景額外設定</h2></th></tr>";
 
   $sql="select `theme_id` from ".$xoopsDB->prefix("tad_themes")." where `theme_name`='{$theme_name}'";
-  $result=$xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error()."<br>".$sql);
+  $result=$xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error()."<br>".$sql);
   list($theme_id)=$xoopsDB->fetchRow($result);
 
   $sql="select `name`, `type`, `value` from ".$xoopsDB->prefix("tad_themes_config2")." where `theme_id`='{$theme_id}'";
   $config2="";
-  $result=$xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error()."<br>".$sql);
+  $result=$xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, $xoopsDB->error()."<br>".$sql);
   while(list($name,$type,$value)=$xoopsDB->fetchRow($result)){
     $config2[$name]=$value;
   }

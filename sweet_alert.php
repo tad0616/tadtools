@@ -8,7 +8,7 @@ class sweet_alert
     public $show_jquery;
 
     //建構函數
-    public function sweet_alert($show_jquery = true)
+    public function __construct($show_jquery = true)
     {
         $this->show_jquery = $show_jquery;
     }

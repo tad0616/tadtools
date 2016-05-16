@@ -20,7 +20,7 @@ class mColorPicker
     public $name;
 
     //
-    public function mColorPicker($name = ".color", $show_jquery = true)
+    public function __construct($name = ".color", $show_jquery = true)
     {
         $this->name        = $name;
         $this->show_jquery = $show_jquery;

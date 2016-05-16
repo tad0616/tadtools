@@ -18,7 +18,7 @@ class colorbox
     public $height;
 
     //$width='auto' ,,$height='auto'
-    public function colorbox($name = ".iframe", $width = '80%', $height = '90%', $show_jquery = true)
+    public function __construct($name = ".iframe", $width = '80%', $height = '90%', $show_jquery = true)
     {
         $this->name        = $name;
         $this->width       = $width;

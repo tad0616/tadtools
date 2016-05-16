@@ -48,7 +48,7 @@ function save_rating($mod_name = "", $col_name = "", $col_sn = "", $rank = "")
 
     $uid = $xoopsUser->uid();
     $sql = "replace into " . $xoopsDB->prefix("{$mod_name}_rank") . " (`col_name`, `col_sn`, `rank`, `uid`, `rank_date`) values('{$col_name}' , '{$col_sn}' , '{$rank}', '{$uid}' , '{$now}')";
-    $xoopsDB->queryF($sql) or die(mysql_error());
+    $xoopsDB->queryF($sql) or die($xoopsDB->error());
 
     die(sprintf(_TAD_STAR_RATING_SAVE, $rank));
 }
@@ -63,7 +63,7 @@ class rating
     public $mod_name;
 
     //建構函數
-    public function rating($mod_name = "", $rank_total = "10", $mode = '', $show_mode = '', $rate_mode = '')
+    public function __construct($mod_name = "", $rank_total = "10", $mode = '', $show_mode = '', $rate_mode = '')
     {
         $this->rank_total = $rank_total;
         $this->mode       = $mode;
@@ -83,7 +83,7 @@ class rating
             $msg   = sprintf(_TAD_STAR_RATING_DATE_SAVE, $rate['rank_date'], $score);
 
             $save_js =
-            "
+                "
                 click: function(score, evt) {
                   score = score * 2;
                   $.post('" . XOOPS_URL . "/modules/tadtools/star_rating.php', {op:'save_rating',mod_name: '{$this->mod_name}', col_name: '$col_name', col_sn: '$col_sn',rank: score }, function(msg) {
@@ -135,7 +135,7 @@ class rating
         }
 
         $sql    = "select rank,rank_date from " . $xoopsDB->prefix("{$this->mod_name}_rank") . " where `col_name`='$col_name' and `col_sn`='$col_sn' and `uid`='$uid'";
-        $result = $xoopsDB->queryF($sql) or die(mysql_error());
+        $result = $xoopsDB->queryF($sql) or die($xoopsDB->error());
         $main   = $xoopsDB->fetchArray($result);
 
         return $main;
@@ -147,7 +147,7 @@ class rating
         global $xoopsDB;
 
         $sql        = "select AVG(`rank`) from " . $xoopsDB->prefix("{$this->mod_name}_rank") . " where `col_name`='$col_name' and `col_sn`='$col_sn'";
-        $result     = $xoopsDB->queryF($sql) or die(mysql_error());
+        $result     = $xoopsDB->queryF($sql) or die($xoopsDB->error());
         list($main) = $xoopsDB->fetchRow($result);
         $main       = round($main, 0);
 

@@ -5,7 +5,7 @@ class syntaxhighlighter
 {
 
     //建構函數
-    public function syntaxhighlighter()
+    public function __construct()
     {
 
     }

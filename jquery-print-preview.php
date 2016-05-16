@@ -23,7 +23,7 @@ class print_preview
 {
     public $name;
 
-    public function print_preview($name = "a.print-preview")
+    public function __construct($name = "a.print-preview")
     {
         $this->name        = $name;
         $this->show_jquery = $show_jquery;

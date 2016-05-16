@@ -20,7 +20,7 @@ class fancybox
     public $autoSize;
 
     //«Øºc¨ç¼Æ
-    public function fancybox($name = "", $width = '90%', $height = null, $show_jquery = true, $show_js = true)
+    public function __construct($name = "", $width = '90%', $height = null, $show_jquery = true, $show_js = true)
     {
         //$this->name=randStr();
         $this->name  = $name;

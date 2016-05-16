@@ -5,7 +5,7 @@ class FooTable
 {
 
     //建構函數
-    public function FooTable()
+    public function __construct()
     {
 
     }
