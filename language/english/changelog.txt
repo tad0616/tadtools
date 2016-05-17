@@ -2,6 +2,7 @@
 ====================================
 1.Fixed some code for PHP7
 2.Modify BootStrap3 templates
+3.Auto update database
 
 
 "TadTools 2.8.9 released 2016-05-16"

@@ -4,7 +4,7 @@ $modversion = array();
 
 //---模組基本資訊---//
 $modversion['name']        = _MI_TADTOOLS_NAME;
-$modversion['version']     = '2.89';
+$modversion['version']     = '2.9';
 $modversion['description'] = _MI_TADTOOLS_DESC;
 $modversion['author']      = 'Tad (tad0616@gmail.com)';
 $modversion['credits']     = "Tad (http://tad0616.net)";
@@ -54,9 +54,6 @@ $modversion['onUninstall'] = "include/onUninstall.php";
 
 //---樣板設定---//
 $i                                          = 1;
-$modversion['templates'][$i]['file']        = 'tadtools_adm_index_tpl.html';
-$modversion['templates'][$i]['description'] = 'tadtools_adm_index_tpl.html';
-$i++;
 $modversion['templates'][$i]['file']        = 'tadtools_adm_index_tpl_b3.html';
 $modversion['templates'][$i]['description'] = 'tadtools_adm_index_tpl_b3.html';
 
