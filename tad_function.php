@@ -102,16 +102,10 @@ function get_bootstrap()
         if ($xoTheme) {
             if ($tt_bootstrap_color == "bootstrap3") {
                 $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap3/css/bootstrap.css');
-            } elseif ($tt_bootstrap_color == "bootstrap") {
-                $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap/css/bootstrap.css');
-                $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap/css/bootstrap-responsive.css');
             } else {
                 $c = explode('/', $tt_bootstrap_color);
                 if ($c[0] == "bootstrap3") {
-                    $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/' . $tt_bootstrap_color . '/bootstrap.min.css');
-                } elseif ($c[0] == "bootstrap") {
-                    $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap/css/bootstrap.css');
-                    $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap/css/bootstrap-responsive.css');
+                    $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap3/css/bootstrap.css');
                     $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/' . $tt_bootstrap_color . '/bootstrap.min.css');
                 }
 

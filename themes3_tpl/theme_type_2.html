@@ -1,4 +1,4 @@
-<div id="xoops_theme_content_zone" class="row" style="<{$content_zone}>">
+<div id="xoops_theme_content_zone" <{if $theme_kind!="html"}>class="row"<{/if}> style="<{$content_zone}>">
 
   <{if $xoBlocks.canvas_left or $xoBlocks.canvas_right}>
 
@@ -27,4 +27,6 @@
 
   <{/if}>
 
+  <div style="clear: both;"></div>
 </div>
+<div style="clear: both;"></div>

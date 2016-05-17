@@ -127,7 +127,7 @@ function mk_bootstrap_menu_options($theme_kind = "", $mode = "light")
 function directory_list($directory_base_path = "")
 {
 
-    $myts = &MyTextSanitizer::getInstance();
+    $myts = MyTextSanitizer::getInstance();
 
     $directory_base_path = $myts->addSlashes($directory_base_path);
 
@@ -144,7 +144,6 @@ function directory_list($directory_base_path = "")
         if (is_dir($filename)) {
             $result_list[$basefilename] = directory_list($filename);
         } else {
-
             $ext = strtolower(array_pop(explode('.', $filename)));
             $len = strlen($ext);
             if ($len > 0 and $len <= 4) {

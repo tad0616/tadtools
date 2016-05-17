@@ -68,6 +68,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
                 $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap3/css/bootstrap.css');
             } else {
                 $c = explode('/', $tt_bootstrap_color);
+                $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap3/css/bootstrap.css');
                 $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/' . $tt_bootstrap_color . '/bootstrap.min.css');
 
             }

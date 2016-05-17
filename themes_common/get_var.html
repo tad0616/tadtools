@@ -131,8 +131,8 @@ if($theme_type=='theme_type_1'){
     if(!$xoops_showlblock and !$xoops_showrblock){
       $center_width=$theme_width;
     }else{
-      $center_width=$theme_width-$lb_width-24;
-      $center_content_width=$center_width-24;
+      $center_width=$theme_width-$lb_width-40;
+      $center_content_width=$center_width-15;
     }
 
     $left_block.="width:{$lb_width}px;";
@@ -149,7 +149,7 @@ if($theme_type=='theme_type_1'){
     if(!$xoops_showlblock and !$xoops_showrblock){
       $center_width=$theme_width;
     }else{
-      $center_width=$theme_width-$rb_width-15;
+      $center_width=$theme_width-$rb_width-40;
     }
 
     $left_block.="width:{$lb_width}px;";
@@ -167,8 +167,8 @@ if($theme_type=='theme_type_1'){
     if(!$xoops_showlblock){
       $center_width=$theme_width;
     }else{
-      $center_width=$theme_width-$lb_width-24;
-      $center_content_width=$center_width-24;
+      $center_width=$theme_width-$lb_width-50;
+      $center_content_width=$center_width-15;
     }
     $left_block.="float:left; width:{$lb_width}px;";
     $center_block.="float:right;  width:{$center_width}px;";
@@ -187,7 +187,7 @@ if($theme_type=='theme_type_1'){
     if(!$xoops_showrblock){
       $center_width=$theme_width;
     }else{
-      $center_width=$theme_width-$lb_width-20;
+      $center_width=$theme_width-$lb_width-50;
     }
     $left_block.="float:right; width: {$lb_width}px;";
     $center_block.="float:left; width: {$center_width}px; padding-left: 10px;";
@@ -205,11 +205,11 @@ if($theme_type=='theme_type_1'){
     if(!$xoops_showlblock and !$xoops_showrblock){
       $center_width = $theme_width;
     }elseif(!$xoops_showlblock){
-      $center_width=$theme_width - $rb_width - 5;
+      $center_width=$theme_width - $rb_width - 15;
     }elseif(!$xoops_showrblock){
-      $center_width=$theme_width - $lb_width - 5;
+      $center_width=$theme_width - $lb_width - 15;
     }else{
-      $center_width=$theme_width - $lb_width - $rb_width - 10;
+      $center_width=$theme_width - $lb_width - $rb_width - 30;
     }
 
     $left_block.="float:left;  width:{$lb_width}px;";
@@ -226,13 +226,13 @@ if($theme_type=='theme_type_1'){
     if(!$xoops_showlblock and !$xoops_showrblock){
       $center_width=$theme_width;
     }elseif(!$xoops_showlblock){
-      $center_width=$theme_width-$rb_width-5;
+      $center_width=$theme_width-$rb_width-15;
     }elseif(!$xoops_showrblock){
-      $center_width=$theme_width-$lb_width-5;
+      $center_width=$theme_width-$lb_width-15;
     }else{
-      $center_width=$theme_width-$lb_width-$rb_width-10;
+      $center_width=$theme_width-$lb_width-$rb_width-30;
     }
-    $center_content_width=$center_width-20;
+    $center_content_width=$center_width-30;
     $left_block.="float:left;  width:{$lb_width}px;";
     $center_block.="float:right;  width:{$center_width}px;";
     $center_block_content="width:{$center_content_width}px;";
@@ -248,11 +248,11 @@ if($theme_type=='theme_type_1'){
     if(!$xoops_showlblock and !$xoops_showrblock){
       $center_width=$theme_width;
     }elseif(!$xoops_showlblock){
-      $center_width=$theme_width-$rb_width-5;
+      $center_width=$theme_width-$rb_width-15;
     }elseif(!$xoops_showrblock){
-      $center_width=$theme_width-$lb_width-5;
+      $center_width=$theme_width-$lb_width-15;
     }else{
-      $center_width=$theme_width-$lb_width-$rb_width-10;
+      $center_width=$theme_width-$lb_width-$rb_width-30;
     }
     $left_block.="float:right;  width:{$lb_width}px;";
     $center_block.="float:left;  width:{$center_width}px; padding-left: 15px;";
@@ -268,7 +268,7 @@ if($theme_type=='theme_type_1'){
     $center_width=$lb_width=$rb_width=$theme_width-30;
     $left_block.="float:none;  width:{$lb_width}px; padding-left: 10px;";
     $center_block.="float:none;  width:{$center_width}px; padding-left: 10px;";
-    $right_block.="float:none;  width:{$rb_width}px; clear:both; padding-left: 10px;";
+    $right_block.="float:none;  width:{$rb_width}px; padding-left: 10px;";
     $left_block2.="";
     $right_block2.="";
     $center_block_content="";
