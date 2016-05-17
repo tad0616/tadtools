@@ -1,3 +1,9 @@
+"TadTools 2.9 released 2016-05-17"
+====================================
+1.Fixed some code for PHP7
+2.Modify BootStrap3 templates
+
+
 "TadTools 2.8.9 released 2016-05-16"
 ====================================
 1.Add fontawesome plugin for CKeditor
