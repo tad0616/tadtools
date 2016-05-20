@@ -56,15 +56,16 @@ if (!function_exists('html5')) {
 if (!function_exists('web_error')) {
     function web_error($sql)
     {
-        global $isAdmin;
+        global $isAdmin, $xoopsDB;
 
-        $main = "<h1>哎呀～資料庫有點問題呢～</h1>";
+        $in_admin = (strpos($_SERVER['PHP_SELF'], "/admin/") !== false) ? true : false;
+        $main     = "<h1>" . _MI_OOPS_SOMETHING_WRONG . "</h1>";
 
-        if ($isAdmin) {
-            $main .= "<div class='well'>$sql</div>";
+        if ($isAdmin or $in_admin) {
+            $main .= "<div class='well'>{$sql}</div>";
         }
 
-        $main .= "<div class='alert alert-danger'>" . $xoopsDB->error() . "</div>";
+        $main .= "<div class='alert alert-danger'>" . $xoopsDB->error() . "</div><div class='text-center'><a href='javascript:history.go(-1);' class='btn btn-primary'>" . _TAD_BACK_PAGE . "</a></div>";
 
         die(html5($main));
     }

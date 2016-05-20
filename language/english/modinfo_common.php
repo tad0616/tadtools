@@ -15,3 +15,4 @@ define('_MI_USE_PDA_TITLE', 'Do you use PDA (pda.php)?');
 define('_MI_USE_PDA_TITLE_DESC', 'If yes, website will use pda.php for Mobile device.');
 define('_MI_STAR_RATING_TITLE', 'Do you use Star rating?');
 define('_MI_STAR_RATING_DESC', '');
+define('_MI_OOPS_SOMETHING_WRONG', 'OOPS! Something wrong!');

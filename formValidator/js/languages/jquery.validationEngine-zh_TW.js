@@ -130,6 +130,10 @@
                     "regex": /^[0-9a-zA-Z]+$/,
                     "alertText": "* 只限英文及數字"
                 },
+                "onlyLetterComma": {
+                    "regex": /^[a-zA-Z\,\(\)\-\']+$/,
+                    "alertText": "* 只限英文、小括號、減號及逗號"
+                },
                 "onChineseSp": {
                     "regex": /^[\u4E00-\u9fa5\ ]+$/,
                     "alertText": "* 只能用中文字及空白，不能用特殊符號、數字、英文"
@@ -137,6 +141,14 @@
                 "onChinese": {
                     "regex": /^[\u4E00-\u9fa5]+$/,
                     "alertText": "* 只能用中文字，不能用特殊符號、數字、英文"
+                },
+                "onChineseparentheses": {
+                    "regex": /^[\u4E00-\u9fa5\(\)\']+$/,
+                    "alertText": "* 只能用中文字及小括號，不能用特殊符號、數字、英文"
+                },
+                "isbn": {
+                    "regex": /^(97(8|9))?\d{9}(\d|X)$/,
+                    "alertText": "* isbn格式不正確！"
                 },
                 // --- CUSTOM RULES -- Those are specific to the demos, they can be removed or changed to your likings
                 "ajaxUserCall": {

@@ -82,23 +82,42 @@ class JwPlayer
             }
 
             $playlist_setup = "
-              listbar: {
-                position: '{$this->display}',
-                size: {$playlist_size}
-              },
-              ";
-            $mode = "
-              'modes': [
-                { type: 'flash', src: '" . TADTOOLS_URL . "/jwplayer/player.swf' }
-              ],";
+            var list = document.getElementById('jw_list');
+            var html = list.innerHTML;
+
+            playerInstance_{$this->id}.on('ready',function(){
+            var playlist = playerInstance_{$this->id}.getPlaylist();
+            for (var index=0;index<playlist.length;index++){
+                var playindex = index +1;
+
+                html += \"<li id='play-items-\"+index+\"' class='list-group-item' style='min-height: 70px; font-size: 11px; overflow: hidden;'><a href='javascript:playThis(\"+index+\")'><div style='width:80px;height:50px;margin-right:3px;float:left;background:url(\"+playlist[index] . image+\") center center no-repeat;background-size:cover;'></div>\"+playlist[index].title+\"</a></li>\"
+                list.innerHTML = html;
+            }
+
+            });
+
+            playerInstance_{$this->id}.on('playlistItem', function() {
+                var playlist = playerInstance_{$this->id}.getPlaylist();
+                var index = playerInstance_{$this->id}.getPlaylistIndex();
+                var current_li = document.getElementById(\"play-items-\"+index);
+                for(var i = 0; i < playlist.length; i++) {
+                        $('li[id^=play-items-]').removeClass( \"active\" );
+                }
+                current_li.classList.add('active');
+            });
+
+            function playThis(index) {
+                playerInstance_{$this->id}.playlistItem(index);
+            }
+
+            $(window).load(function() {
+                $('#jw_playlist_zone_{$this->id}').css('height',$('#jw_{$this->id}').height()).css('overflow','auto');
+            });
+
+            ";
         } else {
             $file  = "file:'{$this->file}',";
             $image = "image:'{$this->image}',";
-            $mode  = "
-              'modes': [
-                { type: 'html5' } ,
-                { type: 'flash', src: '" . TADTOOLS_URL . "/jwplayer/player.swf' }
-              ],";
         }
 
         $screen_width = empty($this->width) ? "screen_width" : "'{$this->width}'";
@@ -107,43 +126,68 @@ class JwPlayer
         $repeat    = empty($this->repeat) ? "" : "repeat: $this->repeat,";
         $autostart = empty($this->autostart) ? "" : "autostart: $this->autostart,";
 
+        $player = "
+        <style>
+        li.list-group-item >a {
+            color: black;
+        }
+        li.active > a {
+            color: white;
+        }
+        </style>";
+
         if ($xoTheme) {
             $xoTheme->addScript('modules/tadtools/jwplayer/jwplayer.js');
-            $player = "";
         } else {
 
             $player = "<script type='text/javascript' src='" . TADTOOLS_URL . "/jwplayer/jwplayer.js'></script>
             ";
         }
+        $player .= "<script>jwplayer.key='oLChm0Lmsd2wPANnbFZEpiNs0zOdS8qmJNlfyA==';</script>";
+
+        $player .= ($this->mode == "playlist") ? "
+        <div id='playlist_zone_{$this->id}' class='row' style='min-height:320px;'>
+            <div class='col-md-8' id='jw_zone_{$this->id}'>
+                <div id='jw_{$this->id}'>Loading the player ...</div>
+            </div>
+            <div class='col-md-4' id='jw_playlist_zone_{$this->id}'>
+                <ul class='list-group' id='jw_list'>
+
+                </ul>
+            </div>
+        </div>
+        " : "
+        <div class='row' style='min-height:160px;'>
+            <div class='col-md-12'>
+                <div id='jw_{$this->id}' class='embed-responsive embed-responsive-4by3'>Loading the player ...</div>
+            </div>
+        </div>";
 
         $player .= "
-        <script>jwplayer.key='SBWKYdsRa2OtuUvmS4pHvZ7cPvjwzJ9x1qhOTw==';</script>
-        <div id='mediaspace{$this->id}'>Loading the player ...</div>
         <script type='text/javascript'>
-          var screen_width= $('#mediaspace{$this->id}').width();
-          var rate_height= screen_width * {$this->height} + {$this->play_list_height} ;
+            var playerInstance_{$this->id} = jwplayer('jw_{$this->id}');
 
-          var playlist_size=screen_width * 0.25;
 
-          jwplayer('mediaspace{$this->id}').setup({
-            'modes': [
-              { type: 'html5' } ,
-              { type: 'flash', src: '" . TADTOOLS_URL . "/jwplayer/player.swf' }
-            ],
-            $file
+            if($('#playlist_zone_{$this->id}').width() <= 640){
+                $('#jw_zone_{$this->id}').removeClass('col-md-8').addClass('col-md-12');
+                $('#jw_playlist_zone_{$this->id}').removeClass('col-md-4').addClass('col-md-12');
+            }
+
+            playerInstance_{$this->id}.setup({
+              $file
+              image:'{$this->image}',
+              width: '100%',
+              aspectratio: '4:3',
+              $this->other_code
+              $autostart
+              $repeat
+              skin: {
+                name: 'bekle'
+              }
+            });
+
             $playlist_setup
-            image:'{$this->image}',
-            width: $screen_width,
-            height: $rate_height,
-            skin: '{$this->skin}',
-            plugins: {
-              viral: { onpause: 'false' ,oncomplete:'false', functions:'embed' },
-              'hd-2': {state : true}
-            },
-            $this->other_code
-            stretching: 'uniform',
-            autostart: 'false'
-          });
+
         </script>
         ";
         return $player;
