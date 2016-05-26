@@ -1,5 +1,12 @@
 <{php}>
-  global $xoopsDB,$xoopsTpl,$xoopsModule;
+  global $xoopsDB,$xoopsTpl,$xoopsModule,$xoTheme;
+
+  if($xoTheme){
+    $xoTheme->addScript('browse.php?Frameworks/jquery/jquery.js');
+    $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate.min.js');
+    $xoTheme->addStylesheet("modules/tadtools/jquery/themes/base/jquery.ui.all.css");
+    $xoTheme->addScript('modules/tadtools/jquery/ui/jquery-ui.js');
+  }
 
   $my_menu=get_theme_menu_items(0);
   $i=sizeof($my_menu);

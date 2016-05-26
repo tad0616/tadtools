@@ -131,16 +131,9 @@ if (!function_exists('toolbar_bootstrap')) {
 
         make_menu_json($interface_menu, $moduleName);
 
-        $jquery = get_jquery();
+        get_jquery();
 
-        $row    = ($_SESSION['bootstrap'] == '3') ? 'row' : 'row-fluid';
-        $col    = ($_SESSION['bootstrap'] == '3') ? 'col-md-12' : 'span12';
-        $home   = ($_SESSION['bootstrap'] == '3') ? 'fa fa-home' : 'icon-home';
-        $wrench = ($_SESSION['bootstrap'] == '3') ? 'fa fa-wrench' : 'icon-wrench';
-        $edit   = ($_SESSION['bootstrap'] == '3') ? 'fa fa-edit' : 'icon-edit';
-        $th     = ($_SESSION['bootstrap'] == '3') ? 'fa fa-th' : 'icon-th';
-
-        $options = "<li><a href='index.php' title='" . _TAD_HOME . "'><i class='{$home}'></i></a></li>";
+        $options = "<li><a href='index.php' title='" . _TAD_HOME . "'><i class='fa fa-home'></i></a></li>";
         if (is_array($interface_menu)) {
 
             $basename = basename($_SERVER['SCRIPT_NAME']);
@@ -163,9 +156,9 @@ if (!function_exists('toolbar_bootstrap')) {
             }
 
             if ($isAdmin and $module_id) {
-                $options .= "<li {$active}><a href='admin/index.php' title='" . sprintf(_TAD_ADMIN, $mod_name) . "'><i class='{$wrench}'></i></a></li>";
-                $options .= "<li {$active}><a href='" . XOOPS_URL . "/modules/system/admin.php?fct=preferences&op=showmod&mod={$module_id}' title='" . sprintf(_TAD_CONFIG, $mod_name) . "'><i class='{$edit}'></i></a></li>";
-                $options .= "<li {$active}><a href='" . XOOPS_URL . "/modules/system/admin.php?fct=blocksadmin&op=list&filter=1&selgen={$module_id}&selmod=-2&selgrp=-1&selvis=-1' title='" . sprintf(_TAD_BLOCKS, $mod_name) . "'><i class='{$th}'></i></a></li>";
+                $options .= "<li {$active}><a href='admin/index.php' title='" . sprintf(_TAD_ADMIN, $mod_name) . "'><i class='fa fa-wrench'></i></a></li>";
+                $options .= "<li {$active}><a href='" . XOOPS_URL . "/modules/system/admin.php?fct=preferences&op=showmod&mod={$module_id}' title='" . sprintf(_TAD_CONFIG, $mod_name) . "'><i class='fa fa-edit'></i></a></li>";
+                $options .= "<li {$active}><a href='" . XOOPS_URL . "/modules/system/admin.php?fct=blocksadmin&op=list&filter=1&selgen={$module_id}&selmod=-2&selgrp=-1&selvis=-1' title='" . sprintf(_TAD_BLOCKS, $mod_name) . "'><i class='fa fa-th'></i></a></li>";
             }
         } else {
             return;
@@ -204,8 +197,8 @@ if (!function_exists('toolbar_bootstrap')) {
 
     </style>
 
-    <div class='{$row}'>
-      <div class='{$col}'>
+    <div class='row'>
+      <div class='col-md-12'>
         <nav class='toolbar_bootstrap_nav'>
           <ul>
             $options

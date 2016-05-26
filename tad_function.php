@@ -22,11 +22,7 @@ if (!function_exists('html5')) {
             $jquery = get_jquery($ui);
         }
         $bootstrap_version = 3;
-        $bootstrap_path    = "bootstrap3";
-        $bootstrap_link    = $bootstrap ? "<link rel='stylesheet' type='text/css' media='all' href='" . XOOPS_URL . "/modules/tadtools/{$bootstrap_path}/css/bootstrap.css' />" : "";
-
-        $row  = $bootstrap_version == 2 ? "row-fluid" : "row";
-        $span = $bootstrap_version == 2 ? "span" : "col-md-";
+        $bootstrap_link    = $bootstrap ? "<link rel='stylesheet' type='text/css' media='all' href='" . XOOPS_URL . "/modules/tadtools/bootstrap3/css/bootstrap.css' />" : "";
 
         $main = "<!DOCTYPE html>\n";
         $main .= "<html lang='zh-TW'>\n";
@@ -39,8 +35,8 @@ if (!function_exists('html5')) {
         $main .= "</head>\n";
         $main .= "<body>\n";
         $main .= "    <div class='container'>\n";
-        $main .= "        <div class='{$row}'>\n";
-        $main .= "            <div class='{$span}12'>\n";
+        $main .= "        <div class='row'>\n";
+        $main .= "            <div class='col-md-12'>\n";
         $main .= "                {$content}\n";
         $main .= "            </div>\n";
         $main .= "        </div>\n";
@@ -87,14 +83,9 @@ function get_bootstrap()
 
         list($tt_use_bootstrap, $tt_bootstrap_color, $tt_theme_kind) = $xoopsDB->fetchRow($result);
 
-        $_SESSION['theme_kind'] = $tt_theme_kind;
-        if (strpos($tt_bootstrap_color, 'bootstrap3') !== false) {
-            $_SESSION[$theme_set]['bootstrap_version'] = 'bootstrap3';
-            $_SESSION['bootstrap']                     = '3';
-        } else {
-            $_SESSION[$theme_set]['bootstrap_version'] = 'bootstrap';
-            $_SESSION['bootstrap']                     = '2';
-        }
+        $_SESSION['theme_kind']                    = $tt_theme_kind;
+        $_SESSION[$theme_set]['bootstrap_version'] = 'bootstrap3';
+        $_SESSION['bootstrap']                     = '3';
 
         if ($xoopsTpl) {
             $xoopsTpl->assign("bootstrap_version", $_SESSION['bootstrap']);
@@ -379,7 +370,7 @@ if (!function_exists('power_chk')) {
         //取得模組編號
         $module_id = $xoopsModule->getVar('mid');
         //取得群組權限功能
-        $gperm_handler = &xoops_gethandler('groupperm');
+        $gperm_handler = xoops_gethandler('groupperm');
 
         //權限項目編號
         $perm_itemid = intval($sn);

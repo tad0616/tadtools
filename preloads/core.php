@@ -22,7 +22,6 @@ class TadtoolsCorePreload extends XoopsPreloadItem
             $_SESSION['old_theme_set'] = $theme_set;
         }
 
-        //if (!isset($_SESSION['bootstrap']) or ($_SESSION['old_theme_set'] != $theme_set)) {
         $_SESSION['old_theme_set'] = $theme_set;
 
         $sql = "select `tt_theme`,`tt_use_bootstrap`,`tt_bootstrap_color`,`tt_theme_kind` from `" . $xoopsDB->prefix("tadtools_setup") . "`  where `tt_theme`='{$theme_set}'";
@@ -56,10 +55,9 @@ class TadtoolsCorePreload extends XoopsPreloadItem
 
         $_SESSION['theme_kind']                    = $tt_theme_kind;
         $_SESSION[$theme_set]['bootstrap_version'] = 'bootstrap3';
-        $_SESSION['bootstrap']                     = '3';
 
         if ($xoopsTpl) {
-            $xoopsTpl->assign("bootstrap_version", $_SESSION['bootstrap']);
+            $xoopsTpl->assign("bootstrap_version", 3);
         }
         //}
         //die($tt_bootstrap_color);

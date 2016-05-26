@@ -62,18 +62,21 @@
       <{php}>
 
       global $xoopsConfig,$xoopsTpl;
-      $modhandler = &xoops_gethandler('module');
-      $config_handler =& xoops_gethandler('config');
+
+
+      $modhandler = xoops_gethandler('module');
+      $config_handler =xoops_gethandler('config');
 
       $TadLoginXoopsModule = &$modhandler->getByDirname("tad_login");
+
       if($TadLoginXoopsModule){
         include_once XOOPS_ROOT_PATH."/modules/tad_login/function.php";
         include_once XOOPS_ROOT_PATH."/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
         $tad_login['facebook'] =facebook_login('return');
         $tad_login['google'] =google_login('return');
 
-        $config_handler =& xoops_gethandler('config');
-        $modConfig= & $config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
+        $config_handler =xoops_gethandler('config');
+        $modConfig= &$config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
 
         $auth_method=$modConfig['auth_method'];
         $i=0;

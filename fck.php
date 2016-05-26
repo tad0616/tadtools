@@ -86,7 +86,6 @@ class FCKEditor264
                 $editor = "
                 <script type='text/javascript' src='" . TADTOOLS_URL . "/ckeditor/ckeditor.js'></script>";
             }
-            $bootstrap = $_SESSION['bootstrap'] == 3 ? "bootstrap3" : "bootstrap";
 
             $other_css = '';
             if ($this->ContentsCss) {
@@ -114,7 +113,7 @@ class FCKEditor264
                 height : '{$this->Height}' ,
                 language : '" . _LANGCODE . "' ,
                 toolbar : '{$this->ToolbarSet}' ,
-                contentsCss : ['" . TADTOOLS_URL . "/{$bootstrap}/css/bootstrap.css'{$other_css}],
+                contentsCss : ['" . TADTOOLS_URL . "/bootstrap3/css/bootstrap.css'{$other_css}],
                 extraPlugins: 'syntaxhighlight,oembed,eqneditor,quicktable{$extra_uploadcare}',
                 {$uploadcare_setup}
                 filebrowserBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=file&mod_dir=" . $this->xoopsDirName . "',

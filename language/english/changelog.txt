@@ -1,18 +1,23 @@
-"TadTools 2.9.1 released 2016-05-20"
+TadTools 2.9.2 (2016-05-26 released)
+====================================
+1.Removed BootStrap2 code
+
+
+TadTools 2.9.1 (2016-05-20 released)
 ====================================
 1.Fixed some language
 2.Set min-height to video
 3.Upgrade JW Player to 7.4.2 nad add playlist
 
 
-"TadTools 2.9 released 2016-05-17"
+TadTools 2.9 (2016-05-17 released)
 ====================================
 1.Fixed some code for PHP7
 2.Modify BootStrap3 templates
 3.Auto update database
 
 
-"TadTools 2.8.9 released 2016-05-16"
+TadTools 2.8.9 (2016-05-16 released)
 ====================================
 1.Add fontawesome plugin for CKeditor
 2.Removed all BootStrap2 configuation
@@ -20,13 +25,13 @@
 4.Fixed some code for PHP7
 
 
-"TadTools 2.8.8 released 2016-04-13"
+TadTools 2.8.8 (2016-04-13 released)
 ====================================
 1.Fixed site can not automatically determine the bootstrap version sometimes
 2.upgrade font-awesome to 4.6.1
 
 
-"TadTools 2.8.7 released 2016-04-08"
+TadTools 2.8.7 (2016-04-08 released)
 ====================================
 1.Fix $TadUpFiles can't update file information
 2.Upgrade bootstrap to 3.3.6
@@ -37,37 +42,37 @@
 7.Incorrect toolbar permissions
 8.CKeditor add some new function
 
-"TadTools 2.8.6 released 2016-01-21"
+TadTools 2.8.6 (2016-01-21 released)
 ====================================
 1.$TadUpFiles add set_diles_sn() function
 
 
-"TadTools 2.8.5 released 2016-01-20"
+TadTools 2.8.5 (2016-01-20 released)
 ====================================
 1. Add smoothslides
 2. $TadUpFiles added uploaded image management capabilities
 
 
-"TadTools Version 2.8.4 released 2016-01-10"
+TadTools 2.8.4 (2016-01-10 released)
 ====================================
 1. Automatic include font-awesome
 2. $TadUpFiles added Keyword filtering
 
-"TadTools Version 2.8.3 released 2016-01-04"
+TadTools 2.8.3 (2016-01-04 released)
 ====================================
 1. Add jquery-print-preview Print preview
 2. Add CKEditor picture rotary tool and pagination tools
 3. Modify $TadUpFiles bootstrap problem
 
 
-"TadTools Version 2.8.2 released 2015-12-17"
+TadTools 2.8.2 (2015-12-17 released)
 ====================================
 1. Improved $TadUpFiles file editing and presentation interface
 2. Adjust the default error screen
 3. Add Easy-Responsive-Tabs
 
 
-"TadTools Version 2.8.1 released 2015-12-01"
+TadTools 2.8.1 (2015-12-01 released)
 ====================================
 1.Upgrade font-awesome to 4.5.0
 2.Modify File display layout
@@ -75,68 +80,68 @@
 4.Add picture rotation function
 
 
-"TadTools Version 2.8 released 2015-11-04"
+TadTools 2.8 (2015-11-04 released)
 ====================================
  1.Add tcpdf
  2.Remove new jgrowl
 
 
- "TadTools Version 2.7.9 released 2015-10-30"
+ TadTools 2.7.9 (2015-10-30 released)
 ====================================
  1.Add mp3 online playback
 
 
-"TadTools Version 2.7.8 released 2015-10-26"
+TadTools 2.7.8 (2015-10-26 released)
 ====================================
  1.Fixed fck.php
  2.Update summernote to 0.6.16
 
 
-"TadTools Version 2.7.7 released 2015-10-23"
+TadTools 2.7.7 (2015-10-23 released)
 ====================================
  1.tad_function.php add html5() and web_error() function.
  2.CKEditor remove autogrow, mathedit and add quicktable.
  3.Add fullcalendar.
  4.Modify ResponsiveSlides.php
 
-"TadTools Version 2.7.6 released 2015-10-21"
+TadTools 2.7.6 (2015-10-21 released)
 ====================================
  1.Fixed get_menu_var.html
  2.Fixed footable.php
  3.CKeditor upgrade to 4.5.4
  4.Fixed video.php
 
-"TadTools Version 2.7.5 released 2015-10-16"
+TadTools 2.7.5 (2015-10-16 released)
 ====================================
   1.CK editor set new CSS features and new uploadcare element
   2. Fixed jquery problem
   3. Add the new FooTable-Bootstrap
   4. New uploadcare public key preferences (there are set to use)
 
-"TadTools Version 2.7.4 released 2015-09-02"
+TadTools 2.7.4 (2015-09-02 released)
 ====================================
  1.font-awesome update to 4.4.0
  2.Modify menu template
 
-"TadTools Version 2.7.3 released 2015-08-02"
+TadTools 2.7.3 (2015-08-02 released)
 ====================================
  1. Fix jquery load issue
  2. Fix stickytableheaders path
 
 
-"TadTools Version 2.7.2 released 2015-08-02"
+TadTools 2.7.2 (2015-08-02 released)
 ====================================
  1.Fixed the bug about elFinder can't delete file.
  2.Fixed the bug that boostrap3 navbar third layer option can't link.
  3.Remove jquery.js rom common template avoid duplication
  4.Solve the problem that the theme can not be automatically loaded bootstrap.
 
-"TadTools Version 2.7.1 released 2015-07-19"
+TadTools 2.7.1 (2015-07-19 released)
 ====================================
  1.Fixed site is not working properly after the update module.
  2.Removed margin css in tadtools/themes3_tpl/centerZone.html.
 
-"TadTools Version 2.7 released 2015-07-13"
+TadTools 2.7 (2015-07-13 released)
 ====================================
  1.Fixed part of the common template layout in HTML mode will not correct situations occur
  2.Fixed logo.html more than a > symbol problem.
@@ -146,7 +151,7 @@
  6.cssmenu and nav-pills navigation bar to join Login Form
  7.Fixed fancy_box js syntax
 
-"TadTools Version 2.69 released 2015-06-30"
+TadTools 2.69 (2015-06-30 released)
 ====================================
  1.Fixed some bug.
  2.Fixed theme kind issue.
@@ -156,7 +161,7 @@
  6.Added template_common folder.
 
 
-"TadTools Version 2.68 released 2015-05-26"
+TadTools 2.68 (2015-05-26 released)
 ====================================
  1. Amend login logout, bootstrap version determining misalignment problems.
  2. Fixed colorbox width not set correctly.
@@ -165,7 +170,7 @@
  5. Add ztree 3.5 tree kit
 
 
-"TadTools Version 2.67 released 2015-05-05"
+TadTools 2.67 (2015-05-05 released)
 ====================================
  1. Fixed jwplayer_new.php playlist movie can not solve the problem.
  2. colorbox added length and width auto adjustment function
@@ -176,13 +181,13 @@
  7. Toolbar menu function added to produce the module's json file for site map module reads
 
 
-"TadTools Version 2.66 released 2015-03-23"
+TadTools 2.66 (2015-03-23 released)
 ====================================
  1. Modify the initial set back, in most cases you can not select "Apply BootStrap color" issue options.
 
 
 
-"TadTools Version 2.65 released 2015-03-21"
+TadTools 2.65 (2015-03-21 released)
 ====================================
  1. Add mColorPicker.php color picker
  2. Introduction jquery.jgrowl.js 1.4.2 replace the old version to make it official that can be used jquery 1.9.x
@@ -197,14 +202,13 @@
  11.tadtools complete bootstrap3 interface
 
 
-
-"TadTools Version 2.64 released 2015-02-25"
+TadTools 2.64 (2015-02-25 released)
 ====================================
  1.font-awesome updated to 4.3.0
  2. Fix $ TadUpFiles problem can not be downloaded
 
 
-"TadTools Version 2.63 released 2015-01-22"
+TadTools 2.63 (2015-01-22 released)
 ====================================
  1. Update the social-likes kit 3.0.7
  2. Add BootStrap3
@@ -218,7 +222,7 @@
  10. The new sweet-alert feature
 
 
-"TadTools Version 2.62 released 2014-11-11"
+TadTools 2.62 (2014-11-11 released)
 ====================================
  1. Add syntaxhighlighter 2.1.382
  2. Add syntaxhighlighter versions election preferences
@@ -229,7 +233,7 @@
 
 
 
-"TadTools Version 2.61 released 2014-10-24"
+TadTools 2.61 (2014-10-24 released)
 ====================================
  1. Fixed lofslidernews.php to conform to accessibility specifications
  2. Amendments to conform to accessibility specifications dtree
@@ -239,7 +243,7 @@
  6. Add syntaxhighlighter Preferences
 
 
-"TadTools Version 2.6 released 2014-09-23"
+TadTools 2.6 (2014-09-23 released)
 ====================================
  1. jquery down version is 1.8.3, in order to increase the compatibility of the old jquery
  2. Fixed the bug StickyTableHeaders path capitalization errors
@@ -267,7 +271,7 @@ $ 18. TadUpFiles added set_download_url (), can be loaded at the path they want 
 24. The increase slideman slide graphic model
 
 
-"TadTools version 2.5 release 2014-06-25"
+TadTools 2.5 (2014-06-25 released)
 ====================================
  1. Two new preferences and scenery related (adjustable OpenID login menu of presentation and whether nail choose to live in the navigation bar)
  2. Add a new graphic slide common template in order to improve compatibility, and sets development for more choices
@@ -285,7 +289,7 @@ $ 18. TadUpFiles added set_download_url (), can be loaded at the path they want 
 
 
 
-"TadTools Version 2.4 released 2014-05-17"
+TadTools 2.4 (2014-05-17 released)
 ====================================
  1. In response to tad_theme new style setting function block, modify common template to support this feature.
  2. Re-optimized navigation bar syntax, the menu variable independently get_menu_var.html, making it more flexible and easier to manage applications.
@@ -302,7 +306,7 @@ $ 18. TadUpFiles added set_download_url (), can be loaded at the path they want 
 
 
 
-"TadTools Version 2.3 released 2014-05-02"
+TadTools 2.3 (2014-05-02 released)
 ====================================
  1. To make amendments TadUpFiles explanation, without explanation places the file name instead.
  2. Add TadUpFiles Autoplay set the file time.
@@ -312,7 +316,7 @@ $ 18. TadUpFiles added set_download_url (), can be loaded at the path they want 
  6. Upgrade JWPlayer 6.8 (solve Tad Player can not play movies on mobile phones problem)
 
 
-"TadTools version 2.2 release 2014-04-09"
+TadTools 2.2 (2014-04-09 released)
 ====================================
  1. Let scenery smarter, no left column or right column automatically fills forum
  2. Fixed TadUpFiles make certain windows when downloading the document name can not be downloaded right questions
@@ -331,7 +335,7 @@ $ 18. TadUpFiles added set_download_url (), can be loaded at the path they want 
 15. remove fckeditor editor directory
 
 
-"TadTools Version 2.10 released 2014-03-13"
+TadTools 2.10 (2014-03-13 released)
 ====================================
 1. Add a specific page dedicated cross-functional
 2. Composition label one more logo_position
@@ -341,7 +345,7 @@ $ 18. TadUpFiles added set_download_url (), can be loaded at the path they want 
 6. Fixed two-column at the bottom right area, if the slide graphic canceled, the area below the bug will disappear
 
 
-"TadTools Version 2.09 released 2014-03-05"
+TadTools 2.09 (2014-03-05 released)
 ====================================
 1. The fine-tuning the toolbar, so as not to appear on the first page, only in the second page, in order to maintain beautiful pictures
 2. Add automatically deleted easily rack installation file install_chk.php, in order to increase system security.
@@ -350,7 +354,7 @@ $ 18. TadUpFiles added set_download_url (), can be loaded at the path they want 
 5. fixed on the phone, pull-down menus invalid question
 6. Quick Access into sets in
 
-"TadTools Version 2.08 released 2014-02-17"
+TadTools 2.08 (2014-02-17 released)
 ====================================
 1. trimming tree
 2. Unable to drag and zoom the problem corrected tree form
@@ -359,18 +363,18 @@ $ 18. TadUpFiles added set_download_url (), can be loaded at the path they want 
 5. Fixes Fixed problem responsiveslides not display textual content
 
 
-"TadTools Version 2.07 released 2014-01-25"
+TadTools 2.07 (2014-01-25 released)
 ====================================
 1. Update treeTable to version 3.1.0 to address some of the features and bootstrap clash problem.
 
 
-"TadTools Version 2.06 released 2014-01-20"
+TadTools 2.06 (2014-01-20 released)
 ====================================
 1. If the toolbar is only one back home, then automatically hide the toolbar.
 2. New txt_to_group_name (), get_all_groups (), get_basename (), to_utf8 (), is_utf8 (), auto_charset () and other common functions.
 3. Modify TadUpFiles object, so that it can also support the document name when importing files.
 
-"TadTools Version 2.05 released 2014-01-16"
+TadTools 2.05 (2014-01-16 released)
 ====================================
 1. Strengthen the PHP syntax, to avoid dismissal notification message wrong.
 2. Close TadUpFiles of jQuery UI (to avoid affecting pda.php page)
@@ -378,32 +382,32 @@ $ 18. TadUpFiles added set_download_url (), can be loaded at the path they want 
 The common navigation bar crawl scenery added logo function diagram
 
 
-"TadTools Version 2.04 released 2014-01-02"
+TadTools 2.04 (2014-01-02 released)
 ====================================
 1. Remove FCK uploaded test page, and strengthen security
 2. Copy the new file import method TadUpFiles import_one_file ();
 3. The new setting common template file elements (for developers decorations)
 3. Update ResponsiveSlides to version 1.54
 
-"TadTools Version 2.03 released 2013-12-19"
+TadTools 2.03 (2013-12-19 released)
 ====================================
 1. Modify TadUpFiles, added get_file_for_smarty () method
 2. Modify TadUpFiles, amendments deleted, files can not be deleted entity bug
 3. Add BSIE (contempt IE), limited lifting of bootstrap support for ie6
 
-"TadTools Version 2.02 released 2013-11-14"
+TadTools 2.02 (2013-11-14 released)
 ====================================
 1. strict mode for MySQL to make the best of
 2. Modify TadUpFiles integration upload objects so that support various coding languages ​​and platforms, and to strengthen the efficiency of loading (avoid CPU spikes).
 3. Add transcoding utility functions, so windows or linux can properly use the document name
 4. Update the JW Player Player to version 6.7, and use the new JW Player object file
 
-"TadTools Version 2.01 released 2013-10-24"
+TadTools 2.01 (2013-10-24 released)
 ====================================
 1. Fixed iconize.css, add more format support
 2. Modify JwPlayer players to make and support custom width.
 
-"TadTools version 2.0 release 2013-10-16"
+TadTools 2.0 (2013-10-16 released)
 ====================================
 1. Update the bootstrap is 2.3.2, and the use of more complete bootstrap (bootstrap before have streamlined)
 2. Adjust the background management interface module CSS, so that the table header row background and text color more clearly and solve most of the buttons see IE bug.
@@ -412,19 +416,19 @@ The common navigation bar crawl scenery added logo function diagram
 5. Remove plupload Kit
 6. Add darkstrap, and sets new color (normal or dark) is set
 
-"TadTools Version 1.19 released 2013-07-29"
+TadTools 1.19 (2013-07-29 released)
 ====================================
 1. Since projekktor player no longer support youtube, so remove it.
 2. Modify JwPlayer player, use HTML5 playback, and support for automatic width detection.
 3. Modify phpWord, so that can be used \ n new line in the table.
 
-"TadTools Version 1.18 released 2013-07-01"
+TadTools 1.18 (2013-07-01 released)
 ====================================
 1. New jquery.sharrre-1.3.4 Tweets tool
 2. phpExcel upgrade to version 1.7.9
 3. Modify JwPlayer player settings, support for automatic detection of film width, height is automatically set to scale
 
-"TadTools Version 1.17 released 2013-06-06"
+TadTools 1.17 (2013-06-06 released)
 ====================================
 1. extract the common language file
 2. Update Verification Suite 2.6 formValidator
@@ -434,7 +438,7 @@ The common navigation bar crawl scenery added logo function diagram
 6. Add oembed embed multimedia editing tools, such as device and mathematics CKEditor plug
 
 
-"TadTools Version 1.16 released 2013-05-24"
+TadTools 1.16 (2013-05-24 released)
 ====================================
 1. Amend the title text becomes white background form a problem
 2. Modify the facebook message frame in the second layer of the directory site is not working properly
@@ -448,14 +452,14 @@ The common navigation bar crawl scenery added logo function diagram
 10. Fixed CKEdit the "Upload" button failure problem
 11. The editor does not support xlanguage solve problems
 
-"TadTools 1.15 Version 2013-05-08 release"
+TadTools 1.15 (2013-05-08 released)
 ====================================
 1. Add fancyBox responsive tool boxes
 2. bootstrap the 2.3.1 update, and remove navbar related settings inside out in order to avoid the effects of the original bootstrap settings.
 3. Add tadtools scenery whether he wishes to use additional bootstrap settings.
 4. The modular architecture tadtools changed XOOPS 2.5.5
 
-"TadTools Version 1.14 released 2013-03-03"
+TadTools 1.14 (2013-03-03 released)
 ====================================
 1. Update projekktor Player to version 1.2.19r188, playing Toolbar does not automatically solve the problem emerge
 2. New footable Responsive Table Tools
@@ -463,7 +467,7 @@ The common navigation bar crawl scenery added logo function diagram
 The amendments even if there are pages from FB comment block to the message, the message could not be displayed issue.
 
 
-"TadTools Version 1.13 released 2012-12-17"
+TadTools 1.13 (2012-12-17 released)
 ====================================
 1. Adjust facebook message box width 100%
 2. Add projekktor free software player
@@ -472,14 +476,14 @@ The amendments even if there are pages from FB comment block to the message, the
 5. Add jquery.raty-2.4.5 score Kits
 
 
-"TadTools Version 1.12 released 2012-11-23"
+TadTools 1.12 (2012-11-23 released)
 ====================================
 1. Add flexslider response sliding tool
 2. Add ResponsiveSlides response sliding tool
 3. Remove fckeditor switch ckeditor 3.6.5 (because fckeditor not work in firfox 17)
 
 
-"TadTools 1.11 Version 2012-10-15 release"
+TadTools 1.11 (2012-10-15 released)
 ====================================
 1. After cancel Google API key station Preferences
 2. After cancellations facebook station Preferences
@@ -496,7 +500,7 @@ The amendments even if there are pages from FB comment block to the message, the
 13. Join bootstrap 2.1.1
 
 
-"TadTools release version 1.10 2012-7-14"
+TadTools 1.10 (2012-7-14 released)
 ====================================
 1. Cancel the google API key of Preferences
 2.jquery preset in local mode of operation
@@ -504,7 +508,7 @@ The amendments even if there are pages from FB comment block to the message, the
 The update introduces jquery function uses the Google API mode versions update to jquery 1.7.2 and jqueryui 1.8.21
 
 
-"TadTools Version 1.9 released 2012-06-12"
+TadTools 1.9 (2012-06-12 released)
 ====================================
 1. Update FCKeditor to version 2.6.7
 2. Update KCFinder to version 2.5.1
@@ -514,13 +518,13 @@ The update introduces jquery function uses the Google API mode versions update t
 6. Update jquery-ui to version 1.8.20
 7. New lofslidernews Tools
 
-"TadTools Version 1.8 released 2011-12-29"
+TadTools 1.8 (2011-12-29 released)
 ====================================
 1. Update the JW Player objects, correction playlist display problems.
 2. More Tweets tool change using AddThis service.
 3. Add the JW Player HD support
 
-"TadTools Version 1.7 released 2011-12-08"
+TadTools 1.7 (2011-12-08 released)
 ====================================
 1. Fixed Tweets tool display problems in IE.
 2. JW Player update to version 5.8, and support ipad other devices.
@@ -529,7 +533,7 @@ The update introduces jquery function uses the Google API mode versions update t
 5. Add the handheld device to determine the function.
 6. Add QR Code function
 
-"TadTools 2011-11-12 Version 1.6 release."
+TadTools 1.6 (2011-11-12 released)
 ====================================
 1. Update jw player to version 5.6
 2. Update Verification Suite formValidator 1.4 2.2
@@ -541,7 +545,7 @@ The update introduces jquery function uses the Google API mode versions update t
 8. Modify tweets tool, join Google+
 
 
-"TadTools 1.5 version released 2011-03-24"
+TadTools 1.5 (2011-03-24 released)
 ====================================
 1. Adjust jw player 5.3 object
 2. Add a table of jquery tree treeTable
@@ -555,19 +559,19 @@ The update introduces jquery function uses the Google API mode versions update t
 10. New formValidator form validation tool
 11. A new message function facebook
 
-"TadTools Version 1.4 released 2010-11-25"
+TadTools 1.4 (2010-11-25 released)
 ====================================
 1. Add Jupload upload java applet
 2. Adjust jw player 5.3 object
 3. Add rrmdir remove a directory tree function
 
-"TadTools Version 1.3 released 2010-11-16"
+TadTools 1.3 (2010-11-16 released)
 ====================================
 1. Cancel jBreadCrumb path tool white background
 2. Avoid introducing problem repeat function
 3. imported functions independent jquery
 
-"TadTools Version 1.2 released 2010-11-04"
+TadTools 1.2 (2010-11-04 released)
 ====================================
 1. Add background menu function admin_toolbar ()
 2. Add a horizontal path tool jBreadCrumb
@@ -577,14 +581,14 @@ The amendments introduced mainfile.php path
 6. Add jeditable, click Edit function
 
 
-"TadTools 2010-10-05 released version 1.1"
+TadTools 1.1 (2010-10-05 released)
 ====================================
 1. Add jquerychained linked menu Kit
 2. Add FCK editor KCFinder kit.
 3. FCK editor added "reduce indent" and "unlink" button, and open the tab key function
 
 
-"TadTools 2010-10-05 released version 1.0"
+TadTools 1.0 (2010-10-05 released)
 ====================================
 1. FCKeditor 2.6.4 WYSIWYG editor
 2. dtree tree kit
