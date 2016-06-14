@@ -18,7 +18,8 @@ class formValidator
     public function render($Position = "topRight")
     {
         global $xoTheme;
-        $jquery = ($this->show_jquery) ? get_jquery() : "";
+
+        get_jquery();
 
         $LANGCODE = str_replace("-", "_", _LANGCODE);
 

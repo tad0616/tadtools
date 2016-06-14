@@ -9,35 +9,16 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * @copyright  The XOOPS Project http://sourceforge.net/projects/xoops/
- * @license    http://www.fsf.org/copyleft/gpl.html GNU public license
- * @package    TadTools
- * @since      2.5.0
- * @author     Tad
- * @version    $Id $
+ * @copyright       (c) 2000-2016 XOOPS Project (www.xoops.org)
+ * @license             GNU GPL (http://www.gnu.org/licenses/gpl-2.0.html/)
+ * @package             TadTools
+ * @since               2.5.0
+ * @author              Tad
  **/
 
-include '../../../include/cp_header.php';
+require_once dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
 
-defined('FRAMEWORKS_ART_FUNCTIONS_INI') || include_once XOOPS_ROOT_PATH . '/Frameworks/art/functions.ini.php';
-include_once XOOPS_ROOT_PATH . "/modules/" . $xoopsModule->getVar("dirname") . "/class/admin.php";
-
-load_functions('admin');
-
-if (!@include_once XOOPS_ROOT_PATH . "/modules/" . $xoopsModule->getVar("dirname") . "/language/" . $xoopsConfig['language'] . "/main.php") {
-    include_once XOOPS_ROOT_PATH . "/modules/" . $xoopsModule->getVar("dirname") . "/language/english/main.php";
-}
-if (!isset($xoopsTpl) || !is_object($xoopsTpl)) {
+if (!isset($GLOBALS['xoopsTpl']) || !is_object($GLOBALS['xoopsTpl'])) {
     include_once XOOPS_ROOT_PATH . '/class/template.php';
-    $xoopsTpl = new XoopsTpl();
+    $GLOBALS['xoopsTpl'] = new XoopsTpl();
 }
-
-include_once XOOPS_ROOT_PATH . "/modules/tadtools/include/beforeheader.php";
-$xoopsOption['template_main'] = set_bootstrap();
-
-xoops_cp_header();
-
-// Define Stylesheet and JScript
-$xoTheme->addStylesheet(XOOPS_URL . "/modules/" . $xoopsModule->getVar('dirname') . "/css/admin.css");
-//$xoTheme->addScript("browse.php?Frameworks/jquery/jquery.js");
-//$xoTheme->addScript("browse.php?modules/" . $xoopsModule->getVar("dirname") . "/js/admin.js");

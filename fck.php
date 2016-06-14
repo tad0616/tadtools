@@ -1,7 +1,7 @@
 <?php
 include_once "tadtools_header.php";
 
-class FCKEditor264
+class CKEditor
 {
     public $xoopsDirName;
     public $ColName;
@@ -73,6 +73,7 @@ class FCKEditor264
             $editor     = $summernote->render();
         } else {
 
+            get_jquery();
             $_SESSION['xoops_mod_name'] = $this->xoopsDirName;
 
             // before being fed to the textarea of CKEditor
@@ -80,11 +81,13 @@ class FCKEditor264
             $content = str_replace('[', '&#91;', $content);
 
             if ($xoTheme) {
-                //$editor = "";
+                $editor = "";
                 $xoTheme->addScript('modules/tadtools/ckeditor/ckeditor.js');
+                $xoTheme->addScript('modules/tadtools/ckeditor/adapters/jquery.js');
             } else {
                 $editor = "
-                <script type='text/javascript' src='" . TADTOOLS_URL . "/ckeditor/ckeditor.js'></script>";
+                <script type='text/javascript' src='" . TADTOOLS_URL . "/ckeditor/ckeditor.js'></script>
+                <script type='text/javascript' src='" . TADTOOLS_URL . "/ckeditor/adapters/jquery.js'></script>";
             }
 
             $other_css = '';
@@ -113,8 +116,8 @@ class FCKEditor264
                 height : '{$this->Height}' ,
                 language : '" . _LANGCODE . "' ,
                 toolbar : '{$this->ToolbarSet}' ,
-                contentsCss : ['" . TADTOOLS_URL . "/bootstrap3/css/bootstrap.css'{$other_css}],
-                extraPlugins: 'syntaxhighlight,oembed,eqneditor,quicktable{$extra_uploadcare}',
+                contentsCss : ['" . TADTOOLS_URL . "/bootstrap3/css/bootstrap.css','" . TADTOOLS_URL . "/css/font-awesome/css/font-awesome.css'{$other_css}],
+                extraPlugins: 'syntaxhighlight,oembed,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak,fontawesome{$extra_uploadcare}',
                 {$uploadcare_setup}
                 filebrowserBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=file&mod_dir=" . $this->xoopsDirName . "',
                 filebrowserImageBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=image&mod_dir=" . $this->xoopsDirName . "',
@@ -135,6 +138,7 @@ class FCKEditor264
                 qtPreviewBackground: '#c8def4' // preview table background (hover)
               } );
               </script>
+                <script>CKEDITOR.dtd.\$removeEmpty['span'] = false;</script>
               ";
         }
         return $editor;

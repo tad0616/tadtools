@@ -1,7 +1,8 @@
 /* 針對XOOPS 2.5.*版之前的後台做微調 */
 
-body ,div , a , li ,td ,th{
-  font-size: 12px;
+body{
+  font-size: 11pt;
+  font-family: "Helvetica Neue",Helvetica,Arial,"微軟正黑體",sans-serif;
 }
 
 .tooltip {

@@ -1,3 +1,12 @@
+TadTools 2.9.3（2016-06-05 released)
+====================================
+1.Support XOOPS 2.5.8
+2.Change PageBar to BootStrap3
+3.The bug that the administrator can not sign in when the site is down has been fixed.
+4.exe file upload support
+5.CKEditor update to version 4.5.9, and the problems about can not be corrected using the paste function has been fixed.
+
+
 TadTools 2.9.2 (2016-05-26 released)
 ====================================
 1.Removed BootStrap2 code

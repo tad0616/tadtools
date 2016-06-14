@@ -103,7 +103,7 @@ function get_bootstrap()
 
             }
             $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/fix-bootstrap.css');
-            $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm.css');
+            $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm3.css');
             $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/font-awesome/css/font-awesome.css');
 
         }
@@ -533,7 +533,7 @@ if (!function_exists('rrmdir')) {
 }
 //取得分頁工具
 if (!function_exists('getPageBar')) {
-    function getPageBar($sql = "", $show_num = 20, $page_list = 10, $to_page = "", $url_other = "", $bootstrap = "")
+    function getPageBar($sql = "", $show_num = 20, $page_list = 10, $to_page = "", $url_other = "", $bootstrap = "3")
     {
         global $xoopsDB;
         //die('PHP_SELF:'.$_SERVER['PHP_SELF']);

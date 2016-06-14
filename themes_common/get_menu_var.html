@@ -20,24 +20,41 @@
   $xoopsTpl->assign('menu_var',$my_menu);
 
   //取得選單選項
-  function get_theme_menu_items($id="",$other_menu=true){
+  function get_theme_menu_items($id="", $other_menu=true){
     global $xoopsDB,$xoopsTpl;
 
     $my_menu=array();
     if(strpos($_SESSION['menu_var_kind'],'all')!==false or strpos($_SESSION['menu_var_kind'],'my_menu')!==false){
-      $sql="select menuid,itemname,itemurl,target,icon from ".$xoopsDB->prefix("tad_themes_menu")." where of_level='{$id}' and status='1' order by position";
+      $sql="select `menuid`, `itemname`, `itemurl`, `target`, `icon`, `link_cate_name`, `link_cate_sn` from ".$xoopsDB->prefix("tad_themes_menu")." where of_level='{$id}' and status='1' order by position";
       $result = $xoopsDB->query($sql);
 
+      $modhandler      = xoops_gethandler('module');
       if($result){
         $i=0;
-        while(list($menuid,$itemname,$itemurl,$target,$icon)=$xoopsDB->fetchRow($result)){
-          $icon=str_replace('icon-','fa-',$icon);
+        while(list($menuid,$itemname,$itemurl,$target,$icon,$link_cate_name,$link_cate_sn)=$xoopsDB->fetchRow($result)){
+          if(!empty($link_cate_name)){
+
+            switch($link_cate_name){
+
+              case "tadnews_page_cate":
+                $TadNewsModule = $modhandler->getByDirname("tadnews");
+                if(!$TadNewsModule){
+                  continue;
+                }
+              break;
+            }
+            $custom_menu=get_custom_menu_items($link_cate_name, $link_cate_sn);
+            $sub_menu=get_theme_menu_items($menuid,false);
+            $my_menu[$i]['submenu']=array_merge($custom_menu,$sub_menu);
+          }else{
+            $my_menu[$i]['submenu']=get_theme_menu_items($menuid,false);
+          }
+
           $my_menu[$i]['id']=$menuid;
           $my_menu[$i]['title']=$itemname;
           $my_menu[$i]['url']=$itemurl;
           $my_menu[$i]['target']=$target;
-          $my_menu[$i]['icon']=$icon;
-          $my_menu[$i]['submenu']=get_theme_menu_items($menuid,false);
+          $my_menu[$i]['icon']=str_replace('icon-','fa-',$icon);
           $i++;
         }
       }
@@ -61,6 +78,35 @@
 
     return $all_menu;
   }
+
+  //取得其他模組單元的選單
+  function get_custom_menu_items($link_cate_name, $link_cate_sn){
+    global $xoopsDB,$xoopsTpl,$xoopsUser;
+    $i=0;
+    $sub_menu='';
+
+    switch($link_cate_name){
+
+      case "tadnews_page_cate":
+        $sql      = "select nsn,news_title from " . $xoopsDB->prefix("tad_news") . " where ncsn='{$link_cate_sn}'";
+        $result   = $xoopsDB->queryF($sql) or web_error($sql);
+        $ncsn_arr = "";
+        while (list($nsn, $news_title) = $xoopsDB->fetchRow($result)) {
+          $sub_menu[$link_cate_name.$i]['id']=$i;
+          $sub_menu[$link_cate_name.$i]['title']=$news_title;
+          $sub_menu[$link_cate_name.$i]['url']=XOOPS_URL."/modules/tadnews/page.php?nsn={$nsn}";
+          $sub_menu[$link_cate_name.$i]['target']="_self";
+          $sub_menu[$link_cate_name.$i]['icon']= 'fa-angle-right';
+          $sub_menu[$link_cate_name.$i]['submenu']="";
+          $i++;
+        }
+      break;
+
+    }
+
+    return $sub_menu;
+  }
+
 
   //取得模組選單
   function get_module_menu_item($i){

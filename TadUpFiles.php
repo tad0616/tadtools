@@ -302,16 +302,17 @@ class TadUpFiles
     }
 
     //上傳元件
-    public function upform($show_edit = false, $upname = 'upfile', $maxlength = "", $show_list_del_file = true, $only_type = "", $thumb = true)
+    public function upform($show_edit = false, $upname = 'upfile', $maxlength = "", $show_list_del_file = true, $only_type = "", $thumb = true, $id = '')
     {
         $maxlength     = empty($maxlength) ? "" : "maxlength='{$maxlength}'";
         $accept        = ($only_type) ? "accept='{$only_type}'" : "";
         $list_del_file = ($show_list_del_file) ? $this->list_del_file($show_edit, $thumb) : "";
         $jquery        = get_jquery(true);
+        $id            = empty($id) ? $upname : $id;
 
         $main = "
         $jquery
-        <input type='file' name='{$upname}[]' id='{$upname}' $maxlength multiple='multiple' $accept >
+        <input type='file' name='{$upname}[]' id='{$id}' $maxlength multiple='multiple' $accept >
 
         {$list_del_file}
         ";
@@ -396,7 +397,8 @@ class TadUpFiles
                 $w  = "width:130px; word-break: break-word;";
                 $w2 = "width:{$this->thumb_width}; float:left; margin-right:10px;";
             } else {
-                $thumb_tool   = "";
+                $thumb_tool = "<a href=\"javascript:remove_file('{$files_sn}');\" style='font-size: 12px;' class='text-danger'>
+                                <i class=\"fa fa-trash\"></i> " . _TAD_DEL . "</a></div>";
                 $thumb_style  = "";
                 $thumb_style2 = "";
                 $thumb_pic    = "";

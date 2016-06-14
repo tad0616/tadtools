@@ -1,29 +1,33 @@
 <?php
-//---基本設定---//
-$modversion = array();
 
-//---模組基本資訊---//
-$modversion['name']        = _MI_TADTOOLS_NAME;
-$modversion['version']     = '2.92';
-$modversion['description'] = _MI_TADTOOLS_DESC;
-$modversion['author']      = 'Tad (tad0616@gmail.com)';
-$modversion['credits']     = "Tad (http://tad0616.net)";
-$modversion['help']        = 'page=help';
-$modversion['license']     = 'GNU GPL 2.0';
-$modversion['license_url'] = 'www.gnu.org/licenses/gpl-2.0.html/';
-$modversion['image']       = "images/logo_{$xoopsConfig['language']}.png";
-$modversion['dirname']     = basename(__DIR__);
+$modversion                   = array();
+$modversion['name']           = _MI_TADTOOLS_NAME;
+$modversion['version']        = 2.93;
+$modversion['description']    = _MI_TADTOOLS_DESC;
+$modversion['author']         = 'Tad (tad0616@gmail.com)';
+$modversion['credits']        = '';
+$modversion['help']           = 'page=help';
+$modversion['license']        = 'GNU GPL 2.0 or later';
+$modversion['license_url']    = 'www.gnu.org/licenses/gpl-2.0.html/';
+$modversion['image']          = "images/logo_{$xoopsConfig['language']}.png";
+$modversion['dirname']        = basename(__DIR__);
+$modversion['dirmoduleadmin'] = '/Frameworks/moduleclasses/moduleadmin';
+$modversion['icons16']        = '../../Frameworks/moduleclasses/icons/16';
+$modversion['icons32']        = '../../Frameworks/moduleclasses/icons/32';
 
-//---模組狀態資訊---//
-$modversion['release_date']        = '2016/05/26';
-$modversion['module_website_url']  = 'http://tad0616.net/';
-$modversion['module_website_name'] = _MI_TAD_WEB;
-$modversion['module_status']       = 'release';
-$modversion['author_website_url']  = 'http://tad0616.net/';
-$modversion['author_website_name'] = _MI_TAD_WEB;
-$modversion['min_php']             = '5.3';
+//about
+$modversion['module_status']       = 'Final';
+$modversion['release_date']        = '2016/06/05';
+$modversion['module_website_url']  = 'http://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=1';
+$modversion['module_website_name'] = 'XOOPS EZGO';
+$modversion['author_website_url']  = 'http://tad0616.net';
+$modversion['author_website_name'] = 'Tad';
+$modversion['min_php']             = '5.4';
 $modversion['min_xoops']           = '2.5.7';
-$modversion['min_db']              = array('mysql' => '5.0.7', 'mysqli' => '5.0.7');
+$modversion['min_admin']           = '1.1';
+$modversion['min_db']              = array(
+    'mysql'  => '5.0.7',
+    'mysqli' => '5.0.7');
 
 //---paypal資訊---//
 $modversion['paypal']                  = array();
@@ -54,8 +58,8 @@ $modversion['onUninstall'] = "include/onUninstall.php";
 
 //---樣板設定---//
 $i                                          = 1;
-$modversion['templates'][$i]['file']        = 'tadtools_adm_index_tpl_b3.html';
-$modversion['templates'][$i]['description'] = 'tadtools_adm_index_tpl_b3.html';
+$modversion['templates'][$i]['file']        = 'tadtools_adm_index.tpl';
+$modversion['templates'][$i]['description'] = 'tadtools_adm_index.tpl';
 
 //---偏好設定---//
 $i = 1;
@@ -106,4 +110,4 @@ $modversion['blocks'][$i]['file']        = 'tadtools_qrcode.php';
 $modversion['blocks'][$i]['name']        = _MI_TADTOOLS_QRCODE_BLOCK_NAME;
 $modversion['blocks'][$i]['description'] = _MI_TADTOOLS_QRCODE_BLOCK_DESC;
 $modversion['blocks'][$i]['show_func']   = 'tadtools_qrcode';
-$modversion['blocks'][$i]['template']    = 'tadtools_qrcode.html';
+$modversion['blocks'][$i]['template']    = 'tadtools_qrcode_block.tpl';

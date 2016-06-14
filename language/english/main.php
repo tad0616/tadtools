@@ -81,3 +81,5 @@ define('TADTOOLS_CALENDAR_NEXT_MONTH', 'Next Month');
 define('TADTOOLS_ROTATE_LEFT', 'rotate 90 degrees left');
 define('TADTOOLS_ROTATE_RIGHT', 'rotate 90 degrees right');
 define('TADTOOLS_CHECKBOX_TO_DEL', 'To delete a file, please click on the check box.');
+
+define('_TAD_MENU_CONFIG', 'Dorpdown Setup');

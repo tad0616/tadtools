@@ -73,6 +73,7 @@ class CKEditor
             $editor     = $summernote->render();
         } else {
 
+            get_jquery();
             $_SESSION['xoops_mod_name'] = $this->xoopsDirName;
 
             // before being fed to the textarea of CKEditor
@@ -82,9 +83,11 @@ class CKEditor
             if ($xoTheme) {
                 $editor = "";
                 $xoTheme->addScript('modules/tadtools/ckeditor/ckeditor.js');
+                $xoTheme->addScript('modules/tadtools/ckeditor/adapters/jquery.js');
             } else {
                 $editor = "
-                <script type='text/javascript' src='" . TADTOOLS_URL . "/ckeditor/ckeditor.js'></script>";
+                <script type='text/javascript' src='" . TADTOOLS_URL . "/ckeditor/ckeditor.js'></script>
+                <script type='text/javascript' src='" . TADTOOLS_URL . "/ckeditor/adapters/jquery.js'></script>";
             }
 
             $other_css = '';
@@ -114,7 +117,7 @@ class CKEditor
                 language : '" . _LANGCODE . "' ,
                 toolbar : '{$this->ToolbarSet}' ,
                 contentsCss : ['" . TADTOOLS_URL . "/bootstrap3/css/bootstrap.css','" . TADTOOLS_URL . "/css/font-awesome/css/font-awesome.css'{$other_css}],
-                extraPlugins: 'syntaxhighlight,oembed,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak,fontawesome{$extra_uploadcare}',
+                extraPlugins: 'syntaxhighlight,oembed,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak,fontawesome,codemirror{$extra_uploadcare}',
                 {$uploadcare_setup}
                 filebrowserBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=file&mod_dir=" . $this->xoopsDirName . "',
                 filebrowserImageBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=image&mod_dir=" . $this->xoopsDirName . "',

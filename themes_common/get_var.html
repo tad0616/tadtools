@@ -103,7 +103,7 @@ if($mid){
       $data=$xoopsDB->fetchArray($result);
     }
 
-    //以下會產生這些變數： $theme_id , $theme_name , $theme_type , $lb_width , $rb_width , $clb_width , $crb_width , $base_color ,$lb_color , $cb_color , $rb_color , $margin_top , $margin_bottom , $bg_img , $logo_img ,$logo_position, $navlogo_img , $bg_attachment , $bg_color , $bg_position , $bg_repeat , $logo_top , $logo_right , $logo_bottom , $logo_left , $theme_enable , $slide_width , $slide_height , $font_size , $font_color , $link_color , $hover_color , $theme_kind , $navbar_pos , $navbar_bg_top , $navbar_bg_bottom , $navbar_hover, $navbar_color ,	$navbar_color_hover ,	$navbar_icon, $navbar_img
+    //以下會產生這些變數： $theme_id , $theme_name , $theme_type , $lb_width , $rb_width , $clb_width , $crb_width , $base_color ,$lb_color , $cb_color , $rb_color , $margin_top , $margin_bottom , $bg_img , $logo_img ,$logo_position, $navlogo_img , $bg_attachment , $bg_color , $bg_position , $bg_repeat , $logo_top , $logo_right , $logo_bottom , $logo_left, $logo_center , $theme_enable , $slide_width , $slide_height , $font_size , $font_color , $link_color , $hover_color , $theme_kind , $navbar_pos , $navbar_bg_top , $navbar_bg_bottom , $navbar_hover, $navbar_color ,	$navbar_color_hover ,	$navbar_icon, $navbar_img
     if(empty($data['theme_id']))$use_default_config=true;
 
   }else{
@@ -294,9 +294,13 @@ $this->assign('center_width',$center_width);
 /****設定Logo圖位置****/
 $logo_place="";
 if(!empty($logo_top))$logo_place.="top:{$logo_top}px;";
-if(!empty($logo_right))$logo_place.="right:{$logo_right}px;";
 if(!empty($logo_bottom))$logo_place.="bottom:{$logo_bottom}px;";
-if(!empty($logo_left))$logo_place.="left:{$logo_left}px;";
+if($logo_center=='1'){
+  $logo_place.="margin-left: auto; margin-right: auto; left: 0; right: 0;";
+}else{
+  if(!empty($logo_right))$logo_place.="right:{$logo_right}px;";
+  if(!empty($logo_left))$logo_place.="left:{$logo_left}px;";
+}
 $this->assign('logo_place',$logo_place);
 
 

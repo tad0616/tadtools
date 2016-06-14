@@ -1,7 +1,9 @@
 <?php
-/*-----------引入檔案區--------------*/
-$xoopsOption['template_main'] = "tadtools_adm_index_tpl.html";
-include_once "header.php";
+include_once __DIR__ . '/admin_header.php';
+xoops_cp_header();
+// $indexAdmin = new ModuleAdmin();
+// echo $indexAdmin->addNavigation(basename(__FILE__));
+
 include_once "../tad_function.php";
 
 /*-----------function區--------------*/
@@ -180,9 +182,14 @@ switch ($op) {
 
     default:
         tadtools_setup();
+        $template_main = 'tadtools_adm_index.tpl';
         break;
 }
 
 /*-----------秀出結果區--------------*/
-$xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm.css');
-include_once 'footer.php';
+$xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap3/css/bootstrap.css');
+$xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm3.css');
+if (isset($template_main)) {
+    $GLOBALS['xoopsTpl']->display("db:{$template_main}");
+}
+include_once __DIR__ . '/admin_footer.php';
