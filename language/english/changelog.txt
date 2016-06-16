@@ -1,3 +1,17 @@
+TadTools 2.9.5 (2016-06-16 released)
+====================================
+1.Add modules common templates
+2.Add themes common languages
+3.Optimization profile user accounts layout
+
+
+TadTools 2.9.4 (2016-06-15 released)
+====================================
+1.Fix template file
+2.CKEditor added CodeMirror
+3.Upload support self-extracting archive
+
+
 TadTools 2.9.3（2016-06-05 released)
 ====================================
 1.Support XOOPS 2.5.8
