@@ -1,70 +1,38 @@
-<div class="xoops-comment-body">
-    <{section name=i loop=$comments}>
-        <div class="row">
-            <div class="col-xs-2 col-md-2"><strong><{$lang_poster}></strong></div>
-            <div class="col-xs-10 col-md-10"><strong><{$lang_thread}></strong></div>
+<{section name=i loop=$comments}>
+    <br/>
+    <table class="table table-bordered">
+        <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/blocks_tpl/system/system_comment.tpl" comment=$comments[i]}>
+    </table>
+
+    <{if $show_threadnav == true}>
+        <div class="txtleft marg3 pad5">
+            <a href="<{$comment_url}>" title="<{$lang_top}>"><{$lang_top}></a> | <a
+                    href="<{$comment_url}>&amp;com_id=<{$comments[i].pid}>&amp;com_rootid=<{$comments[i].rootid}>#newscomment<{$comments[i].pid}>"><{$lang_parent}></a>
         </div>
-        <{include file="db:system_comment.tpl" comment=$comments[i]}>
-
-        <{if $show_threadnav == true}>
-            <a href="<{$comment_url}>" title="<{$lang_top}>"><{$lang_top}></a>
-            <a href="<{$comment_url}>&amp;com_id=<{$comments[i].pid}>&amp;com_rootid=<{$comments[i].rootid}>#newscomment<{$comments[i].pid}>"><{$lang_parent}></a>
-        <{/if}>
-
-        <{if $comments[i].show_replies == true}>
-            <!-- start comment tree -->
-            <div class="row">
-                <div class="col-md-4">
-                    <strong><{$lang_subject}></strong>
-                </div>
-
-                <div class="col-md-4">
-                    <strong><{$lang_poster}></strong>
-                </div>
-                <div class="col-md-4">
-                    <strong><{$lang_posted}></strong>
-                </div>
-            </div>
-            <{foreach item=reply from=$comments[i].replies}>
-                <div class="row">
-                    <div class="col-md-4">
-                        <{$reply.prefix}> <a href="<{$comment_url}>&amp;com_id=<{$reply.id}>&amp;com_rootid=<{$reply.root_id}>" title=""><{$reply.title}></a>
-                    </div>
-
-                    <div class="col-md-4">
-                        <{$reply.poster.uname}>
-                    </div>
-
-                    <div class="col-md-4">
-                        <{$reply.date_posted}>
-                    </div>
-                </div>
-            <{/foreach}>
-            <!-- end comment tree -->
-        <{/if}>
-    <{/section}>
-
-    <{if $commentform}>
-        <div class="aligncenter">
-            <button class="btn-comment btn btn-primary btn-md" data-toggle="modal" data-target="#comments-form">
-                <span class="glyphicon glyphicon-comment"></span> Add Comment
-            </button>
-        </div>
-        <!-- Modal -->
-        <div class="modal fade" id="comments-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog comments-modal">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="xoops-comment-form">
-                            <{$commentform}>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">&times;</button>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div>
-        <!-- /.modal -->
     <{/if}>
-</div>
+
+    <{if $comments[i].show_replies == true}>
+        <!-- start comment tree -->
+        <br/>
+        <table class="table table-bordered">
+            <tr>
+                <th class="width50"><{$lang_subject}></th>
+                <th class="width20 txtcenter"><{$lang_poster}></th>
+                <th class="txtright"><{$lang_posted}></th>
+            </tr>
+            <{foreach item=reply from=$comments[i].replies}>
+                <tr>
+                    <td class="even"><{$reply.prefix}> <a href="<{$comment_url}>&amp;com_id=<{$reply.id}>&amp;com_rootid=<{$reply.root_id}>" title=""><{$reply.title}></a>
+                    </td>
+                    <td class="odd txtcenter"><{$reply.poster.uname}></td>
+                    <td class="even right"><{$reply.date_posted}></td>
+                </tr>
+            <{/foreach}>
+        </table>
+        <!-- end comment tree -->
+    <{/if}>
+
+<{/section}>
+
+<{if $commentform}>
+    <div class="commentform"><{$commentform}></div><{/if}>
