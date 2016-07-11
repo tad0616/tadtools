@@ -1,3 +1,9 @@
+TadTools 2.9.6 (2016-06-18 released)
+====================================
+1. Modify the comment templates
+2. New Easy-Responsive-Tabs Kit
+
+
 TadTools 2.9.5 (2016-06-16 released)
 ====================================
 1.Add modules common templates
