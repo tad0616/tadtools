@@ -76,6 +76,19 @@ CKEDITOR.editorConfig = function( config ) {
       { name: 'bar2', items : [ 'Styles','Format','FontSize','TextColor','BGColor','Bold','Italic','Underline','Strike','-','JustifyLeft','JustifyCenter','JustifyRight'] }
     ];
 
+
+
+    config.toolbar = 'tadSimple';
+    config.toolbar_tadSimple =
+    [
+      { name: 'bar1', items : ['Image','Table','oembed','EqnEditor','Link','Unlink']},
+      { name: 'bar2', items : ['FontSize','TextColor','BGColor','Bold','Italic','Underline','Strike']},
+      { name: 'bar3', items : ['JustifyLeft','JustifyCenter','JustifyRight']},
+      { name: 'bar4', items : ['NumberedList','BulletedList'] },
+      { name: 'bar5', items : ['Outdent','Indent']},
+      { name: 'bar6', items : ['RemoveFormat']}
+    ];
+
     config.codemirror = {
 
       // Set this to the theme you wish to use (codemirror themes)

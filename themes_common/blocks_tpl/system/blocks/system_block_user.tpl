@@ -1,5 +1,4 @@
 <div class="panel panel-success">
-  <div class="panel-heading"><{$smarty.const._TAD_TF_MYMENU}></div>
 
   <!-- List group -->
   <ul class="list-group">

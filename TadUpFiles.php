@@ -472,6 +472,7 @@ class TadUpFiles
 
         $files = "
         $fancybox_code
+        <link href=\"" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css\" rel=\"stylesheet\">
         <script type='text/javascript'>
             $(document).ready(function(){
                 $('#list_del_file_sort').sortable({ opacity: 0.6, cursor: 'move', update: function() {
