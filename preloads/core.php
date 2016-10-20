@@ -5,6 +5,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
     public static function eventCoreFooterStart($args)
     {
         global $xoopsConfig, $xoopsDB, $xoTheme, $xoopsTpl, $xoopsUser;
+
         $xoTheme->addScript('browse.php?Frameworks/jquery/jquery.js');
         $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate.min.js');
         $xoTheme->addStylesheet("modules/tadtools/jquery/themes/base/jquery.ui.all.css");

@@ -37,7 +37,7 @@ class FooTable
             <script src='" . TADTOOLS_URL . "/FooTable/js/footable-0.1.js' type='text/javascript'></script>
             <script type='text/javascript'>
               $(function() {
-                $('table').footable();
+                $('{$this->selector}').footable();
               });
             </script>
             ";
@@ -50,7 +50,7 @@ class FooTable
 if(file_exists(XOOPS_ROOT_PATH."/modules/tadtools/FooTable.php")){
 include_once XOOPS_ROOT_PATH."/modules/tadtools/FooTable.php";
 
-$FooTable = new FooTable();
+$FooTable = new FooTable('.footable');
 $FooTableJS=$FooTable->render();
 $xoopsTpl->assign('FooTableJS' , $FooTableJS);
 }

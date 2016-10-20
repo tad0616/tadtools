@@ -29,6 +29,7 @@ class tinymap
     public function set_key($key)
     {
         $this->gmap_key = $key;
+
     }
 
     public function set_option($key = '', $val = '', $quotation = true)
@@ -45,7 +46,7 @@ class tinymap
 
     public function render()
     {
-        $jquery = ($this->show_jquery) ? get_jquery() : "";
+        $jquery = ($this->show_jquery) ? "<script src='" . XOOPS_URL . "/browse.php?Frameworks/jquery/jquery.js' type='text/javascript'></script>" : "";
         if ($xoTheme) {
             $xoTheme->addScript('modules/tadtools/tinymap/jquery.tinyMap.js');
             $main = '';
@@ -73,57 +74,35 @@ class tinymap
         $center      = "";
         $marker_addr = "";
         if (!empty($this->x) and !empty($this->y)) {
-            $center      = "center: {x: '{$this->x}', y: '{$this->y}'},";
-            $marker_addr = "addr: '{$this->x}, {$this->y}',";
+            $center      = "'center': [{$this->x} , {$this->y}],";
+            $marker_addr = "'addr': [{$this->x}, {$this->y}]";
         }
 
         $zoom = "";
         if (!empty($this->zoom)) {
-            $zoom = "zoom: {$this->zoom},";
+            $zoom = "'zoom': {$this->zoom},";
+        }
+
+        $gmap_key_set = "";
+        if (!empty($this->gmap_key)) {
+            $gmap_key_set = "$.fn.tinyMapConfigure({
+              'key': '{$this->gmap_key}'
+            });";
         }
 
         $main .= "
-        $jquery
         <script type='text/javascript'>
-         $(document).ready(function()
-         {
-           $('{$this->id}').tinyMap({
-              {$option_arr}
-              {$center}
-              {$zoom}
-              marker: [
-                {
-                  {$mark_option_set}
-                }
-              ]
-          });
+        var map = $('{$this->id}');
 
-          // 執行 tinyMap 前可使用 $.tinyMapConfigure 進行 API 的設定。
-          $.fn.tinyMapConfigure({
-              // Google Maps API URL
-              'api': '//maps.googleapis.com/maps/api/js',
-              // Google Maps API Version
-              'v': '3.21',
-              // GPS Sensor，預設 false
-              'sensor': true|false,
-              // Google Maps API Key，預設 null
-              'key': '{$this->gmap_key}'
-              // 使用的地圖語言
-              // 'language': 'zh‐TW'
-              // 載入的函式庫名稱，預設 null
-              // 'libraries': 'adsense,drawing,geometry...',
-              // 使用個人化的地圖，預設 false
-              // 'signed_in': true|false,
-              // MarkerClustererPlus.js 路徑
-              // 預設 '//google‐maps‐utility‐library‐v3.googlecode.com/svn/trunk/markerclustererplus/src/markerclusterer_packed.js'
-              // 建議下載至自有主機，避免讀取延遲造成無法使用。
-              // 'clusterer': '/path/to/markerclusterer.js'
-              // MarkerWithLabel.js 路徑
-              // 預設 '//google‐maps‐utility‐library‐v3.googlecode.com/svn/trunk/markerwithlabel/src/markerwithlabel_packed.js'
-              // 建議下載至自有主機，避免讀取延遲造成無法使用。
-              // 'withLabel': '/path/to/markerwithlabel.js'
-          });
-         })
+        {$gmap_key_set}
+        map.tinyMap({
+            {$center}
+            {$zoom}
+            {$option_arr}
+            'marker': [{
+              {$marker_addr}
+            }]
+        });
         </script>";
 
         return $main;

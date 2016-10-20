@@ -73,11 +73,22 @@
       if($TadLoginXoopsModule){
         include_once XOOPS_ROOT_PATH."/modules/tad_login/function.php";
         include_once XOOPS_ROOT_PATH."/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
-        $tad_login['facebook'] =facebook_login('return');
-        $tad_login['google'] =google_login('return');
 
         $config_handler =xoops_gethandler('config');
         $modConfig= &$config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
+
+        if (in_array('facebook', $modConfig['auth_method'])) {
+            $tad_login['facebook'] = facebook_login('return');
+        } else {
+            $tad_login['facebook'] = '';
+        }
+
+        if (in_array('google', $modConfig['auth_method'])) {
+            $tad_login['google'] = google_login('return');
+        } else {
+            $tad_login['google'] = '';
+        }
+
 
         $auth_method=$modConfig['auth_method'];
         $i=0;

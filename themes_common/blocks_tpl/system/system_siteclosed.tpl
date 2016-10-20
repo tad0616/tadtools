@@ -14,7 +14,6 @@
 
     <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/link_css.html"}>
 
-    <link href="<{xoImgUrl styles/custom.css}>" rel="stylesheet" type="text/css" />
 
     <!-- 給模組套用的樣板標籤 -->
     <{$xoops_module_header}>

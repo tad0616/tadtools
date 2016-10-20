@@ -1,17 +1,15 @@
-/*jshint unused:false */
+/*globals $,google,MarkerClusterer,MarkerWithLabel */
 /**
  * jQuery tinyMap plugin
- * http://app.essoduke.org/tinyMap/
- * Copyright 2015 essoduke.org, Licensed MIT.
+ * https://code.essoduke.org/tinyMap/
+ * Copyright 2016 essoduke.org, Licensed MIT.
  *
  * Changelog
  * -------------------------------
- * 修正 modify.direction 無法作用的錯誤。
+ * 修正使用字串地址建立標記時，若標記數量 > 10 個以上，會導致之後的標記消失的問題。
  *
- * @author essoduke.org
- * @version 3.3.3.1
+ * @author Essoduke Chang<essoduke@gmail.com>
  * @license MIT License
- * Last modified: 2015-10-06 15:28:17
  */
 /**
  * Call while google maps api loaded
@@ -25,17 +23,18 @@ window.gMapsCallback = function () {
  */
 ;(function ($, window, document, undefined) {
 
+    'use strict';
+
     // API Configure
     var apiLoaded = false,
         apiClusterLoaded = false,
         apiMarkerWithLabelLoaded = false,
         tinyMapConfigure = {
-            'sensor'   : false,
             'language' : 'zh-TW',
             'callback' : 'gMapsCallback',
             'api'      : 'https://maps.googleapis.com/maps/api/js',
-            'clusterer': 'https://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclustererplus/src/markerclusterer_packed.js',
-            'withLabel': 'https://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerwithlabel/src/markerwithlabel_packed.js'
+            'clusterer': 'https://cdn.essoduke.org/js/tinyMap/markerclusterer.js',
+            'withLabel': 'https://cdn.essoduke.org/js/tinyMap/markerwithlabel.js'
         },
     // Default plugin settings
         defaults = {
@@ -47,7 +46,8 @@ window.gMapsCallback = function () {
             'notFound': '找不到查詢的地點',
             'zoom': 8
         },
-        styles = {};
+        styles = {},
+        timeout;
     //#!#START STYLES
         styles = {
             // Grey Scale
@@ -60,6 +60,30 @@ window.gMapsCallback = function () {
             }]
         };
     //#!#END
+    /**
+     * Recursively iterate for replace google.maps constants
+     * @param {Mixed} obj Object
+     * @since 3.3.16
+     */
+    function scan (obj) {
+        var i = 0, prop, m;
+        if (obj instanceof Array) {
+            for (i = 0; i < obj.length; i += 1) {
+                scan(obj[i]);
+            }
+        } else if ('object' === typeof obj) {
+            for (prop in obj) {
+                if (!('string' === typeof obj[prop])) {
+                    scan(obj[prop]);
+                } else if (/^google\.map/gi.test(obj[prop])) {
+                    m = obj[prop].split('.');
+                    if (4 === m.length) {
+                        obj[prop] = google.maps[m[2]][m[3]];
+                    }
+                }
+            }
+        }
+    }
     /**
      * Parsing the location
      * @param {(string|string[]|number[]|Object)} loc Location
@@ -97,6 +121,12 @@ window.gMapsCallback = function () {
                 result.lng = loc.lng;
             }
         }
+
+        // Location offset
+        // @since v3.4.4
+        result.lat = parseFloat(result.lat, 10) + ((Math.random() - 0.5) / 10000);
+        result.lng = parseFloat(result.lng, 10) + ((Math.random() - 0.5) / 10000);
+
         if (true === formatting) {
             return new google.maps.LatLng(result.lat, result.lng);
         }
@@ -107,7 +137,6 @@ window.gMapsCallback = function () {
      * Label in Maps
      * @param {Object} options Label options
      * @protected
-     * @constructor
      */
     function Label (options) {
         var self = this,
@@ -127,15 +156,20 @@ window.gMapsCallback = function () {
     }
     //#!#END
     /**
-     * tinyMap Constructor
+     * jQuery tinyMap Constructor
      * @param {Object} container HTML element
      * @param {(Object|string)} options User settings
-     * @constructs jQuery.tinyMap
      */
     function TinyMap (container, options) {
 
         var self = this,
             opt = $.extend({}, defaults, options);
+
+        /**
+         * Overlay loading control
+         * @type {bool}
+         */
+        self.idleOnceCount = false;
         /**
          * Map instance
          * @type {Object}
@@ -230,7 +264,7 @@ window.gMapsCallback = function () {
         // Append loading string
         $(this.container).html(opt.loading);
         // Call initialize
-        self.init();
+        return self.init();
     }
     /**
      * TinyMap prototype
@@ -242,7 +276,7 @@ window.gMapsCallback = function () {
          * @type {string}
          * @constant
          */
-        'VERSION': '3.3.3.1',
+        'VERSION': '3.4.5',
 
         /**
          * Format to google.maps.Size
@@ -271,52 +305,53 @@ window.gMapsCallback = function () {
          * Overlay processes
          * @private
          */
-        overlay: function () {
+        overlay: function (callback) {
 
             var map = this.map,
                 opt = this.options;
 
             try {
-                //#!#START ADSENSE
-                // Adsense overlay
-                this.adsense(map, opt);
-                //#!#END
-                //#!#START KML
-                // kml overlay
-                this.kml(map, opt);
-                //#!#END
-                //#!#START DIRECTION
-                // direction overlay
-                this.directionService(map, opt);
-                //#!#END
-                //#!#START MARKER
-                // markers overlay
-                this.placeMarkers(map, opt);
-                //#!#END
-                //#!#START POLYLINE
-                // polyline overlay
-                this.drawPolyline(map, opt);
-                //#!#END
-                //#!#START POLYGON
-                // polygon overlay
-                this.drawPolygon(map, opt);
-                //#!#END
-                //#!#START CIRCLE
-                // circle overlay
-                this.drawCircle(map, opt);
-                //#!#END
-                //#!#START STREETVIEW
-                // StreetView service
-                this.streetView(map, opt);
-                //#!#END
-                //#!#START PLACES
-                // PlaceService
-                this.places(map, opt);
-                //#!#END
-                // GeoLocation
-                this.geoLocation(map, opt);
+                if (!this.idleOnceCount) {
+                    //#!#START KML
+                    // kml overlay
+                    this.kml(map, opt);
+                    //#!#END
+                    //#!#START DIRECTION
+                    // direction overlay
+                    this.directionService(map, opt);
+                    //#!#END
+                    //#!#START MARKER
+                    // markers overlay
+                    this.placeMarkers(map, opt);
+                    //#!#END
+                    //#!#START POLYLINE
+                    // polyline overlay
+                    this.drawPolyline(map, opt);
+                    //#!#END
+                    //#!#START POLYGON
+                    // polygon overlay
+                    this.drawPolygon(map, opt);
+                    //#!#END
+                    //#!#START CIRCLE
+                    // circle overlay
+                    this.drawCircle(map, opt);
+                    //#!#END
+                    //#!#START STREETVIEW
+                    // StreetView service
+                    this.streetView(map, opt);
+                    //#!#END
+                    //#!#START PLACES
+                    // PlaceService
+                    this.places(map, opt);
+                    //#!#END
+                    // GeoLocation
+                    this.geoLocation(map, opt);
+                    this.idleOnceCount = true;
+                }
             } catch (ignore) {
                 console.error(ignore);
+            } finally {
+                google.maps.event.trigger(map, 'resize');
             }
         },
         /**
@@ -331,6 +366,7 @@ window.gMapsCallback = function () {
 
             switch (typeof event) {
             case 'function':
+                google.maps.event.clearListeners(target, 'click');
                 google.maps.event.addListener(target, 'click', event);
                 break;
             case 'object':
@@ -339,6 +375,7 @@ window.gMapsCallback = function () {
                         if ('created' === e) {
                             event[e].call(target);
                         } else {
+                            google.maps.event.clearListeners(target, e);
                             google.maps.event.addListener(target, e, event[e]);
                         }
                     } else {
@@ -346,16 +383,20 @@ window.gMapsCallback = function () {
                             if (event[e].hasOwnProperty('once') && true === event[e].once) {
                                 google.maps.event.addListenerOnce(target, e, event[e].func);
                             } else {
+                                google.maps.event.clearListeners(target, e);
                                 google.maps.event.addListener(target, e, event[e].func);
                             }
                         } else if ('function' === typeof event[e]) {
+                            google.maps.event.clearListeners(target, e);
                             google.maps.event.addListener(target, e, event[e]);
                         }
                     }
                 }
                 break;
             }
-            if (target.hasOwnProperty('infoWindow')) {
+            // Click for infoWindow
+            if (target.hasOwnProperty('defaultInfoWindow')) {
+                google.maps.event.clearListeners(target, 'click');
                 google.maps.event.addListener(target, 'click', function () {
                     var i = 0,
                         m = {};
@@ -375,39 +416,6 @@ window.gMapsCallback = function () {
                     target.infoWindow.open(self.map, target);
                 });
             }
-        },
-        //#!#START ADSENSE
-        /**
-         * Adsense overlay
-         * @param {Object} map Map instance
-         * @param {Object} opt options
-         */
-        adsense: function (map, opt) {
-
-            var defOpt = {}, adUnit = {};
-
-            if (opt.hasOwnProperty('adsense')) {
-                defOpt = $.extend({}, {
-                    'map': map,
-                    'format': 'BANNER',
-                    'position': 'TOP',
-                    'publisherId': '',
-                    'channelNumber': ''
-                }, opt.adsense);
-
-                defOpt.format = 'undefined' !== google.maps.adsense.AdFormat[defOpt.format] ?
-                                google.maps.adsense.AdFormat[defOpt.format] :
-                                google.maps.adsense.AdFormat['BANNER'];
-                defOpt.position = 'undefined' !== google.maps.ControlPosition[defOpt.position] ?
-                                  google.maps.ControlPosition[defOpt.position] :
-                                  google.maps.ControlPosition['TOP_CENTER'];
-
-                adUnit = new google.maps.adsense.AdUnit(
-                    document.createElement('div'),
-                    defOpt
-                );
-            }
-
         },
         //#!#END
         //#!#START KML
@@ -522,14 +530,6 @@ window.gMapsCallback = function () {
                             }
                         }
 
-                        // Created event for circle is created.
-                        if (polyline && defOpt.hasOwnProperty('event') &&
-                            defOpt.event.hasOwnProperty('created') &&
-                            'function' === typeof defOpt.event.created
-                        ) {
-                            defOpt.event.created.call(polyline, self);
-                        }
-
                         // Events binding
                         if (polylineX.hasOwnProperty('event')) {
                             self.bindEvents(polyline, polylineX.event);
@@ -583,7 +583,6 @@ window.gMapsCallback = function () {
                 polygon = {},
                 defOpt = {},
                 coords = [],
-                len = 0,
                 i = 0,
                 j = 0,
                 p = {},
@@ -614,12 +613,6 @@ window.gMapsCallback = function () {
                         polygon.setMap(map);
 
                         // Created event for circle is created.
-                        if (polygon && defOpt.hasOwnProperty('event') &&
-                            defOpt.event.hasOwnProperty('created') &&
-                            'function' === typeof defOpt.event.created
-                        ) {
-                            defOpt.event.created.call(polygon, self);
-                        }
                         if (defOpt.hasOwnProperty('event')) {
                             self.bindEvents(polygon, defOpt.event);
                         }
@@ -666,13 +659,6 @@ window.gMapsCallback = function () {
                         circles = new google.maps.Circle(defOpt);
                         self._circles.push(circles);
 
-                        // Created event for circle is created.
-                        if (circles && defOpt.hasOwnProperty('event') &&
-                            defOpt.event.hasOwnProperty('created') &&
-                            'function' === typeof defOpt.event.created
-                        ) {
-                            defOpt.event.created.call(circles, self);
-                        }
                         if (circle.hasOwnProperty('event')) {
                             self.bindEvents(circles, circle.event);
                         }
@@ -691,9 +677,13 @@ window.gMapsCallback = function () {
             var icons = {};
 
             if (marker.hasOwnProperty('icon')) {
+
+                icons = marker.icon;
+
                 if ('string' === typeof marker.icon) {
                     return marker.icon;
                 }
+
                 if (marker.icon.hasOwnProperty('url')) {
                     icons.url = marker.icon.url;
                 }
@@ -721,7 +711,6 @@ window.gMapsCallback = function () {
             }
             return icons;
         },
-
         /**
          * Post process of Marker
          * @since v3.3.0
@@ -732,9 +721,11 @@ window.gMapsCallback = function () {
          */
         processMarker: function (map, opt, marker, source) {
 
-            var self = this,
-                exists = self.get('marker'),
-                infoWindow = {};
+            var self     = this,
+                exists   = self.get('marker'),
+                label    = {},
+                labelOpt = {},
+                infoOpt  = {};
 
             // Apply marker fitbounds
             if (marker.hasOwnProperty('position')) {
@@ -745,35 +736,46 @@ window.gMapsCallback = function () {
                     true === opt.markerFitBounds
                 ) {
                     // Make sure fitBounds call after the last marker created.
-                    if (exists.marker.length === opt.marker.length) {
+                    if (exists.length === opt.marker.length) {
                         map.fitBounds(self._bounds);
                     }
                 }
             }
+
             // InfoWindow
-            if (marker.hasOwnProperty('text') && marker.text.length) {
-                if (
-                    marker.hasOwnProperty('infoWindow') &&
-                    'function' === typeof marker.infoWindow.setContent
+            if ('undefined' === typeof marker.infoWindow) {
+                marker.infoWindow = new google.maps.InfoWindow({
+                    'content': marker.text
+                });
+            }
+
+
+            if (marker.hasOwnProperty('text')) {
+
+                marker.infoWindow.setContent(marker.text);
+
+                if (!marker.hasOwnProperty('event') ||
+                    !marker.event.hasOwnProperty('click')
                 ) {
-                    marker.infoWindow.setContent(marker.text);
-                } else {
-                    marker.infoWindow = new google.maps.InfoWindow(
-                        marker.hasOwnProperty('infoWindowOptions') ?
-                        marker.infoWindowOptions :
-                        {
-                            'content': marker.text
-                        }
-                    );
+                    marker.defaultInfoWindow = true;
+                }
+
+                self.bindEvents(marker, marker.event);
+
+                // @since 3.3.16
+                if (marker.hasOwnProperty('infoWindowOptions')) {
+                    infoOpt = $.extend({}, {
+                        'content': marker.infoWindowOptions.hasOwnProperty('content') ?
+                                   marker.infoWindowOptions.content :
+                                   marker.text
+                    }, marker.infoWindowOptions);
+                    marker.infoWindow.setOptions(infoOpt);
                     // infoWindow events binding.
-                    if (marker.hasOwnProperty('infoWindowOptions') &&
-                        'undefined' !== typeof marker.infoWindowOptions.event
-                    ) {
-                        self.bindEvents(marker.infoWindow, marker.infoWindowOptions.event);
+                    if (infoOpt.hasOwnProperty('event') && 'undefined' !== typeof infoOpt.event) {
+                        self.bindEvents(marker.infoWindow, infoOpt.event);
                     }
                 }
             }
-
             /**
              * Apply marker cluster.
              * Require markerclusterer.js
@@ -782,7 +784,6 @@ window.gMapsCallback = function () {
              * @since 2015-10-01 18:20:00
              */
             if (!source) {
-            
                 // Markers cluster
                 if (!marker.hasOwnProperty('cluster') ||
                     (marker.hasOwnProperty('cluster') && true === marker.cluster)
@@ -792,40 +793,57 @@ window.gMapsCallback = function () {
                     }
                 }
             }
+
             // Create Label
             if (marker.hasOwnProperty('newLabel')) {
-                label = new Label({
+                labelOpt = {
+                    'id'  : marker.id,
                     'text': marker.newLabel,
                     'map' : map,
                     'css' : marker.hasOwnProperty('newLabelCSS') ?
                             marker.newLabelCSS.toString() :
-                            '',
-                    'id'  : marker.id
-                });
-                label.bindTo('position', marker);
-                label.bindTo('visible', marker);
-                self._labels.push(label);
-            }
-            
-            // Modify existed label.
-            if (marker.hasOwnProperty('id')) {
+                            ''
+                };
                 self.get({
                     'label': [marker.id]
                 }, function (ms) {
-                    ms.label.forEach(function (lb) {
-                        lb.text = marker.newLabel;
-                        $(lb.span).addClass(marker.newLabelCSS);
-                        lb.bindTo('position', marker);
-                        lb.draw();
-                    });
-                });
-            }
-            // Hide labels when clustering.
-            // @since v3.2.16
-            if ('object' === typeof label) {
-                google.maps.event.addListener(marker, 'map_changed', function () {
-                    if ('function' === typeof label.setMap) {
-                        label.setMap(this.getMap());
+                    // Modify existed label if exists.
+                    var i   = 0,
+                        len = ms.label.length,
+                        lb = {};
+                    if (len) {
+                        for (i = 0; i < len; i += 1) {
+                            lb = ms.label[i];
+                            lb.text = marker.newLabel;
+                            $(lb.span).addClass(marker.newLabelCSS);
+                            lb.bindTo('position', marker);
+                            lb.draw();
+                        }
+                        /*
+                        ms.label.forEach(function (lb) {
+                            lb.text = marker.newLabel;
+                            $(lb.span).addClass(marker.newLabelCSS);
+                            lb.bindTo('position', marker);
+                            lb.draw();
+                        });
+                        */
+                    // Or create the new one.
+                    // @since v3.3.6
+                    } else {
+                        label = new Label(labelOpt);
+                        label.bindTo('position', marker);
+                        self._labels.push(label);
+                        // @since 3.3.15
+                        label.set('visible', marker.showLabel);
+                        // Hide or show labels when clustering end.
+                        // @since v3.3.11
+                        if ('object' === typeof label && true === opt.markerCluster) {
+                            google.maps.event.addListener(marker, 'map_changed', function () {
+                                if ('function' === typeof label.setMap) {
+                                    label.set('visible', null !== marker.getMap());
+                                }
+                            });
+                        }
                     }
                 });
             }
@@ -833,20 +851,109 @@ window.gMapsCallback = function () {
             self.bindEvents(marker, marker.event);
         },
         /**
+         * Markers HTML Control
+         * @since v3.3.8
+         */
+        markerControl: function () {
+
+            var self = this,
+                opt = self.options,
+                mOpt = {
+                    'css': '',
+                    'label': '請選擇&hellip;',
+                    'infoWindow': true,
+                    'panTo': true,
+                    'onChange': ''
+                },
+                controls;
+
+            if (opt.hasOwnProperty('markerControl')) {
+
+                // Get container of control list.
+                if ('string' === typeof opt.markerControl) {
+                    controls = $(opt.markerControl.toString());
+                } else {
+                    if (opt.markerControl.hasOwnProperty('container')) {
+                        controls = $(opt.markerControl.container);
+                    } else {
+                        controls = $(opt.markerControl);
+                    }
+                    mOpt = $.extend({}, mOpt, opt.markerControl);
+                }
+                if (controls.length) {
+                    self.get('marker', function (ms) {
+
+                        // Select list template
+                        var html = [
+                            '<select class="marker-list-control">',
+                            '<option>' + mOpt.label + '</option>'
+                        ];
+
+                        // Build the html
+                        ms.forEach(function (m) {
+                            if ('undefined' !== typeof m.infoWindow) {
+                                m.infoWindow.close();
+                            }
+                            html.push('<option value="' + m.id + '" data-marker-id="' + m.id + '">' + (m.title ? m.title : m.id) + '</option>');
+                        });
+                        html.push('</select>');
+                        // onChange binding
+                        controls.on('change.tinyMap', 'select', function () {
+                            var option = $(this);
+                            self.close('marker');
+                            if (this.value.length) {
+                                // Get the marker that has selected.
+                                self.get({'marker': [this.value]}, function (g) {
+                                    var mk = {};
+                                    if (g.marker.length && 'undefined' !== g.marker[0]) {
+                                        mk = g.marker[0];
+                                        if (true === mOpt.infoWindow) {
+                                            if ('undefined' !== typeof mk.infoWindow &&
+                                                'function' === typeof mk.infoWindow.open
+                                            ) {
+                                                mk.infoWindow.open(self.map, mk);
+                                            }
+                                        }
+                                        if (true === mOpt.panTo) {
+                                            self.map.panTo(mk.getPosition());
+                                        }
+                                        if ('function' === typeof mOpt.onChange) {
+                                            mOpt.onChange.call(option, mk);
+                                        }
+                                    }
+                                });
+                            }
+                        })
+                        .html(html.join(''));
+                        // Add Custom CSS Class
+                        if ('string' === typeof mOpt.css) {
+                            controls.find('select').addClass(mOpt.css);
+                        }
+                    });
+                }
+            }
+        },
+        /**
          * Place markers layer.
          * @param {Object} map Map instance
          * @param {Object} opt Markers options
          * @param {string} source Mode
          */
-        placeMarkers: function (map, opt, source) {
+        placeMarkers: function (map, opt, source, mks) {
 
-            var self   = this,
-                geocoder = {},
+            var self           = this,
+                geocoder       = {},
                 clusterOptions = {
-                    'maxZoom': null,
+                    'maxZoom' : null,
                     'gridSize': 60
                 },
-                markers = Array.isArray(opt.marker) ? opt.marker : [];
+                markers = Array.isArray(opt.marker) ? opt.marker : [],
+                tmks = [],
+                tOut;
+
+            if ('undefined' !== typeof mks && Array.isArray(mks) && mks.length) {
+                markers = mks;
+            }
 
             /**
              * Apply marker cluster.
@@ -865,20 +972,21 @@ window.gMapsCallback = function () {
             }
 
             // Markers loop
-            markers.forEach(function (m) {
+            markers.forEach(function (m, index) {
 
-                var addr   = parseLatLng(m.addr, true),
-                    icons  = self.markerIcon(m),
-                    iwOpt  = {},
-                    markerOptions = {
-                        'map': map,
-                        'animation': null
-                    },
+                var addr = parseLatLng(m.addr, true),
+                    icons = self.markerIcon(m),
                     insertFlag = true,
                     markerExisted = false,
                     marker = {},
                     mk = {},
-                    id = 'undefined' !== typeof m.id ? m.id : false;
+                    id = 'undefined' !== typeof m.id ? m.id : (m.addr.toString().replace(/\s/g, '')),
+                    markerOptions = {
+                        'id': id,
+                        'map': map,
+                        'animation': null,
+                        'showLabel': true
+                    };
 
                 markerOptions = $.extend({}, markerOptions, m);
 
@@ -887,7 +995,8 @@ window.gMapsCallback = function () {
                     self.get({
                         'marker': [id]
                     }, function (ms) {
-                        if (ms.marker) {
+                        // Has found the marker
+                        if (Array.isArray(ms.marker) && ms.marker.length) {
                             if (!(m.hasOwnProperty('forceInsert') && true === m.forceInsert)) {
                                 m = $.extend(ms.marker[0], m);
                                 if ('function' === typeof self._clusters.removeMarker) {
@@ -916,15 +1025,24 @@ window.gMapsCallback = function () {
                     // For string address
                     geocoder = new google.maps.Geocoder();
                     geocoder.geocode({'address': addr}, function (results, status) {
-                        // If exceeded, call it later by setTimeout;
+                        // If exceeded, create later.
                         if (status === google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+                            // OVER_QUERY_LIMIT redo.
+                            // @since 3.4.5
                             setTimeout(function () {
-                                self.placeMarkers(map, opt, source);
-                            }, self.interval);
+                                //console.info(['Marker[', index, '] query failed at (', addr, ').'].join(''));
+                                self.placeMarkers(map, opt, source, [m]);
+                            }, self.interval * (index + 1));
                         } else if (status === google.maps.GeocoderStatus.OK) {
                             if (!insertFlag && markerExisted) {
                                 if ('function' === typeof m.setPosition) {
-                                    m.setPosition(results[0].geometry.location)
+                                    m.setPosition(results[0].geometry.location);
+                                    if (markerOptions.hasOwnProperty('title')) {
+                                        m.setTitle(markerOptions.title);
+                                    }
+                                    if (markerOptions.hasOwnProperty('icon')) {
+                                        m.setIcon(markerOptions.icon);
+                                    }
                                 }
                                 mk = m;
                             } else {
@@ -933,6 +1051,7 @@ window.gMapsCallback = function () {
                                     marker = 'function' === typeof MarkerWithLabel ?
                                              new MarkerWithLabel(markerOptions) :
                                              new google.maps.Marker(markerOptions);
+
                                 } else {
                                     marker = new google.maps.Marker(markerOptions);
                                 }
@@ -944,14 +1063,21 @@ window.gMapsCallback = function () {
                             self.processMarker(map, opt, mk, source);
                         }
                     });
-
                 } else {
                     // For LatLng type
+                    // When Marker was existed.
                     if (!insertFlag && markerExisted) {
                         if ('function' === typeof m.setPosition) {
-                            m.setPosition(addr);
+                            if (addr.lat() && addr.lng()) {
+                                m.setPosition(addr);
+                            }
                         }
-
+                        if (markerOptions.hasOwnProperty('title')) {
+                            m.setTitle(markerOptions.title);
+                        }
+                        if (markerOptions.hasOwnProperty('icon')) {
+                            m.setIcon(markerOptions.icon);
+                        }
                         mk = m;
                     } else {
                         markerOptions.position = addr;
@@ -970,6 +1096,7 @@ window.gMapsCallback = function () {
                     self.processMarker(map, opt, mk, source);
                 }
             });
+            self.markerControl();
         },
         //#!#END
         //#!#START DIRECTION
@@ -998,22 +1125,25 @@ window.gMapsCallback = function () {
                         }, opts),
                         waypointsOpts = [],
                         waypointsText = [],
-                        waypointsIcon = [],
-                        renderMultipleRoutes = false;
+                        waypointsIcon = [];
 
                     request.origin = parseLatLng(opts.from, true);
                     request.destination = parseLatLng(opts.to, true);
+
                     // TravelMode
                     request.travelMode = opts.hasOwnProperty('travel') && google.maps.TravelMode[opts.travel.toString().toUpperCase()] ?
                                          google.maps.TravelMode[opts.travel.toString().toUpperCase()] :
                                          google.maps.TravelMode.DRIVING;
-                    
+
                     // Info Panel
                     if (opts.hasOwnProperty('panel') && $(opts.panel).length) {
                         renderOpts.panel = $(opts.panel).get(0);
                     }
                     if (opts.hasOwnProperty('requestExtra') && opts.requestExtra) {
                         request = $.extend({}, request, opts.requestExtra);
+                    }
+                    if (opts.hasOwnProperty('optimize')) {
+                        request.optimizeWaypoints = opts.optimize;
                     }
                     // Waypoints
                     if (opts.hasOwnProperty('waypoint') && Array.isArray(opts.waypoint)) {
@@ -1037,23 +1167,20 @@ window.gMapsCallback = function () {
                         });
                         request.waypoints = waypointsOpts;
                     }
-                    
+
                     // DirectionService
                     directionsService.route(request, function (response, status) {
                         if (status === google.maps.DirectionsStatus.OK) {
-                            
-
-                            response.routes.forEach(function (route, i) {
-                            
+                            response.routes.forEach(function (route, index) {
                                 // @since 3.3.2 Multiple routes render.
                                 if (opts.hasOwnProperty('renderAll') &&
                                     true === opts.renderAll &&
                                     true === request.provideRouteAlternatives
                                 ){
-                                    new google.maps.DirectionsRenderer({
+                                    var dr = new google.maps.DirectionsRenderer({
                                         'map': map,
                                         'directions': response,
-                                        'routeIndex': i
+                                        'routeIndex': index
                                     });
                                 }
 
@@ -1229,8 +1356,7 @@ window.gMapsCallback = function () {
                 request = $.extend({
                     'location': map.getCenter(),
                     'radius'  : 100
-                }, reqOpt),
-                i = 0;
+                }, reqOpt);
 
             request.location = parseLatLng(request.location, true);
 
@@ -1266,9 +1392,9 @@ window.gMapsCallback = function () {
 
             try {
 
-                var self = this,
-                    geolocation = navigator.geolocation,
-                    geoOpt = {};
+                var self        = this,
+                    geoOpt      = {},
+                    geolocation = navigator.geolocation;
 
                 if (!geolocation) {
                     return;
@@ -1282,7 +1408,7 @@ window.gMapsCallback = function () {
                 }
 
                 if (true === opt.autoLocation || 'function' === typeof opt.autoLocation) {
-                    geolocation.getCurrentPosition(
+                    geolocation.watchPosition(
                         function (loc) {
                             if (('undefined' !== typeof loc) &&
                                 ('coords' in loc) &&
@@ -1314,8 +1440,8 @@ window.gMapsCallback = function () {
          */
         panTo: function (addr) {
 
-            var m = this.map,
-                loc = {},
+            var m        = this.map,
+                loc      = {},
                 geocoder = {};
 
             if (null !== m && 'undefined' !== typeof m) {
@@ -1346,16 +1472,14 @@ window.gMapsCallback = function () {
         //#!#END
         //#!#START CLOSE
         /**
-         * Method: Close all infoWindow on map
+         * Method: Close all of infoWindows on map
          * @param {string} type Layer type
          */
         close: function (layer, callback) {
             var self   = this,
                 layers = self.get(layer),
-                item   = {},
                 loop   = {},
-                obj    = '',
-                i      = 0;
+                obj    = '';
 
             if (layers.hasOwnProperty('map')) {
                 delete layers.map;
@@ -1379,7 +1503,6 @@ window.gMapsCallback = function () {
                         });
                     }
                 }
-
                 if ('function' === typeof callback) {
                     callback.call(this);
                 }
@@ -1393,21 +1516,21 @@ window.gMapsCallback = function () {
         //#!#START CLEAR
         /**
          * Method: Google Maps clear the specificed layer
-         * @param {string} type Layer type
+         * @param {string} type Layer's type
          */
         clear: function (layer, callback) {
 
             var self     = this,
                 dMarkers = self._directionsMarkers,
-                labels   = self._labels,
                 layers   = self.get(layer),
                 loop     = {},
-                item     = {},
-                obj      = '',
-                i        = 0;
+                key      = '',
+                obj      = '';
 
-            if (layers.hasOwnProperty('map')) {
-                delete layers.map;
+            if ('undefined' !== typeof layers &&
+                'undefined' !== typeof layers.map
+            ) {
+                    delete layers.map;
             }
 
             if (Array.isArray(layers)) {
@@ -1416,41 +1539,44 @@ window.gMapsCallback = function () {
                 loop = layers;
             }
 
+            function dMarkersLoopCallback (dm, j) {
+                if ('function' === typeof dm.setMap) {
+                    self._directionsMarkers[j].setMap(null);
+                }
+            }
+
+            function loopObjCallback (item) {
+                // Remove the direction icons.
+                if ('direction' === obj) {
+                    dMarkers.forEach(dMarkersLoopCallback);
+                    self._directionsMarkers.filter(function (n) {
+                        return 'undefined' !== typeof n;
+                    });
+                }
+                // Remove from Map
+                if ('function' === typeof item.set) {
+                    item.set('visible', false);
+                }
+                if ('function' === typeof item.setMap) {
+                    item.setMap(null);
+                }
+                // Remove from Array
+                if (-1 !== self[key].indexOf(item)) {
+                    delete self[key][self[key].indexOf(item)];
+                }
+            }
+
+            function keyFilter (n) {
+                return 'undefined' !== typeof n;
+            }
+
             try {
                 for (obj in loop) {
-                    key = '_' + obj.toString().toLowerCase() + 's';
                     if (Array.isArray(loop[obj])) {
-                        loop[obj].forEach(function (item) {
-                            if ('marker' === obj) {
-                                if ('undefined' !== typeof labels[i] && labels.hasOwnProperty('div')) {
-                                    self._labels[i].div.remove();
-                                }
-                            }
-                            // Remove the direction icons.
-                            if ('direction' === obj) {
-                                dMarkers.forEach(function (dm, j) {
-                                    if ('function' === typeof dm.setMap) {
-                                        self._directionsMarkers[j].setMap(null);
-                                    }
-                                });
-                                self._directionsMarkers.filter(function (n) {
-                                    return 'undefined' !== typeof n;
-                                });
-                            }
-                            // Remove from Map
-                            if ('function' === typeof item.set) {
-                                item.set('visible', false);
-                            }
-                            if ('function' === typeof item.setMap) {
-                                item.setMap(null);
-                            }
-                            // Remove from Array
-                            self[key][i] = undefined;
-                        });
+                        key = '_' + obj.toString().toLowerCase() + 's';
+                        loop[obj].forEach(loopObjCallback);
                         // Filter undefined elements
-                        self[key] = self[key].filter(function (n) {
-                            return 'undefined' !== typeof n;
-                        });
+                        self[key] = self[key].filter(keyFilter);
                     }
                 }
                 if ('function' === typeof callback) {
@@ -1471,17 +1597,12 @@ window.gMapsCallback = function () {
         get: function (layer, callback) {
 
             var self     = this,
-                dMarkers = self._directionsMarkers,
-                labels   = self._labels,
                 layers   = [],
-                result   = [],
                 target   = {},
-                item     = {},
                 obj      = {},
                 key      = '',
                 lb       = '',
-                i        = 0,
-                j        = 0;
+                i        = 0;
 
             if ('undefined' === typeof layer) {
                 layer = {
@@ -1497,9 +1618,19 @@ window.gMapsCallback = function () {
                 };
             }
 
+            function keyLoopCallback (item) {
+                var index = self[key].indexOf(item);
+                if (0 === layer[obj].length ||
+                    -1 !== layer[obj].indexOf(index)  ||
+                    ('undefined' !== typeof item.id && 0 < item.id.length && (-1 !== item.id.indexOf(layer[obj])))
+                ) {
+                    target[obj].push(item);
+                }
+            }
+
             try {
                 if ('string' === typeof layer) {
-                    if (~layer.indexOf(',')) {
+                    if (-1 !== layer.indexOf(',')) {
                         layers = layer.replace(/\s/gi, '').split(',');
                         for (i = 0; i < layers.length; i += 1) {
                             lb = layers[i].toString().toLowerCase();
@@ -1524,23 +1655,16 @@ window.gMapsCallback = function () {
                             key = '_' + obj.toString().toLowerCase() + 's';
                             if (Array.isArray(self[key])) {
                                 target[obj] = [];
-                                self[key].forEach(function (item) {
-                                    if (
-                                        0 === layer[obj].length ||
-                                        -1 !== layer[obj].indexOf(i) ||
-                                        ('undefined' !== typeof item.id && 0 < item.id.length && (~layer[obj].indexOf(item.id)))
-                                    ) {
-                                        target[obj].push(item);
-                                    }
-                                });
+                                self[key].forEach(keyLoopCallback);
                             }
                         }
                     }
-                    target['map'] = self.map;
+                    target.map = self.map;
                 }
                 if ('function' === typeof callback) {
                     callback.call(this, target);
                 }
+                return target;
             } catch (ignore) {
                 console.error(ignore);
             } finally {
@@ -1598,6 +1722,50 @@ window.gMapsCallback = function () {
                 }
             }
             return $(this.container);
+        },
+        //#!#END
+        //#!#QUERY
+        /**
+         * Method: Query address or latlng
+         * @param {(string|Array|Object)} addr Address or latlng
+         * @param {Function} callback Function callback
+         */
+        query: function (addr, callback) {
+            var self = this,
+                geocoder = new google.maps.Geocoder(),
+                address = parseLatLng(addr),
+                opt = {};
+            if ('string' === typeof address) {
+                opt.address = address;
+            } else {
+                opt = {
+                    'location': {
+                        'lat': parseFloat(address.lat, 10),
+                        'lng': parseFloat(address.lng, 10)
+                    }
+                };
+            }
+            geocoder.geocode(opt, function (results, status) {
+                try {
+                    if (status === google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+                        setTimeout(function () {
+                            self.query(addr, callback);
+                        }, self.interval);
+                    } else if (status === google.maps.GeocoderStatus.OK && Array.isArray(results)) {
+                        if (0 < results.length && results[0].hasOwnProperty('geometry')) {
+                            if ('function' === typeof callback) {
+                                callback.call(self, results[0]);
+                            } else {
+                                return results[0];
+                            }
+                        }
+                    } else {
+                        console.error('Geocoder Error Code: ' + status);
+                    }
+                } catch (ignore) {
+                    console.error(ignore);
+                }
+            });
         },
         //#!#END
         //#!#START DESTROY
@@ -1736,8 +1904,10 @@ window.gMapsCallback = function () {
                             earthsradius = 6378137,
                             points = 64,
                             rlat = (circle.getRadius() / earthsradius) * r2d,
-                            rlng = rlat / Math.cos(circle.getCenter().lat() * d2r);
+                            rlng = rlat / Math.cos(circle.getCenter().lat() * d2r),
                             theta = 0,
+                            ey = 0,
+                            ex = 0,
                             j = 0;
                         for (j = 0; j < 65; j += 1) {
                             theta = Math.PI * (j / (points/2));
@@ -1812,7 +1982,10 @@ window.gMapsCallback = function () {
                 param    = $.extend({}, tinyMapConfigure),
                 api      = param.api.split('?')[0],
                 msg      = '',
-                o        = {};
+                vo       = {},
+                o        = {},
+                defIdle  = true,
+                se;
 
             try {
                 delete param.api;
@@ -1822,7 +1995,7 @@ window.gMapsCallback = function () {
             } catch (ignore) {
             }
 
-            // Asynchronous load the Google Maps API
+            // Asynchronous loading Google Maps API
             if (!apiLoaded && 'undefined' === typeof window.google) {
                 script = document.createElement('script');
                 script.setAttribute('src', [api, param].join('?'));
@@ -1833,6 +2006,8 @@ window.gMapsCallback = function () {
 
             // Make sure Google maps API is loaded.
             if ('object' === typeof window.google) {
+
+                scan(self.options);
 
                 // Load MarkerClusterer library
                 if (!apiClusterLoaded &&
@@ -1846,6 +2021,7 @@ window.gMapsCallback = function () {
                     apiClusterLoaded = true;
                     script = null;
                 }
+
                 // Load MarkerWithLabel library
                 if (!apiMarkerWithLabelLoaded &&
                     self.options.hasOwnProperty('markerWithLabel') &&
@@ -1864,27 +2040,36 @@ window.gMapsCallback = function () {
                 Label.prototype = new google.maps.OverlayView();
                 Label.prototype.onAdd = function () {
                     var self = this;
-                    self.div.appendTo($(self.getPanes().overlayLayer));
-                    self.listeners = [
-                        google.maps.event.addListener(self, 'visible_changed', self.onRemove)
-                    ];
+                    if (null !== self.div) {
+                        self.div.appendTo($(self.getPanes().overlayLayer));
+                        self.listeners = [
+                            google.maps.event.addListener(self, 'visible_changed', function () { self.draw(); }),
+                            google.maps.event.addListener(self, 'position_changed', function () { self.draw(); }),
+                            google.maps.event.addListener(self, 'visible_changed', function () { self.draw(); }),
+                            google.maps.event.addListener(self, 'clickable_changed', function () { self.draw(); }),
+                            google.maps.event.addListener(self, 'text_changed', function () { self.draw(); }),
+                            google.maps.event.addListener(self, 'zindex_changed', function () { self.draw(); })
+                        ];
+                    }
                 };
                 Label.prototype.draw = function () {
-                    var me = this,
-                        projection = me.getProjection(),
+                    var self = this,
+                        projection = self.getProjection(),
                         position   = {};
                     try {
-                        if (projection) {
-                            position = projection.fromLatLngToDivPixel(me.get('position'));
-                            if (position) {
-                                me.div.css({
-                                    'left'    : position.x + 'px',
-                                    'top'     : position.y + 'px',
-                                    'display' : 'block'
-                                });
-                            }
-                            if (me.text) {
-                                me.span.html(me.text.toString());
+                        if (null !== self.div) {
+                            if (projection) {
+                                position = projection.fromLatLngToDivPixel(self.get('position'));
+                                if (position) {
+                                    self.div.css({
+                                        'left'    : position.x + 'px',
+                                        'top'     : position.y + 'px',
+                                        'display' : self.get('visible') ? 'block' : 'none'
+                                    });
+                                }
+                                if (self.text) {
+                                    self.span.html(self.text.toString());
+                                }
                             }
                         }
                     } catch (ignore) {
@@ -1893,6 +2078,7 @@ window.gMapsCallback = function () {
                 };
                 Label.prototype.onRemove = function () {
                     $(this.div).remove();
+                    this.div = null;
                 };
                 //#!#END
                 // Parsing ControlOptions
@@ -1944,15 +2130,14 @@ window.gMapsCallback = function () {
                                 if (0 < results.length && results[0].hasOwnProperty('geometry')) {
                                     self.googleMapOptions.center = results[0].geometry.location;
                                     self.map = new google.maps.Map(self.container, self.googleMapOptions);
-                                    google.maps.event.addListenerOnce(self.map, 'idle', function () {
-                                        self.overlay();
-                                        google.maps.event.trigger(self.map, 'resize');
-                                    });
-                                    self.bindEvents(self.map, self.options.event);
+                                    // Function injection for IDLE event.
+                                    // @since 3.4.0
+                                    se = 'undefined' !== typeof self.options.event ? self.options.event : {};
+                                    self.mapIdleEvent(se);
                                 }
                             } else {
                                 msg = (self.options.notFound || status).toString();
-                                self.container.innerHTML($('<div/>').text(msg).html());
+                                self.container.innerHTML = $('<div/>').text(msg).html();
                                 console.error('Geocoder Error Code: ' + status);
                             }
                         } catch (ignore) {
@@ -1961,12 +2146,54 @@ window.gMapsCallback = function () {
                     });
                 } else {
                     self.map = new google.maps.Map(self.container, self.googleMapOptions);
-                    google.maps.event.addListenerOnce(self.map, 'idle', function () {
-                        self.overlay();
-                        google.maps.event.trigger(self.map, 'resize');
-                    });
-                    self.bindEvents(self.map, self.options.event);
+                    // Function injection for IDLE event.
+                    // @since 3.4.0
+                    se = 'undefined' !== typeof self.options.event ? self.options.event : {};
+                    self.mapIdleEvent(se);
                 }
+            }
+        },
+        /**
+         * Process custom events of Map to prevent conflict.
+         *
+         * @param {Object} se Options
+         * @since 3.4.0
+         */
+        mapIdleEvent: function (se) {
+            var self = this;
+            if (se.hasOwnProperty('idle')) {
+                if ('undefined' !== se.idle.func &&
+                    'function' === typeof se.idle.func &&
+                    'undefined' !== typeof se.idle.once
+                ) {
+                    if (true === se.idle.once) {
+                        google.maps.event.addListenerOnce(self.map, 'idle', function () {
+                            self.overlay();
+                            se.idle.func.apply(this, arguments);
+                            delete se.idle;
+                            self.bindEvents(self.map, se);
+                        });
+                    } else {
+                        google.maps.event.addListener(self.map, 'idle', function () {
+                            self.overlay();
+                            se.idle.func.apply(this, arguments);
+                            self.bindEvents(self.map, se);
+                        });
+                    }
+                } else {
+                    if ('function' === typeof se.idle) {
+                        google.maps.event.addListener(self.map, 'idle', function () {
+                            self.overlay();
+                            se.idle.apply(this, arguments);
+                            self.bindEvents(self.map, se);
+                        });
+                    }
+                }
+            } else {
+                google.maps.event.addListenerOnce(self.map, 'idle', function () {
+                    self.overlay();
+                    self.bindEvents(self.map, se);
+                });
             }
         }
     };
@@ -1979,51 +2206,15 @@ window.gMapsCallback = function () {
         tinyMapConfigure = $.extend(tinyMapConfigure, options);
     };
     /**
-     * Quick query latlng/address
-     * @param {Object} options Query params
-     * @param {Function} callback Function for callback
-     * @global
-     */
-    $.fn.tinyMapQuery = function (options, callback) {
-
-        var def = {
-                'key': tinyMapConfigure.hasOwnProperty('key') ? tinyMapConfigure.key : '',
-                'language': 'zh-TW'
-            },
-            opt = $.extend({}, def, options),
-            result = null;
-
-        $.getJSON(
-            'https://maps.googleapis.com/maps/api/geocode/json',
-            opt,
-            function (data) {
-                if (data.status === 'OK') {
-                    if (data.hasOwnProperty('results') &&
-                        'undefined' !== typeof data.results[0]
-                    ) {
-                        if (opt.hasOwnProperty('latlng')) {
-                            result = data.results[0].formatted_address;
-                        } else if (opt.hasOwnProperty('address')) {
-                            result = [
-                                data.results[0].geometry.location.lat,
-                                data.results[0].geometry.location.lng
-                            ].join(',');
-                        }
-                        callback.call(this, result);
-                    }
-                }
-            });
-    };
-    /**
      * jQuery tinyMap instance
      * @param {Object} options Plugin settings
      * @public
      */
     $.fn.tinyMap = function (options) {
         var instance = {},
-            result = [],
-            args = arguments,
-            id  = 'tinyMap';
+            result   = [],
+            args     = arguments,
+            id       = 'tinyMap';
         if ('string' === typeof options) {
             this.each(function () {
                 instance = $.data(this, id);

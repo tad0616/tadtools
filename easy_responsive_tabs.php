@@ -7,6 +7,21 @@ include_once XOOPS_ROOT_PATH."/modules/tadtools/easy_responsive_tabs.php";
 $responsive_tabs = new easy_responsive_tabs('#demoTab', $type = 'default, vertical, accordion', $activetab_bg = '#B5AC5F', $inactive_bg = '#E0D78C', $active_border_color = '#9C905C', $active_content_border_color = '#9C905C');
 $responsive_tabs_code=$responsive_tabs->rander();
 $xoopsTpl->assign('responsive_tabs_code',$responsive_tabs_code);
+
+<div id="demoTab">
+<ul class="resp-tabs-list vert">
+<li> .... </li>
+<li> .... </li>
+<li> .... </li>
+</ul>
+
+<div class="resp-tabs-container vert">
+<div> ....... </div>
+<div> ....... </div>
+<div> ....... </div>
+</div>
+</div>
+
  */
 include_once "tadtools_header.php";
 include_once "jquery.php";

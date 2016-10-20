@@ -1,8 +1,9 @@
 /* 針對XOOPS 2.5.*版之前的後台做微調 */
 
-body{
-  font-size: 11pt;
-  font-family: "Helvetica Neue",Helvetica,Arial,"微軟正黑體",sans-serif;
+/*@import url(normalize.css);*/
+
+body ,div , a , li ,td ,th{
+  font-size: 14px;
 }
 
 .tooltip {
@@ -23,8 +24,8 @@ li {
 
 a.btn {
   font-weight: normal;
-  background-color: initial;
-  color: initial;
+  background-color: none;
+  color: white;
 }
 
 input[type="submit"]:hover, input[type="reset"]:hover, input[type="button"]:hover, .xo-formbuttons:hover, .formButton:hover, button:hover{

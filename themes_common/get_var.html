@@ -125,13 +125,11 @@ if($theme_kind=='mix')$theme_width=12;
 
 //TYPE1:二欄式（左右區域皆在左邊）
 if($theme_type=='theme_type_1'){
-  if($theme_kind!="html"){
-    $center_width=$theme_width-$lb_width;
-  }else{
+  if($theme_kind=="html"){
     if(!$xoops_showlblock and !$xoops_showrblock){
       $center_width=$theme_width;
     }else{
-      $center_width=$theme_width-$lb_width-40;
+      $center_width=$theme_width-$lb_width-50;
       $center_content_width=$center_width-15;
     }
 
@@ -139,35 +137,34 @@ if($theme_type=='theme_type_1'){
     $center_block.="float:right; width:{$center_width}px;";
     $center_block_content="width:{$center_content_width}px;";
     $right_block.=" width:{$rb_width}px;";
+  }else{
+    $center_width=$theme_width-$lb_width;
   }
 
 //TYPE2:二欄式（左右區域皆在右邊）
 }elseif($theme_type=='theme_type_2'){
-  if($theme_kind!="html"){
-    $center_width=$theme_width-$rb_width;
-  }else{
+  if($theme_kind=="html"){
     if(!$xoops_showlblock and !$xoops_showrblock){
       $center_width=$theme_width;
     }else{
-      $center_width=$theme_width-$rb_width-40;
+      $center_width=$theme_width-$rb_width-50;
     }
 
     $left_block.="width:{$lb_width}px;";
     $center_block.="float:left;  width:{$center_width}px; padding-left: 15px;";
     $center_block_content=$center_block;
     $right_block.="width:{$rb_width}px;";
+  }else{
+    $center_width=$theme_width-$rb_width;
   }
 
 //TYPE3:二欄式（左區域在左邊，右區域在下方）
 }elseif($theme_type=='theme_type_3'){
-  if($theme_kind!="html"){
-    $rb_width="12";
-    $center_width=$theme_width-$lb_width;
-  }else{
+  if($theme_kind=="html"){
     if(!$xoops_showlblock){
       $center_width=$theme_width;
     }else{
-      $center_width=$theme_width-$lb_width-50;
+      $center_width=$theme_width-$lb_width-60;
       $center_content_width=$center_width-15;
     }
     $left_block.="float:left; width:{$lb_width}px;";
@@ -176,18 +173,18 @@ if($theme_type=='theme_type_1'){
     $right_block.="float:none;  width:{$theme_width}px; clear:both;";
     $left_block2="";
     $right_block2.="float:left; padding-left: 15px;";
+  }else{
+    $rb_width="12";
+    $center_width=$theme_width-$lb_width;
   }
 
 //TYPE4:二欄式（左區域在右邊，右區域在下方）
 }elseif($theme_type=='theme_type_4'){
-  if($theme_kind!="html"){
-    $rb_width="12";
-    $center_width=$theme_width-$lb_width;
-  }else{
+  if($theme_kind=="html"){
     if(!$xoops_showrblock){
       $center_width=$theme_width;
     }else{
-      $center_width=$theme_width-$lb_width-50;
+      $center_width=$theme_width-$lb_width-60;
     }
     $left_block.="float:right; width: {$lb_width}px;";
     $center_block.="float:left; width: {$center_width}px; padding-left: 10px;";
@@ -195,76 +192,77 @@ if($theme_type=='theme_type_1'){
     $right_block.="float:none; width:{$theme_width}px; clear:both;";
     $left_block2="";
     $right_block2.="float:left; padding-left: 15px;";
+  }else{
+    $rb_width="12";
+    $center_width=$theme_width-$lb_width;
   }
 
 //TYPE5:三欄式標準配置
 }elseif($theme_type=='theme_type_5'){
-  if($theme_kind!="html"){
-    $center_width=$theme_width-$lb_width-$rb_width;
-  }else{
+  if($theme_kind=="html"){
     if(!$xoops_showlblock and !$xoops_showrblock){
       $center_width = $theme_width;
     }elseif(!$xoops_showlblock){
-      $center_width=$theme_width - $rb_width - 15;
+      //$center_width=$theme_width - $rb_width - 20;
     }elseif(!$xoops_showrblock){
-      $center_width=$theme_width - $lb_width - 15;
+      $center_width=$theme_width - $lb_width - 20;
     }else{
-      $center_width=$theme_width - $lb_width - $rb_width - 30;
+      $center_width=$theme_width - $lb_width - $rb_width - 50;
     }
 
     $left_block.="float:left;  width:{$lb_width}px;";
     $center_block.="float:left;  width:{$center_width}px;";
     $right_block.="float:right;  width:{$rb_width}px;";
     $left_block2=$right_block2=$center_block_content="";
+  }else{
+    $center_width=$theme_width-$lb_width-$rb_width;
   }
 
 //TYPE6:三欄式（左右區域皆在左邊）
 }elseif($theme_type=='theme_type_6'){
-  if($theme_kind!="html"){
-    $center_width=$theme_width-$lb_width-$rb_width;
-  }else{
+  if($theme_kind=="html"){
     if(!$xoops_showlblock and !$xoops_showrblock){
       $center_width=$theme_width;
     }elseif(!$xoops_showlblock){
-      $center_width=$theme_width-$rb_width-15;
+      $center_width=$theme_width-$rb_width-20;
     }elseif(!$xoops_showrblock){
-      $center_width=$theme_width-$lb_width-15;
+      $center_width=$theme_width-$lb_width-20;
     }else{
-      $center_width=$theme_width-$lb_width-$rb_width-30;
+      $center_width=$theme_width-$lb_width-$rb_width-50;
     }
-    $center_content_width=$center_width-30;
+    $center_content_width=$center_width-50;
     $left_block.="float:left;  width:{$lb_width}px;";
     $center_block.="float:right;  width:{$center_width}px;";
     $center_block_content="width:{$center_content_width}px;";
     $right_block.="float:left;  width:{$rb_width}px;";
     $left_block2=$right_block2="";
+  }else{
+    $center_width=$theme_width-$lb_width-$rb_width;
   }
 
 //TYPE7:三欄式（左右區域皆在右邊）
 }elseif($theme_type=='theme_type_7'){
-  if($theme_kind!="html"){
-    $center_width=$theme_width-$lb_width-$rb_width;
-  }else{
+  if($theme_kind=="html"){
     if(!$xoops_showlblock and !$xoops_showrblock){
       $center_width=$theme_width;
     }elseif(!$xoops_showlblock){
-      $center_width=$theme_width-$rb_width-15;
+      $center_width=$theme_width-$rb_width-20;
     }elseif(!$xoops_showrblock){
-      $center_width=$theme_width-$lb_width-15;
+      $center_width=$theme_width-$lb_width-20;
     }else{
-      $center_width=$theme_width-$lb_width-$rb_width-30;
+      $center_width=$theme_width-$lb_width-$rb_width-50;
     }
     $left_block.="float:right;  width:{$lb_width}px;";
     $center_block.="float:left;  width:{$center_width}px; padding-left: 15px;";
     $right_block.="float:right;  width:{$rb_width}px;";
     $left_block2=$right_block2=$center_block_content="";
+  }else{
+    $center_width=$theme_width-$lb_width-$rb_width;
   }
 
 //TYPE8:單欄式（左區域在上方，右區域在下方）
 }elseif($theme_type=='theme_type_8'){
-  if($theme_kind!="html"){
-    $lb_width=$center_width=$rb_width="12";
-  }else{
+  if($theme_kind=="html"){
     $center_width=$lb_width=$rb_width=$theme_width-30;
     $left_block.="float:none;  width:{$lb_width}px; padding-left: 10px;";
     $center_block.="float:none;  width:{$center_width}px; padding-left: 10px;";
@@ -272,6 +270,8 @@ if($theme_type=='theme_type_1'){
     $left_block2.="";
     $right_block2.="";
     $center_block_content="";
+  }else{
+    $lb_width=$center_width=$rb_width="12";
   }
 }
 

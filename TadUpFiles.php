@@ -472,6 +472,7 @@ class TadUpFiles
 
         $files = "
         $fancybox_code
+        <link href=\"" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css\" rel=\"stylesheet\">
         <script type='text/javascript'>
             $(document).ready(function(){
                 $('#list_del_file_sort').sortable({ opacity: 0.6, cursor: 'move', update: function() {
@@ -556,11 +557,11 @@ class TadUpFiles
         global $xoopsDB, $xoopsUser;
 
         if (empty($main_width)) {
-            $main_width = "1280";
+            $main_width = "1920";
         }
 
         if (empty($thumb_width)) {
-            $thumb_width = "120";
+            $thumb_width = "240";
         }
 
         //die(var_dump($_FILES[$upname]));
@@ -730,7 +731,7 @@ class TadUpFiles
     }
 
     //解決 basename 抓不到中文檔名的問題
-    private function get_basename($filename)
+    protected function get_basename($filename)
     {
         $filename = preg_replace('/^.+[\\\\\\/]/', '', $filename);
         $filename = rtrim($filename, '/');
@@ -855,7 +856,7 @@ class TadUpFiles
     }
 
     //檔案格式
-    private function mime_content_type($filename)
+    protected function mime_content_type($filename)
     {
 
         $mime_types = array(
@@ -929,7 +930,7 @@ class TadUpFiles
     }
 
     //做縮圖
-    private function thumbnail($filename = "", $thumb_name = "", $type = "image/jpeg", $width = "120")
+    protected function thumbnail($filename = "", $thumb_name = "", $type = "image/jpeg", $width = "120")
     {
 
         ini_set('memory_limit', '50M');
@@ -1132,7 +1133,7 @@ class TadUpFiles
     }
 
     //更新某個欄位值
-    private function update_col_val($files_sn = "", $col = "", $val = "")
+    protected function update_col_val($files_sn = "", $col = "", $val = "")
     {
         global $xoopsDB, $xoopsUser;
 
@@ -1671,7 +1672,7 @@ class TadUpFiles
         return $all;
     }
 
-    private function filesize2bytes($str)
+    protected function filesize2bytes($str)
     {
         $bytes = 0;
 
@@ -1695,7 +1696,7 @@ class TadUpFiles
         return $bytes;
     }
 
-    private function delete_directory($dirname)
+    protected function delete_directory($dirname)
     {
         if (is_dir($dirname)) {
             $dir_handle = opendir($dirname);
