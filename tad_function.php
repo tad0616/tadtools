@@ -114,7 +114,12 @@ function get_bootstrap()
 if (!function_exists('get_xoops_url')) {
     function get_xoops_url()
     {
-        $u = parse_url("http://" . $_SERVER["HTTP_HOST"] . $_SERVER['REQUEST_URI']);
+        if ($_SERVER['HTTPS']) {
+            $protocol = 'https://';
+        } else {
+            $protocol = 'http://';
+        }
+        $u = parse_url($protocol . $_SERVER["HTTP_HOST"] . $_SERVER['REQUEST_URI']);
         if (!empty($u['path']) and preg_match('/\/modules/', $u['path'])) {
             $XMUrl = explode("/modules", $u['path']);
         } elseif (!empty($u['path']) and preg_match('/\/themes/', $u['path'])) {
