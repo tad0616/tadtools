@@ -1,11 +1,10 @@
-TadTools 2.9.8 (2016-10-20 released)
+TadTools 2.9.8 (2016-10-07 released)
 ====================================
 1. Upgrade the BootStrap to 3.3.7
 2. Fix the problem that My97DatePicker suite can not be used
 3. Upgrade the tinymap to 3.4.5
 4. Remove the jupload suite
 5. Remove the footable-bootstrap package
-6. Modify the login menu
 
 
 TadTools 2.9.7 (2016-09-30 released)

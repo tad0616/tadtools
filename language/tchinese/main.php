@@ -85,3 +85,4 @@ define('TADTOOLS_ROTATE_LEFT', '左轉 90 度');
 define('TADTOOLS_ROTATE_RIGHT', '右轉 90 度');
 define('TADTOOLS_CHECKBOX_TO_DEL', '欲刪除檔案請點擊勾選框。');
 define('_TAD_MENU_CONFIG', '選單設定');
+define('_TAD_OOPS_SOMETHING_WRONG', '哎呀！資料庫有點問題呢！');

@@ -55,7 +55,7 @@ if (!function_exists('web_error')) {
         global $isAdmin, $xoopsDB;
 
         $in_admin = (strpos($_SERVER['PHP_SELF'], "/admin/") !== false) ? true : false;
-        $main     = "<h1>" . _MI_OOPS_SOMETHING_WRONG . "</h1>";
+        $main     = "<h1>" . _TAD_OOPS_SOMETHING_WRONG . "</h1>";
 
         if ($isAdmin or $in_admin) {
             $main .= "<div class='well'>{$sql}</div>";
