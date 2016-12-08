@@ -1,3 +1,9 @@
+TadTools 2.9.9 (2016-12-08 released)
+====================================
+1. get_xoops_url() add https support
+2. Modify elFinder unable to upload the chinese file name problem
+3. Upload to join 7z, ufo, sb, sb2 and other formats
+
 TadTools 2.9.8 (2016-10-07 released)
 ====================================
 1. Upgrade the BootStrap to 3.3.7

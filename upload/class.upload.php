@@ -2308,6 +2308,12 @@ class upload
             'application/x-zip',
             'application/x-zip-compressed',
             'application/zip',
+            'application/x-7z',
+            'application/x-7z-compressed',
+            'application/7z',
+            'application/x-scratch',
+            'application/x-scratch2',
+            'image/ufo',
             'audio/*',
             'image/*',
             'multipart/x-gzip',
@@ -2321,6 +2327,10 @@ class upload
         );
 
         $this->mime_types = array(
+            'ufo'     => 'image/ufo',
+            '7z'      => 'application/x-7z-compressed',
+            'sb'      => 'application/x-scratch',
+            'sb2'     => 'application/x-scratch2',
             'exe'     => 'application/x-download',
             'jpg'     => 'image/jpeg',
             'jpeg'    => 'image/jpeg',
