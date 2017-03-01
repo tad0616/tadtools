@@ -43,8 +43,8 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
 
             template:
                 '<div class="row two-col-left">' +
-                    '<div class="col-md-4 col-sm-4 span4 col-sidebar"><p><img src="http://placehold.it/300x250&text=Image" /></p></div>' +
-                    '<div class="col-md-8 col-sm-8 span8 col-main"><p>Content</p></div>' +
+                    '<div class="col-sm-4 col-sm-4 span4 col-sidebar"><p><img src="http://placehold.it/300x250&text=Image" /></p></div>' +
+                    '<div class="col-sm-8 col-sm-8 span8 col-main"><p>Content</p></div>' +
                 '</div>',
 
             editables: {
@@ -72,8 +72,8 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
 
             template:
                 '<div class="row two-col-right">' +
-                    '<div class="col-md-8 col-sm-8 span8 col-main"><p>Content</p></div>' +
-                    '<div class="col-md-4 col-sm-4 span4 col-sidebar"><p><img src="http://placehold.it/300x250&text=Image" /></p></div>' +
+                    '<div class="col-sm-8 col-sm-8 span8 col-main"><p>Content</p></div>' +
+                    '<div class="col-sm-4 col-sm-4 span4 col-sidebar"><p><img src="http://placehold.it/300x250&text=Image" /></p></div>' +
                 '</div>',
 
             editables: {
@@ -101,8 +101,8 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
 
             template:
                 '<div class="row two-col">' +
-                    '<div class="col-md-6 col-sm-6 span6 col-1"><p><img src="http://placehold.it/500x280&text=Image" /></p><p>Content</p></div>' +
-                    '<div class="col-md-6 col-sm-6 span6 col-2"><p><img src="http://placehold.it/500x280&text=Image" /></p><p>Content</p></div>' +
+                    '<div class="col-sm-6 col-sm-6 span6 col-1"><p><img src="http://placehold.it/500x280&text=Image" /></p><p>Content</p></div>' +
+                    '<div class="col-sm-6 col-sm-6 span6 col-2"><p><img src="http://placehold.it/500x280&text=Image" /></p><p>Content</p></div>' +
                 '</div>',
 
             editables: {
@@ -130,9 +130,9 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
 
             template:
                 '<div class="row three-col">' +
-                    '<div class="col-md-4 col-sm-4 span4 col-1"><p><img src="http://placehold.it/400x225&text=Image" /></p><p>Text below</p></div>' +
-                    '<div class="col-md-4 col-sm-4 span4 col-2"><p><img src="http://placehold.it/400x225&text=Image" /></p><p>Text below</p></div>' +
-                    '<div class="col-md-4 col-sm-4 span4 col-3"><p><img src="http://placehold.it/400x225&text=Image" /></p><p>Text below</p></div>' +
+                    '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img src="http://placehold.it/400x225&text=Image" /></p><p>Text below</p></div>' +
+                    '<div class="col-sm-4 col-sm-4 span4 col-2"><p><img src="http://placehold.it/400x225&text=Image" /></p><p>Text below</p></div>' +
+                    '<div class="col-sm-4 col-sm-4 span4 col-3"><p><img src="http://placehold.it/400x225&text=Image" /></p><p>Text below</p></div>' +
                 '</div>',
 
             editables: {

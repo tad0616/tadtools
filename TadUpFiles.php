@@ -354,13 +354,13 @@ class TadUpFiles
                     }
                     $thumb_tool = "
                     <div class='row'>
-                        <div class='col-md-3 text-left'>
+                        <div class='col-sm-3 text-left'>
                         </div>
-                        <div class='col-md-6 text-center'>
+                        <div class='col-sm-6 text-center'>
                             <a href=\"javascript:remove_file('{$files_sn}');\" style='font-size: 12px;' class='text-danger'>
                                 <i class=\"fa fa-trash\"></i> " . _TAD_DEL . "
                             </a></div>
-                        <div class='col-md-3 text-right'>
+                        <div class='col-sm-3 text-right'>
                         </div>
                     </div>";
 
@@ -373,15 +373,15 @@ class TadUpFiles
 
                     $thumb_tool = "
                     <div class='row'>
-                        <div class='col-md-4 text-right'>
+                        <div class='col-sm-4 text-right'>
                             <a href=\"javascript:rotate('left','{$files_sn}','{$this->prefix}{$this->subdir}','{$this->image_dir}','{$this->thumbs_dir}','{$file_name}','{$file_type}')\" id='left90'><i class=\"fa fa-undo text-success\" title='" . TADTOOLS_ROTATE_LEFT . "'></i></a>
                         </div>
-                        <div class='col-md-4 text-center'>
+                        <div class='col-sm-4 text-center'>
                             <a href=\"javascript:remove_file('{$files_sn}');\" style='font-size: 12px;' class='text-danger'>
                                 <i class=\"fa fa-times text-danger\" title=\"" . _TAD_DEL . "\"></i>
                             </a>
                         </div>
-                        <div class='col-md-4 text-left'>
+                        <div class='col-sm-4 text-left'>
                             <a href=\"javascript:rotate('right','{$files_sn}','{$this->prefix}{$this->subdir}','{$this->image_dir}','{$this->thumbs_dir}','{$file_name}','{$file_type}')\" id='right90'><i class=\"fa fa-repeat text-info\" title='" . TADTOOLS_ROTATE_RIGHT . "'></i></a>
                         </div>
                     </div>";
@@ -418,11 +418,11 @@ class TadUpFiles
                 <tr id='fdtr_{$files_sn}'>
                   <td style='{$w}'>
                     <div class='row'>
-                      <div class='col-md-3'>
+                      <div class='col-sm-3'>
                         {$thumb_style}
                         {$thumb_tool}
                       </div>
-                      <div class='col-md-9'>
+                      <div class='col-sm-9'>
                         {$filename_label}
                         <textarea name='save_description[$files_sn]' rows=1 class='form-control'>{$description}</textarea>
                       </div>
@@ -512,7 +512,7 @@ class TadUpFiles
         if ($show_edit === true or $show_edit == "full") {
             $files .= "
               <div class='row' style='margin-top:10px;'>
-                <div class='col-md-12'>
+                <div class='col-sm-12'>
                     <table class='table table-striped table-hover'>
                         <tbody id='list_del_file_sort' >
                             $all_file
@@ -527,7 +527,7 @@ class TadUpFiles
             <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/css/rounded-list.css' />
             <div style='height:30px;'></div>
             <div class='row' style='margin-top:10px;'>
-                <div class='col-md-12'>
+                <div class='col-sm-12'>
                 <ol class='rectangle-list' style=\"counter-reset: li; list-style: none; *list-style: decimal; font: 15px 'trebuchet MS', 'lucida sans'; padding: 0; text-shadow: 0 1px 0 rgba(255,255,255,.5);\" id='list_del_file_sort'>
                     {$all_file}
                 </ol>
@@ -538,7 +538,7 @@ class TadUpFiles
             $files .= "
                 <div style='height:30px;'></div>
                 <div class='row' style='margin-top:10px;'>
-                    <div class='col-md-12'>
+                    <div class='col-sm-12'>
                         <ul class='thumbnails' id='list_del_file_sort'>
                             {$all_file}
                         </ul>
@@ -1288,14 +1288,18 @@ class TadUpFiles
                 $files[$files_sn]['path'] = $pic_name;
                 $files[$files_sn]['url']  = "<a href='{$pic_name}' title='{$description}' {$rel} class='{$fancyboxset}'>{$show_file_name}</a>";
 
-                $files[$files_sn]['tb_link'] = "<a href='{$dl_url}' title='{$description}' {$rel} class='{$fancyboxset}'><img src='$thumb_pic' alt='{$description}' title='{$description}'></a>";
-                $files[$files_sn]['tb_path'] = $thumb_pic;
-                $files[$files_sn]['tb_url']  = "<a href='{$dl_url}' title='{$description}' {$rel} class='{$fancyboxset}'>{$description}</a>";
+                $files[$files_sn]['tb_link']   = "<a href='{$dl_url}' title='{$description}' {$rel} class='{$fancyboxset}'><img src='$thumb_pic' alt='{$description}' title='{$description}'></a>";
+                $files[$files_sn]['tb_path']   = $thumb_pic;
+                $files[$files_sn]['tb_url']    = "<a href='{$dl_url}' title='{$description}' {$rel} class='{$fancyboxset}'>{$description}</a>";
+                $files[$files_sn]['html_link'] = "{$show_file_name} : <a href='" . XOOPS_URL . "{$dl_url}'>" . XOOPS_URL . "{$dl_url}</a>";
+                $files[$files_sn]['text_link'] = "{$show_file_name} : " . XOOPS_URL . "{$dl_url}";
             } else {
                 $files[$files_sn]['link']               = "<a href='{$dl_url}#{$original_filename}' target='{$target}'>{$show_file_name}</a>";
                 $files[$files_sn]['path']               = "{$dl_url}#{$original_filename}";
                 $files[$files_sn]['original_file_path'] = $this->TadUpFilesUrl . "/{$file_name}";
                 $files[$files_sn]['physical_file_path'] = $this->TadUpFilesDir . "/{$file_name}";
+                $files[$files_sn]['html_link']          = "{$show_file_name} : <a href='" . XOOPS_URL . "{$dl_url}'>" . XOOPS_URL . "{$dl_url}</a>";
+                $files[$files_sn]['text_link']          = "{$show_file_name} : " . XOOPS_URL . "{$dl_url}";
             }
         }
 
@@ -1469,11 +1473,17 @@ class TadUpFiles
 
         if ($file_arr) {
             $i = 1;
-            if ($show_mode != "filename" and $show_mode != "small") {
-                $all_files .= "<ul>";
+
+            if ($show_mode == "file_url") {
+                $all_files = "<ul>";
+            } elseif ($show_mode == "file_text_url" or $show_mode == "small") {
+                $all_files = "";
             } elseif ($show_mode == "filename") {
                 $all_files .= "<ol class='rectangle-list' style=\"counter-reset: li; list-style: none; *list-style: decimal; font: 15px 'trebuchet MS', 'lucida sans'; padding: 0; text-shadow: 0 1px 0 rgba(255,255,255,.5);\">";
+            } else {
+                $all_files .= "<ul>";
             }
+
             foreach ($file_arr as $files_sn => $file_info) {
 
                 if ($show_mode == "filename") {
@@ -1482,6 +1492,10 @@ class TadUpFiles
                     } else {
                         $all_files .= "<li>{$file_info['url']}</li>";
                     }
+                } elseif ($show_mode == "file_url") {
+                    $all_files .= "<li>{$file_info['html_link']}</li>";
+                } elseif ($show_mode == "file_text_url") {
+                    $all_files .= "{$file_info['text_link']},";
                 } else {
                     $linkto      = $file_info['path'];
                     $description = empty($file_info['description']) ? $file_info['original_filename'] : $file_info['description'];
@@ -1533,17 +1547,20 @@ class TadUpFiles
 
                 $i++;
             }
-            if ($show_mode != "filename" and $show_mode != "small") {
+
+            if ($show_mode == "file_url") {
                 $all_files .= "</ul>";
+            } elseif ($show_mode == "file_text_url" or $show_mode == "small") {
+                $all_files .= "";
             } elseif ($show_mode == "filename") {
-                $all_files .= "</ol>";
+                $all_files .= "</ol><div style='clear:both;'></div>";
+            } else {
+                $all_files .= "</ul><div style='clear:both;'></div>";
             }
 
         } else {
             $all_files = "";
         }
-
-        $all_files .= "<div style='clear:both;'></div>";
 
         return $all_files;
     }

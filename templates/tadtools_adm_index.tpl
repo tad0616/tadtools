@@ -9,14 +9,14 @@
     </tr>
     <{foreach item=theme from=$themes}>
       <tr>
-        <td <{$theme.color}> class="col-md-3">
+        <td <{$theme.color}> class="col-sm-3">
           <{$theme.theme_name}>
         </td>
-        <td <{$theme.color}> class="col-md-2">
+        <td <{$theme.color}> class="col-sm-2">
           <{$theme.theme_kind}>
             <input type="hidden" name="tt_theme_kind[<{$theme.theme_name}>]" value="<{$theme.theme_kind}>">
         </td>
-        <td <{$theme.color}> class="col-md-3">
+        <td <{$theme.color}> class="col-sm-3">
           <{if $theme.tad_theme==1}>
             <{$smarty.const._MA_TT_TAD_THEMES}>
             <input type="hidden" name="tt_use_bootstrap[<{$theme.theme_name}>]" value="0">
@@ -28,7 +28,7 @@
             </select>
           <{/if}>
         </td>
-        <td <{$theme.color}> class="col-md-4">
+        <td <{$theme.color}> class="col-sm-4">
             <select name="tt_bootstrap_color[<{$theme.theme_name}>]" class="form-control">
               <{foreach from=$theme.bootstrap_theme item=color}>
                 <option value="<{$color.theme_path}>" <{if $theme.bootstrap_color==$color.theme}>selected<{/if}>><{$color.theme}> (<{if $color.kind}><{$color.kind}>-<{/if}><{$color.color}>)</option>

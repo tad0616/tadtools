@@ -18,11 +18,18 @@ class bubblepopup
     //新增提示
     public function add_tip($id = "", $content = "", $position = "top", $align = "left", $theme = 'all-black', $style = "color:'#FFFFFF'")
     {
+
         $this->code[] = "
-      \$('{$id}').qtip({
-        content:'$content'
-      });
-    ";
+        $('{$id}').qtip({
+        content: {
+            text: '$content'
+        },
+        style: {
+            classes: 'qtip-dark qtip-shadow'
+        }
+        });
+        ";
+
     }
 
     //產生路徑工具
@@ -38,27 +45,29 @@ class bubblepopup
         }
 
         if ($xoTheme) {
+            // die('aaaaa');
             $xoTheme->addStylesheet('modules/tadtools/jquery.qtip/jquery.qtip.css');
             $xoTheme->addScript('modules/tadtools/jquery.qtip/jquery.qtip.js');
             $xoTheme->addScript('modules/tadtools/jquery.qtip/imagesloaded.pkg.min.js');
 
             $xoTheme->addScript('', null, "
-        (function(\$){
-          \$(document).ready(function(){
-            {$all_code}
-          });
-        })(jQuery);
-      ");
+            (function(\$){
+              \$(document).ready(function(){
+                {$all_code}
+              });
+            })(jQuery);
+          ");
         } else {
+            // die('bbbbb');
             $main = "
-      $jquery
-      <link href='" . TADTOOLS_URL . "/jquery.qtip/jquery.qtip.css' rel='stylesheet' type='text/css' />
-      <script src='" . TADTOOLS_URL . "/jquery.qtip/jquery.qtip.js' type='text/javascript'></script>
-      <script src='" . TADTOOLS_URL . "/jquery.qtip/imagesloaded.pkg.min.js' type='text/javascript'></script>
+            $jquery
+            <link href='" . TADTOOLS_URL . "/jquery.qtip/jquery.qtip.css' rel='stylesheet' type='text/css' />
+            <script src='" . TADTOOLS_URL . "/jquery.qtip/jquery.qtip.js' type='text/javascript'></script>
+            <script src='" . TADTOOLS_URL . "/jquery.qtip/imagesloaded.pkg.min.js' type='text/javascript'></script>
 
-      <script type='text/javascript'>
-       $all_code
-      </script>";
+            <script type='text/javascript'>
+             $all_code
+            </script>";
 
             return $main;
         }

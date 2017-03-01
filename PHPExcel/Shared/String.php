@@ -2,7 +2,7 @@
 /**
  * PHPExcel
  *
- * Copyright (c) 2006 - 2013 PHPExcel
+ * Copyright (c) 2006 - 2014 PHPExcel
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,9 +20,9 @@
  *
  * @category   PHPExcel
  * @package    PHPExcel_Shared
- * @copyright  Copyright (c) 2006 - 2013 PHPExcel (http://www.codeplex.com/PHPExcel)
+ * @copyright  Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
- * @version    1.7.9, 2013-06-02
+ * @version    ##VERSION##, ##DATE##
  */
 
 
@@ -31,7 +31,7 @@
  *
  * @category   PHPExcel
  * @package    PHPExcel_Shared
- * @copyright  Copyright (c) 2006 - 2013 PHPExcel (http://www.codeplex.com/PHPExcel)
+ * @copyright  Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  */
 class PHPExcel_Shared_String
 {
@@ -403,7 +403,7 @@ class PHPExcel_Shared_String
 	 * @return boolean
 	 */
 	public static function IsUTF8($value = '') {
-		return utf8_encode(utf8_decode($value)) === $value;
+		return $value === '' || preg_match('/^./su', $value) === 1;
 	}
 
 	/**
@@ -626,6 +626,41 @@ class PHPExcel_Shared_String
 		return ucwords($pValue);
 	}
 
+    public static function mb_is_upper($char)
+    {
+        return mb_strtolower($char, "UTF-8") != $char;
+    }
+
+    public static function mb_str_split($string)
+    {
+        # Split at all position not after the start: ^
+        # and not before the end: $
+        return preg_split('/(?<!^)(?!$)/u', $string );
+    }
+
+	/**
+	 * Reverse the case of a string, so that all uppercase characters become lowercase
+     *    and all lowercase characters become uppercase
+	 *
+	 * @param string $pValue UTF-8 encoded string
+	 * @return string
+	 */
+	public static function StrCaseReverse($pValue = '')
+	{
+        if (self::getIsMbstringEnabled()) {
+            $characters = self::mb_str_split($pValue);
+            foreach($characters as &$character) {
+                if(self::mb_is_upper($character)) {
+                    $character = mb_strtolower($character, 'UTF-8');
+                } else {
+                    $character = mb_strtoupper($character, 'UTF-8');
+                }
+            }
+            return implode('', $characters);
+		}
+		return strtolower($pValue) ^ strtoupper($pValue) ^ $pValue;
+	}
+
 	/**
 	 * Identify whether a string contains a fractional numeric value,
 	 *    and convert it to a numeric if it is
@@ -771,6 +806,6 @@ class PHPExcel_Shared_String
 		if (is_numeric($value))
 			return $value;
 		$v = floatval($value);
-		return (is_numeric(substr($value,0,strlen($v)))) ? $v : $value;
+		return (is_numeric(substr($value, 0, strlen($v)))) ? $v : $value;
 	}
 }

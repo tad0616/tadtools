@@ -1,6 +1,6 @@
-<{includeq file="db:profile_breadcrumbs.html"}>
+<{includeq file="db:profile_breadcrumbs.tpl"}>
 <div class="row">
-<div class="col-xs-6 col-md-6 aligncenter">
+<div class="col-xs-6 col-sm-6 aligncenter">
 <{if $avatar}>
         <img src="<{$avatar}>" alt="<{$uname}>" class="img-responsive img-rounded img-thumbnail">
 <{/if}>
@@ -12,9 +12,9 @@
         <{/if}>
 	</ul>
     </div><!-- .aligncenter -->
-</div><!-- .col-md-6 .aligncenter -->
+</div><!-- .col-sm-6 .aligncenter -->
 
-<div class="col-xs-6 col-md-6">
+<div class="col-xs-6 col-sm-6">
 <{if !$user_ownpage && $xoops_isuser == true}>
     <form name="usernav" action="user.php" method="post">
         <input class="btn btn-success" type="button" value="<{$smarty.const._PROFILE_MA_SENDPM}>" onclick="javascript:openWithSelfMain('<{$xoops_url}>/pmlite.php?send2=1&amp;to_userid=<{$user_uid}>', 'pmlite', 450, 380);">
@@ -56,7 +56,7 @@
     <{/if}>
     </form>
 <{/if}>
-</div><!-- .col-md-6 -->
+</div><!-- .col-sm-6 -->
 </div><!-- .row -->
 
 <{foreach item=category from=$categories}>

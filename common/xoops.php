@@ -198,7 +198,7 @@ if (!function_exists('toolbar_bootstrap')) {
     </style>
 
     <div class='row'>
-      <div class='col-md-12'>
+      <div class='col-sm-12'>
         <nav class='toolbar_bootstrap_nav'>
           <ul>
             $options

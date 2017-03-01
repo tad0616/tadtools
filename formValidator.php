@@ -10,6 +10,7 @@ class formValidator
     //建構函數
     public function __construct($id = "", $show_jquery = true)
     {
+        get_jquery(true);
         $this->show_jquery = $show_jquery;
         $this->id          = $id;
     }

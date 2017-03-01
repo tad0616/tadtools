@@ -2,7 +2,7 @@
 /**
  * PHPExcel
  *
- * Copyright (c) 2006 - 2013 PHPExcel
+ * Copyright (c) 2006 - 2014 PHPExcel
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,9 +20,9 @@
  *
  * @category   PHPExcel
  * @package    PHPExcel_Settings
- * @copyright  Copyright (c) 2006 - 2013 PHPExcel (http://www.codeplex.com/PHPExcel)
+ * @copyright  Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
- * @version    1.7.9, 2013-06-02
+ * @version    ##VERSION##, ##DATE##
  */
 
 /** PHPExcel root directory */
@@ -30,7 +30,7 @@ if (!defined('PHPEXCEL_ROOT')) {
     /**
      * @ignore
      */
-    define('PHPEXCEL_ROOT', __DIR__ . '/../');
+    define('PHPEXCEL_ROOT', dirname(__FILE__) . '/../');
     require(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
 }
 
@@ -105,6 +105,12 @@ class PHPExcel_Settings
      */
     private static $_pdfRendererPath = NULL;
 
+    /**
+     * Default options for libxml loader
+     *
+     * @var int
+     */
+    private static $_libXmlLoaderOptions = null;
 
     /**
      * Set the Zip handler Class that PHPExcel should use for Zip file management (PCLZip or ZipArchive)
@@ -339,7 +345,6 @@ class PHPExcel_Settings
         return self::$_pdfRendererName;
     } // function getPdfRendererName()
 
-
     /**
      * Return the directory path to the PDF Rendering Library that PHPExcel is currently configured to use
      *
@@ -351,4 +356,36 @@ class PHPExcel_Settings
         return self::$_pdfRendererPath;
     } // function getPdfRendererPath()
 
+    /**
+     * Set default options for libxml loader
+     *
+     * @param int $options Default options for libxml loader
+     */
+    public static function setLibXmlLoaderOptions($options = null)
+    {
+        if (is_null($options) && defined(LIBXML_DTDLOAD)) {
+            $options = LIBXML_DTDLOAD | LIBXML_DTDATTR;
+        }
+        if (version_compare(PHP_VERSION, '5.2.11') >= 0) {
+            @libxml_disable_entity_loader($options == (LIBXML_DTDLOAD | LIBXML_DTDATTR)); 
+        }
+        self::$_libXmlLoaderOptions = $options;
+    } // function setLibXmlLoaderOptions
+
+    /**
+     * Get default options for libxml loader.
+     * Defaults to LIBXML_DTDLOAD | LIBXML_DTDATTR when not set explicitly.
+     *
+     * @return int Default options for libxml loader
+     */
+    public static function getLibXmlLoaderOptions()
+    {
+        if (is_null(self::$_libXmlLoaderOptions) && defined(LIBXML_DTDLOAD)) {
+            self::setLibXmlLoaderOptions(LIBXML_DTDLOAD | LIBXML_DTDATTR);
+        }
+        if (version_compare(PHP_VERSION, '5.2.11') >= 0) {
+            @libxml_disable_entity_loader(self::$_libXmlLoaderOptions == (LIBXML_DTDLOAD | LIBXML_DTDATTR));
+        }
+        return self::$_libXmlLoaderOptions;
+    } // function getLibXmlLoaderOptions
 }

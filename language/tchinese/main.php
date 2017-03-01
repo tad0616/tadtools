@@ -24,6 +24,7 @@ define('_TAD_DEL', '刪除');
 define('_TAD_ENABLE', '顯示');
 define('_TAD_UNABLE', '隱藏');
 define('_TAD_ADD', '新增資料');
+define('_TAD_ADD_CATE', '建立分類');
 define('_TAD_FOR', '：');
 define('_TAD_GO', '執行');
 define('_TAD_SAVE', '儲存');
@@ -86,3 +87,5 @@ define('TADTOOLS_ROTATE_RIGHT', '右轉 90 度');
 define('TADTOOLS_CHECKBOX_TO_DEL', '欲刪除檔案請點擊勾選框。');
 define('_TAD_MENU_CONFIG', '選單設定');
 define('_TAD_OOPS_SOMETHING_WRONG', '哎呀！資料庫有點問題呢！');
+
+define('_TAD_EMPTY', '尚無資料');

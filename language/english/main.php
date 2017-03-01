@@ -21,6 +21,7 @@ define('_TAD_DEL', 'Delete');
 define('_TAD_ENABLE', 'Enable');
 define('_TAD_UNABLE', 'Disable');
 define('_TAD_ADD', 'Add');
+define('_TAD_ADD_CATE', 'Add category');
 define('_TAD_FOR', ' : ');
 define('_TAD_GO', 'Go');
 define('_TAD_SAVE', 'Save');
@@ -83,3 +84,5 @@ define('TADTOOLS_ROTATE_RIGHT', 'rotate 90 degrees right');
 define('TADTOOLS_CHECKBOX_TO_DEL', 'To delete a file, please click on the check box.');
 
 define('_TAD_MENU_CONFIG', 'Dorpdown Setup');
+
+define('_TAD_EMPTY', 'No information available');

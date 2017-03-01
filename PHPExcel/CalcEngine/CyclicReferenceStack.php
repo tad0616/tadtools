@@ -2,7 +2,7 @@
 /**
  * PHPExcel
  *
- * Copyright (c) 2006 - 2013 PHPExcel
+ * Copyright (c) 2006 - 2014 PHPExcel
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,9 +20,9 @@
  *
  * @category   PHPExcel
  * @package    PHPExcel_Calculation
- * @copyright  Copyright (c) 2006 - 2013 PHPExcel (http://www.codeplex.com/PHPExcel)
+ * @copyright  Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  * @license	http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
- * @version	1.7.9, 2013-06-02
+ * @version	##VERSION##, ##DATE##
  */
 
 
@@ -31,7 +31,7 @@
  *
  * @category	PHPExcel_CalcEngine_CyclicReferenceStack
  * @package		PHPExcel_Calculation
- * @copyright	Copyright (c) 2006 - 2013 PHPExcel (http://www.codeplex.com/PHPExcel)
+ * @copyright	Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  */
 class PHPExcel_CalcEngine_CyclicReferenceStack {
 
@@ -58,8 +58,8 @@ class PHPExcel_CalcEngine_CyclicReferenceStack {
 	 * @param  mixed  $value
 	 */
 	public function push($value) {
-		$this->_stack[] = $value;
-	}	//	function push()
+		$this->_stack[$value] = $value;
+	}
 
 	/**
 	 * Pop the last entry from the stack
@@ -68,7 +68,7 @@ class PHPExcel_CalcEngine_CyclicReferenceStack {
 	 */
 	public function pop() {
 		return array_pop($this->_stack);
-	}	//	function pop()
+	}
 
 	/**
 	 * Test to see if a specified entry exists on the stack
@@ -76,7 +76,7 @@ class PHPExcel_CalcEngine_CyclicReferenceStack {
 	 * @param  mixed  $value  The value to test
 	 */
 	public function onStack($value) {
-		return in_array($value, $this->_stack);
+		return isset($this->_stack[$value]);
 	}
 
 	/**
@@ -84,7 +84,7 @@ class PHPExcel_CalcEngine_CyclicReferenceStack {
 	 */
 	public function clear() {
 		$this->_stack = array();
-	}	//	function push()
+	}
 
 	/**
 	 * Return an array of all entries on the stack
@@ -95,4 +95,4 @@ class PHPExcel_CalcEngine_CyclicReferenceStack {
 		return $this->_stack;
 	}
 
-}	//	class PHPExcel_CalcEngine_CyclicReferenceStack
+}

@@ -11,7 +11,7 @@
   clear: both;
 }
 
-.col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+.col-xs-1, .col-sm-1, .col-sm-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-sm-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-sm-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-sm-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-sm-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-sm-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-sm-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-sm-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-sm-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-sm-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-sm-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-sm-12, .col-lg-12 {
   position: relative;
   min-height: 1px;
   float: left;
@@ -19,24 +19,24 @@
   box-sizing: border-box;
   -moz-box-sizing: border-box;
 }
-.col-md-6 {
+.col-sm-6 {
   width: 50%;
 }
-.col-md-3 {
+.col-sm-3 {
   width: 25%;
 }
-.col-md-9 {
+.col-sm-9 {
   width: 75%;
 }
-.col-md-4 {
+.col-sm-4 {
   width: 33.3%;
 }
 
 /* Custom styles */
-.col-md-6 img,
-.col-md-3 img,
-.col-md-4 img,
-.col-md-9 img {
+.col-sm-6 img,
+.col-sm-3 img,
+.col-sm-4 img,
+.col-sm-9 img {
   display: block;
   max-width: 100%;
   height: auto;
@@ -53,12 +53,12 @@
 	border: 1px solid #ddd;
 	box-shadow: 0 1px 1px #fff inset, 0 -1px 0px #ccc inset;
 }
-.two-col .col-md-6,
-.two-col-left .col-md-3,
-.two-col-left .col-md-9,
-.two-col-right .col-md-3,
-.two-col-right .col-md-9,
-.three-col .col-md-4,
+.two-col .col-sm-6,
+.two-col-left .col-sm-3,
+.two-col-left .col-sm-9,
+.two-col-right .col-sm-3,
+.two-col-right .col-sm-9,
+.three-col .col-sm-4,
 .accordion dd .content,
 .accordion dd.accordion-navigation>a {
 	box-shadow: 0 1px 1px #ddd inset;
@@ -67,11 +67,11 @@
 	background: #fff;
 	min-height: 5em;
 }
-.two-col .col-md-6,
-.two-col-left .col-md-3,
-.two-col-left .col-md-9,
-.two-col-right .col-md-3,
-.two-col-right .col-md-9 {
+.two-col .col-sm-6,
+.two-col-left .col-sm-3,
+.two-col-left .col-sm-9,
+.two-col-right .col-sm-3,
+.two-col-right .col-sm-9 {
 	margin: -3px;
 }
 .two-col-right .col-sidebar,
@@ -91,10 +91,10 @@
 	margin-left: 3px;
   margin-right: -3px;
 }
-.two-col-left .col-md-9{
+.two-col-left .col-sm-9{
   margin-left: 8px;
 }
-.two-col-right .col-md-9{
+.two-col-right .col-sm-9{
   margin-right: 8px;
 }
 

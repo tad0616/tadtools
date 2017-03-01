@@ -25,7 +25,6 @@
  * @version    Beta 0.6.3, 08.07.2011
  */
 
-
 /**
  * PHPWord_Style_Paragraph
  *
@@ -33,141 +32,214 @@
  * @package    PHPWord_Style
  * @copyright  Copyright (c) 2011 PHPWord
  */
-class PHPWord_Style_Paragraph {
-	
-	/**
-	 * Paragraph alignment
-	 * 
-	 * @var string
-	 */
-	private $_align;
-	
-	/**
-	 * Space before Paragraph
-	 * 
-	 * @var int
-	 */
-	private $_spaceBefore;
-	
-	/**
-	 * Space after Paragraph
-	 * 
-	 * @var int
-	 */
-	private $_spaceAfter;
-	
-	/**
-	 * Spacing between breaks
-	 * 
-	 * @var int
-	 */
-	private $_spacing;
-	
-	
-	/**
-	 * New Paragraph Style
-	 */
-	public function __construct() {
-		$this->_align           = null;
-		$this->_spaceBefore     = null;
-		$this->_spaceAfter      = null;
-		$this->_spacing         = null;
-	}
-	
-	/**
-	 * Set Style value
-	 * 
-	 * @param string $key
-	 * @param mixed $value
-	 */
-	public function setStyleValue($key, $value) {
-		if($key == '_spacing') {
-			$value += 240; // because line height of 1 matches 240 twips
-		}
-		$this->$key = $value;
-	}
+class PHPWord_Style_Paragraph
+{
 
-	/**
-	 * Get Paragraph Alignment
-	 * 
-	 * @return string
-	 */
-	public function getAlign() {
-		return $this->_align;
-	}
+    /**
+     * Paragraph alignment
+     *
+     * @var string
+     */
+    private $_align;
 
-	/**
-	 * Set Paragraph Alignment
-	 * 
-	 * @param string $pValue
-	 * @return PHPWord_Style_Paragraph
-	 */
-	public function setAlign($pValue = null) {
-		if(strtolower($pValue) == 'justify') {
-			// justify becames both
-			$pValue = 'both';
-		}
-		$this->_align = $pValue;
-		return $this;
-	}
+    /**
+     * Space before Paragraph
+     *
+     * @var int
+     */
+    private $_spaceBefore;
 
-	/**
-	 * Get Space before Paragraph
-	 * 
-	 * @return string
-	 */
-	public function getSpaceBefore() {
-		return $this->_spaceBefore;
-	}
+    /**
+     * Space after Paragraph
+     *
+     * @var int
+     */
+    private $_spaceAfter;
 
-	/**
-	 * Set Space before Paragraph
-	 * 
-	 * @param int $pValue
-	 * @return PHPWord_Style_Paragraph
-	 */
-	public function setSpaceBefore($pValue = null) {
-	   $this->_spaceBefore = $pValue;
-	   return $this;
-	}
+    /**
+     * Spacing between breaks
+     *
+     * @var int
+     */
+    private $_spacing;
+    /**
+     * 縮進 indentleft and indentright段落縮進值,單位為twips
+     *
+     * 縮進indentFirstLine and indentFirstChars  首行縮進twips數
+     *
+     * @var int
+     */
+    private $_indentLeft;
+    private $_indentRight;
+    private $_indentFirstLine;
+    private $_indentFirstLineChars;
 
-	/**
-	 * Get Space after Paragraph
-	 * 
-	 * @return string
-	 */
-	public function getSpaceAfter() {
-		return $this->_spaceAfter;
-	}
+    /**
+     * New Paragraph Style
+     */
+    public function __construct()
+    {
+        $this->_align                = null;
+        $this->_spaceBefore          = null;
+        $this->_spaceAfter           = null;
+        $this->_spacing              = null;
+        $this->_indentLeft           = null;
+        $this->_indentRight          = null;
+        $this->_indentFirstLine      = null;
+        $this->_indentFirstLineChars = null;
+    }
 
-	/**
-	 * Set Space after Paragraph
-	 * 
-	 * @param int $pValue
-	 * @return PHPWord_Style_Paragraph
-	 */
-	public function setSpaceAfter($pValue = null) {
-	   $this->_spaceAfter = $pValue;
-	   return $this;
-	}
+    /**
+     * Set Style value
+     *
+     * @param string $key
+     * @param mixed $value
+     */
+    public function setStyleValue($key, $value)
+    {
+        if ($key == '_spacing') {
+            $value += 240; // because line height of 1 matches 240 twips
+        }
+        $this->$key = $value;
+    }
 
-	/**
-	 * Get Spacing between breaks
-	 * 
-	 * @return int
-	 */
-	public function getSpacing() {
-		return $this->_spacing;
-	}
+    /**
+     * Get Paragraph Alignment
+     *
+     * @return string
+     */
+    public function getAlign()
+    {
+        return $this->_align;
+    }
 
-	/**
-	 * Set Spacing between breaks
-	 * 
-	 * @param int $pValue
-	 * @return PHPWord_Style_Paragraph
-	 */
-	public function setSpacing($pValue = null) {
-	   $this->_spacing = $pValue;
-	   return $this;
-	}
+    /**
+     * Set Paragraph Alignment
+     *
+     * @param string $pValue
+     * @return PHPWord_Style_Paragraph
+     */
+    public function setAlign($pValue = null)
+    {
+        if (strtolower($pValue) == 'justify') {
+            // justify becames both
+            $pValue = 'both';
+        }
+        $this->_align = $pValue;
+        return $this;
+    }
+
+    /**
+     * Get Space before Paragraph
+     *
+     * @return string
+     */
+    public function getSpaceBefore()
+    {
+        return $this->_spaceBefore;
+    }
+
+    /**
+     * Set Space before Paragraph
+     *
+     * @param int $pValue
+     * @return PHPWord_Style_Paragraph
+     */
+    public function setSpaceBefore($pValue = null)
+    {
+        $this->_spaceBefore = $pValue;
+        return $this;
+    }
+
+    /**
+     * Get Space after Paragraph
+     *
+     * @return string
+     */
+    public function getSpaceAfter()
+    {
+        return $this->_spaceAfter;
+    }
+
+    /**
+     * Set Space after Paragraph
+     *
+     * @param int $pValue
+     * @return PHPWord_Style_Paragraph
+     */
+    public function setSpaceAfter($pValue = null)
+    {
+        $this->_spaceAfter = $pValue;
+        return $this;
+    }
+
+    /**
+     * Get Spacing between breaks
+     *
+     * @return int
+     */
+    public function getSpacing()
+    {
+        return $this->_spacing;
+    }
+
+    /**
+     * Set Spacing between breaks
+     *
+     * @param int $pValue
+     * @return PHPWord_Style_Paragraph
+     */
+    public function setSpacing($pValue = null)
+    {
+        $this->_spacing = $pValue;
+        return $this;
+    }
+
+    // 獲取左縮進值
+    public function getIndentLeft()
+    {
+        return $this->_indentLeft;
+    }
+
+    // 設置左縮進值
+    public function setIndentLeft($pValue = null)
+    {
+        $this->_indentLeft = $pValue;
+        return $this;
+    }
+
+    // 獲取右縮進值
+    public function getIndentRight()
+    {
+        return $this->_indentRight;
+    }
+
+    // 設置右縮進值
+    public function setIndentRight($pValue = null)
+    {
+        $this->_indentRight = $pValue;
+        return $this;
+    }
+    // 首行縮進相關方法
+    public function setIndentFirstLine($pValue = null)
+    {
+        $this->_indentFirstLine = $pValue;
+        return $this;
+    }
+
+    public function getIndentFirstLine()
+    {
+        return $this->_indentFirstLine;
+    }
+
+    public function setIndentFirstLineChars($pValue = null)
+    {
+        $this->_indentFirstLineChars = $pValue;
+        return $this;
+    }
+
+    public function getIndentFirstLineChars()
+    {
+        return $this->_indentFirstLineChars;
+    }
 }

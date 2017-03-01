@@ -1,3 +1,24 @@
+TadTools 3.02 (2017-02-17 released)
+====================================
+1. Upload to join mp4, m4v, m4a, webm, oggvogv and other formats
+2. PHPWord new indentation function
+3. TadUpFiles.php add text link function
+
+
+TadTools 3.01 (2017-01-20 released)
+====================================
+1. Upgrade qtip to 3.0
+2. phpExcel upgrade to 1.8.1 to support PHP7
+3. Upload to join svg format
+
+
+TadTools 3.0 (2017-01-07 released)
+====================================
+1. Change the col-md of boootstrap to col-sm
+2. elFinder upgrade to 2.1.19
+3. Add tpl formate template files
+
+
 TadTools 2.9.9 (2016-12-08 released)
 ====================================
 1. get_xoops_url() add https support

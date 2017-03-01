@@ -2327,6 +2327,7 @@ class upload
         );
 
         $this->mime_types = array(
+            'svg'     => 'image/svg+xml',
             'ufo'     => 'image/ufo',
             '7z'      => 'application/x-7z-compressed',
             'sb'      => 'application/x-scratch',
@@ -2339,6 +2340,12 @@ class upload
             'png'     => 'image/png',
             'bmp'     => 'image/bmp',
             'flv'     => 'video/x-flv',
+            'mp4'     => 'video/mp4',
+            'm4v'     => 'video/mp4',
+            'ogv'     => 'video/ogv',
+            'webm'    => 'video/webm',
+            'ogg'     => 'audio/ogg',
+            'm4a'     => 'audio/mp4',
             'js'      => 'application/x-javascript',
             'json'    => 'application/json',
             'tiff'    => 'image/tiff',
@@ -3753,7 +3760,7 @@ class upload
                         if (!$this->rmkdir($this->file_dst_path, $this->dir_chmod)) {
                             $this->log .= ' failed<br />';
                             $this->processed = false;
-                            $this->error     = $this->translate('destination_dir');
+                            $this->error     = $this->translate('destination_dir') . $this->file_dst_path;
                         } else {
                             $this->log .= ' success<br />';
                         }

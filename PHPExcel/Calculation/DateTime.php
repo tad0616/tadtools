@@ -2,7 +2,7 @@
 /**
  * PHPExcel
  *
- * Copyright (c) 2006 - 2013 PHPExcel
+ * Copyright (c) 2006 - 2014 PHPExcel
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,9 +20,9 @@
  *
  * @category	PHPExcel
  * @package		PHPExcel_Calculation
- * @copyright	Copyright (c) 2006 - 2013 PHPExcel (http://www.codeplex.com/PHPExcel)
+ * @copyright	Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  * @license		http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
- * @version		1.7.9, 2013-06-02
+ * @version		##VERSION##, ##DATE##
  */
 
 
@@ -41,7 +41,7 @@ if (!defined('PHPEXCEL_ROOT')) {
  *
  * @category	PHPExcel
  * @package		PHPExcel_Calculation
- * @copyright	Copyright (c) 2006 - 2013 PHPExcel (http://www.codeplex.com/PHPExcel)
+ * @copyright	Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  */
 class PHPExcel_Calculation_DateTime {
 
@@ -1071,7 +1071,9 @@ class PHPExcel_Calculation_DateTime {
 	public static function DAYOFMONTH($dateValue = 1) {
 		$dateValue	= PHPExcel_Calculation_Functions::flattenSingleValue($dateValue);
 
-		if (is_string($dateValue = self::_getDateValue($dateValue))) {
+		if ($dateValue === null) {
+            $dateValue = 1;
+		} elseif (is_string($dateValue = self::_getDateValue($dateValue))) {
 			return PHPExcel_Calculation_Functions::VALUE();
 		} elseif ($dateValue == 0.0) {
 			return 0;
@@ -1114,7 +1116,9 @@ class PHPExcel_Calculation_DateTime {
 		}
 		$style = floor($style);
 
-		if (is_string($dateValue = self::_getDateValue($dateValue))) {
+		if ($dateValue === null) {
+            $dateValue = 1;
+		} elseif (is_string($dateValue = self::_getDateValue($dateValue))) {
 			return PHPExcel_Calculation_Functions::VALUE();
 		} elseif ($dateValue < 0.0) {
 			return PHPExcel_Calculation_Functions::NaN();
@@ -1180,7 +1184,9 @@ class PHPExcel_Calculation_DateTime {
 		}
 		$method = floor($method);
 
-		if (is_string($dateValue = self::_getDateValue($dateValue))) {
+		if ($dateValue === null) {
+            $dateValue = 1;
+		} elseif (is_string($dateValue = self::_getDateValue($dateValue))) {
 			return PHPExcel_Calculation_Functions::VALUE();
 		} elseif ($dateValue < 0.0) {
 			return PHPExcel_Calculation_Functions::NaN();
@@ -1216,7 +1222,9 @@ class PHPExcel_Calculation_DateTime {
 	public static function MONTHOFYEAR($dateValue = 1) {
 		$dateValue	= PHPExcel_Calculation_Functions::flattenSingleValue($dateValue);
 
-		if (is_string($dateValue = self::_getDateValue($dateValue))) {
+		if ($dateValue === null) {
+            $dateValue = 1;
+		} elseif (is_string($dateValue = self::_getDateValue($dateValue))) {
 			return PHPExcel_Calculation_Functions::VALUE();
 		} elseif ($dateValue < 0.0) {
 			return PHPExcel_Calculation_Functions::NaN();
@@ -1245,7 +1253,9 @@ class PHPExcel_Calculation_DateTime {
 	public static function YEAR($dateValue = 1) {
 		$dateValue	= PHPExcel_Calculation_Functions::flattenSingleValue($dateValue);
 
-		if (is_string($dateValue = self::_getDateValue($dateValue))) {
+		if ($dateValue === null) {
+            $dateValue = 1;
+		} elseif (is_string($dateValue = self::_getDateValue($dateValue))) {
 			return PHPExcel_Calculation_Functions::VALUE();
 		} elseif ($dateValue < 0.0) {
 			return PHPExcel_Calculation_Functions::NaN();

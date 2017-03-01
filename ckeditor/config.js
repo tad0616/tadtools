@@ -9,14 +9,16 @@ CKEDITOR.editorConfig = function( config ) {
     config.toolbar_my =
     [
       { name: 'bar1', items : ['Source'] },
-      { name: 'bar1_1', items : ['Cut','Copy','Paste','PasteFromWord','Undo','Redo'] },
-      { name: 'bar1_2', items : ['Image','oembed','EqnEditor','jwplayer','Flash','Table','HorizontalRule','Smiley','Link','Unlink'] },
-      { name: 'bar1_3', items : ['NumberedList','BulletedList','RemoveFormat','Syntaxhighlight','-', 'Blockquote', 'CreateDiv','-','PageBreak','WidgetTemplateMenu','Uploadcare'] },
-      '/',
-      { name: 'bar2', items : [ 'Styles','Format','FontSize','TextColor','BGColor','Bold','Italic','Underline','Strike'] },
-      { name: 'bar2_1', items : [ 'JustifyLeft','JustifyCenter','JustifyRight', 'JustifyBlock','Outdent','Indent'] },
-      { name: 'bar2_2', items : [ 'Find', 'Replace', '-', 'SelectAll','FontAwesome'] },
-      { name: 'bar2_3', items : [ ] }
+      { name: 'bar2', items : ['Cut','Copy','Paste','PasteFromWord','Undo','Redo'] },
+      { name: 'bar3', items : ['Image','oembed','EqnEditor','jwplayer','Flash','Table','HorizontalRule','Smiley','Link','Unlink'] },
+      { name: 'bar4', items : ['NumberedList','BulletedList','RemoveFormat','Syntaxhighlight'] },
+      { name: 'bar5', items : ['Blockquote', 'CreateDiv'] },
+      { name: 'bar6', items : ['PageBreak','WidgetTemplateMenu','Uploadcare'] },
+      { name: 'bar7', items : ['Styles','Format','FontSize'] },
+      { name: 'bar7-1', items : ['TextColor','BGColor','Bold','Italic','Underline','Strike'] },
+      { name: 'bar8', items : ['Outdent','Indent'] },
+      { name: 'bar9', items : ['JustifyLeft','JustifyCenter','JustifyRight', 'JustifyBlock'] },
+      { name: 'bar10', items : ['Find', 'Replace',  'SelectAll','FontAwesome'] }
     ];
 
     //CKEDITOR.config.autoGrow_maxHeight = 450;

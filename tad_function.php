@@ -36,7 +36,7 @@ if (!function_exists('html5')) {
         $main .= "<body>\n";
         $main .= "    <div class='container'>\n";
         $main .= "        <div class='row'>\n";
-        $main .= "            <div class='col-md-12'>\n";
+        $main .= "            <div class='col-sm-12'>\n";
         $main .= "                {$content}\n";
         $main .= "            </div>\n";
         $main .= "        </div>\n";
@@ -571,7 +571,7 @@ if (!function_exists('getPageBar')) {
             $mybar       = $navbar->makeBootStrap3Bar();
             $main['bar'] = "
               <div class='row'>
-                <div class='col-md-12'>
+                <div class='col-sm-12'>
                   <div class='text-center'>
                     <nav>
                       <ul class='pagination'>

@@ -147,10 +147,10 @@ class JwPlayer
 
         $player .= ($this->mode == "playlist") ? "
         <div id='playlist_zone_{$this->id}' class='row' style='min-height:320px;'>
-            <div class='col-md-8' id='jw_zone_{$this->id}'>
+            <div class='col-sm-8' id='jw_zone_{$this->id}'>
                 <div id='jw_{$this->id}'>Loading the player ...</div>
             </div>
-            <div class='col-md-4' id='jw_playlist_zone_{$this->id}'>
+            <div class='col-sm-4' id='jw_playlist_zone_{$this->id}'>
                 <ul class='list-group' id='jw_list'>
 
                 </ul>
@@ -158,7 +158,7 @@ class JwPlayer
         </div>
         " : "
         <div class='row' style='min-height:160px;'>
-            <div class='col-md-12'>
+            <div class='col-sm-12'>
                 <div id='jw_{$this->id}' class='embed-responsive embed-responsive-4by3'>Loading the player ...</div>
             </div>
         </div>";
@@ -169,8 +169,8 @@ class JwPlayer
 
 
             if($('#playlist_zone_{$this->id}').width() <= 640){
-                $('#jw_zone_{$this->id}').removeClass('col-md-8').addClass('col-md-12');
-                $('#jw_playlist_zone_{$this->id}').removeClass('col-md-4').addClass('col-md-12');
+                $('#jw_zone_{$this->id}').removeClass('col-sm-8').addClass('col-sm-12');
+                $('#jw_playlist_zone_{$this->id}').removeClass('col-sm-4').addClass('col-sm-12');
             }
 
             playerInstance_{$this->id}.setup({
