@@ -32,6 +32,8 @@ define('_TAD_NEXT', '下一步');
 define('_TAD_RESET', '重設');
 define('_TAD_CANCEL', '取消');
 define('_TAD_SUBMIT', '送出');
+define('_TAD_SEARCH', '查詢');
+define('_TAD_FILTER', '篩選');
 define('_TAD_PERMISSION_DENIED', '您沒有執行此功能的權限。');
 
 define('_TAD_INPUT_FORM', '輸入表單');
@@ -51,6 +53,7 @@ define('_TAD_SORTABLE', '可直接拉動排序');
 
 define('_TAD_ADMIN', '「%s」管理後台');
 define('_TAD_CONFIG', '「%s」偏好設定');
+define('_TAD_UPDATE', '更新「%s」');
 define('_TAD_BLOCKS', '「%s」區塊管理');
 
 define('_TAD_TF_BLOCK_CONFIG', '設定本區塊');

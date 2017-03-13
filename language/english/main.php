@@ -30,6 +30,7 @@ define('_TAD_RESET', 'Reset');
 define('_TAD_CANCEL', 'Cancel');
 define('_TAD_SUBMIT', 'Submit');
 define('_TAD_SEARCH', 'Search');
+define('_TAD_FILTER', 'Filter');
 define('_TAD_PERMISSION_DENIED', 'You do not have permission to perform this function.');
 
 define('_TAD_INPUT_FORM', 'Form');
@@ -49,6 +50,7 @@ define('_TAD_SORTABLE', 'Drag to sort.');
 
 define('_TAD_ADMIN', '"%s" Admin');
 define('_TAD_CONFIG', '"%s" Preferences');
+define('_TAD_UPDATE', 'update "%s"');
 define('_TAD_BLOCKS', '"%s" Blocks');
 define('_TAD_TF_BLOCK_CONFIG', 'Block config');
 define('_TAD_TF_SYSTEM_CONFIG', 'System config');

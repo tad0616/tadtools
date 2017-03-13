@@ -246,7 +246,7 @@
 
         $my_menu[$i]['id']=$i;
         $my_menu[$i]['title']=_TAD_TF_USER_BLOCK;
-        $my_menu[$i]['url']=XOOPS_URL."/modules/system/admin.php?fct=blocksadmin";
+        $my_menu[$i]['url']=XOOPS_URL."/modules/system/admin.php?fct=blocksadmin&op=list&filter=1&selgen=-1&selmod=-2&selgrp=-1&selvis=1";
         $my_menu[$i]['target']="_self";
         $my_menu[$i]['icon']="fa-th";
         $my_menu[$i]['submenu']="";

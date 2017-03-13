@@ -1,3 +1,57 @@
+2017-02-25  Naoki Sawada  <hypweb@gmail.com>
+
+	* elFinder (2.1.22):
+		- [VD:LocalFileSystem] Fixed #1882 option `copyJoin` does not work on extract
+		- [cmd:help] Fixed #1898 error ".tabs is not a function" without JqUI tabs widget
+		- [VD:abstract] Fixed #1899 rotating image breaks itself without exiftran and jpegtran
+		- [VD:LocalFileSystem] Fixed #1910 `startPath` dose not work currently 
+		- [VD:abstract] Fixed #1911 unable to rename folder
+		- And some minor bug fixes
+
+
+2017-02-25  Naoki Sawada  <hypweb@gmail.com>
+
+	* elFinder (2.0.9):
+		- [VD:abstract] Fixed #1911 unable to rename folder
+
+
+2017-02-09  Naoki Sawada  <hypweb@gmail.com>
+
+	* elFinder (2.0.8):
+		- [VD:security] Fixed #1891 MIME-type check of unknown item is not execute
+
+
+2017-02-07  Naoki Sawada  <hypweb@gmail.com>
+
+	* elFinder (2.1.21):
+		- [cmd:open] Fixed #1844 make configurable to open into tab(s)
+		- [php:core] Fixed #1846 target folder may be stay locked by adding items
+		- [cmd:download] Fixed #1868 fixed up timeouts for bad connection download
+		- [proxy:v1] Fixed #1880 error on command `paste`
+		- [v1 support] Fixed #1884 error on command `reload`
+		- [cmd:upload] Fixed #1885 Error on upload.ui = 'uploadbutton'
+		- [VD:security] Fixed #1891 MIME-type check of unknown item is not execute
+		- And some minor bug fixes
+
+
+2017-01-11  Naoki Sawada  <hypweb@gmail.com>
+
+	* elFinder (2.1.20):
+		- [php:core] Fixed #1800 session write before umount of the volume
+		- [cmd:upload] Fixed #1804 add folder upload button into upload dialog
+		- [php:plugin] Fixed #1807 enable/disable plugin by pressing meta key on DnD upload
+		- [cmd:rename] Fixed #1814 trigger event blur of input on item unselect
+		- [js:core] Fixed #1817 add "execpre.[cmd]" event and make cmd exec cancelable
+		- [js:core] Fixed #1818 mtime not defined for chunk upload
+		- [js:core] Fixed #1826 allow command invalidation by each item(folder/file)
+		- [ui:dialog] Fixed #1824 empty dialog on elfinder load
+		- [cmd:resize] Fixed #1834 configurable default state of `8px Grid`
+		- [VD] Fixed #1841 published files security issues
+		- [js:core] Fixed #1832 allow to set error message on HTTP status code 4/5xx
+		- [js:cmd] Fixed #1842 disable shortcut that specified to `disabled`
+		- [php:core] Fixed #1843 security vulnerability fix
+
+
 2016-12-10  Naoki Sawada  <hypweb@gmail.com>
 
 	* elFinder (2.1.19):

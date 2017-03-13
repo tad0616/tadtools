@@ -35,6 +35,10 @@ function xoops_module_update_tadtools(&$module, $old_version)
         go_update7();
     }
 
+    if (chk_chk8()) {
+        go_update8();
+    }
+
     /*
 
     $old_fckeditor=XOOPS_ROOT_PATH."/modules/tadtools/fckeditor";
@@ -237,6 +241,26 @@ function go_update7()
 {
     global $xoopsDB;
     $sql = "update " . $xoopsDB->prefix("tadtools_setup") . " set `tt_bootstrap_color`='bootstrap3' where `tt_theme_kind`='bootstrap'";
+    $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, $xoopsDB->error());
+    return true;
+}
+
+function chk_chk8()
+{
+    global $xoopsDB;
+    $sql    = "select count(*) from " . $xoopsDB->prefix("tad_uploader_files_center") . " where `hash_filename` like '%}.%'";
+    $result = $xoopsDB->queryF($sql);
+    if (empty($result)) {
+        return false;
+    }
+
+    return true;
+}
+
+function go_update8()
+{
+    global $xoopsDB;
+    $sql = "update " . $xoopsDB->prefix("tad_uploader_files_center") . " set `hash_filename`=replace(`hash_filename` , '}.' , '.') where `hash_filename` like '%}.%'";
     $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin", 30, $xoopsDB->error());
     return true;
 }

@@ -1,3 +1,19 @@
+TadTools 3.04 (2017-03-13釋出)
+====================================
+1. Fixed the CKEditor editor could not upload a file other than the image
+2. Upgrade elFinder to 2.1.22
+3. Modify the left side of the block in the small screen will automatically pull to the right
+4. Fixed upload file if the encryption will not be able to download the problem
+
+
+TadTools 3.03 (2017-03-02 released)
+====================================
+1. Fix the TadUpFiles.php file name encryption function
+2. Modify the menu bar to enter the icon for the admin area
+3. Add the "Update" button to the module toolbar
+4. Update fontawesome to 4.7.0
+
+
 TadTools 3.02 (2017-02-17 released)
 ====================================
 1. Upload to join mp4, m4v, m4a, webm, oggvogv and other formats

@@ -1042,6 +1042,7 @@ class TadUpFiles
             } else {
                 $file_handle->file_new_name_body = ($safe_name) ? "{$this->col_name}_{$this->col_sn}_{$this->sort}" : $file_handle->file_src_name_body;
             }
+
             //若是圖片才縮圖
             if ($kind == "img" and !empty($main_width)) {
                 if ($file_handle->image_src_x > $main_width) {
@@ -1095,14 +1096,18 @@ class TadUpFiles
                 }
 
                 $description = (empty($files_sn) or empty($desc)) ? $file['name'] : $desc;
-
+                if ($hash) {
+                    $db_hash_name = "{$hash_name}.{$ext}";
+                } else {
+                    $db_hash_name = '';
+                }
                 if (empty($files_sn)) {
-                    $sql = "insert into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}','{$file['name']}','{$this->subdir}','{$hash_name}.{$ext}')";
+                    $sql = "insert into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}','{$file['name']}','{$this->subdir}','{$db_hash_name}')";
                     $xoopsDB->queryF($sql) or web_error($sql);
                     //取得最後新增資料的流水編號
                     $files_sn = $xoopsDB->getInsertId();
                 } else {
-                    $sql = "replace into `{$this->TadUpFilesTblName}` (`files_sn`,`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`) values('{$files_sn}','{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}','{$file['name']}','{$this->subdir}','{$hash_name}.{$ext}')";
+                    $sql = "replace into `{$this->TadUpFilesTblName}` (`files_sn`,`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`) values('{$files_sn}','{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}','{$file['name']}','{$this->subdir}','{$db_hash_name}')";
                     $xoopsDB->queryF($sql) or web_error($sql);
                 }
                 //die($sql);
@@ -1162,7 +1167,7 @@ class TadUpFiles
         }
 
         $sql = "select * from `{$this->TadUpFilesTblName}`  where $del_what";
-        //die($sql);
+        // die($sql);
         $result = $xoopsDB->query($sql) or web_error($sql);
 
         while (list($files_sn, $col_name, $col_sn, $sort, $kind, $file_name, $file_type, $file_size, $description, $counter, $original_filename, $hash_filename, $sub_dir) = $xoopsDB->fetchRow($result)) {
@@ -1275,6 +1280,11 @@ class TadUpFiles
             $files[$files_sn]['original_filename'] = $original_filename;
             $files[$files_sn]['hash_filename']     = $hash_filename;
             $dl_url                                = empty($this->download_url) ? "{$link_path}?op=tufdl&files_sn=$files_sn" : $this->download_url . "&files_sn=$files_sn";
+            $http                                  = 'http://';
+            if (!empty($_SERVER['HTTPS'])) {
+                $http = ($_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://';
+            }
+            $full_dl_url = empty($this->download_url) ? "{$http}{$_SERVER["HTTP_HOST"]}{$link_path}?op=tufdl&files_sn=$files_sn" : $this->download_url . "&files_sn=$files_sn";
 
             if ($kind == "img") {
                 $fancyboxset = "fancybox_{$this->col_name}";
@@ -1291,15 +1301,15 @@ class TadUpFiles
                 $files[$files_sn]['tb_link']   = "<a href='{$dl_url}' title='{$description}' {$rel} class='{$fancyboxset}'><img src='$thumb_pic' alt='{$description}' title='{$description}'></a>";
                 $files[$files_sn]['tb_path']   = $thumb_pic;
                 $files[$files_sn]['tb_url']    = "<a href='{$dl_url}' title='{$description}' {$rel} class='{$fancyboxset}'>{$description}</a>";
-                $files[$files_sn]['html_link'] = "{$show_file_name} : <a href='" . XOOPS_URL . "{$dl_url}'>" . XOOPS_URL . "{$dl_url}</a>";
-                $files[$files_sn]['text_link'] = "{$show_file_name} : " . XOOPS_URL . "{$dl_url}";
+                $files[$files_sn]['html_link'] = "{$show_file_name} : <a href='{$full_dl_url}'>{$full_dl_url}</a>";
+                $files[$files_sn]['text_link'] = "{$show_file_name} : {$full_dl_url}";
             } else {
                 $files[$files_sn]['link']               = "<a href='{$dl_url}#{$original_filename}' target='{$target}'>{$show_file_name}</a>";
                 $files[$files_sn]['path']               = "{$dl_url}#{$original_filename}";
                 $files[$files_sn]['original_file_path'] = $this->TadUpFilesUrl . "/{$file_name}";
                 $files[$files_sn]['physical_file_path'] = $this->TadUpFilesDir . "/{$file_name}";
-                $files[$files_sn]['html_link']          = "{$show_file_name} : <a href='" . XOOPS_URL . "{$dl_url}'>" . XOOPS_URL . "{$dl_url}</a>";
-                $files[$files_sn]['text_link']          = "{$show_file_name} : " . XOOPS_URL . "{$dl_url}";
+                $files[$files_sn]['html_link']          = "{$show_file_name} : <a href='{$full_dl_url}'>{$full_dl_url}</a>";
+                $files[$files_sn]['text_link']          = "{$show_file_name} : {$full_dl_url}";
             }
         }
 
@@ -1577,7 +1587,7 @@ class TadUpFiles
         $file_size     = $file['file_size'];
         $real_filename = $file['original_filename'];
         $dl_name       = ($hash) ? $file['hash_filename'] : $file['file_name'];
-
+        // die($dl_name);
         $sql = "update `{$this->TadUpFilesTblName}` set `counter`=`counter`+1 where `files_sn`='{$files_sn}'";
         $xoopsDB->queryF($sql) or web_error($sql);
 
@@ -1685,7 +1695,7 @@ class TadUpFiles
 
         $result = $xoopsDB->queryF($sql) or web_error($sql);
         $all    = $xoopsDB->fetchArray($result);
-
+        // die(var_export($all));
         return $all;
     }
 

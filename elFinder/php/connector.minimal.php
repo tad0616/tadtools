@@ -98,18 +98,18 @@ $mdir = $_SESSION['xoops_mod_name'];
 // Documentation for connector options:
 // https://github.com/Studio-42/elFinder/wiki/Connector-configuration-options
 $opts = array(
-	// 'debug' => true,
-	'roots' => array(
-		array(
-			'driver'        => 'LocalFileSystem',           // driver for accessing file system (REQUIRED)
-			'path'          => XOOPS_ROOT_PATH . "/uploads/{$mdir}/{$_GET['type']}/",                 // path to files (REQUIRED)
-			'URL'           => XOOPS_URL . "/uploads/{$mdir}/{$_GET['type']}/", // URL to files (REQUIRED)
-			'uploadDeny'    => array('all'),                // All Mimetypes not allowed to upload
-			'uploadAllow'   => array('image', 'text/plain'),// Mimetype `image` and `text/plain` allowed to upload
-			'uploadOrder'   => array('deny', 'allow'),      // allowed Mimetype `image` and `text/plain` only
-			'accessControl' => 'access'                     // disable and hide dot starting files (OPTIONAL)
-		)
-	)
+    // 'debug' => true,
+    'roots' => array(
+        array(
+            'driver'        => 'LocalFileSystem', // driver for accessing file system (REQUIRED)
+            'path'          => XOOPS_ROOT_PATH . "/uploads/{$mdir}/{$_GET['type']}/", // path to files (REQUIRED)
+            'URL'           => XOOPS_URL . "/uploads/{$mdir}/{$_GET['type']}/", // URL to files (REQUIRED)
+            'uploadDeny'    => array('text/php', 'text/x-php', 'application/php', 'application/x-php', 'application/x-httpd-php', 'application/x-httpd-php-source'), // All Mimetypes not allowed to upload
+            'uploadAllow'   => array('all'), // Mimetype `image` and `text/plain` allowed to upload
+            'uploadOrder'   => array('allow', 'deny'), // allowed Mimetype `image` and `text/plain` only
+            'accessControl' => 'access', // disable and hide dot starting files (OPTIONAL)
+        ),
+    ),
 );
 
 // run elFinder

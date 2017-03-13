@@ -49,7 +49,7 @@
     </li>
 
     <li>
-      <a href="<{$xoops_url}>/modules/system/admin.php?fct=blocksadmin">
+      <a href="<{$xoops_url}>/modules/system/admin.php?fct=blocksadmin&op=list&filter=1&selgen=-1&selmod=-2&selgrp=-1&selvis=1">
         <span class="fa fa-th"></span>
         <{$smarty.const.TF_USER_BLOCK}>
       </a>

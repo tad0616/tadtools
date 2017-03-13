@@ -37,6 +37,7 @@ CKEDITOR.editorConfig = function( config ) {
     CKEDITOR.config.syntaxhighlight_firstLine =0;
     CKEDITOR.config.syntaxhighlight_lang = 'PHP';
 
+
     // CKEDITOR.config.stylesSet = 'myStyles';
     config.stylesSet= [
         // Block-level styles
