@@ -3,42 +3,42 @@
 
 //上傳表單（enctype='multipart/form-data'）
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
-$TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="file",$image="image",$thumbs="image/.thumbs");
+$TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="/file",$image="/image",$thumbs="/image/.thumbs");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn); //若 $show_list_del_file ==true 時一定要有
 $upform=$TadUpFiles->upform($show_edit,$upname,$maxlength,$show_list_del_file,$only_type,$thumb);
 
 //儲存：
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
-$TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="file",$image="image",$thumbs="image/.thumbs");
+$TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="/file",$image="/image",$thumbs="/image/.thumbs");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn,$sort);
 $TadUpFiles->upload_file($upname,$width,$thumb_width,$files_sn,$desc,$safe_name=false,$hash=false);
 
 //儲存單一檔案：
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
-$TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="file",$image="image",$thumbs="image/.thumbs");
+$TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="/file",$image="/image",$thumbs="/image/.thumbs");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn,$sort);
 $TadUpFiles->upload_one_file($_FILES['upfile']['name'],$_FILES['upfile']['tmp_name'],$_FILES['upfile']['type'],$_FILES['upfile']['size'],$width,$thumb_width,$files_sn,$desc,$safe_name=false,$hash=false);
 
 //複製匯入單一檔案：
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
-$TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="file",$image="image",$thumbs="image/.thumbs");
+$TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="/file",$image="/image",$thumbs="/image/.thumbs");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn,$sort);
 $TadUpFiles->import_one_file($from="",$new_filename="",$main_width="1280",$thumb_width="120",$files_sn="" ,$desc="" ,$safe_name=false ,$hash=false);
 
 //顯示可刪除列表
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
-$TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="file",$image="image",$thumbs="image/.thumbs");
+$TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="/file",$image="/image",$thumbs="/image/.thumbs");
 $TadUpFiles->set_col($col_name,$col_sn,$sort);
 $TadUpFiles->set_thumb($thumb_width="120px",$thumb_height="70px",$thumb_bg_color="#000");
 $list_del_file=$TadUpFiles->list_del_file($show_edit=false,$mode);
 
 //顯示：
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
-$TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="file",$image="image",$thumbs="image/.thumbs");
+$TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="/file",$image="/image",$thumbs="/image/.thumbs");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn,$sort);
 $show_files=$TadUpFiles->show_files($upname,true,NULL,false,false,NULL,NULL,false);
@@ -598,7 +598,7 @@ class TadUpFiles
         }
 
         // die(var_dump($files));
-        $all_files_sn = '';
+        $all_files_sn = array();
         foreach ($files as $file) {
             //先刪除舊檔
             if (!empty($files_sn)) {
@@ -1228,7 +1228,7 @@ class TadUpFiles
     public function get_file($files_sn = "", $limit = null, $path = null, $hash = false, $desc_as_name = false, $keyword = '', $only_keyword = false, $target = "_self")
     {
         global $xoopsDB, $xoopsUser;
-        $files      = "";
+        $files      = array();
         $os_charset = (PATH_SEPARATOR == ':') ? "UTF-8" : "Big5";
 
         $and_sort = (!empty($this->sort)) ? " and `sort`='{$this->sort}'" : "";
@@ -1248,7 +1248,9 @@ class TadUpFiles
         }
 
         $sql = "select * from `{$this->TadUpFilesTblName}` $where";
-
+        // if ($this->col_name == 'topic_sn') {
+        //     die($sql);
+        // }
         $result = $xoopsDB->queryF($sql) or web_error($sql);
         while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $files_sn, $col_name, $col_sn, $sort, $kind, $file_name, $file_type, $file_size, $description
@@ -1343,7 +1345,7 @@ class TadUpFiles
         // die($sql);
         $result = $xoopsDB->queryF($sql) or web_error($sql);
         $i      = 0;
-        $files  = '';
+        $files  = array();
         while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $files_sn, $col_name, $col_sn, $sort, $kind, $file_name, $file_type, $file_size, $description
             foreach ($all as $k => $v) {
@@ -1415,7 +1417,7 @@ class TadUpFiles
         $sql = "select * from `{$this->TadUpFilesTblName}` $where";
         //die($sql);
         $result = $xoopsDB->queryF($sql) or web_error($sql);
-        $files  = "";
+        $files  = array();
         while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $files_sn, $col_name, $col_sn, $sort, $kind, $file_name, $file_type, $file_size, $description
             foreach ($all as $k => $v) {
@@ -1474,7 +1476,7 @@ class TadUpFiles
             $all_files .= $fancybox->render(false, null, $autoPlay, $playSpeed);
         }
 
-        $file_arr = "";
+        $file_arr = array();
         $file_arr = $this->get_file(null, $limit, $path, $hash, $desc_as_name, $keyword, $only_keyword, $target);
 
         if (empty($file_arr)) {
@@ -1485,9 +1487,9 @@ class TadUpFiles
             $i = 1;
 
             if ($show_mode == "file_url") {
-                $all_files = "<ul>";
+                $all_files .= "<ul>";
             } elseif ($show_mode == "file_text_url" or $show_mode == "small") {
-                $all_files = "";
+                $all_files .= "";
             } elseif ($show_mode == "filename") {
                 $all_files .= "<ol class='rectangle-list' style=\"counter-reset: li; list-style: none; *list-style: decimal; font: 15px 'trebuchet MS', 'lucida sans'; padding: 0; text-shadow: 0 1px 0 rgba(255,255,255,.5);\">";
             } else {
@@ -1549,9 +1551,9 @@ class TadUpFiles
                     //描述顯示
                     $show_description_txt = ($show_description) ? "<div style='font-weight: normal; font-size: 11px; word-break: break-all; line-height: 1.2; margin: 4px auto 4px 0px; text-align: left;'>{$i}) {$description} {$show_dl_txt}</div>" : "{$show_dl_txt}";
 
-                    $all_files .= ($show_mode == "small") ? "<a href='{$linkto}' class='iconize {$fancyboxset}' {$rel}  title='{$description}'></a> " : "
+                    $all_files .= ($show_mode == "small") ? "<a href='{$linkto}' class='iconize {$fancyboxset}' {$rel}>&nbsp;</a> " : "
                       <li style='width:120px;height:120px;float:left;list-style:none;'>
-                        <a href='{$linkto}' class='thumbnail {$fancyboxset}' {$rel} style=\"width: 110px; height: 70px; overflow: hidden; background-image: url('{$thumb_pic}'); background-repeat: no-repeat; background-position: center center; margin-bottom: 4px;\" title='{$description}'></a>{$show_description_txt}
+                        <a href='{$linkto}' class='thumbnail {$fancyboxset}' {$rel} style=\"width: 110px; height: 70px; overflow: hidden; background: #000000 url('{$thumb_pic}') no-repeat center center / contain; margin-bottom: 4px;\">&nbsp;</a>{$show_description_txt}
                       </li>";
                 }
 

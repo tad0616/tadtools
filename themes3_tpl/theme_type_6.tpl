@@ -1,4 +1,4 @@
-<div id="xoops_theme_content_zone" <{if $theme_kind!="html"}>class="row"<{/if}> style="<{$content_zone}>">
+<div id="xoops_theme_content_zone" <{if $theme_kind!="html"}>class="row row-sm-eq"<{/if}> style="<{$content_zone}>">
   <!-- 若是有左、右區塊 -->
   <{if $xoBlocks.canvas_left and $xoBlocks.canvas_right}>
     <!-- 若模式是HTML -->

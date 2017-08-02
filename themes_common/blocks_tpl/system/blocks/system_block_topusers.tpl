@@ -1,20 +1,18 @@
-<{foreach item=user from=$block.users}>
-    <ul class="userblock list-unstyled">
-
+<div class="row">
+  <{foreach item=user from=$block.users}>
+    <div class="col-sm-12">
+      <div class="thumbnail">
         <{if $user.avatar != ""}>
-            <li class="avatar-image">
-                <img src="<{$user.avatar}>" alt="<{$user.name}>" class="img-circle">
-                <span class="badge pull-right"><{$user.rank}></span>
-            </li>
+          <img src="<{$user.avatar}>" alt="<{$user.name}>" class="img-responsive img-rounded">
         <{else}>
-            <li class="avatar-image">
-                <img src="<{$xoops_imageurl}>images/blank.gif" alt="<{$user.name}>" class="img-circle">
-                <span class="badge pull-right"><{$user.rank}></span>
-            </li>
+          <img src="<{$xoops_imageurl}>images/blank.gif" alt="<{$user.name}>" class="img-circle">
         <{/if}>
-
-        <li class="user-name"><a href="<{$xoops_url}>/userinfo.php?uid=<{$user.id}>" title="<{$user.name}>"><{$user.name}></a></li>
-
-        <li class="join-date text-right"><{$user.posts}></li>
-    </ul>
-<{/foreach}>
+        <div class="caption">
+          <h3><a href="<{$xoops_url}>/userinfo.php?uid=<{$user.id}>" title="<{$user.name}>"><{$user.name}></a>
+          <small><i class="fa fa-star-o" aria-hidden="true"></i> <{$user.rank}> <i class="fa fa-file-text-o" aria-hidden="true"></i> <{$user.posts}></small>
+          </h3>
+        </div>
+      </div>
+    </div>
+  <{/foreach}>
+</div>

@@ -1,13 +1,17 @@
-<{foreach item=user from=$block.users}>
-    <ul class="userblock list-unstyled">
+<div class="row">
+  <{foreach item=user from=$block.users}>
+    <div class="col-sm-12">
+      <div class="thumbnail">
         <{if $user.avatar != ""}>
-            <li class="avatar-image"><img src="<{$user.avatar}>" alt="<{$user.name}>" class="img-circle"></li>
+          <img src="<{$user.avatar}>" alt="<{$user.name}>" class="img-responsive img-rounded">
         <{else}>
-            <li class="avatar-image"><img src="<{$xoops_imageurl}>images/blank.gif" alt="<{$user.name}>" class="img-circle"></li>
+          <img src="<{$xoops_imageurl}>images/blank.gif" alt="<{$user.name}>" class="img-circle">
         <{/if}>
-
-        <li class="user-name"><a href="<{$xoops_url}>/userinfo.php?uid=<{$user.id}>" title="<{$user.name}>"><{$user.name}></a></li>
-
-        <li class="join-date text-right hidden-sm join-date"><{$user.joindate}></li>
-    </ul>
-<{/foreach}>
+        <div class="caption">
+          <h3><a href="<{$xoops_url}>/userinfo.php?uid=<{$user.id}>" title="<{$user.name}>"><{$user.name}></a>
+          <small><i class="fa fa-calendar" aria-hidden="true"></i> <{$user.joindate}></small></h3>
+        </div>
+      </div>
+    </div>
+  <{/foreach}>
+</div>

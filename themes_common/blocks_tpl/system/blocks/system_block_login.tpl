@@ -1,7 +1,7 @@
 <div class="loginform">
   <form action="<{xoAppUrl user.php}>" method="post" class="form-horizontal" role="form">
     <div class="form-group">
-      <label class="col-sm-4 control-label">
+      <label class="col-sm-4 control-label" for="uname">
         <{$smarty.const.TF_USER_S_ID}>
       </label>
       <div class="col-sm-8">
@@ -10,7 +10,7 @@
     </div>
 
     <div class="form-group">
-      <label class="col-sm-4 control-label">
+      <label class="col-sm-4 control-label" for="pass">
         <{$smarty.const.TF_USER_S_PASS}>
       </label>
       <div class="col-sm-8">
@@ -19,9 +19,9 @@
     </div>
 
     <div class="form-group">
-      <label class="col-sm-4 control-label checkbox">
+      <label class="col-sm-4 control-label checkbox" for="rememberme">
         <{if isset($block.lang_rememberme)}>
-            <input type="checkbox" name="rememberme" value="On" class="formButton">
+            <input type="checkbox" name="rememberme" id="rememberme" value="On" class="formButton">
             <{$block.lang_rememberme}>
         <{/if}>
       </label>
@@ -37,13 +37,13 @@
 
     <div class="form-group">
       <div class="col-sm-5">
-        <a href="<{$xoops_url}>/register.php" class="btn btn-xs btn-link" style="background: transparent; width: auto; color: #303030; font-size: 12px;">
+        <a href="<{$xoops_url}>/register.php" class="btn btn-xs btn-link">
           <span class="fa fa-pencil"></span>
           <{$smarty.const.TF_USER_REGIST}>
         </a>
       </div>
       <div class="col-sm-7">
-        <a href="<{$xoops_url}>/user.php#lost" class="btn btn-xs btn-link" style="background: transparent; width: auto; color: #303030; font-size: 12px;">
+        <a href="<{$xoops_url}>/user.php#lost" class="btn btn-xs btn-link">
           <span class="fa fa-search"></span>
           <{$smarty.const.TF_USER_FORGET_PASS}>
         </a>

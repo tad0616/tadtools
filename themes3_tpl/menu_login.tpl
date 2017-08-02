@@ -9,7 +9,7 @@
               <{$smarty.const.TF_USER_ENTER}>
             </legend>
             <div class="form-group">
-              <label class="col-sm-4 control-label">
+              <label class="col-sm-4 control-label" for="uname">
                 <{$smarty.const.TF_USER_S_ID}>
               </label>
               <div class="col-sm-8">
@@ -18,7 +18,7 @@
             </div>
 
             <div class="form-group">
-              <label class="col-sm-4 control-label">
+              <label class="col-sm-4 control-label" for="pass">
                 <{$smarty.const.TF_USER_S_PASS}>
               </label>
               <div class="col-sm-8">
@@ -90,6 +90,13 @@
         }
 
 
+        if (in_array('edu', $modConfig['auth_method'])) {
+            $tad_login['edu'] = edu_login('return');
+        } else {
+            $tad_login['edu'] = '';
+        }
+
+
         $auth_method=$modConfig['auth_method'];
         $i=0;
 
@@ -101,6 +108,8 @@
             $tlogin[$i]['link']=$tad_login['facebook'];
           }elseif($method=="google"){
             $tlogin[$i]['link']=$tad_login['google'];
+          }elseif($method=="edu"){
+            $tlogin[$i]['link']=$tad_login['edu'];
           }else{
             $tlogin[$i]['link']=XOOPS_URL."/modules/tad_login/index.php?login&op={$method}";
           }

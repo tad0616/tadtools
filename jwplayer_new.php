@@ -139,7 +139,6 @@ class JwPlayer
         if ($xoTheme) {
             $xoTheme->addScript('modules/tadtools/jwplayer/jwplayer.js');
         } else {
-
             $player = "<script type='text/javascript' src='" . TADTOOLS_URL . "/jwplayer/jwplayer.js'></script>
             ";
         }
@@ -177,7 +176,7 @@ class JwPlayer
               $file
               image:'{$this->image}',
               width: '100%',
-              aspectratio: '4:3',
+              aspectratio: '16:9',
               $this->other_code
               $autostart
               $repeat

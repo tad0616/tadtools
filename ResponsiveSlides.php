@@ -117,7 +117,7 @@ class slider
 
         <script type='text/javascript'>
          $(document).ready( function(){
-            $('#{$id}').responsiveSlides({
+            jQuery('#{$id}').responsiveSlides({
               auto: true,
               pager: false,
               nav: true,

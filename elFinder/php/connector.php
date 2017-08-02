@@ -86,10 +86,11 @@ elFinder::$netDrivers['ftp'] = 'FTP';
  * @param  string  $path  file path relative to volume root directory started with directory separator
  * @return bool|null
  **/
-function access($attr, $path, $data, $volume) {
-	return strpos(basename($path), '.') === 0       // if file/folder begins with '.' (dot)
-		? !($attr == 'read' || $attr == 'write')    // set read+write to false, other (locked+hidden) set to true
-		:  null;                                    // else elFinder decide it itself
+function access($attr, $path, $data, $volume)
+{
+    return strpos(basename($path), '.') === 0// if file/folder begins with '.' (dot)
+     ? !($attr == 'read' || $attr == 'write') // set read+write to false, other (locked+hidden) set to true
+     : null; // else elFinder decide it itself
 }
 
 $logger = new elFinderSimpleLogger('../files/temp/log.txt');
@@ -101,7 +102,8 @@ $mdir = $_SESSION['xoops_mod_name'];
 // https://github.com/Studio-42/elFinder/wiki/Connector-configuration-options
 $opts = array(
     // 'debug' => true,
-    'roots' => array(
+    "locale" => "zh_TW.UTF-8",
+    'roots'  => array(
         array(
             'driver'        => 'LocalFileSystem', // driver for accessing file system (REQUIRED)
             'path'          => XOOPS_ROOT_PATH . "/uploads/{$mdir}/", // path to files (REQUIRED)
@@ -110,6 +112,7 @@ $opts = array(
             'uploadAllow'   => array('all'), // Mimetype `image` and `text/plain` allowed to upload
             'uploadOrder'   => array('allow', 'deny'), // allowed Mimetype `image` and `text/plain` only
             'accessControl' => 'access', // disable and hide dot starting files (OPTIONAL)
+            // 'acceptedName'  => '/^\w[\w\s\.\%\-\(\)\[\]]*$/u',
         ),
     ),
 );
@@ -117,4 +120,3 @@ $opts = array(
 // run elFinder
 $connector = new elFinderConnector(new elFinder($opts));
 $connector->run();
-

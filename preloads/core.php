@@ -5,9 +5,16 @@ class TadtoolsCorePreload extends XoopsPreloadItem
     public static function eventCoreFooterStart($args)
     {
         global $xoopsConfig, $xoopsDB, $xoTheme, $xoopsTpl, $xoopsUser;
-
         $xoTheme->addScript('browse.php?Frameworks/jquery/jquery.js');
-        $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate.min.js');
+
+        $ver = intval(str_replace('.', '', substr(XOOPS_VERSION, 6, 5)));
+
+        if ($ver >= 259) {
+            $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
+        } else {
+            $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-1.4.1.min.js');
+        }
+
         $xoTheme->addStylesheet("modules/tadtools/jquery/themes/base/jquery.ui.all.css");
         $xoTheme->addScript('modules/tadtools/jquery/ui/jquery-ui.js');
         //$xoTheme->addScript('modules/tadtools/jquery/jquery.jgrowl.js');
@@ -42,8 +49,8 @@ class TadtoolsCorePreload extends XoopsPreloadItem
 
                     } else {
                         $sql = "update `" . $xoopsDB->prefix("tadtools_setup") . "` set `tt_use_bootstrap`='{$tt_use_bootstrap}',
-                                `tt_bootstrap_color`='{$tt_bootstrap_color}',
-                                `tt_theme_kind`='{$tt_theme_kind}' where `tt_theme`='{$theme_set}'";
+                            `tt_bootstrap_color`='{$tt_bootstrap_color}',
+                            `tt_theme_kind`='{$tt_theme_kind}' where `tt_theme`='{$theme_set}'";
                     }
                     $xoopsDB->queryF($sql);
                 }

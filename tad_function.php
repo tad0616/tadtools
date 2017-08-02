@@ -68,7 +68,7 @@ if (!function_exists('web_error')) {
 }
 
 //載入 bootstrap，目前僅後台用得到
-function get_bootstrap()
+function get_bootstrap($mode = '')
 {
     global $xoopsConfig, $xoopsDB, $xoTheme, $xoopsTpl;
 
@@ -107,6 +107,11 @@ function get_bootstrap()
             $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/font-awesome/css/font-awesome.css');
 
         }
+    } elseif ($mode == "return") {
+        $main = "
+            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/bootstrap3/css/bootstrap.css' >
+            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css' >";
+        return $main;
     }
 }
 
@@ -114,12 +119,8 @@ function get_bootstrap()
 if (!function_exists('get_xoops_url')) {
     function get_xoops_url()
     {
-        if ($_SERVER['HTTPS']) {
-            $protocol = 'https://';
-        } else {
-            $protocol = 'http://';
-        }
-        $u = parse_url($protocol . $_SERVER["HTTP_HOST"] . $_SERVER['REQUEST_URI']);
+        $protocol = ($_SERVER['HTTPS']) ? 'https://' : 'http://';
+        $u        = parse_url($protocol . $_SERVER["HTTP_HOST"] . $_SERVER['REQUEST_URI']);
         if (!empty($u['path']) and preg_match('/\/modules/', $u['path'])) {
             $XMUrl = explode("/modules", $u['path']);
         } elseif (!empty($u['path']) and preg_match('/\/themes/', $u['path'])) {
@@ -216,7 +217,8 @@ if (!function_exists('push_url')) {
         if (!$enable) {
             return;
         }
-        $jquery = get_jquery();
+        $jquery   = get_jquery();
+        $protocol = ($_SERVER['HTTPS']) ? 'https://' : 'http://';
 
         $main = "
         <link rel='stylesheet' href='" . XOOPS_URL . "/modules/tadtools/social-likes/social-likes_birman.css'>
@@ -225,7 +227,7 @@ if (!function_exists('push_url')) {
         <script type='text/javascript'>
         $().ready(function() {
           $('.social-likes').socialLikes({
-            url: 'http://{$_SERVER["HTTP_HOST"]}{$_SERVER['REQUEST_URI']}',
+            url: '{$protocol}{$_SERVER["HTTP_HOST"]}{$_SERVER['REQUEST_URI']}',
             title: '{$xoopsConfig['sitename']}',
             counters: true,
             singleTitle: 'Share it!'
@@ -252,18 +254,21 @@ if (!function_exists('facebook_comments')) {
             return;
         }
 
-        $url = (empty($page) and empty($col_name) and empty($col_sn)) ? "http://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}" : XOOPS_URL . "/modules/{$modules}/{$page}?{$col_name}={$col_sn}";
+        $protocol = ($_SERVER['HTTPS']) ? 'https://' : 'http://';
+        $url      = (empty($page) and empty($col_name) and empty($col_sn)) ? "{$protocol}{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}" : XOOPS_URL . "/modules/{$modules}/{$page}?{$col_name}={$col_sn}";
 
         $main = "
-        <div id='fb-root'></div>
+        <div id=\"fb-root\"></div>
         <script>(function(d, s, id) {
           var js, fjs = d.getElementsByTagName(s)[0];
           if (d.getElementById(id)) return;
           js = d.createElement(s); js.id = id;
-          js.src = '//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.3&appId=199288920104939';
+          js.src = \"//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.9&appId=1825513194361728\";
           fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));</script>
+
         <div class='fb-comments' data-href='{$url}' data-width='100%' data-numposts='10' data-colorscheme='light' data-order-by='reverse_time'></div>
+
     ";
 
         return $main;
@@ -364,25 +369,33 @@ if (!function_exists('power_chk')) {
     function power_chk($perm_name = "", $sn = "")
     {
         global $xoopsUser, $xoopsModule;
-
+        if (!$xoopsModule) {
+            return;
+        }
+        // echo var_export($perm_name);
+        // echo var_export($sn);
         //取得目前使用者的群組編號
         if ($xoopsUser) {
             $groups = $xoopsUser->getGroups();
         } else {
             $groups = XOOPS_GROUP_ANONYMOUS;
         }
-
+        // echo var_export($groups);
         //取得模組編號
         $module_id = $xoopsModule->getVar('mid');
+        // echo var_export($module_id);
         //取得群組權限功能
         $gperm_handler = xoops_gethandler('groupperm');
 
         //權限項目編號
         $perm_itemid = intval($sn);
+        // echo var_export($perm_itemid);
         //依據該群組是否對該權限項目有使用權之判斷 ，做不同之處理
         if ($gperm_handler->checkRight($perm_name, $perm_itemid, $groups, $module_id)) {
+            // die('true');
             return true;
         }
+        // die('false');
         return false;
     }
 }
@@ -905,5 +918,118 @@ if (!class_exists('PageBar')) {
             $page_bar['sql']     = $this->sqlQuery();
             return $page_bar;
         }
+    }
+}
+
+if (!function_exists('toolbar_bootstrap')) {
+    function toolbar_bootstrap($interface_menu = array())
+    {
+        global $xoopsUser, $xoopsModule;
+
+        if ($xoopsModule) {
+            $module_id  = $xoopsModule->mid();
+            $mod_name   = $xoopsModule->name();
+            $moduleName = $xoopsModule->dirname();
+        } else {
+            $mod_name = $moduleName = "";
+        }
+        if ($xoopsUser) {
+            $isAdmin = $xoopsUser->isAdmin($module_id);
+        } else {
+            $isAdmin = false;
+        }
+
+        if (empty($interface_menu)) {
+            return;
+        }
+
+        make_menu_json($interface_menu, $moduleName);
+
+        get_jquery();
+
+        $options = "<li><a href='index.php' title='" . _TAD_HOME . "'><i class='fa fa-home'></i></a></li>";
+        if (is_array($interface_menu)) {
+
+            $basename = basename($_SERVER['SCRIPT_NAME']);
+            if (sizeof($interface_menu) == 1 and substr($_SERVER['REQUEST_URI'], -9) == "index.php") {
+                return;
+            }
+
+            foreach ($interface_menu as $title => $url) {
+                if (substr($url, -15) == "admin/index.php" or substr($url, -14) == "admin/main.php") {
+                    continue;
+                }
+
+                $urlPath = (empty($moduleName) or substr($url, 0, 7) == "http://") ? $url : XOOPS_URL . "/modules/{$moduleName}/{$url}";
+                $baseurl = basename($url);
+                //if($baseurl=="index.php" and !preg_match("/admin/", $url))continue;
+                $active = strpos($_SERVER['SCRIPT_NAME'], $url) !== false ? "class='current'" : "";
+                $options .= "
+                  <li {$active}><a href='{$urlPath}'>{$title}</a></li>
+                ";
+            }
+
+            if ($isAdmin and $module_id) {
+                $options .= "<li {$active}><a href='admin/index.php' title='" . sprintf(_TAD_ADMIN, $mod_name) . "'><i class='fa fa-wrench'></i></a></li>";
+                $options .= "<li {$active}><a href='" . XOOPS_URL . "/modules/system/admin.php?fct=preferences&op=showmod&mod={$module_id}' title='" . sprintf(_TAD_CONFIG, $mod_name) . "'><i class='fa fa-edit'></i></a></li>";
+                $options .= "<li {$active}><a href='" . XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin&op=update&module={$moduleName}' title='" . sprintf(_TAD_UPDATE, $mod_name) . "'><i class='fa fa-refresh'></i></a></li>";
+                $options .= "<li {$active}><a href='" . XOOPS_URL . "/modules/system/admin.php?fct=blocksadmin&op=list&filter=1&selgen={$module_id}&selmod=-2&selgrp=-1&selvis=-1' title='" . sprintf(_TAD_BLOCKS, $mod_name) . "'><i class='fa fa-th'></i></a></li>";
+            }
+        } else {
+            return;
+        }
+
+        $main = "
+        <style>
+        .toolbar_bootstrap_nav {
+          position: relative;
+          margin: 20px 0;
+        }
+        .toolbar_bootstrap_nav ul {
+          margin: 0;
+          padding: 0;
+        }
+        .toolbar_bootstrap_nav li {
+          margin: 0 5px 10px 0;
+          padding: 0;
+          list-style: none;
+          display: inline-block;
+        }
+        .toolbar_bootstrap_nav a {
+          padding: 3px 12px;
+          text-decoration: none;
+          color: #999;
+          line-height: 100%;
+        }
+        .toolbar_bootstrap_nav a:hover {
+          color: #000;
+        }
+        .toolbar_bootstrap_nav .current a {
+          background: #999;
+          color: #fff;
+          border-radius: 5px;
+        }
+
+        </style>
+
+        <div class='row'>
+          <div class='col-sm-12'>
+            <nav class='toolbar_bootstrap_nav'>
+              <ul>
+                $options
+              </ul>
+            </nav>
+          </div>
+        </div>";
+        return $main;
+    }
+}
+
+if (!function_exists('make_menu_json')) {
+    function make_menu_json($interface_menu = array(), $moduleName = "")
+    {
+        $json     = json_encode($interface_menu);
+        $filename = XOOPS_ROOT_PATH . "/uploads/menu_{$moduleName}.txt";
+        file_put_contents($filename, $json);
     }
 }

@@ -2327,6 +2327,7 @@ class upload
         );
 
         $this->mime_types = array(
+            'gcode'   => 'text/plain',
             'svg'     => 'image/svg+xml',
             'ufo'     => 'image/ufo',
             '7z'      => 'application/x-7z-compressed',

@@ -5,8 +5,6 @@ if (!defined('XOOPS_ROOT_PATH')) {
     include_once XOOPS_ROOT_PATH . "/mainfile.php";
 }
 
-include_once "common/xoops.php";
-
 if (!defined("TADTOOLS_PATH")) {
     define("TADTOOLS_PATH", XOOPS_ROOT_PATH . "/modules/tadtools");
 }

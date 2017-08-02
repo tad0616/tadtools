@@ -3,42 +3,42 @@
 
 //上傳表單（enctype='multipart/form-data'）
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
-$TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="file",$image="image",$thumbs="image/.thumbs");
+$TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="/file",$image="/image",$thumbs="/image/.thumbs");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn); //若 $show_list_del_file ==true 時一定要有
 $upform=$TadUpFiles->upform($show_edit,$upname,$maxlength,$show_list_del_file,$only_type,$thumb);
 
 //儲存：
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
-$TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="file",$image="image",$thumbs="image/.thumbs");
+$TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="/file",$image="/image",$thumbs="/image/.thumbs");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn,$sort);
 $TadUpFiles->upload_file($upname,$width,$thumb_width,$files_sn,$desc,$safe_name=false,$hash=false);
 
 //儲存單一檔案：
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
-$TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="file",$image="image",$thumbs="image/.thumbs");
+$TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="/file",$image="/image",$thumbs="/image/.thumbs");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn,$sort);
 $TadUpFiles->upload_one_file($_FILES['upfile']['name'],$_FILES['upfile']['tmp_name'],$_FILES['upfile']['type'],$_FILES['upfile']['size'],$width,$thumb_width,$files_sn,$desc,$safe_name=false,$hash=false);
 
 //複製匯入單一檔案：
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
-$TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="file",$image="image",$thumbs="image/.thumbs");
+$TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="/file",$image="/image",$thumbs="/image/.thumbs");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn,$sort);
 $TadUpFiles->import_one_file($from="",$new_filename="",$main_width="1280",$thumb_width="120",$files_sn="" ,$desc="" ,$safe_name=false ,$hash=false);
 
 //顯示可刪除列表
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
-$TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="file",$image="image",$thumbs="image/.thumbs");
+$TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="/file",$image="/image",$thumbs="/image/.thumbs");
 $TadUpFiles->set_col($col_name,$col_sn,$sort);
 $TadUpFiles->set_thumb($thumb_width="120px",$thumb_height="70px",$thumb_bg_color="#000");
 $list_del_file=$TadUpFiles->list_del_file($show_edit=false,$mode);
 
 //顯示：
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
-$TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="file",$image="image",$thumbs="image/.thumbs");
+$TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="/file",$image="/image",$thumbs="/image/.thumbs");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn,$sort);
 $show_files=$TadUpFiles->show_files($upname,true,NULL,false,false,NULL,NULL,false);
@@ -605,7 +605,7 @@ class TadUpFiles2 extends TadUpFiles
     public function get_file($files_sn = "", $limit = null, $path = null, $hash = false, $desc_as_name = false, $keyword = '', $only_keyword = false, $target = "_self")
     {
         global $xoopsDB, $xoopsUser;
-        $files      = "";
+        $files      = array();
         $os_charset = (PATH_SEPARATOR == ':') ? "UTF-8" : "Big5";
 
         $and_sort = (!empty($this->sort)) ? " and `sort`='{$this->sort}'" : "";
@@ -797,7 +797,7 @@ class TadUpFiles2 extends TadUpFiles
 
                     $all_files .= ($show_mode == "small") ? "<a href='{$linkto}' class='iconize {$fancyboxset}' {$rel}  title='{$description}'></a> " : "
                       <li style='width:120px;height:120px;float:left;list-style:none;'>
-                        <a href='{$linkto}' class='thumbnail {$fancyboxset}' {$rel} style=\"width: 110px; height: 70px; overflow: hidden; background-image: url('{$thumb_pic}'); background-repeat: no-repeat; background-position: center center; margin-bottom: 4px;\" title='{$description}'></a>{$show_description_txt}
+                        <a href='{$linkto}' class='thumbnail {$fancyboxset}' {$rel} style=\"width: 110px; height: 70px; overflow: hidden; background-color: #000000;  background-image: url('{$thumb_pic}'); background-repeat: no-repeat; background-position: center center; background-size: contain; margin-bottom: 4px;\" title='{$description}'></a>{$show_description_txt}
                       </li>";
                 }
 

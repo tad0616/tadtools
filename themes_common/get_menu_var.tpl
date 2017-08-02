@@ -3,7 +3,15 @@
 
   if($xoTheme){
     $xoTheme->addScript('browse.php?Frameworks/jquery/jquery.js');
-    $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate.min.js');
+
+    $ver = intval(str_replace('.', '', substr(XOOPS_VERSION, 6, 5)));
+
+    if ($ver >= 259) {
+        $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
+    } else {
+        $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-1.4.1.min.js');
+    }
+
     $xoTheme->addStylesheet("modules/tadtools/jquery/themes/base/jquery.ui.all.css");
     $xoTheme->addScript('modules/tadtools/jquery/ui/jquery-ui.js');
   }
@@ -55,6 +63,7 @@
           $my_menu[$i]['url']=$itemurl;
           $my_menu[$i]['target']=$target;
           $my_menu[$i]['icon']=str_replace('icon-','fa-',$icon);
+          $my_menu[$i]['img']='';
           $i++;
         }
       }
@@ -113,7 +122,6 @@
     global $xoopsDB,$xoopsTpl,$xoopsUser;
     $dir='';
     $u=parse_url($_SERVER['REQUEST_URI']);
-
     if(!empty($u['path']) and strpos($u['path'], '/modules/')!==false){
       preg_match_all('/\/modules\/(.*)\//',$u['path'],$all);
       $dir=$all[1][0];
@@ -122,18 +130,9 @@
 
 
     if(file_exists(XOOPS_ROOT_PATH."/modules/{$dir}/interface_menu.php")){
-      //include_once XOOPS_ROOT_PATH."/modules/{$dir}/interface_menu.php";
+      include_once XOOPS_ROOT_PATH."/modules/{$dir}/interface_menu.php";
+      global $interface_menu,$interface_menu_img,$isAdmin,$module_id,$interface_icon;
 
-      global $interface_menu,$isAdmin,$module_id;
-      if ($_GET['test'] == '1') {
-          echo "<h1>3</h1>";
-          echo '$dir:' . $dir."<br>";
-          echo '$module_id:' . $module_id."<br>";
-          echo '$isAdmin:' . $isAdmin."<br>";
-          echo '$isShopAdmin:' . $isShopAdmin."<br>";
-          echo var_export($interface_menu,true)."<br>";
-          exit;
-      }
 
       foreach($interface_menu as $title=>$url){
         $my_menu[$i]['id']=$i;
@@ -141,6 +140,7 @@
         $my_menu[$i]['url']=XOOPS_URL."/modules/{$dir}/{$url}";
         $my_menu[$i]['target']="_self";
         $my_menu[$i]['icon']=$interface_icon[$title];
+        $my_menu[$i]['img']=($interface_menu_img[$title])?XOOPS_URL."/modules/{$dir}/images/{$interface_menu_img[$title]}":'';
         $my_menu[$i]['submenu']="";
         $i++;
       }

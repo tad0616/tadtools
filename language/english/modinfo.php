@@ -31,3 +31,6 @@ define('_MI_TADTOOLS_BACK_2_ADMIN', 'Back to Administration of ');
 
 //help
 define('_MI_TADTOOLS_HELP_OVERVIEW', 'Overview');
+
+define('_MI_TADTOOLS_USE_CODEMIRROR', 'Do you use codemirror plugin?');
+define('_MI_TADTOOLS_USE_CODEMIRROR_DESC', 'If you often use syntaxhighlighter paste the original code, it is recommended to close.');

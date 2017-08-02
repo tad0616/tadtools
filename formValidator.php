@@ -33,10 +33,7 @@ class formValidator
               (function(\$){
                 \$(document).ready(function(){
                   \$('{$this->id}').validationEngine({
-                    inlineValidation: true,
-                    success :  false,
                     promptPosition: '$Position', //選項有：topLeft, topRight, bottomLeft,  centerRight, bottomRight
-                    failure : function() {}
                   });
                 });
               })(jQuery);
@@ -52,10 +49,7 @@ class formValidator
             <script type='text/javascript'>
             $().ready(function() {
               $('{$this->id}').validationEngine({
-                inlineValidation: true,
-                success :  false,
                 promptPosition: '$Position', //選項有：topLeft, topRight, bottomLeft,  centerRight, bottomRight
-                failure : function() {}
               });
             });
             </script>";

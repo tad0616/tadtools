@@ -26,7 +26,7 @@ function tadtools_setup()
     $version = _MA_TT_VERSION . $xoopsModule->getVar("version");
 
     $i      = 0;
-    $themes = "";
+    $themes = array();
     foreach ($xoopsConfig['theme_set_allowed'] as $theme) {
         $color = $xoopsConfig['theme_set'] == $theme ? "style='background-color:#E2EDAD'" : "";
 

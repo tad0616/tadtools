@@ -23,5 +23,19 @@
 
   <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/theme_css_navbar.tpl"}>
 
+  <{if $theme_kind!="html"}>
+    .row-sm-eq {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display:         flex;
+        flex-direction: column;
+    }
+    @media (min-width:768px) {
+        .row-sm-eq {
+            flex-direction: row;
+        }
+    }
+  <{/if}>
 </style>
 <!--導覽工具列、區塊標題CSS設定 by hc-->

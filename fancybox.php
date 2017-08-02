@@ -59,18 +59,12 @@ class fancybox
         $jquery = $this->show_jquery ? get_jquery() : "";
 
         if ($xoTheme) {
-            $xoTheme->addScript('modules/tadtools/fancyBox/lib/jquery.mousewheel-3.0.6.pack.js');
-            $xoTheme->addScript('modules/tadtools/fancyBox/source/jquery.fancybox.js?v=2.1.4');
-            $xoTheme->addStylesheet('modules/tadtools/fancyBox/source/jquery.fancybox.css?v=2.1.4');
-            $xoTheme->addStylesheet('modules/tadtools/fancyBox/source/helpers/jquery.fancybox-buttons.css?v=1.0.5');
-            $xoTheme->addScript('modules/tadtools/fancyBox/source/helpers/jquery.fancybox-buttons.js?v=1.0.5');
-            $xoTheme->addStylesheet('modules/tadtools/fancyBox/source/helpers/jquery.fancybox-thumbs.css?v=1.0.7');
-            $xoTheme->addScript('modules/tadtools/fancyBox/source/helpers/jquery.fancybox-thumbs.js?v=1.0.7');
-            $xoTheme->addScript('modules/tadtools/fancyBox/source/helpers/jquery.fancybox-media.js?v=1.0.5');
+            $xoTheme->addScript('modules/tadtools/fancyBox/lib/jquery.mousewheel.pack.js');
+            $xoTheme->addScript('modules/tadtools/fancyBox/source/jquery.fancybox.js');
+            $xoTheme->addStylesheet('modules/tadtools/fancyBox/source/jquery.fancybox.css');
 
             $xoTheme->addScript('', null, "
-            (function(\$){
-              \$(document).ready(function(){
+              jQuery(document).ready(function(){
                 \$('{$this->name}').fancybox({
                   fitToView : true,
                   width   : '{$this->width}',
@@ -85,18 +79,12 @@ class fancybox
                   {$prevent_closed_outside_code}
                 });
               });
-            })(jQuery);
           ");
         } else {
 
-            $js = $this->show_js ? "<script type='text/javascript' src='" . TADTOOLS_URL . "/fancyBox/lib/jquery.mousewheel-3.0.6.pack.js'></script>
-              <script type='text/javascript' language='javascript' src='" . TADTOOLS_URL . "/fancyBox/source/jquery.fancybox.js?v=2.1.4'></script>
-              <link rel='stylesheet' href='" . TADTOOLS_URL . "/fancyBox/source/jquery.fancybox.css?v=2.1.4' type='text/css' media='screen' />
-              <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-buttons.css?v=1.0.5' />
-              <script type='text/javascript' src='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-buttons.js?v=1.0.5'></script>
-              <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-thumbs.css?v=1.0.7' />
-              <script type='text/javascript' src='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-thumbs.js?v=1.0.7'></script>
-              <script type='text/javascript' src='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-media.js?v=1.0.5'></script>" : "";
+            $js = $this->show_js ? "<script type='text/javascript' src='" . TADTOOLS_URL . "/fancyBox/lib/jquery.mousewheel.pack.js'></script>
+              <script type='text/javascript' language='javascript' src='" . TADTOOLS_URL . "/fancyBox/source/jquery.fancybox.js'></script>
+              <link rel='stylesheet' href='" . TADTOOLS_URL . "/fancyBox/source/jquery.fancybox.css' type='text/css' media='screen' />" : "";
 
             $fancybox = "
             {$jquery}

@@ -171,7 +171,7 @@ define('PDF_FONT_SIZE_DATA', 8);
 /**
  * Default monospaced font name.
  */
-define('PDF_FONT_MONOSPACED', 'courier');
+define('PDF_FONT_MONOSPACED', 'droidsansfallback');
 
 /**
  * Ratio used to adjust the conversion of pixels to user units.

@@ -4,8 +4,8 @@
 <div style="padding:0px;margin:0px;">
   <div id="SliderName_3" class="SliderName_3" style="padding:0px;margin:0px; width: <{$slide_width}>px; height: <{$slide_height}>px;">
     <{foreach from=$slider_var item=slide}>
-      <img src="<{$slide.file_url}>" alt="<{$slide.description}>" title="<{$slide.description}>" />
-    <div class="SliderName_3Description"><{$slide.description}></div>
+      <img src="<{$slide.file_url}>" alt="<{$slide.text_description}>" title="<{$slide.text_description}>" />
+      <div class="SliderName_3Description"><{$slide.description}></div>
     <{/foreach}>
   </div>
   <div class="c"></div>

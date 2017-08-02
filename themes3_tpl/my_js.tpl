@@ -1,9 +1,12 @@
 <script type="text/javascript">
   $(document).ready(function(){
-    $("select[name='xoops_theme_select']").addClass("col-sm-12");
-    $("input[name='query']").addClass("col-sm-12");
-    $("input[name='uname']").addClass("col-sm-12");
-    $("input[name='pass']").addClass("col-sm-12");
+    $("select[name='xoops_theme_select']").addClass("form-control");
+    $("input[name='query']").addClass("form-control");
+    $("input[name='uname']").addClass("form-control");
+    $("input[name='pass']").addClass("form-control");
+
+
+    $('iframe:not([title])').attr('title','iframe content');
 
     <{php}>
       if(file_exists(XOOPS_ROOT_PATH."/modules/tadtools/mobile_device_detect.php")){
@@ -15,31 +18,8 @@
       }
     <{/php}>
 
-    if(mobile_device==''){
-      var leftBlock=$("#xoops_theme_left_zone").height();
-      var centerBlock=$("#xoops_theme_center_zone").height();
-      var rightBlock=$("#xoops_theme_right_zone").height();
-      var maxheight=leftBlock;
 
-      if(rightBlock > maxheight){
-        maxheight=rightBlock;
-      }
-
-      if(centerBlock > maxheight){
-        maxheight=centerBlock;
-      }
-
-      <{if $theme_type=="theme_type_5" || $theme_type=="theme_type_6" || $theme_type=="theme_type_7"}>
-        $("#xoops_theme_left_zone").height(maxheight);
-        $("#xoops_theme_right_zone").height(maxheight);
-      <{elseif $theme_type=="theme_type_3" || $theme_type=="theme_type_4"}>
-        $("#xoops_theme_left_zone").height(maxheight);
-      <{elseif $theme_type=="theme_type_1"}>
-        $("#xoops_theme_left_zone").height(maxheight);
-      <{elseif $theme_type=="theme_type_2"}>
-        $("#xoops_theme_right_zone").height(maxheight);
-      <{/if}>
-    }
 
   });
 </script>
+

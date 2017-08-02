@@ -116,6 +116,7 @@
           $menu_var[<{$m.id}>]['url'] = "<{$m.url}>";<br>
           $menu_var[<{$m.id}>]['target'] = "<{$m.target}>";<br>
           $menu_var[<{$m.id}>]['icon'] = "<{$m.icon}>";<br>
+          $menu_var[<{$m.id}>]['img'] = "<{$m.img}>";<br>
           $menu_var[<{$m.id}>]['submenu'] = "<{$m.submenu}>";
         </td></tr>
         <{if $m.submenu}>
@@ -126,6 +127,7 @@
               $menu_var[<{$m.id}>]['submenu'][<{$m2.id}>]['url'] = "<{$m2.url}>";<br>
               $menu_var[<{$m.id}>]['submenu'][<{$m2.id}>]['target'] = "<{$m2.target}>";<br>
               $menu_var[<{$m.id}>]['submenu'][<{$m2.id}>]['icon'] = "<{$m2.icon}>";<br>
+              $menu_var[<{$m.id}>]['submenu'][<{$m2.id}>]['img'] = "<{$m2.img}>";<br>
               $menu_var[<{$m.id}>]['submenu'][<{$m2.id}>]['submenu'] = "<{$m2.submenu}>";
             </td></tr>
               <{if $m2.submenu}>
@@ -136,6 +138,7 @@
                     $menu_var[<{$m.id}>]['submenu'][<{$m2.id}>]['submenu'][<{$m3.id}>]['url'] = "<{$m3.url}>";<br>
                     $menu_var[<{$m.id}>]['submenu'][<{$m2.id}>]['submenu'][<{$m3.id}>]['target'] = "<{$m3.target}>";<br>
                     $menu_var[<{$m.id}>]['submenu'][<{$m2.id}>]['submenu'][<{$m3.id}>]['icon'] = "<{$m3.icon}>";<br>
+                    $menu_var[<{$m.id}>]['submenu'][<{$m2.id}>]['submenu'][<{$m3.id}>]['img'] = "<{$m3.img}>";<br>
                     $menu_var[<{$m.id}>]['submenu'][<{$m2.id}>]['submenu'][<{$m3.id}>]['submenu'] = "<{$m3.submenu}>";
                   </td></tr>
                 <{/foreach}>

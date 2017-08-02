@@ -21,10 +21,15 @@ $use_default_config=false;
 $TadLoginXoopsModule = $modhandler->getByDirname("tad_login");
 $TadLoginmid=($TadLoginXoopsModule)?$TadLoginXoopsModule->getVar('mid'):0;
 
+if(empty($TadLoginmid)){
+  $TadLoginXoopsModule = $modhandler->getByDirname("tn_login");
+  $TadLoginmid=($TadLoginXoopsModule)?$TadLoginXoopsModule->getVar('mid'):0;
+}
+
 $config_handler =xoops_gethandler('config');
 $TadLoginConfig =$config_handler->getConfigsByCat(0, $TadLoginmid);
 if(empty($TadLoginConfig['openid_login']))$TadLoginConfig['openid_login']='0';
-if(empty($TadLoginConfig['openid_logo']))$TadLoginConfig['openid_login']='1';
+if(empty($TadLoginConfig['openid_logo']))$TadLoginConfig['openid_logo']='1';
 $this->assign('openid_login',$TadLoginConfig['openid_login']);
 $this->assign('openid_logo',$TadLoginConfig['openid_logo']);
 
@@ -115,7 +120,7 @@ if($mid){
 
 /****設定各個區域的底色****/
 $left_block=$left_block2="";
-$center_block="background-color:{$cb_color};";
+$center_block="background-color: {$cb_color};";
 $right_block=$right_block2="";
 
 
@@ -349,7 +354,7 @@ if($mid){
 $block_position=array("leftBlock", "rightBlock", "centerBlock", "centerLeftBlock", "centerRightBlock", "centerBottomBlock", "centerBottomLeftBlock", "centerBottomRightBlock");
 $this->assign('block_position',$block_position);
 $i=0;
-$positions="";
+$positions=array();
 foreach( $block_position as $position){
   $positions[$i]['block_position']=$position;
   $positions[$i]['block_config']=$use_default_config?$block_config:$db[$position]['block_config'];

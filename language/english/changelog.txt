@@ -1,4 +1,42 @@
-TadTools 3.04 (2017-03-13釋出)
+TadTools 3.09 (released on 2017-06-16)
+====================================
+1. Added framework7
+2.Completion of accessibility 2.0 A-level detection
+3. Update ResponsiveSlides to 1.5.5
+
+
+TadTools 3.08 (2017-05-05 released)
+====================================
+1. Upgrade SmartMenu to the latest version
+2. logo support plain text
+3. The video playback default ratio is changed to 16: 9
+
+
+TadTools 3.07 (2017-04-20 released)
+====================================
+1. Modify the TCPDF preset font
+2. Improve https compatibility
+3. Join the TadDataCenter class
+4. Upload and add gcode format support
+5. Join tn_login support
+6. Remove all common templates in .html format
+7. Optimize the scenery model
+
+
+TadTools 3.06 (2017-03-17 released)
+====================================
+1.Fixed the problem of col-md-failure in BootStrap.
+2.Upgrade all BootStrap3 themes.
+
+
+TadTools 3.05 (2017-03-15 released)
+====================================
+1. Adjust the facebook tag
+2. Let elfinder support Chinese folders and file names
+3. Correct the three-column layout in some cases will not be normal
+
+
+TadTools 3.04 (2017-03-13 released)
 ====================================
 1. Fixed the CKEditor editor could not upload a file other than the image
 2. Upgrade elFinder to 2.1.22

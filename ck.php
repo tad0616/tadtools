@@ -62,7 +62,7 @@ class CKEditor
     //產生編輯器
     public function render()
     {
-        global $xoTheme;
+        global $xoTheme, $xoopsModuleConfig;
 
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/mobile_device_detect.php";
         $mobile = mobile_device_detect(true, false, true, true, true, true, true, false, false);
@@ -83,11 +83,9 @@ class CKEditor
             if ($xoTheme) {
                 $editor = "";
                 $xoTheme->addScript('modules/tadtools/ckeditor/ckeditor.js');
-                $xoTheme->addScript('modules/tadtools/ckeditor/adapters/jquery.js');
             } else {
                 $editor = "
-                <script type='text/javascript' src='" . TADTOOLS_URL . "/ckeditor/ckeditor.js'></script>
-                <script type='text/javascript' src='" . TADTOOLS_URL . "/ckeditor/adapters/jquery.js'></script>";
+                <script type='text/javascript' src='" . TADTOOLS_URL . "/ckeditor/ckeditor.js'></script>";
             }
 
             $other_css = '';
@@ -105,6 +103,8 @@ class CKEditor
                 },";
             }
 
+            $codemirror = $xoopsModuleConfig['use_codemirror'] ? ',codemirror' : '';
+
             $editor .= "
               <textarea name='{$this->ColName}' id='editor_{$this->ColName}' class='ckeditor_css'>{$content}</textarea>
 
@@ -117,7 +117,7 @@ class CKEditor
                 language : '" . _LANGCODE . "' ,
                 toolbar : '{$this->ToolbarSet}' ,
                 contentsCss : ['" . TADTOOLS_URL . "/bootstrap3/css/bootstrap.css','" . TADTOOLS_URL . "/css/font-awesome/css/font-awesome.css'{$other_css}],
-                extraPlugins: 'syntaxhighlight,oembed,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak,fontawesome,codemirror{$extra_uploadcare}',
+                extraPlugins: 'syntaxhighlight,dialog,oembed,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak,fontawesome,prism,codesnippet{$codemirror}{$extra_uploadcare}',
                 {$uploadcare_setup}
                 filebrowserBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=file&mod_dir=" . $this->xoopsDirName . "',
                 filebrowserImageBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=image&mod_dir=" . $this->xoopsDirName . "',

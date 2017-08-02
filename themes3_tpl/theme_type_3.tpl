@@ -1,4 +1,4 @@
-<div id="xoops_theme_content_zone" <{if $theme_kind!="html"}>class="row"<{/if}> style="<{$content_zone}>">
+<div id="xoops_theme_content_zone" <{if $theme_kind!="html"}>class="row row-sm-eq"<{/if}> style="<{$content_zone}>">
   <!-- 若是有左區塊 -->
   <{if $xoBlocks.canvas_left}>
     <!-- 若模式是HTML -->
@@ -44,7 +44,7 @@
 </div>
 
 <{if $xoBlocks.canvas_right}>
-  <div id="xoops_theme_right_zone" <{if $theme_kind!="html"}>class="row"<{/if}> style="background-color:<{$rb_color}>;">
+  <div id="xoops_theme_right_zone" <{if $theme_kind!="html"}>class="row row-sm-eq"<{/if}> style="background-color:<{$rb_color}>;">
       <a accesskey="R" href="#xoops_theme_right_zone_key" title="<{$smarty.const._TAD_RIGHT_ZONE}>" id="xoops_theme_right_zone_key" style="color: transparent; font-size: 10px;">:::</a>
     <div class="<{if $theme_kind!="html"}>col-sm-<{/if}><{$rb_width}>">
       <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/rightBottom.tpl"}>
