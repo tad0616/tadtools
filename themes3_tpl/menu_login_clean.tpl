@@ -68,7 +68,7 @@
       $modhandler = xoops_gethandler('module');
       $config_handler =xoops_gethandler('config');
 
-      $TadLoginXoopsModule = &$modhandler->getByDirname("tad_login");
+      $TadLoginXoopsModule = $modhandler->getByDirname("tad_login");
 
       if($TadLoginXoopsModule){
         include_once XOOPS_ROOT_PATH."/modules/tad_login/function.php";

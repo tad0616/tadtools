@@ -218,7 +218,7 @@ if (!function_exists('push_url')) {
             return;
         }
         $jquery   = get_jquery();
-        $protocol = ($_SERVER['HTTPS']) ? 'https://' : 'http://';
+        $protocol = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
 
         $main = "
         <link rel='stylesheet' href='" . XOOPS_URL . "/modules/tadtools/social-likes/social-likes_birman.css'>
@@ -254,7 +254,7 @@ if (!function_exists('facebook_comments')) {
             return;
         }
 
-        $protocol = ($_SERVER['HTTPS']) ? 'https://' : 'http://';
+        $protocol = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
         $url      = (empty($page) and empty($col_name) and empty($col_sn)) ? "{$protocol}{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}" : XOOPS_URL . "/modules/{$modules}/{$page}?{$col_name}={$col_sn}";
 
         $main = "
@@ -731,7 +731,7 @@ if (!class_exists('PageBar')) {
                 }
             }
 
-            $vars = "";
+            $vars = array();
             // 合併變數名與變數值
             for ($i = 0; $i < count($var); $i++) {
                 $vars[$i] = implode("=", $var[$i]);

@@ -140,7 +140,7 @@ function chk_chk3()
 {
     global $xoopsDB;
     $modhandler  = xoops_gethandler('module');
-    $xoopsModule = &$modhandler->getByDirname("tadtools");
+    $xoopsModule = $modhandler->getByDirname("tadtools");
     $mod_id      = $xoopsModule->getVar('mid');
 
     if ($mod_id) {
@@ -159,7 +159,7 @@ function go_update3()
 {
     global $xoopsDB;
     $modhandler  = xoops_gethandler('module');
-    $xoopsModule = &$modhandler->getByDirname("tadtools");
+    $xoopsModule = $modhandler->getByDirname("tadtools");
     $mod_id      = $xoopsModule->getVar('mid');
     if ($mod_id) {
         $sql = "insert into " . $xoopsDB->prefix("group_permission") . " (`gperm_groupid`, `gperm_itemid`, `gperm_modid`, `gperm_name`) values(1, '$mod_id' , 1 , 'module_read') , (2, '$mod_id' , 1 , 'module_read') ,(3, '$mod_id' , 1 , 'module_read')";

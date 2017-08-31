@@ -30,4 +30,5 @@ redirect_header("http://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?mod
 }
 include_once XOOPS_ROOT_PATH."/modules/tadtools/cal.php";
 $cal=new My97DatePicker();
+$cal->render();
  */

@@ -1665,7 +1665,7 @@ class TadUpFiles
             }
 
             $modhandler        = xoops_gethandler('module');
-            $xoopsModule       = &$modhandler->getByDirname("tadtools");
+            $xoopsModule       = $modhandler->getByDirname("tadtools");
             $config_handler    = xoops_gethandler('config');
             $xoopsModuleConfig = &$config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
 

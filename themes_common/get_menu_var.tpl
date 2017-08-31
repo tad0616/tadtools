@@ -92,7 +92,7 @@
   function get_custom_menu_items($link_cate_name, $link_cate_sn){
     global $xoopsDB,$xoopsTpl,$xoopsUser;
     $i=0;
-    $sub_menu='';
+    $sub_menu=array();
 
     switch($link_cate_name){
 
