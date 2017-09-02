@@ -13,7 +13,7 @@ function tadtools_setup()
 
     $use_bootstrap = $bootstrap_color = "";
 
-    $sql    = "select * from `" . $xoopsDB->prefix("tadtools_setup") . "`";
+    $sql = "SELECT * FROM `" . $xoopsDB->prefix("tadtools_setup") . "`";
     $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error() . "<hr>" . $sql);
     //$tt_theme,$tt_use_bootstrap,$tt_bootstrap_color
     while (list($tt_theme, $tt_use_bootstrap, $tt_bootstrap_color, $tt_theme_kind) = $xoopsDB->fetchRow($result)) {

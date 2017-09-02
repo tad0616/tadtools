@@ -168,7 +168,7 @@ class TadDataCenter
     public function saveData()
     {
         global $xoopsDB;
-        $myts = &MyTextSanitizer::getInstance();
+        $myts = MyTextSanitizer::getInstance();
         // die(var_export($_REQUEST['TDC']));
         // die('$this->col_sn=' . $this->col_sn);
         foreach ($_REQUEST['TDC'] as $name => $value) {
@@ -196,7 +196,7 @@ class TadDataCenter
     public function saveCustomData($data_arr = array())
     {
         global $xoopsDB;
-        $myts = &MyTextSanitizer::getInstance();
+        $myts = MyTextSanitizer::getInstance();
         foreach ($data_arr as $name => $value) {
             $name   = $myts->addSlashes($name);
             $values = '';
@@ -222,7 +222,7 @@ class TadDataCenter
     public function getData($name = '', $sort = '')
     {
         global $xoopsDB;
-        $myts     = &MyTextSanitizer::getInstance();
+        $myts     = MyTextSanitizer::getInstance();
         $and_name = ($name != '') ? "and `data_name`='{$name}'" : "";
         $and_sort = ($sort != '') ? "and `data_sort`='{$sort}'" : "";
         $sql      = "select `data_name`,`data_sort`, `data_value` from `{$this->TadDataCenterTblName}`
@@ -246,7 +246,7 @@ class TadDataCenter
     public function delData($name = '', $data_sort = '')
     {
         global $xoopsDB;
-        $myts     = &MyTextSanitizer::getInstance();
+        $myts     = MyTextSanitizer::getInstance();
         $and_name = ($name != '') ? "and `data_name`='{$name}'" : "";
         $and_sort = ($data_sort != '') ? "and `data_sort`='{$data_sort}'" : "";
         $sql      = "delete from `{$this->TadDataCenterTblName}`
