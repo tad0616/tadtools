@@ -15,6 +15,9 @@ define('_TAD_EXPAND_ALL', 'Expand all');
 define('_TAD_CONTACT_ALL', 'Contact all');
 
 define('_TAD_DEL_CONFIRM', 'Are you sure to delete it?');
+define('_TAD_DEL_CONFIRM_TITLE', 'Are you sure to delete this data');
+define('_TAD_DEL_CONFIRM_TEXT', 'Relevant information will be removed!');
+define('_TAD_DEL_CONFIRM_BTN', 'OK to delete!');
 define('_TAD_FUNCTION', 'Function');
 define('_TAD_EDIT', 'Edit');
 define('_TAD_DEL', 'Delete');
