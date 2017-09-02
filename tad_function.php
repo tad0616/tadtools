@@ -385,7 +385,7 @@ if (!function_exists('power_chk')) {
         $module_id = $xoopsModule->getVar('mid');
         // echo var_export($module_id);
         //取得群組權限功能
-        $gperm_handler = xoops_gethandler('groupperm');
+        $gperm_handler = xoops_getHandler('groupperm');
 
         //權限項目編號
         $perm_itemid = intval($sn);
