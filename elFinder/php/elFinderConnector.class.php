@@ -192,9 +192,9 @@ class elFinderConnector {
 							if (empty($matches[1]) && $matches[1] !== '0') {
 								$start = $size - $matches[2];
 							} else {
-								$start = intval($matches[1]);
+								$start = (int)$matches[1];
 								if (!empty($matches[2])) {
-									$end = intval($matches[2]);
+									$end = (int)$matches[2];
 									if ($end >= $size) {
 										$end = $size - 1;
 									}

@@ -1025,8 +1025,8 @@ class elFinderVolumeBox extends elFinderVolumeDriver
                 }
 
                 if (($s = getimagesize($tmb)) != false) {
-                    $x = $s[0] > $tmbSize ? intval(($s[0] - $tmbSize) / 2) : 0;
-                    $y = $s[1] > $tmbSize ? intval(($s[1] - $tmbSize) / 2) : 0;
+                    $x = $s[0] > $tmbSize ? (int)(($s[0] - $tmbSize) / 2) : 0;
+                    $y = $s[1] > $tmbSize ? (int)(($s[1] - $tmbSize) / 2) : 0;
                     $result = $this->imgCrop($tmb, $tmbSize, $tmbSize, $x, $y, 'png');
                 }
             } else {
@@ -1182,7 +1182,7 @@ class elFinderVolumeBox extends elFinderVolumeDriver
      **/
     protected function _joinPath($dir, $name)
     {
-        if (strval($dir) === '0') {
+        if ((string)$dir === '0') {
             $dir = '';
         }
 

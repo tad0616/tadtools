@@ -417,7 +417,7 @@ class elFinder {
 		}
 
 		// set self::$volumesCnt by HTTP header "X-elFinder-VolumesCntStart"
-		if (isset($_SERVER['HTTP_X_ELFINDER_VOLUMESCNTSTART']) && ($volumesCntStart = intval($_SERVER['HTTP_X_ELFINDER_VOLUMESCNTSTART']))) {
+		if (isset($_SERVER['HTTP_X_ELFINDER_VOLUMESCNTSTART']) && ($volumesCntStart = (int)$_SERVER['HTTP_X_ELFINDER_VOLUMESCNTSTART'])) {
 			self::$volumesCnt = $volumesCntStart;
 		}
 		
@@ -427,7 +427,7 @@ class elFinder {
 		$this->timeout = (isset($opts['timeout']) ? $opts['timeout'] : 0);
 		$this->uploadTempPath = (isset($opts['uploadTempPath']) ? $opts['uploadTempPath'] : '');
 		$this->callbackWindowURL = (isset($opts['callbackWindowURL']) ? $opts['callbackWindowURL'] : '');
-		$this->maxTargets = (isset($opts['maxTargets']) ? intval($opts['maxTargets']) : $this->maxTargets);
+		$this->maxTargets = (isset($opts['maxTargets']) ? (int)$opts['maxTargets'] : $this->maxTargets);
 		elFinder::$commonTempPath = (isset($opts['commonTempPath']) ? $opts['commonTempPath'] : './.tmp');
 		if (!is_writable(elFinder::$commonTempPath)) {
 			elFinder::$commonTempPath = sys_get_temp_dir();
@@ -435,10 +435,10 @@ class elFinder {
 				elFinder::$commonTempPath = '';
 			}
 		}
-		$this->maxArcFilesSize = isset($opts['maxArcFilesSize'])? intval($opts['maxArcFilesSize']) : 0;
+		$this->maxArcFilesSize = isset($opts['maxArcFilesSize'])? (int)$opts['maxArcFilesSize'] : 0;
 		$this->optionsNetVolumes = (isset($opts['optionsNetVolumes']) && is_array($opts['optionsNetVolumes']))? $opts['optionsNetVolumes'] : array();
 		if (isset($opts['itemLockExpire'])) {
-			$this->itemLockExpire = intval($opts['itemLockExpire']);
+			$this->itemLockExpire = (int)$opts['itemLockExpire'];
 		}
 		
 		// deprecated settings
@@ -1171,7 +1171,7 @@ class elFinder {
 				foreach($ls as $_f) {
 					$_mtime = max($_mtime, $_f['ts']);
 				}
-				$compare = strval(count($ls)).':'.strval($_mtime);
+				$compare = (string)count($ls) . ':' . (string)$_mtime;
 				if ($compare !== $args['compare']) {
 					break;
 				}
@@ -2033,7 +2033,7 @@ class elFinder {
 			$fname = $m[1];
 			$encname = md5($cid . '_' . $fname);
 			$base = $tempDir . DIRECTORY_SEPARATOR . 'ELF' . $encname;
-			$clast = intval($m[3]);
+			$clast = (int)$m[3];
 			if (is_null($tmpname)) {
 				ignore_user_abort(true);
 				sleep(10); // wait 10 sec
@@ -2771,7 +2771,7 @@ class elFinder {
 		$compare = null;
 		// long polling mode
 		if ($args['compare'] && count($args['targets']) === 1) {
-			$compare = intval($args['compare']);
+			$compare = (int)$args['compare'];
 			$hash = $args['targets'][0];
 			if ($volume = $this->volume($hash)) {
 				$standby = (int)$volume->getOption('plStandby');
@@ -2814,7 +2814,7 @@ class elFinder {
 		
 		$result = array('files' => $files);
 		if (!is_null($compare)) {
-			$result['compare'] = strval($compare);
+			$result['compare'] = (string)$compare;
 		}
 		return $result;
 	}

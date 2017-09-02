@@ -20,7 +20,7 @@ class QR {//Licensed under GPLv3, full text at http://www.gnu.org/licenses/gpl-3
 	$this->format();
 	}
 	private function prepare($data,$ecc){//Validate Data
-	$ver=0;$len=strlen($data);$this->type=QR::BIN;$ecc=min(max(intval($ecc),QR::ECC_M),QR::ECC_Q);
+	$ver=0;$len=strlen($data);$this->type=QR::BIN;$ecc=min(max((int)$ecc, QR::ECC_M), QR::ECC_Q);
 	if(!preg_match('{[^0-9]}',$data)){$this->type=QR::NUM;}
 	elseif(!preg_match('{[^A-Z0-9 $%*+\-./:]}',$data)){$this->type=QR::ALPHA;}
 	elseif(mb_detect_encoding($data,'SJIS',true) && preg_match('{[\x81-\x9F\xE0-\xEF]}',$data)){$this->type=QR::KANJI;}
@@ -30,8 +30,8 @@ class QR {//Licensed under GPLv3, full text at http://www.gnu.org/licenses/gpl-3
 	$this->img=str_split(str_pad('',pow($this->dim,2),'4'),$this->dim);
 	$data=$this->data;$c=strlen($data);$rem='';//Begin formatting data
 	switch($this->type){
-	case QR::NUM:$data=str_split($data,3);if($c%3!=0){$rem=QR::bits(intval(array_pop($data)),($c%3)*3+1);}
-		foreach($data as &$d){$d=QR::bits(intval($d),10);}$data[]=$rem;break;
+	case QR::NUM:$data=str_split($data,3);if($c%3!=0){$rem=QR::bits((int)array_pop($data), ($c % 3) * 3 + 1);}
+		foreach($data as &$d){$d=QR::bits((int)$d, 10);}$data[] =$rem;break;
 	case QR::ALPHA:$data=str_split($data,2);if($c%2==1){$rem=QR::bits(QR::$alpha[array_pop($data)],6);}
 		foreach($data as &$d){$d=QR::bits(QR::$alpha[$d[0]]*45+QR::$alpha[$d[1]],11);}$data[]=$rem;break;
 	case QR::BIN:$data=str_split($data);foreach($data as &$d){$d=QR::bits(ord($d),8);}break;
