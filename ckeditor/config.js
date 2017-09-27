@@ -52,6 +52,8 @@ CKEDITOR.editorConfig = function( config ) {
         // Inline styles
         { name: '自適應圖片', element: 'img', styles: {'height': 'auto'}, attributes: { 'class': 'img-responsive' } },
         { name: '自適應圖框', element: 'img', styles: {'height': 'auto'}, attributes: { 'class': 'img-responsive img-thumbnail' } },
+        { name: '語法', element: 'code'},
+        { name: '按鍵', element: 'kbd'},
         { name: 'Default 標籤', element: 'span', attributes: { 'class': 'label label-default' } },
         { name: 'Primary 標籤', element: 'span', attributes: { 'class': 'label label-primary' } },
         { name: 'Success 標籤', element: 'span', attributes: { 'class': 'label label-success' } },

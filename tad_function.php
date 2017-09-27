@@ -119,27 +119,34 @@ function get_bootstrap($mode = '')
 if (!function_exists('get_xoops_url')) {
     function get_xoops_url()
     {
-        $protocol = ($_SERVER['HTTPS']) ? 'https://' : 'http://';
-        $u        = parse_url($protocol . $_SERVER["HTTP_HOST"] . $_SERVER['REQUEST_URI']);
-        if (!empty($u['path']) and preg_match('/\/modules/', $u['path'])) {
-            $XMUrl = explode("/modules", $u['path']);
-        } elseif (!empty($u['path']) and preg_match('/\/themes/', $u['path'])) {
-            $XMUrl = explode("/themes", $u['path']);
-        } elseif (!empty($u['path']) and preg_match('/.php/', $u['path'])) {
-            $XMUrl[0] = dirname($u['path']);
-        } elseif (!empty($u['path'])) {
-            $XMUrl[0] = $u['path'];
-        } else {
-            $XMUrl[0] = "";
-        }
+        $http = ($_SERVER['HTTPS']) ? 'https://' : 'http://';
+        $port = $_SERVER['SERVER_PORT'] == 80 ? '' : ":{$_SERVER['SERVER_PORT']}";
+        if (!isset($_SESSION['ez_url'])) {
+            $u = parse_url($http . $_SERVER["SERVER_NAME"] . $port . $_SERVER['REQUEST_URI']);
+            if (!empty($u['path']) and preg_match('/\/modules/', $u['path'])) {
+                $XMUrl = explode("/modules", $u['path']);
+            } elseif (!empty($u['path']) and preg_match('/\/themes/', $u['path'])) {
+                $XMUrl = explode("/themes", $u['path']);
+            } elseif (!empty($u['path']) and preg_match('/\/upgrade/', $u['path'])) {
+                $XMUrl = explode("/upgrade", $u['path']);
+            } elseif (!empty($u['path']) and preg_match('/\/include/', $u['path'])) {
+                $XMUrl = explode("/include", $u['path']);
+            } elseif (!empty($u['path']) and preg_match('/.php/', $u['path'])) {
+                $XMUrl[0] = dirname($u['path']);
+            } elseif (!empty($u['path'])) {
+                $XMUrl[0] = $u['path'];
+            } else {
+                $XMUrl[0] = "";
+            }
 
-        $my_url = str_replace('\\', '/', $XMUrl['0']);
-        if (substr($my_url, -1) == '/') {
-            $my_url = substr($my_url, 0, -1);
-        }
+            $my_url = str_replace('\\', '/', $XMUrl['0']);
+            if (substr($my_url, -1) == '/') {
+                $my_url = substr($my_url, 0, -1);
+            }
 
-        $url = "{$u['scheme']}://{$u['host']}{$my_url}";
-        return $url;
+            $_SESSION['ez_url'] = "{$u['scheme']}://{$u['host']}{$port}{$my_url}";
+        }
+        return $_SESSION['ez_url'];
     }
 }
 

@@ -1,4 +1,17 @@
-TadTools 3.09 (released on 2017-06-16)
+TadTools 3.1 (2017-09-25 released)
+====================================
+1. thumbnail changed to full map presentation
+2. Modify the meta tag for the common template
+3. Remove unnecessary validation syntax
+4. Change codemirror to preferences can be turned off or enabled
+5. Adjust the thumbnail width, zoom in and set it square
+6. Remove jquery-migrate
+7. solve jquery.jgrowl problem
+8. Upgrade My97DatePicker to version 4.8
+9. Add new phpWord and phpExcel
+
+
+TadTools 3.09 (2017-06-16 released)
 ====================================
 1. Added framework7
 2.Completion of accessibility 2.0 A-level detection

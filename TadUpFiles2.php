@@ -796,8 +796,8 @@ class TadUpFiles2 extends TadUpFiles
                     $show_description_txt = ($show_description) ? "<div style='font-weight: normal; font-size: 11px; word-break: break-all; line-height: 1.2; margin: 4px auto 4px 0px; text-align: left;'>{$i}) {$description} {$show_dl_txt}</div>" : "{$show_dl_txt}";
 
                     $all_files .= ($show_mode == "small") ? "<a href='{$linkto}' class='iconize {$fancyboxset}' {$rel}  title='{$description}'></a> " : "
-                      <li style='width:120px;height:120px;float:left;list-style:none;'>
-                        <a href='{$linkto}' class='thumbnail {$fancyboxset}' {$rel} style=\"width: 110px; height: 70px; overflow: hidden; background-color: #000000;  background-image: url('{$thumb_pic}'); background-repeat: no-repeat; background-position: center center; background-size: contain; margin-bottom: 4px;\" title='{$description}'></a>{$show_description_txt}
+                      <li style='width:120px;height:160px;float:left;list-style:none;'>
+                        <a href='{$linkto}' class='thumbnail {$fancyboxset}' {$rel} style=\"width: 120px; height: 120px; overflow: hidden; background-color: #333333;  background-image: url('{$thumb_pic}'); background-repeat: no-repeat; background-position: center center; background-size: contain; margin-bottom: 4px;\" title='{$description}'></a>{$show_description_txt}
                       </li>";
                 }
 
