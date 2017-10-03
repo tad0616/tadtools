@@ -416,7 +416,7 @@ if (!function_exists('txt_to_group_name')) {
             $g_txt_all = $default_txt;
         } else {
             $gs    = explode(",", $enable_group);
-            $g_txt = "";
+            $g_txt = array();
             foreach ($gs as $gid) {
                 $g_txt[] = $groups_array[$gid];
             }
@@ -865,15 +865,15 @@ if (!class_exists('PageBar')) {
             while ($i <= $this->pTotal && $i <= ($this->pCurrent * $this->pLimit)) {
                 if ($i == $this->current) {
                     $bar_center = "
-          {$bar_center}
-          <li class='active'>
-            <a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='{$i}'>{$i}<span class='sr-only'>(current)</span></a>
-          </li>";
+                      {$bar_center}
+                      <li class='active'>
+                        <a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='{$i}'>{$i}<span class='sr-only'>(current)</span></a>
+                      </li>";
                 } else {
                     $bar_center .= "
-          <li>
-            <a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='{$i}'>{$i}</a>
-          </li>";
+                      <li>
+                        <a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='{$i}'>{$i}</a>
+                      </li>";
                 }
                 $i++;
             }

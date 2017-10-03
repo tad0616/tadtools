@@ -34,13 +34,18 @@ class fullcalendar
 
         if ($xoTheme) {
             $xoTheme->addStylesheet('modules/tadtools/fullcalendar/fullcalendar.css');
+            $xoTheme->addScript('modules/tadtools/fullcalendar/lib/moment.min.js');
             $xoTheme->addScript('modules/tadtools/fullcalendar/fullcalendar.js');
+            $xoTheme->addScript('modules/tadtools/fullcalendar/locale-all.js');
+
             $fullcalendar = '';
         } else {
             $fullcalendar = "
             $jquery
             <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/fullcalendar/fullcalendar.css'>
-            <script src='" . TADTOOLS_URL . "/fullcalendar/fullcalendar.js' type='text/javascript'></script>";
+            <script src='" . TADTOOLS_URL . "/fullcalendar/lib/moment.min.js' type='text/javascript'></script>
+            <script src='" . TADTOOLS_URL . "/fullcalendar/fullcalendar.js' type='text/javascript'></script>
+            <script src='" . TADTOOLS_URL . "/fullcalendar/locale-all.js' type='text/javascript'></script>";
         }
 
         $js_parameter = "";
@@ -52,7 +57,9 @@ class fullcalendar
 
         $get_event = "";
         if ($json_file) {
-            $json_parameter = "start: start.getTime(), end: end.getTime(), ";
+            // $json_parameter = "start: start.format(), end: end.format(), ";
+            $json_parameter = "";
+
             if (!empty($this->json_parameter)) {
                 foreach ($this->json_parameter as $key => $value) {
                     $json_parameter_arr[] = "{$key}: '{$value}'";
@@ -60,32 +67,33 @@ class fullcalendar
                 $json_parameter .= implode(',', $json_parameter_arr);
             }
             $get_event = "
-            events: function(start, end, callback) {
-                \$.getJSON('$json_file',
-                {
-                  {$json_parameter}
+                events: {
+                    url: '$json_file',
+                    type: 'POST',
+                    data: {
+                        {$json_parameter}
+                    },
+                    error: function() {
+                        alert('there was an error while fetching events!');
+                    }
                 },
-                function(result) {
-                  callback(result);
-                });
-              },
+
             ";
         }
 
         $fullcalendar .= "<script type='text/javascript'>
           \$(function() {
               \$('{$selector}').fullCalendar({
-                buttonText:{
-                  today:'" . TADTOOLS_CALENDAR_TODAY . "',
-                  prev:'" . TADTOOLS_CALENDAR_PREV_MONTH . "',
-                  next:'" . TADTOOLS_CALENDAR_NEXT_MONTH . "'
-                },
+                editable: true,
+                navLinks: true,
+                eventLimit: true,
+                locale: window.navigator.userLanguage || window.navigator.language,
                 {$js_parameter}
                 {$get_event}
                 header: {
-                  left: 'prev,next today',
-                  center: 'title',
-                  right: ''
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay,listWeek'
                 }
               })
           });
