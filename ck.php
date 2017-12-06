@@ -103,6 +103,7 @@ class CKEditor
                 },";
             }
 
+            $xoopsModuleConfig  = TadToolsXoopsModuleConfig();
             $codemirror = $xoopsModuleConfig['use_codemirror'] ? ',codemirror' : '';
 
             $editor .= "
