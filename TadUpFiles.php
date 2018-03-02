@@ -1668,9 +1668,9 @@ class TadUpFiles
                 copy($file_hd_saved, $tmp_file);
             }
 
-            $modhandler        = xoops_gethandler('module');
+            $modhandler        = xoops_getHandler('module');
             $xoopsModule       = $modhandler->getByDirname("tadtools");
-            $config_handler    = xoops_gethandler('config');
+            $config_handler    = xoops_getHandler('config');
             $xoopsModuleConfig = &$config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
 
             if ($xoopsModuleConfig['auto_charset'] != 0) {
@@ -1718,13 +1718,13 @@ class TadUpFiles
             'P' => 1024 * 1024 * 1024 * 1024 * 1024,
         );
 
-        $bytes = floatval($str);
+        $bytes = (float)$str;
 
         if (preg_match('#([KMGTP]?)$#si', $str, $matches) && !empty($bytes_array[$matches[1]])) {
             $bytes *= $bytes_array[$matches[1]];
         }
 
-        $bytes = intval(round($bytes, 2));
+        $bytes = (int)round($bytes, 2);
 
         return $bytes;
     }

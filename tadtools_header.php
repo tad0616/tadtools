@@ -20,10 +20,10 @@ include_once TADTOOLS_PATH . "/language/{$xoopsConfig['language']}/main.php";
 if (!function_exists('TadToolsXoopsModuleConfig')) {
     function TadToolsXoopsModuleConfig()
     {
-        $modhandler  = xoops_gethandler('module');
+        $modhandler  = xoops_getHandler('module');
         $xoopsModule = $modhandler->getByDirname("tadtools");
         if (is_object($xoopsModule)) {
-            $config_handler    = xoops_gethandler('config');
+            $config_handler    = xoops_getHandler('config');
             $xoopsModuleConfig = $config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
 
             return $xoopsModuleConfig;

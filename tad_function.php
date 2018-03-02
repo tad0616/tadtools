@@ -394,10 +394,10 @@ if (!function_exists('power_chk')) {
         $module_id = $xoopsModule->getVar('mid');
         // echo var_export($module_id);
         //取得群組權限功能
-        $gperm_handler = xoops_gethandler('groupperm');
+        $gperm_handler = xoops_getHandler('groupperm');
 
         //權限項目編號
-        $perm_itemid = intval($sn);
+        $perm_itemid = (int)$sn;
         // echo var_export($perm_itemid);
         //依據該群組是否對該權限項目有使用權之判斷 ，做不同之處理
         if ($gperm_handler->checkRight($perm_name, $perm_itemid, $groups, $module_id)) {
@@ -660,7 +660,7 @@ if (!class_exists('PageBar')) {
 
         public function __construct($total, $limit = 10, $page_limit)
         {
-            $limit = intval($limit);
+            $limit = (int)$limit;
             //die(var_export($limit));
             $mydirname     = basename(dirname(__FILE__));
             $this->prev    = "<img src='" . TADTOOLS_URL . "/images/1leftarrow.png' alt='" . _TAD_BACK_PAGE . "' align='absmiddle' hspace=3>";
@@ -683,7 +683,7 @@ if (!class_exists('PageBar')) {
             $this->query_str  = $this->processQuery($this->used_query);
             $this->glue       = ($this->query_str == "") ? '?' : '&';
 
-            $this->current = (isset($_GET[$this->url_page])) ? intval($_GET[$this->url_page]) : 1;
+            $this->current = (isset($_GET[$this->url_page])) ? (int)$_GET[$this->url_page] : 1;
             if ($this->current < 1) {
                 $this->current = 1;
             }

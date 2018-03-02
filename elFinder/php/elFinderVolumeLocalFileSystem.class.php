@@ -30,6 +30,7 @@ if (!class_exists('RecursiveCallbackFilterIterator', false)) {
  * @author Dmitry (dio) Levashov
  * @author Troex Nevelin
  **/
+
 class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver
 {
 
