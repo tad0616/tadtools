@@ -24,8 +24,8 @@ if (!function_exists('get_jquery')) {
                   <script type='text/javascript'>
                     if(typeof jQuery == 'undefined') {
                     document.write(\"<script type='text/javascript' src='" . TADTOOLS_URL . "/jquery/jquery-3.2.1.js'><\/script>\");
-                    document.write(\"<script type='text/javascript' src='" . TADTOOLS_URL . "/jquery/jquery-migrate-3.0.0.min.js'><\/script>\");
-                    document.write(\"<script type='text/javascript' src='" . TADTOOLS_URL . "/jquery/jquery.jgrowl.js'><\/script>\");
+                    // document.write(\"<script type='text/javascript' src='" . TADTOOLS_URL . "/jquery/jquery-migrate-3.0.0.min.js'><\/script>\");
+                    // document.write(\"<script type='text/javascript' src='" . TADTOOLS_URL . "/jquery/jquery.jgrowl.js'><\/script>\");
                     }
                   </script>
                   $jqueryui_path
@@ -35,8 +35,8 @@ if (!function_exists('get_jquery')) {
                   <script type='text/javascript'>
                     if(typeof jQuery == 'undefined') {
                     document.write(\"<script type='text/javascript' src='" . TADTOOLS_URL . "/jquery/jquery-3.2.1.js'><\/script>\");
-                    document.write(\"<script type='text/javascript' src='" . TADTOOLS_URL . "/jquery/jquery-migrate-1.4.1.min.js'><\/script>\");
-                    document.write(\"<script type='text/javascript' src='" . TADTOOLS_URL . "/jquery/jquery.jgrowl.js'><\/script>\");
+                    // document.write(\"<script type='text/javascript' src='" . TADTOOLS_URL . "/jquery/jquery-migrate-1.4.1.min.js'><\/script>\");
+                    // document.write(\"<script type='text/javascript' src='" . TADTOOLS_URL . "/jquery/jquery.jgrowl.js'><\/script>\");
                     }
                   </script>
                   $jqueryui_path
@@ -49,15 +49,15 @@ if (!function_exists('get_jquery')) {
 
             $ver = (int)str_replace('.', '', substr(XOOPS_VERSION, 6, 5));
 
-            if ($ver >= 259) {
-                $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
-            } else {
-                $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-1.4.1.min.js');
-            }
+            // if ($ver >= 259) {
+            //     $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
+            // } else {
+            //     $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-1.4.1.min.js');
+            // }
 
             if ($ui) {
                 $xoTheme->addStylesheet("modules/tadtools/jquery/themes/{$theme}/jquery.ui.all.css");
-                $xoTheme->addScript('modules/tadtools/jquery/ui/jquery-ui.js');
+                $xoTheme->addScript('browse.php?Frameworks/jquery/plugins/jquery.ui.js');
             }
         }
     }

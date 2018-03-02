@@ -304,18 +304,20 @@ class TadUpFiles
     //上傳元件
     public function upform($show_edit = false, $upname = 'upfile', $maxlength = "", $show_list_del_file = true, $only_type = "", $thumb = true, $id = '')
     {
-        $maxlength     = empty($maxlength) ? "" : "maxlength='{$maxlength}'";
-        $accept        = ($only_type) ? "accept='{$only_type}'" : "";
-        $list_del_file = ($show_list_del_file) ? $this->list_del_file($show_edit, $thumb) : "";
-        $jquery        = get_jquery(true);
-        $id            = empty($id) ? $upname : $id;
+        $maxlength_code = empty($maxlength) ? "" : "maxlength='{$maxlength}'";
+        $accept         = ($only_type) ? "accept='{$only_type}'" : "";
+        $list_del_file  = ($show_list_del_file) ? $this->list_del_file($show_edit, $thumb) : "";
+        $jquery         = get_jquery(true);
+        $id             = empty($id) ? $upname : $id;
+
+        $multiple = ($maxlength == 1) ? '' : "$maxlength_code multiple='multiple'";
 
         $main = "
-        $jquery
-        <input type='file' name='{$upname}[]' id='{$id}' $maxlength multiple='multiple' $accept >
+            $jquery
+            <input type='file' name='{$upname}[]' id='{$id}' $multiple $accept >
 
-        {$list_del_file}
-        ";
+            {$list_del_file}
+            ";
 
         return $main;
     }
@@ -1552,8 +1554,8 @@ class TadUpFiles
                     $show_description_txt = ($show_description) ? "<div style='font-weight: normal; font-size: 11px; word-break: break-all; line-height: 1.2; margin: 4px auto 4px 0px; text-align: left;'>{$i}) {$description} {$show_dl_txt}</div>" : "{$show_dl_txt}";
 
                     $all_files .= ($show_mode == "small") ? "<a href='{$linkto}' class='iconize {$fancyboxset}' {$rel}>&nbsp;</a> " : "
-                      <li style='width:120px;height:120px;float:left;list-style:none;'>
-                        <a href='{$linkto}' class='thumbnail {$fancyboxset}' {$rel} style=\"width: 110px; height: 70px; overflow: hidden; background: #000000 url('{$thumb_pic}') no-repeat center center / contain; margin-bottom: 4px;\">&nbsp;</a>{$show_description_txt}
+                      <li style='width:120px;height:160px;float:left;list-style:none;'>
+                        <a href='{$linkto}' class='thumbnail {$fancyboxset}' {$rel} style=\"width: 120px; height: 120px; overflow: hidden; background: #333333 url('{$thumb_pic}') no-repeat center center / contain; margin-bottom: 4px;\">&nbsp;</a>{$show_description_txt}
                       </li>";
                 }
 
