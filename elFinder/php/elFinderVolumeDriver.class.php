@@ -1086,7 +1086,7 @@ abstract class elFinderVolumeDriver {
 				case 'g':
 					$n = 1073741824;
 			}
-			$this->uploadMaxSize = intval($size)*$n;
+			$this->uploadMaxSize = (int)$size * $n;
 		}
 		// Set maximum to PHP_INT_MAX
 		if (!defined('PHP_INT_MAX')) {
@@ -1273,7 +1273,7 @@ abstract class elFinderVolumeDriver {
 		
 		// fix sync interval
 		if ($this->options['syncMinMs'] !== 0) {
-			$this->options['syncMinMs'] = max($this->options[$this->options['syncChkAsTs']? 'tsPlSleep' : 'lsPlSleep'] * 1000, intval($this->options['syncMinMs']));
+			$this->options['syncMinMs'] = max($this->options[$this->options['syncChkAsTs']? 'tsPlSleep' : 'lsPlSleep'] * 1000, (int)$this->options['syncMinMs']);
 		}
 
 		return $this->mounted = true;
@@ -1427,33 +1427,33 @@ abstract class elFinderVolumeDriver {
 			}
 		}
 		$opts = array(
-			'path'            => $hash? $this->path($hash) : '',
-			'url'             => $this->URL,
-			'tmbUrl'          => (! $this->imgLib && $this->options['tmbFbSelf'])? 'self' : $this->tmbURL,
-			'disabled'        => $this->disabled,
-			'separator'       => $this->separator,
-			'copyOverwrite'   => intval($this->options['copyOverwrite']),
-			'uploadOverwrite' => intval($this->options['uploadOverwrite']),
-			'uploadMaxSize'   => intval($this->uploadMaxSize),
-			'uploadMaxConn'   => intval($this->options['uploadMaxConn']),
-			'uploadMime'      => array(
+            'path'            => $hash? $this->path($hash) : '',
+            'url'             => $this->URL,
+            'tmbUrl'          => (! $this->imgLib && $this->options['tmbFbSelf'])? 'self' : $this->tmbURL,
+            'disabled'        => $this->disabled,
+            'separator'       => $this->separator,
+            'copyOverwrite'   => (int)$this->options['copyOverwrite'],
+            'uploadOverwrite' => (int)$this->options['uploadOverwrite'],
+            'uploadMaxSize'   => (int)$this->uploadMaxSize,
+            'uploadMaxConn'   => (int)$this->options['uploadMaxConn'],
+            'uploadMime'      => array(
 				'firstOrder' => isset($this->uploadOrder[0])? $this->uploadOrder[0] : 'deny',
 				'allow'      => $this->uploadAllow,
 				'deny'       => $this->uploadDeny
 			),
-			'dispInlineRegex' => $this->options['dispInlineRegex'],
-			'jpgQuality'      => intval($this->options['jpgQuality']),
-			'archivers'       => array(
+            'dispInlineRegex' => $this->options['dispInlineRegex'],
+            'jpgQuality'      => (int)$this->options['jpgQuality'],
+            'archivers'       => array(
 				'create'    => $create,
 				'extract'   => isset($this->archivers['extract']) && is_array($this->archivers['extract']) ? array_keys($this->archivers['extract']) : array(),
 				'createext' => $createext
 			),
-			'uiCmdMap'        => (isset($this->options['uiCmdMap']) && is_array($this->options['uiCmdMap']))? $this->options['uiCmdMap'] : array(),
-			'syncChkAsTs'     => intval($this->options['syncChkAsTs']),
-			'syncMinMs'       => intval($this->options['syncMinMs']),
-			'i18nFolderName'  => intval($this->options['i18nFolderName']),
-			'tmbCrop'         => intval($this->options['tmbCrop'])
-		);
+            'uiCmdMap'        => (isset($this->options['uiCmdMap']) && is_array($this->options['uiCmdMap']))? $this->options['uiCmdMap'] : array(),
+            'syncChkAsTs'     => (int)$this->options['syncChkAsTs'],
+            'syncMinMs'       => (int)$this->options['syncMinMs'],
+            'i18nFolderName'  => (int)$this->options['i18nFolderName'],
+            'tmbCrop'         => (int)$this->options['tmbCrop']
+        );
 		if ($hash === null) {
 			// call from getRootStatExtra()
 			if (! empty($this->options['icon'])) {
@@ -2812,7 +2812,7 @@ abstract class elFinderVolumeDriver {
 	 */
 	public function imageUtil($mode, $src, $options = array()) {
 		if (! isset($options['jpgQuality'])) {
-			$options['jpgQuality'] = intval($this->options['jpgQuality']);
+			$options['jpgQuality'] = (int)$this->options['jpgQuality'];
 		}
 		if (! isset($options['bgcolor'])) {
 			$options['bgcolor'] = '#ffffff';
@@ -3707,8 +3707,8 @@ abstract class elFinderVolumeDriver {
 			$stat['volumeid'] = $this->id;
 		}
 		
-		$stat['read']  = intval($this->attr($path, 'read', isset($stat['read']) ? !!$stat['read'] : null, $isDir));
-		$stat['write'] = intval($this->attr($path, 'write', isset($stat['write']) ? !!$stat['write'] : null, $isDir));
+		$stat['read']  = (int)$this->attr($path, 'read', isset($stat['read']) ? !!$stat['read'] : null, $isDir);
+		$stat['write'] = (int)$this->attr($path, 'write', isset($stat['write']) ? !!$stat['write'] : null, $isDir);
 		if ($root) {
 			$stat['locked'] = 1;
 			if ($this->options['type'] !== '') {
@@ -3757,8 +3757,7 @@ abstract class elFinderVolumeDriver {
 						}
 					} elseif (!empty($stat['alias']) && !empty($stat['target'])) {
 						$stat['dirs'] = isset($this->cache[$stat['target']])
-							? intval(isset($this->cache[$stat['target']]['dirs']))
-							: $this->subdirsCE($stat['target']);
+							? (int)isset($this->cache[$stat['target']]['dirs']) : $this->subdirsCE($stat['target']);
 						
 					} elseif ($this->subdirsCE($path)) {
 						$stat['dirs'] = 1;
@@ -3960,7 +3959,7 @@ abstract class elFinderVolumeDriver {
 		foreach ($this->getScandir($path) as $stat) {
 			$size = $stat['mime'] == 'directory' && $stat['read'] 
 				? $this->countSize($this->decode($stat['hash'])) 
-				: (isset($stat['size']) ? intval($stat['size']) : 0);
+				: (isset($stat['size']) ? (int)$stat['size'] : 0);
 			if ($size > 0) {
 				$result += $size;
 			}
@@ -4038,11 +4037,11 @@ abstract class elFinderVolumeDriver {
 						$this->ARGS['targets'][0] : '');
 			}
 			if ($ARGtarget !== '') {
-				$ARGtarget = strval($ARGtarget);
+				$ARGtarget = (string)$ARGtarget;
 				if ($target === '') {
 					return (strpos($ARGtarget, $this->id) === 0);
 				} else {
-					$target = strval($target);
+					$target = (string)$target;
 					return ($target === $ARGtarget);
 				}
 			}
@@ -4504,12 +4503,12 @@ abstract class elFinderVolumeDriver {
 		if (isset($this->imgConverter[$mime])) {
 			$imgConverter = $this->imgConverter[$mime]['func'];
 			if (! empty($this->imgConverter[$mime]['maxlen'])) {
-				$maxlength = intval($this->imgConverter[$mime]['maxlen']);
+				$maxlength = (int)$this->imgConverter[$mime]['maxlen'];
 			}
 		} else if (isset($this->imgConverter[$type])) {
 			$imgConverter = $this->imgConverter[$type]['func'];
 			if (! empty($this->imgConverter[$type]['maxlen'])) {
-				$maxlength = intval($this->imgConverter[$type]['maxlen']);
+				$maxlength = (int)$this->imgConverter[$type]['maxlen'];
 			}
 		}
 		if ($imgConverter && ! is_callable($imgConverter)) {
@@ -4592,8 +4591,8 @@ abstract class elFinderVolumeDriver {
 				}
 		
 				if ($result && ($s = getimagesize($tmb)) != false) {
-					$x = $s[0] > $tmbSize ? intval(($s[0] - $tmbSize)/2) : 0;
-					$y = $s[1] > $tmbSize ? intval(($s[1] - $tmbSize)/2) : 0;
+					$x = $s[0] > $tmbSize ? (int)(($s[0] - $tmbSize) / 2) : 0;
+					$y = $s[1] > $tmbSize ? (int)(($s[1] - $tmbSize) / 2) : 0;
 					$result = $this->imgCrop($result, $tmbSize, $tmbSize, $x, $y, 'png');
 				} else {
 					$result = false;

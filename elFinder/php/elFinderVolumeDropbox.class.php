@@ -821,8 +821,8 @@ class elFinderVolumeDropbox extends elFinderVolumeDriver {
 				}
 	
 				if (($s = getimagesize($tmb)) != false) {
-					$x = $s[0] > $tmbSize ? intval(($s[0] - $tmbSize)/2) : 0;
-					$y = $s[1] > $tmbSize ? intval(($s[1] - $tmbSize)/2) : 0;
+					$x = $s[0] > $tmbSize ? (int)(($s[0] - $tmbSize) / 2) : 0;
+					$y = $s[1] > $tmbSize ? (int)(($s[1] - $tmbSize) / 2) : 0;
 					$result = $this->imgCrop($tmb, $tmbSize, $tmbSize, $x, $y, 'png');
 				}
 	

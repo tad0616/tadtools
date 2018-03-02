@@ -139,7 +139,7 @@ function go_update2()
 function chk_chk3()
 {
     global $xoopsDB;
-    $modhandler  = xoops_gethandler('module');
+    $modhandler  = xoops_getHandler('module');
     $xoopsModule = $modhandler->getByDirname("tadtools");
     $mod_id      = $xoopsModule->getVar('mid');
 
@@ -158,7 +158,7 @@ function chk_chk3()
 function go_update3()
 {
     global $xoopsDB;
-    $modhandler  = xoops_gethandler('module');
+    $modhandler  = xoops_getHandler('module');
     $xoopsModule = $modhandler->getByDirname("tadtools");
     $mod_id      = $xoopsModule->getVar('mid');
     if ($mod_id) {

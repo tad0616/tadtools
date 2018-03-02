@@ -765,7 +765,7 @@ class elFinderVolumeFTP extends elFinderVolumeDriver {
 						break;
 
 					case 'modify':
-						$ts = mktime(intval(substr($val, 8, 2)), intval(substr($val, 10, 2)), intval(substr($val, 12, 2)), intval(substr($val, 4, 2)), intval(substr($val, 6, 2)), substr($val, 0, 4));
+						$ts = mktime((int)substr($val, 8, 2), (int)substr($val, 10, 2), (int)substr($val, 12, 2), (int)substr($val, 4, 2), (int)substr($val, 6, 2), substr($val, 0, 4));
 						$stat['ts'] = $ts;
 						break;
 
