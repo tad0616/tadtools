@@ -48,7 +48,16 @@ jQuery.browser.msie = /msie/.test(navigator.userAgent.toLowerCase());
                 .appendTo('body');
 
             // The frame lives
-            print_frame_ref = print_frame[0].contentWindow.document;
+            if (frames["print-frame"]) {
+                var print_frame_ref = frames["print-frame"].document;
+            } else {
+                for (var i = 0; i < window.frames.length; i++) {
+                    if (window.frames[i].name == "print-frame") {
+                        var print_frame_ref = window.frames[i].document;
+                        break;
+                    }
+                }
+            }
             print_frame_ref.open();
             print_frame_ref.write('<!DOCTYPE html>' +
                 '<html lang="zh-TW">' +
@@ -91,7 +100,7 @@ jQuery.browser.msie = /msie/.test(navigator.userAgent.toLowerCase());
 
             // Disable scrolling
             $('body').css({overflowY: 'hidden', height: '100%'});
-            $('img', print_frame_ref).load(function() {
+            $('img', print_frame_ref).on('load', function() {
                 print_frame.height($('body', print_frame.contents())[0].scrollHeight);
             });
 

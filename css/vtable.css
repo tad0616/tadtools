@@ -1,0 +1,225 @@
+.vtable {
+  width: 100%;
+  display: table;
+  border: 1px solid rgb(122, 160, 186);
+}
+
+.vtable a {
+  /*color: #8e352e;*/
+  text-decoration: none;
+}
+
+.vtable ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  display: table-row;
+}
+
+.vtable li,
+.vtable li.blank {
+  display: table-cell;
+  /*float: left;*/
+  width: 14%;
+  padding: 5px;
+  box-sizing: border-box;
+  border: 1px solid rgb(122, 160, 186);
+  /*  margin-right: -1px;
+margin-bottom: -1px;*/
+}
+
+.vtable ul.vhead {
+  height: 40px;
+  /* background: #7aa0ba; */
+}
+
+.vtable ul.vhead.light{
+  height: 1em;
+}
+
+.vtable ul.vhead li {
+  text-align: center;
+  text-transform: uppercase;
+  line-height: 20px;
+  padding: 10px 6px;
+  background: #7aa0ba;
+  color: #fff;
+  /* font-size: 14px; */
+  border: 1px solid rgb(122, 160, 186);
+}
+
+
+.vtable ul.vhead.light li{
+  background: transparent;
+  color: rgb(75, 75, 75);
+  line-height: 1em;
+  padding: 4px 6px;
+  text-align: left;
+}
+
+
+.vtable li.vbody {
+  /*height: 280px;*/
+}
+
+.vtable li.day:hover {
+  background: #fcec92;
+  /*border: 1px solid black;*/
+}
+
+.vtable li.vtitle {
+  background: #e3f0f9;
+  /* color:#000;*/
+  width: 8%;
+  text-align: center;
+  vertical-align: middle;
+}
+
+
+/* 隱藏欄位，手機才會出現 */
+
+.vtable .vcell {
+  display: none;
+}
+
+.vtable li.w {
+  display: none;
+}
+
+.vtable li.w1 {
+  width: 10%;
+}
+
+.vtable li.w2 {
+  width: 20%;
+}
+
+.vtable li.w3 {
+  width: 30%;
+}
+
+.vtable li.w4 {
+  width: 40%;
+}
+
+.vtable li.w5 {
+  width: 50%;
+}
+
+.vtable li.w6 {
+  width: 60%;
+}
+
+.vtable li.w7 {
+  width: 70%;
+}
+
+.vtable li.w8 {
+  width: 80%;
+}
+
+.vtable li.w9 {
+  width: 90%;
+}
+
+.vtable li.w10 {
+  width: 100%;
+}
+
+.vtable li.vt {
+  vertical-align: top;
+}
+
+.vtable li.vm {
+  vertical-align: middle;
+}
+
+.vtable.no_border,
+.vtable.no_border li,
+.vtable.no_border ul li {
+  border: none;
+}
+
+
+/* ============================
+Mobile Responsiveness
+============================*/
+
+@media (max-width: 768px) {
+  .vtable .vhead,
+  .vtable .other-month {
+    display: none;
+  }
+
+  .vtable li,
+  .vtable li.vtitle {
+    display: block;
+    height: auto !important;
+    border: 1px solid rgba(122, 160, 186, 0.5);
+    width: 100%;
+    padding: 10px;
+    /*margin-bottom: -1px;*/
+  }
+
+  .vtable .date {
+    float: none;
+  }
+
+  .vtable li.vcell,
+  .vtable li.vcell:hover {
+    display: block;
+    background: #7aa0ba;
+    color: white;
+  }
+
+  .vtable li.blank {
+    display: none;
+  }
+
+  .w {
+    display: inline;
+  }
+
+  .vtable li.w1,
+  .vtable li.w2,
+  .vtable li.w3,
+  .vtable li.w4,
+  .vtable li.w5,
+  .vtable li.w6,
+  .vtable li.w7,
+  .vtable li.w8,
+  .vtable li.w9,
+  .vtable li.w10 {
+    width: 100%;
+  }
+}
+/*
+<link href="<{$xoops_url}>/modules/tadtools/css/vtable.css" media="all" rel="stylesheet">
+<!-- 左標右格 -->
+<div class="vtable">
+<ul>
+<li class="w2 vtitle">到園日期</li>
+<li class="w8">
+<{$order_start}>～<{$order_end}>
+</li>
+</ul>
+</div>
+
+<!-- 上標下格 -->
+<div class="vtable">
+<ul class="vhead">
+<li>日期</li>
+<li>營位名稱</li>
+</ul>
+<ul>
+<li class="vcell">日期</li>
+<li>2017-11-11</li>
+<li class="vcell">營位名稱</li>
+<li>XXXX</li>
+</ul>
+</div>
+
+
+
+*/

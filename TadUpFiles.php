@@ -59,7 +59,7 @@ $TadUpFiles=new TadUpFiles("模組名稱");
 //$TadUpFiles->set_col($col_name,$col_sn,$sort); //若要整個刪除
 $TadUpFiles->del_files($files_sn);
 
-//單一檔案真實路徑：
+//單一檔案圖檔真實路徑：
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
 $TadUpFiles=new TadUpFiles("模組名稱");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
@@ -554,7 +554,7 @@ class TadUpFiles
     }
 
     //上傳圖檔，$this->col_name=對應欄位名稱,$col_sn=對應欄位編號,$種類：img,file,$sort=圖片排序,$files_sn="更新編號"
-    public function upload_file($upname = 'upfile', $main_width = "1280", $thumb_width = "120", $files_sn = "", $desc = null, $safe_name = false, $hash = false, $return_col = "file_name")
+    public function upload_file($upname = 'upfile', $main_width = "1920", $thumb_width = "240", $files_sn = "", $desc = null, $safe_name = false, $hash = false, $return_col = "file_name")
     {
         global $xoopsDB, $xoopsUser;
 
@@ -742,21 +742,20 @@ class TadUpFiles
     }
 
     //複製、匯入單一檔案，$this->col_name=對應欄位名稱,$col_sn=對應欄位編號,$種類：img,file,$sort=圖片排序,$files_sn="更新編號"
-    public function import_one_file($from = "", $new_filename = "", $main_width = "1280", $thumb_width = "120", $files_sn = "", $desc = "", $safe_name = false, $hash = false)
+    public function import_one_file($from = "", $new_filename = "", $main_width = "1920", $thumb_width = "240", $files_sn = "", $desc = "", $safe_name = false, $hash = false)
     {
         global $xoopsDB, $xoopsUser;
 
         if (empty($main_width)) {
-            $main_width = "1280";
+            $main_width = "1920";
         }
 
         if (empty($thumb_width)) {
-            $thumb_width = "120";
+            $thumb_width = "240";
         }
 
-        //die($from);
+        // die($from);
         $filename = $this->get_basename($from);
-
         $type = $this->mime_content_type($filename);
         $size = filesize($from);
 
@@ -791,6 +790,7 @@ class TadUpFiles
         $path         = ($kind == "img") ? $this->TadUpFilesImgDir : $this->TadUpFilesDir;
         $new_filename = ($safe_name) ? "{$this->col_name}_{$this->col_sn}_{$this->sort}.{$ext}" : $filename;
 
+        // die($new_filename);
         $readme    = "";
         $hash_name = md5(rand(0, 1000) . $filename);
         if ($hash) {
@@ -802,7 +802,6 @@ class TadUpFiles
         } else {
             $hash_filename = $new_filename;
         }
-
         //若是圖片才縮圖
         if ($kind == "img" and !empty($main_width)) {
 
@@ -812,6 +811,7 @@ class TadUpFiles
                 unlink($path . "/" . $hash_filename);
             }
 
+            // die("$from, $path/$hash_filename");
             if (copy($from, $path . "/" . $hash_filename)) {
                 $description = (empty($files_sn) and empty($desc)) ? $filename : $desc;
 
@@ -1302,19 +1302,22 @@ class TadUpFiles
                 $files[$files_sn]['path'] = $pic_name;
                 $files[$files_sn]['url']  = "<a href='{$pic_name}' title='{$description}' {$rel} class='{$fancyboxset}'>{$show_file_name}</a>";
 
-                $files[$files_sn]['tb_link']   = "<a href='{$dl_url}' title='{$description}' {$rel} class='{$fancyboxset}'><img src='$thumb_pic' alt='{$description}' title='{$description}'></a>";
-                $files[$files_sn]['tb_path']   = $thumb_pic;
-                $files[$files_sn]['tb_url']    = "<a href='{$dl_url}' title='{$description}' {$rel} class='{$fancyboxset}'>{$description}</a>";
-                $files[$files_sn]['html_link'] = "{$show_file_name} : <a href='{$full_dl_url}'>{$full_dl_url}</a>";
-                $files[$files_sn]['text_link'] = "{$show_file_name} : {$full_dl_url}";
+                $files[$files_sn]['tb_link']           = "<a href='{$dl_url}' title='{$description}' {$rel} class='{$fancyboxset}'><img src='$thumb_pic' alt='{$description}' title='{$description}'></a>";
+                $files[$files_sn]['tb_path']           = $thumb_pic;
+                $files[$files_sn]['tb_url']            = "<a href='{$dl_url}' title='{$description}' {$rel} class='{$fancyboxset}'>{$description}</a>";
+                $files[$files_sn]['original_file_path'] = $this->TadUpFilesImgUrl . "/{$file_name}";
+                $files[$files_sn]['physical_file_path'] = $this->TadUpFilesImgDir . "/{$file_name}";
             } else {
                 $files[$files_sn]['link']               = "<a href='{$dl_url}#{$original_filename}' target='{$target}'>{$show_file_name}</a>";
                 $files[$files_sn]['path']               = "{$dl_url}#{$original_filename}";
                 $files[$files_sn]['original_file_path'] = $this->TadUpFilesUrl . "/{$file_name}";
                 $files[$files_sn]['physical_file_path'] = $this->TadUpFilesDir . "/{$file_name}";
-                $files[$files_sn]['html_link']          = "{$show_file_name} : <a href='{$full_dl_url}'>{$full_dl_url}</a>";
-                $files[$files_sn]['text_link']          = "{$show_file_name} : {$full_dl_url}";
             }
+            $files[$files_sn]['original_filename']  = $original_filename;
+            $files[$files_sn]['full_dl_url']        = $full_dl_url;
+            $files[$files_sn]['show_file_name']    = $show_file_name;
+            $files[$files_sn]['text_link']          = "{$show_file_name} : {$full_dl_url}";
+            $files[$files_sn]['html_link']          = "{$show_file_name} : <a href='{$full_dl_url}'>{$full_dl_url}</a>";
         }
 
         return $files;
@@ -1417,7 +1420,7 @@ class TadUpFiles
         $where = $files_sn ? "where `files_sn`='{$files_sn}'" : "where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' $and_sort order by sort limit 0,1";
 
         $sql = "select * from `{$this->TadUpFilesTblName}` $where";
-        //die($sql);
+        // die($sql);
         $result = $xoopsDB->queryF($sql) or web_error($sql);
         $files  = array();
         while ($all = $xoopsDB->fetchArray($result)) {
@@ -1437,7 +1440,6 @@ class TadUpFiles
                 $files = (file_exists("{$this->TadUpFilesImgDir}/{$file_name}")) ? "{$path}/{$file_name}" : "";
             }
         }
-
         return $files;
     }
 
@@ -1466,8 +1468,8 @@ class TadUpFiles
             $all_files = "";
         }
 
-        $autoPlay  = empty($playSpeed) ? false : true;
         $playSpeed = empty($playSpeed) ? 0 : $playSpeed;
+        $autoPlay  = empty($playSpeed) ? false : true;
 
         if ($this->showFancyBox) {
             if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/fancybox.php")) {
@@ -1475,7 +1477,7 @@ class TadUpFiles
             }
             include_once XOOPS_ROOT_PATH . "/modules/tadtools/fancybox.php";
             $fancybox = new fancybox(".fancybox_{$this->col_name}", 640, 480);
-            $all_files .= $fancybox->render(false, null, $autoPlay, $playSpeed);
+            $all_files .= ($show_mode == "file_text_url" or $show_mode == "file_url") ? '' : $fancybox->render(false, null, $autoPlay, $playSpeed);
         }
 
         $file_arr = array();

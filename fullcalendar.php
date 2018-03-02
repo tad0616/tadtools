@@ -87,13 +87,17 @@ class fullcalendar
                 editable: true,
                 navLinks: true,
                 eventLimit: true,
-                locale: window.navigator.userLanguage || window.navigator.language,
+                locale: 'zh-tw',
+                buttonText:{today: '今天'},
+                // locale: window.navigator.userLanguage || window.navigator.language,
                 {$js_parameter}
                 {$get_event}
                 header: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'month,agendaWeek,agendaDay,listWeek'
+                    left: 'prev,today,next',
+                    right: 'title'
+                    // left: 'prev,next today',
+                    // center: 'title',
+                    // right: 'month,agendaWeek,agendaDay,listWeek'
                 }
               })
           });

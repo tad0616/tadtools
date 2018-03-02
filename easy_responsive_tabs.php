@@ -46,7 +46,7 @@ class easy_responsive_tabs
 
     }
 
-    public function rander()
+    public function rander($tabidentify = 'vert', $function = '')
     {
         global $xoTheme;
         $jquery          = get_jquery();
@@ -58,12 +58,14 @@ class easy_responsive_tabs
             $xoTheme->addScript('', null, "
                 \$(document).ready(function(){
                   \$('" . $this->name . "').easyResponsiveTabs({
-                        tabidentify: 'vert',
+                        tabidentify: '$tabidentify',
                         type: '{$this->type}', //Types: default, vertical, accordion
                         width: 'auto',
                         fit: true,
                         closed: false,
-                        activate: function() {},
+                        activate: function(e) {
+                            console.log(e);
+                        },
                         activetab_bg: '{$this->activetab_bg}',
                         inactive_bg: '{$this->inactive_bg}',
                         active_border_color: '{$this->active_border_color}',
@@ -83,7 +85,7 @@ class easy_responsive_tabs
             <script>
               $(document).ready(function(){
                 $('" . $this->name . "').easyResponsiveTabs({
-                    tabidentify: 'vert',
+                    tabidentify: '$tabidentify',
                     type: '{$this->type}', //Types: default, vertical, accordion
                     width: 'auto',
                     fit: true,

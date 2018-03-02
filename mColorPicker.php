@@ -8,7 +8,7 @@ $mColorPicker=new mColorPicker('.color');
 $mColorPicker_code=$mColorPicker->render();
 $xoopsTpl->assign('mColorPicker_code',$mColorPicker_code);
 
-//data-hex='true' Ò»¶¨ÒªÓĞ
+//data-hex='true' ä¸€å®šè¦æœ‰
 <input type='text' name='color' class='color' value='{$act['color']}' data-text='hidden' data-hex='true' style='height:20px;width:20px;' />
 
  */

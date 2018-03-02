@@ -2350,6 +2350,7 @@ class upload
             'js'      => 'application/x-javascript',
             'json'    => 'application/json',
             'tiff'    => 'image/tiff',
+            'tif'    => 'image/tiff',
             'css'     => 'text/css',
             'xml'     => 'application/xml',
             'doc'     => 'application/msword',

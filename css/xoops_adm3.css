@@ -1,10 +1,10 @@
 /* 針對XOOPS 2.5.*版之前的後台做微調 */
 
-/*@import url(normalize.css);*/
+/* @import url(normalize.css); */
 
-body ,div , a , li ,td ,th{
+/* body ,div , a , li ,td ,th{
   font-size: 14px;
-}
+} */
 
 .tooltip {
   opacity: 100;

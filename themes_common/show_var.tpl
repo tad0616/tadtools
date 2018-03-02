@@ -100,6 +100,8 @@
       <tr><th>導覽列文字顏色</th><th>$navbar_color</th><td><{$navbar_color}></td></tr>
       <tr><th>導覽列文字移過顏色</th><th>$navbar_color_hover</th><td><{$navbar_color_hover}></td></tr>
       <tr><th>導覽列圖示顏色</th><th>$navbar_icon</th><td><{$navbar_icon}></td></tr>
+      <tr><th>導覽選項上下距離</th><th>$navbar_py</th><td><{$navbar_py}></td></tr>
+      <tr><th>導覽選項左右距離</th><th>$navbar_px</th><td><{$navbar_px}></td></tr>
       <tr><th>導覽列背景圖</th><th>$navbar_img</th><td><{$navbar_img}></td></tr>
 
 
@@ -159,7 +161,8 @@
           $slider_var[<{$slide.files_sn}>]['sub_dir'] = "<{$slide.sub_dir}>";<br>
           $slider_var[<{$slide.files_sn}>]['file_url'] = "<{$slide.file_url}>";<br>
           $slider_var[<{$slide.files_sn}>]['file_thumb_url'] = "<{$slide.file_thumb_url}>";<br>
-          $slider_var[<{$slide.files_sn}>]['slide_url'] = "<{$slide.slide_url}>";
+          $slider_var[<{$slide.files_sn}>]['slide_url'] = "<{$slide.slide_url}>";<br>
+          $slider_var[<{$slide.files_sn}>]['slide_target'] = "<{$slide.slide_target}>";
         </td></tr>
       <{/foreach}>
 <{php}>

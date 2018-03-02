@@ -4,14 +4,14 @@
 //單一表單
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
-$TadDataCenter->set_col($col_name);
-$form=$TadDataCenter->getForm($form_tag, $name, $type, $value, $options, $attr, $other);
+$TadDataCenter->set_col($col_name,$col_sn);
+$form=$TadDataCenter->getForm($mode, $form_tag, $name, $type, $value, $options, $attr, $other);
 
 //批次表單
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
-$TadDataCenter->set_col($col_name);
-$TadDataCenter->assignBatchForm($form_tag, $data_arr = [], $type = '')
+$TadDataCenter->set_col($col_name,$col_sn);
+$TadDataCenter->assignBatchForm($form_tag, $data_arr = array(), $type = '')
 
 //儲存資料：
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
@@ -25,7 +25,7 @@ $TadDataCenter->saveCustomData($data_arr = array());
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
-$data=$TadDataCenter->getData($name,$sort);
+$data=$TadDataCenter->getData($name,$sort=0);
 $xoopsTpl->assign('TDC', $data);
 <{$TDC.data_name.0}>
 
@@ -94,7 +94,7 @@ class TadDataCenter
     }
 
     //取得表單
-    public function getForm($mode = 'return', $form_tag, $name, $type = '', $def_value = '', $options = [], $attr = [], $other = '')
+    public function getForm($mode = 'return', $form_tag, $name, $type = '', $def_value = '', $options = array(), $attr = array(), $other = '')
     {
         global $xoopsTpl;
 
@@ -120,13 +120,20 @@ class TadDataCenter
                     $form = '';
                     foreach ($options as $k => $v) {
                         $checked = $v == $value ? 'checked' : '';
-                        $form .= "<div class=\"radio-inline\"><input type=\"{$type}\" name=\"TDC[{$name}]\" value=\"{$v}\" {$checked} {$attr_str}>{$k}</div>\n";
+                        $form .= "<label class=\"radio-inline\"><input type=\"{$type}\" name=\"TDC[{$name}]\" value=\"{$v}\" {$checked} {$attr_str}>{$k}</label>\n";
                     }
                 } elseif ($type == "checkbox") {
                     $form = '';
                     foreach ($options as $k => $v) {
                         $checked = in_array($v, $value) ? 'checked' : '';
-                        $form .= "<div class=\"checkbox-inline\"><input type=\"{$type}\" name=\"TDC[{$name}][]\" value=\"{$v}\" {$checked} {$attr_str}>{$k}</div>\n";
+                        $form .= "<label class=\"checkbox-inline\"><input type=\"{$type}\" name=\"TDC[{$name}][]\" value=\"{$v}\" {$checked} {$attr_str}>{$k}</label>\n";
+                    }
+
+                } elseif ($type == "checkbox-radio") {
+                    $form = '';
+                    foreach ($options as $k => $v) {
+                        $checked = in_array($v, $value) ? 'checked' : '';
+                        $form .= "<label class=\"checkbox\"><input type=\"checkbox\" name=\"TDC[{$name}]\" value=\"{$v}\" {$checked} {$attr_str}>{$k}</label>\n";
                     }
                 } elseif ($type == "") {
                     $form = "<input type=\"text\" name=\"TDC[{$name}]\" value=\"{$value}\" {$attr_str}>";
@@ -148,6 +155,7 @@ class TadDataCenter
                 $form = "<textarea name=\"TDC[{$name}]\" {$attr_str}>{$value}</textarea>";
                 break;
         }
+
         if ($mode == 'assign') {
             $xoopsTpl->assign($name, $form);
         } else {
@@ -157,7 +165,7 @@ class TadDataCenter
     }
 
     //套用文字框到Smarty
-    public function assignBatchForm($form_tag, $data_arr = [], $type = '', $attr = [])
+    public function assignBatchForm($form_tag, $data_arr = array(), $type = '', $attr = array())
     {
         foreach ($data_arr as $col_name) {
             $this->getForm('assign', $form_tag, $col_name, $type, '', '', $attr);
@@ -173,7 +181,7 @@ class TadDataCenter
         // die('$this->col_sn=' . $this->col_sn);
         foreach ($_REQUEST['TDC'] as $name => $value) {
             $name   = $myts->addSlashes($name);
-            $values = '';
+            $values = array();
             if (!is_array($value)) {
                 $values[0] = $value;
             } else {
@@ -182,6 +190,7 @@ class TadDataCenter
 
             foreach ($values as $sort => $val) {
                 $val = $myts->addSlashes($val);
+                // die("$name, $sort");
                 $this->delData($name, $sort);
 
                 $sql = "insert into `{$this->TadDataCenterTblName}`
@@ -199,7 +208,7 @@ class TadDataCenter
         $myts = MyTextSanitizer::getInstance();
         foreach ($data_arr as $name => $value) {
             $name   = $myts->addSlashes($name);
-            $values = '';
+            $values = array();
             if (!is_array($value)) {
                 $values[0] = $value;
             } else {
@@ -219,7 +228,7 @@ class TadDataCenter
     }
 
     //取得資料
-    public function getData($name = '', $sort = '')
+    public function getData($name = '', $data_sort = null)
     {
         global $xoopsDB;
         $myts     = MyTextSanitizer::getInstance();
@@ -233,7 +242,7 @@ class TadDataCenter
             list($data_name, $data_sort, $data_value) = $xoopsDB->fetchRow($result);
             return $data_value;
         } else {
-            $values = '';
+            $values = array();
             while (list($data_name, $data_sort, $data_value) = $xoopsDB->fetchRow($result)) {
                 $values[$data_name][$data_sort] = $data_value;
             }
@@ -251,6 +260,7 @@ class TadDataCenter
         $and_sort = ($data_sort != '') ? "and `data_sort`='{$data_sort}'" : "";
         $sql      = "delete from `{$this->TadDataCenterTblName}`
             where `mid`= '{$this->mid}' and `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' {$and_name} {$and_sort}";
+        // die($sql);
         $xoopsDB->queryF($sql) or web_error($sql);
     }
 }

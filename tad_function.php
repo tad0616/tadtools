@@ -379,8 +379,10 @@ if (!function_exists('power_chk')) {
         if (!$xoopsModule) {
             return;
         }
+
         // echo var_export($perm_name);
         // echo var_export($sn);
+
         //取得目前使用者的群組編號
         if ($xoopsUser) {
             $groups = $xoopsUser->getGroups();
@@ -970,7 +972,15 @@ if (!function_exists('toolbar_bootstrap')) {
                 $urlPath = (empty($moduleName) or substr($url, 0, 7) == "http://") ? $url : XOOPS_URL . "/modules/{$moduleName}/{$url}";
                 $baseurl = basename($url);
                 //if($baseurl=="index.php" and !preg_match("/admin/", $url))continue;
-                $active = strpos($_SERVER['SCRIPT_NAME'], $url) !== false ? "class='current'" : "";
+                // die($_SERVER['PHP_SELF']);
+                if (strpos($_SERVER['REQUEST_URI'], $url) !== false) {
+                    $active = "class='current'";
+                } elseif (strpos($_SERVER['SCRIPT_NAME'], $url) !== false) {
+                    $active = "class='current'";
+                } else {
+                    $active = "";
+                }
+                // $active = strpos($_SERVER['SCRIPT_NAME'], $url) !== false ? "class='current'" : "";
                 $options .= "
                   <li {$active}><a href='{$urlPath}'>{$title}</a></li>
                 ";

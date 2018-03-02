@@ -16,7 +16,7 @@ class slider
         $this->show_jquery = $show_jquery;
     }
 
-    public function add_content($sn = "", $title = "", $content = "", $image = "", $date = "", $url = "", $width = "", $height = "")
+    public function add_content($sn = "", $title = "", $content = "", $image = "", $date = "", $url = "", $width = "", $height = "", $target = "")
     {
         $this->item[$sn]['title']   = $title;
         $this->item[$sn]['content'] = $content;
@@ -25,6 +25,7 @@ class slider
         $this->item[$sn]['url']     = $url;
         $this->item[$sn]['width']   = $width;
         $this->item[$sn]['height']  = $height;
+        $this->item[$sn]['target']  = $target;
     }
 
     //產生語法
@@ -79,11 +80,12 @@ class slider
                 </li>
               ";
             } else {
-                $alt = empty($title) ? 'slider image' : $title;
+                $alt          = empty($title) ? 'slider image ' . $sn : $title;
+                $caption_link = $caption ? "<a href='{$item_content['url']}' {$item_content['target']}>$caption</a>" : "";
                 $all .= "
                   <li>
-                    <a href='{$item_content['url']}'><img src='$image' alt='{$alt}' title='{$alt}'></a>
-                    <a href='{$item_content['url']}'>$caption</a>
+                    <a href='{$item_content['url']}' {$item_content['target']}><img src='$image' alt='{$alt}'></a>
+                    $caption_link
                   </li>
                 ";
             }

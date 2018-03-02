@@ -706,8 +706,8 @@ class TadUpFiles2 extends TadUpFiles
             $all_files = "";
         }
 
-        $autoPlay  = empty($playSpeed) ? false : true;
         $playSpeed = empty($playSpeed) ? 0 : $playSpeed;
+        $autoPlay  = empty($playSpeed) ? false : true;
 
         if ($this->showFancyBox) {
             if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/fancybox.php")) {
@@ -715,7 +715,7 @@ class TadUpFiles2 extends TadUpFiles
             }
             include_once XOOPS_ROOT_PATH . "/modules/tadtools/fancybox.php";
             $fancybox = new fancybox(".fancybox_{$this->col_name}", '80%', '80%');
-            $all_files .= $fancybox->render(false, null, 0, $playSpeed);
+            $all_files .= ($show_mode == "file_text_url" or $show_mode == "file_url") ? '' : $fancybox->render(false, null, $autoPlay, $playSpeed);
         }
 
         $file_arr = "";
@@ -727,7 +727,12 @@ class TadUpFiles2 extends TadUpFiles
 
         if ($file_arr) {
             $i = 1;
-            if ($show_mode != "filename" and $show_mode != "small") {
+
+            if ($show_mode == "file_url") {
+                $all_files .= "<ul>";
+            } elseif ($show_mode == "file_text_url" or $show_mode == "small") {
+                $all_files .= "";
+            } elseif ($show_mode != "filename" and $show_mode != "small") {
                 $all_files .= "<ul>";
             } elseif ($show_mode == "filename") {
                 $all_files .= "<ol class='rectangle-list' style=\"counter-reset: li; list-style: none; *list-style: decimal; font: 15px 'trebuchet MS', 'lucida sans'; padding: 0; text-shadow: 0 1px 0 rgba(255,255,255,.5);\">";
@@ -740,6 +745,10 @@ class TadUpFiles2 extends TadUpFiles
                     } else {
                         $all_files .= "<li>{$file_info['url']}</li>";
                     }
+                } elseif ($show_mode == "file_url") {
+                    $all_files .= "<li>{$file_info['html_link']}</li>";
+                } elseif ($show_mode == "file_text_url") {
+                    $all_files .= "{$file_info['text_link']},";
                 } else {
                     $linkto      = $file_info['path'];
                     $description = empty($file_info['description']) ? $file_info['original_filename'] : $file_info['description'];
@@ -797,13 +806,18 @@ class TadUpFiles2 extends TadUpFiles
 
                     $all_files .= ($show_mode == "small") ? "<a href='{$linkto}' class='iconize {$fancyboxset}' {$rel}  title='{$description}'></a> " : "
                       <li style='width:120px;height:160px;float:left;list-style:none;'>
-                        <a href='{$linkto}' class='thumbnail {$fancyboxset}' {$rel} style=\"width: 120px; height: 120px; overflow: hidden; background-color: #333333;  background-image: url('{$thumb_pic}'); background-repeat: no-repeat; background-position: center center; background-size: contain; margin-bottom: 4px;\" title='{$description}'></a>{$show_description_txt}
+                        <a href='{$linkto}' class='thumbnail {$fancyboxset}' {$rel} style=\"width: 120px; height: 120px; overflow: hidden; background: #333333 url('{$thumb_pic}') no-repeat center center / contain; margin-bottom: 4px;\">&nbsp;</a>{$show_description_txt}
                       </li>";
                 }
 
                 $i++;
             }
-            if ($show_mode != "filename" and $show_mode != "small") {
+
+            if ($show_mode == "file_url") {
+                $all_files .= "</ul>";
+            } elseif ($show_mode == "file_text_url" or $show_mode == "small") {
+                $all_files .= "";
+            } elseif ($show_mode != "filename" and $show_mode != "small") {
                 $all_files .= "</ul>";
             } elseif ($show_mode == "filename") {
                 $all_files .= "</ol>";

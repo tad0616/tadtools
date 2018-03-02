@@ -23,6 +23,8 @@ if ($foo->uploaded) {
     // save uploaded image with no changes
     $foo->Process($path);
     if ($foo->processed) {
+        // die($foo->file_dst_name);
+        chmod($path . $_FILES['upload']['name'], 0777);
         $msg = $url . $_FILES['upload']['name'];
         mkhtml($fn, $msg);
     } else {

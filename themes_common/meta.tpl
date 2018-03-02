@@ -2,6 +2,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+<{if $nocache}>
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="expires" content="0">
+<{/if}>
+
 <meta name="robots" content="<{$xoops_meta_robots}>" >
 <meta name="keywords" content="<{$xoops_meta_keywords}>" >
 <meta name="description" content="<{$xoops_meta_description}>" >
