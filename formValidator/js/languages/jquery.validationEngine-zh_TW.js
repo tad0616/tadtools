@@ -205,7 +205,20 @@
                     "alertText2": "可接受的格式： ",
                     "alertText3": "mm/dd/yyyy hh:mm:ss AM|PM 或 ",
                     "alertText4": "yyyy-mm-dd hh:mm:ss AM|PM"
-	            }
+	            },
+                "IDFormat": {
+                    "regex": /^[A-Z]{1}[0-9]{9}$/,
+                    "alertText": "* 格式不正確 首字英文需大寫，或證號錯誤！"
+                },
+                "ajaxFormatCallPhp": {
+                    "url": "phpajax/ajaxValidateFieldFormat.php",
+                    // you may want to pass extra data on the ajax call
+                    //"extraData": "name=eric",
+                    // if you provide an "alertTextOk", it will show as a green prompt when the field validates
+                    "alertTextOk": "* 可以使用",
+                    "alertText": "* 無效的格式",
+                    "alertTextLoad": "* 正在確認格式是否正確，請稍等。"
+                }
             };
 
         }

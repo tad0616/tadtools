@@ -5,7 +5,7 @@
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
-$form=$TadDataCenter->getForm($mode, $form_tag, $name, $type, $value, $options, $attr, $other);
+$form=$TadDataCenter->getForm($mode, $form_tag, $name, $type, $value, $options, $attr, $sort);
 
 //批次表單
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
@@ -35,6 +35,47 @@ $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
 $TadDataCenter->delData($name,$sort);
 
+//-------------------------------------------------------------------------
+
+//後台自訂問卷界面
+include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+$TadDataCenter=new TadDataCenter($module_dirname);
+$TadDataCenter->set_col($col_name,$col_sn);
+$xoopsTpl->assign('CustomSetupForm', $TadDataCenter->getCustomSetupForm(true, false));
+<{$CustomSetupForm}>
+
+//顯示問卷
+include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+$TadDataCenter=new TadDataCenter($module_dirname);
+$TadDataCenter->set_col($col_name,$col_sn);
+$xoopsTpl->assign('CustomForm', $TadDataCenter->getCustomForm());
+<{$CustomForm}>
+
+//後台自訂問卷設定儲存
+include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+$TadDataCenter=new TadDataCenter($module_dirname);
+$TadDataCenter->set_col($col_name,$col_sn);
+$TadDataCenter->saveCustomSetupForm();
+
+//前台自訂問卷答案儲存
+include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+$TadDataCenter=new TadDataCenter($module_dirname);
+$TadDataCenter->set_col($col_name,$col_sn);
+$TadDataCenter->saveCustomSetupFormVal();
+
+或
+case "saveCustomSetupFormVal":
+$user = get_integration_users();
+$TadDataCenter->set_col('tea_uid', $user['iuId']);
+$TadDataCenter->saveCustomSetupFormVal();
+break;
+
+//填答列表
+include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+$TadDataCenter=new TadDataCenter($module_dirname);
+$TadDataCenter->set_col($col_name,$col_sn);
+$xoopsTpl->assign('getCustomAns', $TadDataCenter->getCustomAns());
+
 資料表：
 CREATE TABLE `模組名稱_data_center` (
 `mid` mediumint(9) unsigned NOT NULL  COMMENT '模組編號',
@@ -45,12 +86,15 @@ CREATE TABLE `模組名稱_data_center` (
 `data_sort` mediumint(9) unsigned NOT NULL  COMMENT '排序',
 PRIMARY KEY  (`mid`,`col_name`,`col_sn`,`data_name`,`data_sort`)
 ) ENGINE=MyISAM;
+
  */
 
 class TadDataCenter
 {
     public $col_name;
     public $col_sn;
+    public $ans_col_name;
+    public $ans_col_sn;
     public $module_dirname;
     public $mid;
     public $TadDataCenterTblName;
@@ -93,52 +137,67 @@ class TadDataCenter
         $this->col_sn   = $col_sn;
     }
 
+    public function set_ans_col($ans_col_name = "", $ans_col_sn = "")
+    {
+        $this->ans_col_name = $ans_col_name;
+        $this->ans_col_sn   = $ans_col_sn;
+    }
     //取得表單
-    public function getForm($mode = 'return', $form_tag, $name, $type = '', $def_value = '', $options = array(), $attr = array(), $other = '')
+    public function getForm($mode = 'return', $form_tag, $name, $type = '', $def_value = '', $options = array(), $attr = array(), $sort = '', $ans_col_name = '', $ans_col_sn = '')
     {
         global $xoopsTpl;
 
-        $dbv = $this->getData($name);
-
         if ($type == 'checkbox') {
+            $dbv   = $this->getData($name, null, $ans_col_name, $ans_col_sn);
             $value = isset($dbv[$name]) ? $dbv[$name] : $def_value;
+        } elseif ($sort > 0) {
+            $dbv   = $this->getData($name, $sort, $ans_col_name, $ans_col_sn);
+            $value = isset($dbv[$name]) ? $dbv[$name] : $def_value;
+
         } else {
+            $dbv   = $this->getData($name, null, $ans_col_name, $ans_col_sn);
             $value = isset($dbv[$name]) ? $dbv[$name][0] : $def_value;
         }
 
         if (empty($attr)) {
-            $attr = ['class' => 'form-control', 'id' => $name];
+            if (in_array($type, array('radio', 'checkbox', 'checkbox-radio'))) {
+                $attr = array('id' => $name);
+            } else {
+                $attr = array('class' => 'form-control', 'id' => $name);
+            }
         }
 
         $attr_str = '';
         foreach ($attr as $k => $v) {
             $attr_str .= " {$k}=\"{$v}\"";
         }
+
+        $arr = $sort > 0 ? "[$sort]" : '';
         switch ($form_tag) {
             case 'input':
                 if ($type == "radio") {
                     $form = '';
                     foreach ($options as $k => $v) {
                         $checked = $v == $value ? 'checked' : '';
-                        $form .= "<label class=\"radio-inline\"><input type=\"{$type}\" name=\"TDC[{$name}]\" value=\"{$v}\" {$checked} {$attr_str}>{$k}</label>\n";
+                        $form .= "<label class=\"radio-inline\"><input type=\"{$type}\" name=\"TDC[{$name}]{$arr}\" value=\"{$v}\" {$checked} {$attr_str}>{$k}</label>\n";
                     }
                 } elseif ($type == "checkbox") {
                     $form = '';
                     foreach ($options as $k => $v) {
                         $checked = in_array($v, $value) ? 'checked' : '';
-                        $form .= "<label class=\"checkbox-inline\"><input type=\"{$type}\" name=\"TDC[{$name}][]\" value=\"{$v}\" {$checked} {$attr_str}>{$k}</label>\n";
+                        $form .= "<label class=\"checkbox-inline\"><input type=\"{$type}\" name=\"TDC[{$name}]{$arr}[]\" value=\"{$v}\" {$checked} {$attr_str}>{$k}</label>\n";
                     }
 
                 } elseif ($type == "checkbox-radio") {
                     $form = '';
                     foreach ($options as $k => $v) {
                         $checked = in_array($v, $value) ? 'checked' : '';
-                        $form .= "<label class=\"checkbox\"><input type=\"checkbox\" name=\"TDC[{$name}]\" value=\"{$v}\" {$checked} {$attr_str}>{$k}</label>\n";
+                        $form .= "<label class=\"checkbox\"><input type=\"checkbox\" name=\"TDC[{$name}]{$arr}\" value=\"{$v}\" {$checked} {$attr_str}>{$k}</label>\n";
                     }
                 } elseif ($type == "") {
-                    $form = "<input type=\"text\" name=\"TDC[{$name}]\" value=\"{$value}\" {$attr_str}>";
+                    $form = "<input type=\"text\" name=\"TDC[{$name}]{$arr}\" value=\"{$value}\" {$attr_str}>";
                 } else {
-                    $form = "<input type=\"{$type}\" name=\"TDC[{$name}]\" value=\"{$value}\" {$attr_str}>";
+                    $form = "<input type=\"{$type}\" name=\"TDC[{$name}]{$arr}\" value=\"{$value}\" {$attr_str}>";
                 }
                 break;
             case 'select':
@@ -147,12 +206,25 @@ class TadDataCenter
                     $selected = $k == $value ? 'selected' : '';
                     $options_str .= "<option value=\"{$k}\" {$selected}>{$v}</option>\n";
                 }
-                $form = "<select name=\"TDC[{$name}]\" value=\"{$value}\" {$attr_str}>
+                $form = "<select name=\"TDC[{$name}]{$arr}\" value=\"{$value}\" {$attr_str}>
                 {$options_str}
                 </select>";
                 break;
             case 'textarea':
-                $form = "<textarea name=\"TDC[{$name}]\" {$attr_str}>{$value}</textarea>";
+                $form = "<textarea name=\"TDC[{$name}]{$arr}\" {$attr_str}>{$value}</textarea>";
+                break;
+                $options_str = '';
+                foreach ($options as $k => $v) {
+                    $selected = $k == $value ? 'selected' : '';
+                    $options_str .= "<option value=\"{$k}\" {$selected}>{$v}</option>\n";
+                }
+                $form = "<select name=\"TDC[{$name}]{$arr}\" value=\"{$value}\" {$attr_str}>
+                {$options_str}
+                </select>";
+                break;
+            case 'note':
+                $options_str = implode('', $options);
+                $form        = "<div class='form-control-static'><b>{$options_str}</b></div>";
                 break;
         }
 
@@ -180,6 +252,7 @@ class TadDataCenter
         // die(var_export($_REQUEST['TDC']));
         // die('$this->col_sn=' . $this->col_sn);
         foreach ($_REQUEST['TDC'] as $name => $value) {
+
             $name   = $myts->addSlashes($name);
             $values = array();
             if (!is_array($value)) {
@@ -189,6 +262,9 @@ class TadDataCenter
             }
 
             foreach ($values as $sort => $val) {
+                if ($_REQUEST['dc_op'] == "saveCustomSetupForm" and empty($val)) {
+                    continue;
+                }
                 $val = $myts->addSlashes($val);
                 // die("$name, $sort");
                 $this->delData($name, $sort);
@@ -228,15 +304,19 @@ class TadDataCenter
     }
 
     //取得資料
-    public function getData($name = '', $data_sort = null)
+    public function getData($name = '', $data_sort = null, $ans_col_name = '', $ans_col_sn = '')
     {
         global $xoopsDB;
         $myts     = MyTextSanitizer::getInstance();
         $and_name = ($name != '') ? "and `data_name`='{$name}'" : "";
         $and_sort = ($sort != '') ? "and `data_sort`='{$sort}'" : "";
-        $sql      = "select `data_name`,`data_sort`, `data_value` from `{$this->TadDataCenterTblName}`
-            where `mid`= '{$this->mid}' and `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' {$and_name} {$and_sort}";
-        // die($sql);
+
+        $col_name = !empty($ans_col_name) ? $ans_col_name : $this->col_name;
+        $col_sn   = !empty($ans_col_name) ? $ans_col_sn : $this->col_sn;
+
+        $sql = "select `data_name`,`data_sort`, `data_value` from `{$this->TadDataCenterTblName}`
+            where `mid`= '{$this->mid}' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}' {$and_name} {$and_sort}";
+        // echo $sql."<br>";
         $result = $xoopsDB->queryF($sql) or web_error($sql);
         if (isset($data_sort)) {
             list($data_name, $data_sort, $data_value) = $xoopsDB->fetchRow($result);
@@ -262,5 +342,276 @@ class TadDataCenter
             where `mid`= '{$this->mid}' and `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' {$and_name} {$and_sort}";
         // die($sql);
         $xoopsDB->queryF($sql) or web_error($sql);
+    }
+
+    public function mk_form_group($left_width, $right_width, $label, $form, $input_group, $Help)
+    {
+        $Help_text    = $Help ? '<small class="text-muted">' . $Help . '</small>' : "";
+        $ig_tag_start = $input_group ? '<div class="input-group">' : '';
+        $ig_tag_body  = $input_group ? '<span class="input-group-btn">' . $input_group . '</span>' : '';
+        $ig_tag_end   = $input_group ? '</div>' : '';
+        $main         = '
+        <div class="form-group">
+            <label class="col-sm-' . $left_width . ' control-label">' . $label . '</label>
+            <div class="col-sm-' . $right_width . '">
+            ' . $ig_tag_start . '
+            ' . $form . '
+            ' . $ig_tag_body . '
+            ' . $ig_tag_end . '
+            ' . $Help_text . '
+            </div>
+        </div>
+        ';
+        return $main;
+    }
+
+    //$form_arr[]=array('0'=>3,'1'=>4,'2'=>'xxx','3'='<input>');
+    public function mk_form_group_arr($form_arr)
+    {
+        $main = '<div class="form-group">';
+        foreach ($form_arr as $k => $form) {
+            $sronly = empty($form[0]) ? 'sr-only' : '';
+            $main .= '
+                <label class="col-sm-' . $form[0] . ' control-label ' . $sronly . '">' . $form[2] . '</label>
+                <div class="col-sm-' . $form[1] . '">
+                ' . $form[3] . '
+                </div>
+            ';
+        }
+        $main .= '</div>';
+
+        return $main;
+    }
+    //從界面取得自訂表單
+    public function getCustomSetupForm($action)
+    {
+        $action = empty($action) ? $_SERVER['PHP_SELF'] : $action;
+        $data   = $this->getData('dcq');
+        $sort   = 0;
+        $main   = '<form action="' . $action . '" method="post" class="form-horizontal">';
+        foreach ($data['dcq'] as $sort => $json) {
+            $main .= $this->getCustomSetupCol($sort, $json);
+            $sort++;
+        }
+        $main .= $this->getCustomSetupCol($sort);
+        $main .= '<input type="hidden" name="dc_op" value="saveCustomSetupForm">';
+        $main .= '<input type="hidden" name="' . $this->col_name . '" value="' . $this->col_sn . '">';
+        $main .= '<div class="text-center"><button type="submit" class="btn btn-primary">儲存</button></div>';
+        $main .= '</form>';
+
+        return $main;
+    }
+
+    //取得設定界面的單一欄位
+    private function getCustomSetupCol($sort, $json)
+    {
+
+        $val = json_decode($json, true);
+
+        $col_type_arr['input=text']     = '文字框';
+        $col_type_arr['input=radio']    = '單選圓框';
+        $col_type_arr['input=checkbox'] = '複選方框';
+        // $col_type_arr['input=checkbox-radio'] = '單選方框';
+        $col_type_arr['select']   = '下拉選單';
+        $col_type_arr['textarea'] = '大量文字框';
+        $col_type_arr['note']     = '說明文字';
+        $option                   = '';
+        foreach ($col_type_arr as $type => $text) {
+            $selected = $val['type'] == $type ? "selected" : '';
+            $option .= '<option value="' . $type . '" ' . $selected . '>' . $text . '</option>';
+        }
+
+        $i          = $sort + 1;
+        $form_arr   = array();
+        $form_arr[] = array(1, 3, '題目' . $i, '<input type="text" name="dcq[' . $sort . '][title]" class="form-control" placeholder="請輸入題目" value="' . $val['title'] . '">');
+        
+        $form_arr[] = array(0, 3, '說明', '<input type="text" name="dcq[' . $sort . '][placeholder]" class="form-control" placeholder="此處輸入相關說明" value="' . $val['placeholder'] . '">');
+        
+        $form_arr[] = array(0, 1, '類型', '<select name="dcq[' . $sort . '][type]" class="form-control">' . $option . '</select>');
+        $form_arr[] = array(0, 4, '選項', '<input type="text" name="dcq[' . $sort . '][opt]" class="form-control" placeholder="選項請用;隔開，如：「男;女」，若選項值和選項文字不同，請用=設定，如「1=男;0=女」" value="' . $val['opt'] . '">');
+        $main .= $this->mk_form_group_arr($form_arr);
+        return $main;
+    }
+
+    //儲存自訂表單設定
+    public function saveCustomSetupForm()
+    {
+        if ($_REQUEST['dc_op'] == "saveCustomSetupForm") {
+            $this->saveDcqData();
+            header("location: {$_SERVER['HTTP_REFERER']}");
+            exit;
+        }
+    }
+
+    //儲存自訂問卷資料資料
+    private function saveDcqData()
+    {
+        global $xoopsDB;
+        $myts = MyTextSanitizer::getInstance();
+        // die(var_export($_REQUEST['dcq']));
+        // die('$this->col_sn=' . $this->col_sn);
+        foreach ($_REQUEST['dcq'] as $sort => $dcq) {
+            if ($_REQUEST['dc_op'] == "saveCustomSetupForm" and empty($dcq['title'])) {
+                continue;
+            }
+
+            $json_val = json_encode($dcq, JSON_UNESCAPED_UNICODE);
+            $json_val = $myts->addSlashes($json_val);
+
+            $this->delData('dcq', $sort);
+
+            $sql = "insert into `{$this->TadDataCenterTblName}`
+                    (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`)
+                    values('{$this->mid}' , '{$this->col_name}' , '{$this->col_sn}' , 'dcq' , '{$json_val}' , '{$sort}')";
+            $xoopsDB->queryF($sql) or web_error($sql);
+
+        }
+    }
+
+    //取得自訂表單
+    public function getCustomForm($use_form = true, $use_submit = false, $action = '', $lw = 3, $rw = 9)
+    {
+
+        $action   = empty($action) ? $_SERVER['PHP_SELF'] : $action;
+        $data     = $this->getData('dcq');
+        $sort     = 0;
+        $form_col = '';
+        foreach ($data['dcq'] as $sort => $json) {
+            $dcq                   = json_decode($json, true);
+            list($form_tag, $type) = explode('=', $dcq['type']);
+
+            $name       = "{$this->col_name}_{$this->col_sn}_dcq_{$sort}";
+            $options    = explode(';', $dcq['opt']);
+            $option_arr = array();
+            foreach ($options as $opt) {
+                if (strpos($opt, '=') !== false) {
+                    list($key, $val) = explode('=', $opt);
+                } else {
+                    $key = $val = $opt;
+                }
+                $option_arr[$key] = $val;
+            }
+            if (in_array($type, array('radio', 'checkbox', 'checkbox-radio'))) {
+                $attr_arr = array('id' => $name);
+            } else {
+                $attr_arr = array('class' => 'form-control', 'id' => $name, 'placeholder' => $dcq['placeholder']);
+            }
+            $col = $this->getForm('return', $form_tag, $name, $type, null, $option_arr, $attr_arr, null, $this->ans_col_name, $this->ans_col_sn);
+            $form_col .= $this->mk_form_group($lw, $rw, $dcq['title'], $col);
+        }
+
+        if ($form_col) {
+            $form = $use_form ? '<form action="' . $action . '" method="post" class="form-horizontal">' : '';
+            $form .= $form_col;
+            $form .= $use_submit ? $this->mk_form_group($lw, $rw, '', '<input type="hidden" name="op" value="saveCustomSetupFormVal"><input type="hidden" name="dc_op" value="saveCustomSetupFormVal"><input type="hidden" name="' . $this->ans_col_name . '" value="' . $this->ans_col_sn . '"><button type="submit" class="btn btn-primary">儲存</button>') : '';
+            $form .= $use_form ? "</form>" : '';
+            return $form;
+        }
+    }
+
+    //儲存自訂表單值
+    public function saveCustomSetupFormVal()
+    {
+        // die(var_dump($_REQUEST));
+        if ($_REQUEST['dc_op'] == "saveCustomSetupFormVal") {
+            $this->saveData();
+            header("location: {$_SERVER['HTTP_REFERER']}");
+            exit;
+        }
+    }
+
+    //已填答案列表
+    public function getCustomAns($call_back_func = "")
+    {
+
+        $data = $this->getData('dcq');
+        $main = "<table class='table table-bordered table-striped table-hover'>
+        <tr><th>填寫人</th>";
+        foreach ($data['dcq'] as $sort => $json) {
+            $dcq                   = json_decode($json, true);
+            list($form_tag, $type) = explode('=', $dcq['type']);
+            if ($form_tag == "note") {
+                continue;
+            }
+            $name[] = "{$this->col_name}_{$this->col_sn}_dcq_{$sort}";
+            $main .= "<th>{$dcq['title']}</th>";
+
+        }
+        // die(var_dump($ans));
+        $main .= "</tr>";
+
+        $ans = $this->getDcqDataArr($name);
+
+        foreach ($ans as $col_sn => $ans_arr) {
+            $title = ($call_back_func) ? call_user_func($call_back_func, $col_sn) : $col_sn;
+
+            $main .= "<tr><td>{$title}</td>";
+
+            // foreach ($ans_arr as $data_name => $value) {
+            foreach ($name as $data_name) {
+                $main .= "<td>";
+                $main .= nl2br(implode("、", $ans_arr[$data_name]));
+                $main .= "</td>";
+            }
+
+            $main .= "</tr>";
+        }
+        $main .= "</table>";
+        return $main;
+    }
+
+    //取得填答資料陣列
+    public function getDcqDataArr($data_name = '')
+    {
+        global $xoopsDB;
+        if (is_array($data_name)) {
+            foreach ($data_name as $name) {
+                $sql = "select col_sn, data_sort ,data_value from `{$this->TadDataCenterTblName}`
+                    where `mid`= '{$this->mid}' and `data_name`='{$name}' order by col_sn";
+                $result = $xoopsDB->queryF($sql) or web_error($sql);
+
+                while (list($col_sn, $data_sort, $data_value) = $xoopsDB->fetchRow($result)) {
+                    $values[$col_sn][$name][$data_sort] = $data_value;
+                }
+            }
+        } else {
+            $sql = "select col_sn, data_sort ,data_value from `{$this->TadDataCenterTblName}`
+            where `mid`= '{$this->mid}' and `data_name`='{$data_name}' order by col_sn";
+            $result = $xoopsDB->queryF($sql) or web_error($sql);
+
+            while (list($col_sn, $data_sort, $data_value) = $xoopsDB->fetchRow($result)) {
+                $values[$col_sn][$data_name][$data_sort] = $data_value;
+            }
+        }
+        return $values;
+
+    }
+
+    private function rand_str($len = 6, $format = 'ALL')
+    {
+        switch ($format) {
+            case 'ALL':
+                $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                break;
+            case 'CHAR':
+                $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+                break;
+            case 'NUMBER':
+                $chars = '0123456789';
+                break;
+            default:
+                $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                break;
+        }
+        list($usec, $sec) = explode(' ', microtime());
+        $seed             = (float) $sec + ((float) $usec * 100000);
+        // die('seed=' . $seed);
+        mt_srand($seed);
+        $password = "";
+        while (strlen($password) < $len) {
+            $password .= substr($chars, (mt_rand() % strlen($chars)), 1);
+        }
+
+        return $password;
     }
 }
