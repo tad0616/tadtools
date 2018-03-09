@@ -70,11 +70,23 @@ $TadDataCenter->set_col('tea_uid', $user['iuId']);
 $TadDataCenter->saveCustomSetupFormVal();
 break;
 
-//填答列表
+//自訂表單填答列表（表格）
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
-$xoopsTpl->assign('getCustomAns', $TadDataCenter->getCustomAns());
+$getCustomAns=$TadDataCenter->getCustomAns();
+
+//自訂表單題目
+include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+$TadDataCenter=new TadDataCenter($module_dirname);
+$TadDataCenter->set_col($col_name,$col_sn);
+$CustomSetup      = $TadDataCenter->getCustomSetup();
+
+//自訂表單填答陣列
+include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+$TadDataCenter=new TadDataCenter($module_dirname);
+$TadDataCenter->set_col($col_name,$col_sn);
+$getCustomAnsArr=$TadDataCenter->getCustomAnsArr();
 
 資料表：
 CREATE TABLE `模組名稱_data_center` (
@@ -228,7 +240,7 @@ class TadDataCenter
                 break;
         }
 
-        if ($mode == 'assign') {
+        if ($xoopsTpl and $mode == 'assign') {
             $xoopsTpl->assign($name, $form);
         } else {
             return $form;
@@ -344,21 +356,22 @@ class TadDataCenter
         $xoopsDB->queryF($sql) or web_error($sql);
     }
 
-    public function mk_form_group($left_width, $right_width, $label, $form, $input_group, $Help)
+    public function mk_form_group($left_width, $right_width, $label, $form, $input_group = false, $help = '', $require = '')
     {
-        $Help_text    = $Help ? '<small class="text-muted">' . $Help . '</small>' : "";
+        $help_text    = $help ? '<div><small class="text-muted">' . $help . '</small></div>' : "";
         $ig_tag_start = $input_group ? '<div class="input-group">' : '';
         $ig_tag_body  = $input_group ? '<span class="input-group-btn">' . $input_group . '</span>' : '';
         $ig_tag_end   = $input_group ? '</div>' : '';
+        $require_mark = $require == 1 ? ' <span style="color:red;">*</span>' : '';
         $main         = '
         <div class="form-group">
-            <label class="col-sm-' . $left_width . ' control-label">' . $label . '</label>
+            <label class="col-sm-' . $left_width . ' control-label">' . $label . $require_mark . '</label>
             <div class="col-sm-' . $right_width . '">
             ' . $ig_tag_start . '
             ' . $form . '
             ' . $ig_tag_body . '
             ' . $ig_tag_end . '
-            ' . $Help_text . '
+            ' . $help_text . '
             </div>
         </div>
         ';
@@ -408,13 +421,12 @@ class TadDataCenter
 
         $val = json_decode($json, true);
 
-        $col_type_arr['input=text']     = '文字框';
-        $col_type_arr['input=radio']    = '單選圓框';
-        $col_type_arr['input=checkbox'] = '複選方框';
-        // $col_type_arr['input=checkbox-radio'] = '單選方框';
-        $col_type_arr['select']   = '下拉選單';
-        $col_type_arr['textarea'] = '大量文字框';
-        $col_type_arr['note']     = '說明文字';
+        $col_type_arr['input=text']     = _TDC_INPUT;
+        $col_type_arr['input=radio']    = _TDC_RADIO;
+        $col_type_arr['input=checkbox'] = _TDC_CHECKBOX;
+        $col_type_arr['select']   = _TDC_SELECT;
+        $col_type_arr['textarea'] = _TDC_TEXTAREA;
+        $col_type_arr['note']     = _TDC_NOTE;
         $option                   = '';
         foreach ($col_type_arr as $type => $text) {
             $selected = $val['type'] == $type ? "selected" : '';
@@ -423,12 +435,15 @@ class TadDataCenter
 
         $i          = $sort + 1;
         $form_arr   = array();
-        $form_arr[] = array(1, 3, '題目' . $i, '<input type="text" name="dcq[' . $sort . '][title]" class="form-control" placeholder="請輸入題目" value="' . $val['title'] . '">');
-        
-        $form_arr[] = array(0, 3, '說明', '<input type="text" name="dcq[' . $sort . '][placeholder]" class="form-control" placeholder="此處輸入相關說明" value="' . $val['placeholder'] . '">');
-        
-        $form_arr[] = array(0, 1, '類型', '<select name="dcq[' . $sort . '][type]" class="form-control">' . $option . '</select>');
-        $form_arr[] = array(0, 4, '選項', '<input type="text" name="dcq[' . $sort . '][opt]" class="form-control" placeholder="選項請用;隔開，如：「男;女」，若選項值和選項文字不同，請用=設定，如「1=男;0=女」" value="' . $val['opt'] . '">');
+        $form_arr[] = array(1, 2, _TDC_TITLE . $i, '<input type="text" name="dcq[' . $sort . '][title]" class="form-control" placeholder="'._TDC_INPUT_TITLE.'" value="' . $val['title'] . '">');
+
+        $form_arr[] = array(0, 3, _TDC_DESCRIPTION, '<input type="text" name="dcq[' . $sort . '][placeholder]" class="form-control" placeholder="'._TDC_INPUT_DESCRIPTION.'" value="' . $val['placeholder'] . '">');
+
+        $form_arr[] = array(0, 1, _TDC_TYPE, '<select name="dcq[' . $sort . '][type]" class="form-control">' . $option . '</select>');
+        $form_arr[] = array(0, 4, _TDC_OPTIONS, '<input type="text" name="dcq[' . $sort . '][opt]" class="form-control" placeholder="'._TDC_OPTIONS_NOTE.'" value="' . $val['opt'] . '">');
+
+        $checked    = $val['require'] == 1 ? 'checked' : '';
+        $form_arr[] = array(0, 1, _TDC_REQUIRE . $i, '<label class="checkbox-inline"><input type="checkbox" name="dcq[' . $sort . '][require]" value="1" ' . $checked . '>'._TDC_REQUIRE.'</label>');
         $main .= $this->mk_form_group_arr($form_arr);
         return $main;
     }
@@ -468,6 +483,33 @@ class TadDataCenter
         }
     }
 
+    //取得自訂表單題目設定
+    public function getCustomSetup()
+    {
+        $data    = $this->getData('dcq');
+        $dcq_arr = array();
+        foreach ($data['dcq'] as $sort => $json) {
+            $dcq                                 = json_decode($json, true);
+            list($dcq['form_tag'], $dcq['type']) = explode('=', $dcq['type']);
+
+            $dcq['name'] = "{$this->col_name}_{$this->col_sn}_dcq_{$sort}";
+
+            $options    = explode(';', $dcq['opt']);
+            $option_arr = array();
+            foreach ($options as $opt) {
+                if (strpos($opt, '=') !== false) {
+                    list($key, $val) = explode('=', $opt);
+                } else {
+                    $key = $val = $opt;
+                }
+                $option_arr[$key] = $val;
+            }
+            $dcq['option_arr'] = $option_arr;
+            $dcq_arr[$sort]    = $dcq;
+        }
+        return $dcq_arr;
+    }
+
     //取得自訂表單
     public function getCustomForm($use_form = true, $use_submit = false, $action = '', $lw = 3, $rw = 9)
     {
@@ -491,19 +533,27 @@ class TadDataCenter
                 }
                 $option_arr[$key] = $val;
             }
+
+            $require = $dcq['require'] == 1 ? " validate[required]" : "";
             if (in_array($type, array('radio', 'checkbox', 'checkbox-radio'))) {
-                $attr_arr = array('id' => $name);
+                $attr_arr = array('class' => $require, 'id' => $name);
             } else {
-                $attr_arr = array('class' => 'form-control', 'id' => $name, 'placeholder' => $dcq['placeholder']);
+                $attr_arr = array('class' => "form-control $require", 'id' => $name, 'placeholder' => $dcq['placeholder']);
             }
             $col = $this->getForm('return', $form_tag, $name, $type, null, $option_arr, $attr_arr, null, $this->ans_col_name, $this->ans_col_sn);
-            $form_col .= $this->mk_form_group($lw, $rw, $dcq['title'], $col);
+            $form_col .= $this->mk_form_group($lw, $rw, $dcq['title'], $col, false, $dcq['placeholder'], $dcq['require']);
         }
 
         if ($form_col) {
-            $form = $use_form ? '<form action="' . $action . '" method="post" class="form-horizontal">' : '';
+            $form = '';
+            if ($use_form) {
+                include_once XOOPS_ROOT_PATH . "/modules/tadtools/formValidator.php";
+                $formValidator      = new formValidator("#myForm", false);
+                $formValidator_code = $formValidator->render('topLeft');
+                $form               = '<form action="' . $action . '" id="myForm" method="post" class="form-horizontal">';
+            }
             $form .= $form_col;
-            $form .= $use_submit ? $this->mk_form_group($lw, $rw, '', '<input type="hidden" name="op" value="saveCustomSetupFormVal"><input type="hidden" name="dc_op" value="saveCustomSetupFormVal"><input type="hidden" name="' . $this->ans_col_name . '" value="' . $this->ans_col_sn . '"><button type="submit" class="btn btn-primary">儲存</button>') : '';
+            $form .= $use_submit ? $this->mk_form_group($lw, $rw, '', '<input type="hidden" name="op" value="saveCustomSetupFormVal"><input type="hidden" name="dc_op" value="saveCustomSetupFormVal"><input type="hidden" name="' . $this->ans_col_name . '" value="' . $this->ans_col_sn . '"><button type="submit" class="btn btn-primary">'._TAD_SAVE.'</button>') : '';
             $form .= $use_form ? "</form>" : '';
             return $form;
         }
@@ -558,6 +608,24 @@ class TadDataCenter
         }
         $main .= "</table>";
         return $main;
+    }
+
+    //已填答案陣列
+    public function getCustomAnsArr()
+    {
+
+        $data = $this->getData('dcq');
+        foreach ($data['dcq'] as $sort => $json) {
+            $dcq                   = json_decode($json, true);
+            list($form_tag, $type) = explode('=', $dcq['type']);
+            if ($form_tag == "note") {
+                continue;
+            }
+            $name[] = "{$this->col_name}_{$this->col_sn}_dcq_{$sort}";
+        }
+
+        $ans = $this->getDcqDataArr($name);
+        return $ans;
     }
 
     //取得填答資料陣列

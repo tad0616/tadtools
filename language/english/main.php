@@ -91,3 +91,20 @@ define('TADTOOLS_CHECKBOX_TO_DEL', 'To delete a file, please click on the check 
 define('_TAD_MENU_CONFIG', 'Dorpdown Setup');
 
 define('_TAD_EMPTY', 'No information available');
+
+//TadDataCenter.php
+Define('_TDC_REQUIRE', 'Required');
+Define('_TDC_INPUT', 'Textbox');
+Define('_TDC_RADIO', 'Radio');
+Define('_TDC_CHECKBOX', 'Checkbox');
+Define('_TDC_SELECT', 'Select');
+Define('_TDC_TEXTAREA', 'Textarea');
+Define('_TDC_NOTE', 'Description text');
+Define('_TDC_TITLE', 'Title');
+Define('_TDC_INPUT_TITLE', 'Please enter title');
+Define('_TDC_DESCRIPTION', 'Description');
+Define('_TDC_INPUT_DESCRIPTION', 'Enter the relevant description here');
+Define('_TDC_TYPE', 'Type');
+Define('_TDC_OPTIONS', 'Options');
+Define('_TDC_OPTIONS_NOTE', 'Use the ; to separate options. eg, "male;female". If the option value and the option text are different, use = to set it, eg "1=male;0=female"');
+// define('_TDC_', 'Required');
