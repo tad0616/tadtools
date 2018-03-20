@@ -4,6 +4,25 @@ include_once "jquery.php";
 include_once "include/beforeheader.php";
 get_bootstrap();
 
+if (!function_exists('setup_meta')) {
+    function setup_meta($title="", $content="", $image="")
+    {
+        global $xoTheme,$xoopsTpl;
+        if (is_object($xoTheme)) {
+            $xoTheme->addMeta('meta', 'keywords', $title);
+            $xoTheme->addMeta('meta', 'description', strip_tags($content));
+        } else {
+            $xoopsTpl->assign('xoops_meta_keywords', 'keywords', $title);
+            $xoopsTpl->assign('xoops_meta_description', strip_tags($content));
+        }
+
+        $xoopsTpl->assign('fb_title', $title);
+        $xoopsTpl->assign('fb_description', strip_tags($content));
+        $xoopsTpl->assign('fb_image', $image);
+        $xoopsTpl->assign("xoops_pagetitle", $title);
+    }
+}
+
 //解決 basename 抓不到中文檔名的問題
 if (!function_exists('get_basename')) {
     function get_basename($filename)
@@ -397,7 +416,7 @@ if (!function_exists('power_chk')) {
         $gperm_handler = xoops_getHandler('groupperm');
 
         //權限項目編號
-        $perm_itemid = (int)$sn;
+        $perm_itemid = (int) $sn;
         // echo var_export($perm_itemid);
         //依據該群組是否對該權限項目有使用權之判斷 ，做不同之處理
         if ($gperm_handler->checkRight($perm_name, $perm_itemid, $groups, $module_id)) {
@@ -660,7 +679,7 @@ if (!class_exists('PageBar')) {
 
         public function __construct($total, $limit = 10, $page_limit)
         {
-            $limit = (int)$limit;
+            $limit = (int) $limit;
             //die(var_export($limit));
             $mydirname     = basename(dirname(__FILE__));
             $this->prev    = "<img src='" . TADTOOLS_URL . "/images/1leftarrow.png' alt='" . _TAD_BACK_PAGE . "' align='absmiddle' hspace=3>";
@@ -683,7 +702,7 @@ if (!class_exists('PageBar')) {
             $this->query_str  = $this->processQuery($this->used_query);
             $this->glue       = ($this->query_str == "") ? '?' : '&';
 
-            $this->current = (isset($_GET[$this->url_page])) ? (int)$_GET[$this->url_page] : 1;
+            $this->current = (isset($_GET[$this->url_page])) ? (int) $_GET[$this->url_page] : 1;
             if ($this->current < 1) {
                 $this->current = 1;
             }

@@ -1,3 +1,14 @@
+TadTools 3.1.7 (2018-03-20 釋出)
+====================================
+1.提高 TadDataCenter 的版本相容性，支援 PHP 5.4 以下版本
+2.無障礙 2.0 A 級修正
+3.更新jquery qtip2 為 3.0.3 版
+4.修正 jquery.validationEngine.js 於新版 jquery 下部份檢查無效的問題
+5.TadDataCenter 加入自訂表單功能
+6.TadUpFiles.php 新增各種檔案格式限制功能（感謝geek01）
+7.新增 setup_meta()函數
+
+
 TadTools 3.1.6 (2018-02-13 釋出)
 ====================================
 1.修改導覽列共同樣板使之支援選項距離設定

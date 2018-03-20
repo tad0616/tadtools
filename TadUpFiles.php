@@ -483,7 +483,7 @@ class TadUpFiles
         <link href=\"" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css\" rel=\"stylesheet\">
         <script type='text/javascript'>
             $(document).ready(function(){
-                $('#list_del_file_sort').sortable({ opacity: 0.6, cursor: 'move', update: function() {
+                $('#list_del_file_sort_{$this->col_name}').sortable({ opacity: 0.6, cursor: 'move', update: function() {
                     var order = $(this).sortable('serialize');
                     $.post('" . XOOPS_URL . "/modules/tadtools/save_sort.php',order+'&col_name={$this->col_name}&col_sn={$this->col_sn}&tbl_name=" . $this->TadUpFilesTblName . "', function(theResponse){
                         $('#df_save_msg').html(theResponse);
@@ -522,7 +522,7 @@ class TadUpFiles
               <div class='row' style='margin-top:10px;'>
                 <div class='col-sm-12'>
                     <table class='table table-striped table-hover'>
-                        <tbody id='list_del_file_sort' >
+                        <tbody id='list_del_file_sort_{$this->col_name}' >
                             $all_file
                         </tbody>
                     </table>
@@ -536,7 +536,7 @@ class TadUpFiles
             <div style='height:30px;'></div>
             <div class='row' style='margin-top:10px;'>
                 <div class='col-sm-12'>
-                <ol class='rectangle-list' style=\"counter-reset: li; list-style: none; *list-style: decimal; font: 15px 'trebuchet MS', 'lucida sans'; padding: 0; text-shadow: 0 1px 0 rgba(255,255,255,.5);\" id='list_del_file_sort'>
+                <ol class='rectangle-list' style=\"counter-reset: li; list-style: none; *list-style: decimal; font: 15px 'trebuchet MS', 'lucida sans'; padding: 0; text-shadow: 0 1px 0 rgba(255,255,255,.5);\" id='list_del_file_sort_{$this->col_name}'>
                     {$all_file}
                 </ol>
                 </div>
@@ -547,7 +547,7 @@ class TadUpFiles
                 <div style='height:30px;'></div>
                 <div class='row' style='margin-top:10px;'>
                     <div class='col-sm-12'>
-                        <ul class='thumbnails' id='list_del_file_sort'>
+                        <ul class='thumbnails' id='list_del_file_sort_{$this->col_name}'>
                             {$all_file}
                         </ul>
                     </div>

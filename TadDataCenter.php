@@ -41,14 +41,14 @@ $TadDataCenter->delData($name,$sort);
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
-$xoopsTpl->assign('CustomSetupForm', $TadDataCenter->getCustomSetupForm(true, false));
+$xoopsTpl->assign('CustomSetupForm', $TadDataCenter->getCustomSetupForm($action));
 <{$CustomSetupForm}>
 
 //顯示問卷
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
-$xoopsTpl->assign('CustomForm', $TadDataCenter->getCustomForm());
+$xoopsTpl->assign('CustomForm', $TadDataCenter->getCustomForm($use_form = true, $use_submit = false, $action = '', $lw = 3, $rw = 9));
 <{$CustomForm}>
 
 //後台自訂問卷設定儲存
@@ -61,14 +61,7 @@ $TadDataCenter->saveCustomSetupForm();
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
-$TadDataCenter->saveCustomSetupFormVal();
-
-或
-case "saveCustomSetupFormVal":
-$user = get_integration_users();
-$TadDataCenter->set_col('tea_uid', $user['iuId']);
-$TadDataCenter->saveCustomSetupFormVal();
-break;
+$TadDataCenter->saveData();
 
 //自訂表單填答列表（表格）
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
@@ -90,14 +83,16 @@ $getCustomAnsArr=$TadDataCenter->getCustomAnsArr();
 
 資料表：
 CREATE TABLE `模組名稱_data_center` (
-`mid` mediumint(9) unsigned NOT NULL  COMMENT '模組編號',
-`col_name` varchar(100) NOT NULL default '' COMMENT '欄位名稱',
-`col_sn` mediumint(9) unsigned NOT NULL COMMENT '欄位編號',
-`data_name` varchar(100) NOT NULL default '' COMMENT '資料名稱',
+`mid` mediumint(9) unsigned NOT NULL AUTO_INCREMENT COMMENT '模組編號',
+`col_name` varchar(100) NOT NULL DEFAULT '' COMMENT '欄位名稱',
+`col_sn` mediumint(9) unsigned NOT NULL DEFAULT '0' COMMENT '欄位編號',
+`data_name` varchar(100) NOT NULL DEFAULT '' COMMENT '資料名稱',
 `data_value` text NOT NULL COMMENT '儲存值',
-`data_sort` mediumint(9) unsigned NOT NULL  COMMENT '排序',
-PRIMARY KEY  (`mid`,`col_name`,`col_sn`,`data_name`,`data_sort`)
-) ENGINE=MyISAM;
+`data_sort` mediumint(9) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
+`col_id` varchar(100) NOT NULL COMMENT '辨識字串',
+`update_time` datetime NOT NULL COMMENT '更新時間',
+PRIMARY KEY (`mid`,`col_name`,`col_sn`,`data_name`,`data_sort`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
  */
 
@@ -154,6 +149,7 @@ class TadDataCenter
         $this->ans_col_name = $ans_col_name;
         $this->ans_col_sn   = $ans_col_sn;
     }
+
     //取得表單
     public function getForm($mode = 'return', $form_tag, $name, $type = '', $def_value = '', $options = array(), $attr = array(), $sort = '', $ans_col_name = '', $ans_col_sn = '')
     {
@@ -199,13 +195,17 @@ class TadDataCenter
                         $checked = in_array($v, $value) ? 'checked' : '';
                         $form .= "<label class=\"checkbox-inline\"><input type=\"{$type}\" name=\"TDC[{$name}]{$arr}[]\" value=\"{$v}\" {$checked} {$attr_str}>{$k}</label>\n";
                     }
-
                 } elseif ($type == "checkbox-radio") {
                     $form = '';
                     foreach ($options as $k => $v) {
                         $checked = in_array($v, $value) ? 'checked' : '';
                         $form .= "<label class=\"checkbox\"><input type=\"checkbox\" name=\"TDC[{$name}]{$arr}\" value=\"{$v}\" {$checked} {$attr_str}>{$k}</label>\n";
                     }
+                } elseif ($type == "date") {
+                    include_once XOOPS_ROOT_PATH . "/modules/tadtools/cal.php";
+                    $cal = new My97DatePicker();
+                    $cal->render();
+                    $form = "<input type=\"text\" name=\"TDC[{$name}]{$arr}\" value=\"{$value}\" {$attr_str} onClick=\"WdatePicker({dateFmt:'yyyy-MM-dd', startDate:'%y-%M-%d'})\">";
                 } elseif ($type == "") {
                     $form = "<input type=\"text\" name=\"TDC[{$name}]{$arr}\" value=\"{$value}\" {$attr_str}>";
                 } else {
@@ -282,8 +282,8 @@ class TadDataCenter
                 $this->delData($name, $sort);
 
                 $sql = "insert into `{$this->TadDataCenterTblName}`
-                (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`)
-                values('{$this->mid}' , '{$this->col_name}' , '{$this->col_sn}' , '{$name}' , '{$val}' , '{$sort}')";
+                (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`, `update_time`)
+                values('{$this->mid}' , '{$this->col_name}' , '{$this->col_sn}' , '{$name}' , '{$val}' , '{$sort}',now())";
                 $xoopsDB->queryF($sql) or web_error($sql);
             }
         }
@@ -340,7 +340,30 @@ class TadDataCenter
             }
             return $values;
         }
+    }
 
+    //取得問卷題目資料
+    public function getDcqData($sort = '')
+    {
+        global $xoopsDB;
+        $myts     = MyTextSanitizer::getInstance();
+        $and_sort = ($sort != '') ? "and `data_sort`='{$sort}'" : "";
+
+        $sql = "select * from `{$this->TadDataCenterTblName}`
+                where `mid`= '{$this->mid}' and `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' and `data_name`='dcq' {$and_sort} order by data_sort";
+
+        $result = $xoopsDB->queryF($sql) or web_error($sql);
+        if ($sort) {
+            $all = $xoopsDB->fetchArray($result);
+            return $all;
+        } else {
+            $values = array();
+            while ($all = $xoopsDB->fetchArray($result)) {
+                $data_sort          = $all['data_sort'];
+                $values[$data_sort] = $all;
+            }
+            return $values;
+        }
     }
 
     //刪除資料
@@ -379,9 +402,9 @@ class TadDataCenter
     }
 
     //$form_arr[]=array('0'=>3,'1'=>4,'2'=>'xxx','3'='<input>');
-    public function mk_form_group_arr($form_arr)
+    public function mk_form_group_arr($form_arr, $col_id = '')
     {
-        $main = '<div class="form-group">';
+        $main = '<div class="form-group" id="col_id_' . $col_id . '">';
         foreach ($form_arr as $k => $form) {
             $sronly = empty($form[0]) ? 'sr-only' : '';
             $main .= '
@@ -395,28 +418,46 @@ class TadDataCenter
 
         return $main;
     }
+
     //從界面取得自訂表單
     public function getCustomSetupForm($action)
     {
-        $action = empty($action) ? $_SERVER['PHP_SELF'] : $action;
-        $data   = $this->getData('dcq');
-        $sort   = 0;
-        $main   = '<form action="' . $action . '" method="post" class="form-horizontal">';
-        foreach ($data['dcq'] as $sort => $json) {
-            $main .= $this->getCustomSetupCol($sort, $json);
+        $action  = empty($action) ? $_SERVER['PHP_SELF'] : $action;
+        $DcqData = $this->getDcqData();
+        $sort    = 0;
+        $main    = '
+        <script type="text/javascript">
+        $(document).ready(function(){
+            $("#dcq_sort").sortable({ opacity: 0.6, cursor: "move", update: function() {
+                var order = $(this).sortable("serialize");
+                $.post("' . XOOPS_URL . '/modules/tadtools/TadDataCenter.php?dcq_op=save_dcq_sort&col_sn=' . $this->col_sn . '&col_name=' . $this->col_name . '&dirname=' . $this->module_dirname . '", order, function(theResponse){
+                    $("#save_msg").html(theResponse);
+                    location.reload();
+                });
+            }
+            });
+        });
+        </script>
+        <div id="save_msg"></div>
+        <form action="' . $action . '" method="post" class="form-horizontal" id="dcq_sort">';
+        foreach ($DcqData as $sort => $data) {
+            $main .= $this->getCustomSetupCol($sort, $data['data_value'], $data['col_id']);
             $sort++;
         }
-        $main .= $this->getCustomSetupCol($sort);
+        $main .= $this->getCustomSetupCol($sort, '', 'new');
         $main .= '<input type="hidden" name="dc_op" value="saveCustomSetupForm">';
         $main .= '<input type="hidden" name="' . $this->col_name . '" value="' . $this->col_sn . '">';
         $main .= '<div class="text-center"><button type="submit" class="btn btn-primary">儲存</button></div>';
         $main .= '</form>';
 
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+        $sweet_alert      = new sweet_alert();
+        $sweet_alert_code = $sweet_alert->render("del_dcq_col", XOOPS_URL . "/modules/tadtools/TadDataCenter.php?dcq_op=del_dcq_col&col_name={$this->col_name}&col_sn={$this->col_sn}&dirname={$this->module_dirname}&col_id=", 'col_id');
         return $main;
     }
 
     //取得設定界面的單一欄位
-    private function getCustomSetupCol($sort, $json)
+    private function getCustomSetupCol($sort, $json = '', $col_id = '')
     {
 
         $val = json_decode($json, true);
@@ -424,27 +465,34 @@ class TadDataCenter
         $col_type_arr['input=text']     = _TDC_INPUT;
         $col_type_arr['input=radio']    = _TDC_RADIO;
         $col_type_arr['input=checkbox'] = _TDC_CHECKBOX;
-        $col_type_arr['select']   = _TDC_SELECT;
-        $col_type_arr['textarea'] = _TDC_TEXTAREA;
-        $col_type_arr['note']     = _TDC_NOTE;
-        $option                   = '';
+        $col_type_arr['input=date']     = _TDC_DATE;
+        $col_type_arr['select']         = _TDC_SELECT;
+        $col_type_arr['textarea']       = _TDC_TEXTAREA;
+        $col_type_arr['note']           = _TDC_NOTE;
+        $option                         = '';
         foreach ($col_type_arr as $type => $text) {
             $selected = $val['type'] == $type ? "selected" : '';
             $option .= '<option value="' . $type . '" ' . $selected . '>' . $text . '</option>';
         }
-
+        $del        = ($col_id != 'new' and $col_id) ? "<a href=\"javascript:del_dcq_col('{$col_id}')\" style='color:red;'><i class='fa fa-trash-o' title='" . _TAD_DEL . "'></i></a> " : '';
         $i          = $sort + 1;
         $form_arr   = array();
-        $form_arr[] = array(1, 2, _TDC_TITLE . $i, '<input type="text" name="dcq[' . $sort . '][title]" class="form-control" placeholder="'._TDC_INPUT_TITLE.'" value="' . $val['title'] . '">');
+        $form_arr[] = array(1, 2, $del . _TDC_TITLE . $i, '<input type="text" name="dcq[' . $sort . '][title]" class="form-control" placeholder="' . _TDC_INPUT_TITLE . '" value="' . $val['title'] . '">');
 
-        $form_arr[] = array(0, 3, _TDC_DESCRIPTION, '<input type="text" name="dcq[' . $sort . '][placeholder]" class="form-control" placeholder="'._TDC_INPUT_DESCRIPTION.'" value="' . $val['placeholder'] . '">');
+        $form_arr[] = array(0, 2, _TDC_DESCRIPTION, '<input type="text" name="dcq[' . $sort . '][placeholder]" class="form-control" placeholder="' . _TDC_INPUT_DESCRIPTION . '" value="' . $val['placeholder'] . '">');
 
         $form_arr[] = array(0, 1, _TDC_TYPE, '<select name="dcq[' . $sort . '][type]" class="form-control">' . $option . '</select>');
-        $form_arr[] = array(0, 4, _TDC_OPTIONS, '<input type="text" name="dcq[' . $sort . '][opt]" class="form-control" placeholder="'._TDC_OPTIONS_NOTE.'" value="' . $val['opt'] . '">');
+        $form_arr[] = array(0, 4, _TDC_OPTIONS, '<input type="text" name="dcq[' . $sort . '][opt]" class="form-control" placeholder="' . _TDC_OPTIONS_NOTE . '" value="' . $val['opt'] . '">');
 
         $checked    = $val['require'] == 1 ? 'checked' : '';
-        $form_arr[] = array(0, 1, _TDC_REQUIRE . $i, '<label class="checkbox-inline"><input type="checkbox" name="dcq[' . $sort . '][require]" value="1" ' . $checked . '>'._TDC_REQUIRE.'</label>');
-        $main .= $this->mk_form_group_arr($form_arr);
+        $form_arr[] = array(0, 1, _TDC_REQUIRE . $i, '<label class="checkbox-inline"><input type="checkbox" name="dcq[' . $sort . '][require]" value="1" ' . $checked . '>' . _TDC_REQUIRE . '</label>');
+
+        if ($col_id == 'new') {
+            $form_arr[] = array(0, 1, _TDC_COL_ID, '<input type="hidden" name="dcq[' . $sort . '][col_id]" value="' . $col_id . '">');
+        } else {
+            $form_arr[] = array(0, 1, _TDC_COL_ID, '<input type="hidden" name="dcq[' . $sort . '][old_col_id]" value="' . $col_id . '"><input type="text" name="dcq[' . $sort . '][col_id]" class="form-control" placeholder="' . _TDC_INPUT_COL_ID . '" value="' . $col_id . '" title="' . _TDC_INPUT_COL_ID . '">');
+        }
+        $main .= $this->mk_form_group_arr($form_arr, $col_id);
         return $main;
     }
 
@@ -474,25 +522,37 @@ class TadDataCenter
             $json_val = $myts->addSlashes($json_val);
 
             $this->delData('dcq', $sort);
-
-            $sql = "insert into `{$this->TadDataCenterTblName}`
-                    (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`)
-                    values('{$this->mid}' , '{$this->col_name}' , '{$this->col_sn}' , 'dcq' , '{$json_val}' , '{$sort}')";
+            $col_id = empty($dcq['col_id']) ? $this->rand_str() : $dcq['col_id'];
+            $sql    = "insert into `{$this->TadDataCenterTblName}`
+                    (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`, `col_id`, `update_time`)
+                    values('{$this->mid}' , '{$this->col_name}' , '{$this->col_sn}' , 'dcq' , '{$json_val}' , '{$sort}' , '{$col_id}' , now())";
             $xoopsDB->queryF($sql) or web_error($sql);
-
+            if ($dcq['col_id'] != $dcq['old_col_id']) {
+                $this->update_col_id($dcq['old_col_id'], $dcq['col_id']);
+            }
         }
+    }
+
+    //更新辨識碼
+    private function update_col_id($old_col_id, $new_col_id)
+    {
+        global $xoopsDB;
+        $sql = "update `{$this->TadDataCenterTblName}` set `data_name`='{$this->col_name}_{$this->col_sn}_dcq_{$new_col_id}' where `data_name`='{$this->col_name}_{$this->col_sn}_dcq_{$old_col_id}'";
+        // die($sql);
+        $xoopsDB->queryF($sql) or web_error($sql);
     }
 
     //取得自訂表單題目設定
     public function getCustomSetup()
     {
-        $data    = $this->getData('dcq');
+        $DcqData = $this->getDcqData();
         $dcq_arr = array();
-        foreach ($data['dcq'] as $sort => $json) {
-            $dcq                                 = json_decode($json, true);
+        foreach ($DcqData as $sort => $data) {
+            $dcq = json_decode($data['data_value'], true);
+
             list($dcq['form_tag'], $dcq['type']) = explode('=', $dcq['type']);
 
-            $dcq['name'] = "{$this->col_name}_{$this->col_sn}_dcq_{$sort}";
+            $dcq['name'] = "{$this->col_name}_{$this->col_sn}_dcq_{$data['col_id']}";
 
             $options    = explode(';', $dcq['opt']);
             $option_arr = array();
@@ -515,14 +575,14 @@ class TadDataCenter
     {
 
         $action   = empty($action) ? $_SERVER['PHP_SELF'] : $action;
-        $data     = $this->getData('dcq');
+        $DcqData  = $this->getDcqData();
         $sort     = 0;
         $form_col = '';
-        foreach ($data['dcq'] as $sort => $json) {
-            $dcq                   = json_decode($json, true);
+        foreach ($DcqData as $sort => $data) {
+            $dcq                   = json_decode($data['data_value'], true);
             list($form_tag, $type) = explode('=', $dcq['type']);
 
-            $name       = "{$this->col_name}_{$this->col_sn}_dcq_{$sort}";
+            $name       = "{$this->col_name}_{$this->col_sn}_dcq_{$data['col_id']}";
             $options    = explode(';', $dcq['opt']);
             $option_arr = array();
             foreach ($options as $opt) {
@@ -550,80 +610,96 @@ class TadDataCenter
                 include_once XOOPS_ROOT_PATH . "/modules/tadtools/formValidator.php";
                 $formValidator      = new formValidator("#myForm", false);
                 $formValidator_code = $formValidator->render('topLeft');
-                $form               = '<form action="' . $action . '" id="myForm" method="post" class="form-horizontal">';
+                $form               = '<form action="' . $action . '" id="myForm" method="post" class="form-horizontal">
+                <input type="hidden" name="dcq_op" value="saveCustomSetupFormVal">';
             }
             $form .= $form_col;
-            $form .= $use_submit ? $this->mk_form_group($lw, $rw, '', '<input type="hidden" name="op" value="saveCustomSetupFormVal"><input type="hidden" name="dc_op" value="saveCustomSetupFormVal"><input type="hidden" name="' . $this->ans_col_name . '" value="' . $this->ans_col_sn . '"><button type="submit" class="btn btn-primary">'._TAD_SAVE.'</button>') : '';
+            $form .= '
+            <input type="hidden" name="' . $this->ans_col_name . '" value="' . $this->ans_col_sn . '">
+            <input type="hidden" name="dirname" value="' . $this->module_dirname . '">
+            <input type="hidden" name="col_name" value="' . $this->ans_col_name . '">
+            <input type="hidden" name="col_sn" value="' . $this->ans_col_sn . '">';
+            $form .= $use_submit ? $this->mk_form_group($lw, $rw, '', '<button type="submit" class="btn btn-primary">' . _TAD_SAVE . '</button>') : '';
             $form .= $use_form ? "</form>" : '';
             return $form;
         }
     }
 
-    //儲存自訂表單值
-    public function saveCustomSetupFormVal()
-    {
-        // die(var_dump($_REQUEST));
-        if ($_REQUEST['dc_op'] == "saveCustomSetupFormVal") {
-            $this->saveData();
-            header("location: {$_SERVER['HTTP_REFERER']}");
-            exit;
-        }
-    }
-
     //已填答案列表
-    public function getCustomAns($call_back_func = "")
+    public function getCustomAns($call_back_func = "", $del_col_name = false)
     {
 
-        $data = $this->getData('dcq');
-        $main = "<table class='table table-bordered table-striped table-hover'>
-        <tr><th>填寫人</th>";
-        foreach ($data['dcq'] as $sort => $json) {
-            $dcq                   = json_decode($json, true);
+        $DcqData = $this->getDcqData();
+        $main    = "
+        <link href='" . XOOPS_URL . "/modules/tadtools/css/vtable.css' media='all' rel='stylesheet'>
+
+        <div class='vtable'>
+        <ul class='vhead'>
+        <li>" . _TDC_FILL_PEOPLE . "</li>
+        ";
+
+        foreach ($DcqData as $sort => $data) {
+            $dcq                   = json_decode($data['data_value'], true);
             list($form_tag, $type) = explode('=', $dcq['type']);
             if ($form_tag == "note") {
                 continue;
             }
-            $name[] = "{$this->col_name}_{$this->col_sn}_dcq_{$sort}";
-            $main .= "<th>{$dcq['title']}</th>";
-
+            $dcq_title        = $dcq['title'];
+            $name[$dcq_title] = "{$this->col_name}_{$this->col_sn}_dcq_{$data['col_id']}";
+            $main .= "<li style='text-align: center;'>{$dcq_title}</li>";
         }
-        // die(var_dump($ans));
-        $main .= "</tr>";
 
-        $ans = $this->getDcqDataArr($name);
+        if ($del_col_name) {
+            $main .= "<li>" . _TAD_FUNCTION . "</li>";
+        }
+        $main .= "</ul>";
 
+        $data_name_arr = array();
+        $ans           = $this->getDcqDataArr($name);
         foreach ($ans as $col_sn => $ans_arr) {
-            $title = ($call_back_func) ? call_user_func($call_back_func, $col_sn) : $col_sn;
-
-            $main .= "<tr><td>{$title}</td>";
-
+            $title = ($call_back_func) ? call_user_func($call_back_func, $col_sn, $this->col_name, $this->col_sn) : $col_sn;
+            $main .= "<ul>
+            <li class='vcell'>" . _TDC_FILL_PEOPLE . "</li>
+            <li style='text-align: center;'>{$title}</li>";
             // foreach ($ans_arr as $data_name => $value) {
-            foreach ($name as $data_name) {
-                $main .= "<td>";
+            foreach ($name as $dcq_title => $data_name) {
+                $main .= "<li class='vcell'>{$dcq_title}</li>
+                <li>";
                 $main .= nl2br(implode("、", $ans_arr[$data_name]));
-                $main .= "</td>";
+                $main .= "</li>";
+
+                $data_name_arr[$data_name] = $data_name;
             }
 
-            $main .= "</tr>";
+            if ($del_col_name) {
+                $main .= "<li style='text-align: center;'><a href='javascript:del_dcq_ans({$col_sn})' style='color:red;'><i class='fa fa-trash-o' title='" . _TAD_DEL . "'></i>
+                </a></li>";
+            }
+            $main .= "</ul>";
         }
-        $main .= "</table>";
+        $main .= "</div>";
+
+        if ($del_col_name) {
+            $data_name = implode('|', $data_name_arr);
+            include_once XOOPS_ROOT_PATH . "/modules/tadtools/sweet_alert.php";
+            $sweet_alert      = new sweet_alert();
+            $sweet_alert_code = $sweet_alert->render("del_dcq_ans", XOOPS_URL . "/modules/tadtools/TadDataCenter.php?dcq_op=del_dcq_ans&data_name={$data_name}&dirname={$this->module_dirname}&col_name={$del_col_name}&col_sn=", 'col_ans_sn');
+        }
         return $main;
     }
 
     //已填答案陣列
     public function getCustomAnsArr()
     {
-
-        $data = $this->getData('dcq');
-        foreach ($data['dcq'] as $sort => $json) {
-            $dcq                   = json_decode($json, true);
+        $DcqData = $this->getDcqData();
+        foreach ($DcqData as $sort => $data) {
+            $dcq                   = json_decode($data['data_value'], true);
             list($form_tag, $type) = explode('=', $dcq['type']);
             if ($form_tag == "note") {
                 continue;
             }
-            $name[] = "{$this->col_name}_{$this->col_sn}_dcq_{$sort}";
+            $name[] = "{$this->col_name}_{$this->col_sn}_dcq_{$data['col_id']}";
         }
-
         $ans = $this->getDcqDataArr($name);
         return $ans;
     }
@@ -632,10 +708,13 @@ class TadDataCenter
     public function getDcqDataArr($data_name = '')
     {
         global $xoopsDB;
+        $and_col_name = $this->ans_col_name ? "and `col_name`='{$this->ans_col_name}'" : '';
+        $and_col_sn   = $this->ans_col_sn ? "and `col_sn`='{$this->ans_col_sn}'" : '';
+
         if (is_array($data_name)) {
             foreach ($data_name as $name) {
                 $sql = "select col_sn, data_sort ,data_value from `{$this->TadDataCenterTblName}`
-                    where `mid`= '{$this->mid}' and `data_name`='{$name}' order by col_sn";
+                    where `mid`= '{$this->mid}' and `data_name`='{$name}' $and_col_name $and_col_sn order by col_sn";
                 $result = $xoopsDB->queryF($sql) or web_error($sql);
 
                 while (list($col_sn, $data_sort, $data_value) = $xoopsDB->fetchRow($result)) {
@@ -644,7 +723,7 @@ class TadDataCenter
             }
         } else {
             $sql = "select col_sn, data_sort ,data_value from `{$this->TadDataCenterTblName}`
-            where `mid`= '{$this->mid}' and `data_name`='{$data_name}' order by col_sn";
+            where `mid`= '{$this->mid}' and `data_name`='{$data_name}' $and_col_name $and_col_sn order by col_sn";
             $result = $xoopsDB->queryF($sql) or web_error($sql);
 
             while (list($col_sn, $data_sort, $data_value) = $xoopsDB->fetchRow($result)) {
@@ -681,5 +760,50 @@ class TadDataCenter
         }
 
         return $password;
+    }
+}
+
+if ($_REQUEST['dcq_op']) {
+    include_once "../../mainfile.php";
+    include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+    $dcq_op    = system_CleanVars($_REQUEST, 'dcq_op', '', 'string');
+    $dirname   = system_CleanVars($_REQUEST, 'dirname', '', 'string');
+    $col_name  = system_CleanVars($_REQUEST, 'col_name', '', 'string');
+    $col_sn    = system_CleanVars($_REQUEST, 'col_sn', '', 'int');
+    $data_name = system_CleanVars($_REQUEST, 'data_name', '', 'string');
+    $col_id    = system_CleanVars($_REQUEST, 'col_id', '', 'string');
+
+    if ($dcq_op == 'save_dcq_sort') {
+        $sql = "update " . $xoopsDB->prefix("{$dirname}_data_center") . " set `data_sort`=`data_sort`+1000 where  `col_name`='{$col_name}' and `col_sn`='{$col_sn}'";
+        $xoopsDB->queryF($sql) or die(_TAD_SORT_FAIL . " (" . date("Y-m-d H:i:s") . ")" . $sql);
+
+        $sort = 0;
+        foreach ($_POST['col_id'] as $col_id) {
+            $sql = "update " . $xoopsDB->prefix("{$dirname}_data_center") . " set `data_sort`='{$sort}' where col_id='{$col_id}' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}'";
+            $xoopsDB->queryF($sql) or die(_TAD_SORT_FAIL . " (" . date("Y-m-d H:i:s") . ")" . $sql);
+            $sort++;
+        }
+        echo _TAD_SORTED . "(" . date("Y-m-d H:i:s") . ")";
+    } elseif ($dcq_op == 'del_dcq_ans' and $_SESSION['isAdmin']) {
+        $data_name_arr = explode('|', $data_name);
+        foreach ($data_name_arr as $data_name) {
+            $sql = "delete from " . $xoopsDB->prefix("{$dirname}_data_center") . " where `data_name`='{$data_name}' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}'";
+            $xoopsDB->queryF($sql) or die(" (" . date("Y-m-d H:i:s") . ")" . $sql);
+        }
+        header("location:{$_SERVER['HTTP_REFERER']}");
+        exit;
+    } elseif ($dcq_op == 'del_dcq_col' and $_SESSION['isAdmin']) {
+        $sql = "delete from " . $xoopsDB->prefix("{$dirname}_data_center") . " where `col_id`='{$col_id}'";
+        $xoopsDB->queryF($sql) or die(" (" . date("Y-m-d H:i:s") . ")" . $sql);
+        $sql = "delete from " . $xoopsDB->prefix("{$dirname}_data_center") . " where `data_name`='{$col_name}_{$col_sn}_dcq_{$col_id}'";
+        $xoopsDB->queryF($sql) or die(" (" . date("Y-m-d H:i:s") . ")" . $sql);
+        header("location:{$_SERVER['HTTP_REFERER']}");
+        exit;
+    } elseif ($dcq_op == 'saveCustomSetupFormVal') {
+        $TadDataCenter = new TadDataCenter($dirname);
+        $TadDataCenter->set_col($col_name, $col_sn);
+        $TadDataCenter->saveData();
+        header("location:{$_SERVER['HTTP_REFERER']}");
+        exit;
     }
 }

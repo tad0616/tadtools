@@ -1,3 +1,13 @@
+TadTools 3.1.7 (released on 2018-03-20)
+====================================
+1. Improve TadDataCenter compatibility, supporting PHP 5.4 and later versions
+2. Accessibility 2.0 Level A correction
+3. Updated jquery qtip2 to version 3.0.3
+4. Fixed an issue where jquery.validationEngine.js was not valid in the new version of jquery
+5. TadDataCenter add custom form function
+6. TadUpFiles.php adds various file format restrictions (thanks to geek01)
+7. Added setup_meta() function
+
 TadTools 3.1.6 (released on 2018-02-13)
 ====================================
 1. Modify the navigation template to make it support the common template option distance settings
