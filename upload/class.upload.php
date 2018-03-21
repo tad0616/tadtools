@@ -2324,6 +2324,9 @@ class upload
             'text/xml',
             'text/comma-separated-values',
             'video/*',
+            'application/x-font-ttf',
+            'application/x-font-otf',
+            'application/x-font-ttc',
         );
 
         $this->mime_types = array(
@@ -2424,6 +2427,9 @@ class upload
             'onetoc2' => 'application/onenote',
             'onetmp'  => 'application/onenote',
             'onepkg'  => 'application/onenote',
+            'ttf'     => 'application/x-font-ttf',
+            'otf'     => 'application/x-font-otf',
+            'ttc'     => 'application/x-font-ttc',
         );
     }
 
