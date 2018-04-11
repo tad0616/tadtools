@@ -522,7 +522,7 @@ class TadDataCenter
             $json_val = $myts->addSlashes($json_val);
 
             $this->delData('dcq', $sort);
-            $col_id = empty($dcq['col_id']) ? $this->rand_str() : $dcq['col_id'];
+            $col_id = (empty($dcq['col_id']) or $dcq['col_id']=="new")? $this->rand_str() : $dcq['col_id'];
             $sql    = "insert into `{$this->TadDataCenterTblName}`
                     (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`, `col_id`, `update_time`)
                     values('{$this->mid}' , '{$this->col_name}' , '{$this->col_sn}' , 'dcq' , '{$json_val}' , '{$sort}' , '{$col_id}' , now())";
