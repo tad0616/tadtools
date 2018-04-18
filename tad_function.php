@@ -334,6 +334,7 @@ if (!function_exists('mk_qrcode_name')) {
     }
 }
 
+
 if (!function_exists('chk_qrcode_url')) {
     function chk_qrcode_url($url)
     {
