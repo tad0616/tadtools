@@ -1,3 +1,9 @@
+TadTools 3.1.8 (尚未釋出)
+====================================
+1.新增 js cookie 2.2.0
+2.修改 Easy-Responsive-Tabs 套件以支援 cookie
+
+
 TadTools 3.1.7 (2018-03-20 釋出)
 ====================================
 1.提高 TadDataCenter 的版本相容性，支援 PHP 5.4 以下版本
@@ -18,7 +24,7 @@ TadTools 3.1.6 (2018-02-13 釋出)
 TadTools 3.1.5 (2018-02-11 釋出)
 ====================================
 1.jquery.validationEngine.js 更新為 2.6.2修正版
-2.修改Easy-Responsive-Tabs套件以支援巢狀頁籤
+2.修改 Easy-Responsive-Tabs 套件以支援巢狀頁籤
 3.佈景標題圖自適應
 4.加入自適應表格CSS
 

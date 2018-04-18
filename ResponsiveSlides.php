@@ -145,3 +145,13 @@ class slider
         return $main;
     }
 }
+/*
+if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/ResponsiveSlides.php")) {
+redirect_header("index.php", 3, _MB_NEED_TADTOOLS);
+}
+include_once XOOPS_ROOT_PATH . "/modules/tadtools/ResponsiveSlides.php";
+
+$slider = new slider($字數);
+$slider->add_content($編號, $標題, $內容, $圖片, $日期, $連結);
+$slider_content = $slider->render();
+ */

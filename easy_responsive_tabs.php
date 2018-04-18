@@ -53,18 +53,20 @@ class easy_responsive_tabs
         $responsive_tabs = '';
         if ($xoTheme) {
             $xoTheme->addScript('modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js');
+            $xoTheme->addScript('modules/tadtools/jqueryCookie/js.cookie.min.js');
             $xoTheme->addStylesheet('modules/tadtools/Easy-Responsive-Tabs/css/easy-responsive-tabs.css');
-
+            $cookie_name = substr($this->name, 1) . '_baseURI';
             $xoTheme->addScript('', null, "
-                \$(document).ready(function(){
-                  \$('" . $this->name . "').easyResponsiveTabs({
+                $(document).ready(function(){
+                  $('" . $this->name . "').easyResponsiveTabs({
                         tabidentify: '$tabidentify',
                         type: '{$this->type}', //Types: default, vertical, accordion
                         width: 'auto',
                         fit: true,
                         closed: false,
                         activate: function(e) {
-                            console.log(e);
+                            Cookies.remove('{$cookie_name}');
+                            Cookies.set('{$cookie_name}', e.currentTarget.baseURI);
                         },
                         activetab_bg: '{$this->activetab_bg}',
                         inactive_bg: '{$this->inactive_bg}',
@@ -104,3 +106,5 @@ class easy_responsive_tabs
 
     }
 }
+
+#若有更新，記得把 $currentTab.trigger('tabactivate', $currentTab); 移動到 if (historyApi) {} 之後

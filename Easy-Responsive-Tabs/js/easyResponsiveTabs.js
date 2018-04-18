@@ -26,6 +26,7 @@
             //Events
             $(this).bind('tabactivate', function (e, currentTab) {
                 if (typeof options.activate === 'function') {
+                    // console.log(li.baseURI);
                     options.activate.call(currentTab, e)
                 }
             });
@@ -170,7 +171,6 @@
 
                             $respTabs.find('.resp-tab-content[aria-labelledby = ' + $tabAria + '].' + options.tabidentify).slideDown().addClass('resp-tab-content-active');
                         } else {
-                            console.log('here');
                             $respTabs.find('.resp-tab-active.' + options.tabidentify).removeClass('resp-tab-active').css({
                                 'background-color': options.inactive_bg,
                                 'border-color': 'none'
@@ -185,8 +185,6 @@
 
                             $respTabs.find('.resp-tab-content[aria-labelledby = ' + $tabAria + '].' + options.tabidentify).addClass('resp-tab-content-active').attr('style', 'display:block');
                         }
-                        //Trigger tab activation event
-                        $currentTab.trigger('tabactivate', $currentTab);
 
                         //Update Browser History
                         if (historyApi) {
@@ -208,7 +206,12 @@
                             }
 
                             history.replaceState(null, null, newHash);
+                            console.log(newHash);
                         }
+
+
+                        //Trigger tab activation event
+                        $currentTab.trigger('tabactivate', $currentTab);
                     });
 
                 });
