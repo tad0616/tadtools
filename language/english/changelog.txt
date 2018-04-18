@@ -1,3 +1,12 @@
+TadTools 3.1.8 (released on 2018-04-18)
+====================================
+1. Added js cookie 2.2.0
+2. Modify Easy-Responsive-Tabs Kit to Support Cookies
+3. Menu array variable to add readable group settings
+4. Increase ttf,ttc,otf format
+5. Added tadnews app related files (thanks geek01)
+
+
 TadTools 3.1.7 (released on 2018-03-20)
 ====================================
 1. Improve TadDataCenter compatibility, supporting PHP 5.4 and later versions
@@ -7,6 +16,7 @@ TadTools 3.1.7 (released on 2018-03-20)
 5. TadDataCenter add custom form function
 6. TadUpFiles.php adds various file format restrictions (thanks to geek01)
 7. Added setup_meta() function
+
 
 TadTools 3.1.6 (released on 2018-02-13)
 ====================================
