@@ -1,6 +1,6 @@
 <?php
 /**
- * TadTools module
+ * 模組名稱 module
  *
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -9,16 +9,32 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * @copyright       (c) 2000-2016 XOOPS Project (www.xoops.org)
- * @license             GNU GPL (http://www.gnu.org/licenses/gpl-2.0.html/)
- * @package             TadTools
- * @since               2.5.0
- * @author              Tad
+ * @copyright    The XOOPS Project http://sourceforge.net/projects/xoops/
+ * @license      http://www.fsf.org/copyleft/gpl.html GNU public license
+ * @package      模組名稱
+ * @since        2.5.7
+ * @author       作者
+ * @version      $Id $
  **/
 
-require_once dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
+include '../../../include/cp_header.php';
 
-if (!isset($GLOBALS['xoopsTpl']) || !is_object($GLOBALS['xoopsTpl'])) {
-    include_once XOOPS_ROOT_PATH . '/class/template.php';
-    $GLOBALS['xoopsTpl'] = new XoopsTpl();
+defined('FRAMEWORKS_ART_FUNCTIONS_INI') || include_once XOOPS_ROOT_PATH . '/Frameworks/art/functions.ini.php';
+include_once XOOPS_ROOT_PATH . "/modules/" . $xoopsModule->getVar("dirname") . "/class/admin.php";
+
+load_functions('admin');
+
+if (!@include_once XOOPS_ROOT_PATH . "/modules/" . $xoopsModule->getVar("dirname") . "/language/" . $xoopsConfig['language'] . "/main.php") {
+    include_once XOOPS_ROOT_PATH . "/modules/" . $xoopsModule->getVar("dirname") . "/language/english/main.php";
 }
+if (!isset($xoopsTpl) || !is_object($xoopsTpl)) {
+    include_once XOOPS_ROOT_PATH . '/class/template.php';
+    $xoopsTpl = new XoopsTpl();
+}
+
+xoops_cp_header();
+
+// Define Stylesheet and JScript
+$xoTheme->addStylesheet(XOOPS_URL . "/modules/" . $xoopsModule->getVar('dirname') . "/css/admin.css");
+//$xoTheme->addScript("browse.php?Frameworks/jquery/jquery.js");
+//$xoTheme->addScript("browse.php?modules/" . $xoopsModule->getVar("dirname") . "/js/admin.js");

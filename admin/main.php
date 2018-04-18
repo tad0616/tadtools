@@ -1,10 +1,6 @@
 <?php
-include_once __DIR__ . '/admin_header.php';
-xoops_cp_header();
-// $indexAdmin = new ModuleAdmin();
-// echo $indexAdmin->addNavigation(basename(__FILE__));
-
-include_once "../tad_function.php";
+$xoopsOption['template_main'] = "tadtools_adm_index.tpl"; //設定樣板檔（必）
+include_once "header.php"; //引入預設檔頭（必）
 
 /*-----------function區--------------*/
 function tadtools_setup()
@@ -13,7 +9,7 @@ function tadtools_setup()
 
     $use_bootstrap = $bootstrap_color = "";
 
-    $sql = "SELECT * FROM `" . $xoopsDB->prefix("tadtools_setup") . "`";
+    $sql    = "SELECT * FROM `" . $xoopsDB->prefix("tadtools_setup") . "`";
     $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error() . "<hr>" . $sql);
     //$tt_theme,$tt_use_bootstrap,$tt_bootstrap_color
     while (list($tt_theme, $tt_use_bootstrap, $tt_bootstrap_color, $tt_theme_kind) = $xoopsDB->fetchRow($result)) {
@@ -178,18 +174,11 @@ switch ($op) {
         save();
         header("location:{$_SERVER['PHP_SELF']}");
         exit;
-        break;
 
     default:
         tadtools_setup();
-        $template_main = 'tadtools_adm_index.tpl';
         break;
 }
 
 /*-----------秀出結果區--------------*/
-$xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap3/css/bootstrap.css');
-$xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm3.css');
-if (isset($template_main)) {
-    $GLOBALS['xoopsTpl']->display("db:{$template_main}");
-}
-include_once __DIR__ . '/admin_footer.php';
+include_once 'footer.php';

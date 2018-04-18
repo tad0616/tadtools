@@ -17,19 +17,7 @@
  * @version      $Id $
  **/
 
-require_once '../../../include/cp_header.php';
-include 'header.php';
+echo "<div align=\"center\"><a href=\"http://www.xoops.org\" target=\"_blank\"><img src=\"../images/admin/xoopsmicrobutton.gif\" alt=\"XOOPS\" title=\"XOOPS\"></a></div>";
+echo "<div class='center smallsmall italic pad5'><strong>" . $xoopsModule->getVar("name") . "</strong> is maintained by the <a class='tooltip' rel='external' href='http://www.xoops.org/' title='Visit XOOPS Community'>XOOPS Community</a></div>";
 
-include_once XOOPS_ROOT_PATH . "/modules/" . $xoopsModule->getVar("dirname") . "/class/admin.php";
-
-$index_admin = new ModuleAdmin();
-
-$index_admin->addConfigLabel(_AM_XDIR_CONFIG_CHECK);
-$index_admin->addLineConfigLabel(_AM_XDIR_CONFIG_PHP, $xoopsModule->getInfo("min_php"), 'php');
-$index_admin->addLineConfigLabel(_AM_XDIR_CONFIG_XOOPS, $xoopsModule->getInfo("min_xoops"), 'xoops');
-
-echo $index_admin->addNavigation('index.php');
-echo $index_admin->renderIndex();
-
-include "footer.php";
 xoops_cp_footer();
