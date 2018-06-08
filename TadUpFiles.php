@@ -1035,7 +1035,7 @@ class TadUpFiles
     }
 
     //上傳單一檔案，$this->col_name=對應欄位名稱,$col_sn=對應欄位編號,$種類：img,file,$sort=圖片排序,$files_sn="更新編號"
-    public function upload_one_file($name = "", $tmp_name = "", $type = "", $size = "", $main_width = "1280", $thumb_width = "120", $files_sn = "", $desc = "", $safe_name = false, $hash = false)
+    public function upload_one_file($name = "", $tmp_name = "", $type = "", $size = "", $main_width = "1280", $thumb_width = "120", $files_sn = "", $desc = "", $safe_name = false, $hash = false,$allow = "")
     {
         global $xoopsDB, $xoopsUser;
 
@@ -1706,14 +1706,22 @@ class TadUpFiles
             header('Content-Length: ' . filesize($file_hd_saved));
 
             ob_clean();
-            $handle = fopen($file_hd_saved, "rb");
+            if (version_compare(phpversion(), '5.5', '<')) {
+                $handle = fopen($file_hd_saved, "rb");
 
-            set_time_limit(0);
-            while (!feof($handle)) {
-                echo fread($handle, 4096);
-                flush();
+                set_time_limit(0);
+                while (!feof($handle)) {
+                    echo fread($handle, 4096);
+                    flush();
+                }
+                fclose($handle);
+            }else{
+                foreach ($this->readFile($file_hd_saved) as $n => $line) {
+                    echo $line;
+                }
             }
-            fclose($handle);
+
+
             die;
         } else {
             if ($os_charset != _CHARSET) {
@@ -1759,6 +1767,19 @@ class TadUpFiles
             }
             exit;
         }
+    }
+
+    private function readFile($file)
+    {
+        # 打開檔案
+        $handle = fopen($file, 'rb');
+
+        while (feof($handle) === false) {
+            # 重點 每次讀取 1024 個字節
+            yield fread($handle, 1024);
+        }
+
+        fclose($handle);
     }
 
     //取得單一檔案資料

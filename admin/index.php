@@ -1,6 +1,6 @@
 <?php
 /**
- * 模組名稱 module
+ * TadTools module
  *
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -11,9 +11,9 @@
  *
  * @copyright    The XOOPS Project http://sourceforge.net/projects/xoops/
  * @license      http://www.fsf.org/copyleft/gpl.html GNU public license
- * @package      模組名稱
+ * @package      TadTools
  * @since        2.5.7
- * @author       作者
+ * @author       Tad
  * @version      $Id $
  **/
 

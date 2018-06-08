@@ -1,10 +1,11 @@
-TadTools 3.1.8 (released on 2018-04-18)
+TadTools 3.1.8 (released on 2018-05-14)
 ====================================
 1. Added js cookie 2.2.0
 2. Modify Easy-Responsive-Tabs Kit to Support Cookies
 3. Menu array variable to add readable group settings
 4. Increase ttf,ttc,otf format
 5. Added tadnews app related files (thanks geek01)
+6. Remove the tchinese Big5 language
 
 
 TadTools 3.1.7 (released on 2018-03-20)

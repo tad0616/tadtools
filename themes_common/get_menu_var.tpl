@@ -50,6 +50,9 @@ function get_theme_menu_items($id = "", $other_menu = true)
         if ($result) {
             $i = 0;
             while (list($menuid, $itemname, $itemurl, $target, $icon, $link_cate_name, $link_cate_sn, $read_group) = $xoopsDB->fetchRow($result)) {
+                if(empty($read_group)){
+                    $read_group='1,2,3';
+                }
                 $read_group_array = explode(',', $read_group);
                 if (array_intersect($User_Groups, $read_group_array)) {
                     if (!empty($link_cate_name)) {

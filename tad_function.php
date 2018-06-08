@@ -5,9 +5,9 @@ include_once "include/beforeheader.php";
 get_bootstrap();
 
 if (!function_exists('setup_meta')) {
-    function setup_meta($title="", $content="", $image="")
+    function setup_meta($title = "", $content = "", $image = "")
     {
-        global $xoTheme,$xoopsTpl;
+        global $xoTheme, $xoopsTpl;
         if (is_object($xoTheme)) {
             $xoTheme->addMeta('meta', 'keywords', $title);
             $xoTheme->addMeta('meta', 'description', strip_tags($content));
@@ -34,7 +34,7 @@ if (!function_exists('get_basename')) {
 }
 
 if (!function_exists('html5')) {
-    function html5($content = "", $ui = false, $bootstrap = true, $bootstrap_version = 3, $use_jquery = true)
+    function html5($content = "", $ui = false, $bootstrap = true, $bootstrap_version = 3, $use_jquery = true, $container='container')
     {
         $jquery = '';
         if ($use_jquery) {
@@ -53,7 +53,7 @@ if (!function_exists('html5')) {
         $main .= "  {$jquery}\n";
         $main .= "</head>\n";
         $main .= "<body>\n";
-        $main .= "    <div class='container'>\n";
+        $main .= "    <div class='$container'>\n";
         $main .= "        <div class='row'>\n";
         $main .= "            <div class='col-sm-12'>\n";
         $main .= "                {$content}\n";
@@ -334,7 +334,6 @@ if (!function_exists('mk_qrcode_name')) {
     }
 }
 
-
 if (!function_exists('chk_qrcode_url')) {
     function chk_qrcode_url($url)
     {
@@ -411,7 +410,10 @@ if (!function_exists('power_chk')) {
         }
         // echo var_export($groups);
         //取得模組編號
-        $module_id = $xoopsModule->getVar('mid');
+        $module_id = $xoopsModule->mid();
+        if (empty($perm_name)) {
+            $perm_name = $xoopsModule->dirname();
+        }
         // echo var_export($module_id);
         //取得群組權限功能
         $gperm_handler = xoops_getHandler('groupperm');

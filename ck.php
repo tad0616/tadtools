@@ -16,12 +16,12 @@ class CKEditor
     //建構函數
     public function __construct($xoopsDirName = "", $ColName = "", $Value = "")
     {
-        $xoopsModuleConfig  = TadToolsXoopsModuleConfig();
-        $this->xoopsDirName = $xoopsDirName;
-        $this->ColName      = $ColName;
-        $this->Value        = $Value;
-        if (!empty($xoopsModuleConfig['uploadcare_publickey'])) {
-            $this->set_demopublickey($xoopsModuleConfig['uploadcare_publickey']);
+        $TadToolsModuleConfig = TadToolsXoopsModuleConfig();
+        $this->xoopsDirName        = $xoopsDirName;
+        $this->ColName             = $ColName;
+        $this->Value               = $Value;
+        if (!empty($TadToolsModuleConfig['uploadcare_publickey'])) {
+            $this->set_demopublickey($TadToolsModuleConfig['uploadcare_publickey']);
         }
     }
 
@@ -62,7 +62,7 @@ class CKEditor
     //產生編輯器
     public function render()
     {
-        global $xoTheme, $xoopsModuleConfig;
+        global $xoTheme, $TadToolsModuleConfig;
 
         include_once XOOPS_ROOT_PATH . "/modules/tadtools/mobile_device_detect.php";
         $mobile = mobile_device_detect(true, false, true, true, true, true, true, false, false);
@@ -103,8 +103,8 @@ class CKEditor
                 },";
             }
 
-            $xoopsModuleConfig  = TadToolsXoopsModuleConfig();
-            $codemirror = $xoopsModuleConfig['use_codemirror'] ? ',codemirror' : '';
+            $TadToolsModuleConfig = TadToolsXoopsModuleConfig();
+            $codemirror                = $TadToolsModuleConfig['use_codemirror'] ? ',codemirror' : '';
 
             $editor .= "
               <textarea name='{$this->ColName}' id='editor_{$this->ColName}' class='ckeditor_css'>{$content}</textarea>

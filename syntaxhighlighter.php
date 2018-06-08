@@ -15,19 +15,19 @@ class syntaxhighlighter
     {
         global $xoTheme;
         get_jquery();
-        $xoopsModuleConfig        = TadToolsXoopsModuleConfig();
-        $syntaxhighlighter_themes = !empty($xoopsModuleConfig['syntaxhighlighter_themes']) ? $xoopsModuleConfig['syntaxhighlighter_themes'] : 'shThemeDefault';
+        $TadToolsModuleConfig = TadToolsXoopsModuleConfig();
+        $syntaxhighlighter_themes  = !empty($TadToolsModuleConfig['syntaxhighlighter_themes']) ? $TadToolsModuleConfig['syntaxhighlighter_themes'] : 'shThemeDefault';
 
         if ($xoTheme) {
 
-            $dir = !empty($xoopsModuleConfig['syntaxhighlighter_version']) ? "modules/tadtools/" . $xoopsModuleConfig['syntaxhighlighter_version'] : "modules/tadtools/syntaxhighlighter";
+            $dir = !empty($TadToolsModuleConfig['syntaxhighlighter_version']) ? "modules/tadtools/" . $TadToolsModuleConfig['syntaxhighlighter_version'] : "modules/tadtools/syntaxhighlighter";
 
-            $dir2 = !empty($xoopsModuleConfig['syntaxhighlighter_version']) ? TADTOOLS_URL . "/" . $xoopsModuleConfig['syntaxhighlighter_version'] : TADTOOLS_URL . "/syntaxhighlighter";
+            $dir2 = !empty($TadToolsModuleConfig['syntaxhighlighter_version']) ? TADTOOLS_URL . "/" . $TadToolsModuleConfig['syntaxhighlighter_version'] : TADTOOLS_URL . "/syntaxhighlighter";
 
             $xoTheme->addStylesheet("$dir/styles/shCore.css");
             $xoTheme->addStylesheet("$dir/styles/{$syntaxhighlighter_themes}.css");
 
-            if ($xoopsModuleConfig['syntaxhighlighter_version'] == "syntaxhighlighter_2") {
+            if ($TadToolsModuleConfig['syntaxhighlighter_version'] == "syntaxhighlighter_2") {
                 $xoTheme->addScript("$dir/scripts/shCore.js");
                 $xoTheme->addScript("$dir/scripts/shBrushAS3.js");
                 $xoTheme->addScript("$dir/scripts/shBrushBash.js");
@@ -110,14 +110,14 @@ class syntaxhighlighter
 
             }
         } else {
-            $dir = !empty($xoopsModuleConfig['syntaxhighlighter_version']) ? TADTOOLS_URL . "/" . $xoopsModuleConfig['syntaxhighlighter_version'] : TADTOOLS_URL . "/syntaxhighlighter";
+            $dir = !empty($TadToolsModuleConfig['syntaxhighlighter_version']) ? TADTOOLS_URL . "/" . $TadToolsModuleConfig['syntaxhighlighter_version'] : TADTOOLS_URL . "/syntaxhighlighter";
 
             $syntaxhighlighter = "
               <link type='text/css' rel='stylesheet' href='{$dir}/styles/shCore.css'/>
               <link type='text/css' rel='stylesheet' href='{$dir}/styles/{$syntaxhighlighter_themes}.css'/>
               ";
 
-            if ($xoopsModuleConfig['syntaxhighlighter_version'] == "syntaxhighlighter_2") {
+            if ($TadToolsModuleConfig['syntaxhighlighter_version'] == "syntaxhighlighter_2") {
                 $syntaxhighlighter .= "
                 <script type='text/javascript' src='{$dir}/scripts/shCore.js'></script>
                 <script type='text/javascript' src='{$dir}/scripts/shBrushAS3.js'></script>

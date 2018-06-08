@@ -13,6 +13,7 @@
 .navbar-default .navbar-nav > li > a {
   color: <{$navbar_color}>;
   padding: <{$navbar_py}>px <{$navbar_px}>px;
+  font-size: <{$navbar_font_size}>em;
 }
 .navbar-default .navbar-nav > li > a:focus,
 .navbar-default .navbar-nav > li > a:hover {

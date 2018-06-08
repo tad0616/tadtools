@@ -283,13 +283,13 @@ class TadDataCenter
 
                 $sql = "insert into `{$this->TadDataCenterTblName}`
                 (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`, `update_time`)
-                values('{$this->mid}' , '{$this->col_name}' , '{$this->col_sn}' , '{$name}' , '{$val}' , '{$sort}',now())";
+                values('{$this->mid}' , '{$this->col_name}' , '{$this->col_sn}' , '{$name}' , '{$val}' , '{$sort}', now())";
                 $xoopsDB->queryF($sql) or web_error($sql);
             }
         }
     }
 
-    //儲存資料 $data[]=['name'=>$name, 'value'=>$value, 'sort'=>$sort]
+    //儲存資料 $data_arr=array($name=>array($sort=>$value)]
     public function saveCustomData($data_arr = array())
     {
         global $xoopsDB;
@@ -522,7 +522,7 @@ class TadDataCenter
             $json_val = $myts->addSlashes($json_val);
 
             $this->delData('dcq', $sort);
-            $col_id = (empty($dcq['col_id']) or $dcq['col_id']=="new")? $this->rand_str() : $dcq['col_id'];
+            $col_id = (empty($dcq['col_id']) or $dcq['col_id'] == "new") ? $this->rand_str() : $dcq['col_id'];
             $sql    = "insert into `{$this->TadDataCenterTblName}`
                     (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`, `col_id`, `update_time`)
                     values('{$this->mid}' , '{$this->col_name}' , '{$this->col_sn}' , 'dcq' , '{$json_val}' , '{$sort}' , '{$col_id}' , now())";
@@ -625,59 +625,99 @@ class TadDataCenter
         }
     }
 
-    //已填答案列表
-    public function getCustomAns($call_back_func = "", $del_col_name = false)
+    //已填答案列表： $del_col_name= 'uid'(顯示刪除，並以 uid 為參數) ，$display_mode=vertical
+    public function getCustomAns($call_back_func = "", $del_col_name = false, $display_mode = '')
     {
 
         $DcqData = $this->getDcqData();
-        $main    = "
-        <link href='" . XOOPS_URL . "/modules/tadtools/css/vtable.css' media='all' rel='stylesheet'>
 
-        <div class='vtable'>
-        <ul class='vhead'>
-        <li>" . _TDC_FILL_PEOPLE . "</li>
-        ";
+        $main = "<link href='" . XOOPS_URL . "/modules/tadtools/css/vtable.css' media='all' rel='stylesheet'>";
 
-        foreach ($DcqData as $sort => $data) {
-            $dcq                   = json_decode($data['data_value'], true);
-            list($form_tag, $type) = explode('=', $dcq['type']);
-            if ($form_tag == "note") {
-                continue;
-            }
-            $dcq_title        = $dcq['title'];
-            $name[$dcq_title] = "{$this->col_name}_{$this->col_sn}_dcq_{$data['col_id']}";
-            $main .= "<li style='text-align: center;'>{$dcq_title}</li>";
-        }
+        if ($display_mode == 'vertical') {
 
-        if ($del_col_name) {
-            $main .= "<li>" . _TAD_FUNCTION . "</li>";
-        }
-        $main .= "</ul>";
+            $main .= "<div class='vtable'>";
 
-        $data_name_arr = array();
-        $ans           = $this->getDcqDataArr($name);
-        foreach ($ans as $col_sn => $ans_arr) {
-            $title = ($call_back_func) ? call_user_func($call_back_func, $col_sn, $this->col_name, $this->col_sn) : $col_sn;
-            $main .= "<ul>
-            <li class='vcell'>" . _TDC_FILL_PEOPLE . "</li>
-            <li style='text-align: center;'>{$title}</li>";
-            // foreach ($ans_arr as $data_name => $value) {
-            foreach ($name as $dcq_title => $data_name) {
-                $main .= "<li class='vcell'>{$dcq_title}</li>
-                <li>";
-                $main .= nl2br(implode("、", $ans_arr[$data_name]));
-                $main .= "</li>";
+            foreach ($DcqData as $sort => $data) {
+                $dcq                   = json_decode($data['data_value'], true);
+                list($form_tag, $type) = explode('=', $dcq['type']);
+                if ($form_tag == "note") {
+                    continue;
+                }
 
-                $data_name_arr[$data_name] = $data_name;
+                $dcq_title = $dcq['title'];
+                $data_name = "{$this->col_name}_{$this->col_sn}_dcq_{$data['col_id']}";
+                $ans       = $this->getDcqDataArr($data_name);
+                // if($_GET['debug']==1){
+                //     die(var_export($this->ans_col_sn));
+                // }
+                $answer = array();
+                foreach ($ans as $a) {
+                    $answer[] = nl2br(implode("、", $a[$data_name]));
+                }
+                $dcq_answer = implode(";", $answer);
+                $main .= "<ul>
+                <li class='w2 vtitle'>$dcq_title</li>
+                <li class='w8'>$dcq_answer</li>
+                </ul>";
             }
 
             if ($del_col_name) {
-                $main .= "<li style='text-align: center;'><a href='javascript:del_dcq_ans({$col_sn})' style='color:red;'><i class='fa fa-trash-o' title='" . _TAD_DEL . "'></i>
-                </a></li>";
+                $main .= "<ul>
+                <li class='w2 vtitle'>" . _TAD_FUNCTION . "</li>
+                <li class='w8'><li style='text-align: center;'><a href='javascript:del_dcq_ans({$this->col_sn})' style='color:red;'><li class='fa fa-trash-o' title='" . _TAD_DEL . "'></li></li>
+                </ul>";
+            }
+            $main .= "</div>";
+
+        } else {
+
+            $main .= "
+            <div class='vtable'>
+            <ul class='vhead'>
+            <li>" . _TDC_FILL_PEOPLE . "</li>
+            ";
+
+            foreach ($DcqData as $sort => $data) {
+                $dcq                   = json_decode($data['data_value'], true);
+                list($form_tag, $type) = explode('=', $dcq['type']);
+                if ($form_tag == "note") {
+                    continue;
+                }
+                $dcq_title        = $dcq['title'];
+                $name[$dcq_title] = "{$this->col_name}_{$this->col_sn}_dcq_{$data['col_id']}";
+                $main .= "<li style='text-align: center;'>{$dcq_title}</li>";
+            }
+
+            if ($del_col_name) {
+                $main .= "<li>" . _TAD_FUNCTION . "</li>";
             }
             $main .= "</ul>";
+
+            $data_name_arr = array();
+            $ans           = $this->getDcqDataArr($name);
+            foreach ($ans as $col_sn => $ans_arr) {
+                $title = ($call_back_func) ? call_user_func($call_back_func, $col_sn, $this->col_name, $this->col_sn) : $col_sn;
+                $main .= "<ul>
+                <li class='vcell'>" . _TDC_FILL_PEOPLE . "</li>
+                <li style='text-align: center;'>{$title}</li>";
+                // foreach ($ans_arr as $data_name => $value) {
+                foreach ($name as $dcq_title => $data_name) {
+                    $main .= "<li class='vcell'>{$dcq_title}</li>
+                    <li>";
+                    $main .= nl2br(implode("、", $ans_arr[$data_name]));
+                    $main .= "</li>";
+
+                    $data_name_arr[$data_name] = $data_name;
+                }
+
+                if ($del_col_name) {
+                    $main .= "<li style='text-align: center;'><a href='javascript:del_dcq_ans({$col_sn})' style='color:red;'><i class='fa fa-trash-o' title='" . _TAD_DEL . "'></i>
+                    </a></li>";
+                }
+                $main .= "</ul>";
+            }
+            $main .= "</div>";
         }
-        $main .= "</div>";
 
         if ($del_col_name) {
             $data_name = implode('|', $data_name_arr);
