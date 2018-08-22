@@ -321,14 +321,14 @@ class TadDataCenter
         global $xoopsDB;
         $myts     = MyTextSanitizer::getInstance();
         $and_name = ($name != '') ? "and `data_name`='{$name}'" : "";
-        $and_sort = ($sort != '') ? "and `data_sort`='{$sort}'" : "";
+        $and_sort = ($data_sort != '') ? "and `data_sort`='{$data_sort}'" : "";
 
         $col_name = !empty($ans_col_name) ? $ans_col_name : $this->col_name;
         $col_sn   = !empty($ans_col_name) ? $ans_col_sn : $this->col_sn;
 
         $sql = "select `data_name`,`data_sort`, `data_value` from `{$this->TadDataCenterTblName}`
             where `mid`= '{$this->mid}' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}' {$and_name} {$and_sort}";
-        // echo $sql."<br>";
+
         $result = $xoopsDB->queryF($sql) or web_error($sql);
         if (isset($data_sort)) {
             list($data_name, $data_sort, $data_value) = $xoopsDB->fetchRow($result);
@@ -750,7 +750,7 @@ class TadDataCenter
         global $xoopsDB;
         $and_col_name = $this->ans_col_name ? "and `col_name`='{$this->ans_col_name}'" : '';
         $and_col_sn   = $this->ans_col_sn ? "and `col_sn`='{$this->ans_col_sn}'" : '';
-
+        $values=array();
         if (is_array($data_name)) {
             foreach ($data_name as $name) {
                 $sql = "select col_sn, data_sort ,data_value from `{$this->TadDataCenterTblName}`
@@ -803,7 +803,7 @@ class TadDataCenter
     }
 }
 
-if ($_REQUEST['dcq_op']) {
+if (isset($_REQUEST['dcq_op'])) {
     include_once "../../mainfile.php";
     include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
     $dcq_op    = system_CleanVars($_REQUEST, 'dcq_op', '', 'string');

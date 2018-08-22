@@ -1,3 +1,13 @@
+TadTools 3.1.9 (released on 2018-06-08)
+====================================
+1. Strict mode of supporting database
+2. The menu is not readable group is regarded as open
+3. Modify the use of module preferences to avoid conflicts with other modules
+4. File download section, if the PHP version is 5.5 or higher, the stream format will be automatically changed to save memory
+5. Add navbar text size settings
+6. Shadows appear automatically when the navbar is locked
+
+
 TadTools 3.1.8 (released on 2018-05-14)
 ====================================
 1. Added js cookie 2.2.0

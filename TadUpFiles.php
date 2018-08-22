@@ -160,6 +160,7 @@ class TadUpFiles
     public $showFancyBox   = true;
     public $download_url   = "";
     public $files_sn;
+    public $filename_size  = '15px';
 
     public function __construct($prefix = "", $subdir = "", $file = "/file", $image = "/image", $thumbs = "/image/.thumbs")
     {
@@ -287,6 +288,11 @@ class TadUpFiles
             $this->thumbs_dir = $dir;
         }
         $this->set_path();
+    }
+
+    public function set_var($name = "", $val = "")
+    {
+        $this->$name = $val;
     }
 
     public function set_col($col_name = "", $col_sn = "", $sort = "")
@@ -550,7 +556,7 @@ class TadUpFiles
             <div style='height:30px;'></div>
             <div class='row' style='margin-top:10px;'>
                 <div class='col-sm-12'>
-                <ol class='rectangle-list' style=\"counter-reset: li; list-style: none; *list-style: decimal; font: 15px 'trebuchet MS', 'lucida sans'; padding: 0; text-shadow: 0 1px 0 rgba(255,255,255,.5);\" id='list_del_file_sort_{$this->col_name}'>
+                <ol class='rectangle-list' style=\"counter-reset: li; list-style: none; *list-style: decimal; font: ".$this->filename_size." 'trebuchet MS', 'lucida sans'; padding: 0; text-shadow: 0 1px 0 rgba(255,255,255,.5);\" id='list_del_file_sort_{$this->col_name}'>
                     {$all_file}
                 </ol>
                 </div>
@@ -1561,7 +1567,7 @@ class TadUpFiles
             } elseif ($show_mode == "file_text_url" or $show_mode == "small") {
                 $all_files .= "";
             } elseif ($show_mode == "filename") {
-                $all_files .= "<ol class='rectangle-list' style=\"counter-reset: li; list-style: none; *list-style: decimal; font: 15px 'trebuchet MS', 'lucida sans'; padding: 0; text-shadow: 0 1px 0 rgba(255,255,255,.5);\">";
+                $all_files .= "<ol class='rectangle-list' style=\"counter-reset: li; list-style: none; *list-style: decimal; font: ".$this->filename_size." 'trebuchet MS', 'lucida sans'; padding: 0; text-shadow: 0 1px 0 rgba(255,255,255,.5);\">";
             } else {
                 $all_files .= "<ul>";
             }
@@ -1706,21 +1712,14 @@ class TadUpFiles
             header('Content-Length: ' . filesize($file_hd_saved));
 
             ob_clean();
-            if (version_compare(phpversion(), '5.5', '<')) {
-                $handle = fopen($file_hd_saved, "rb");
+            $handle = fopen($file_hd_saved, "rb");
 
-                set_time_limit(0);
-                while (!feof($handle)) {
-                    echo fread($handle, 4096);
-                    flush();
-                }
-                fclose($handle);
-            }else{
-                foreach ($this->readFile($file_hd_saved) as $n => $line) {
-                    echo $line;
-                }
+            set_time_limit(0);
+            while (!feof($handle)) {
+                echo fread($handle, 4096);
+                flush();
             }
-
+            fclose($handle);
 
             die;
         } else {
@@ -1769,18 +1768,7 @@ class TadUpFiles
         }
     }
 
-    private function readFile($file)
-    {
-        # 打開檔案
-        $handle = fopen($file, 'rb');
 
-        while (feof($handle) === false) {
-            # 重點 每次讀取 1024 個字節
-            yield fread($handle, 1024);
-        }
-
-        fclose($handle);
-    }
 
     //取得單一檔案資料
     public function get_one_file($files_sn = "")

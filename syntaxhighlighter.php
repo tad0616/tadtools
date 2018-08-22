@@ -15,8 +15,8 @@ class syntaxhighlighter
     {
         global $xoTheme;
         get_jquery();
-        $TadToolsModuleConfig = TadToolsXoopsModuleConfig();
-        $syntaxhighlighter_themes  = !empty($TadToolsModuleConfig['syntaxhighlighter_themes']) ? $TadToolsModuleConfig['syntaxhighlighter_themes'] : 'shThemeDefault';
+        $TadToolsModuleConfig     = TadToolsXoopsModuleConfig();
+        $syntaxhighlighter_themes = !empty($TadToolsModuleConfig['syntaxhighlighter_themes']) ? $TadToolsModuleConfig['syntaxhighlighter_themes'] : 'shThemeDefault';
 
         if ($xoTheme) {
 
@@ -109,6 +109,9 @@ class syntaxhighlighter
                 ");
 
             }
+
+            $xoTheme->addStylesheet(TADTOOLS_URL . "/prism/prism.css");
+            $xoTheme->addScript(TADTOOLS_URL . "/prism/prism.js");
         } else {
             $dir = !empty($TadToolsModuleConfig['syntaxhighlighter_version']) ? TADTOOLS_URL . "/" . $TadToolsModuleConfig['syntaxhighlighter_version'] : TADTOOLS_URL . "/syntaxhighlighter";
 

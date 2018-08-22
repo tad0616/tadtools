@@ -34,7 +34,7 @@ if (!function_exists('get_basename')) {
 }
 
 if (!function_exists('html5')) {
-    function html5($content = "", $ui = false, $bootstrap = true, $bootstrap_version = 3, $use_jquery = true, $container='container')
+    function html5($content = "", $ui = false, $bootstrap = true, $bootstrap_version = 3, $use_jquery = true, $container = 'container')
     {
         $jquery = '';
         if ($use_jquery) {
@@ -71,7 +71,8 @@ if (!function_exists('html5')) {
 if (!function_exists('web_error')) {
     function web_error($sql)
     {
-        global $isAdmin, $xoopsDB;
+        global $xoopsDB, $xoopsModule, $xoopsUser;
+        $isAdmin = $xoopsUser ? $xoopsUser->isAdmin($xoopsModule->mid()) : false;
 
         $in_admin = (strpos($_SERVER['PHP_SELF'], "/admin/") !== false) ? true : false;
         $main     = "<h1>" . _TAD_OOPS_SOMETHING_WRONG . "</h1>";

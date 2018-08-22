@@ -13,7 +13,7 @@
 .navbar-default .navbar-nav > li > a {
   color: <{$navbar_color}>;
   padding: <{$navbar_py}>px <{$navbar_px}>px;
-  font-size: <{$navbar_font_size}>em;
+  font-size: <{$navbar_font_size}>%;
 }
 .navbar-default .navbar-nav > li > a:focus,
 .navbar-default .navbar-nav > li > a:hover {
@@ -40,3 +40,28 @@
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=<{$navbar_bg_top}>, endColorstr=<{$navbar_bg_bottom}>, GradientType=0);
 
 }
+
+.dropdown-menu > li > a{
+  font-size: <{$navbar_font_size}>%;
+}
+
+<{if $navbar_pos=='navbar-fixed-top'}>
+  <{assign var=margin_top value=50}>
+  nav.navbar {
+    box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.5);
+    -o-box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.5);
+  }
+<{/if}>
+
+
+<{if $navbar_pos=='navbar-fixed-bottom'}>
+  <{assign var=margin_bottom value=50}>
+  nav.navbar {
+    box-shadow: 0px -3px 10px 1px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0px -3px 10px 1px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0px -3px 10px 1px rgba(0, 0, 0, 0.5);
+    -o-box-shadow: 0px -3px 10px 1px rgba(0, 0, 0, 0.5);
+  }
+<{/if}>
