@@ -85,8 +85,11 @@ function search_bootstrap($path = "")
 
 function mk_bootstrap_menu($theme_kind = "", $theme_color = "")
 {
-    $theme_array3 = mk_bootstrap_menu_options('bootstrap3', "light");
-    $theme_array4 = mk_bootstrap_menu_options('bootstrap3', "dark");
+    if (empty($theme_kind)) {
+        $theme_kind = "bootstrap3";
+    }
+    $theme_array3 = mk_bootstrap_menu_options($theme_kind, "light");
+    $theme_array4 = mk_bootstrap_menu_options($theme_kind, "dark");
     $theme_array  = array_merge($theme_array3, $theme_array4);
 
     return $theme_array;

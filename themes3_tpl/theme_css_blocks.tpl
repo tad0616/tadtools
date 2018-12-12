@@ -17,7 +17,7 @@
   .<{$bt.block_position}> a.block_config{
     float:<{$bt.block_config}>;
     position:relative;
-    z-index: 1000;
+    z-index: 1;
   }
 
   <{if $bt.block_style}>

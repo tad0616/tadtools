@@ -1,0 +1,47 @@
+/* 針對XOOPS 2.5.*版之前的後台做微調 */
+
+/* @import url(normalize.css); */
+
+/* body ,div , a , li ,td ,th{
+  font-size: 14px;
+} */
+
+.tooltip {
+    opacity: 100;
+    position: relative;
+    display: inline;
+    filter: none;
+}
+
+.table-striped tbody>tr:nth-child(2n+1)>th,
+th {
+    background-color: rgb(46, 50, 59);
+    color: white;
+}
+
+li {
+    line-height: 1em;
+}
+
+a.btn {
+    font-weight: normal;
+    background-color: none;
+    color: white;
+}
+
+input[type="submit"]:hover,
+input[type="reset"]:hover,
+input[type="button"]:hover,
+.xo-formbuttons:hover,
+.formButton:hover,
+button:hover {
+    padding: 6px 12px;
+}
+
+.page-header {
+    font-family: "微軟正黑體";
+    color: #4c636d;
+    padding-bottom: 9px;
+    margin: 40px 0 20px;
+    border-bottom: 1px solid #eee;
+}

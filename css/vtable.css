@@ -30,7 +30,7 @@ margin-bottom: -1px;*/
 }
 
 .vtable ul.vhead {
-  height: 40px;
+  height: 30px;
   /* background: #7aa0ba; */
 }
 
@@ -41,14 +41,13 @@ margin-bottom: -1px;*/
 .vtable ul.vhead li {
   text-align: center;
   text-transform: uppercase;
-  line-height: 20px;
-  padding: 10px 6px;
+  line-height: 15px;
+  padding: 6px;
   background: #7aa0ba;
   color: #fff;
   /* font-size: 14px; */
   border: 1px solid rgb(122, 160, 186);
 }
-
 
 .vtable ul.vhead.light li{
   background: transparent;
@@ -57,7 +56,6 @@ margin-bottom: -1px;*/
   padding: 4px 6px;
   text-align: left;
 }
-
 
 .vtable li.vbody {
   /*height: 280px;*/
@@ -75,7 +73,6 @@ margin-bottom: -1px;*/
   text-align: center;
   vertical-align: middle;
 }
-
 
 /* 隱藏欄位，手機才會出現 */
 
@@ -140,7 +137,6 @@ margin-bottom: -1px;*/
 .vtable.no_border ul li {
   border: none;
 }
-
 
 /* ============================
 Mobile Responsiveness
@@ -219,7 +215,5 @@ Mobile Responsiveness
 <li class="vm">XXXX</li>
 </ul>
 </div>
-
-
 
 */

@@ -102,7 +102,7 @@
 						// csp: 'Content-Security-Policy',
 						// 'css-extras': 'CSSExtras',
 						// d: 'D',
-						// dart: 'Dart',
+						dart: 'Dart',
 						// diff: 'Diff',
 						// django: 'Django/Jinja2',
 						// docker: 'Docker',

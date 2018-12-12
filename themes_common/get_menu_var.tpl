@@ -75,7 +75,7 @@ function get_theme_menu_items($id = "", $other_menu = true)
 
                     $my_menu[$i]['id']         = $menuid;
                     $my_menu[$i]['title']      = $itemname;
-                    $my_menu[$i]['url']        = $itemurl;
+                    $my_menu[$i]['url']        = ($itemurl=='' or $itemurl=='#')?'index.php':$itemurl;
                     $my_menu[$i]['target']     = $target;
                     $my_menu[$i]['icon']       = str_replace('icon-', 'fa-', $icon);
                     $my_menu[$i]['img']        = '';

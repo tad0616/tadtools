@@ -1,3 +1,8 @@
+TadTools 3.2 (released on 2018-08-23)
+=============================================
+1. CKEditor joins the CodeSnippet button
+2. Block title file can use the block title setting of the scene management when using [img]
+
 TadTools 3.1.9 (released on 2018-06-08)
 ====================================
 1. Strict mode of supporting database

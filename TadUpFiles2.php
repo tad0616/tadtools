@@ -323,7 +323,7 @@ class TadUpFiles2 extends TadUpFiles
     }
 
     //複製、匯入單一檔案，$this->col_name=對應欄位名稱,$col_sn=對應欄位編號,$種類：img,file,$sort=圖片排序,$files_sn="更新編號"
-    public function import_one_file($from = "", $new_filename = "", $main_width = "1280", $thumb_width = "120", $files_sn = "", $desc = "", $safe_name = false, $hash = false)
+    public function import_one_file($from = "", $new_filename = "", $main_width = "1280", $thumb_width = "120", $files_sn = "", $desc = "", $safe_name = false, $hash = false, $link = false)
     {
         global $xoopsDB, $xoopsUser;
 
@@ -406,7 +406,13 @@ class TadUpFiles2 extends TadUpFiles
                 }
             }
 
-            if (copy($from, $path . "/" . $hash_filename)) {
+            if($link){
+                $copy_or_link=symlink($from, $path . "/" . $hash_filename);
+            }else{
+                $copy_or_link=copy($from, $path . "/" . $hash_filename);
+            }
+
+            if ($copy_or_link) {
                 $description = (empty($files_sn) and empty($desc)) ? $filename : $desc;
 
                 if (empty($files_sn)) {
@@ -427,7 +433,7 @@ class TadUpFiles2 extends TadUpFiles
             //複製檔案
             $this->thumbnail($from, $new_thumb, $type, $thumb_width);
         } else {
-            if (copy($from, $path . "/" . $hash_filename)) {
+            if ($copy_or_link) {
 
                 $filename    = auto_charset($filename);
                 $description = (empty($files_sn) or empty($desc)) ? $filename : $desc;

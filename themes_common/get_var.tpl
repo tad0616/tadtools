@@ -148,6 +148,11 @@ if ($theme_type == 'theme_type_1') {
         $center_block .= "float:right; width:{$center_width}px;";
         $center_block_content = "width:{$center_content_width}px;";
         $right_block .= " width:{$rb_width}px;";
+    } elseif ($theme_kind == "bootstrap4") {
+        $center_width = $cb_width;
+        if($lb_width=='auto'){
+            $lb_width=12-$cb_width;
+        }
     } else {
         $center_width = $theme_width - $lb_width;
     }
@@ -165,6 +170,11 @@ if ($theme_type == 'theme_type_1') {
         $center_block .= "float:left;  width:{$center_width}px; padding-left: 15px;";
         $center_block_content = $center_block;
         $right_block .= "width:{$rb_width}px;";
+    } elseif ($theme_kind == "bootstrap4") {
+        $center_width = $cb_width;
+        if($rb_width=='auto'){
+            $rb_width=12-$cb_width;
+        }
     } else {
         $center_width = $theme_width - $rb_width;
     }
@@ -184,6 +194,12 @@ if ($theme_type == 'theme_type_1') {
         $right_block .= "float:none;  width:{$theme_width}px; clear:both;";
         $left_block2 = "";
         $right_block2 .= "float:left; padding-left: 15px;";
+    } elseif ($theme_kind == "bootstrap4") {
+        $center_width = $cb_width;
+        if($lb_width=='auto'){
+            $lb_width=12-$cb_width;
+        }
+        $rb_width     = "12";
     } else {
         $rb_width     = "12";
         $center_width = $theme_width - $lb_width;
@@ -203,6 +219,12 @@ if ($theme_type == 'theme_type_1') {
         $right_block .= "float:none; width:{$theme_width}px; clear:both;";
         $left_block2 = "";
         $right_block2 .= "float:left; padding-left: 15px;";
+    } elseif ($theme_kind == "bootstrap4") {
+        $center_width = $cb_width;
+        if($lb_width=='auto'){
+            $lb_width=12-$cb_width;
+        }
+        $rb_width     = "12";
     } else {
         $rb_width     = "12";
         $center_width = $theme_width - $lb_width;
@@ -225,6 +247,8 @@ if ($theme_type == 'theme_type_1') {
         $center_block .= "float:left;  width:{$center_width}px;";
         $right_block .= "float:right;  width:{$rb_width}px;";
         $left_block2 = $right_block2 = $center_block_content = "";
+    } elseif ($theme_kind == "bootstrap4") {
+        $center_width = $cb_width;
     } else {
         $center_width = $theme_width - $lb_width - $rb_width;
     }
@@ -247,6 +271,8 @@ if ($theme_type == 'theme_type_1') {
         $center_block_content = "width:{$center_content_width}px;";
         $right_block .= "float:left;  width:{$rb_width}px;";
         $left_block2 = $right_block2 = "";
+    } elseif ($theme_kind == "bootstrap4") {
+        $center_width = $cb_width;
     } else {
         $center_width = $theme_width - $lb_width - $rb_width;
     }
@@ -267,6 +293,8 @@ if ($theme_type == 'theme_type_1') {
         $center_block .= "float:left;  width:{$center_width}px; padding-left: 15px;";
         $right_block .= "float:right;  width:{$rb_width}px;";
         $left_block2 = $right_block2 = $center_block_content = "";
+    } elseif ($theme_kind == "bootstrap4") {
+        $center_width = $cb_width;
     } else {
         $center_width = $theme_width - $lb_width - $rb_width;
     }
@@ -281,6 +309,8 @@ if ($theme_type == 'theme_type_1') {
         $left_block2 .= "";
         $right_block2 .= "";
         $center_block_content = "";
+    } elseif ($theme_kind == "bootstrap4") {
+        $lb_width = $center_width = $rb_width = "12";
     } else {
         $lb_width = $center_width = $rb_width = "12";
     }
@@ -296,28 +326,29 @@ $this->assign('leftBlocks2', $left_block2);
 $this->assign('rightBlocks2', $right_block2);
 
 $this->assign('lb_width', $lb_width);
+$this->assign('cb_width', $cb_width);
 $this->assign('rb_width', $rb_width);
 $this->assign('center_width', $center_width);
 
 /****設定Logo圖位置****/
 $logo_place = "";
 if (!empty($logo_top)) {
-    $logo_place .= "top:{$logo_top}px;";
+    $logo_place .= "top:{$logo_top}%;";
 }
 
 if (!empty($logo_bottom)) {
-    $logo_place .= "bottom:{$logo_bottom}px;";
+    $logo_place .= "bottom:{$logo_bottom}%;";
 }
 
 if ($logo_center == '1') {
     $logo_place .= "margin-left: auto; margin-right: auto; left: 0; right: 0;";
 } else {
     if (!empty($logo_right)) {
-        $logo_place .= "right:{$logo_right}px;";
+        $logo_place .= "right:{$logo_right}%;";
     }
 
     if (!empty($logo_left)) {
-        $logo_place .= "left:{$logo_left}px;";
+        $logo_place .= "left:{$logo_left}%;";
     }
 
 }
@@ -389,27 +420,29 @@ $this->assign('positions', $positions);
 /****佈景額外設定****/
 $theme_name = $xoopsConfig['theme_set'];
 //額外佈景設定
-if (file_exists(XOOPS_ROOT_PATH . "/themes/{$theme_name}/config2.php")) {
-    include_once XOOPS_ROOT_PATH . "/themes/{$theme_name}/config2.php";
-    if ($mid) {
-        $sql    = "select `name`, `type`, `value` from " . $xoopsDB->prefix("tad_themes_config2") . " where `theme_id`='{$theme_id}'";
-        $result = $xoopsDB->query($sql);
-        while (list($name, $type, $value) = $xoopsDB->fetchRow($result)) {
-            $config2[$name] = $value;
+$config2_files=array('config2_base','config2_bg','config2_slide','config2_logo','config2_block','config2_nav','config2');
+foreach($config2_files as $config2_file){
+    if (file_exists(XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php")) {
+        include_once XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php";
+        if ($mid) {
+            $sql    = "select `name`, `type`, `value` from " . $xoopsDB->prefix("tad_themes_config2") . " where `theme_id`='{$theme_id}'";
+            $result = $xoopsDB->query($sql);
+            while (list($name, $type, $value) = $xoopsDB->fetchRow($result)) {
+                $config2[$name] = $value;
+            }
         }
-    }
 
-    foreach ($theme_config as $k => $config) {
-        $name  = $config['name'];
-        $value = is_null($config2[$name]) ? $config['default'] : $config2[$name];
-        if ($config['type'] == "array") {
-            $value = str_replace("{XOOPS_URL}", XOOPS_URL, $value);
-            $value = json_decode($value, true);
+        foreach ($theme_config as $k => $config) {
+            $name  = $config['name'];
+            $value = is_null($config2[$name]) ? $config['default'] : $config2[$name];
+            if ($config['type'] == "array") {
+                $value = str_replace("{XOOPS_URL}", XOOPS_URL, $value);
+                $value = json_decode($value, true);
+            }
+            $this->assign($name, $value);
         }
-        $this->assign($name, $value);
     }
 }
-
 
 /****佈景 TadDataCenter 設定****/
 include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
@@ -428,7 +461,6 @@ list($allow_register) = $xoopsDB->fetchRow($result);
 $this->assign('allow_register', $allow_register);
 
 <{/php}>
-
 
 <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/get_menu_var.tpl"}>
 <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/get_slider_var.tpl"}>

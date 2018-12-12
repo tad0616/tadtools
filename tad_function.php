@@ -94,19 +94,19 @@ function get_bootstrap($mode = '')
 
     $in_admin = (strpos($_SERVER['PHP_SELF'], "/admin/") !== false) ? true : false;
 
+    $theme_set = $xoopsConfig['theme_set'];
+
+    $sql = "select `tt_use_bootstrap`,`tt_bootstrap_color`,`tt_theme_kind` from `" . $xoopsDB->prefix("tadtools_setup") . "`  where `tt_theme`='{$theme_set}'";
+
+    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error());
+
+    list($tt_use_bootstrap, $tt_bootstrap_color, $tt_theme_kind) = $xoopsDB->fetchRow($result);
+
+    $_SESSION['theme_kind']                    = $tt_theme_kind;
+    $_SESSION[$theme_set]['bootstrap_version'] = $tt_theme_kind;
+    $_SESSION['bootstrap']                     = $tt_theme_kind == 'bootstrap4' ? '4' : '3';
+
     if ($in_admin) {
-        $theme_set = $xoopsConfig['theme_set'];
-
-        $sql = "select `tt_use_bootstrap`,`tt_bootstrap_color`,`tt_theme_kind` from `" . $xoopsDB->prefix("tadtools_setup") . "`  where `tt_theme`='{$theme_set}'";
-
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error());
-
-        list($tt_use_bootstrap, $tt_bootstrap_color, $tt_theme_kind) = $xoopsDB->fetchRow($result);
-
-        $_SESSION['theme_kind']                    = $tt_theme_kind;
-        $_SESSION[$theme_set]['bootstrap_version'] = 'bootstrap3';
-        $_SESSION['bootstrap']                     = '3';
-
         if ($xoopsTpl) {
             $xoopsTpl->assign("bootstrap_version", $_SESSION['bootstrap']);
         }
@@ -114,23 +114,36 @@ function get_bootstrap($mode = '')
         if ($xoTheme) {
             if ($tt_bootstrap_color == "bootstrap3") {
                 $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap3/css/bootstrap.css');
+                $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm3.css');
+            } elseif ($tt_bootstrap_color == "bootstrap4") {
+                $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap4/css/bootstrap.css');
+                $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm4.css');
             } else {
                 $c = explode('/', $tt_bootstrap_color);
-                if ($c[0] == "bootstrap3") {
+                if ($c[0] == "bootstrap4") {
+                    $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap4/css/bootstrap.css');
+                    $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm4.css');
+                    $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/' . $tt_bootstrap_color . '/bootstrap.min.css');
+                }elseif ($c[0] == "bootstrap3") {
                     $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap3/css/bootstrap.css');
+                    $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm3.css');
                     $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/' . $tt_bootstrap_color . '/bootstrap.min.css');
                 }
 
             }
             $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/fix-bootstrap.css');
-            $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm3.css');
             $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/font-awesome/css/font-awesome.css');
 
         }
     } elseif ($mode == "return") {
-        $main = "
-            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/bootstrap3/css/bootstrap.css' >
-            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css' >";
+        if($tt_theme_kind=="bootstrap4"){
+            $main = "
+            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/bootstrap4/css/bootstrap.css'>";
+        }else{
+            $main = "
+            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/bootstrap3/css/bootstrap.css'>";
+        }
+        $main .= "<link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css'>";
         return $main;
     }
 }
@@ -612,27 +625,26 @@ if (!function_exists('getPageBar')) {
             $navbar->set_url_other($url_other);
         }
 
-        if ($bootstrap == '3') {
-            $mybar       = $navbar->makeBootStrap3Bar();
-            $main['bar'] = "
-              <div class='row'>
-                <div class='col-sm-12'>
-                  <div class='text-center'>
-                    <nav>
-                      <ul class='pagination'>
-                        {$mybar['left']}
-                        {$mybar['center']}
-                        {$mybar['right']}
-                      </ul>
-                    </nav>
-                  </div>
+        if ($bootstrap == '3' or $bootstrap == '4') {
+                $mybar       = $navbar->makeBootStrap3Bar('',$bootstrap);
+                $main['bar'] = "
+                <div class='row'>
+                    <div class='col-sm-12'>
+                        <div class='text-center'>
+                            <nav>
+                                <ul class='pagination justify-content-center'>
+                                {$mybar['left']}
+                                {$mybar['center']}
+                                {$mybar['right']}
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              ";
+                ";
         } else {
             $mybar       = $navbar->makeBar();
-            $main['bar'] = "<div style='text-align:center;margin:4px;'>{$mybar['left']}{$mybar['center']}{$mybar['right']}<div style='zoom:1;clear:both;'></div></div>
-      ";
+            $main['bar'] = "<div style='text-align:center;margin:4px;'>{$mybar['left']}{$mybar['center']}{$mybar['right']}<div style='zoom:1;clear:both;'></div></div>";
         }
 
         $main['sql']   = $sql . $mybar['sql'];
@@ -873,7 +885,7 @@ if (!class_exists('PageBar')) {
         }
 
         // 製作 bar
-        public function makeBootStrap3Bar($url_page = "none")
+        public function makeBootStrap3Bar($url_page = "none",$bootstrap=3)
         {
             if ($url_page != "none") {
                 $this->url_page = $url_page;
@@ -890,15 +902,15 @@ if (!class_exists('PageBar')) {
             while ($i <= $this->pTotal && $i <= ($this->pCurrent * $this->pLimit)) {
                 if ($i == $this->current) {
                     $bar_center = "
-                      {$bar_center}
-                      <li class='active'>
-                        <a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='{$i}'>{$i}<span class='sr-only'>(current)</span></a>
-                      </li>";
+                        {$bar_center}
+                        <li class='page-item active'>
+                            <a class='page-link' href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='{$i}'>{$i}<span class='sr-only'>(current)</span></a>
+                        </li>";
                 } else {
                     $bar_center .= "
-                      <li>
-                        <a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='{$i}'>{$i}</a>
-                      </li>";
+                        <li class='page-item'>
+                            <a class='page-link' href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='{$i}'>{$i}</a>
+                        </li>";
                 }
                 $i++;
             }
@@ -907,23 +919,23 @@ if (!class_exists('PageBar')) {
             // 往前跳一頁
             if ($this->current <= 1) {
                 //$bar_left=$bar_first="";
-                $bar_left  = "<li class='disabled'><a href='#'>&lsaquo;</a></li>";
-                $bar_first = "<li class='disabled'><a href='#'>&laquo;</a></li>";
+                $bar_left  = "<li class='page-item disabled'><a class='page-link' href='#'>&lsaquo;</a></li>";
+                $bar_first = "<li class='page-item disabled'><a class='page-link' href='#'>&laquo;</a></li>";
             } else {
                 $i         = $this->current - 1;
-                $bar_left  = "<li><a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='" . _TAD_BACK_PAGE . "'>&lsaquo;</a></li>";
-                $bar_first = "<li><a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}=1{$loadtime}' title='" . _TAD_FIRST_PAGE . "' >&laquo;</a></li>";
+                $bar_left  = "<li class='page-item'><a class='page-link' href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='" . _TAD_BACK_PAGE . "'>&lsaquo;</a></li>";
+                $bar_first = "<li class='page-item'><a class='page-link' href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}=1{$loadtime}' title='" . _TAD_FIRST_PAGE . "' >&laquo;</a></li>";
             }
 
             // 往後跳一頁
             if ($this->current >= $this->pTotal) {
                 //$bar_right=$bar_last="";
-                $bar_right = "<li class='disabled'><a href='#'>&rsaquo;</a></li>";
-                $bar_last  = "<li class='disabled'><a href='#'>&raquo;</a></li>";
+                $bar_right = "<li class='page-item disabled'><a class='page-link' href='#'>&rsaquo;</a></li>";
+                $bar_last  = "<li class='page-item disabled'><a class='page-link' href='#'>&raquo;</a></li>";
             } else {
                 $i         = $this->current + 1;
-                $bar_right = "<li><a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='" . _TAD_NEXT_PAGE . "'>&rsaquo;</a></li>";
-                $bar_last  = "<li><a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$this->pTotal}{$loadtime}' title='" . _TAD_LAST_PAGE . "' >&raquo;</a></li>";
+                $bar_right = "<li class='page-item'><a class='page-link' href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='" . _TAD_NEXT_PAGE . "'>&rsaquo;</a></li>";
+                $bar_last  = "<li class='page-item'><a class='page-link' href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$this->pTotal}{$loadtime}' title='" . _TAD_LAST_PAGE . "' >&raquo;</a></li>";
             }
 
             // 往前跳一整個頁框(層)

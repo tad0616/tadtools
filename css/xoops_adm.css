@@ -2,7 +2,12 @@
 
 @import url(normalize.css);
 
-body ,div , a , li ,td ,th{
+body,
+div,
+a,
+li,
+td,
+th {
   font-size: 12px;
 }
 
@@ -10,11 +15,12 @@ body ,div , a , li ,td ,th{
   opacity: 100;
   position: relative;
   display: inline;
-  filter:none;
+  filter: none;
 }
 
-.table-striped tbody > tr:nth-child(2n+1) > th ,th  {
-  background-color:rgb(46, 50, 59);
+.table-striped tbody>tr:nth-child(2n+1)>th,
+th {
+  background-color: rgb(46, 50, 59);
   color: white;
 }
 
@@ -27,8 +33,6 @@ a.btn {
   color: white;
 }
 
-a.btn:link{
-}
+a.btn:link {}
 
-a.btn:visited{
-}
+a.btn:visited {}

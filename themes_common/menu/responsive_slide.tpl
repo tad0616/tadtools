@@ -6,7 +6,11 @@ if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/ResponsiveSlides.php")) {
     $no_item_slide_images = true;
 
     //假如有專屬圖文
-    $now_url = "http://" . $_SERVER["HTTP_HOST"] . $_SERVER['REQUEST_URI'];
+    $http = 'http://';
+    if (!empty($_SERVER['HTTPS'])) {
+        $http = ($_SERVER['HTTPS'] === 'on') ? 'https://' : 'http://';
+    }
+    $now_url = $$http . $_SERVER["HTTP_HOST"] . $_SERVER['REQUEST_URI'];
     if ($xoopsModule) {
         $sql    = "select `menuid`,`itemname`,`itemurl` from " . $xoopsDB->prefix("tad_themes_menu") . "";
         $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error());
