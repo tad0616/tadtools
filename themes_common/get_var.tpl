@@ -371,7 +371,6 @@ if ($slide_height >= 30) {
 }
 
 /****導覽工具列、區塊標題CSS設定****/
-
 $this->assign('navbar_pos', $navbar_pos);
 $this->assign('navbar_bg_top', $navbar_bg_top);
 $this->assign('navbar_bg_bottom', $navbar_bg_bottom);

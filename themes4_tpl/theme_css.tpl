@@ -64,9 +64,9 @@
                 background-image: url(<{$navbar_img}>);
                 background-size: cover;
             <{elseif $navbar_bg_top==$navbar_bg_bottom}>
-                background-color: <{$navbar_bg_top}>;
+                background: <{$navbar_bg_top}>;
             <{else}>
-                background-color: linear-gradient(<{$navbar_bg_top}>, <{$navbar_bg_bottom}>);
+                background: linear-gradient(<{$navbar_bg_top}>, <{$navbar_bg_bottom}>);
             <{/if}>
         <{/if}>
     }
@@ -74,22 +74,22 @@
     #nav-container-display{
         <{if $nav_display_type=='not_full'}>
             <{if $navbar_img}>
-                background-color:tranparent;
+                background-color: tranparent;
                 background-image: url(<{$navbar_img}>);
                 background-size: cover;
             <{elseif $navbar_bg_top==$navbar_bg_bottom}>
-                background-color: <{$navbar_bg_top}>;
+                background: <{$navbar_bg_top}>;
             <{else}>
-                background-color: linear-gradient(<{$navbar_bg_top}>, <{$navbar_bg_bottom}>);
+                background: linear-gradient(<{$navbar_bg_top}>, <{$navbar_bg_bottom}>);
             <{/if}>
         <{else}>
-            background-color:tranparent;
+            background-color: tranparent;
         <{/if}>
     }
 
     #content-container{
         <{if $content_display_type=='not_full'}>
-            background-color:tranparent;
+            background-color: tranparent;
         <{else}>
             background-color: <{$base_color}>;
         <{/if}>
