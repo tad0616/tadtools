@@ -399,28 +399,30 @@ class TadUpFiles
                     //有編輯框
                     $thumb_style = "<div style='text-align: center;'><img src='{$thumb_pic}' alt='{$file_name}'></div>";
                     //無編輯框
-                    $thumb_style2 = "<a class='thumbnail' style='width:{$this->thumb_width};height:{$this->thumb_height};overflow:hidden;background-color: transparent; background-image:url({$thumb_pic});background-position:{$this->thumb_position};background-repeat:{$this->thumb_repeat};background-size:{$this->thumb_size}; margin-bottom: 4px;' title='{$description}'></a>";
+                    $thumb_style2 = "<a class='thumbnail' style='display:inline-block; width:{$this->thumb_width};height:{$this->thumb_height};overflow:hidden;background-color: transparent; background-image:url({$thumb_pic});background-position:{$this->thumb_position};background-repeat:{$this->thumb_repeat};background-size:{$this->thumb_size}; margin-bottom: 4px;' title='{$description}'></a>";
                 } else {
                     $thumb_pic = "{$this->TadUpFilesThumbUrl}/{$file_name}";
 
                     $thumb_tool = "
-                    <div class='row'>
-                        <div class='col-sm-4 text-right'>
+                    <table class='table'>
+                        <tr>
+                        <td class='text-right'>
                             <a href=\"javascript:rotate('left','{$files_sn}','{$this->prefix}{$this->subdir}','{$this->image_dir}','{$this->thumbs_dir}','{$file_name}','{$file_type}')\" id='left90'><i class=\"fa fa-undo text-success\" title='" . TADTOOLS_ROTATE_LEFT . "'></i></a>
-                        </div>
-                        <div class='col-sm-4 text-center'>
+                        </td>
+                        <td class='text-center'>
                             <a href=\"javascript:remove_file('{$files_sn}');\" style='font-size: 12px;' class='text-danger'>
                                 <i class=\"fa fa-times text-danger\" title=\"" . _TAD_DEL . "\"></i>
                             </a>
-                        </div>
-                        <div class='col-sm-4 text-left'>
+                        </td>
+                        <td class='text-left'>
                             <a href=\"javascript:rotate('right','{$files_sn}','{$this->prefix}{$this->subdir}','{$this->image_dir}','{$this->thumbs_dir}','{$file_name}','{$file_type}')\" id='right90'><i class=\"fa fa-repeat text-info\" title='" . TADTOOLS_ROTATE_RIGHT . "'></i></a>
-                        </div>
-                    </div>";
+                        </td>
+                        </tr>
+                    </table>";
 
                     $thumb_style = "<a name='{$files_sn}' id='thumb{$files_sn}' href='{$this->TadUpFilesImgUrl}/{$file_name}' style='display: block; width: 120px; height: 80px; overflow: hidden; background-color: {$this->thumb_bg_color}; background-image: url({$thumb_pic}),url(" . TADTOOLS_URL . "/images/transparent.png); background-position: center center; background-repeat: no-repeat; background-size: contain; border: 1px solid gray; margin: 0px auto;' title='{$description}' class='fancybox_demo' rel='demo'></a>";
 
-                    $thumb_style2 = "<a class='thumbnail' style='width:{$this->thumb_width};height:{$this->thumb_height};overflow:hidden;background-color:{$this->thumb_bg_color};background-image:url({$thumb_pic});background-position:{$this->thumb_position};background-repeat:{$this->thumb_repeat};background-size:{$this->thumb_size}; margin-bottom: 4px;' title='{$description}'></a>";
+                    $thumb_style2 = "<a class='thumbnail' style='display:inline-block; width:{$this->thumb_width};height:{$this->thumb_height};overflow:hidden;background-color:{$this->thumb_bg_color};background-image:url({$thumb_pic});background-position:{$this->thumb_position};background-repeat:{$this->thumb_repeat};background-size:{$this->thumb_size}; margin-bottom: 4px;' title='{$description}'></a>";
                 }
                 $img_class ="img-thumbnail";
                 // $img_class = ($this->bootstrap == '3') ? "img-thumbnail" : "img-polaroid";
@@ -449,16 +451,12 @@ class TadUpFiles
                 $all_file .= "
                 <tr id='fdtr_{$files_sn}'>
                   <td style='{$w}'>
-                    <div class='row'>
-                      <div class='col-sm-3'>
                         {$thumb_style}
                         {$thumb_tool}
-                      </div>
-                      <div class='col-sm-9'>
-                        {$filename_label}
-                        <textarea name='save_description[$files_sn]' rows=1 class='form-control'>{$description}</textarea>
-                      </div>
-                    </div>
+                  </td>
+                  <td>
+                  {$filename_label}
+                  <textarea name='save_description[$files_sn]' rows=1 class='form-control'>{$description}</textarea>
                   </td>
                 </tr>";
             } elseif ($show_edit == "list") {
@@ -544,16 +542,12 @@ class TadUpFiles
 
         if ($show_edit === true or $show_edit == "full") {
             $files .= "
-              <div class='row' style='margin-top:10px;'>
-                <div class='col-sm-12'>
-                    <table class='table table-striped table-hover'>
-                        <tbody id='list_del_file_sort_{$this->col_name}' >
-                            $all_file
-                        </tbody>
-                    </table>
-                </div>
-              </div>
-              {$sort_able}
+            {$sort_able}
+                <table class='table table-striped table-hover' style='width:100%; margin-top:10px;'>
+                    <tbody id='list_del_file_sort_{$this->col_name}' >
+                        $all_file
+                    </tbody>
+                </table>
               ";
         } elseif ($show_edit == "list") {
             $files .= "
@@ -1632,8 +1626,8 @@ class TadUpFiles
                     $show_description_txt = ($show_description) ? "<div style='font-weight: normal; font-size: 11px; word-break: break-all; line-height: 1.2; margin: 4px auto 4px 0px; text-align: left;'>{$i}) {$description} {$show_dl_txt}</div>" : "{$show_dl_txt}";
 
                     $all_files .= ($show_mode == "small") ? "<a href='{$linkto}' class='iconize {$fancyboxset}' {$rel}>&nbsp;</a> " : "
-                      <li style='width:120px;height:160px;float:left;list-style:none;'>
-                        <a href='{$linkto}' class='thumbnail {$fancyboxset}' {$rel} style=\"width: 120px; height: 120px; overflow: hidden; background: #333333 url('{$thumb_pic}') no-repeat center center / contain; margin-bottom: 4px;\">&nbsp;</a>{$show_description_txt}
+                      <li style='width:120px;height:180px;float:left;list-style:none;'>
+                        <a href='{$linkto}' class='thumbnail {$fancyboxset}' {$rel} style=\"display:inline-block; width: 120px; height: 120px; overflow: hidden; background-color: #333333; background-image: url('{$thumb_pic}');background-repeat: no-repeat;background-position: center center;background-size: cover; margin-bottom: 4px;\">&nbsp;</a>{$show_description_txt}
                       </li>";
                 }
 

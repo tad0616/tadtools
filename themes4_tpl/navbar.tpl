@@ -61,10 +61,10 @@
 
             <!-- Right nav -->
             <ul class="nav navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="<{$xoops_url}>/modules/tad_themes/admin/dropdown.php" title="<{$smarty.const._TAD_MENU_CONFIG}>"><i class="fa fa-plus-circle"></i></a>
-                </li>
                 <{if $xoops_isadmin}>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<{$xoops_url}>/modules/tad_themes/admin/dropdown.php" title="<{$smarty.const._TAD_MENU_CONFIG}>"><i class="fa fa-plus-circle"></i></a>
+                    </li>
                     <{if $xoops_dirname=="" || $xoops_dirname=="system"}>
                         <li class="nav-item">
                             <a class="nav-link" href="<{$xoops_url}>/admin.php" title="<{$smarty.const.TF_MODULE_CONFIG}>"><span class="fa fa-wrench"></span></a>
