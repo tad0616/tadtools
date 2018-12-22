@@ -887,7 +887,7 @@ if (!class_exists('PageBar')) {
         // 製作 bar
         public function makeBootStrap3Bar($url_page = "none",$bootstrap=3)
         {
-            if ($url_page != "none") {
+            if ($url_page != "none" and $url_page != "") {
                 $this->url_page = $url_page;
             }
             $this->init();

@@ -105,7 +105,7 @@
 
     #footer-container{
         position: relative;
-        z-index: 10;
+        z-index: 8;
         <{if $footer_display_type=='not_full'}>
             background-color:tranparent;
         <{else}>

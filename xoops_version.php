@@ -20,7 +20,7 @@ $modversion['module_status']       = 'Final';
 $modversion['release_date']        = '2018/08/23';
 $modversion['module_website_url']  = 'http://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=1';
 $modversion['module_website_name'] = 'XOOPS EZGO';
-$modversion['author_website_url']  = 'http://tad0616.net';
+$modversion['author_website_url']  = 'https://tad0616.net';
 $modversion['author_website_name'] = 'Tad';
 $modversion['min_php']             = '5.4';
 $modversion['min_xoops']           = '2.5.7';
