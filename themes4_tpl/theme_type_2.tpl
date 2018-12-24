@@ -1,10 +1,10 @@
 <div class="row" id="xoops_theme_content_zone" style="<{$content_zone}>">
     <{if $xoBlocks.canvas_left or $xoBlocks.canvas_right}>
-        <div class="col-sm-<{$cb_width}>" id="xoops_theme_center_zone" style="<{$centerBlocks}>">
+        <div class="col-md-<{$cb_width}>" id="xoops_theme_center_zone" style="<{$centerBlocks}>">
             <{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/centerZone.tpl"}>
         </div>
 
-        <div class="col-sm-<{$rb_width}>" id="xoops_theme_right_zone" style="background-color: <{$rb_color}>;">
+        <div class="col-md-<{$rb_width}>" id="xoops_theme_right_zone" style="background-color: <{$rb_color}>;">
             <a accesskey="R" href="#xoops_theme_right_zone_key" title="<{$smarty.const._TAD_RIGHT_ZONE}>" id="xoops_theme_right_zone_key" style="color: transparent; font-size: 10px;">:::</a>
             <div id="xoops_theme_right"  style="<{$rightBlocks}>">
                 <{if $xoBlocks.canvas_left}>
@@ -17,7 +17,7 @@
             </div>
         </div>
     <{else}>
-        <div id="xoops_theme_center_zone" class="col-sm-12" style="<{$centerBlocks}>">
+        <div id="xoops_theme_center_zone" class="col-md-12" style="<{$centerBlocks}>">
             <{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/centerZone.tpl"}>
         </div>
     <{/if}>

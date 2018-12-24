@@ -721,7 +721,7 @@ class TadUpFiles
                 $file_handle->auto_create_dir = true;
 
                 $upload_date = date("Y-m-d H:i:s");
-                $uid         = isset($xoopsUser) ? $xoopsUser->uid : 0;
+                $uid         = isset($xoopsUser) ? $xoopsUser->uid() : 0;
 
                 //若是圖片才製作小縮圖
                 if ($kind == "img") {
@@ -876,7 +876,7 @@ class TadUpFiles
 
         $tag         = '';
         $upload_date = date("Y-m-d H:i:s");
-        $uid         = isset($xoopsUser) ? $xoopsUser->uid : 0;
+        $uid         = isset($xoopsUser) ? $xoopsUser->uid() : 0;
 
         //若是圖片才縮圖
         if ($kind == "img" and !empty($main_width)) {
@@ -1157,7 +1157,7 @@ class TadUpFiles
 
             $tag         = '';
             $upload_date = date("Y-m-d H:i:s");
-            $uid         = isset($xoopsUser) ? $xoopsUser->uid : 0;
+            $uid         = isset($xoopsUser) ? $xoopsUser->uid() : 0;
 
             //若是圖片才製作小縮圖
             if ($kind == "img") {
@@ -1583,15 +1583,15 @@ class TadUpFiles
     }
 
     //取得附檔或附圖 $show_mode=filename , small,playSpeed=3000 or 0
-    public function show_files($upname = "", $thumb = true, $show_mode = "", $show_description = false, $show_dl = false, $limit = null, $path = null, $hash = false, $playSpeed = 5000, $desc_as_name = false, $keyword = '', $only_keyword = false, $target = '_self')
+    public function show_files($upname = "", $thumb = true, $show_mode = "", $show_description = false, $show_dl = false, $limit = null, $path = null, $hash = false, $playSpeed = 0, $desc_as_name = false, $keyword = '', $only_keyword = false, $target = '_self')
     {
+        global $xoTheme;
 
+        $all_files = "";
         if ($show_mode == "small") {
-            $all_files = "<link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/css/iconize.css' />";
+            $xoTheme->addStylesheet('modules/tadtools/css/iconize.css');
         } elseif ($show_mode == "filename") {
-            $all_files = "<link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/css/rounded-list.css' />";
-        } else {
-            $all_files = "";
+            $xoTheme->addStylesheet('modules/tadtools/css/rounded-list.css');
         }
 
         if ($hash) {
@@ -1636,7 +1636,12 @@ class TadUpFiles
                     if ($file_info['kind'] == "file") {
                         $all_files .= "<li>{$file_info['link']}</li>";
                     } else {
-                        $all_files .= "<li>{$file_info['url']}</li>";
+                        if (strpos($file_info['tag'], '360') !== false) {
+                            $linkto      = TADTOOLS_URL . "/360.php?photo={$file_info['path']}";
+                            $all_files .= "<li><a href='{$linkto}' class='fancybox_{$this->col_name}' data-fancybox-type='iframe'>{$file_info['original_filename']}</a></li>";
+                        } else {
+                            $all_files .= "<li>{$file_info['url']}</li>";
+                        }
                     }
                 } elseif ($show_mode == "file_url") {
                     $all_files .= "<li>{$file_info['html_link']}</li>";
@@ -1698,9 +1703,9 @@ class TadUpFiles
                     $show_description_txt = ($show_description) ? "<div style='font-weight: normal; font-size: 11px; word-break: break-all; line-height: 1.2; margin: 4px auto 4px 0px; text-align: left;'>{$i}) {$description} {$show_dl_txt}</div>" : "{$show_dl_txt}";
 
                     $all_files .= ($show_mode == "small") ? "<a href='{$linkto}' class='iconize {$fancyboxset}' {$rel}>&nbsp;</a> " : "
-                      <li style='width:120px;height:180px;float:left;list-style:none;'>
-                        <a href='{$linkto}' class='thumbnail {$fancyboxset}' {$rel} style=\"display:inline-block; width: 120px; height: 120px; overflow: hidden; background-color: #333333; background-image: url('{$thumb_pic}');background-repeat: no-repeat;background-position: center center;background-size: cover; margin-bottom: 4px;\">&nbsp;</a>{$show_description_txt}
-                      </li>";
+                    <li style='width:120px;height:180px;float:left;list-style:none;'>
+                    <a href='{$linkto}' class='thumbnail {$fancyboxset}' {$rel} style=\"display:inline-block; width: 120px; height: 120px; overflow: hidden; background-color: #333333; background-image: url('{$thumb_pic}');background-repeat: no-repeat;background-position: center center;background-size: cover; margin-bottom: 4px;\">&nbsp;</a>{$show_description_txt}
+                    </li>";
                 }
 
                 $i++;
