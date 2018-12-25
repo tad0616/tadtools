@@ -1,6 +1,8 @@
-TadTools 3.3 (尚未釋出)
+TadTools 3.2.1 (2019-01-01 釋出)
 ====================================
 1.移除 CKEditor 的 jwplayer 外掛
+2.支援 BootStrap4
+3.支援 PHP 7.3
 
 
 TadTools 3.2 (2018-08-23 釋出)

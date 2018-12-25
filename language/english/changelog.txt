@@ -1,3 +1,10 @@
+TadTools 3.2.1 (released from 2019-01-01)
+=============================================
+1. Remove CKEditor's jwplayer plugin
+2. Support BootStrap4
+3. Support PHP 7.3
+
+
 TadTools 3.2 (released on 2018-08-23)
 =============================================
 1. CKEditor joins the CodeSnippet button
