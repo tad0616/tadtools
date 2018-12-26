@@ -1,70 +1,63 @@
-<div class="panel panel-success">
-
-  <!-- List group -->
-  <ul class="list-group">
+<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{$xoops_url}>/modules/tadtools/css/vertical_menu.css">
+<ul class="vertical_menu">
     <{if $xoops_isadmin}>
-        <li class="list-group-item">
+        <li>
             <a href="<{xoAppUrl admin.php}>" title="<{$block.lang_adminmenu}>">
-                <span class="glyphicon glyphicon-wrench"></span>
+                <i class="fa fa-wrench"></i>
                 <{$block.lang_adminmenu}>
             </a>
         </li>
 
-        <li class="list-group-item">
+        <li>
             <a href="<{xoAppUrl user.php}>" title="<{$block.lang_youraccount}>">
-                <span class="glyphicon glyphicon-user"></span>
+                <i class="fa fa-user"></i>
                 <{$block.lang_youraccount}>
             </a>
         </li>
     <{else}>
-        <li class="list-group-item">
+        <li>
             <a class="menuTop" href="<{xoAppUrl user.php}>" title="<{$block.lang_youraccount}>">
-                <span class="glyphicon glyphicon-user"></span>
+                <i class="fa fa-user"></i>
                 <{$block.lang_youraccount}>
             </a>
         </li>
     <{/if}>
 
-    <li class="list-group-item">
+    <li>
         <a href="<{xoAppUrl edituser.php}>" title="<{$block.lang_editaccount}>">
-            <span class="glyphicon glyphicon-pencil"></span>
+            <i class="fa fa-pencil"></i>
             <{$block.lang_editaccount}>
         </a>
     </li>
 
-    <li class="list-group-item">
+    <li>
         <a href="<{xoAppUrl notifications.php}>" title="<{$block.lang_notifications}>">
-            <span class="glyphicon glyphicon-info-sign"></span>
+            <i class="fa fa-bell"></i>
             <{$block.lang_notifications}>
         </a>
     </li>
 
     <{if $block.new_messages > 0}>
-        <li class="list-group-item">
-            <a class="info" href="<{xoAppUrl viewpmsg.php}>" title="<{$block.lang_inbox}>">
-                <span class="glyphicon glyphicon-envelope"></span>
+        <li>
+            <a class="selected" href="<{xoAppUrl viewpmsg.php}>" title="<{$block.lang_inbox}>">
+                <i class="fa fa-envelope"></i>
                 <{$block.lang_inbox}>
-                <span class="badge pull-right"><strong><{$block.new_messages}></strong></span>
+                <i class="badge pull-right"><strong><{$block.new_messages}></strong></i>
             </a>
         </li>
     <{else}>
-        <li class="list-group-item">
+        <li>
             <a href="<{xoAppUrl viewpmsg.php}>" title="<{$block.lang_inbox}>">
-                <span class="glyphicon glyphicon-envelope"></span>
+                <i class="fa fa-envelope"></i>
                 <{$block.lang_inbox}>
             </a>
         </li>
     <{/if}>
 
-    <li class="list-group-item">
+    <li>
         <a href="<{xoAppUrl user.php?op=logout}>" title="<{$block.lang_logout}>">
-            <span class="glyphicon glyphicon-off"></span>
+            <i class="fa fa-sign-out"></i>
             <{$block.lang_logout}>
         </a>
     </li>
-  </ul>
-</div>
-
-
-
-
+</ul>
