@@ -119,3 +119,5 @@ $modversion['blocks'][$i]['name']        = _MI_TADTOOLS_QRCODE_BLOCK_NAME;
 $modversion['blocks'][$i]['description'] = _MI_TADTOOLS_QRCODE_BLOCK_DESC;
 $modversion['blocks'][$i]['show_func']   = 'tadtools_qrcode';
 $modversion['blocks'][$i]['template']    = 'tadtools_qrcode_block.tpl';
+$modversion['blocks'][$i]['edit_func']   = "tadtools_qrcode_edit";
+$modversion['blocks'][$i]['options']     = "120";
