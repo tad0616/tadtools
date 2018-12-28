@@ -9,7 +9,7 @@ function tadtools_qrcode($options)
     $protocol = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
     get_jquery();
     $block['url']   = urlencode($protocol . $_SERVER["SERVER_NAME"] . $_SERVER['REQUEST_URI']);
-    $block['width'] = (int) $options[0];
+    $block['width'] = $options[0] < 50 ? 120 : (int) $options[0];
     return $block;
 }
 
