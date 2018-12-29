@@ -2,7 +2,7 @@
 include_once "tadtools_header.php";
 include_once "jquery.php";
 
-class slider
+class flexslider
 {
     public $show_jquery;
     public $word_num;

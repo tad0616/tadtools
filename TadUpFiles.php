@@ -1588,10 +1588,18 @@ class TadUpFiles
         global $xoTheme;
 
         $all_files = "";
-        if ($show_mode == "small") {
-            $xoTheme->addStylesheet('modules/tadtools/css/iconize.css');
-        } elseif ($show_mode == "filename") {
-            $xoTheme->addStylesheet('modules/tadtools/css/rounded-list.css');
+        if($xoTheme){
+            if ($show_mode == "small") {
+                $xoTheme->addStylesheet('modules/tadtools/css/iconize.css');
+            } elseif ($show_mode == "filename") {
+                $xoTheme->addStylesheet('modules/tadtools/css/rounded-list.css');
+            }
+        }else{
+            if ($show_mode == "small") {
+                $all_files = '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="'.XOOPS_URL.'/modules/tadtools/css/iconize.css">';
+            } elseif ($show_mode == "filename") {
+                $all_files = '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="'.XOOPS_URL.'/modules/tadtools/css/rounded-list.css">';
+            }
         }
 
         if ($hash) {

@@ -1,65 +1,69 @@
 ul.vertical_menu {
-    position: relative;
-    background: transparent;
-    width: 100%;
-    margin: auto;
-    padding: 0;
-    list-style: none;
-    overflow: hidden;
-    z-index: 999;
+  position: relative;
+  background: transparent;
+  width: 100%;
+  margin: auto;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+  z-index: 999;
+}
+
+.vertical_menu li {
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  display: block;
+  overflow: hidden;
+  position: relative;
+  text-decoration: none;
+  padding: 0px 6px;
+  border-bottom: 1px dotted #cfcfcf;
+  -webkit-transition: all 0.2s linear;
+  -moz-transition: all 0.2s linear;
+  -o-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+}
+
+.vertical_menu li:hover {
+  background: #efefef;
 }
 
 .vertical_menu li a {
-    width: 100%;
-    height: 40px;
-    line-height: 40px;
-    display: block;
-    overflow: hidden;
-    position: relative;
-    text-decoration: none;
-    text-transform: uppercase;
-    color: #686868;
-    padding: 0px 6px;
-    border-bottom: 1px dotted #cfcfcf;
-
-    -webkit-transition: all 0.2s linear;
-    -moz-transition: all 0.2s linear;
-    -o-transition: all 0.2s linear;
-    transition: all 0.2s linear;
+  color: #686868;
 }
-
-.vertical_menu li a:hover {
-    background: #efefef;
-}
-
 
 .vertical_menu li a:hover i {
-    color: #ea4f35;
+  color: #ea4f35;
 }
 
 .vertical_menu i {
-    -webkit-transition: all 0.2s linear;
-    -moz-transition: all 0.2s linear;
-    -o-transition: all 0.2s linear;
-    transition: all 0.2s linear;
+  -webkit-transition: all 0.2s linear;
+  -moz-transition: all 0.2s linear;
+  -o-transition: all 0.2s linear;
+  transition: all 0.2s linear;
 }
 
 .vertical_menu em {
-    font-size: 10px;
-    background: #ea4f35;
-    padding: 3px 5px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
-    font-style: normal;
-    color: #fff;
-    margin-top: 17px;
-    margin-right: 15px;
-    line-height: 10px;
-    height: 10px;
-    float: right;
+  font-size: 10px;
+  background: #ea4f35;
+  padding: 3px 5px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  font-style: normal;
+  color: #fff;
+  margin-top: 17px;
+  margin-right: 15px;
+  line-height: 10px;
+  height: 10px;
+  float: right;
 }
 
-.vertical_menu li.selected a {
-    background: #efefef;
+.vertical_menu li.selected {
+  background: #efefef;
+}
+
+.vertical_menu li:last-child {
+  border-bottom: none;
 }

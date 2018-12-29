@@ -2327,6 +2327,7 @@ class upload
             'application/x-font-ttf',
             'application/x-font-otf',
             'application/x-font-ttc',
+            'application/font',
         );
 
         $this->mime_types = array(
@@ -2427,9 +2428,9 @@ class upload
             'onetoc2' => 'application/onenote',
             'onetmp'  => 'application/onenote',
             'onepkg'  => 'application/onenote',
-            'ttf'     => 'application/x-font-ttf',
-            'otf'     => 'application/x-font-otf',
-            'ttc'     => 'application/x-font-ttc',
+            'ttf'     => 'application/font',
+            'otf'     => 'application/font',
+            'ttc'     => 'application/font',
         );
     }
 
