@@ -5,7 +5,7 @@ $home['title']=$home_title;
 $home['url']=$home_url;
 
 $sql = "select csn,of_csn,title from ".$xoopsDB->prefix("tad_gallery_cate")." order by sort";
-$result = $xoopsDB->query($sql) or web_error($sql);
+$result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
 while(list($csn,$of_csn,$title)=$xoopsDB->fetchRow($result)){
 $title_arr[$csn]=$title;
 $cate_arr[$csn]=$of_csn;
@@ -30,7 +30,7 @@ class dtree
     public $url_arr;
     public $home;
 
-    //«Øºc¨ç¼Æ
+    //ï¿½Øºcï¿½ï¿½ï¿½
     public function __construct($name = "", $home = "", $title_arr = "", $cate_arr = "", $url_arr = "")
     {
         $this->name      = $name;
@@ -40,7 +40,7 @@ class dtree
         $this->home      = $home;
     }
 
-    //²£¥Í¿ï³æ
+    //ï¿½ï¿½ï¿½Í¿ï¿½ï¿½
     public function render($fontsize = "12px", $open = false, $useLines = true)
     {
         global $xoTheme;
