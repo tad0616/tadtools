@@ -115,7 +115,7 @@ function get_custom_menu_items($link_cate_name, $link_cate_sn)
 
         case "tadnews_page_cate":
             $sql      = "select nsn, news_title from " . $xoopsDB->prefix("tad_news") . " where ncsn='{$link_cate_sn}' order by `page_sort`";
-            $result   = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+            $result   = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
             $ncsn_arr = "";
             while (list($nsn, $news_title) = $xoopsDB->fetchRow($result)) {
                 $sub_menu[$link_cate_name . $i]['id']      = $i;

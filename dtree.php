@@ -5,7 +5,7 @@ $home['title']=$home_title;
 $home['url']=$home_url;
 
 $sql = "select csn,of_csn,title from ".$xoopsDB->prefix("tad_gallery_cate")." order by sort";
-$result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+$result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 while(list($csn,$of_csn,$title)=$xoopsDB->fetchRow($result)){
 $title_arr[$csn]=$title;
 $cate_arr[$csn]=$of_csn;

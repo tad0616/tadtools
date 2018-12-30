@@ -6,7 +6,7 @@ ul.vertical_menu {
   padding: 0;
   list-style: none;
   overflow: hidden;
-  z-index: 999;
+  z-index: 7;
 }
 
 .vertical_menu li {

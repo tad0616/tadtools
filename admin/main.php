@@ -10,7 +10,7 @@ function tadtools_setup()
     $use_bootstrap = $bootstrap_color = "";
 
     $sql    = "SELECT * FROM `" . $xoopsDB->prefix("tadtools_setup") . "`";
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     //$tt_theme,$tt_use_bootstrap,$tt_bootstrap_color
     while (list($tt_theme, $tt_use_bootstrap, $tt_bootstrap_color, $tt_theme_kind) = $xoopsDB->fetchRow($result)) {
         // $setup[$tt_theme]=array();
@@ -37,7 +37,7 @@ function tadtools_setup()
                 if (empty($tt_theme_kind_arr[$theme]) or $theme_change == 0) {
                     $sql = "replace into `" . $xoopsDB->prefix("tadtools_setup") . "` (`tt_theme` , `tt_use_bootstrap`,`tt_bootstrap_color` , `tt_theme_kind`) values('{$theme}', '0', '{$theme_color}', '{$theme_kind}')";
                     //die($sql);
-                    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+                    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
                     $themes[$i]['theme_kind']      = $theme_kind;
                     $themes[$i]['use_bootstrap']   = '0';
@@ -165,7 +165,7 @@ function save()
     global $xoopsDB;
     foreach ($_POST['tt_use_bootstrap'] as $tt_theme => $tt_use_bootstrap) {
         $sql = "replace into `" . $xoopsDB->prefix("tadtools_setup") . "` (`tt_theme` , `tt_use_bootstrap`,`tt_bootstrap_color` , `tt_theme_kind`) values('{$tt_theme}', '{$tt_use_bootstrap}', '{$_POST['tt_bootstrap_color'][$tt_theme]}', '{$_POST['tt_theme_kind'][$tt_theme]}')";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     }
 }
 /*-----------執行動作判斷區----------*/

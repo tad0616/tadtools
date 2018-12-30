@@ -365,7 +365,7 @@ class TadUpFiles
             $sql = "select * from `{$this->TadUpFilesTblName}`  where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' order by sort";
         }
         // die($sql);
-        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         $i      = 0;
         while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $files_sn, $col_name, $col_sn, $sort, $kind, $file_name, $file_type, $file_size, $description
@@ -772,13 +772,13 @@ class TadUpFiles
 
                         $sql = "replace into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`counter`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}',0,'{$file['name']}','{$this->subdir}','{$hash_name}','{$upload_date}','{$uid}','{$tag}')";
 
-                        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+                        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
                         //取得最後新增資料的流水編號
                         $insert_files_sn = $xoopsDB->getInsertId();
                     } else {
                         $sql = "replace into `{$this->TadUpFilesTblName}` (`files_sn`,`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$files_sn}','{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}','{$file['name']}','{$this->subdir}','{$hash_name}','{$upload_date}','{$uid}','{$tag}')";
 
-                        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+                        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
                     }
 
                     // if ($return_col == "files_sn") {
@@ -907,12 +907,12 @@ class TadUpFiles
 
                 if (empty($files_sn)) {
                     $sql = "insert into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$new_filename}','{$type}','{$size}','{$description}','{$filename}','{$this->subdir}','{$hash_name}.{$ext}','{$upload_date}','{$uid}','{$tag}')";
-                    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+                    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
                     //取得最後新增資料的流水編號
                     $files_sn = $xoopsDB->getInsertId();
                 } else {
                     $sql = "replace into `{$this->TadUpFilesTblName}` (`files_sn`,`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$files_sn}','{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$$new_filename}','{$type}','{$size}','{$description}','{$filename}','{$this->subdir}','{$hash_name}.{$ext}','{$upload_date}','{$uid}','{$tag}')";
-                    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+                    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
                 }
                 $this->sort = "";
                 //echo "copy \"$from\" to  \"$path/$hash_filename\" OK!<br>";
@@ -930,12 +930,12 @@ class TadUpFiles
 
                 if (empty($files_sn)) {
                     $sql = "insert into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$new_filename}','{$type}','{$size}','{$description}','{$filename}','{$this->subdir}','{$hash_name}.{$ext}','{$upload_date}','{$uid}','{$tag}')";
-                    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+                    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
                     //取得最後新增資料的流水編號
                     $files_sn = $xoopsDB->getInsertId();
                 } else {
                     $sql = "replace into `{$this->TadUpFilesTblName}` (`files_sn`,`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$files_sn}','{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$$new_filename}','{$type}','{$size}','{$description}','{$filename}','{$this->subdir}','{$hash_name}.{$ext}','{$upload_date}','{$uid}','{$tag}')";
-                    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+                    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
                 }
 
                 $this->sort = "";
@@ -1212,12 +1212,12 @@ class TadUpFiles
                 }
                 if (empty($files_sn)) {
                     $sql = "insert into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}','{$file['name']}','{$this->subdir}','{$db_hash_name}','{$upload_date}','{$uid}','{$tag}')";
-                    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+                    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
                     //取得最後新增資料的流水編號
                     $files_sn = $xoopsDB->getInsertId();
                 } else {
                     $sql = "replace into `{$this->TadUpFilesTblName}` (`files_sn`,`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$files_sn}','{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}','{$file['name']}','{$this->subdir}','{$db_hash_name}','{$upload_date}','{$uid}','{$tag}')";
-                    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+                    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
                 }
                 //die($sql);
             } else {
@@ -1240,7 +1240,7 @@ class TadUpFiles
 
         $sql = "select max(sort) from `{$this->TadUpFilesTblName}`  where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}'";
 
-        $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $result    = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         list($max) = $xoopsDB->fetchRow($result);
 
         return ++$max;
@@ -1256,7 +1256,7 @@ class TadUpFiles
         $val  = $myts->addSlashes($val);
 
         $sql = "update `{$this->TadUpFilesTblName}`  set `$col`='{$val}' where `files_sn`='{$files_sn}'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     }
 
     //刪除實體檔案
@@ -1277,7 +1277,7 @@ class TadUpFiles
 
         $sql = "select * from `{$this->TadUpFilesTblName}`  where $del_what";
         // die($sql);
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
         while (list($files_sn, $col_name, $col_sn, $sort, $kind, $file_name, $file_type, $file_size, $description, $counter, $original_filename, $hash_filename, $sub_dir) = $xoopsDB->fetchRow($result)) {
             $this->set_col($col_name, $col_sn, $sort);
@@ -1362,7 +1362,7 @@ class TadUpFiles
 
         $sql = "select * from `{$this->TadUpFilesTblName}` $where";
 
-        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $files_sn, $col_name, $col_sn, $sort, $kind, $file_name, $file_type, $file_size, $description
             foreach ($all as $k => $v) {
@@ -1470,7 +1470,7 @@ class TadUpFiles
 
         $sql = "select * from `{$this->TadUpFilesTblName}` $where";
         // die($sql);
-        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         $i      = 0;
         $files  = array();
         while ($all = $xoopsDB->fetchArray($result)) {
@@ -1546,7 +1546,7 @@ class TadUpFiles
 
         $sql = "select * from `{$this->TadUpFilesTblName}` $where";
         // die($sql);
-        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         $files  = array();
         while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $files_sn, $col_name, $col_sn, $sort, $kind, $file_name, $file_type, $file_size, $description
@@ -1576,7 +1576,7 @@ class TadUpFiles
 
         $sql = "select count(*) from `{$this->TadUpFilesTblName}`  where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}'";
 
-        $result       = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $result       = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         list($amount) = $xoopsDB->fetchRow($result);
 
         return $amount;
@@ -1754,7 +1754,7 @@ class TadUpFiles
         $dl_name       = ($this->hash) ? $file['hash_filename'] : $file['file_name'];
         // die($dl_name);
         $sql = "update `{$this->TadUpFilesTblName}` set `counter`=`counter`+1 where `files_sn`='{$files_sn}'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
         if ($file['kind'] == "img") {
             $file_saved    = "{$this->TadUpFilesImgUrl}/{$dl_name}";
@@ -1859,7 +1859,7 @@ class TadUpFiles
 
         $sql = "select * from `{$this->TadUpFilesTblName}`  where `files_sn`='{$files_sn}'";
 
-        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         $all    = $xoopsDB->fetchArray($result);
         // die(var_export($all));
         return $all;
