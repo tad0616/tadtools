@@ -11,13 +11,11 @@ ul.vertical_menu {
 
 .vertical_menu li {
   width: 100%;
-  height: 40px;
-  line-height: 40px;
   display: block;
   overflow: hidden;
   position: relative;
   text-decoration: none;
-  padding: 0px 6px;
+  padding: 8px 6px;
   border-bottom: 1px dotted #cfcfcf;
   -webkit-transition: all 0.2s linear;
   -moz-transition: all 0.2s linear;
