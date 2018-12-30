@@ -72,7 +72,7 @@ if (!function_exists('web_error')) {
     function web_error($sql, $file = '', $line = '')
     {
         global $xoopsDB, $xoopsModule, $xoopsUser;
-        $isAdmin = $xoopsUser ? $xoopsUser->isAdmin($xoopsModule->mid()) : false;
+        $isAdmin = ($xoopsUser and $xoopsModule) ? $xoopsUser->isAdmin($xoopsModule->mid()) : false;
 
         $in_admin = (strpos($_SERVER['PHP_SELF'], "/admin/") !== false) ? true : false;
         $main     = "<h1>" . _TAD_OOPS_SOMETHING_WRONG . "</h1>";
