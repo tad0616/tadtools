@@ -2,19 +2,24 @@
 //此檔案是給 ck.php 用的，勿刪
 include_once "../../mainfile.php";
 include_once "upload/class.upload.php";
+
+include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+$type            = system_CleanVars($_REQUEST, 'type', '', 'string');
+$CKEditorFuncNum = system_CleanVars($_REQUEST, 'CKEditorFuncNum', '', 'sn');
+
 $mdir     = $_SESSION['xoops_mod_name'];
-$path     = XOOPS_ROOT_PATH . "/uploads/{$mdir}/{$_GET['type']}/";
-$url      = XOOPS_URL . "/uploads/{$mdir}/{$_GET['type']}/";
+$path     = XOOPS_ROOT_PATH . "/uploads/{$mdir}/{$type}/";
+$url      = XOOPS_URL . "/uploads/{$mdir}/{$type}/";
 $type_arr = array('image', 'file', 'flash');
 
 //判斷是否是非法調用
-if (empty($_GET['CKEditorFuncNum'])) {
+if (empty($_CKEditorFuncNum)) {
     mkhtml(1, "", "error");
 }
 
-$fn = $_GET['CKEditorFuncNum'];
+$fn = $_CKEditorFuncNum;
 
-if (!in_array($_GET['type'], $type_arr)) {
+if (!in_array($type, $type_arr)) {
     mkhtml(1, "", "error");
 }
 
