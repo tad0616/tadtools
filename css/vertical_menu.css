@@ -1,67 +1,80 @@
-ul.vertical_menu {
-  position: relative;
-  background: transparent;
-  width: 100%;
-  margin: auto;
-  padding: 0;
-  list-style: none;
-  overflow: hidden;
-  z-index: 7;
+ul.vertical_menu,
+ol.vertical_menu {
+    position: relative;
+    background: transparent;
+    width: 100%;
+    margin: auto;
+    padding: 0;
+    list-style: none;
+    overflow: hidden;
+    z-index: 7;
+}
+
+ul.num,
+ol.num {
+    counter-reset: number;
+}
+
+ul.num li a:before,
+ol.num li a:before {
+    counter-increment: number;
+    content: counter(number)". ";
+    color: rgb(39, 111, 139);
 }
 
 .vertical_menu li {
-  width: 100%;
-  display: block;
-  overflow: hidden;
-  position: relative;
-  text-decoration: none;
-  padding: 8px 6px;
-  border-bottom: 1px dotted #cfcfcf;
-  -webkit-transition: all 0.2s linear;
-  -moz-transition: all 0.2s linear;
-  -o-transition: all 0.2s linear;
-  transition: all 0.2s linear;
+    width: 100%;
+    display: block;
+    overflow: hidden;
+    position: relative;
+    text-decoration: none;
+    padding: 8px 6px;
+    border-bottom: 1px dotted #cfcfcf;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+    transition: all 0.2s linear;
 }
 
 .vertical_menu li:hover {
-  background: #efefef;
+    background: #efefef;
 }
 
-.vertical_menu li a {
-  color: #686868;
+.vertical_menu li:hover a {
+    /* color: #ea4f35; */
+    text-decoration: none;
 }
 
-.vertical_menu li a:hover i {
-  color: #ea4f35;
+.vertical_menu li:hover i {
+    /* color: #ea4f35; */
 }
 
 .vertical_menu i {
-  -webkit-transition: all 0.2s linear;
-  -moz-transition: all 0.2s linear;
-  -o-transition: all 0.2s linear;
-  transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+    transition: all 0.2s linear;
 }
 
 .vertical_menu em {
-  font-size: 10px;
-  background: #ea4f35;
-  padding: 3px 5px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-  font-style: normal;
-  color: #fff;
-  margin-top: 17px;
-  margin-right: 15px;
-  line-height: 10px;
-  height: 10px;
-  float: right;
+    font-size: 10px;
+    background: #ea4f35;
+    padding: 3px 5px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    font-style: normal;
+    color: #fff;
+    margin-top: 17px;
+    margin-right: 15px;
+    line-height: 10px;
+    height: 10px;
+    float: right;
 }
 
-.vertical_menu li.selected {
-  background: #efefef;
+.vertical_menu li.selected a {
+    background: #efefef;
 }
-
 .vertical_menu li:last-child {
-  border-bottom: none;
-}
+    border-bottom: none;
+  }

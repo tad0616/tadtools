@@ -5,8 +5,7 @@ redirect_header("index.php",3, _MA_NEED_TADTOOLS);
 }
 include_once XOOPS_ROOT_PATH."/modules/tadtools/easy_responsive_tabs.php";
 $responsive_tabs = new easy_responsive_tabs('#demoTab', $type = 'default, vertical, accordion', $activetab_bg = '#B5AC5F', $inactive_bg = '#E0D78C', $active_border_color = '#9C905C', $active_content_border_color = '#9C905C');
-$responsive_tabs_code=$responsive_tabs->rander();
-$xoopsTpl->assign('responsive_tabs_code',$responsive_tabs_code);
+$responsive_tabs->rander();
 
 <div id="demoTab">
 <ul class="resp-tabs-list vert">
