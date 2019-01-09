@@ -15,8 +15,8 @@ ol.num {
     counter-reset: number;
 }
 
-ul.num li a:before,
-ol.num li a:before {
+ul.num>li a:first-child:before,
+ol.num>li a:first-child:before {
     counter-increment: number;
     content: counter(number)". ";
     color: rgb(39, 111, 139);
