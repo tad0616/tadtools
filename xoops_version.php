@@ -2,7 +2,7 @@
 
 $modversion                   = array();
 $modversion['name']           = _MI_TADTOOLS_NAME;
-$modversion['version']        = 3.21;
+$modversion['version']        = 3.22;
 $modversion['description']    = _MI_TADTOOLS_DESC;
 $modversion['author']         = 'Tad (tad0616@gmail.com)';
 $modversion['credits']        = '';
@@ -17,7 +17,7 @@ $modversion['icons32']        = '../../Frameworks/moduleclasses/icons/32';
 
 //about
 $modversion['module_status']       = 'Final';
-$modversion['release_date']        = '2019/01/01';
+$modversion['release_date']        = '2019/01/20';
 $modversion['module_website_url']  = 'http://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=1';
 $modversion['module_website_name'] = 'XOOPS EZGO';
 $modversion['author_website_url']  = 'https://tad0616.net';
