@@ -10,6 +10,13 @@ ol.vertical_menu {
     z-index: 7;
 }
 
+ul.border,
+ol.border {
+    background: #fff;
+    border: 1px solid rgb(210, 213, 214) ;
+    border-radius: 5px;
+}
+
 ul.num,
 ol.num {
     counter-reset: number;

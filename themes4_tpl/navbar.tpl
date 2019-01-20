@@ -22,10 +22,8 @@
     <script type="title/javascript" src="<{xoAppUrl modules/tadtools/smartmenus/jquery.smartmenus.min.js}>"></script>
     <script type="title/javascript" src="<{xoAppUrl modules/tadtools/smartmenus/addons/bootstrap-4/jquery.smartmenus.bootstrap-4.min.js}>"></script>
 
-    <link href="<{$xoops_url}>/modules/tadtools/colorbox/colorbox.css" rel="stylesheet">
-    <script type="title/javascript" src="<{xoAppUrl modules/tadtools/colorbox/jquery.colorbox.js}>"></script>
-
-
+    <link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{xoAppUrl modules/tadtools/colorbox/colorbox.css}>" />
+    <script type="text/javascript" src="<{xoAppUrl modules/tadtools/colorbox/jquery.colorbox.js}>"></script>
 
     <script>
         function tad_themes_popup(URL) {
