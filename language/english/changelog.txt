@@ -1,3 +1,11 @@
+TadTools 3.2.3 (released from 2019-01-23)
+=============================================
+1. Remove the summernote editor
+2. Fix CKEditor can't upload the problem
+3. Add editor image upload auto thumbnail mechanism
+4. Remove files with doubts
+5. Fixed the problem that the BootStrap3 set could not display the screen correctly in some modules.
+
 TadTools 3.2.2 (released from 2019-01-20)
 =============================================
 1. Patch the vulnerabilities that can be used to delete files arbitrarily

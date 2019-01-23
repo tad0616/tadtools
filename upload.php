@@ -1,30 +1,42 @@
 <?php
 //此檔案是給 ck.php 用的，勿刪
 include_once "../../mainfile.php";
+if (!$xoopsUser) {
+    exit;
+}
 include_once "upload/class.upload.php";
 
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $type            = system_CleanVars($_REQUEST, 'type', '', 'string');
-$CKEditorFuncNum = system_CleanVars($_REQUEST, 'CKEditorFuncNum', '', 'sn');
+$CKEditorFuncNum = system_CleanVars($_REQUEST, 'CKEditorFuncNum', '', 'int');
 
-$mdir     = $_SESSION['xoops_mod_name'];
-$path     = XOOPS_ROOT_PATH . "/uploads/{$mdir}/{$type}/";
-$url      = XOOPS_URL . "/uploads/{$mdir}/{$type}/";
-$type_arr = array('image', 'file', 'flash');
+$mdir             = $_SESSION['xoops_mod_name'];
+$path             = XOOPS_ROOT_PATH . "/uploads/{$mdir}/{$type}/";
+$url              = XOOPS_URL . "/uploads/{$mdir}/{$type}/";
+$type_arr         = array('image', 'file', 'flash');
+$image_max_width  = $xoopsModuleConfig['image_max_width'] ? (int) $xoopsModuleConfig['image_max_width'] : 640;
+$image_max_height = $xoopsModuleConfig['image_max_height'] ? (int) $xoopsModuleConfig['image_max_height'] : 640;
 
 //判斷是否是非法調用
-if (empty($_CKEditorFuncNum)) {
-    mkhtml(1, "", "error");
+if (empty($CKEditorFuncNum)) {
+    mkhtml(1, "", "{$type} -{$CKEditorFuncNum} error");
 }
 
-$fn = $_CKEditorFuncNum;
+$fn = $CKEditorFuncNum;
 
 if (!in_array($type, $type_arr)) {
-    mkhtml(1, "", "error");
+    mkhtml(1, "", "{$type} -{$CKEditorFuncNum} error");
 }
 
 $foo = new Upload($_FILES['upload']);
 if ($foo->uploaded) {
+
+    $foo->file_new_name_body = $_FILES['upload']['name'];
+    $foo->image_resize       = true;
+    $foo->image_ratio        = true;
+    $foo->image_x            = $image_max_width;
+    $foo->image_y            = $image_max_height;
+
     // save uploaded image with no changes
     $foo->Process($path);
     if ($foo->processed) {

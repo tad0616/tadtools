@@ -96,18 +96,39 @@ function access($attr, $path, $data, $volume)
 $logger = new elFinderSimpleLogger('../files/temp/log.txt');
 
 include_once "../../../../mainfile.php";
-$mdir = $_SESSION['xoops_mod_name'];
-
+$mdir             = $_SESSION['xoops_mod_name'];
+$image_max_width  = $xoopsModuleConfig['image_max_width'] ? (int) $xoopsModuleConfig['image_max_width'] : 640;
+$image_max_height = $xoopsModuleConfig['image_max_height'] ? (int) $xoopsModuleConfig['image_max_height'] : 640;
 // Documentation for connector options:
 // https://github.com/Studio-42/elFinder/wiki/Connector-configuration-options
 $opts = array(
     // 'debug' => true,
+    'bind'   => array(
+        'upload.presave' => array(
+            'Plugin.AutoResize.onUpLoadPreSave',
+        ),
+    ),
+    'plugin' => array(
+        'AutoResize' => array(
+            'enable'    => true, // For control by volume driver
+            'maxWidth'  => $image_max_width, // Path to Water mark image
+            'maxHeight' => $image_max_height, // Margin right pixel
+            'quality'   => 95, // JPEG image save quality
+        ),
+    ),
     "locale" => "zh_TW.UTF-8",
     'roots'  => array(
         array(
             'driver'        => 'LocalFileSystem', // driver for accessing file system (REQUIRED)
             'path'          => XOOPS_ROOT_PATH . "/uploads/{$mdir}/", // path to files (REQUIRED)
             'URL'           => XOOPS_URL . "/uploads/{$mdir}/", // URL to files (REQUIRED)
+            'plugin'        => array(
+                'AutoResize' => array(
+                    'enable'    => true, // For control by volume driver
+                    'maxWidth'  => $image_max_width, // Path to Water mark image
+                    'maxHeight' => $image_max_height, // Margin right pixel
+                ),
+            ),
             'uploadDeny'    => array('text/php', 'text/x-php', 'application/php', 'application/x-php', 'application/x-httpd-php', 'application/x-httpd-php-source'), // All Mimetypes not allowed to upload
             'uploadAllow'   => array('all'), // Mimetype `image` and `text/plain` allowed to upload
             'uploadOrder'   => array('allow', 'deny'), // allowed Mimetype `image` and `text/plain` only

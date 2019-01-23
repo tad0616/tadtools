@@ -2,7 +2,7 @@
 
 $modversion                   = array();
 $modversion['name']           = _MI_TADTOOLS_NAME;
-$modversion['version']        = 3.22;
+$modversion['version']        = 3.23;
 $modversion['description']    = _MI_TADTOOLS_DESC;
 $modversion['author']         = 'Tad (tad0616@gmail.com)';
 $modversion['credits']        = '';
@@ -17,14 +17,13 @@ $modversion['icons32']        = '../../Frameworks/moduleclasses/icons/32';
 
 //about
 $modversion['module_status']       = 'Final';
-$modversion['release_date']        = '2019/01/20';
+$modversion['release_date']        = '2019/01/23';
 $modversion['module_website_url']  = 'http://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=1';
 $modversion['module_website_name'] = 'XOOPS EZGO';
 $modversion['author_website_url']  = 'https://tad0616.net';
 $modversion['author_website_name'] = 'Tad';
 $modversion['min_php']             = '5.4';
 $modversion['min_xoops']           = '2.5.7';
-$modversion['min_admin']           = '1.1';
 $modversion['min_db']              = array(
     'mysql'  => '5.0.7',
     'mysqli' => '5.0.7');
@@ -112,6 +111,22 @@ $modversion['config'][$i]['description'] = '_MI_TADTOOLS_USE_CODEMIRROR_DESC';
 $modversion['config'][$i]['formtype']    = 'yesno';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = '1';
+
+$i++;
+$modversion['config'][$i]['name']        = 'image_max_width';
+$modversion['config'][$i]['title']       = '_MI_TADTOOLS_IMAGE_MAX_WIDTH';
+$modversion['config'][$i]['description'] = '_MI_TADTOOLS_IMAGE_MAX_WIDTH_DESC';
+$modversion['config'][$i]['formtype']    = 'textbox';
+$modversion['config'][$i]['valuetype']   = 'int';
+$modversion['config'][$i]['default']     = '800';
+
+$i++;
+$modversion['config'][$i]['name']        = 'image_max_height';
+$modversion['config'][$i]['title']       = '_MI_TADTOOLS_IMAGE_MAX_HEIGHT';
+$modversion['config'][$i]['description'] = '_MI_TADTOOLS_IMAGE_MAX_HEIGHT_DESC';
+$modversion['config'][$i]['formtype']    = 'textbox';
+$modversion['config'][$i]['valuetype']   = 'int';
+$modversion['config'][$i]['default']     = '800';
 
 $i                                       = 0;
 $modversion['blocks'][$i]['file']        = 'tadtools_qrcode.php';
