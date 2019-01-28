@@ -30,8 +30,8 @@ if (!in_array($type, $type_arr)) {
 
 $foo = new Upload($_FILES['upload']);
 if ($foo->uploaded) {
-
-    $foo->file_new_name_body = $_FILES['upload']['name'];
+    $path_parts              = pathinfo($_FILES['upload']['name']);
+    $foo->file_new_name_body = $path_parts['filename'];
     $foo->image_resize       = true;
     $foo->image_ratio        = true;
     $foo->image_x            = $image_max_width;

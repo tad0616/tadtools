@@ -96,7 +96,13 @@ function access($attr, $path, $data, $volume)
 $logger = new elFinderSimpleLogger('../files/temp/log.txt');
 
 include_once "../../../../mainfile.php";
-$mdir             = $_SESSION['xoops_mod_name'];
+$mdir = $_SESSION['xoops_mod_name'];
+if (!$xoopsModuleConfig) {
+    $modhandler        = xoops_gethandler('module');
+    $xoopsModule       = $modhandler->getByDirname("tadtools");
+    $config_handler    = xoops_gethandler('config');
+    $xoopsModuleConfig = $config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
+}
 $image_max_width  = $xoopsModuleConfig['image_max_width'] ? (int) $xoopsModuleConfig['image_max_width'] : 640;
 $image_max_height = $xoopsModuleConfig['image_max_height'] ? (int) $xoopsModuleConfig['image_max_height'] : 640;
 // Documentation for connector options:

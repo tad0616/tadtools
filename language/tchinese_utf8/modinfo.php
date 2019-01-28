@@ -35,7 +35,7 @@ define('_MI_TADTOOLS_HELP_OVERVIEW', '概要');
 define('_MI_TADTOOLS_USE_CODEMIRROR', '是否使用 codemirror 外掛？');
 define('_MI_TADTOOLS_USE_CODEMIRROR_DESC', 'codemirror 可美化編輯器的原始碼模式，但若原始碼中有用到 syntaxhighlighter ，則會導致 syntaxhighlighter 中的原始碼縮排失效。若常會用 syntaxhighlighter 貼原始碼者，建議關閉。');
 
-define('_MI_TADTOOLS_IMAGE_MAX_WIDTH', '編輯器上傳圖片的最大高度');
+define('_MI_TADTOOLS_IMAGE_MAX_WIDTH', 'CK編輯器上傳圖片的最大寬度');
 define('_MI_TADTOOLS_IMAGE_MAX_WIDTH_DESC', '請填數字，單位為px');
-define('_MI_TADTOOLS_IMAGE_MAX_HEIGHT', '編輯器上傳圖片的最大高度');
+define('_MI_TADTOOLS_IMAGE_MAX_HEIGHT', 'CK編輯器上傳圖片的最大高度');
 define('_MI_TADTOOLS_IMAGE_MAX_HEIGHT_DESC', '請填數字，單位為px');
