@@ -1,10 +1,9 @@
-
 .my-form {
     counter-reset: number;
     border-radius: 4px;
     border: 1px solid rgb(114, 177, 250);
     background: rgb(235, 241, 248);
-    padding:10px
+    padding: 10px
 }
 
 .my-row {
@@ -44,6 +43,11 @@
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 
+
+.my-100 {
+    width: 100%;
+}
+
 textarea.my-input {
     line-height: 1.5;
     min-width: 80%;
@@ -73,7 +77,7 @@ textarea.my-input {
     margin-right: 4px;
 }
 
-.my-example{
+.my-example {
     color: white;
     background-color: rgb(39, 78, 128);
     padding: 4px;

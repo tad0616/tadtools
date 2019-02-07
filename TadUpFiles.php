@@ -1710,7 +1710,7 @@ class TadUpFiles
                     //描述顯示
                     $show_description_txt = ($show_description) ? "<div style='font-weight: normal; font-size: 11px; word-break: break-all; line-height: 1.2; margin: 4px auto 4px 0px; text-align: left;'>{$i}) {$description} {$show_dl_txt}</div>" : "{$show_dl_txt}";
 
-                    $all_files .= ($show_mode == "small") ? "<a href='{$linkto}' data-toggle='tooltip' data-placement='top' title='{$description}'  class='iconize {$fancyboxset}' {$rel}>&nbsp;</a> " : "
+                    $all_files .= ($show_mode == "small") ? "<a href='{$linkto}' data-toggle='tooltip' data-placement='top' title='{$description}' class='iconize {$fancyboxset}' {$rel}>&nbsp;</a> " : "
                     <li style='width:120px;height:180px;float:left;list-style:none;'>
                     <a href='{$linkto}' class='thumbnail {$fancyboxset}' {$rel} style=\"display:inline-block; width: 120px; height: 120px; overflow: hidden; background-color: #333333; background-image: url('{$thumb_pic}');background-repeat: no-repeat;background-position: center center;background-size: cover; margin-bottom: 4px;\">&nbsp;</a>{$show_description_txt}
                     </li>";
