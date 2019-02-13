@@ -113,3 +113,6 @@ define('_TDC_OPTIONS_NOTE', '選項請用;隔開，如：「男;女」，若選�
 define('_TDC_FILL_PEOPLE', '填寫人');
 define('_TDC_INPUT_COL_ID', '沒事勿動，給程式用的');
 define('_TDC_COL_ID', '程式辨識碼');
+
+//TadUpFiles.php
+define('_TUF_PERMISSION_NOTE', '不選即全部開放下載：');

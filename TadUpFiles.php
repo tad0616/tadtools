@@ -1,5 +1,7 @@
 <?php
 /*
+$TadUpFiles->set_var("permission", true); //要使用權限控管時才需要
+
 //加入上傳檔案MIME types篩選
 //新增ext2mime函數，可將副檔名轉換為MIME types，提供給$file_handle->allowed使用
 //$allow = "doc;docx;pdf"，利用分號;區分允許上傳的檔案類型
@@ -150,6 +152,7 @@ class TadUpFiles
     public $file_dir   = "/file";
     public $image_dir  = "/image";
     public $thumbs_dir = "/image/.thumbs";
+    public $permission = false;
 
     public $thumb_width    = '120px';
     public $thumb_height   = '70px';
@@ -329,6 +332,7 @@ class TadUpFiles
     //上傳元件
     public function upform($show_edit = false, $upname = 'upfile', $maxlength = "", $show_list_del_file = true, $only_type = "", $thumb = true, $id = '')
     {
+        global $xoopsDB;
         $maxlength_code = empty($maxlength) ? "" : "maxlength='{$maxlength}'";
         $accept         = ($only_type) ? "accept='{$only_type}'" : "";
         $list_del_file  = ($show_list_del_file) ? $this->list_del_file($show_edit, $thumb) : "";
@@ -337,14 +341,38 @@ class TadUpFiles
 
         $multiple = ($maxlength == 1) ? '' : "$maxlength_code multiple='multiple'";
 
+        $permission = "";
+        if ($this->permission) {
+
+            $groups=$this->get_groups();
+
+            $permission = _TUF_PERMISSION_NOTE;
+            foreach ($groups as $groupid => $name) {
+                $permission .= "<label><input type='checkbox' name='dl_group[new][]' value='{$groupid}'>{$name}</label> \n";
+            }
+        }
+
         $main = "
             $jquery
             <input type='file' name='{$upname}[]' id='{$id}' $multiple $accept class='form-control' style='height: initial;'>
-
+            $permission
             {$list_del_file}
             ";
 
         return $main;
+    }
+
+    private function get_groups(){
+        global $xoopsDB;
+        $sql    = "select groupid,name from `" . $xoopsDB->prefix("groups") . "` where group_type!='Anonymous' order by groupid";
+        $result = $xoopsDB->query($sql) or web_error($sql);
+
+        $permission = _TUF_PERMISSION_NOTE;
+        $groups=array();
+        while (list($groupid, $name) = $xoopsDB->fetchRow($result)) {
+            $groups[$groupid]=$name;
+        }
+        return $groups;
     }
 
     //列出可刪除檔案，$show_edit=true(full),false(thumb),'list','none'
@@ -354,6 +382,11 @@ class TadUpFiles
 
         if (!is_null($show_tip)) {
             $this->show_tip = $show_tip;
+        }
+
+        // 權限設定
+        if ($this->permission) {
+            $groups=$this->get_groups();
         }
 
         $all_file = "";
@@ -424,9 +457,8 @@ class TadUpFiles
 
                     $thumb_style2 = "<a class='thumbnail' style='display:inline-block; width:{$this->thumb_width};height:{$this->thumb_height};overflow:hidden;background-color:{$this->thumb_bg_color};background-image:url({$thumb_pic});background-position:{$this->thumb_position};background-repeat:{$this->thumb_repeat};background-size:{$this->thumb_size}; margin-bottom: 4px;' title='{$description}'></a>";
                 }
-                $img_class ="img-thumbnail";
+                $img_class = "img-thumbnail";
                 // $img_class = ($this->bootstrap == '3') ? "img-thumbnail" : "img-polaroid";
-
 
                 $w  = "width:130px; word-break: break-word;";
                 $w2 = "width:{$this->thumb_width}; float:left; margin-right:10px;";
@@ -441,6 +473,21 @@ class TadUpFiles
             }
             $filename_label = "";
             if ($show_edit === true or $show_edit == "full") {
+                // 權限設定
+                if ($this->permission) {
+                    $sql    = "select gperm_groupid from `" . $xoopsDB->prefix("group_permission") . "` where gperm_name='dl_group' and gperm_itemid='{$files_sn}' order by gperm_groupid";
+                    $result = $xoopsDB->query($sql) or web_error($sql);
+                    $gperm_groupid_arr=array();
+                    while(list($gperm_groupid) = $xoopsDB->fetchRow($result)){
+                        $gperm_groupid_arr[]=$gperm_groupid;
+                    }
+                    $permission = _TUF_PERMISSION_NOTE;
+                    foreach ($groups as $groupid => $name) {
+                        $checked=in_array($groupid,$gperm_groupid_arr)?'checked':'';
+                        $permission .= "<label><input type='checkbox' name='dl_group[$files_sn][]' value='{$groupid}' {$checked}>{$name}</label> \n";
+                    }
+                }
+
                 if ($show_filename) {
                     $filename_label = "
                     <label class='checkbox' style='margin:5px 0px;'>
@@ -456,7 +503,8 @@ class TadUpFiles
                   </td>
                   <td>
                   {$filename_label}
-                  <textarea name='save_description[$files_sn]' rows=1 class='form-control'>{$description}</textarea>
+                  <textarea name='save_description[$files_sn]' rows=1 size=2 class='form-control'>{$description}</textarea>
+                  $permission
                   </td>
                 </tr>";
             } elseif ($show_edit == "list") {
@@ -613,12 +661,34 @@ class TadUpFiles
         //設置上傳大小
         ini_set('memory_limit', '180M');
 
+        // 更新權限
+        if ($this->permission) {
+            $modhandler  = xoops_gethandler('module');
+            $xoopsModule = $modhandler->getByDirname($this->prefix);
+            $mod_id      = $xoopsModule->mid();
+        }
+
         //儲存檔案描述
         if (!empty($_POST['save_description'])) {
             foreach ($_POST['save_description'] as $save_files_sn => $files_desc) {
                 $this->update_col_val($save_files_sn, 'description', $files_desc);
+                // 順便更新權限
+                if ($this->permission) {
+                    $sql = "delete from `" . $xoopsDB->prefix("group_permission") . "` where `gperm_itemid`='{$save_files_sn}' and `gperm_name`='dl_group'";
+                    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+
+                    foreach ($_POST['dl_group'][$save_files_sn] as $groupid) {
+                        $gperm_groupid = (int) $groupid;
+                        $sql           = "insert into `" . $xoopsDB->prefix("group_permission") . "`  (`gperm_groupid`,`gperm_itemid`,`gperm_modid`,`gperm_name`) values('{$gperm_groupid}', '{$save_files_sn}', '{$mod_id}', 'dl_group')";
+                        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+                    }
+                }
             }
         }
+
+
+
+
         //die(var_export($_POST['del_file']));
         //刪除勾選檔案
         if (!empty($_POST['del_file'])) {
@@ -769,21 +839,29 @@ class TadUpFiles
                     $hash_name = ($this->hash) ? "{$hash_name}.{$ext}" : "";
 
                     if (empty($files_sn)) {
-
                         $sql = "replace into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`counter`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}',0,'{$file['name']}','{$this->subdir}','{$hash_name}','{$upload_date}','{$uid}','{$tag}')";
 
                         $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
                         //取得最後新增資料的流水編號
                         $insert_files_sn = $xoopsDB->getInsertId();
+
+                        // 加入權限
+                        if ($this->permission) {
+                            foreach ($_POST['dl_group']['new'] as $groupid) {
+                                $gperm_groupid = (int) $groupid;
+                                $sql           = "insert into `" . $xoopsDB->prefix("group_permission") . "`  (`gperm_groupid`,`gperm_itemid`,`gperm_modid`,`gperm_name`) values('{$gperm_groupid}', '{$insert_files_sn}', '{$mod_id}', 'dl_group')";
+                                $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+                            }
+                        }
+
                     } else {
                         $sql = "replace into `{$this->TadUpFilesTblName}` (`files_sn`,`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$files_sn}','{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}','{$file['name']}','{$this->subdir}','{$hash_name}','{$upload_date}','{$uid}','{$tag}')";
 
                         $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
                     }
 
-                    // if ($return_col == "files_sn") {
                     $all_files_sn[] = $insert_files_sn;
-                    // }
+
                 } else {
                     redirect_header($_SERVER['PHP_SELF'], 3, "Error:" . $file_handle->error);
                 }
@@ -896,15 +974,15 @@ class TadUpFiles
                 }
             }
 
-            if($link){
-                $copy_or_link=symlink($from, $path . "/" . $hash_filename);
-            }else{
-                $copy_or_link=copy($from, $path . "/" . $hash_filename);
+            if ($link) {
+                $copy_or_link = symlink($from, $path . "/" . $hash_filename);
+            } else {
+                $copy_or_link = copy($from, $path . "/" . $hash_filename);
             }
 
             if ($copy_or_link) {
-                $description = (empty($files_sn) and empty($desc)) ? $filename : $desc;
-                    $this->col_sn=(int)$this->col_sn;
+                $description  = (empty($files_sn) and empty($desc)) ? $filename : $desc;
+                $this->col_sn = (int) $this->col_sn;
                 if (empty($files_sn)) {
                     $sql = "insert into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$new_filename}','{$type}','{$size}','{$description}','{$filename}','{$this->subdir}','{$hash_name}.{$ext}','{$upload_date}','{$uid}','{$tag}')";
                     $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
@@ -1264,6 +1342,11 @@ class TadUpFiles
     {
         global $xoopsDB, $xoopsUser;
 
+        $modhandler  = xoops_gethandler('module');
+        $xoopsModule = $modhandler->getByDirname($this->prefix);
+        $mod_id      = $xoopsModule->mid();
+        $isAdmin     = $xoopsUser->isAdmin($mod_id);
+
         if (!empty($files_sn)) {
             $del_what = "`files_sn`='{$files_sn}'";
         } elseif (!empty($this->col_name) and !empty($this->col_sn)) {
@@ -1275,33 +1358,37 @@ class TadUpFiles
             return false;
         }
 
-        $sql = "select * from `{$this->TadUpFilesTblName}`  where $del_what";
-        // die($sql);
+        $sql    = "select * from `{$this->TadUpFilesTblName}`  where $del_what";
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
-        while (list($files_sn, $col_name, $col_sn, $sort, $kind, $file_name, $file_type, $file_size, $description, $counter, $original_filename, $hash_filename, $sub_dir) = $xoopsDB->fetchRow($result)) {
-            $this->set_col($col_name, $col_sn, $sort);
-            $del_sql = "delete  from `{$this->TadUpFilesTblName}`  where files_sn='{$files_sn}'";
-            $xoopsDB->queryF($del_sql) or web_error($del_sql);
-
-            if (!empty($hash_filename)) {
-                $file_name = $hash_filename;
+        while ($all = $xoopsDB->fetchArray($result)) {
+            foreach ($all as $k => $v) {
+                $$k = $v;
             }
+            if ($isAdmin or $uid == $xoopsUser->uid()) {
+                $this->set_col($col_name, $col_sn, $sort);
+                $del_sql = "delete  from `{$this->TadUpFilesTblName}`  where files_sn='{$files_sn}'";
+                $xoopsDB->queryF($del_sql) or web_error($del_sql);
 
-            if ($kind == "img") {
-                unlink("{$this->TadUpFilesImgDir}/{$file_name}");
-                unlink("{$this->TadUpFilesThumbDir}/{$file_name}");
-            } else {
-                unlink("{$this->TadUpFilesDir}/{$file_name}");
+                if (!empty($hash_filename)) {
+                    $file_name = $hash_filename;
+                }
+
+                if ($kind == "img") {
+                    unlink("{$this->TadUpFilesImgDir}/{$file_name}");
+                    unlink("{$this->TadUpFilesThumbDir}/{$file_name}");
+                } else {
+                    unlink("{$this->TadUpFilesDir}/{$file_name}");
+                }
+
+                $f = explode('.', $hash_filename);
+                if (file_exists("{$this->TadUpFilesDir}/{$f[0]}_info.txt")) {
+                    unlink("{$this->TadUpFilesDir}/{$f[0]}_info.txt");
+                }
+
+                $tmp_dir = XOOPS_ROOT_PATH . "/uploads/{$this->prefix}/tmp/{$files_sn}";
+                $this->delete_directory($tmp_dir);
             }
-
-            $f = explode('.', $hash_filename);
-            if (file_exists("{$this->TadUpFilesDir}/{$f[0]}_info.txt")) {
-                unlink("{$this->TadUpFilesDir}/{$f[0]}_info.txt");
-            }
-
-            $tmp_dir = XOOPS_ROOT_PATH . "/uploads/{$this->prefix}/tmp/{$files_sn}";
-            $this->delete_directory($tmp_dir);
         }
         return true;
     }
@@ -1319,8 +1406,6 @@ class TadUpFiles
         if ($file[$files_sn]['kind'] == "img") {
             //die('asss');
             $file = $this->get_pic_file("images", "dir", $files_sn);
-
-            //die($file."-----".$this->TadUpFilesImgDir."/{$new_name}");
 
             rename($file, $this->TadUpFilesImgDir . "/{$new_name}");
 
@@ -1397,8 +1482,8 @@ class TadUpFiles
             $files[$files_sn]['uid']               = $uid;
             $files[$files_sn]['tag']               = $tag;
 
-            $dl_url                                = empty($this->download_url) ? "{$link_path}?op=tufdl&files_sn=$files_sn" : $this->download_url . "&files_sn=$files_sn";
-            $http                                  = 'http://';
+            $dl_url = empty($this->download_url) ? "{$link_path}?op=tufdl&files_sn=$files_sn" : $this->download_url . "&files_sn=$files_sn";
+            $http   = 'http://';
             if (!empty($_SERVER['HTTPS'])) {
                 $http = ($_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://';
             }
@@ -1588,17 +1673,17 @@ class TadUpFiles
         global $xoTheme;
 
         $all_files = "";
-        if($xoTheme){
+        if ($xoTheme) {
             if ($show_mode == "small") {
                 $xoTheme->addStylesheet('modules/tadtools/css/iconize.css');
             } elseif ($show_mode == "filename") {
                 $xoTheme->addStylesheet('modules/tadtools/css/rounded-list.css');
             }
-        }else{
+        } else {
             if ($show_mode == "small") {
-                $all_files = '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="'.XOOPS_URL.'/modules/tadtools/css/iconize.css">';
+                $all_files = '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/modules/tadtools/css/iconize.css">';
             } elseif ($show_mode == "filename") {
-                $all_files = '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="'.XOOPS_URL.'/modules/tadtools/css/rounded-list.css">';
+                $all_files = '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/modules/tadtools/css/rounded-list.css">';
             }
         }
 
@@ -1645,7 +1730,7 @@ class TadUpFiles
                         $all_files .= "<li>{$file_info['link']}</li>";
                     } else {
                         if (strpos($file_info['tag'], '360') !== false) {
-                            $linkto      = TADTOOLS_URL . "/360.php?photo={$file_info['path']}";
+                            $linkto = TADTOOLS_URL . "/360.php?photo={$file_info['path']}";
                             $all_files .= "<li><a href='{$linkto}' class='fancybox_{$this->col_name}' data-fancybox-type='iframe'>{$file_info['original_filename']}</a></li>";
                         } else {
                             $all_files .= "<li>{$file_info['url']}</li>";
@@ -1739,10 +1824,33 @@ class TadUpFiles
     //下載並新增計數器
     public function add_file_counter($files_sn = "", $hash = false, $force = false, $path = "")
     {
-        global $xoopsDB;
+        global $xoopsDB,$xoopsUser;
+
+        // 權限設定
+        if ($this->permission) {
+            $sql    = "select gperm_groupid from `" . $xoopsDB->prefix("group_permission") . "` where gperm_name='dl_group' and gperm_itemid='{$files_sn}' order by gperm_groupid";
+            $result = $xoopsDB->query($sql) or web_error($sql);
+            $gperm_groupid_arr=array();
+            while(list($gperm_groupid) = $xoopsDB->fetchRow($result)){
+                $gperm_groupid_arr[]=$gperm_groupid;
+            }
+
+            if(!empty($gperm_groupid_arr)){
+                //取得目前使用者的群組編號
+                if ($xoopsUser) {
+                    $groups = $xoopsUser->getGroups();
+                } else {
+                    $groups = XOOPS_GROUP_ANONYMOUS;
+                }
+
+                if(!array_intersect($groups, $gperm_groupid_arr)){
+                    redirect_header($_SERVER['HTTP_REFERER'], 3, _TAD_PERMISSION_DENIED);
+                }
+            }
+
+        }
 
         $file = $this->get_one_file($files_sn);
-
         $this->set_dir('subdir', $file['sub_dir']);
         if ($hash) {
             $this->set_hash($hash);

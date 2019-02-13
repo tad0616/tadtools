@@ -112,3 +112,5 @@ Define('_TDC_OPTIONS_NOTE', 'Use the ; to separate options. eg, "male;female". I
 define('_TDC_FILL_PEOPLE', 'Name');
 define('_TDC_INPUT_COL_ID', 'Do not move, for program');
 define('_TDC_COL_ID', 'Identifier');
+//TadUpFiles.php
+define('_TUF_PERMISSION_NOTE', 'If not checked, all open downloads');

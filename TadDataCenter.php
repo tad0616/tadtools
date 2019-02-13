@@ -598,7 +598,7 @@ class TadDataCenter
     //取得自訂表單
     public function getCustomForm($use_form = true, $use_submit = false, $action = '', $lw = 3, $rw = 9)
     {
-
+        global $xoTheme;
         $action   = empty($action) ? $_SERVER['PHP_SELF'] : $action;
         $DcqData  = $this->getDcqData();
         $sort     = 0;
@@ -630,12 +630,19 @@ class TadDataCenter
         }
 
         if ($form_col) {
-            $form = '';
+
+            if($xoTheme){
+                $form='';
+                $xoTheme->addStylesheet('modules/tadtools/css/my-input.css');
+            }else{
+                $form = '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="'.XOOPS_URL.'/modules/tadtools/css/my-input.css">';
+            }
+
             if ($use_form) {
                 include_once XOOPS_ROOT_PATH . "/modules/tadtools/formValidator.php";
                 $formValidator      = new formValidator("#myForm", false);
                 $formValidator_code = $formValidator->render('topLeft');
-                $form               = '<form action="' . $action . '" id="myForm" method="post" class="form-horizontal">';
+                $form               .= '<form action="' . $action . '" id="myForm" method="post" class="form-horizontal"  enctype="multipart/form-data">';
             }
             $form .= $form_col;
             $form .= '
@@ -873,7 +880,7 @@ if (isset($_REQUEST['dcq_op'])) {
         $TadDataCenter = new TadDataCenter($dirname);
         $TadDataCenter->set_col($col_name, $col_sn);
         $TadDataCenter->saveData();
-        header("location:{$_SERVER['HTTP_REFERER']}");
-        exit;
+        // header("location:{$_SERVER['HTTP_REFERER']}");
+        // exit;
     }
 }
