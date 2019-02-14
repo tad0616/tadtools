@@ -278,8 +278,7 @@ class TadDataCenter
                     continue;
                 }
                 $val = $myts->addSlashes($val);
-                // die("$name, $sort");
-                $this->delData($name, $sort);
+                $this->delData($name, $sort, __FILE__, __LINE__);
 
                 $sql = "insert into `{$this->TadDataCenterTblName}`
                 (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`, `col_id`, `update_time`)
@@ -294,6 +293,7 @@ class TadDataCenter
     {
         global $xoopsDB;
         $myts = MyTextSanitizer::getInstance();
+        // die(var_dump($data_arr));
         foreach ($data_arr as $name => $value) {
             $name   = $myts->addSlashes($name);
             $values = array();
@@ -306,7 +306,7 @@ class TadDataCenter
             foreach ($values as $sort => $val) {
                 $v=json_decode($val,true);
                 $val = $myts->addSlashes($val);
-                $this->delData($name, $sort);
+                $this->delData($name, $sort, __FILE__, __LINE__);
 
                 $sql = "insert into `{$this->TadDataCenterTblName}`
                 (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`, `col_id`, `update_time`)
@@ -368,7 +368,7 @@ class TadDataCenter
     }
 
     //刪除資料
-    public function delData($name = '', $data_sort = '')
+    public function delData($name = '', $data_sort = '', $file, $line)
     {
         global $xoopsDB;
         $myts     = MyTextSanitizer::getInstance();
@@ -376,7 +376,7 @@ class TadDataCenter
         $and_sort = ($data_sort != '') ? "and `data_sort`='{$data_sort}'" : "";
         $sql      = "delete from `{$this->TadDataCenterTblName}`
             where `mid`= '{$this->mid}' and `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' {$and_name} {$and_sort}";
-        // die($sql);
+        // die("$sql ,$file, $line");
         $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     }
 
@@ -424,7 +424,7 @@ class TadDataCenter
         $action  = empty($action) ? $_SERVER['PHP_SELF'] : $action;
         $DcqData = $this->getDcqData();
         $sort    = 0;
-        
+
         if($xoTheme){
             $main='';
             $xoTheme->addStylesheet('modules/tadtools/css/my-input.css');
@@ -460,7 +460,7 @@ class TadDataCenter
             <li class="w1"><span data-toggle="tooltip" data-placement="top" title="給程式讀取用，無須修改，若要修改，影確保其為唯一值">唯一碼</span></li>
             </ul>';
         foreach ($DcqData as $sort => $data) {
-            
+
             $main .= $this->getCustomSetupCol($sort, $data['data_value'], $data['col_id']);
             $sort++;
         }
@@ -546,7 +546,7 @@ class TadDataCenter
             $json_val = json_encode($dcq, JSON_UNESCAPED_UNICODE);
             $json_val = $myts->addSlashes($json_val);
 
-            $this->delData('dcq', $sort);
+            $this->delData('dcq', $sort, __FILE__, __LINE__);
             $col_id = (empty($dcq['col_id']) or $dcq['col_id'] == "new") ? $this->rand_str() : $dcq['col_id'];
             $sql    = "insert into `{$this->TadDataCenterTblName}`
                     (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`, `col_id`, `update_time`)
