@@ -740,7 +740,7 @@ class TadDataCenter
                 // foreach ($ans_arr as $data_name => $value) {
                 foreach ($name as $dcq_title => $data_name) {
                     $main .= "<li class='vcell'>{$dcq_title}</li>
-                    <li>";
+                    <li class='text-center'>";
                     $main .= nl2br(implode("、", $ans_arr[$data_name]));
                     $main .= "</li>";
 
