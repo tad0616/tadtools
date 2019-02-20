@@ -6,18 +6,16 @@ $op       = system_CleanVars($_REQUEST, 'op', '', 'string');
 $mod_name = system_CleanVars($_REQUEST, 'mod_name', '', 'string');
 $files_sn = system_CleanVars($_REQUEST, 'files_sn', '', 'int');
 
-if ($xoopsUser) {
-    switch ($op) {
-        case 'remove_file':
-            include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
-            $TadUpFiles = new TadUpFiles($mod_name);
-            if ($TadUpFiles->del_files($files_sn)) {
-                echo '1';
-            }
-            break;
+switch ($op) {
+    case 'remove_file':
+        include_once XOOPS_ROOT_PATH . "/modules/tadtools/TadUpFiles.php";
+        $TadUpFiles = new TadUpFiles($mod_name);
+        if ($TadUpFiles->del_files($files_sn)) {
+            echo '1';
+        }
+        break;
 
-        default:
-            # code...
-            break;
-    }
+    default:
+        # code...
+        break;
 }

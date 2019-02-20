@@ -497,15 +497,15 @@ class TadUpFiles
                 }
                 $all_file .= "
                 <tr id='fdtr_{$files_sn}'>
-                  <td style='{$w}'>
-                        {$thumb_style}
-                        {$thumb_tool}
-                  </td>
-                  <td>
-                  {$filename_label}
-                  <textarea name='save_description[$files_sn]' rows=1 size=2 class='form-control'>{$description}</textarea>
-                  $permission
-                  </td>
+                    <td style='{$w}'>
+                            {$thumb_style}
+                            {$thumb_tool}
+                    </td>
+                    <td>
+                    {$filename_label}
+                    <textarea name='save_description[$files_sn]' rows=1 size=2 class='form-control'>{$description}</textarea>
+                    $permission
+                    </td>
                 </tr>";
             } elseif ($show_edit == "list") {
                 //無編輯框，無圖示
@@ -527,7 +527,7 @@ class TadUpFiles
                     <!--input type='checkbox' name='del_file[]' value='{$files_sn}'-->
                     {$original_filename}
                     </label>
-                   ";
+                    ";
                 }
                 $all_file .= "
                 <li style='list-style-type:none;{$w2}' id='fdtr_{$files_sn}'>
@@ -578,6 +578,8 @@ class TadUpFiles
                         if(data=='1'){
                             $('#fdtr_' + files_sn).html('<li>已刪除</li>');
                             $('#fdtr_' + files_sn).remove();
+                        }else{
+                            $('#fdtr_' + files_sn).html('<li>刪敗刪除：'+data+'</li>');
                         }
                     });
                 }
@@ -791,7 +793,7 @@ class TadUpFiles
                 $file_handle->auto_create_dir = true;
 
                 $upload_date = date("Y-m-d H:i:s");
-                $uid         = isset($xoopsUser) ? $xoopsUser->uid() : 0;
+                $uid         = is_object($xoopsUser) ? $xoopsUser->uid() : 0;
 
                 //若是圖片才製作小縮圖
                 if ($kind == "img") {
@@ -954,7 +956,7 @@ class TadUpFiles
 
         $tag         = '';
         $upload_date = date("Y-m-d H:i:s");
-        $uid         = isset($xoopsUser) ? $xoopsUser->uid() : 0;
+        $uid         = is_object($xoopsUser) ? $xoopsUser->uid() : 0;
 
         //若是圖片才縮圖
         if ($kind == "img" and !empty($main_width)) {
@@ -1235,7 +1237,7 @@ class TadUpFiles
 
             $tag         = '';
             $upload_date = date("Y-m-d H:i:s");
-            $uid         = isset($xoopsUser) ? $xoopsUser->uid() : 0;
+            $uid         = is_object($xoopsUser) ? $xoopsUser->uid() : 0;
 
             //若是圖片才製作小縮圖
             if ($kind == "img") {
@@ -1345,7 +1347,7 @@ class TadUpFiles
         $modhandler  = xoops_gethandler('module');
         $xoopsModule = $modhandler->getByDirname($this->prefix);
         $mod_id      = $xoopsModule->mid();
-        $isAdmin     = $xoopsUser->isAdmin($mod_id);
+        $isAdmin     = is_object($xoopsUser)?$xoopsUser->isAdmin($mod_id):false;
 
         if (!empty($files_sn)) {
             $del_what = "`files_sn`='{$files_sn}'";
@@ -1361,11 +1363,13 @@ class TadUpFiles
         $sql    = "select * from `{$this->TadUpFilesTblName}`  where $del_what";
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
+        $my_uid=is_object($xoopsUser)?$xoopsUser->uid():0;
+
         while ($all = $xoopsDB->fetchArray($result)) {
             foreach ($all as $k => $v) {
                 $$k = $v;
             }
-            if ($isAdmin or $uid == $xoopsUser->uid()) {
+            if ($isAdmin or $uid == $my_uid ) {
                 $this->set_col($col_name, $col_sn, $sort);
                 $del_sql = "delete  from `{$this->TadUpFilesTblName}`  where files_sn='{$files_sn}'";
                 $xoopsDB->queryF($del_sql) or web_error($del_sql);
