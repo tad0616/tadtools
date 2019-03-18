@@ -328,7 +328,7 @@ class TadDataCenter
         $col_sn   = !empty($ans_col_name) ? $ans_col_sn : $this->col_sn;
 
         $sql = "select `data_name`,`data_sort`, `data_value` from `{$this->TadDataCenterTblName}`
-            where `mid`= '{$this->mid}' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}' {$and_name} {$and_sort}";
+            where `mid`= '{$this->mid}' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}' {$and_name} {$and_sort} order by data_sort";
 
         $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         if (isset($data_sort)) {

@@ -978,6 +978,7 @@ if (!function_exists('toolbar_bootstrap')) {
         } else {
             $mod_name = $moduleName = "";
         }
+
         if ($xoopsUser) {
             $isAdmin = $xoopsUser->isAdmin($module_id);
         } else {
