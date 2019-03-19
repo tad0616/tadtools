@@ -1,3 +1,12 @@
+TadTools 3.2.4 (released from 2019-03-19)
+=============================================
+1.TadUpFiles.php new download permission setting mechanism
+2. Modify non-administrator can not delete the attachment problem
+3. Add the bootstrap-table kit
+4. Put back bootstrap2
+5. Update phpExcel and phpWord objects
+
+
 TadTools 3.2.3 (released from 2019-01-23)
 =============================================
 1. Remove the summernote editor
