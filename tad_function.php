@@ -528,9 +528,12 @@ if (!function_exists('auto_charset')) {
     {
         $os_charset = (PATH_SEPARATOR == ':') ? "UTF-8" : "Big5";
         if ($os_charset != _CHARSET) {
-            $str = $OS_or_Web == 'web' ? iconv($os_charset, _CHARSET, $str) : iconv(_CHARSET, $os_charset, $str);
+            $new_str = $OS_or_Web == 'web' ? iconv($os_charset, _CHARSET, $str) : iconv(_CHARSET, $os_charset, $str);
         }
-        return $str;
+        if(empty($new_str)){
+           $new_str=$str; 
+        }
+        return $new_str;
     }
 }
 
@@ -978,7 +981,6 @@ if (!function_exists('toolbar_bootstrap')) {
         } else {
             $mod_name = $moduleName = "";
         }
-
         if ($xoopsUser) {
             $isAdmin = $xoopsUser->isAdmin($module_id);
         } else {

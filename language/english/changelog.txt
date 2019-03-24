@@ -1,3 +1,7 @@
+TadTools 3.2.5 (released from 2019-03-24)
+=============================================
+1. Adjust the coding judgment to avoid transcoding failure
+
 TadTools 3.2.4 (released from 2019-03-19)
 =============================================
 1.TadUpFiles.php new download permission setting mechanism

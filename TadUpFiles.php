@@ -909,7 +909,7 @@ class TadUpFiles
         $filename = $this->get_basename($from);
         $type     = $this->mime_content_type($filename);
         $size     = filesize($from);
-
+        // die($filename);
         //取消上傳時間限制
         set_time_limit(0);
         //設置上傳大小
@@ -981,17 +981,18 @@ class TadUpFiles
             } else {
                 $copy_or_link = copy($from, $path . "/" . $hash_filename);
             }
-
             if ($copy_or_link) {
                 $description  = (empty($files_sn) and empty($desc)) ? $filename : $desc;
                 $this->col_sn = (int) $this->col_sn;
                 if (empty($files_sn)) {
                     $sql = "insert into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$new_filename}','{$type}','{$size}','{$description}','{$filename}','{$this->subdir}','{$hash_name}.{$ext}','{$upload_date}','{$uid}','{$tag}')";
+                    // die("1-{$sql}");
                     $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
                     //取得最後新增資料的流水編號
                     $files_sn = $xoopsDB->getInsertId();
                 } else {
                     $sql = "replace into `{$this->TadUpFilesTblName}` (`files_sn`,`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$files_sn}','{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$$new_filename}','{$type}','{$size}','{$description}','{$filename}','{$this->subdir}','{$hash_name}.{$ext}','{$upload_date}','{$uid}','{$tag}')";
+                    // die("2-{$sql}");
                     $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
                 }
                 $this->sort = "";
@@ -1003,18 +1004,25 @@ class TadUpFiles
             //複製檔案
             $this->thumbnail($from, $new_thumb, $type, $thumb_width);
         } else {
+            if ($link) {
+                $copy_or_link = symlink($from, $path . "/" . $hash_filename);
+            } else {
+                $copy_or_link = copy($from, $path . "/" . $hash_filename);
+            }
             if ($copy_or_link) {
-
                 $filename    = auto_charset($filename);
+                // die($filename);
                 $description = (empty($files_sn) or empty($desc)) ? $filename : $desc;
 
                 if (empty($files_sn)) {
                     $sql = "insert into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$new_filename}','{$type}','{$size}','{$description}','{$filename}','{$this->subdir}','{$hash_name}.{$ext}','{$upload_date}','{$uid}','{$tag}')";
+                    // die("3-{$sql}");
                     $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
                     //取得最後新增資料的流水編號
                     $files_sn = $xoopsDB->getInsertId();
                 } else {
                     $sql = "replace into `{$this->TadUpFilesTblName}` (`files_sn`,`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$files_sn}','{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$$new_filename}','{$type}','{$size}','{$description}','{$filename}','{$this->subdir}','{$hash_name}.{$ext}','{$upload_date}','{$uid}','{$tag}')";
+                    // die("4-{$sql}");
                     $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
                 }
 
