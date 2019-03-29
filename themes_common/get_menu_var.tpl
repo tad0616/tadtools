@@ -120,7 +120,7 @@ function get_custom_menu_items($link_cate_name, $link_cate_sn)
             while (list($nsn, $news_title) = $xoopsDB->fetchRow($result)) {
                 $sub_menu[$link_cate_name . $i]['id']      = $i;
                 $sub_menu[$link_cate_name . $i]['title']   = $news_title;
-                $sub_menu[$link_cate_name . $i]['url']     = XOOPS_URL . "/modules/tadnews/page.php?nsn={$nsn}";
+                $sub_menu[$link_cate_name . $i]['url']     = XOOPS_URL . "/modules/tadnews/page.php?ncsn={$link_cate_sn}&nsn={$nsn}";
                 $sub_menu[$link_cate_name . $i]['target']  = "_self";
                 $sub_menu[$link_cate_name . $i]['icon']    = 'fa-angle-right';
                 $sub_menu[$link_cate_name . $i]['submenu'] = "";
