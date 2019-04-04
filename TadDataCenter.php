@@ -368,7 +368,7 @@ class TadDataCenter
     }
 
     //刪除資料
-    public function delData($name = '', $data_sort = '', $file, $line)
+    public function delData($name = '', $data_sort = '', $file='', $line='')
     {
         global $xoopsDB;
         $myts     = MyTextSanitizer::getInstance();
