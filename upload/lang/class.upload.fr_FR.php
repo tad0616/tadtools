@@ -30,7 +30,7 @@
 /**
  * Class upload french translation
  *
- * @version   0.25
+ * @version   0.28
  * @author    Colin Verot <colin@verot.net>
  * @license   http://opensource.org/licenses/gpl-license.php GNU Public License
  * @copyright Colin Verot
@@ -46,6 +46,9 @@
     $translation['uploaded_too_big_html']       = 'Le fichier transmis dépasse la taille autorisée dans le formulaire.';
     $translation['uploaded_partial']            = 'Le fichier n\' été que partiellement transmis.';
     $translation['uploaded_missing']            = 'Le serveur n\'a pas reçu de fichier.';
+    $translation['uploaded_no_tmp_dir']         = 'Il n\'y a pas de répertoire temporaire disponible';
+    $translation['uploaded_cant_write']         = 'Impossible d\'écrire sur le disque.';
+    $translation['uploaded_err_extension']      = 'Upload stoppé par l\'extension.';
     $translation['uploaded_unknown']            = 'Erreur inconnue.';
     $translation['try_again']                   = 'Erreur de transmission. Essayez encore.';
     $translation['file_too_big']                = 'Fichier trop gros.';
@@ -64,7 +67,7 @@
     $translation['temp_file_missing']           = 'Le fichier source est incorrect. Impossible de continuer.';
     $translation['source_missing']              = 'Le fichier transmis est incorrect. Impossible de continuer.';
     $translation['destination_dir']             = 'Le répertoire de destination ne peut être crée. Impossible de continuer.';
-    $translation['destination_dir_missing']     = 'Le répertoire de destination n\'éxiste pas. Impossible de continuer.';
+    $translation['destination_dir_missing']     = 'Le répertoire de destination n\'existe pas. Impossible de continuer.';
     $translation['destination_path_not_dir']    = 'Le chemin de destination n\'est pas un répertoire. Impossible de continuer.';
     $translation['destination_dir_write']       = 'Le répertoire de destination ne peut être ouvert en écriture. Impossible de continuer.';
     $translation['destination_path_write']      = 'Le chemin de destination ne peut être ouvert en écriture. Impossible de continuer.';
@@ -81,3 +84,5 @@
     $translation['no_conversion_type']          = 'Le type de conversion n\'est pas défini.';
     $translation['copy_failed']                 = 'La copie du fichier sur le serveur a échoué.';
     $translation['reading_failed']              = 'Erreur pendant la lecture du fichier.';
+
+?>

@@ -1,6 +1,8 @@
 TadTools 3.2.6 (尚未釋出)
 ====================================
 1.升級 tcpdf 為 6.2.26 版
+2.移除 jBreadCrumb 套件
+3.升級 class.upload.php 為 0.35-dev
 
 
 TadTools 3.2.5 (2019-03-24 釋出)

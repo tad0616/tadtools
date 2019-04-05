@@ -4,6 +4,32 @@ include_once "jquery.php";
 include_once "include/beforeheader.php";
 get_bootstrap();
 
+//路徑導覽，需搭配 get_模組_cate_path($分類編號);
+if (!function_exists('tad_breadcrumb')) {
+    function tad_breadcrumb($cate_sn = '0', $cate_path_array = array(), $url_page = "index.php", $page_cate_name = "csn", $cate_title_name = "title", $last = "")
+    {
+        $item = "";
+        if (is_array($cate_path_array)) {
+            foreach ($cate_path_array as $path_cate_sn => $cate) {
+                $url    = ($cate_sn == $path_cate_sn) ? "<a href='{$url_page}?{$page_cate_name}={$path_cate_sn}'>{$cate[$cate_title_name]}</a>" : "<a href='{$url_page}?{$page_cate_name}={$path_cate_sn}'>{$cate[$cate_title_name]}</a>";
+                $active = ($cate_sn == $path_cate_sn) ? "active" : "";
+                $item .= "<li class='breadcrumb-item {$active}'>{$url}</li>";
+            }
+        }
+        if ($last) {
+            $item .= "<li class='breadcrumb-item'>{$last}</li>";
+        }
+
+        $main = "
+        <ul class='breadcrumb'>
+            $item
+        </ul>
+    ";
+        return $main;
+    }
+
+}
+
 if (!function_exists('setup_meta')) {
     function setup_meta($title = "", $content = "", $image = "")
     {
@@ -530,8 +556,8 @@ if (!function_exists('auto_charset')) {
         if ($os_charset != _CHARSET) {
             $new_str = $OS_or_Web == 'web' ? iconv($os_charset, _CHARSET, $str) : iconv(_CHARSET, $os_charset, $str);
         }
-        if(empty($new_str)){
-           $new_str=$str; 
+        if (empty($new_str)) {
+            $new_str = $str;
         }
         return $new_str;
     }
