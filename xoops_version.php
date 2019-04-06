@@ -128,6 +128,14 @@ $modversion['config'][$i]['formtype']    = 'textbox';
 $modversion['config'][$i]['valuetype']   = 'int';
 $modversion['config'][$i]['default']     = '1280';
 
+$i++;
+$modversion['config'][$i]['name']        = 'mime_type_check';
+$modversion['config'][$i]['title']       = '_MI_TADTOOLS_MIME_TYPE_CHECK';
+$modversion['config'][$i]['description'] = '_MI_TADTOOLS_MIME_TYPE_CHECK_DESC';
+$modversion['config'][$i]['formtype']    = 'yesno';
+$modversion['config'][$i]['valuetype']   = 'int';
+$modversion['config'][$i]['default']     = '1';
+
 $i                                       = 0;
 $modversion['blocks'][$i]['file']        = 'tadtools_qrcode.php';
 $modversion['blocks'][$i]['name']        = _MI_TADTOOLS_QRCODE_BLOCK_NAME;

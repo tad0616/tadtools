@@ -39,3 +39,5 @@ define('_MI_TADTOOLS_IMAGE_MAX_WIDTH', 'The maximum width of the image uploaded 
 define('_MI_TADTOOLS_IMAGE_MAX_WIDTH_DESC', 'Please fill in the number, the unit is px');
 define('_MI_TADTOOLS_IMAGE_MAX_HEIGHT', 'The maximum height of the image uploaded by the CKeditor');
 define('_MI_TADTOOLS_IMAGE_MAX_HEIGHT_DESC', 'Please fill in the number, the unit is px');
+define('_MI_TADTOOLS_MIME_TYPE_CHECK', "Do you need to perform MIME TYPE check of the file when uploading the file");
+define('_MI_TADTOOLS_MIME_TYPE_CHECK_DESC', "This check is to avoid fake files. If the file cannot be uploaded, you can cancel this check and try");
