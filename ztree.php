@@ -167,6 +167,7 @@ class ztree
             $style = "display:none; position: absolute;z-index: 1000; background: #ffffff;";
             $mode  = "
               view: {
+                // addDiyDom: addDiyDom,
                 dblClickExpand: false,
                 fontCss: getFont
               },
@@ -175,6 +176,7 @@ class ztree
         } else {
             $mode = "
               view: {
+                // addDiyDom: addDiyDom,
                 fontCss: getFont
               },
               edit: {
@@ -211,6 +213,24 @@ class ztree
 
           function getFont(treeId, node) {
             return node.font ? node.font : {};
+          }
+
+          function addDiyDom(treeId, treeNode) {
+            var spaceWidth = 5;
+            var switchObj = $('#' + treeNode.tId + '_switch'),
+            icoObj = $('#' + treeNode.tId + '_ico');
+            switchObj.remove();
+            icoObj.before(switchObj);
+
+            if (treeNode.level > 1) {
+              var spaceStr = \"<span style='display: inline-block;width:\" + (spaceWidth * treeNode.level)+ \"px'></span>\";
+              switchObj.before(spaceStr);
+            }
+            var spantxt=$('#' + treeNode.tId + '_span').html();
+            if(spantxt.length>17){
+              spantxt=spantxt.substring(0,17)+'...';
+              $('#' + treeNode.tId + '_span').html(spantxt);
+            }
           }
 
           {$drop_menu_script}

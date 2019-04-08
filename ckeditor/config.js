@@ -10,8 +10,8 @@ CKEDITOR.editorConfig = function( config ) {
     [
       { name: 'bar1', items : ['Source'] },
       { name: 'bar2', items : ['Cut','Copy','Paste','PasteFromWord','Undo','Redo'] },
-      { name: 'bar3', items : ['Image','oembed','EqnEditor','jwplayer','Flash','Table','HorizontalRule','Smiley','Link','Unlink'] },
-      { name: 'bar4', items : ['NumberedList','BulletedList','RemoveFormat','Syntaxhighlight'] },
+      { name: 'bar3', items : ['Image','oembed','EqnEditor','Flash','Table','HorizontalRule','Smiley','Link','Unlink'] },
+      { name: 'bar4', items : ['NumberedList','BulletedList','RemoveFormat','Syntaxhighlight','CodeSnippet'] },
       { name: 'bar5', items : ['Blockquote', 'CreateDiv'] },
       { name: 'bar6', items : ['PageBreak','WidgetTemplateMenu','Uploadcare'] },
       { name: 'bar7', items : ['Styles','Format','FontSize'] },
@@ -37,7 +37,6 @@ CKEDITOR.editorConfig = function( config ) {
     CKEDITOR.config.syntaxhighlight_firstLine =0;
     CKEDITOR.config.syntaxhighlight_lang = 'PHP';
 
-
     // CKEDITOR.config.stylesSet = 'myStyles';
     config.stylesSet= [
         // Block-level styles
@@ -50,8 +49,8 @@ CKEDITOR.editorConfig = function( config ) {
         { name: 'Danger 提示框', element: 'div', attributes: { 'class': 'alert alert-danger' } },
 
         // Inline styles
-        { name: '自適應圖片', element: 'img', styles: {'height': 'auto'}, attributes: { 'class': 'img-responsive' } },
-        { name: '自適應圖框', element: 'img', styles: {'height': 'auto'}, attributes: { 'class': 'img-responsive img-thumbnail' } },
+        { name: '自適應圖片', element: 'img', styles: {'height': 'auto'}, attributes: { 'class': 'img-responsive img-fluid' } },
+        { name: '自適應圖框', element: 'img', styles: {'height': 'auto'}, attributes: { 'class': 'img-responsive img-thumbnail img-fluid' } },
         { name: '語法', element: 'code'},
         { name: '按鍵', element: 'kbd'},
         { name: 'Default 標籤', element: 'span', attributes: { 'class': 'label label-default' } },
@@ -61,7 +60,6 @@ CKEDITOR.editorConfig = function( config ) {
         { name: 'Warning 標籤', element: 'span', attributes: { 'class': 'label label-warning' } },
         { name: 'Danger 標籤', element: 'span', attributes: { 'class': 'label label-danger' } }
     ] ;
-
 
     // config.pasteFromWordRemoveFontStyles = false;
     config.toolbar = 'myBasic';
@@ -81,17 +79,13 @@ CKEDITOR.editorConfig = function( config ) {
       { name: 'bar2', items : [ 'Styles','Format','FontSize','TextColor','BGColor','Bold','Italic','Underline','Strike','-','JustifyLeft','JustifyCenter','JustifyRight'] }
     ];
 
-
-
     config.toolbar = 'tadSimple';
     config.toolbar_tadSimple =
     [
       { name: 'bar1', items : ['Image','Table','oembed','EqnEditor','Link','Unlink']},
       { name: 'bar2', items : ['FontSize','TextColor','BGColor','Bold','Italic','Underline','Strike']},
       { name: 'bar3', items : ['JustifyLeft','JustifyCenter','JustifyRight']},
-      { name: 'bar4', items : ['NumberedList','BulletedList'] },
-      { name: 'bar5', items : ['Outdent','Indent']},
-      { name: 'bar6', items : ['RemoveFormat']}
+      { name: 'bar4', items : ['NumberedList','BulletedList','Outdent','Indent','-','RemoveFormat']},
     ];
 
     config.codemirror = {

@@ -8,7 +8,6 @@ if (!function_exists('get_jquery')) {
     function get_jquery($ui = false, $mode = "", $theme = 'base')
     {
         global $xoTheme;
-        //$xoopsModuleConfig=TadToolsXoopsModuleConfig();
         if (!isset($xoTheme) or $mode == "return") {
             $jqueryui_path = "";
             if ($ui) {
@@ -18,7 +17,7 @@ if (!function_exists('get_jquery')) {
                 <script src='" . TADTOOLS_URL . "/jquery/ui/jquery-ui.js'></script>";
             }
 
-            $ver = (int)str_replace('.', '', substr(XOOPS_VERSION, 6, 5));
+            $ver = (int) str_replace('.', '', substr(XOOPS_VERSION, 6, 5));
             if ($ver >= 259) {
                 $jquery_path = "
                   <script type='text/javascript'>
@@ -47,7 +46,7 @@ if (!function_exists('get_jquery')) {
 
             $xoTheme->addScript('browse.php?Frameworks/jquery/jquery.js');
 
-            $ver = (int)str_replace('.', '', substr(XOOPS_VERSION, 6, 5));
+            $ver = (int) str_replace('.', '', substr(XOOPS_VERSION, 6, 5));
 
             // if ($ver >= 259) {
             //     $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');

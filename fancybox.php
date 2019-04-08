@@ -7,7 +7,7 @@ include_once XOOPS_ROOT_PATH."/modules/tadtools/fancybox.php";
 $fancybox=new fancybox('.edit_dropdown');
 $fancybox_code=$fancybox->render();
 $xoopsTpl->assign('fancybox_code',$fancybox_code);
-¥[¦b³sµ²¤¤¡Gclass="edit_dropdown" rel="group"¡]¹Ï¡^ data-fancybox-type="iframe"¡]HTML¡^
+åŠ åœ¨é€£çµä¸­ï¼šclass="edit_dropdown" rel="group"ï¼ˆåœ–ï¼‰ data-fancybox-type="iframe"ï¼ˆHTMLï¼‰
  */
 include_once "tadtools_header.php";
 include_once "jquery.php";
@@ -19,27 +19,27 @@ class fancybox
     public $height;
     public $autoSize;
 
-    //«Øºc¨ç¼Æ
+    //å»ºæ§‹å‡½æ•¸
     public function __construct($name = "", $width = '90%', $height = null, $show_jquery = true, $show_js = true)
     {
         //$this->name=randStr();
-        $this->name  = $name;
+        $this->name = $name;
         $this->width = $width;
 
         if (is_null($height)) {
             $this->autoSize = 'true';
-            $this->height   = '90%';
+            $this->height = '90%';
         } else {
             $this->autoSize = 'false';
-            $this->height   = $height;
+            $this->height = $height;
         }
 
         $this->show_jquery = $show_jquery;
-        $this->show_js     = $show_js;
+        $this->show_js = $show_js;
     }
 
-    //²£¥Í»yªk
-    public function render($reload = true, $prevent_closed_outside = false, $autoPlay = false, $playSpeed = 0)
+    //ç”¢ç”Ÿèªžæ³•
+    public function render($reload = true, $prevent_closed_outside = false, $auto_play = false, $playSpeed = 0)
     {
         global $xoTheme;
 
@@ -53,7 +53,7 @@ class fancybox
          overlay : {closeClick: false}
         }" : "";
 
-        $autoPlay  = $autoPlay ? "autoPlay: true," : "";
+        $autoPlay = $auto_play ? "autoPlay: true," : "";
         $playSpeed = $playSpeed ? "playSpeed: {$playSpeed}," : "";
 
         $jquery = $this->show_jquery ? get_jquery() : "";
@@ -112,7 +112,7 @@ class fancybox
 
     }
 
-    //²£¥Íªí³æ»yªk
+    //ç”¢ç”Ÿè¡¨å–®èªžæ³•
     public function renderForm($url = "", $reload = true, $prevent_closed_outside = false, $autoPlay = false, $playSpeed = 0)
     {
         global $xoTheme;
@@ -128,7 +128,7 @@ class fancybox
          overlay : {closeClick: false}
         }" : "";
 
-        $autoPlay  = $autoPlay ? "autoPlay: true," : "";
+        $autoPlay = $autoPlay ? "autoPlay: true," : "";
         $playSpeed = $playSpeed ? "playSpeed: {$playSpeed}," : "";
 
         if ($xoTheme) {

@@ -4,6 +4,51 @@ include_once "jquery.php";
 include_once "include/beforeheader.php";
 get_bootstrap();
 
+//路徑導覽，需搭配 get_模組_cate_path($分類編號);
+if (!function_exists('tad_breadcrumb')) {
+    function tad_breadcrumb($cate_sn = '0', $cate_path_array = array(), $url_page = "index.php", $page_cate_name = "csn", $cate_title_name = "title", $last = "")
+    {
+        $item = "";
+        if (is_array($cate_path_array)) {
+            foreach ($cate_path_array as $path_cate_sn => $cate) {
+                $url    = ($cate_sn == $path_cate_sn) ? "<a href='{$url_page}?{$page_cate_name}={$path_cate_sn}'>{$cate[$cate_title_name]}</a>" : "<a href='{$url_page}?{$page_cate_name}={$path_cate_sn}'>{$cate[$cate_title_name]}</a>";
+                $active = ($cate_sn == $path_cate_sn) ? "active" : "";
+                $item .= "<li class='breadcrumb-item {$active}'>{$url}</li>";
+            }
+        }
+        if ($last) {
+            $item .= "<li class='breadcrumb-item'>{$last}</li>";
+        }
+
+        $main = "
+        <ul class='breadcrumb'>
+            $item
+        </ul>
+    ";
+        return $main;
+    }
+
+}
+
+if (!function_exists('setup_meta')) {
+    function setup_meta($title = "", $content = "", $image = "")
+    {
+        global $xoTheme, $xoopsTpl;
+        if (is_object($xoTheme)) {
+            $xoTheme->addMeta('meta', 'keywords', $title);
+            $xoTheme->addMeta('meta', 'description', strip_tags($content));
+        } else {
+            $xoopsTpl->assign('xoops_meta_keywords', 'keywords', $title);
+            $xoopsTpl->assign('xoops_meta_description', strip_tags($content));
+        }
+
+        $xoopsTpl->assign('fb_title', $title);
+        $xoopsTpl->assign('fb_description', strip_tags($content));
+        $xoopsTpl->assign('fb_image', $image);
+        $xoopsTpl->assign("xoops_pagetitle", $title);
+    }
+}
+
 //解決 basename 抓不到中文檔名的問題
 if (!function_exists('get_basename')) {
     function get_basename($filename)
@@ -15,14 +60,14 @@ if (!function_exists('get_basename')) {
 }
 
 if (!function_exists('html5')) {
-    function html5($content = "", $ui = false, $bootstrap = true, $bootstrap_version = 3, $use_jquery = true)
+    function html5($content = "", $ui = false, $bootstrap = true, $bootstrap_version = 3, $use_jquery = true, $container = 'container')
     {
         $jquery = '';
         if ($use_jquery) {
-            $jquery = get_jquery($ui);
+            $jquery = get_jquery($ui, true);
         }
-        $bootstrap_version = 3;
-        $bootstrap_link    = $bootstrap ? "<link rel='stylesheet' type='text/css' media='all' href='" . XOOPS_URL . "/modules/tadtools/bootstrap3/css/bootstrap.css' />" : "";
+
+        $bootstrap_link = $bootstrap ? "<link rel='stylesheet' type='text/css' media='all' href='" . XOOPS_URL . "/modules/tadtools/bootstrap{$bootstrap_version}/css/bootstrap.css' />" : "";
 
         $main = "<!DOCTYPE html>\n";
         $main .= "<html lang='zh-TW'>\n";
@@ -34,7 +79,7 @@ if (!function_exists('html5')) {
         $main .= "  {$jquery}\n";
         $main .= "</head>\n";
         $main .= "<body>\n";
-        $main .= "    <div class='container'>\n";
+        $main .= "    <div class='$container'>\n";
         $main .= "        <div class='row'>\n";
         $main .= "            <div class='col-sm-12'>\n";
         $main .= "                {$content}\n";
@@ -50,9 +95,10 @@ if (!function_exists('html5')) {
 
 //自訂錯誤訊息
 if (!function_exists('web_error')) {
-    function web_error($sql)
+    function web_error($sql, $file = '', $line = '')
     {
-        global $isAdmin, $xoopsDB;
+        global $xoopsDB, $xoopsModule, $xoopsUser;
+        $isAdmin = ($xoopsUser and $xoopsModule) ? $xoopsUser->isAdmin($xoopsModule->mid()) : false;
 
         $in_admin = (strpos($_SERVER['PHP_SELF'], "/admin/") !== false) ? true : false;
         $main     = "<h1>" . _TAD_OOPS_SOMETHING_WRONG . "</h1>";
@@ -61,7 +107,8 @@ if (!function_exists('web_error')) {
             $main .= "<div class='well'>{$sql}</div>";
         }
 
-        $main .= "<div class='alert alert-danger'>" . $xoopsDB->error() . "</div><div class='text-center'><a href='javascript:history.go(-1);' class='btn btn-primary'>" . _TAD_BACK_PAGE . "</a></div>";
+        $show_position = ($file) ? "<br>{$file}:{$line}" : '';
+        $main .= "<div class='alert alert-danger'>" . $xoopsDB->error() . $show_position . "</div><div class='text-center'><a href='javascript:history.go(-1);' class='btn btn-primary'>" . _TAD_BACK_PAGE . "</a></div>";
 
         die(html5($main));
     }
@@ -74,43 +121,56 @@ function get_bootstrap($mode = '')
 
     $in_admin = (strpos($_SERVER['PHP_SELF'], "/admin/") !== false) ? true : false;
 
+    $theme_set = $xoopsConfig['theme_set'];
+
+    $sql = "select `tt_use_bootstrap`,`tt_bootstrap_color`,`tt_theme_kind` from `" . $xoopsDB->prefix("tadtools_setup") . "`  where `tt_theme`='{$theme_set}'";
+
+    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error() . "<br>" . __FILE__ . ':' . __LINE__);
+
+    list($tt_use_bootstrap, $tt_bootstrap_color, $tt_theme_kind) = $xoopsDB->fetchRow($result);
+
+    $_SESSION['theme_kind']                    = $tt_theme_kind;
+    $_SESSION[$theme_set]['bootstrap_version'] = $tt_theme_kind;
+    $_SESSION['bootstrap']                     = $tt_theme_kind == 'bootstrap4' ? '4' : '3';
+
     if ($in_admin) {
-        $theme_set = $xoopsConfig['theme_set'];
-
-        $sql = "select `tt_use_bootstrap`,`tt_bootstrap_color`,`tt_theme_kind` from `" . $xoopsDB->prefix("tadtools_setup") . "`  where `tt_theme`='{$theme_set}'";
-
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error());
-
-        list($tt_use_bootstrap, $tt_bootstrap_color, $tt_theme_kind) = $xoopsDB->fetchRow($result);
-
-        $_SESSION['theme_kind']                    = $tt_theme_kind;
-        $_SESSION[$theme_set]['bootstrap_version'] = 'bootstrap3';
-        $_SESSION['bootstrap']                     = '3';
-
         if ($xoopsTpl) {
             $xoopsTpl->assign("bootstrap_version", $_SESSION['bootstrap']);
         }
         //die($tt_bootstrap_color);
         if ($xoTheme) {
             if ($tt_bootstrap_color == "bootstrap3") {
-                $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap3/css/bootstrap.css');
+                // $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap3/css/bootstrap.css');
+                // $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm3.css');
+            } elseif ($tt_bootstrap_color == "bootstrap4") {
+                $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap4/css/bootstrap.css');
+                $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm4.css');
             } else {
                 $c = explode('/', $tt_bootstrap_color);
-                if ($c[0] == "bootstrap3") {
-                    $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap3/css/bootstrap.css');
+                if ($c[0] == "bootstrap4") {
+                    $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap4/css/bootstrap.css');
+                    $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm4.css');
                     $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/' . $tt_bootstrap_color . '/bootstrap.min.css');
+                } elseif ($c[0] == "bootstrap3") {
+                    // $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap3/css/bootstrap.css');
+                    // $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm3.css');
+                    // $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/' . $tt_bootstrap_color . '/bootstrap.min.css');
                 }
 
             }
             $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/fix-bootstrap.css');
-            $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm3.css');
             $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/font-awesome/css/font-awesome.css');
 
         }
     } elseif ($mode == "return") {
-        $main = "
-            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/bootstrap3/css/bootstrap.css' >
-            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css' >";
+        if ($tt_theme_kind == "bootstrap4") {
+            $main = "
+            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/bootstrap4/css/bootstrap.css'>";
+        } else {
+            $main = "
+            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/bootstrap3/css/bootstrap.css'>";
+        }
+        $main .= "<link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css'>";
         return $main;
     }
 }
@@ -379,8 +439,10 @@ if (!function_exists('power_chk')) {
         if (!$xoopsModule) {
             return;
         }
+
         // echo var_export($perm_name);
         // echo var_export($sn);
+
         //取得目前使用者的群組編號
         if ($xoopsUser) {
             $groups = $xoopsUser->getGroups();
@@ -389,13 +451,16 @@ if (!function_exists('power_chk')) {
         }
         // echo var_export($groups);
         //取得模組編號
-        $module_id = $xoopsModule->getVar('mid');
+        $module_id = $xoopsModule->mid();
+        if (empty($perm_name)) {
+            $perm_name = $xoopsModule->dirname();
+        }
         // echo var_export($module_id);
         //取得群組權限功能
         $gperm_handler = xoops_getHandler('groupperm');
 
         //權限項目編號
-        $perm_itemid = (int)$sn;
+        $perm_itemid = (int) $sn;
         // echo var_export($perm_itemid);
         //依據該群組是否對該權限項目有使用權之判斷 ，做不同之處理
         if ($gperm_handler->checkRight($perm_name, $perm_itemid, $groups, $module_id)) {
@@ -489,9 +554,12 @@ if (!function_exists('auto_charset')) {
     {
         $os_charset = (PATH_SEPARATOR == ':') ? "UTF-8" : "Big5";
         if ($os_charset != _CHARSET) {
-            $str = $OS_or_Web == 'web' ? iconv($os_charset, _CHARSET, $str) : iconv(_CHARSET, $os_charset, $str);
+            $new_str = $OS_or_Web == 'web' ? iconv($os_charset, _CHARSET, $str) : iconv(_CHARSET, $os_charset, $str);
         }
-        return $str;
+        if (empty($new_str)) {
+            $new_str = $str;
+        }
+        return $new_str;
     }
 }
 
@@ -574,7 +642,7 @@ if (!function_exists('getPageBar')) {
             $bootstrap = $_SESSION['bootstrap'];
         }
 
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 10, $xoopsDB->error() . "<br>$sql");
+        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 10, $xoopsDB->error() . "<br>" . __FILE__ . ':' . __LINE__ . "<br>$sql");
         $total  = $xoopsDB->getRowsNum($result);
 
         $navbar = new PageBar($total, $show_num, $page_list);
@@ -587,27 +655,26 @@ if (!function_exists('getPageBar')) {
             $navbar->set_url_other($url_other);
         }
 
-        if ($bootstrap == '3') {
-            $mybar       = $navbar->makeBootStrap3Bar();
+        if ($bootstrap == '3' or $bootstrap == '4') {
+            $mybar       = $navbar->makeBootStrap3Bar('', $bootstrap);
             $main['bar'] = "
-              <div class='row'>
-                <div class='col-sm-12'>
-                  <div class='text-center'>
-                    <nav>
-                      <ul class='pagination'>
-                        {$mybar['left']}
-                        {$mybar['center']}
-                        {$mybar['right']}
-                      </ul>
-                    </nav>
-                  </div>
+                <div class='row'>
+                    <div class='col-sm-12'>
+                        <div class='text-center'>
+                            <nav>
+                                <ul class='pagination justify-content-center'>
+                                {$mybar['left']}
+                                {$mybar['center']}
+                                {$mybar['right']}
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              ";
+                ";
         } else {
             $mybar       = $navbar->makeBar();
-            $main['bar'] = "<div style='text-align:center;margin:4px;'>{$mybar['left']}{$mybar['center']}{$mybar['right']}<div style='zoom:1;clear:both;'></div></div>
-      ";
+            $main['bar'] = "<div style='text-align:center;margin:4px;'>{$mybar['left']}{$mybar['center']}{$mybar['right']}<div style='zoom:1;clear:both;'></div></div>";
         }
 
         $main['sql']   = $sql . $mybar['sql'];
@@ -658,7 +725,7 @@ if (!class_exists('PageBar')) {
 
         public function __construct($total, $limit = 10, $page_limit)
         {
-            $limit = (int)$limit;
+            $limit = (int) $limit;
             //die(var_export($limit));
             $mydirname     = basename(dirname(__FILE__));
             $this->prev    = "<img src='" . TADTOOLS_URL . "/images/1leftarrow.png' alt='" . _TAD_BACK_PAGE . "' align='absmiddle' hspace=3>";
@@ -681,7 +748,7 @@ if (!class_exists('PageBar')) {
             $this->query_str  = $this->processQuery($this->used_query);
             $this->glue       = ($this->query_str == "") ? '?' : '&';
 
-            $this->current = (isset($_GET[$this->url_page])) ? (int)$_GET[$this->url_page] : 1;
+            $this->current = (isset($_GET[$this->url_page])) ? (int) $_GET[$this->url_page] : 1;
             if ($this->current < 1) {
                 $this->current = 1;
             }
@@ -848,9 +915,9 @@ if (!class_exists('PageBar')) {
         }
 
         // 製作 bar
-        public function makeBootStrap3Bar($url_page = "none")
+        public function makeBootStrap3Bar($url_page = "none", $bootstrap = 3)
         {
-            if ($url_page != "none") {
+            if ($url_page != "none" and $url_page != "") {
                 $this->url_page = $url_page;
             }
             $this->init();
@@ -865,15 +932,15 @@ if (!class_exists('PageBar')) {
             while ($i <= $this->pTotal && $i <= ($this->pCurrent * $this->pLimit)) {
                 if ($i == $this->current) {
                     $bar_center = "
-                      {$bar_center}
-                      <li class='active'>
-                        <a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='{$i}'>{$i}<span class='sr-only'>(current)</span></a>
-                      </li>";
+                        {$bar_center}
+                        <li class='page-item active'>
+                            <a class='page-link' href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='{$i}'>{$i}<span class='sr-only'>(current)</span></a>
+                        </li>";
                 } else {
                     $bar_center .= "
-                      <li>
-                        <a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='{$i}'>{$i}</a>
-                      </li>";
+                        <li class='page-item'>
+                            <a class='page-link' href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='{$i}'>{$i}</a>
+                        </li>";
                 }
                 $i++;
             }
@@ -882,23 +949,23 @@ if (!class_exists('PageBar')) {
             // 往前跳一頁
             if ($this->current <= 1) {
                 //$bar_left=$bar_first="";
-                $bar_left  = "<li class='disabled'><a href='#'>&lsaquo;</a></li>";
-                $bar_first = "<li class='disabled'><a href='#'>&laquo;</a></li>";
+                $bar_left  = "<li class='page-item disabled'><a class='page-link disabled' href='#'>&lsaquo;</a></li>";
+                $bar_first = "<li class='page-item disabled'><a class='page-link disabled' href='#'>&laquo;</a></li>";
             } else {
                 $i         = $this->current - 1;
-                $bar_left  = "<li><a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='" . _TAD_BACK_PAGE . "'>&lsaquo;</a></li>";
-                $bar_first = "<li><a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}=1{$loadtime}' title='" . _TAD_FIRST_PAGE . "' >&laquo;</a></li>";
+                $bar_left  = "<li class='page-item'><a class='page-link' href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='" . _TAD_BACK_PAGE . "'>&lsaquo;</a></li>";
+                $bar_first = "<li class='page-item'><a class='page-link' href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}=1{$loadtime}' title='" . _TAD_FIRST_PAGE . "' >&laquo;</a></li>";
             }
 
             // 往後跳一頁
             if ($this->current >= $this->pTotal) {
                 //$bar_right=$bar_last="";
-                $bar_right = "<li class='disabled'><a href='#'>&rsaquo;</a></li>";
-                $bar_last  = "<li class='disabled'><a href='#'>&raquo;</a></li>";
+                $bar_right = "<li class='page-item disabled'><a class='page-link disabled' href='#'>&rsaquo;</a></li>";
+                $bar_last  = "<li class='page-item disabled'><a class='page-link disabled' href='#'>&raquo;</a></li>";
             } else {
                 $i         = $this->current + 1;
-                $bar_right = "<li><a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='" . _TAD_NEXT_PAGE . "'>&rsaquo;</a></li>";
-                $bar_last  = "<li><a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$this->pTotal}{$loadtime}' title='" . _TAD_LAST_PAGE . "' >&raquo;</a></li>";
+                $bar_right = "<li class='page-item'><a class='page-link' href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='" . _TAD_NEXT_PAGE . "'>&rsaquo;</a></li>";
+                $bar_last  = "<li class='page-item'><a class='page-link' href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$this->pTotal}{$loadtime}' title='" . _TAD_LAST_PAGE . "' >&raquo;</a></li>";
             }
 
             // 往前跳一整個頁框(層)
@@ -970,7 +1037,15 @@ if (!function_exists('toolbar_bootstrap')) {
                 $urlPath = (empty($moduleName) or substr($url, 0, 7) == "http://") ? $url : XOOPS_URL . "/modules/{$moduleName}/{$url}";
                 $baseurl = basename($url);
                 //if($baseurl=="index.php" and !preg_match("/admin/", $url))continue;
-                $active = strpos($_SERVER['SCRIPT_NAME'], $url) !== false ? "class='current'" : "";
+                // die($_SERVER['PHP_SELF']);
+                if (strpos($_SERVER['REQUEST_URI'], $url) !== false) {
+                    $active = "class='current'";
+                } elseif (strpos($_SERVER['SCRIPT_NAME'], $url) !== false) {
+                    $active = "class='current'";
+                } else {
+                    $active = "";
+                }
+                // $active = strpos($_SERVER['SCRIPT_NAME'], $url) !== false ? "class='current'" : "";
                 $options .= "
                   <li {$active}><a href='{$urlPath}'>{$title}</a></li>
                 ";

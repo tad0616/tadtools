@@ -16,12 +16,12 @@ class CKEditor
     //建構函數
     public function __construct($xoopsDirName = "", $ColName = "", $Value = "")
     {
-        $xoopsModuleConfig  = TadToolsXoopsModuleConfig();
-        $this->xoopsDirName = $xoopsDirName;
-        $this->ColName      = $ColName;
-        $this->Value        = $Value;
-        if (!empty($xoopsModuleConfig['uploadcare_publickey'])) {
-            $this->set_demopublickey($xoopsModuleConfig['uploadcare_publickey']);
+        $TadToolsModuleConfig = TadToolsXoopsModuleConfig();
+        $this->xoopsDirName        = $xoopsDirName;
+        $this->ColName             = $ColName;
+        $this->Value               = $Value;
+        if (!empty($TadToolsModuleConfig['uploadcare_publickey'])) {
+            $this->set_demopublickey($TadToolsModuleConfig['uploadcare_publickey']);
         }
     }
 

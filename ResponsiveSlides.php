@@ -16,7 +16,7 @@ class slider
         $this->show_jquery = $show_jquery;
     }
 
-    public function add_content($sn = "", $title = "", $content = "", $image = "", $date = "", $url = "", $width = "", $height = "")
+    public function add_content($sn = "", $title = "", $content = "", $image = "", $date = "", $url = "", $width = "", $height = "", $target = "")
     {
         $this->item[$sn]['title']   = $title;
         $this->item[$sn]['content'] = $content;
@@ -25,6 +25,7 @@ class slider
         $this->item[$sn]['url']     = $url;
         $this->item[$sn]['width']   = $width;
         $this->item[$sn]['height']  = $height;
+        $this->item[$sn]['target']  = $target;
     }
 
     //產生語法
@@ -40,7 +41,7 @@ class slider
             $utf8_word_num = 90;
         }
 
-        $jquery = ($this->show_jquery) ? get_jquery() : "";
+        get_jquery();
 
         $all = $nav = "";
         $i   = 1;
@@ -77,14 +78,15 @@ class slider
                 </object>
                 $caption
                 </li>
-              ";
+                ";
             } else {
-                $alt = empty($title) ? 'slider image' : $title;
+                $alt          = empty($title) ? 'slider image ' . $sn : $title;
+                $caption_link = $caption ? "<a href='{$item_content['url']}' {$item_content['target']}>$caption</a>" : "";
                 $all .= "
-                  <li>
-                    <a href='{$item_content['url']}'><img src='$image' alt='{$alt}' title='{$alt}'></a>
-                    <a href='{$item_content['url']}'>$caption</a>
-                  </li>
+                    <li>
+                        <a href='{$item_content['url']}' {$item_content['target']}><img src='$image' alt='{$alt}'></a>
+                        $caption_link
+                    </li>
                 ";
             }
 
@@ -92,54 +94,67 @@ class slider
             $i++;
         }
 
-        // $main="";
-        // if($xoTheme){
+        // $main = "";
+        // if ($xoTheme) {
+        //     $xoTheme->addStylesheet('modules/tadtools/ResponsiveSlides/reset.css');
+        //     $xoTheme->addStylesheet('modules/tadtools/ResponsiveSlides/responsiveslides.css');
+        //     $xoTheme->addScript('modules/tadtools/ResponsiveSlides/responsiveslides.js');
+        //     $xoTheme->addScript('', null, "
+        //         \$(document).ready(function(){
+        //             \$('#{$id}').responsiveSlides({
+        //                 auto: true,
+        //                 pager: false,
+        //                 nav: true,
+        //                 speed: 800,
+        //                 pause: true,
+        //                 pauseControls: true,
+        //                 namespace: 'callbacks'
+        //             });
+        //         });
+        //     ");
 
-        //   $xoTheme->addStylesheet('modules/tadtools/ResponsiveSlides/reset.css');
-        //   $xoTheme->addStylesheet('modules/tadtools/ResponsiveSlides/responsiveslides.css');
-        //   $xoTheme->addScript('modules/tadtools/ResponsiveSlides/responsiveslides.js');
-
-        //   $xoTheme->addScript('', null, "
-        //     (function(\$){
-        //       \$(document).ready(function(){
-        //         \$('#{$id}').responsiveSlides();
-        //       });
-        //     })(jQuery);
-        //   ");
-
-        // }else{
-
+        // } else {
         $main = "
-        <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/ResponsiveSlides/reset.css' />
-        <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/ResponsiveSlides/responsiveslides.css' />
-        $jquery
-        <script language='javascript' type='text/javascript' src='" . TADTOOLS_URL . "/ResponsiveSlides/responsiveslides.js'></script>
+            <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/ResponsiveSlides/reset.css' />
+            <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/ResponsiveSlides/responsiveslides.css' />
+            $jquery
+            <script language='javascript' type='text/javascript' src='" . TADTOOLS_URL . "/ResponsiveSlides/responsiveslides.js'></script>
 
-        <script type='text/javascript'>
-         $(document).ready( function(){
-            jQuery('#{$id}').responsiveSlides({
-              auto: true,
-              pager: false,
-              nav: true,
-              speed: 800,
-              pause: true,
-              pauseControls: true,
-              namespace: 'callbacks'
-            });
-          });
-        </script>
-        ";
-        //}
+            <script type='text/javascript'>
+                $(document).ready( function(){
+                    jQuery('#{$id}').responsiveSlides({
+                        auto: true,
+                        pager: false,
+                        nav: true,
+                        speed: 800,
+                        pause: true,
+                        pauseControls: true,
+                        namespace: 'callbacks'
+                    });
+                });
+            </script>
+            ";
+        // }
 
         $main .= "
         <div class='callbacks'>
-          <ul class='rslides' id='{$id}' style='margin-top: {$margin_top}px;'>
-            $all
-          </ul>
+            <ul class='rslides' id='{$id}' style='margin-top: {$margin_top}px;'>
+                $all
+            </ul>
         </div>
         <div class=\"clearfix\"></div>
-      ";
+        ";
 
         return $main;
     }
 }
+/*
+if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/ResponsiveSlides.php")) {
+redirect_header("index.php", 3, _MB_NEED_TADTOOLS);
+}
+include_once XOOPS_ROOT_PATH . "/modules/tadtools/ResponsiveSlides.php";
+
+$slider = new slider($字數);
+$slider->add_content($編號, $標題, $內容, $圖片, $日期, $連結);
+$slider_content = $slider->render();
+ */

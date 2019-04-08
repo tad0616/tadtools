@@ -61,17 +61,17 @@ class smoothslides
         <div class='smoothslides' id='myslideshow1'>
             $all
         </div>
-        <script type='text/javascript' src='" . TADTOOLS_URL . "/smoothslides/js/smoothslides-2.1.0.js'></script>
+        <script type='text/javascript' src='" . TADTOOLS_URL . "/smoothslides/js/smoothslides-2.2.1.min.js'></script>
         <script type='text/javascript'>
           $(window).load( function() {
             $('#myslideshow1').smoothSlides({
-              order: 'random',
-              transitionDuration:6000,
-              effectDuration: 3000,
-              effect: 'panUp,panDown',
-              $show_captions
-              navigation: false,
-              matchImageSize:false
+                order: 'random',
+                transitionDuration:6000,
+                effectDuration: 3000,
+                effect: 'panUp,panDown',
+                $show_captions
+                navigation: false,
+                matchImageSize:false
             });
           });
 

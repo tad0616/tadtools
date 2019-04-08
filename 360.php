@@ -3,7 +3,7 @@ include_once "tadtools_header.php";
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 // $sn    = system_CleanVars($_REQUEST, 'sn', '', 'int');
 $photo = system_CleanVars($_REQUEST, 'photo', '', 'string');
-// $photo = urldecode($photo);
+$photo = filter_var($photo, FILTER_SANITIZE_SPECIAL_CHARS);
 ?>
 <!DOCTYPE HTML>
 <html>

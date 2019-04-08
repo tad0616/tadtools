@@ -16,12 +16,12 @@ class CKEditor
     //建構函數
     public function __construct($xoopsDirName = "", $ColName = "", $Value = "")
     {
-        $xoopsModuleConfig  = TadToolsXoopsModuleConfig();
-        $this->xoopsDirName = $xoopsDirName;
-        $this->ColName      = $ColName;
-        $this->Value        = $Value;
-        if (!empty($xoopsModuleConfig['uploadcare_publickey'])) {
-            $this->set_demopublickey($xoopsModuleConfig['uploadcare_publickey']);
+        $TadToolsModuleConfig = TadToolsXoopsModuleConfig();
+        $this->xoopsDirName   = $xoopsDirName;
+        $this->ColName        = $ColName;
+        $this->Value          = $Value;
+        if (!empty($TadToolsModuleConfig['uploadcare_publickey'])) {
+            $this->set_demopublickey($TadToolsModuleConfig['uploadcare_publickey']);
         }
     }
 
@@ -62,86 +62,76 @@ class CKEditor
     //產生編輯器
     public function render()
     {
-        global $xoTheme, $xoopsModuleConfig;
+        global $xoTheme, $TadToolsModuleConfig;
 
-        include_once XOOPS_ROOT_PATH . "/modules/tadtools/mobile_device_detect.php";
-        $mobile = mobile_device_detect(true, false, true, true, true, true, true, false, false);
+        get_jquery();
+        $_SESSION['xoops_mod_name'] = $this->xoopsDirName;
 
-        if ($mobile) {
-            include_once XOOPS_ROOT_PATH . "/modules/tadtools/summernote.php";
-            $summernote = new summernote($this->ColName, $this->Value);
-            $editor     = $summernote->render();
+        // before being fed to the textarea of CKEditor
+        $content = str_replace('&', '&amp;', $this->Value);
+        $content = str_replace('[', '&#91;', $content);
+
+        if ($xoTheme) {
+            $editor = "";
+            $xoTheme->addScript('modules/tadtools/ckeditor/ckeditor.js');
         } else {
+            $editor = "
+            <script type='text/javascript' src='" . TADTOOLS_URL . "/ckeditor/ckeditor.js'></script>";
+        }
 
-            get_jquery();
-            $_SESSION['xoops_mod_name'] = $this->xoopsDirName;
+        $other_css = '';
+        if ($this->ContentsCss) {
+            $other_css = ",'" . implode("','", $this->ContentsCss) . "'";
+        }
 
-            // before being fed to the textarea of CKEditor
-            $content = str_replace('&', '&amp;', $this->Value);
-            $content = str_replace('[', '&#91;', $content);
-
-            if ($xoTheme) {
-                $editor = "";
-                $xoTheme->addScript('modules/tadtools/ckeditor/ckeditor.js');
-            } else {
-                $editor = "
-                <script type='text/javascript' src='" . TADTOOLS_URL . "/ckeditor/ckeditor.js'></script>";
-            }
-
-            $other_css = '';
-            if ($this->ContentsCss) {
-                $other_css = ",'" . implode("','", $this->ContentsCss) . "'";
-            }
-
-            $demopublickey_js = $extra_uploadcare = $uploadcare_setup = '';
-            if ($this->demopublickey) {
-                $demopublickey_js = "UPLOADCARE_PUBLIC_KEY = '{$this->demopublickey}',";
-                $extra_uploadcare = ",uploadcare";
-                $uploadcare_setup = "
+        $demopublickey_js = $extra_uploadcare = $uploadcare_setup = '';
+        if ($this->demopublickey) {
+            $demopublickey_js = "UPLOADCARE_PUBLIC_KEY = '{$this->demopublickey}',";
+            $extra_uploadcare = ",uploadcare";
+            $uploadcare_setup = "
                 uploadcare: {
                     multiple: true
                 },";
-            }
-
-            $xoopsModuleConfig  = TadToolsXoopsModuleConfig();
-            $codemirror = $xoopsModuleConfig['use_codemirror'] ? ',codemirror' : '';
-
-            $editor .= "
-              <textarea name='{$this->ColName}' id='editor_{$this->ColName}' class='ckeditor_css'>{$content}</textarea>
-
-              <script type='text/javascript'>
-              {$demopublickey_js}
-              CKEDITOR.replace('editor_{$this->ColName}' , {
-                skin : 'moono' ,
-                width : '{$this->Width}' ,
-                height : '{$this->Height}' ,
-                language : '" . _LANGCODE . "' ,
-                toolbar : '{$this->ToolbarSet}' ,
-                contentsCss : ['" . TADTOOLS_URL . "/bootstrap3/css/bootstrap.css','" . TADTOOLS_URL . "/css/font-awesome/css/font-awesome.css'{$other_css}],
-                extraPlugins: 'syntaxhighlight,dialog,oembed,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak,fontawesome,prism,codesnippet{$codemirror}{$extra_uploadcare}',
-                {$uploadcare_setup}
-                filebrowserBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=file&mod_dir=" . $this->xoopsDirName . "',
-                filebrowserImageBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=image&mod_dir=" . $this->xoopsDirName . "',
-                filebrowserFlashBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=flash&mod_dir=" . $this->xoopsDirName . "',
-                filebrowserUploadUrl : '" . TADTOOLS_URL . "/upload.php?type=file&mod_dir=" . $this->xoopsDirName . "',
-                filebrowserImageUploadUrl : '" . TADTOOLS_URL . "/upload.php?type=image&mod_dir=" . $this->xoopsDirName . "',
-                filebrowserFlashUploadUrl : '" . TADTOOLS_URL . "/upload.php?type=flash&mod_dir=" . $this->xoopsDirName . "',
-                qtRows: 10, // Count of rows
-                qtColumns: 10, // Count of columns
-                qtBorder: '1', // Border of inserted table
-                qtWidth: '100%', // Width of inserted table
-                qtStyle: { 'border-collapse' : 'collapse' },
-                qtClass: 'table table-bordered table-hover table-condensed', // Class of table
-                qtCellPadding: '0', // Cell padding table
-                qtCellSpacing: '0', // Cell spacing table
-                qtPreviewBorder: '1px double black', // preview table border
-                qtPreviewSize: '15px', // Preview table cell size
-                qtPreviewBackground: '#c8def4' // preview table background (hover)
-              } );
-              </script>
-                <script>CKEDITOR.dtd.\$removeEmpty['span'] = false;</script>
-              ";
         }
+
+        $TadToolsModuleConfig = TadToolsXoopsModuleConfig();
+        $codemirror           = $TadToolsModuleConfig['use_codemirror'] ? ',codemirror' : '';
+
+        $editor .= "
+        <textarea name='{$this->ColName}' id='editor_{$this->ColName}' class='ckeditor_css'>{$content}</textarea>
+
+        <script type='text/javascript'>
+            {$demopublickey_js}
+            CKEDITOR.replace('editor_{$this->ColName}' , {
+            skin : 'moono' ,
+            width : '{$this->Width}' ,
+            height : '{$this->Height}' ,
+            language : '" . _LANGCODE . "' ,
+            toolbar : '{$this->ToolbarSet}' ,
+            contentsCss : ['" . TADTOOLS_URL . "/bootstrap3/css/bootstrap.css','" . TADTOOLS_URL . "/css/font-awesome/css/font-awesome.css'{$other_css}],
+            extraPlugins: 'syntaxhighlight,dialog,oembed,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak,fontawesome,prism,codesnippet{$codemirror}{$extra_uploadcare}',
+            {$uploadcare_setup}
+            filebrowserBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=file&mod_dir=" . $this->xoopsDirName . "',
+            filebrowserImageBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=image&mod_dir=" . $this->xoopsDirName . "',
+            filebrowserFlashBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=flash&mod_dir=" . $this->xoopsDirName . "',
+            filebrowserUploadUrl : '" . TADTOOLS_URL . "/upload.php?type=file&mod_dir=" . $this->xoopsDirName . "',
+            filebrowserImageUploadUrl : '" . TADTOOLS_URL . "/upload.php?type=image&mod_dir=" . $this->xoopsDirName . "',
+            filebrowserFlashUploadUrl : '" . TADTOOLS_URL . "/upload.php?type=flash&mod_dir=" . $this->xoopsDirName . "',
+            qtRows: 10, // Count of rows
+            qtColumns: 10, // Count of columns
+            qtBorder: '1', // Border of inserted table
+            qtWidth: '100%', // Width of inserted table
+            qtStyle: { 'border-collapse' : 'collapse' },
+            qtClass: 'table table-bordered table-hover table-condensed', // Class of table
+            qtCellPadding: '0', // Cell padding table
+            qtCellSpacing: '0', // Cell spacing table
+            qtPreviewBorder: '1px double black', // preview table border
+            qtPreviewSize: '15px', // Preview table cell size
+            qtPreviewBackground: '#c8def4' // preview table background (hover)
+            } );
+        </script>
+        <script>CKEDITOR.dtd.\$removeEmpty['span'] = false;</script>
+            ";
         return $editor;
     }
 

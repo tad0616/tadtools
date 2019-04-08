@@ -7,13 +7,13 @@ class jeditable
     public $cols;
     public $show_jquery;
 
-    //«Øºc¨ç¼Æ
+    //å»ºæ§‹å‡½æ•¸
     public function __construct($show_jquery = true)
     {
         $this->show_jquery = $show_jquery;
     }
 
-    //³]©w¤å¦rÄæ¦ì $submitdata="{'sn':$the_sn}
+    //è¨­å®šæ–‡å­—æ¬„ä½ $submitdata="{'sn':$the_sn}
     public function setTextCol($selector, $file, $width = '100%', $height = '12px', $submitdata = "", $tooltip = "")
     {
         $submitdata_set = (empty($submitdata)) ? "" : "submitdata:$submitdata,";
@@ -31,7 +31,7 @@ class jeditable
         });";
     }
 
-    //³]©w¤j¶q¤å¦rÄæ¦ì $submitdata="{'sn':$the_sn}
+    //è¨­å®šå¤§é‡æ–‡å­—æ¬„ä½ $submitdata="{'sn':$the_sn}
     public function setTextAreaCol($selector, $file, $width = '100%', $height = '50px', $submitdata = "", $tooltip = "")
     {
         $submitdata_set = (empty($submitdata)) ? "" : "submitdata:$submitdata,";
@@ -49,7 +49,7 @@ class jeditable
         });";
     }
 
-    //³]©w¤U©ÔÄæ¦ì $submitdata="{'sn':$the_sn},$data="{'¨k¥Í':'¨k¥Í' , '¤k¥Í':'¤k¥Í'}";
+    //è¨­å®šä¸‹æ‹‰æ¬„ä½ $submitdata="{'sn':$the_sn},$data="{'ç”·ç”Ÿ':'ç”·ç”Ÿ' , 'å¥³ç”Ÿ':'å¥³ç”Ÿ'}";
     public function setSelectCol($selector, $file, $data = '', $submitdata = "", $tooltip = "")
     {
         $submitdata_set = (empty($submitdata)) ? "" : "submitdata:$submitdata,";
@@ -66,7 +66,7 @@ class jeditable
         });";
     }
 
-    //²£¥Í¸ô®|¤u¨ã
+    //ç”¢ç”Ÿè·¯å¾‘å·¥å…·
     public function render($mode = "")
     {
         global $xoTheme;
@@ -106,9 +106,9 @@ class jeditable
 include_once XOOPS_ROOT_PATH."/modules/tadtools/jeditable.php";
 $file="save.php";
 $jeditable = new jeditable();
-$jeditable->setTextCol("#candidate_note",$file,'140px','12px',"{'vote_sn':$vote_sn,'candidate_id':'$candidate_id','op' : 'save'}","½s¿è³Æµù");
-$jeditable->setTextAreaCol("#id",$file,'140px','12px',"{'sn':$sn,'op' : 'save'}","ÂIÀ»½s¿è");
-$jeditable->setSelectCol("#id",$file,"{'boy':'¨k¥Í' , 'girl':'¤k¥Í' , 'selected':'girl'}","{'sn' : $sn , 'op' : 'save'}","ÂIÀ»½s¿è");
+$jeditable->setTextCol("#candidate_note",$file,'140px','12px',"{'vote_sn':$vote_sn,'candidate_id':'$candidate_id','op' : 'save'}","ç·¨è¼¯å‚™è¨»");
+$jeditable->setTextAreaCol("#id",$file,'140px','12px',"{'sn':$sn,'op' : 'save'}","é»æ“Šç·¨è¼¯");
+$jeditable->setSelectCol("#id",$file,"{'boy':'ç”·ç”Ÿ' , 'girl':'å¥³ç”Ÿ' , 'selected':'girl'}","{'sn' : $sn , 'op' : 'save'}","é»æ“Šç·¨è¼¯");
 $jeditable_set=$jeditable->render();
 
 <?php

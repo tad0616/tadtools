@@ -30,7 +30,7 @@
 /**
  * Class upload xxxxxx translation
  *
- * @version   0.25
+ * @version   0.28
  * @author    xxxxxxxx (xxx@xxx.xxx)
  * @license   http://opensource.org/licenses/gpl-license.php GNU Public License
  * @copyright xxxxxxxx
@@ -39,15 +39,18 @@
  */
 
     $translation = array();
-    $translation['file_error']                  = '檔案錯誤，請重試！';
-    $translation['local_file_missing']          = '檔案不存在。';
-    $translation['local_file_not_readable']     = '檔案無法讀取。';
-    $translation['uploaded_too_big_ini']        = '檔案上傳錯誤 (the uploaded file exceeds the upload_max_filesize directive in php.ini).';
-    $translation['uploaded_too_big_html']       = '檔案上傳錯誤 (the uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the html form).';
-    $translation['uploaded_partial']            = '檔案上傳錯誤 （檔案上傳不完整）';
-    $translation['uploaded_missing']            = '檔案上傳錯誤 （沒有任何檔案被上傳）';
-    $translation['uploaded_unknown']            = '檔案上傳錯誤 （原因不明～）';
-    $translation['try_again']                   = '檔案上傳錯誤，請重試！';
+    $translation['file_error']                  = 'File error. Please try again.';
+    $translation['local_file_missing']          = 'Local file doesn\'t exist.';
+    $translation['local_file_not_readable']     = 'Local file is not readable.';
+    $translation['uploaded_too_big_ini']        = 'File upload error (the uploaded file exceeds the upload_max_filesize directive in php.ini).';
+    $translation['uploaded_too_big_html']       = 'File upload error (the uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the html form).';
+    $translation['uploaded_partial']            = 'File upload error (the uploaded file was only partially uploaded).';
+    $translation['uploaded_missing']            = 'File upload error (no file was uploaded).';
+    $translation['uploaded_no_tmp_dir']         = 'File upload error (missing a temporary folder).';
+    $translation['uploaded_cant_write']         = 'File upload error (failed to write file to disk).';
+    $translation['uploaded_err_extension']      = 'File upload error (file upload stopped by extension).';
+    $translation['uploaded_unknown']            = 'File upload error (unknown error code).';
+    $translation['try_again']                   = 'File upload error. Please try again.';
     $translation['file_too_big']                = 'File too big.';
     $translation['no_mime']                     = 'MIME type can\'t be detected.';
     $translation['incorrect_file']              = 'Incorrect type of file.';
@@ -80,4 +83,6 @@
     $translation['file_create']                 = 'No %s create support.';
     $translation['no_conversion_type']          = 'No conversion type defined.';
     $translation['copy_failed']                 = 'Error copying file on the server. copy() failed.';
-    $translation['reading_failed']              = 'Error reading the file.';   
+    $translation['reading_failed']              = 'Error reading the file.';
+
+?>

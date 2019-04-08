@@ -9,20 +9,27 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * @copyright       (c) 2000-2016 XOOPS Project (www.xoops.org)
- * @license             GNU GPL (http://www.gnu.org/licenses/gpl-2.0.html/)
- * @package             TadTools
- * @since               2.5.0
- * @author              Tad
+ * @copyright    The XOOPS Project http://sourceforge.net/projects/xoops/
+ * @license      http://www.fsf.org/copyleft/gpl.html GNU public license
+ * @package      TadTools
+ * @since        2.5.7
+ * @author       Tad
+ * @version      $Id $
  **/
 
-include_once __DIR__ . '/admin_header.php';
-xoops_cp_header();
+require_once '../../../include/cp_header.php';
+include 'header.php';
 
-$indexAdmin = new ModuleAdmin();
+include_once XOOPS_ROOT_PATH . "/modules/" . $xoopsModule->getVar("dirname") . "/class/admin.php";
 
-echo $indexAdmin->addNavigation(basename(__FILE__));
-echo $indexAdmin->renderIndex();
+$index_admin = new ModuleAdmin();
 
-include_once __DIR__ . '/admin_footer.php';
-//xoops_cp_footer();
+$index_admin->addConfigLabel(_AM_XDIR_CONFIG_CHECK);
+$index_admin->addLineConfigLabel(_AM_XDIR_CONFIG_PHP, $xoopsModule->getInfo("min_php"), 'php');
+$index_admin->addLineConfigLabel(_AM_XDIR_CONFIG_XOOPS, $xoopsModule->getInfo("min_xoops"), 'xoops');
+
+echo $index_admin->addNavigation('index.php');
+echo $index_admin->renderIndex();
+
+include "footer.php";
+xoops_cp_footer();

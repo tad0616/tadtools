@@ -5,8 +5,7 @@ redirect_header("index.php",3, _MA_NEED_TADTOOLS);
 }
 include_once XOOPS_ROOT_PATH."/modules/tadtools/easy_responsive_tabs.php";
 $responsive_tabs = new easy_responsive_tabs('#demoTab', $type = 'default, vertical, accordion', $activetab_bg = '#B5AC5F', $inactive_bg = '#E0D78C', $active_border_color = '#9C905C', $active_content_border_color = '#9C905C');
-$responsive_tabs_code=$responsive_tabs->rander();
-$xoopsTpl->assign('responsive_tabs_code',$responsive_tabs_code);
+$responsive_tabs->rander();
 
 <div id="demoTab">
 <ul class="resp-tabs-list vert">
@@ -46,24 +45,28 @@ class easy_responsive_tabs
 
     }
 
-    public function rander()
+    public function rander($tabidentify = 'vert', $function = '')
     {
         global $xoTheme;
         $jquery          = get_jquery();
         $responsive_tabs = '';
         if ($xoTheme) {
             $xoTheme->addScript('modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js');
+            $xoTheme->addScript('modules/tadtools/jqueryCookie/js.cookie.min.js');
             $xoTheme->addStylesheet('modules/tadtools/Easy-Responsive-Tabs/css/easy-responsive-tabs.css');
-
+            $cookie_name = substr($this->name, 1) . '_baseURI';
             $xoTheme->addScript('', null, "
-                \$(document).ready(function(){
-                  \$('" . $this->name . "').easyResponsiveTabs({
-                        tabidentify: 'vert',
+                $(document).ready(function(){
+                  $('" . $this->name . "').easyResponsiveTabs({
+                        tabidentify: '$tabidentify',
                         type: '{$this->type}', //Types: default, vertical, accordion
                         width: 'auto',
                         fit: true,
                         closed: false,
-                        activate: function() {},
+                        activate: function(e) {
+                            Cookies.remove('{$cookie_name}');
+                            Cookies.set('{$cookie_name}', e.currentTarget.baseURI);
+                        },
                         activetab_bg: '{$this->activetab_bg}',
                         inactive_bg: '{$this->inactive_bg}',
                         active_border_color: '{$this->active_border_color}',
@@ -83,7 +86,7 @@ class easy_responsive_tabs
             <script>
               $(document).ready(function(){
                 $('" . $this->name . "').easyResponsiveTabs({
-                    tabidentify: 'vert',
+                    tabidentify: '$tabidentify',
                     type: '{$this->type}', //Types: default, vertical, accordion
                     width: 'auto',
                     fit: true,
@@ -102,3 +105,5 @@ class easy_responsive_tabs
 
     }
 }
+
+#若有更新，記得把 $currentTab.trigger('tabactivate', $currentTab); 移動到 if (historyApi) {} 之後

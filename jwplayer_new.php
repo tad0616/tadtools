@@ -22,7 +22,8 @@ class JwPlayer
         $this->play_list_height = ($mode == "playlist" and $display == "bottom") ? $height : 0;
         $this->height           = (substr($height, -1) == "%") ? $height : 0.6;
         $this->file             = $file;
-        $this->image            = $image;
+        $this->youtube_id       = $this->getYTid($file);
+        $this->image            = empty($image) ? "https://i3.ytimg.com/vi/{$this->youtube_id}/0.jpg" : $image;
         $this->skin             = (empty($skin)) ? "" : $skin;
         //$this->skin=(empty($skin))?TADTOOLS_URL."/jwplayer/skin/beelden.zip":$skin;
         $this->mode       = $mode;
@@ -156,16 +157,13 @@ class JwPlayer
             </div>
         </div>
         " : "
-        <div class='row' style='min-height:160px;'>
-            <div class='col-sm-12'>
-                <div id='jw_{$this->id}' class='embed-responsive embed-responsive-4by3'>Loading the player ...</div>
-            </div>
+        <div style='min-height:160px;'>
+            <div id='jw_{$this->id}' class='embed-responsive embed-responsive-4by3'>Loading the player ...</div>
         </div>";
 
         $player .= "
         <script type='text/javascript'>
             var playerInstance_{$this->id} = jwplayer('jw_{$this->id}');
-
 
             if($('#playlist_zone_{$this->id}').width() <= 640){
                 $('#jw_zone_{$this->id}').removeClass('col-sm-8').addClass('col-sm-12');
@@ -173,16 +171,16 @@ class JwPlayer
             }
 
             playerInstance_{$this->id}.setup({
-              $file
-              image:'{$this->image}',
-              width: '100%',
-              aspectratio: '16:9',
-              $this->other_code
-              $autostart
-              $repeat
-              skin: {
-                name: 'bekle'
-              }
+                $file
+                image:'{$this->image}',
+                width: '100%',
+                aspectratio: '16:9',
+                $this->other_code
+                $autostart
+                $repeat
+                skin: {
+                    name: 'bekle'
+                }
             });
 
             $playlist_setup
@@ -192,4 +190,25 @@ class JwPlayer
         return $player;
 
     }
+
+    //抓取 Youtube ID
+    public function getYTid($ytURL = "")
+    {
+        if (substr($ytURL, 0, 16) == 'https://youtu.be/') {
+            return substr($ytURL, 16);
+        } else {
+            parse_str(parse_url($ytURL, PHP_URL_QUERY), $params);
+
+            return $params['v'];
+        }
+    }
+
 }
+
+// if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/jwplayer_new.php")) {
+//     redirect_header("index.php", 3, _MD_NEED_TADTOOLS);
+// }
+// include_once XOOPS_ROOT_PATH . "/modules/tadtools/jwplayer_new.php";
+// $jw = new JwPlayer($id = "", $file = "", $image = "", $width = "", $height = "", $skin = "", $mode = "", $display = "", $autostart = false, $repeat = false, $other_code = "");
+// $player = $jw->render();
+// public function __construct($id = "", $file = "", $image = "", $width = "", $height = "", $skin = "", $mode = "", $display = "", $autostart = false, $repeat = false, $other_code = "")

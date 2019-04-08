@@ -131,6 +131,7 @@ a:hover {
 	width:100%;
 	padding:15px 0;
 	background:#eee;
+	font-weight:bold;
 	text-align: center;
 	display: none;
 }
@@ -170,11 +171,6 @@ xmp {
 	position: relative;
 	transition:.2s;
 }
-xmp:hover {
-	opacity:.9;
-	cursor:pointer;
-	cursor:copy;
-}
 xmp:before {
 	content:'';
 	height:100%;
@@ -183,14 +179,6 @@ xmp:before {
 	background:rgba(255,255,255,.1);
 	top:0;
 	left:0;
-}
-xmp:after {
-	content:'CLICK TO COPY';
-	position: absolute;
-	bottom:0;
-	right:5px;
-	opacity: .5;
-	font-size:11px;
 }
 xmp:hover:after {
 	opacity: 1;

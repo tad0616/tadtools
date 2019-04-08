@@ -78,7 +78,7 @@
           <{/if}>
 
           <li id="preview-menu">
-            <a rel="tooltip" title="<{$smarty.const.TF_USER_WELCOME}>" class="dropdown-toggle" data-toggle="dropdown" href="#">
+            <a rel="tooltip" title="<{$smarty.const.TF_USER_WELCOME}>" class="dropdown-toggle" data-toggle="dropdown" href="index.php">
               <{$smarty.const.TF_USER_WELCOME}><{$xoops_name}> <span class="caret"></span>
             </a>
 
@@ -87,7 +87,7 @@
           </li>
         <{elseif $openid_login!="3"}>
           <li id="preview-menu">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="index.php">
               <{$smarty.const.TF_USER_ENTER}> <span class="caret"></span>
             </a>
               <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_login.tpl"}>

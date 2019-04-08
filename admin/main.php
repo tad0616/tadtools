@@ -1,10 +1,6 @@
 <?php
-include_once __DIR__ . '/admin_header.php';
-xoops_cp_header();
-// $indexAdmin = new ModuleAdmin();
-// echo $indexAdmin->addNavigation(basename(__FILE__));
-
-include_once "../tad_function.php";
+$xoopsOption['template_main'] = "tadtools_adm_index.tpl"; //設定樣板檔（必）
+include_once "header.php"; //引入預設檔頭（必）
 
 /*-----------function區--------------*/
 function tadtools_setup()
@@ -13,10 +9,11 @@ function tadtools_setup()
 
     $use_bootstrap = $bootstrap_color = "";
 
-    $sql = "SELECT * FROM `" . $xoopsDB->prefix("tadtools_setup") . "`";
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error() . "<hr>" . $sql);
+    $sql    = "SELECT * FROM `" . $xoopsDB->prefix("tadtools_setup") . "`";
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     //$tt_theme,$tt_use_bootstrap,$tt_bootstrap_color
     while (list($tt_theme, $tt_use_bootstrap, $tt_bootstrap_color, $tt_theme_kind) = $xoopsDB->fetchRow($result)) {
+        // $setup[$tt_theme]=array();
         $use_bootstrap[$tt_theme]     = $tt_use_bootstrap;
         $bootstrap_color[$tt_theme]   = $tt_bootstrap_color;
         $tt_theme_kind_arr[$tt_theme] = $tt_theme_kind;
@@ -37,10 +34,10 @@ function tadtools_setup()
             $theme_kind = "";
             include_once XOOPS_ROOT_PATH . "/themes/{$theme}/config.php";
             if (!empty($theme_kind)) {
-                if (empty($tt_theme_kind_arr[$theme])) {
+                if (empty($tt_theme_kind_arr[$theme]) or $theme_change == 0) {
                     $sql = "replace into `" . $xoopsDB->prefix("tadtools_setup") . "` (`tt_theme` , `tt_use_bootstrap`,`tt_bootstrap_color` , `tt_theme_kind`) values('{$theme}', '0', '{$theme_color}', '{$theme_kind}')";
                     //die($sql);
-                    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error() . "<hr>" . $sql);
+                    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
                     $themes[$i]['theme_kind']      = $theme_kind;
                     $themes[$i]['use_bootstrap']   = '0';
@@ -89,8 +86,11 @@ function search_bootstrap($path = "")
 
 function mk_bootstrap_menu($theme_kind = "", $theme_color = "")
 {
-    $theme_array3 = mk_bootstrap_menu_options('bootstrap3', "light");
-    $theme_array4 = mk_bootstrap_menu_options('bootstrap3', "dark");
+    if (empty($theme_kind)) {
+        $theme_kind = "bootstrap3";
+    }
+    $theme_array3 = mk_bootstrap_menu_options($theme_kind, "light");
+    $theme_array4 = mk_bootstrap_menu_options($theme_kind, "dark");
     $theme_array  = array_merge($theme_array3, $theme_array4);
 
     return $theme_array;
@@ -165,7 +165,7 @@ function save()
     global $xoopsDB;
     foreach ($_POST['tt_use_bootstrap'] as $tt_theme => $tt_use_bootstrap) {
         $sql = "replace into `" . $xoopsDB->prefix("tadtools_setup") . "` (`tt_theme` , `tt_use_bootstrap`,`tt_bootstrap_color` , `tt_theme_kind`) values('{$tt_theme}', '{$tt_use_bootstrap}', '{$_POST['tt_bootstrap_color'][$tt_theme]}', '{$_POST['tt_theme_kind'][$tt_theme]}')";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error() . "<hr>" . $sql);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     }
 }
 /*-----------執行動作判斷區----------*/
@@ -178,18 +178,11 @@ switch ($op) {
         save();
         header("location:{$_SERVER['PHP_SELF']}");
         exit;
-        break;
 
     default:
         tadtools_setup();
-        $template_main = 'tadtools_adm_index.tpl';
         break;
 }
 
 /*-----------秀出結果區--------------*/
-$xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap3/css/bootstrap.css');
-$xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm3.css');
-if (isset($template_main)) {
-    $GLOBALS['xoopsTpl']->display("db:{$template_main}");
-}
-include_once __DIR__ . '/admin_footer.php';
+include_once 'footer.php';

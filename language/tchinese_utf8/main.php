@@ -92,3 +92,27 @@ define('_TAD_MENU_CONFIG', '選單設定');
 define('_TAD_OOPS_SOMETHING_WRONG', '哎呀！資料庫有點問題呢！');
 
 define('_TAD_EMPTY', '尚無資料');
+
+//TadDataCenter.php
+define('_TDC_REQUIRE', '必填');
+define('_TDC_INPUT', '文字框');
+define('_TDC_RADIO', '單選圓框');
+define('_TDC_CHECKBOX', '複選方框');
+define('_TDC_SELECT', '下拉選單');
+define('_TDC_TEXTAREA', '大量文字框');
+define('_TDC_DATE', '日期選單');
+define('_TDC_NOTE', '說明文字');
+define('_TDC_TITLE', '題目');
+define('_TDC_INPUT_TITLE', '請輸入題目');
+define('_TDC_DESCRIPTION', '說明');
+define('_TDC_INPUT_DESCRIPTION', '此處輸入相關說明');
+define('_TDC_TYPE', '類型');
+define('_TDC_OPTIONS', '選項');
+define('_TDC_OPTIONS_NOTE', '選項請用;隔開，如：「男;女」，若選項值和選項文字不同，請用=設定，如「1=男;0=女」');
+// define('_TDC_', '必填');
+define('_TDC_FILL_PEOPLE', '填寫人');
+define('_TDC_INPUT_COL_ID', '沒事勿動，給程式用的');
+define('_TDC_COL_ID', '程式辨識碼');
+
+//TadUpFiles.php
+define('_TUF_PERMISSION_NOTE', '不選即全部開放下載：');

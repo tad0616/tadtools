@@ -34,3 +34,8 @@ define('_MI_TADTOOLS_HELP_OVERVIEW', 'Overview');
 
 define('_MI_TADTOOLS_USE_CODEMIRROR', 'Do you use codemirror plugin?');
 define('_MI_TADTOOLS_USE_CODEMIRROR_DESC', 'If you often use syntaxhighlighter paste the original code, it is recommended to close.');
+
+define('_MI_TADTOOLS_IMAGE_MAX_WIDTH', 'The maximum width of the image uploaded by the CKeditor');
+define('_MI_TADTOOLS_IMAGE_MAX_WIDTH_DESC', 'Please fill in the number, the unit is px');
+define('_MI_TADTOOLS_IMAGE_MAX_HEIGHT', 'The maximum height of the image uploaded by the CKeditor');
+define('_MI_TADTOOLS_IMAGE_MAX_HEIGHT_DESC', 'Please fill in the number, the unit is px');

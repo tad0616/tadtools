@@ -1,6 +1,6 @@
-<p><{$block.online_total}></p>
-<p><{$block.lang_members}>: <{$block.online_members}></p>
-<p><{$block.lang_guests}>: <{$block.online_guests}></p>
-<p><{$block.online_names}></p>
-<a class="btn btn-xs btn-info" href="javascript:openWithSelfMain('<{$xoops_url}>/misc.php?action=showpopups&amp;type=online','Online',420,350);"
-   title="<{$block.lang_more}>"><{$block.lang_more}></a>
+<{assign var=this_file value=$smarty.template|basename|replace:'db:':''}>
+<{if $smarty.session.bootstrap==4}>
+    <{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/blocks_tpl/system/blocks/`$this_file`"}>
+<{else}>
+    <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/blocks_tpl/system/blocks/`$this_file`"}>
+<{/if}>

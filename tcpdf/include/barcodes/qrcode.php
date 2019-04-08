@@ -720,6 +720,7 @@ class QRcode {
 	protected function encodeMask($mask) {
 		$spec = array(0, 0, 0, 0, 0);
 		$this->datacode = $this->getByteStream($this->items);
+
 		if (is_null($this->datacode)) {
 			return NULL;
 		}
@@ -762,7 +763,7 @@ class QRcode {
 			if (QR_FIND_BEST_MASK) {
 				$masked = $this->mask($this->width, $this->frame, $this->level);
 			} else {
-				$masked = $this->makeMask($this->width, $this->frame, ((int)QR_DEFAULT_MASK % 8), $this->level);
+				$masked = $this->makeMask($this->width, $this->frame, (intval(QR_DEFAULT_MASK) % 8), $this->level);
 			}
 		} else {
 			$masked = $this->makeMask($this->width, $this->frame, $mask, $this->level);

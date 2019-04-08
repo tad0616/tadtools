@@ -1,0 +1,261 @@
+.navbar:after {
+    display: none;
+}
+
+.toolbar:before {
+    display: none;
+}
+
+[data-page="index"] .list-block,
+[data-page="category"] .list-block,
+[data-page="month"] .list-block,
+[data-page="archive"] .list-block,
+[data-page="newspaper"] .list-block,
+[data-page="show"] .content-block,
+[data-page="mynews"] .list-block {
+    margin-top: -1px;
+}
+
+[data-page="show"] .list-block .item-after {
+    max-height: none;
+}
+
+.view-main .navbar {
+    background-color: #0085c3;
+}
+
+.infinite-scroll-preloader {
+    margin-top: -20px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.infinite-scroll-preloader .preloader {
+    width: 28px;
+    height: 28px;
+}
+
+.icon {
+    font-size: 24px;
+}
+
+[data-page='member'] .icon {
+    font-size: 20px;
+}
+
+.icon.ion-ios-upload-outline {
+    font-size: 26px;
+}
+
+.panel .list-block {
+    margin-top: 0;
+}
+
+.index-list .item-media,
+.cate-list .item-media {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+}
+
+.index .item-media img,
+.cate-list .item-media img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 100%;
+    width: auto;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.list-block .item-subtitle {
+    font-size: 14px;
+}
+
+.list-block .item-text {
+    font-size: 13px;
+}
+
+hr {
+    margin: 15px 0;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+    height: 0;
+}
+
+#news-wrap {
+    /*background-color: #fff;*/
+}
+
+#news-title h1 {
+    color: #333;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+#news-info {
+    color: #999;
+    margin: 10px 0;
+}
+
+#news-info .label {
+    padding: 0 7px;
+}
+
+#news-content {
+    color: #333;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 1.5;
+}
+
+#news-content img {
+    max-width: 100%;
+    height: auto;
+}
+
+#news-toolbar {
+    margin: 10px 0;
+}
+
+.avatar-wrap {
+    background-color: #0085c3;
+    padding: 20px 0;
+}
+
+.avatar {
+    text-align: center;
+    border-radius: 10px;
+}
+
+.avatar .avatar-pic img {
+    border-radius: 50%;
+    vertical-align: middle;
+    max-width: 80px;
+}
+
+.avatar .avatar-pic .ion-ios-person {
+    font-size: 5.5em;
+    border-radius: 50%;
+    background-color: #d9d9d9;
+    color: #999;
+    height: 80px;
+    text-align: center;
+    width: 80px;
+    display: inline-block;
+    line-height: 1;
+}
+
+.avatar .avatar-name {
+    color: #fff;
+    margin: 5px 0;
+}
+
+.member .item-content {
+    color: #57575b;
+}
+
+.member .login-button {
+    margin-top: 40px;
+}
+
+.login-screen-title {
+    font-size: 24px;
+}
+
+.login-screen .icon {
+    font-size: 28px;
+}
+
+.login-form .web-logo {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.login-form .web-logo img {
+    max-width: 80px;
+}
+
+.login-form .close-login {
+    margin: 40px 0;
+    text-align: center;
+}
+
+.login-form .lost-pass {
+    text-align: right;
+}
+
+.login-form .sign-up {
+    text-align: left;
+}
+
+.btn-fb {
+    background-color: #3b5898;
+    color: #fff;
+    border: 0px;
+    margin-top: 10px;
+}
+
+.btn-fb .icon,
+.btn-gl .icon {
+    margin-right: 10px;
+}
+
+.btn-gl {
+    background-color: #dd4b39;
+    color: #fff;
+    border: 0px;
+    margin: 10px 0;
+}
+
+.btn-openid img {
+    margin: 10px 5px;
+}
+
+.popup-social-share .list-block {
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+    margin: 0;
+}
+
+.popup-social-share {
+    top: inherit;
+    bottom: 0;
+    height: 158px;
+    background-color: #f2f2f2;
+    text-align: center;
+}
+
+.popup-social-share .social-share .sh-twitter {
+    background-color: #55acee;
+}
+
+.popup-social-share .social-share .sh-facebook {
+    background-color: #3b5998;
+}
+
+.popup-social-share .social-share .sh-google-plus {
+    background-color: #dd4b39;
+}
+
+.popup-social-share .social-share .sh-email {
+    background-color: #777;
+}
+
+.popup-social-share .social-share a {
+    border-radius: 50%;
+    color: #fff;
+    display: inline-block;
+    height: 44px;
+    margin: 0 10px;
+    padding: 10px;
+    width: 44px;
+    line-height: 1;
+    text-align: center;
+    box-sizing: border-box;
+}
