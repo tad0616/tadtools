@@ -26,7 +26,7 @@ define('_MI_TADTOOLS_QRCODE_BLOCK_NAME', 'QR Code');
 define('_MI_TADTOOLS_QRCODE_BLOCK_DESC', 'QR Code');
 
 define('_MI_TADTOOLS_DIRNAME', basename(dirname(dirname(__DIR__))));
-define('_MI_TADTOOLS_HELP_HEADER', __DIR__ . '/help/helpheader.html');
+define('_MI_TADTOOLS_HELP_HEADER', __DIR__ . '/help/helpheader.tpl');
 define('_MI_TADTOOLS_BACK_2_ADMIN', 'Back to Administration of ');
 
 //help
