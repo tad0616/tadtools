@@ -2,16 +2,16 @@
 function xoops_module_install_tadtools(&$module)
 {
 
-    mk_dir(XOOPS_ROOT_PATH . "/uploads/tadtools");
-    mk_dir(XOOPS_ROOT_PATH . "/uploads/tadtools/file");
-    mk_dir(XOOPS_ROOT_PATH . "/uploads/tadtools/image");
-    mk_dir(XOOPS_ROOT_PATH . "/uploads/tadtools/image/.thumbs");
+    tadtools_mk_dir(XOOPS_ROOT_PATH . "/uploads/tadtools");
+    tadtools_mk_dir(XOOPS_ROOT_PATH . "/uploads/tadtools/file");
+    tadtools_mk_dir(XOOPS_ROOT_PATH . "/uploads/tadtools/image");
+    tadtools_mk_dir(XOOPS_ROOT_PATH . "/uploads/tadtools/image/.thumbs");
 
     return true;
 }
 
 //建立目錄
-function mk_dir($dir = "")
+function tadtools_mk_dir($dir = "")
 {
     //若無目錄名稱秀出警告訊息
     if (empty($dir)) {
