@@ -89,5 +89,14 @@ class TadtoolsCorePreload extends XoopsPreloadItem
             $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/fix-bootstrap.css');
         }
     }
+    
+            // to add PSR-4 autoloader
+    /**
+     * @param $args
+     */
+    public static function eventCoreIncludeCommonEnd($args)
+    {
+        include __DIR__ . '/autoloader.php';
+    }
 
 }
