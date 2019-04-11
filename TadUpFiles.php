@@ -172,7 +172,7 @@ class TadUpFiles
 
     public function __construct($prefix = "", $subdir = "", $file = "/file", $image = "/image", $thumbs = "/image/.thumbs")
     {
-        global $xoopsDB;
+        global $xoopsDB, $xoopsModule;
         if (!empty($prefix)) {
             $this->set_prefix($prefix);
         }
@@ -188,7 +188,7 @@ class TadUpFiles
         $this->TadUpFilesTblName = $xoopsDB->prefix("{$this->prefix}_files_center");
 
         $modhandler            = xoops_getHandler('module');
-        $xoopsModule           = $modhandler->getByDirname("tadtools");
+//        $xoopsModule           = $modhandler->getByDirname("tadtools");
         $config_handler        = xoops_getHandler('config');
         $xoopsModuleConfig     = $config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
         $this->auto_charset    = $xoopsModuleConfig['auto_charset'];
