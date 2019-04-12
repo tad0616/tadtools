@@ -1360,7 +1360,7 @@ class TadUpFiles
     {
         global $xoopsDB, $xoopsUser;
 
-        $myts = MyTextsanitizer::getInstance();
+        $myts = MyTextSanitizer::getInstance();
         $col  = $myts->addSlashes($col);
         $val  = $myts->addSlashes($val);
 
