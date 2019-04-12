@@ -1,7 +1,7 @@
 <?php
 include_once "../../../../mainfile.php";
 if (isAdmin()) {
-    $v = intval($_GET['v']);
+    $v = (int)$_GET['v'];
     set_debug($v);
     header("location:" . $_SERVER["HTTP_REFERER"]);
 }
