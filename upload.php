@@ -13,7 +13,7 @@ $CKEditorFuncNum = system_CleanVars($_REQUEST, 'CKEditorFuncNum', '', 'int');
 $mdir             = $_SESSION['xoops_mod_name'];
 $path             = XOOPS_ROOT_PATH . "/uploads/{$mdir}/{$type}/";
 $url              = XOOPS_URL . "/uploads/{$mdir}/{$type}/";
-$type_arr         = array('image', 'file', 'flash');
+$type_arr         = ['image', 'file', 'flash'];
 $image_max_width  = $xoopsModuleConfig['image_max_width'] ? (int) $xoopsModuleConfig['image_max_width'] : 640;
 $image_max_height = $xoopsModuleConfig['image_max_height'] ? (int) $xoopsModuleConfig['image_max_height'] : 640;
 

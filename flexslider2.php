@@ -6,7 +6,7 @@ class flexslider
 {
     public $show_jquery;
     public $word_num;
-    public $item = array();
+    public $item = [];
 
     //建構函數
     public function __construct($word_num = 60, $show_jquery = true)

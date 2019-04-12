@@ -68,7 +68,7 @@ class PHPWord
      *
      * @var array
      */
-    private $_sectionCollection = array();
+    private $_sectionCollection = [];
 
     /**
      * Create a new PHPWord Document

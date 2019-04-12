@@ -1,6 +1,6 @@
 <?php
 
-$modversion                   = array();
+$modversion                   = [];
 $modversion['name']           = _MI_TADTOOLS_NAME;
 $modversion['version']        = 3.25;
 $modversion['description']    = _MI_TADTOOLS_DESC;
@@ -24,12 +24,13 @@ $modversion['author_website_url']  = 'https://tad0616.net';
 $modversion['author_website_name'] = 'Tad';
 $modversion['min_php']             = '5.4';
 $modversion['min_xoops']           = '2.5.7';
-$modversion['min_db']              = array(
+$modversion['min_db']              = [
     'mysql'  => '5.0.7',
-    'mysqli' => '5.0.7');
+    'mysqli' => '5.0.7'
+];
 
 //---paypal資訊---//
-$modversion['paypal']                  = array();
+$modversion['paypal']                  = [];
 $modversion['paypal']['business']      = 'tad0616@gmail.com';
 $modversion['paypal']['item_name']     = 'Donation : ' . _MI_TADTOOLS_DESC;
 $modversion['paypal']['amount']        = 0;
@@ -85,7 +86,7 @@ $modversion['config'][$i]['description'] = '_MI_TADTOOLS_DESC6';
 $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'text';
 $modversion['config'][$i]['default']     = 'shThemeMonokai';
-$modversion['config'][$i]['options']     = array('shThemeDefault' => 'shThemeDefault', 'shThemeDjango' => 'shThemeDjango', 'shThemeEclipse' => 'shThemeEclipse', 'shThemeEmacs' => 'shThemeEmacs', 'shThemeFadeToGrey' => 'shThemeFadeToGrey', 'shThemeMDUltra' => 'shThemeMDUltra', 'shThemeMidnight' => 'shThemeMidnight', 'shThemeRDark' => 'shThemeRDark', 'shThemeMonokai' => 'shThemeMonokai');
+$modversion['config'][$i]['options']     = ['shThemeDefault' => 'shThemeDefault', 'shThemeDjango' => 'shThemeDjango', 'shThemeEclipse' => 'shThemeEclipse', 'shThemeEmacs' => 'shThemeEmacs', 'shThemeFadeToGrey' => 'shThemeFadeToGrey', 'shThemeMDUltra' => 'shThemeMDUltra', 'shThemeMidnight' => 'shThemeMidnight', 'shThemeRDark' => 'shThemeRDark', 'shThemeMonokai' => 'shThemeMonokai'];
 
 $i++;
 $modversion['config'][$i]['name']        = 'syntaxhighlighter_version';
@@ -94,7 +95,7 @@ $modversion['config'][$i]['description'] = '_MI_TADTOOLS_DESC7';
 $modversion['config'][$i]['formtype']    = 'select';
 $modversion['config'][$i]['valuetype']   = 'text';
 $modversion['config'][$i]['default']     = 'syntaxhighlighter';
-$modversion['config'][$i]['options']     = array('syntaxhighlighter 2' => 'syntaxhighlighter_2', 'syntaxhighlighter 3' => 'syntaxhighlighter');
+$modversion['config'][$i]['options']     = ['syntaxhighlighter 2' => 'syntaxhighlighter_2', 'syntaxhighlighter 3' => 'syntaxhighlighter'];
 
 $i++;
 $modversion['config'][$i]['name']        = 'uploadcare_publickey';

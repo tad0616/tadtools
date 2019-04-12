@@ -17,13 +17,13 @@
 class ModuleAdmin
 {
 
-    public $_itemButton          = array();
-    public $_itemLabel           = array();
-    public $_itemLineLabel       = array();
+    public $_itemButton          = [];
+    public $_itemLabel           = [];
+    public $_itemLineLabel       = [];
     public $_itemConfigLabel     = '';
-    public $_itemLineConfigLabel = array();
+    public $_itemLineConfigLabel = [];
     public $_itemChangelogLabel  = '';
-    public $_obj                 = array();
+    public $_obj                 = [];
 
     /**
      * Constructor

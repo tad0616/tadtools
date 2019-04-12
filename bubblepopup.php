@@ -4,7 +4,7 @@ include_once "jquery.php";
 
 class bubblepopup
 {
-    public $code = array();
+    public $code = [];
     public $show_jquery;
     public $show_all;
 

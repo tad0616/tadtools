@@ -10,7 +10,7 @@ class CKEditor
     public $Width      = '100%';
     public $Height     = 300;
     public $Value;
-    public $ContentsCss   = array();
+    public $ContentsCss   = [];
     public $demopublickey = "";
 
     //建構函數

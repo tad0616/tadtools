@@ -23,7 +23,7 @@ function tadtools_setup()
     $version = _MA_TT_VERSION . $xoopsModule->getVar("version");
 
     $i      = 0;
-    $themes = array();
+    $themes = [];
     foreach ($xoopsConfig['theme_set_allowed'] as $theme) {
         $color = $xoopsConfig['theme_set'] == $theme ? "style='background-color:#E2EDAD'" : "";
 
@@ -135,7 +135,7 @@ function directory_list($directory_base_path = "")
 
     $directory_base_path = rtrim($directory_base_path, "/") . "/";
 
-    $result_list = array();
+    $result_list = [];
 
     $allfile = glob($directory_base_path . "*");
 

@@ -8,7 +8,7 @@ class lofslidernews
     public $width;
     public $height;
     public $word_num;
-    public $item = array();
+    public $item = [];
 
     //建構函數
     public function __construct($width = '725', $height = '300', $word_num = 60, $show_jquery = true)

@@ -7,7 +7,7 @@ class smoothslides
 {
     public $show_captions;
     public $word_num;
-    public $item = array();
+    public $item = [];
 
     //建構函數
     public function __construct($word_num = 60, $show_captions = false)

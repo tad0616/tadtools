@@ -55,7 +55,7 @@ function save_rating($mod_name = "", $col_name = "", $col_sn = "", $rank = "")
 
 class rating
 {
-    public $code = array();
+    public $code = [];
     public $rank_total;
     public $mode;
     public $show_mode;

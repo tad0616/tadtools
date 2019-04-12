@@ -4,9 +4,9 @@ include_once "tadtools_header.php";
 class fullcalendar
 {
 
-    public $js_parameter   = array();
-    public $json_parameter = array();
-    public $quotation      = array();
+    public $js_parameter   = [];
+    public $json_parameter = [];
+    public $quotation      = [];
 
     //建構函數
     public function __construct()

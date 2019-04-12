@@ -6,7 +6,7 @@ get_bootstrap();
 
 //路徑導覽，需搭配 get_模組_cate_path($分類編號);
 if (!function_exists('tad_breadcrumb')) {
-    function tad_breadcrumb($cate_sn = '0', $cate_path_array = array(), $url_page = "index.php", $page_cate_name = "csn", $cate_title_name = "title", $last = "")
+    function tad_breadcrumb($cate_sn = '0', $cate_path_array = [], $url_page = "index.php", $page_cate_name = "csn", $cate_title_name = "title", $last = "")
     {
         $item = "";
         if (is_array($cate_path_array)) {
@@ -237,7 +237,7 @@ if (!function_exists('autolink')) {
         $urls = _autolink_find_URLS($text);
         if (!empty($urls)) // i.e. there were some URLS found in the text
         {
-            array_walk($urls, '_autolink_create_html_tags', array('target' => $target, 'nofollow' => $nofollow));
+            array_walk($urls, '_autolink_create_html_tags', ['target' => $target, 'nofollow' => $nofollow]);
             $text = strtr($text, $urls);
         }
         return $text;
@@ -261,7 +261,7 @@ if (!function_exists('autolink')) {
         if ($c) {
             return (array_flip($m[0]));
         }
-        return (array());
+        return ([]);
     }
 
     function _autolink_create_html_tags(&$value, $key, $other = null)
@@ -481,7 +481,7 @@ if (!function_exists('txt_to_group_name')) {
             $g_txt_all = $default_txt;
         } else {
             $gs    = explode(",", $enable_group);
-            $g_txt = array();
+            $g_txt = [];
             foreach ($gs as $gid) {
                 $g_txt[] = $groups_array[$gid];
             }
@@ -710,11 +710,11 @@ if (!class_exists('PageBar')) {
         public $last;
         public $first2;
         public $last2;
-        public $bottons = array();
+        public $bottons = [];
         // 要使用的 URL 頁數參數名？
         public $url_page = "g2p";
         // 會使用到的 URL 變數名，給 process_query() 過濾用的。
-        public $used_query = array();
+        public $used_query = [];
         // 目前頁數顏色
         public $act_color = "#990000";
         public $query_str; // 存放 URL 參數列
@@ -744,7 +744,7 @@ if (!class_exists('PageBar')) {
 
         public function init()
         {
-            $this->used_query = array($this->url_page);
+            $this->used_query = [$this->url_page];
             $this->query_str  = $this->processQuery($this->used_query);
             $this->glue       = ($this->query_str == "") ? '?' : '&';
 
@@ -799,13 +799,13 @@ if (!class_exists('PageBar')) {
             for ($i = 0; $i < count($var); $i++) {
                 for ($j = 0; $j < count($used_query); $j++) {
                     if (isset($var[$i][0]) && $var[$i][0] == $used_query[$j]) {
-                        $var[$i] = array();
+                        $var[$i] = [];
                     }
 
                 }
             }
 
-            $vars = array();
+            $vars = [];
             // 合併變數名與變數值
             for ($i = 0; $i < count($var); $i++) {
                 $vars[$i] = implode("=", $var[$i]);
@@ -996,7 +996,7 @@ if (!class_exists('PageBar')) {
 }
 
 if (!function_exists('toolbar_bootstrap')) {
-    function toolbar_bootstrap($interface_menu = array())
+    function toolbar_bootstrap($interface_menu = [])
     {
         global $xoopsUser, $xoopsModule;
 
@@ -1108,7 +1108,7 @@ if (!function_exists('toolbar_bootstrap')) {
 }
 
 if (!function_exists('make_menu_json')) {
-    function make_menu_json($interface_menu = array(), $moduleName = "")
+    function make_menu_json($interface_menu = [], $moduleName = "")
     {
         $json     = json_encode($interface_menu);
         $filename = XOOPS_ROOT_PATH . "/uploads/menu_{$moduleName}.txt";
