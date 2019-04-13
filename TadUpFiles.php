@@ -672,7 +672,7 @@ class TadUpFiles
 
         // 更新權限
         if ($this->permission) {
-            $modhandler = xoops_gethandler('module');
+            $modhandler = xoops_getHandler('module');
             $xoopsModule = $modhandler->getByDirname($this->prefix);
             $mod_id = $xoopsModule->mid();
         }
@@ -1361,7 +1361,7 @@ class TadUpFiles
     {
         global $xoopsDB, $xoopsUser;
 
-        $modhandler = xoops_gethandler('module');
+        $modhandler = xoops_getHandler('module');
         $xoopsModule = $modhandler->getByDirname($this->prefix);
         $mod_id = $xoopsModule->mid();
         $isAdmin = is_object($xoopsUser) ? $xoopsUser->isAdmin($mod_id) : false;
