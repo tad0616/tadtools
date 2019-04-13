@@ -733,7 +733,7 @@ if (!class_exists('PageBar')) {
         {
             $limit = (int) $limit;
             //die(var_export($limit));
-            $mydirname = basename(dirname(__FILE__));
+            $mydirname = basename(__DIR__);
             $this->prev = "<img src='" . TADTOOLS_URL . "/images/1leftarrow.png' alt='" . _TAD_BACK_PAGE . "' align='absmiddle' hspace=3>";
             $this->next = "<img src='" . TADTOOLS_URL . "/images/1rightarrow.png' alt='" . _TAD_NEXT_PAGE . "' align='absmiddle' hspace=3>";
             $this->first = "<img src='" . TADTOOLS_URL . "/images/2leftarrow.png' alt='" . _TAD_FIRST_PAGE . "' align='absmiddle' hspace=3>";
