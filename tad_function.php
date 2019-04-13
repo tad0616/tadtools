@@ -613,7 +613,7 @@ if (!function_exists('mk_dir')) {
         if (!is_dir($dir)) {
             umask(000);
             //若建立失敗秀出警告訊息
-            if (!mkdir($dir, 0777)) {
+            if (!mkdir($dir, 0777) && !is_dir($dir)) {
                 redirect_header('index.php', 3, sprintf(_TAD_MKDIR_ERROR, $dir));
             }
         }
