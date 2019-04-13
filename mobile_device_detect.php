@@ -77,49 +77,49 @@ function mobile_device_detect($iphone = true, $ipad = true, $android = true, $op
         case (preg_match('/ipad/i', $user_agent)): // we find the word ipad in the user agent
             $mobile_browser = $ipad; // mobile browser is either true or false depending on the setting of ipad when calling the function
             $status = 'Apple iPad';
-            if ('http' == mb_substr($ipad, 0, 4)) { // does the value of ipad resemble a url
+            if ('http' === mb_substr($ipad, 0, 4)) { // does the value of ipad resemble a url
                 $mobileredirect = $ipad; // set the mobile redirect url to the url value stored in the ipad value
             } // ends the if for ipad being a url
             break; // break out and skip the rest if we've had a match on the ipad // this goes before the iphone to catch it else it would return on the iphone instead
         case (preg_match('/ipod/i', $user_agent) || preg_match('/iphone/i', $user_agent)): // we find the words iphone or ipod in the user agent
             $mobile_browser = $iphone; // mobile browser is either true or false depending on the setting of iphone when calling the function
             $status = 'Apple';
-            if ('http' == mb_substr($iphone, 0, 4)) { // does the value of iphone resemble a url
+            if ('http' === mb_substr($iphone, 0, 4)) { // does the value of iphone resemble a url
                 $mobileredirect = $iphone; // set the mobile redirect url to the url value stored in the iphone value
             } // ends the if for iphone being a url
             break; // break out and skip the rest if we've had a match on the iphone or ipod
         case (preg_match('/android/i', $user_agent)): // we find android in the user agent
             $mobile_browser = $android; // mobile browser is either true or false depending on the setting of android when calling the function
             $status = 'Android';
-            if ('http' == mb_substr($android, 0, 4)) { // does the value of android resemble a url
+            if ('http' === mb_substr($android, 0, 4)) { // does the value of android resemble a url
                 $mobileredirect = $android; // set the mobile redirect url to the url value stored in the android value
             } // ends the if for android being a url
             break; // break out and skip the rest if we've had a match on android
         case (preg_match('/opera mini/i', $user_agent)): // we find opera mini in the user agent
             $mobile_browser = $opera; // mobile browser is either true or false depending on the setting of opera when calling the function
             $status = 'Opera';
-            if ('http' == mb_substr($opera, 0, 4)) { // does the value of opera resemble a rul
+            if ('http' === mb_substr($opera, 0, 4)) { // does the value of opera resemble a rul
                 $mobileredirect = $opera; // set the mobile redirect url to the url value stored in the opera value
             } // ends the if for opera being a url
             break; // break out and skip the rest if we've had a match on opera
         case (preg_match('/blackberry/i', $user_agent)): // we find blackberry in the user agent
             $mobile_browser = $blackberry; // mobile browser is either true or false depending on the setting of blackberry when calling the function
             $status = 'Blackberry';
-            if ('http' == mb_substr($blackberry, 0, 4)) { // does the value of blackberry resemble a rul
+            if ('http' === mb_substr($blackberry, 0, 4)) { // does the value of blackberry resemble a rul
                 $mobileredirect = $blackberry; // set the mobile redirect url to the url value stored in the blackberry value
             } // ends the if for blackberry being a url
             break; // break out and skip the rest if we've had a match on blackberry
         case (preg_match('/(pre\/|palm os|palm|hiptop|avantgo|plucker|xiino|blazer|elaine)/i', $user_agent)): // we find palm os in the user agent - the i at the end makes it case insensitive
             $mobile_browser = $palm; // mobile browser is either true or false depending on the setting of palm when calling the function
             $status = 'Palm';
-            if ('http' == mb_substr($palm, 0, 4)) { // does the value of palm resemble a rul
+            if ('http' === mb_substr($palm, 0, 4)) { // does the value of palm resemble a rul
                 $mobileredirect = $palm; // set the mobile redirect url to the url value stored in the palm value
             } // ends the if for palm being a url
             break; // break out and skip the rest if we've had a match on palm os
         case (preg_match('/(iris|3g_t|windows ce|opera mobi|windows ce; smartphone;|windows ce; iemobile)/i', $user_agent)): // we find windows mobile in the user agent - the i at the end makes it case insensitive
             $mobile_browser = $windows; // mobile browser is either true or false depending on the setting of windows when calling the function
             $status = 'Windows Smartphone';
-            if ('http' == mb_substr($windows, 0, 4)) { // does the value of windows resemble a rul
+            if ('http' === mb_substr($windows, 0, 4)) { // does the value of windows resemble a rul
                 $mobileredirect = $windows; // set the mobile redirect url to the url value stored in the windows value
             } // ends the if for windows being a url
             break; // break out and skip the rest if we've had a match on windows

@@ -132,7 +132,7 @@ function get_bootstrap($mode = '')
 
     $_SESSION['theme_kind'] = $tt_theme_kind;
     $_SESSION[$theme_set]['bootstrap_version'] = $tt_theme_kind;
-    $_SESSION['bootstrap'] = 'bootstrap4' == $tt_theme_kind ? '4' : '3';
+    $_SESSION['bootstrap'] = 'bootstrap4' === $tt_theme_kind ? '4' : '3';
 
     if ($in_admin) {
         if ($xoopsTpl) {
@@ -140,19 +140,19 @@ function get_bootstrap($mode = '')
         }
         //die($tt_bootstrap_color);
         if ($xoTheme) {
-            if ('bootstrap3' == $tt_bootstrap_color) {
+            if ('bootstrap3' === $tt_bootstrap_color) {
                 // $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap3/css/bootstrap.css');
                 // $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm3.css');
-            } elseif ('bootstrap4' == $tt_bootstrap_color) {
+            } elseif ('bootstrap4' === $tt_bootstrap_color) {
                 $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap4/css/bootstrap.css');
                 $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm4.css');
             } else {
                 $c = explode('/', $tt_bootstrap_color);
-                if ('bootstrap4' == $c[0]) {
+                if ('bootstrap4' === $c[0]) {
                     $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap4/css/bootstrap.css');
                     $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm4.css');
                     $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/' . $tt_bootstrap_color . '/bootstrap.min.css');
-                } elseif ('bootstrap3' == $c[0]) {
+                } elseif ('bootstrap3' === $c[0]) {
                     // $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap3/css/bootstrap.css');
                     // $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm3.css');
                     // $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/' . $tt_bootstrap_color . '/bootstrap.min.css');
@@ -161,8 +161,8 @@ function get_bootstrap($mode = '')
             $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/fix-bootstrap.css');
             $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/font-awesome/css/font-awesome.css');
         }
-    } elseif ('return' == $mode) {
-        if ('bootstrap4' == $tt_theme_kind) {
+    } elseif ('return' === $mode) {
+        if ('bootstrap4' === $tt_theme_kind) {
             $main = "
             <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/bootstrap4/css/bootstrap.css'>";
         } else {
@@ -200,7 +200,7 @@ if (!function_exists('get_xoops_url')) {
             }
 
             $my_url = str_replace('\\', '/', $XMUrl['0']);
-            if ('/' == mb_substr($my_url, -1)) {
+            if ('/' === mb_substr($my_url, -1)) {
                 $my_url = mb_substr($my_url, 0, -1);
             }
 
@@ -387,7 +387,7 @@ if (!function_exists('chk_qrcode_url')) {
         $vars = explode('&', $var[1]);
         foreach ($vars as $v) {
             list($key, $val) = explode('=', $v);
-            if ('loadtime' == $key) {
+            if ('loadtime' === $key) {
                 continue;
             }
 
@@ -514,7 +514,7 @@ if (!function_exists('get_all_groups')) {
 if (!function_exists('to_utf8')) {
     function to_utf8($buffer = '')
     {
-        if (_CHARSET == 'UTF-8') {
+        if (_CHARSET === 'UTF-8') {
             return $buffer;
         }
         $buffer = (!function_exists('mb_convert_encoding')) ? iconv('Big5', 'UTF-8', $buffer) : mb_convert_encoding($buffer, 'UTF-8', 'Big5');
@@ -557,9 +557,9 @@ if (!function_exists('is_utf8')) {
 if (!function_exists('auto_charset')) {
     function auto_charset($str = '', $OS_or_Web = 'web')
     {
-        $os_charset = (PATH_SEPARATOR == ':') ? 'UTF-8' : 'Big5';
+        $os_charset = (PATH_SEPARATOR === ':') ? 'UTF-8' : 'Big5';
         if (_CHARSET != $os_charset) {
-            $new_str = 'web' == $OS_or_Web ? iconv($os_charset, _CHARSET, $str) : iconv(_CHARSET, $os_charset, $str);
+            $new_str = 'web' === $OS_or_Web ? iconv($os_charset, _CHARSET, $str) : iconv(_CHARSET, $os_charset, $str);
         }
         if (empty($new_str)) {
             $new_str = $str;
@@ -766,11 +766,11 @@ if (!class_exists('PageBar')) {
         //初始設定
         public function set($active_color = 'none', $buttons = 'none')
         {
-            if ('none' != $active_color) {
+            if ('none' !== $active_color) {
                 $this->act_color = $active_color;
             }
 
-            if ('none' != $buttons) {
+            if ('none' !== $buttons) {
                 $this->buttons = $buttons;
                 $this->prev = $this->buttons['prev'];
                 $this->next = $this->buttons['next'];
@@ -793,7 +793,7 @@ if (!class_exists('PageBar')) {
             $vars = explode('&', $QUERY_STRING);
             //die(var_export($vars));
             for ($i = 0; $i < count($vars); $i++) {
-                if ('amp;g2p' == mb_substr($vars[$i], 0, 7)) {
+                if ('amp;g2p' === mb_substr($vars[$i], 0, 7)) {
                     continue;
                 }
 
@@ -851,7 +851,7 @@ if (!class_exists('PageBar')) {
         // 製作 bar
         public function makeBar($url_page = 'none')
         {
-            if ('none' != $url_page) {
+            if ('none' !== $url_page) {
                 $this->url_page = $url_page;
             }
             $this->init();
@@ -924,7 +924,7 @@ if (!class_exists('PageBar')) {
         // 製作 bar
         public function makeBootStrap3Bar($url_page = 'none', $bootstrap = 3)
         {
-            if ('none' != $url_page and '' != $url_page) {
+            if ('none' !== $url_page and '' != $url_page) {
                 $this->url_page = $url_page;
             }
             $this->init();
@@ -1032,16 +1032,16 @@ if (!function_exists('toolbar_bootstrap')) {
         $options = "<li><a href='index.php' title='" . _TAD_HOME . "'><i class='fa fa-home'></i></a></li>";
         if (is_array($interface_menu)) {
             $basename = basename($_SERVER['SCRIPT_NAME']);
-            if (1 == count($interface_menu) and 'index.php' == mb_substr($_SERVER['REQUEST_URI'], -9)) {
+            if (1 == count($interface_menu) and 'index.php' === mb_substr($_SERVER['REQUEST_URI'], -9)) {
                 return;
             }
 
             foreach ($interface_menu as $title => $url) {
-                if ('admin/index.php' == mb_substr($url, -15) or 'admin/main.php' == mb_substr($url, -14)) {
+                if ('admin/index.php' === mb_substr($url, -15) or 'admin/main.php' === mb_substr($url, -14)) {
                     continue;
                 }
 
-                $urlPath = (empty($moduleName) or 'http://' == mb_substr($url, 0, 7)) ? $url : XOOPS_URL . "/modules/{$moduleName}/{$url}";
+                $urlPath = (empty($moduleName) or 'http://' === mb_substr($url, 0, 7)) ? $url : XOOPS_URL . "/modules/{$moduleName}/{$url}";
                 $baseurl = basename($url);
                 //if($baseurl=="index.php" and !preg_match("/admin/", $url))continue;
                 // die($_SERVER['PHP_SELF']);

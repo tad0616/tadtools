@@ -15,11 +15,11 @@ function set_bootstrap($tpl = '', $b3 = '_b3')
         list($tt_use_bootstrap, $tt_bootstrap_color, $tt_theme_kind) = $xoopsDB->fetchRow($result);
 
         //$tt_use_bootstrap==1 表示該佈景沒有內建 bootstrap，需引入 bootstrap的意思
-        if ('bootstrap3' == $tt_bootstrap_color) {
+        if ('bootstrap3' === $tt_bootstrap_color) {
             $tpl = $new_tpl;
         } else {
             $c = explode('/', $tt_bootstrap_color);
-            if ('bootstrap3' == $c[0]) {
+            if ('bootstrap3' === $c[0]) {
                 $tpl = $new_tpl;
             }
         }

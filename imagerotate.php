@@ -12,35 +12,35 @@ $type = system_CleanVars($_REQUEST, 'type', '', 'string');
 $pic = XOOPS_ROOT_PATH . "/uploads/{$subdir}{$image_dir}/{$filename}";
 $thumb = XOOPS_ROOT_PATH . "/uploads/{$subdir}{$thumbs_dir}/{$filename}";
 
-if ('image/jpeg' == $type or 'image/jpg' == $type or 'image/pjpg' == $type or 'image/pjpeg' == $type) {
+if ('image/jpeg' === $type or 'image/jpg' === $type or 'image/pjpg' === $type or 'image/pjpeg' === $type) {
     $pic_im = imagecreatefromjpeg($pic);
     $thumb_im = imagecreatefromjpeg($thumb);
     header('Content-type: image/jpg');
-} elseif ('image/png' == $type) {
+} elseif ('image/png' === $type) {
     $pic_im = imagecreatefrompng($pic);
     $thumb_im = imagecreatefrompng($thumb);
     header('Content-type: image/png');
-} elseif ('image/gif' == $type) {
+} elseif ('image/gif' === $type) {
     $pic_im = imagecreatefromgif($pic);
     $thumb_im = imagecreatefromgif($thumb);
     header('Content-type: image/gif');
 }
 
-if ('right' == $op) {
+if ('right' === $op) {
     $pic_new_im = rotate_right90($pic_im);
     $thumb_new_im = rotate_right90($thumb_im);
-} elseif ('left' == $op) {
+} elseif ('left' === $op) {
     $pic_new_im = rotate_left90($pic_im);
     $thumb_new_im = rotate_left90($thumb_im);
 }
 
-if ('image/jpeg' == $type or 'image/jpg' == $type or 'image/pjpg' == $type or 'image/pjpeg' == $type) {
+if ('image/jpeg' === $type or 'image/jpg' === $type or 'image/pjpg' === $type or 'image/pjpeg' === $type) {
     imagejpeg($pic_new_im, $pic);
     imagejpeg($thumb_new_im, $thumb);
-} elseif ('image/png' == $type) {
+} elseif ('image/png' === $type) {
     imagepng($pic_new_im, $pic);
     imagepng($thumb_new_im, $thumb);
-} elseif ('image/gif' == $type) {
+} elseif ('image/gif' === $type) {
     imagegif($pic_new_im, $pic);
     imagegif($thumb_new_im, $thumb);
 }

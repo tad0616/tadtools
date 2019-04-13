@@ -32,7 +32,7 @@ $rating->add_rating("psn",$psn);
 $rating_js=$rating->render();
  */
 
-if (isset($_POST['op']) and 'save_rating' == $_POST['op']) {
+if (isset($_POST['op']) and 'save_rating' === $_POST['op']) {
     save_rating($_POST['mod_name'], $_POST['col_name'], $_POST['col_sn'], $_POST['rank']);
 }
 
@@ -77,7 +77,7 @@ class rating
     {
         global $xoopsUser;
 
-        if ($xoopsUser and 'show' != $this->mode) {
+        if ($xoopsUser and 'show' !== $this->mode) {
             $rate = $this->get_uid_rank($col_name, $col_sn);
             $score = $rate['rank'];
             $msg = sprintf(_TAD_STAR_RATING_DATE_SAVE, $rate['rank_date'], $score);
@@ -97,10 +97,10 @@ class rating
             $save_js = '';
             $disabled = 'readOnly: true,';
             $score = $this->get_avg_rank($col_name, $col_sn);
-            $msg = ('simple' == $this->show_mode) ? '' : sprintf(_TAD_STAR_RATING_AVG, $score);
+            $msg = ('simple' === $this->show_mode) ? '' : sprintf(_TAD_STAR_RATING_AVG, $score);
         }
 
-        $msg_js = ('simple' == $this->show_mode) ? '' : "$('#rating_result_{$col_name}_{$col_sn}').html('$msg');";
+        $msg_js = ('simple' === $this->show_mode) ? '' : "$('#rating_result_{$col_name}_{$col_sn}').html('$msg');";
 
         $score = $score / 2;
 

@@ -155,7 +155,7 @@ class TadDataCenter
     {
         global $xoopsTpl;
 
-        if ('checkbox' == $type) {
+        if ('checkbox' === $type) {
             $dbv = $this->getData($name, null, $ans_col_name, $ans_col_sn);
             $value = isset($dbv[$name]) ? $dbv[$name] : $def_value;
         } elseif ($sort > 0) {
@@ -182,25 +182,25 @@ class TadDataCenter
         $arr = $sort > 0 ? "[$sort]" : '';
         switch ($form_tag) {
             case 'input':
-                if ('radio' == $type) {
+                if ('radio' === $type) {
                     $form = '';
                     foreach ($options as $k => $v) {
                         $checked = $v == $value ? 'checked' : '';
                         $form .= "<label class=\"radio-inline\"><input type=\"{$type}\" name=\"TDC[{$name}]{$arr}\" value=\"{$v}\" {$checked} {$attr_str}>{$k}</label>\n";
                     }
-                } elseif ('checkbox' == $type) {
+                } elseif ('checkbox' === $type) {
                     $form = '';
                     foreach ($options as $k => $v) {
                         $checked = in_array($v, $value, true) ? 'checked' : '';
                         $form .= "<label class=\"checkbox-inline\"><input type=\"{$type}\" name=\"TDC[{$name}]{$arr}[]\" value=\"{$v}\" {$checked} {$attr_str}>{$k}</label>\n";
                     }
-                } elseif ('checkbox-radio' == $type) {
+                } elseif ('checkbox-radio' === $type) {
                     $form = '';
                     foreach ($options as $k => $v) {
                         $checked = in_array($v, $value, true) ? 'checked' : '';
                         $form .= "<label class=\"checkbox\"><input type=\"checkbox\" name=\"TDC[{$name}]{$arr}\" value=\"{$v}\" {$checked} {$attr_str}>{$k}</label>\n";
                     }
-                } elseif ('date' == $type) {
+                } elseif ('date' === $type) {
                     include_once XOOPS_ROOT_PATH . '/modules/tadtools/cal.php';
                     $cal = new My97DatePicker();
                     $cal->render();
@@ -239,7 +239,7 @@ class TadDataCenter
                 break;
         }
 
-        if ($xoopsTpl and 'assign' == $mode) {
+        if ($xoopsTpl and 'assign' === $mode) {
             $xoopsTpl->assign($name, $form);
         } else {
             return $form;
@@ -271,7 +271,7 @@ class TadDataCenter
             }
 
             foreach ($values as $sort => $val) {
-                if ('saveCustomSetupForm' == $_REQUEST['dc_op'] and empty($val)) {
+                if ('saveCustomSetupForm' === $_REQUEST['dc_op'] and empty($val)) {
                     continue;
                 }
                 $val = $myts->addSlashes($val);
@@ -495,7 +495,7 @@ class TadDataCenter
             $option .= '<option value="' . $type . '" ' . $selected . '>' . $text . '</option>';
         }
 
-        $del = ('new' != $col_id and $col_id) ? "<a href=\"javascript:del_dcq_col('{$col_id}')\" style='color:red;'><i class='fa fa-trash-o' title='" . _TAD_DEL . "'></i></a> " : '';
+        $del = ('new' !== $col_id and $col_id) ? "<a href=\"javascript:del_dcq_col('{$col_id}')\" style='color:red;'><i class='fa fa-trash-o' title='" . _TAD_DEL . "'></i></a> " : '';
 
         $i = $sort + 1;
 
@@ -511,7 +511,7 @@ class TadDataCenter
         $checked = 1 == $val['require'] ? 'checked' : '';
         $form_arr[] = [1, _TDC_REQUIRE . $i, '<label class="checkbox-inline"><input type="checkbox" name="dcq[' . $sort . '][require]" value="1" ' . $checked . '>' . _TDC_REQUIRE . '</label>'];
 
-        if ('new' == $col_id) {
+        if ('new' === $col_id) {
             $form_arr[] = [1, _TDC_COL_ID, '<input type="hidden" name="dcq[' . $sort . '][col_id]" value="' . $col_id . '">'];
         } else {
             $form_arr[] = [1, _TDC_COL_ID, '<input type="hidden" name="dcq[' . $sort . '][old_col_id]" value="' . $col_id . '"><input type="text" name="dcq[' . $sort . '][col_id]" class="my-input my-100" placeholder="' . _TDC_INPUT_COL_ID . '" value="' . $col_id . '" title="' . _TDC_INPUT_COL_ID . '">'];
@@ -524,7 +524,7 @@ class TadDataCenter
     //儲存自訂表單設定
     public function saveCustomSetupForm()
     {
-        if ('saveCustomSetupForm' == $_REQUEST['dc_op']) {
+        if ('saveCustomSetupForm' === $_REQUEST['dc_op']) {
             $this->saveDcqData();
             header("location: {$_SERVER['HTTP_REFERER']}");
             exit;
@@ -539,7 +539,7 @@ class TadDataCenter
         // die(var_export($_REQUEST['dcq']));
         // die('$this->col_sn=' . $this->col_sn);
         foreach ($_REQUEST['dcq'] as $sort => $dcq) {
-            if ('saveCustomSetupForm' == $_REQUEST['dc_op'] and empty($dcq['title'])) {
+            if ('saveCustomSetupForm' === $_REQUEST['dc_op'] and empty($dcq['title'])) {
                 continue;
             }
 
@@ -547,7 +547,7 @@ class TadDataCenter
             $json_val = $myts->addSlashes($json_val);
 
             $this->delData('dcq', $sort, __FILE__, __LINE__);
-            $col_id = (empty($dcq['col_id']) or 'new' == $dcq['col_id']) ? $this->rand_str() : $dcq['col_id'];
+            $col_id = (empty($dcq['col_id']) or 'new' === $dcq['col_id']) ? $this->rand_str() : $dcq['col_id'];
             $sql = "insert into `{$this->TadDataCenterTblName}`
                     (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`, `col_id`, `update_time`)
                     values('{$this->mid}' , '{$this->col_name}' , '{$this->col_sn}' , 'dcq' , '{$json_val}' , '{$sort}' , '{$col_id}' , now())";
@@ -670,13 +670,13 @@ class TadDataCenter
             $main = '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/modules/tadtools/css/vtable.css">';
         }
 
-        if ('vertical' == $display_mode) {
+        if ('vertical' === $display_mode) {
             $main .= "<div class='vtable'>";
 
             foreach ($DcqData as $sort => $data) {
                 $dcq = json_decode($data['data_value'], true);
                 list($form_tag, $type) = explode('=', $dcq['type']);
-                if ('note' == $form_tag) {
+                if ('note' === $form_tag) {
                     continue;
                 }
 
@@ -714,7 +714,7 @@ class TadDataCenter
             foreach ($DcqData as $sort => $data) {
                 $dcq = json_decode($data['data_value'], true);
                 list($form_tag, $type) = explode('=', $dcq['type']);
-                if ('note' == $form_tag) {
+                if ('note' === $form_tag) {
                     continue;
                 }
                 $dcq_title = $dcq['title'];
@@ -770,7 +770,7 @@ class TadDataCenter
         foreach ($DcqData as $sort => $data) {
             $dcq = json_decode($data['data_value'], true);
             list($form_tag, $type) = explode('=', $dcq['type']);
-            if ('note' == $form_tag) {
+            if ('note' === $form_tag) {
                 continue;
             }
             $name[] = "{$this->col_name}_{$this->col_sn}_dcq_{$data['col_id']}";
@@ -849,7 +849,7 @@ if (isset($_REQUEST['dcq_op'])) {
     $data_name = system_CleanVars($_REQUEST, 'data_name', '', 'string');
     $col_id = system_CleanVars($_REQUEST, 'col_id', '', 'string');
 
-    if ('save_dcq_sort' == $dcq_op) {
+    if ('save_dcq_sort' === $dcq_op) {
         $sql = 'update ' . $xoopsDB->prefix("{$dirname}_data_center") . " set `data_sort`=`data_sort`+1000 where  `col_name`='{$col_name}' and `col_sn`='{$col_sn}'";
         $xoopsDB->queryF($sql) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
 
@@ -860,7 +860,7 @@ if (isset($_REQUEST['dcq_op'])) {
             $sort++;
         }
         echo _TAD_SORTED . '(' . date('Y-m-d H:i:s') . ')';
-    } elseif ('del_dcq_ans' == $dcq_op and $_SESSION['isAdmin']) {
+    } elseif ('del_dcq_ans' === $dcq_op and $_SESSION['isAdmin']) {
         $data_name_arr = explode('|', $data_name);
         foreach ($data_name_arr as $data_name) {
             $sql = 'delete from ' . $xoopsDB->prefix("{$dirname}_data_center") . " where `data_name`='{$data_name}' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}'";
@@ -868,14 +868,14 @@ if (isset($_REQUEST['dcq_op'])) {
         }
         header("location:{$_SERVER['HTTP_REFERER']}");
         exit;
-    } elseif ('del_dcq_col' == $dcq_op and $_SESSION['isAdmin']) {
+    } elseif ('del_dcq_col' === $dcq_op and $_SESSION['isAdmin']) {
         $sql = 'delete from ' . $xoopsDB->prefix("{$dirname}_data_center") . " where `col_id`='{$col_id}'";
         $xoopsDB->queryF($sql) or die(' (' . date('Y-m-d H:i:s') . ')' . $sql);
         $sql = 'delete from ' . $xoopsDB->prefix("{$dirname}_data_center") . " where `data_name`='{$col_name}_{$col_sn}_dcq_{$col_id}'";
         $xoopsDB->queryF($sql) or die(' (' . date('Y-m-d H:i:s') . ')' . $sql);
         header("location:{$_SERVER['HTTP_REFERER']}");
         exit;
-    } elseif ('saveCustomSetupFormVal' == $dcq_op) {
+    } elseif ('saveCustomSetupFormVal' === $dcq_op) {
         $TadDataCenter = new TadDataCenter($dirname);
         $TadDataCenter->set_col($col_name, $col_sn);
         $TadDataCenter->saveData();

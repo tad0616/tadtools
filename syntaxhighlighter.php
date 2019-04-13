@@ -24,7 +24,7 @@ class syntaxhighlighter
             $xoTheme->addStylesheet("$dir/styles/shCore.css");
             $xoTheme->addStylesheet("$dir/styles/{$syntaxhighlighter_themes}.css");
 
-            if ('syntaxhighlighter_2' == $TadToolsModuleConfig['syntaxhighlighter_version']) {
+            if ('syntaxhighlighter_2' === $TadToolsModuleConfig['syntaxhighlighter_version']) {
                 $xoTheme->addScript("$dir/scripts/shCore.js");
                 $xoTheme->addScript("$dir/scripts/shBrushAS3.js");
                 $xoTheme->addScript("$dir/scripts/shBrushBash.js");
@@ -115,7 +115,7 @@ class syntaxhighlighter
               <link type='text/css' rel='stylesheet' href='{$dir}/styles/{$syntaxhighlighter_themes}.css'/>
               ";
 
-            if ('syntaxhighlighter_2' == $TadToolsModuleConfig['syntaxhighlighter_version']) {
+            if ('syntaxhighlighter_2' === $TadToolsModuleConfig['syntaxhighlighter_version']) {
                 $syntaxhighlighter .= "
                 <script type='text/javascript' src='{$dir}/scripts/shCore.js'></script>
                 <script type='text/javascript' src='{$dir}/scripts/shBrushAS3.js'></script>

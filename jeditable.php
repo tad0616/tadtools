@@ -76,7 +76,7 @@ class jeditable
         }
         $jquery = ($this->show_jquery) ? get_jquery() : '';
 
-        if ($xoTheme and 'force' != $mode) {
+        if ($xoTheme and 'force' !== $mode) {
             $xoTheme->addScript('modules/tadtools/jeditable/jquery.jeditable.mini.js');
 
             $xoTheme->addScript('', null, "

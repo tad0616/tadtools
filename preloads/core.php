@@ -43,7 +43,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
                 include_once XOOPS_ROOT_PATH . "/themes/{$theme_set}/config.php";
                 if (isset($theme_kind)) {
                     $tt_theme_kind = $theme_kind;
-                    $tt_use_bootstrap = 'html' == $theme_kind ? 1 : 0;
+                    $tt_use_bootstrap = 'html' === $theme_kind ? 1 : 0;
                     $tt_bootstrap_color = 'bootstrap3';
                     if (empty($tt_theme)) {
                         $sql = 'insert into `' . $xoopsDB->prefix('tadtools_setup') . "`  (`tt_theme`,`tt_use_bootstrap`,`tt_bootstrap_color`,`tt_theme_kind`) values('{$theme_set}','{$tt_use_bootstrap}','{$tt_bootstrap_color}','{$tt_theme_kind}')";
@@ -63,23 +63,23 @@ class TadtoolsCorePreload extends XoopsPreloadItem
 
         $_SESSION['theme_kind'] = $tt_theme_kind;
         $_SESSION[$theme_set]['bootstrap_version'] = $tt_theme_kind;
-        $_SESSION['bootstrap'] = 'bootstrap4' == $tt_theme_kind ? '4' : '3';
+        $_SESSION['bootstrap'] = 'bootstrap4' === $tt_theme_kind ? '4' : '3';
         if ($xoopsTpl) {
             $xoopsTpl->assign('bootstrap_version', $_SESSION['bootstrap']);
         }
         //}
         //die($tt_bootstrap_color);
         if ($xoTheme and $tt_use_bootstrap) {
-            if ('bootstrap3' == $tt_bootstrap_color) {
+            if ('bootstrap3' === $tt_bootstrap_color) {
                 $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap3/css/bootstrap.css');
-            } elseif ('bootstrap4' == $tt_bootstrap_color) {
+            } elseif ('bootstrap4' === $tt_bootstrap_color) {
                 $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap4/css/bootstrap.css');
             } else {
                 $c = explode('/', $tt_bootstrap_color);
-                if ('bootstrap4' == $c[0]) {
+                if ('bootstrap4' === $c[0]) {
                     $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap4/css/bootstrap.css');
                     $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/' . $tt_bootstrap_color . '/bootstrap.min.css');
-                } elseif ('bootstrap3' == $c[0]) {
+                } elseif ('bootstrap3' === $c[0]) {
                     $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap3/css/bootstrap.css');
                     $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/' . $tt_bootstrap_color . '/bootstrap.min.css');
                 }

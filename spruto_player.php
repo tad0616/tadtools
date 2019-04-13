@@ -19,8 +19,8 @@ class spruto_player
     public function __construct($id = '', $file = '', $image = '', $width = '', $height = '', $skin = '', $mode = '', $display = '', $autostart = false, $repeat = false, $other_code = '')
     {
         $this->width = (empty($width)) ? '' : $width;
-        $this->play_list_height = ('playlist' == $mode and 'bottom' == $display) ? $height : 0;
-        $this->height = ('%' == mb_substr($height, -1)) ? $height : 0.6;
+        $this->play_list_height = ('playlist' === $mode and 'bottom' === $display) ? $height : 0;
+        $this->height = ('%' === mb_substr($height, -1)) ? $height : 0.6;
         $this->file = $file;
         $this->image = $image;
         $this->skin = (empty($skin)) ? '' : $skin;
@@ -69,11 +69,11 @@ class spruto_player
         global $xoTheme;
         $playlistfile = $playlist_setup = '';
 
-        if ('playlist' == $this->mode) {
+        if ('playlist' === $this->mode) {
             $file = "playlist:'{$this->file}',";
             $image = '';
 
-            if ('bottom' == $this->display) {
+            if ('bottom' === $this->display) {
                 $playlist_size = $this->play_list_height;
             } else {
                 $playlist_size = 'playlist_size';
@@ -87,7 +87,7 @@ class spruto_player
                 size: {$playlist_size}
               },
               ";
-        } elseif ('youtube' == $this->mode) {
+        } elseif ('youtube' === $this->mode) {
             $file = "
                 'UserID':'FqVJ7iYqUESxz-xTdKMihw2',
                 'AlbumID':19209,
@@ -116,7 +116,7 @@ class spruto_player
         }
 
         $screen_width = empty($this->width) ? 'screen_width' : "'{$this->width}'";
-        $rate_height = '%' == mb_substr($this->height, -1) ? "'{$this->height}'" : 'rate_height';
+        $rate_height = '%' === mb_substr($this->height, -1) ? "'{$this->height}'" : 'rate_height';
 
         $repeat = empty($this->repeat) ? '' : "repeat: $this->repeat,";
         $autostart = empty($this->autostart) ? '' : "autostart: $this->autostart,";

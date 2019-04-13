@@ -30,8 +30,8 @@ class colorbox
     {
         global $xoTheme;
         $jquery = get_jquery();
-        $width_setup = ('auto' == $this->width) ? '' : ", width:'" . $this->width . "'";
-        $height_setup = ('auto' == $this->height) ? '' : ", height:'" . $this->height . "'";
+        $width_setup = ('auto' === $this->width) ? '' : ", width:'" . $this->width . "'";
+        $height_setup = ('auto' === $this->height) ? '' : ", height:'" . $this->height . "'";
 
         if ($xoTheme) {
             $xoTheme->addStylesheet('modules/tadtools/colorbox/colorbox.css');

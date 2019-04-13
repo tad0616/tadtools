@@ -33,7 +33,7 @@ class print_preview
     {
         global $xoTheme;
 
-        if ($xoTheme and 'assign' == $mode) {
+        if ($xoTheme and 'assign' === $mode) {
             $xoTheme->addScript('modules/tadtools/jquery-print-preview/jquery.print-preview.js');
 
             $xoTheme->addScript('', null, "

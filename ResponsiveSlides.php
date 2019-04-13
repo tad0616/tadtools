@@ -63,7 +63,7 @@ class slider
               {$content_div}
             </div>" : '';
 
-            if ('swf' == mb_strtolower(mb_substr($image, -3))) {
+            if ('swf' === mb_strtolower(mb_substr($image, -3))) {
                 //exactfit,default
                 $all .= "
                 <li>

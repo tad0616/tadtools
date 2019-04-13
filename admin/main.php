@@ -110,14 +110,14 @@ function mk_bootstrap_menu_options($theme_kind = '', $mode = 'light')
     if (is_dir($dir)) {
         if ($dh = opendir($dir)) {
             while (false !== ($file = readdir($dh))) {
-                if ('.' == $file or '..' == $file or 'dir' != filetype($dir . $file)) {
+                if ('.' === $file or '..' === $file or 'dir' !== filetype($dir . $file)) {
                     continue;
                 }
 
                 $theme_array[$file]['kind'] = $theme_kind;
                 $theme_array[$file]['theme_path'] = "{$theme_kind}/themes/{$mode}/{$file}";
                 $theme_array[$file]['theme'] = $file;
-                $theme_array[$file]['color'] = ('dark' == $mode) ? _TT_COLOR_DARK : _TT_COLOR_NORMAL;
+                $theme_array[$file]['color'] = ('dark' === $mode) ? _TT_COLOR_DARK : _TT_COLOR_NORMAL;
             }
             closedir($dh);
         }

@@ -8,7 +8,7 @@ if (!function_exists('get_jquery')) {
     function get_jquery($ui = false, $mode = '', $theme = 'base')
     {
         global $xoTheme;
-        if (!isset($xoTheme) or 'return' == $mode) {
+        if (!isset($xoTheme) or 'return' === $mode) {
             $jqueryui_path = '';
             if ($ui) {
                 $jqueryui_path = "
