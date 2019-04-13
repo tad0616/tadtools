@@ -75,10 +75,10 @@ class easy_responsive_tabs
             ");
         } else {
             $responsive_tabs = "
-              {$jquery}
-              <script type='text/javascript' src='" . TADTOOLS_URL . "/Easy-Responsive-Tabs/js/easyResponsiveTabs.js'></script>
-              <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='" . TADTOOLS_URL . "/Easy-Responsive-Tabs/css/easy-responsive-tabs.css' />
-              ";
+                {$jquery}
+                <script type='text/javascript' src='" . TADTOOLS_URL . "/Easy-Responsive-Tabs/js/easyResponsiveTabs.js'></script>
+                <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='" . TADTOOLS_URL . "/Easy-Responsive-Tabs/css/easy-responsive-tabs.css' />
+                ";
 
             $responsive_tabs .= "
             <script>
