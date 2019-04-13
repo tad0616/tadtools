@@ -27,15 +27,15 @@ abstract class AbstractDb extends AbstractValidator
      * Error constants
      */
     const ERROR_NO_RECORD_FOUND = 'noRecordFound';
-    const ERROR_RECORD_FOUND    = 'recordFound';
+    const ERROR_RECORD_FOUND = 'recordFound';
 
     /**
      * @var array Message templates
      */
-    protected $messageTemplates = array(
-        self::ERROR_NO_RECORD_FOUND => "No record matching the input was found",
-        self::ERROR_RECORD_FOUND    => "A record matching the input was found",
-    );
+    protected $messageTemplates = [
+        self::ERROR_NO_RECORD_FOUND => 'No record matching the input was found',
+        self::ERROR_RECORD_FOUND => 'A record matching the input was found',
+    ];
 
     /**
      * Select object to use. can be set, or will be auto-generated
@@ -94,13 +94,14 @@ abstract class AbstractDb extends AbstractValidator
 
         if ($options instanceof Select) {
             $this->setSelect($options);
+
             return;
         }
 
         if ($options instanceof Traversable) {
             $options = ArrayUtils::iteratorToArray($options);
         } elseif (func_num_args() > 1) {
-            $options       = func_get_args();
+            $options = func_get_args();
             $firstArgument = array_shift($options);
             if (is_array($firstArgument)) {
                 $temp = ArrayUtils::iteratorToArray($firstArgument);
@@ -161,12 +162,12 @@ abstract class AbstractDb extends AbstractValidator
     /**
      * Sets a new database adapter
      *
-     * @param  DbAdapter $adapter
      * @return self Provides a fluent interface
      */
     public function setAdapter(DbAdapter $adapter)
     {
         $this->adapter = $adapter;
+
         return $this;
     }
 
@@ -189,7 +190,8 @@ abstract class AbstractDb extends AbstractValidator
     public function setExclude($exclude)
     {
         $this->exclude = $exclude;
-        $this->select  = null;
+        $this->select = null;
+
         return $this;
     }
 
@@ -211,8 +213,9 @@ abstract class AbstractDb extends AbstractValidator
      */
     public function setField($field)
     {
-        $this->field  = (string) $field;
+        $this->field = (string) $field;
         $this->select = null;
+
         return $this;
     }
 
@@ -234,8 +237,9 @@ abstract class AbstractDb extends AbstractValidator
      */
     public function setTable($table)
     {
-        $this->table  = (string) $table;
+        $this->table = (string) $table;
         $this->select = null;
+
         return $this;
     }
 
@@ -259,18 +263,19 @@ abstract class AbstractDb extends AbstractValidator
     {
         $this->schema = $schema;
         $this->select = null;
+
         return $this;
     }
 
     /**
      * Sets the select object to be used by the validator
      *
-     * @param  Select $select
      * @return self Provides a fluent interface
      */
     public function setSelect(Select $select)
     {
         $this->select = $select;
+
         return $this;
     }
 
@@ -289,12 +294,12 @@ abstract class AbstractDb extends AbstractValidator
         }
 
         // Build select object
-        $select          = new Select();
+        $select = new Select();
         $tableIdentifier = new TableIdentifier($this->table, $this->schema);
-        $select->from($tableIdentifier)->columns(array($this->field));
+        $select->from($tableIdentifier)->columns([$this->field]);
         $select->where->equalTo($this->field, null);
 
-        if ($this->exclude !== null) {
+        if (null !== $this->exclude) {
             if (is_array($this->exclude)) {
                 $select->where->notEqualTo(
                     $this->exclude['field'],

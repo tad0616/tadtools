@@ -42,14 +42,14 @@ class Header extends AbstractPart
      *
      * @var array
      */
-    private $fontTable = array();
+    private $fontTable = [];
 
     /**
      * Color table
      *
      * @var array
      */
-    private $colorTable = array();
+    private $colorTable = [];
 
     /**
      * Get font table.
@@ -219,7 +219,7 @@ class Header extends AbstractPart
     {
         $colors = $style->getBorderColor();
         foreach ($colors as $color) {
-            if ($color !== null) {
+            if (null !== $color) {
                 $this->registerTableItem($this->colorTable, $color);
             }
         }
@@ -253,7 +253,7 @@ class Header extends AbstractPart
      */
     private function registerTableItem(&$table, $value, $default = null)
     {
-        if (in_array($value, $table) === false && $value !== null && $value != $default) {
+        if (false === in_array($value, $table, true) && null !== $value && $value != $default) {
             $table[] = $value;
         }
     }

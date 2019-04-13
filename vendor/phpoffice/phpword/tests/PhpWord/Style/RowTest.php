@@ -32,11 +32,11 @@ class RowTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Row();
 
-        $properties = array(
-            'tblHeader'   => true,
-            'cantSplit'   => false,
+        $properties = [
+            'tblHeader' => true,
+            'cantSplit' => false,
             'exactHeight' => true,
-        );
+        ];
         foreach ($properties as $key => $value) {
             // set/get
             $set = "set{$key}";
@@ -60,11 +60,11 @@ class RowTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Row();
 
-        $properties = array(
-            'tblHeader'   => 'a',
-            'cantSplit'   => 'b',
+        $properties = [
+            'tblHeader' => 'a',
+            'cantSplit' => 'b',
             'exactHeight' => 'c',
-        );
+        ];
         foreach ($properties as $key => $value) {
             $set = "set{$key}";
             $get = "get{$key}";

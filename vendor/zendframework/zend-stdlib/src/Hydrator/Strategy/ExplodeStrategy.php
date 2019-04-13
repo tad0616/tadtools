@@ -31,7 +31,7 @@ final class ExplodeStrategy implements StrategyInterface
     {
         $this->setValueDelimiter($delimiter);
 
-        $this->explodeLimit = ($explodeLimit === null) ? null : (int) $explodeLimit;
+        $this->explodeLimit = (null === $explodeLimit) ? null : (int) $explodeLimit;
     }
 
     /**
@@ -64,14 +64,13 @@ final class ExplodeStrategy implements StrategyInterface
      *
      * @param string|null $value
      *
-     * @return string[]
-     *
      * @throws Exception\InvalidArgumentException
+     * @return string[]
      */
     public function hydrate($value)
     {
         if (null === $value) {
-            return array();
+            return [];
         }
 
         if (!(is_string($value) || is_numeric($value))) {
@@ -82,7 +81,7 @@ final class ExplodeStrategy implements StrategyInterface
             ));
         }
 
-        if ($this->explodeLimit !== null) {
+        if (null !== $this->explodeLimit) {
             return explode($this->valueDelimiter, $value, $this->explodeLimit);
         }
 

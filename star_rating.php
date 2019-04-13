@@ -1,6 +1,6 @@
 <?php
-include_once "tadtools_header.php";
-include_once "jquery.php";
+include_once 'tadtools_header.php';
+include_once 'jquery.php';
 
 /*
 建立
@@ -32,12 +32,12 @@ $rating->add_rating("psn",$psn);
 $rating_js=$rating->render();
  */
 
-if (isset($_POST['op']) and $_POST['op'] == 'save_rating') {
+if (isset($_POST['op']) and 'save_rating' == $_POST['op']) {
     save_rating($_POST['mod_name'], $_POST['col_name'], $_POST['col_sn'], $_POST['rank']);
 }
 
 //儲存分數
-function save_rating($mod_name = "", $col_name = "", $col_sn = "", $rank = "")
+function save_rating($mod_name = '', $col_name = '', $col_sn = '', $rank = '')
 {
     global $xoopsDB, $xoopsUser;
     $now = date('Y-m-d H:i:s', xoops_getUserTimestamp(time()));
@@ -47,7 +47,7 @@ function save_rating($mod_name = "", $col_name = "", $col_sn = "", $rank = "")
     }
 
     $uid = $xoopsUser->uid();
-    $sql = "replace into " . $xoopsDB->prefix("{$mod_name}_rank") . " (`col_name`, `col_sn`, `rank`, `uid`, `rank_date`) values('{$col_name}' , '{$col_sn}' , '{$rank}', '{$uid}' , '{$now}')";
+    $sql = 'replace into ' . $xoopsDB->prefix("{$mod_name}_rank") . " (`col_name`, `col_sn`, `rank`, `uid`, `rank_date`) values('{$col_name}' , '{$col_sn}' , '{$rank}', '{$uid}' , '{$now}')";
     $xoopsDB->queryF($sql) or die($xoopsDB->error());
 
     die(sprintf(_TAD_STAR_RATING_SAVE, $rank));
@@ -63,24 +63,24 @@ class rating
     public $mod_name;
 
     //建構函數
-    public function __construct($mod_name = "", $rank_total = "10", $mode = '', $show_mode = '', $rate_mode = '')
+    public function __construct($mod_name = '', $rank_total = '10', $mode = '', $show_mode = '', $rate_mode = '')
     {
         $this->rank_total = $rank_total;
-        $this->mode       = $mode;
-        $this->show_mode  = $show_mode;
-        $this->rate_mode  = $rate_mode;
-        $this->mod_name   = $mod_name;
+        $this->mode = $mode;
+        $this->show_mode = $show_mode;
+        $this->rate_mode = $rate_mode;
+        $this->mod_name = $mod_name;
     }
 
     //新增提示
-    public function add_rating($col_name = "", $col_sn = "")
+    public function add_rating($col_name = '', $col_sn = '')
     {
         global $xoopsUser;
 
-        if ($xoopsUser and $this->mode != 'show') {
-            $rate  = $this->get_uid_rank($col_name, $col_sn);
+        if ($xoopsUser and 'show' != $this->mode) {
+            $rate = $this->get_uid_rank($col_name, $col_sn);
             $score = $rate['rank'];
-            $msg   = sprintf(_TAD_STAR_RATING_DATE_SAVE, $rate['rank_date'], $score);
+            $msg = sprintf(_TAD_STAR_RATING_DATE_SAVE, $rate['rank_date'], $score);
 
             $save_js =
                 "
@@ -92,19 +92,19 @@ class rating
                 },
               ";
 
-            $disabled = "";
+            $disabled = '';
         } else {
-            $save_js  = "";
-            $disabled = "readOnly: true,";
-            $score    = $this->get_avg_rank($col_name, $col_sn);
-            $msg      = ($this->show_mode == 'simple') ? "" : sprintf(_TAD_STAR_RATING_AVG, $score);
+            $save_js = '';
+            $disabled = 'readOnly: true,';
+            $score = $this->get_avg_rank($col_name, $col_sn);
+            $msg = ('simple' == $this->show_mode) ? '' : sprintf(_TAD_STAR_RATING_AVG, $score);
         }
 
-        $msg_js = ($this->show_mode == 'simple') ? "" : "$('#rating_result_{$col_name}_{$col_sn}').html('$msg');";
+        $msg_js = ('simple' == $this->show_mode) ? '' : "$('#rating_result_{$col_name}_{$col_sn}').html('$msg');";
 
         $score = $score / 2;
 
-        $show_score   = empty($score) ? "" : "score : $score,";
+        $show_score = empty($score) ? '' : "score : $score,";
         $this->code[] = "
         //module:{$this->mod_name}
         $('#rating_{$col_name}_{$col_sn}').raty({
@@ -134,22 +134,22 @@ class rating
             $uid = $xoopsUser->uid();
         }
 
-        $sql    = "select rank,rank_date from " . $xoopsDB->prefix("{$this->mod_name}_rank") . " where `col_name`='$col_name' and `col_sn`='$col_sn' and `uid`='$uid'";
+        $sql = 'select rank,rank_date from ' . $xoopsDB->prefix("{$this->mod_name}_rank") . " where `col_name`='$col_name' and `col_sn`='$col_sn' and `uid`='$uid'";
         $result = $xoopsDB->queryF($sql) or die($xoopsDB->error());
-        $main   = $xoopsDB->fetchArray($result);
+        $main = $xoopsDB->fetchArray($result);
 
         return $main;
     }
 
     //取得平均分數
-    public function get_avg_rank($col_name = "", $col_sn = "")
+    public function get_avg_rank($col_name = '', $col_sn = '')
     {
         global $xoopsDB;
 
-        $sql        = "select AVG(`rank`) from " . $xoopsDB->prefix("{$this->mod_name}_rank") . " where `col_name`='$col_name' and `col_sn`='$col_sn'";
-        $result     = $xoopsDB->queryF($sql) or die($xoopsDB->error());
+        $sql = 'select AVG(`rank`) from ' . $xoopsDB->prefix("{$this->mod_name}_rank") . " where `col_name`='$col_name' and `col_sn`='$col_sn'";
+        $result = $xoopsDB->queryF($sql) or die($xoopsDB->error());
         list($main) = $xoopsDB->fetchRow($result);
-        $main       = round($main, 0);
+        $main = round($main, 0);
 
         return $main;
     }
@@ -190,5 +190,4 @@ class rating
             return $main;
         }
     }
-
 }

@@ -35,7 +35,7 @@ class PHPExcel_Exponential_Best_Fit extends PHPExcel_Best_Fit
      *
      * @var    string
      **/
-    protected $bestFitType        = 'exponential';
+    protected $bestFitType = 'exponential';
 
     /**
      * Return the Y-Value for a specified value of X
@@ -81,9 +81,10 @@ class PHPExcel_Exponential_Best_Fit extends PHPExcel_Best_Fit
      **/
     public function getSlope($dp = 0)
     {
-        if ($dp != 0) {
+        if (0 != $dp) {
             return round(exp($this->_slope), $dp);
         }
+
         return exp($this->_slope);
     }
 
@@ -95,9 +96,10 @@ class PHPExcel_Exponential_Best_Fit extends PHPExcel_Best_Fit
      **/
     public function getIntersect($dp = 0)
     {
-        if ($dp != 0) {
+        if (0 != $dp) {
             return round(exp($this->intersect), $dp);
         }
+
         return exp($this->intersect);
     }
 
@@ -106,7 +108,7 @@ class PHPExcel_Exponential_Best_Fit extends PHPExcel_Best_Fit
      *
      * @param     float[]    $yValues    The set of Y-values for this regression
      * @param     float[]    $xValues    The set of X-values for this regression
-     * @param     boolean    $const
+     * @param     bool    $const
      */
     private function exponentialRegression($yValues, $xValues, $const)
     {
@@ -127,11 +129,11 @@ class PHPExcel_Exponential_Best_Fit extends PHPExcel_Best_Fit
      *
      * @param    float[]        $yValues    The set of Y-values for this regression
      * @param    float[]        $xValues    The set of X-values for this regression
-     * @param    boolean        $const
+     * @param    bool        $const
      */
-    public function __construct($yValues, $xValues = array(), $const = true)
+    public function __construct($yValues, $xValues = [], $const = true)
     {
-        if (parent::__construct($yValues, $xValues) !== false) {
+        if (false !== parent::__construct($yValues, $xValues)) {
             $this->exponentialRegression($yValues, $xValues, $const);
         }
     }

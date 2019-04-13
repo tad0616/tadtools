@@ -1,7 +1,7 @@
 <?php
 
-include_once "tadtools_header.php";
-include_once "jquery.php";
+include_once 'tadtools_header.php';
+include_once 'jquery.php';
 
 class sweet_alert
 {
@@ -14,10 +14,10 @@ class sweet_alert
     }
 
     //產生語法 $type=error,warning,info,success
-    public function render($func_name = "", $url = "", $var = "", $title = _TAD_DEL_CONFIRM_TITLE, $text = _TAD_DEL_CONFIRM_TEXT, $confirmButtonText = _TAD_DEL_CONFIRM_BTN, $type = "warning", $showCancelButton = true)
+    public function render($func_name = '', $url = '', $var = '', $title = _TAD_DEL_CONFIRM_TITLE, $text = _TAD_DEL_CONFIRM_TEXT, $confirmButtonText = _TAD_DEL_CONFIRM_BTN, $type = 'warning', $showCancelButton = true)
     {
         global $xoTheme;
-        $jquery = $this->show_jquery ? get_jquery() : "";
+        $jquery = $this->show_jquery ? get_jquery() : '';
 
         if ($xoTheme) {
             $xoTheme->addStylesheet('modules/tadtools/sweet-alert/sweet-alert.css');
@@ -69,7 +69,6 @@ class sweet_alert
             return $main;
         }
     }
-
 }
 /*
 
@@ -88,4 +87,4 @@ include_once XOOPS_ROOT_PATH."/modules/tadtools/sweet_alert.php";
 $sweet_alert=new sweet_alert();
 $sweet_alert->render("del_table","ajax_mk_tbl.php?op=del&modsn=$modsn&mssn=",'mssn');
 
- */;
+ */

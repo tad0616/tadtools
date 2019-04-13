@@ -44,8 +44,8 @@ class RowTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructWithParams()
     {
-        $iVal = rand(1, 1000);
-        $oRow = new Row($iVal, array('borderBottomSize' => 18, 'borderBottomColor' => '0000FF', 'bgColor' => '66BBFF'));
+        $iVal = mt_rand(1, 1000);
+        $oRow = new Row($iVal, ['borderBottomSize' => 18, 'borderBottomColor' => '0000FF', 'bgColor' => '66BBFF']);
 
         $this->assertEquals($iVal, $oRow->getHeight());
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Style\\Row', $oRow->getStyle());

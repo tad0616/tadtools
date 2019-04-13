@@ -14,6 +14,7 @@
  * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
 namespace PhpOffice\PhpWord\Writer\Word2007\Part;
 
 use PhpOffice\PhpWord\PhpWord;
@@ -31,7 +32,7 @@ class StylesTest extends \PHPUnit_Framework_TestCase
     /**
      * Executed before each method of the class
      */
-    public function tearDown()
+    protected function tearDown()
     {
         TestHelperDOCX::clear();
     }
@@ -43,12 +44,12 @@ class StylesTest extends \PHPUnit_Framework_TestCase
     {
         $phpWord = new PhpWord();
 
-        $pStyle = array('alignment' => Jc::BOTH);
-        $pBase = array('basedOn' => 'Normal');
-        $pNew = array('basedOn' => 'Base Style', 'next' => 'Normal');
-        $rStyle = array('size' => 20);
-        $tStyle = array('bgColor' => 'FF0000', 'cellMargin' => 120, 'borderSize' => 120);
-        $firstRowStyle = array('bgColor' => '0000FF', 'borderSize' => 120, 'borderColor' => '00FF00');
+        $pStyle = ['alignment' => Jc::BOTH];
+        $pBase = ['basedOn' => 'Normal'];
+        $pNew = ['basedOn' => 'Base Style', 'next' => 'Normal'];
+        $rStyle = ['size' => 20];
+        $tStyle = ['bgColor' => 'FF0000', 'cellMargin' => 120, 'borderSize' => 120];
+        $firstRowStyle = ['bgColor' => '0000FF', 'borderSize' => 120, 'borderColor' => '00FF00'];
         $phpWord->setDefaultParagraphStyle($pStyle);
         $phpWord->addParagraphStyle('Base Style', $pBase);
         $phpWord->addParagraphStyle('New Style', $pNew);

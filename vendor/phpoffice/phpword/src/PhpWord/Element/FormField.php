@@ -62,7 +62,7 @@ class FormField extends Text
      *
      * @var array
      */
-    private $entries = array();
+    private $entries = [];
 
     /**
      * Create new instance
@@ -95,7 +95,7 @@ class FormField extends Text
      */
     public function setType($value)
     {
-        $enum = array('textinput', 'checkbox', 'dropdown');
+        $enum = ['textinput', 'checkbox', 'dropdown'];
         $this->type = $this->setEnumVal($value, $enum, $this->type);
 
         return $this;

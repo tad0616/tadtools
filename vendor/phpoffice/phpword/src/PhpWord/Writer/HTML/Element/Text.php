@@ -141,7 +141,7 @@ class Text extends AbstractElement
                 $content .= $this->closingText;
             }
 
-            $content .= "</p>" . PHP_EOL;
+            $content .= '</p>' . PHP_EOL;
         }
 
         return $content;
@@ -194,7 +194,7 @@ class Text extends AbstractElement
         if ($style) {
             $attribute = $fStyleIsObject ? 'style' : 'class';
             $this->openingTags = "<span {$attribute}=\"{$style}\">";
-            $this->closingTags = "</span>";
+            $this->closingTags = '</span>';
         }
     }
 }

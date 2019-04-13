@@ -30,8 +30,8 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
     public function testUnitConversions()
     {
         $values[] = 0; // zero value
-        $values[] = rand(1, 100) / 100; // fraction number
-        $values[] = rand(1, 100); // integer
+        $values[] = mt_rand(1, 100) / 100; // fraction number
+        $values[] = mt_rand(1, 100); // integer
 
         foreach ($values as $value) {
             $result = Converter::cmToTwip($value);
@@ -102,10 +102,10 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
     public function testHtmlToRGB()
     {
         // Prepare test values [ original, expected ]
-        $values[] = array('#FF99DD', array(255, 153, 221)); // With #
-        $values[] = array('FF99DD', array(255, 153, 221)); // 6 characters
-        $values[] = array('F9D', array(255, 153, 221)); // 3 characters
-        $values[] = array('0F9D', false); // 4 characters
+        $values[] = ['#FF99DD', [255, 153, 221]]; // With #
+        $values[] = ['FF99DD', [255, 153, 221]]; // 6 characters
+        $values[] = ['F9D', [255, 153, 221]]; // 3 characters
+        $values[] = ['0F9D', false]; // 4 characters
         // Conduct test
         foreach ($values as $value) {
             $result = Converter::htmlToRGB($value[0]);

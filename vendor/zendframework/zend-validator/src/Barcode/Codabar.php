@@ -24,6 +24,7 @@ class Codabar extends AbstractAdapter
     /**
      * Checks for allowed characters
      * @see Zend\Validator\Barcode.AbstractAdapter::checkChars()
+     * @param mixed $value
      */
     public function hasValidCharacters($value)
     {
@@ -34,13 +35,13 @@ class Codabar extends AbstractAdapter
                 return false;
             }
 
-            $last = substr($value, -1, 1);
+            $last = mb_substr($value, -1, 1);
             if (!strpbrk($last, 'ABCD')) {
                 // Missing stop char
                 return false;
             }
 
-            $value = substr($value, 1, -1);
+            $value = mb_substr($value, 1, -1);
         } elseif (strpbrk($value, 'TN*E')) {
             $first = $value[0];
             if (!strpbrk($first, 'TN*E')) {
@@ -48,19 +49,20 @@ class Codabar extends AbstractAdapter
                 return false;
             }
 
-            $last = substr($value, -1, 1);
+            $last = mb_substr($value, -1, 1);
             if (!strpbrk($last, 'TN*E')) {
                 // Missing stop char
                 return false;
             }
 
-            $value = substr($value, 1, -1);
+            $value = mb_substr($value, 1, -1);
         }
 
-        $chars  = $this->getCharacters();
+        $chars = $this->getCharacters();
         $this->setCharacters('0123456789-$:/.+');
         $result = parent::hasValidCharacters($value);
         $this->setCharacters($chars);
+
         return $result;
     }
 }

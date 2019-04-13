@@ -28,9 +28,9 @@ class Footer extends AbstractContainer
      * @var string
      * @link http://www.schemacentral.com/sc/ooxml/a-wtype-4.html Header or Footer Type
      */
-    const AUTO  = 'default';  // default and odd pages
+    const AUTO = 'default';  // default and odd pages
     const FIRST = 'first';
-    const EVEN  = 'even';
+    const EVEN = 'even';
 
     /**
      * @var string Container type
@@ -68,7 +68,7 @@ class Footer extends AbstractContainer
      */
     public function setType($value = self::AUTO)
     {
-        if (!in_array($value, array(self::AUTO, self::FIRST, self::EVEN))) {
+        if (!in_array($value, [self::AUTO, self::FIRST, self::EVEN], true)) {
             $value = self::AUTO;
         }
         $this->type = $value;

@@ -52,17 +52,17 @@ class TextBoxTest extends \PHPUnit_Framework_TestCase
     public function testStyleArray()
     {
         $oTextBox = new TextBox(
-            array(
-                'width'       => \PhpOffice\PhpWord\Shared\Converter::cmToPixel(4.5),
-                'height'      => \PhpOffice\PhpWord\Shared\Converter::cmToPixel(17.5),
+            [
+                'width' => \PhpOffice\PhpWord\Shared\Converter::cmToPixel(4.5),
+                'height' => \PhpOffice\PhpWord\Shared\Converter::cmToPixel(17.5),
                 'positioning' => 'absolute',
-                'marginLeft'  => \PhpOffice\PhpWord\Shared\Converter::cmToPixel(15.4),
-                'marginTop'   => \PhpOffice\PhpWord\Shared\Converter::cmToPixel(9.9),
-                'stroke'      => 0,
+                'marginLeft' => \PhpOffice\PhpWord\Shared\Converter::cmToPixel(15.4),
+                'marginTop' => \PhpOffice\PhpWord\Shared\Converter::cmToPixel(9.9),
+                'stroke' => 0,
                 'innerMargin' => 0,
-                'borderSize'  => 1,
+                'borderSize' => 1,
                 'borderColor' => '',
-            )
+            ]
         );
 
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Style\\TextBox', $oTextBox->getStyle());

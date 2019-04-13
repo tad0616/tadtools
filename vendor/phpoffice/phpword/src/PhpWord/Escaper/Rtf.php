@@ -26,11 +26,11 @@ class Rtf extends AbstractEscaper
 {
     protected function escapeAsciiCharacter($code)
     {
-        if (20 > $code || $code >= 80) {
+        if ($code < 20 || $code >= 80) {
             return '{\u' . $code . '}';
-        } else {
-            return chr($code);
         }
+
+        return chr($code);
     }
 
     protected function escapeMultibyteCharacter($code)
@@ -40,14 +40,15 @@ class Rtf extends AbstractEscaper
 
     /**
      * @see http://www.randomchaos.com/documents/?source=php_and_unicode
+     * @param mixed $input
      */
     protected function escapeSingleValue($input)
     {
         $escapedValue = '';
 
         $numberOfBytes = 1;
-        $bytes = array();
-        for ($i = 0; $i < strlen($input); ++$i) {
+        $bytes = [];
+        for ($i = 0; $i < mb_strlen($input); ++$i) {
             $character = $input[$i];
             $asciiCode = ord($character);
 
@@ -57,9 +58,9 @@ class Rtf extends AbstractEscaper
                 if (0 == count($bytes)) {
                     if ($asciiCode < 224) {
                         $numberOfBytes = 2;
-                    } else if ($asciiCode < 240) {
+                    } elseif ($asciiCode < 240) {
                         $numberOfBytes = 3;
-                    } else if ($asciiCode < 248) {
+                    } elseif ($asciiCode < 248) {
                         $numberOfBytes = 4;
                     }
                 }
@@ -80,7 +81,7 @@ class Rtf extends AbstractEscaper
                     }
 
                     $numberOfBytes = 1;
-                    $bytes = array();
+                    $bytes = [];
                 }
             }
         }

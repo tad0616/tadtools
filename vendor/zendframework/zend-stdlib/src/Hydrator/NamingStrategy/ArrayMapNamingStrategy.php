@@ -14,12 +14,12 @@ final class ArrayMapNamingStrategy implements NamingStrategyInterface
     /**
      * @var string[]
      */
-    private $extractionMap = array();
+    private $extractionMap = [];
 
     /**
      * @var string[]
      */
-    private $hydrationMap = array();
+    private $hydrationMap = [];
 
     /**
      * Constructor
@@ -30,7 +30,7 @@ final class ArrayMapNamingStrategy implements NamingStrategyInterface
     public function __construct(array $extractionMap)
     {
         $this->extractionMap = $extractionMap;
-        $this->hydrationMap  = array_flip($extractionMap);
+        $this->hydrationMap = array_flip($extractionMap);
     }
 
     /**

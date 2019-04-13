@@ -24,15 +24,13 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    Beta 0.6.3, 08.07.2011
  */
-
-
 interface PHPWord_Writer_IWriter
 {
-	/**
-	 * Save PHPWord to file
-	 *
-	 * @param     string         $pFileName
-	 * @throws     Exception
-	 */
-	public function save($pFilename = null);
+    /**
+     * Save PHPWord to file
+     *
+     * @param null|mixed $pFilename
+     * @throws     Exception
+     */
+    public function save($pFilename = null);
 }

@@ -30,11 +30,11 @@ class TOCTest extends \PHPUnit_Framework_TestCase
     public function testGetSet()
     {
         $object = new TOC();
-        $properties = array(
-            'tabLeader' => array(TOC::TAB_LEADER_DOT, TOC::TAB_LEADER_UNDERSCORE),
-            'tabPos'    => array(9062, 10),
-            'indent'    => array(200, 10),
-        );
+        $properties = [
+            'tabLeader' => [TOC::TAB_LEADER_DOT, TOC::TAB_LEADER_UNDERSCORE],
+            'tabPos' => [9062, 10],
+            'indent' => [200, 10],
+        ];
         foreach ($properties as $property => $value) {
             list($default, $expected) = $value;
             $get = "get{$property}";

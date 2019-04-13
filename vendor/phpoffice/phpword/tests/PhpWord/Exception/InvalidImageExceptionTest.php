@@ -28,11 +28,12 @@ class InvalidImageExceptionTest extends \PHPUnit_Framework_TestCase
     /**
      * Throw new exception
      *
-     * @expectedException \PhpOffice\PhpWord\Exception\InvalidImageException
      * @covers            \PhpOffice\PhpWord\Exception\InvalidImageException
      */
     public function testThrowException()
     {
-        throw new InvalidImageException;
+        $this->expectException(\PhpOffice\PhpWord\Exception\InvalidImageException::class);
+
+        throw new InvalidImageException();
     }
 }

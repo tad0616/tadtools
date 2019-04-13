@@ -28,11 +28,10 @@ final class DateTimeFormatterStrategy implements StrategyInterface
      * Constructor
      *
      * @param string            $format
-     * @param DateTimeZone|null $timezone
      */
     public function __construct($format = DateTime::RFC3339, DateTimeZone $timezone = null)
     {
-        $this->format   = (string) $format;
+        $this->format = (string) $format;
         $this->timezone = $timezone;
     }
 
@@ -65,7 +64,7 @@ final class DateTimeFormatterStrategy implements StrategyInterface
      */
     public function hydrate($value)
     {
-        if ($value === '' || $value === null) {
+        if ('' === $value || null === $value) {
             return;
         }
 

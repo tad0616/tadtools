@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPExcel_Worksheet_Column
  *
@@ -37,56 +36,60 @@
  */
 class PHPExcel_Worksheet_Column
 {
-	/**
-	 * PHPExcel_Worksheet
-	 *
-	 * @var PHPExcel_Worksheet
-	 */
-	private $_parent;
+    /**
+     * PHPExcel_Worksheet
+     *
+     * @var PHPExcel_Worksheet
+     */
+    private $_parent;
 
-	/**
-	 * Column index
-	 *
-	 * @var string
-	 */
-	private $_columnIndex;
+    /**
+     * Column index
+     *
+     * @var string
+     */
+    private $_columnIndex;
 
-	/**
-	 * Create a new column
-	 *
-	 * @param PHPExcel_Worksheet 	$parent
-	 * @param string				$columnIndex
-	 */
-	public function __construct(PHPExcel_Worksheet $parent = null, $columnIndex = 'A') {
-		// Set parent and column index
-		$this->_parent 		= $parent;
-		$this->_columnIndex = $columnIndex;
-	}
+    /**
+     * Create a new column
+     *
+     * @param PHPExcel_Worksheet 	$parent
+     * @param string				$columnIndex
+     */
+    public function __construct(PHPExcel_Worksheet $parent = null, $columnIndex = 'A')
+    {
+        // Set parent and column index
+        $this->_parent = $parent;
+        $this->_columnIndex = $columnIndex;
+    }
 
-	/**
-	 * Destructor
-	 */
-	public function __destruct() {
-		unset($this->_parent);
-	}
+    /**
+     * Destructor
+     */
+    public function __destruct()
+    {
+        unset($this->_parent);
+    }
 
-	/**
-	 * Get column index
-	 *
-	 * @return int
-	 */
-	public function getColumnIndex() {
-		return $this->_columnIndex;
-	}
+    /**
+     * Get column index
+     *
+     * @return int
+     */
+    public function getColumnIndex()
+    {
+        return $this->_columnIndex;
+    }
 
-	/**
-	 * Get cell iterator
-	 *
-	 * @param	integer				$startRow	    The row number at which to start iterating
-	 * @param	integer				$endRow	        Optionally, the row number at which to stop iterating
-	 * @return PHPExcel_Worksheet_CellIterator
-	 */
-	public function getCellIterator($startRow = 1, $endRow = null) {
-		return new PHPExcel_Worksheet_ColumnCellIterator($this->_parent, $this->_columnIndex, $startRow, $endRow);
-	}
+    /**
+     * Get cell iterator
+     *
+     * @param	int				$startRow	    The row number at which to start iterating
+     * @param	int				$endRow	        Optionally, the row number at which to stop iterating
+     * @return PHPExcel_Worksheet_CellIterator
+     */
+    public function getCellIterator($startRow = 1, $endRow = null)
+    {
+        return new PHPExcel_Worksheet_ColumnCellIterator($this->_parent, $this->_columnIndex, $startRow, $endRow);
+    }
 }

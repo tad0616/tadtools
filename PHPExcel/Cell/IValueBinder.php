@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPExcel_Cell_IValueBinder
  *
@@ -40,7 +39,7 @@ interface PHPExcel_Cell_IValueBinder
      *
      * @param  PHPExcel_Cell $cell    Cell to bind value to
      * @param  mixed $value           Value to bind in cell
-     * @return boolean
+     * @return bool
      */
-    public function bindValue(PHPExcel_Cell $cell, $value = NULL);
+    public function bindValue(PHPExcel_Cell $cell, $value = null);
 }

@@ -53,14 +53,14 @@ class TemplateProcessor
      *
      * @var string[]
      */
-    protected $tempDocumentHeaders = array();
+    protected $tempDocumentHeaders = [];
 
     /**
      * Content of footers (in XML format) of the temporary document.
      *
      * @var string[]
      */
-    protected $tempDocumentFooters = array();
+    protected $tempDocumentFooters = [];
 
     /**
      * @since 0.12.0 Throws CreateTemporaryFileException and CopyFileException instead of Exception.
@@ -107,9 +107,8 @@ class TemplateProcessor
      * @param string $xml
      * @param \XSLTProcessor $xsltProcessor
      *
-     * @return string
-     *
      * @throws \PhpOffice\PhpWord\Exception\Exception
+     * @return string
      */
     protected function transformSingleXml($xml, $xsltProcessor)
     {
@@ -155,11 +154,10 @@ class TemplateProcessor
      * @param array $xslOptions
      * @param string $xslOptionsUri
      *
-     * @return void
-     *
      * @throws \PhpOffice\PhpWord\Exception\Exception
+     * @return void
      */
-    public function applyXslStyleSheet($xslDomDocument, $xslOptions = array(), $xslOptionsUri = '')
+    public function applyXslStyleSheet($xslDomDocument, $xslOptions = [], $xslOptionsUri = '')
     {
         $xsltProcessor = new \XSLTProcessor();
 
@@ -180,7 +178,7 @@ class TemplateProcessor
      */
     protected static function ensureMacroCompleted($macro)
     {
-        if (substr($macro, 0, 2) !== '${' && substr($macro, -1) !== '}') {
+        if ('${' !== mb_substr($macro, 0, 2) && '}' !== mb_substr($macro, -1)) {
             $macro = '${' . $macro . '}';
         }
 
@@ -204,7 +202,7 @@ class TemplateProcessor
     /**
      * @param mixed $search
      * @param mixed $replace
-     * @param integer $limit
+     * @param int $limit
      *
      * @return void
      */
@@ -260,21 +258,20 @@ class TemplateProcessor
      * Clone a table row in a template document.
      *
      * @param string $search
-     * @param integer $numberOfClones
-     *
-     * @return void
+     * @param int $numberOfClones
      *
      * @throws \PhpOffice\PhpWord\Exception\Exception
+     * @return void
      */
     public function cloneRow($search, $numberOfClones)
     {
-        if ('${' !== substr($search, 0, 2) && '}' !== substr($search, -1)) {
+        if ('${' !== mb_substr($search, 0, 2) && '}' !== mb_substr($search, -1)) {
             $search = '${' . $search . '}';
         }
 
-        $tagPos = strpos($this->tempDocumentMainPart, $search);
+        $tagPos = mb_strpos($this->tempDocumentMainPart, $search);
         if (!$tagPos) {
-            throw new Exception("Can not clone row, template variable not found or variable contains markup.");
+            throw new Exception('Can not clone row, template variable not found or variable contains markup.');
         }
 
         $rowStart = $this->findRowStart($tagPos);
@@ -319,8 +316,8 @@ class TemplateProcessor
      * Clone a block.
      *
      * @param string $blockname
-     * @param integer $clones
-     * @param boolean $replace
+     * @param int $clones
+     * @param bool $replace
      *
      * @return string|null
      */
@@ -335,7 +332,7 @@ class TemplateProcessor
 
         if (isset($matches[3])) {
             $xmlBlock = $matches[3];
-            $cloned = array();
+            $cloned = [];
             for ($i = 1; $i <= $clones; $i++) {
                 $cloned[] = $xmlBlock;
             }
@@ -392,9 +389,8 @@ class TemplateProcessor
     /**
      * Saves the result document.
      *
-     * @return string
-     *
      * @throws \PhpOffice\PhpWord\Exception\Exception
+     * @return string
      */
     public function save()
     {
@@ -472,7 +468,7 @@ class TemplateProcessor
      * @param mixed $search
      * @param mixed $replace
      * @param string $documentPartXML
-     * @param integer $limit
+     * @param int $limit
      *
      * @return string
      */
@@ -481,10 +477,10 @@ class TemplateProcessor
         // Note: we can't use the same function for both cases here, because of performance considerations.
         if (self::MAXIMUM_REPLACEMENTS_DEFAULT === $limit) {
             return str_replace($search, $replace, $documentPartXML);
-        } else {
-            $regExpEscaper = new RegExp();
-            return preg_replace($regExpEscaper->escape($search), $replace, $documentPartXML, $limit);
         }
+        $regExpEscaper = new RegExp();
+
+        return preg_replace($regExpEscaper->escape($search), $replace, $documentPartXML, $limit);
     }
 
     /**
@@ -504,7 +500,7 @@ class TemplateProcessor
     /**
      * Get the name of the header file for $index.
      *
-     * @param integer $index
+     * @param int $index
      *
      * @return string
      */
@@ -524,7 +520,7 @@ class TemplateProcessor
     /**
      * Get the name of the footer file for $index.
      *
-     * @param integer $index
+     * @param int $index
      *
      * @return string
      */
@@ -536,18 +532,17 @@ class TemplateProcessor
     /**
      * Find the start position of the nearest table row before $offset.
      *
-     * @param integer $offset
-     *
-     * @return integer
+     * @param int $offset
      *
      * @throws \PhpOffice\PhpWord\Exception\Exception
+     * @return integer
      */
     protected function findRowStart($offset)
     {
-        $rowStart = strrpos($this->tempDocumentMainPart, '<w:tr ', ((strlen($this->tempDocumentMainPart) - $offset) * -1));
+        $rowStart = mb_strrpos($this->tempDocumentMainPart, '<w:tr ', ((mb_strlen($this->tempDocumentMainPart) - $offset) * -1));
 
         if (!$rowStart) {
-            $rowStart = strrpos($this->tempDocumentMainPart, '<w:tr>', ((strlen($this->tempDocumentMainPart) - $offset) * -1));
+            $rowStart = mb_strrpos($this->tempDocumentMainPart, '<w:tr>', ((mb_strlen($this->tempDocumentMainPart) - $offset) * -1));
         }
         if (!$rowStart) {
             throw new Exception('Can not find the start position of the row to clone.');
@@ -559,29 +554,29 @@ class TemplateProcessor
     /**
      * Find the end position of the nearest table row after $offset.
      *
-     * @param integer $offset
+     * @param int $offset
      *
      * @return integer
      */
     protected function findRowEnd($offset)
     {
-        return strpos($this->tempDocumentMainPart, '</w:tr>', $offset) + 7;
+        return mb_strpos($this->tempDocumentMainPart, '</w:tr>', $offset) + 7;
     }
 
     /**
      * Get a slice of a string.
      *
-     * @param integer $startPosition
-     * @param integer $endPosition
+     * @param int $startPosition
+     * @param int $endPosition
      *
      * @return string
      */
     protected function getSlice($startPosition, $endPosition = 0)
     {
         if (!$endPosition) {
-            $endPosition = strlen($this->tempDocumentMainPart);
+            $endPosition = mb_strlen($this->tempDocumentMainPart);
         }
 
-        return substr($this->tempDocumentMainPart, $startPosition, ($endPosition - $startPosition));
+        return mb_substr($this->tempDocumentMainPart, $startPosition, ($endPosition - $startPosition));
     }
 }

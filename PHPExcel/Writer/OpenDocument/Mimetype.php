@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPExcel_Writer_OpenDocument_Mimetype
  *
@@ -40,8 +39,8 @@ class PHPExcel_Writer_OpenDocument_Mimetype extends PHPExcel_Writer_OpenDocument
      * Write mimetype to plain text format
      *
      * @param     PHPExcel    $pPHPExcel
-     * @return     string         XML Output
      * @throws     PHPExcel_Writer_Exception
+     * @return     string         XML Output
      */
     public function write(PHPExcel $pPHPExcel = null)
     {

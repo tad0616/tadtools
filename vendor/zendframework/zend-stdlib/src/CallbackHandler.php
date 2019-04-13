@@ -43,9 +43,9 @@ class CallbackHandler
      * @param  string|array|object|callable $callback PHP callback
      * @param  array                        $metadata  Callback metadata
      */
-    public function __construct($callback, array $metadata = array())
+    public function __construct($callback, array $metadata = [])
     {
-        $this->metadata  = $metadata;
+        $this->metadata = $metadata;
         $this->registerCallback($callback);
     }
 
@@ -81,7 +81,7 @@ class CallbackHandler
      * @param  array $args Arguments to pass to callback
      * @return mixed
      */
-    public function call(array $args = array())
+    public function call(array $args = [])
     {
         $callback = $this->getCallback();
 
@@ -95,8 +95,8 @@ class CallbackHandler
         if (static::$isPhp54 && is_string($callback)) {
             $result = $this->validateStringCallbackFor54($callback);
 
-            if ($result !== true && $argCount <= 3) {
-                $callback       = $result;
+            if (true !== $result && $argCount <= 3) {
+                $callback = $result;
                 // Minor performance tweak, if the callback gets called more
                 // than once
                 $this->callback = $result;
@@ -110,11 +110,13 @@ class CallbackHandler
                 if (static::$isPhp54) {
                     return $callback();
                 }
+
                 return call_user_func($callback);
             case 1:
                 if (static::$isPhp54) {
                     return $callback(array_shift($args));
                 }
+
                 return call_user_func($callback, array_shift($args));
             case 2:
                 $arg1 = array_shift($args);
@@ -122,6 +124,7 @@ class CallbackHandler
                 if (static::$isPhp54) {
                     return $callback($arg1, $arg2);
                 }
+
                 return call_user_func($callback, $arg1, $arg2);
             case 3:
                 $arg1 = array_shift($args);
@@ -130,6 +133,7 @@ class CallbackHandler
                 if (static::$isPhp54) {
                     return $callback($arg1, $arg2, $arg3);
                 }
+
                 return call_user_func($callback, $arg1, $arg2, $arg3);
             default:
                 return call_user_func_array($callback, $args);
@@ -167,7 +171,6 @@ class CallbackHandler
         if (array_key_exists($name, $this->metadata)) {
             return $this->metadata[$name];
         }
-        return;
     }
 
     /**
@@ -176,12 +179,12 @@ class CallbackHandler
      * Validates that a static method call in PHP 5.4 will actually work
      *
      * @param  string $callback
-     * @return true|array
      * @throws Exception\InvalidCallbackException if invalid
+     * @return true|array
      */
     protected function validateStringCallbackFor54($callback)
     {
-        if (!strstr($callback, '::')) {
+        if (!mb_strstr($callback, '::')) {
             return true;
         }
 
@@ -212,6 +215,6 @@ class CallbackHandler
         // returning a non boolean value may not be nice for a validate method,
         // but that allows the usage of a static string callback without using
         // the call_user_func function.
-        return array($class, $method);
+        return [$class, $method];
     }
 }

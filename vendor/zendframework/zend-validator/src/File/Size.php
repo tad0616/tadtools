@@ -21,27 +21,27 @@ class Size extends AbstractValidator
     /**
      * @const string Error constants
      */
-    const TOO_BIG   = 'fileSizeTooBig';
+    const TOO_BIG = 'fileSizeTooBig';
     const TOO_SMALL = 'fileSizeTooSmall';
     const NOT_FOUND = 'fileSizeNotFound';
 
     /**
      * @var array Error message templates
      */
-    protected $messageTemplates = array(
-        self::TOO_BIG   => "Maximum allowed size for file is '%max%' but '%size%' detected",
+    protected $messageTemplates = [
+        self::TOO_BIG => "Maximum allowed size for file is '%max%' but '%size%' detected",
         self::TOO_SMALL => "Minimum expected size for file is '%min%' but '%size%' detected",
-        self::NOT_FOUND => "File is not readable or does not exist",
-    );
+        self::NOT_FOUND => 'File is not readable or does not exist',
+    ];
 
     /**
      * @var array Error message template variables
      */
-    protected $messageVariables = array(
-        'min'  => array('options' => 'min'),
-        'max'  => array('options' => 'max'),
+    protected $messageVariables = [
+        'min' => ['options' => 'min'],
+        'max' => ['options' => 'max'],
         'size' => 'size',
-    );
+    ];
 
     /**
      * Detected size
@@ -55,11 +55,11 @@ class Size extends AbstractValidator
      *
      * @var array
      */
-    protected $options = array(
-        'min'           => null, // Minimum file size, if null there is no minimum
-        'max'           => null, // Maximum file size, if null there is no maximum
+    protected $options = [
+        'min' => null, // Minimum file size, if null there is no minimum
+        'max' => null, // Maximum file size, if null there is no maximum
         'useByteString' => true, // Use byte string?
-    );
+    ];
 
     /**
      * Sets validator options
@@ -75,10 +75,10 @@ class Size extends AbstractValidator
     public function __construct($options = null)
     {
         if (is_string($options) || is_numeric($options)) {
-            $options = array('max' => $options);
+            $options = ['max' => $options];
         }
 
-        if (1 < func_num_args()) {
+        if (func_num_args() > 1) {
             $argv = func_get_args();
             array_shift($argv);
             $options['max'] = array_shift($argv);
@@ -99,6 +99,7 @@ class Size extends AbstractValidator
     public function useByteString($byteString = true)
     {
         $this->options['useByteString'] = (bool) $byteString;
+
         return $this;
     }
 
@@ -136,8 +137,8 @@ class Size extends AbstractValidator
      * For example: 2000, 2MB, 0.2GB
      *
      * @param  int|string $min The minimum file size
-     * @return Size Provides a fluent interface
      * @throws Exception\InvalidArgumentException When min is greater than max
+     * @return Size Provides a fluent interface
      */
     public function setMin($min)
     {
@@ -147,13 +148,14 @@ class Size extends AbstractValidator
 
         $min = (int) $this->fromByteString($min);
         $max = $this->getMax(true);
-        if (($max !== null) && ($min > $max)) {
+        if ((null !== $max) && ($min > $max)) {
             throw new Exception\InvalidArgumentException(
                 "The minimum must be less than or equal to the maximum file size, but $min > $max"
             );
         }
 
         $this->options['min'] = $min;
+
         return $this;
     }
 
@@ -181,8 +183,8 @@ class Size extends AbstractValidator
      * For example: 2000, 2MB, 0.2GB
      *
      * @param  int|string $max The maximum file size
-     * @return Size Provides a fluent interface
      * @throws Exception\InvalidArgumentException When max is smaller than min
+     * @return Size Provides a fluent interface
      */
     public function setMax($max)
     {
@@ -192,13 +194,14 @@ class Size extends AbstractValidator
 
         $max = (int) $this->fromByteString($max);
         $min = $this->getMin(true);
-        if (($min !== null) && ($max < $min)) {
+        if ((null !== $min) && ($max < $min)) {
             throw new Exception\InvalidArgumentException(
                 "The maximum must be greater than or equal to the minimum file size, but $max < $min"
             );
         }
 
         $this->options['max'] = $max;
+
         return $this;
     }
 
@@ -221,6 +224,7 @@ class Size extends AbstractValidator
     protected function setSize($size)
     {
         $this->size = $size;
+
         return $this;
     }
 
@@ -237,17 +241,17 @@ class Size extends AbstractValidator
         if (is_string($value) && is_array($file)) {
             // Legacy Zend\Transfer API support
             $filename = $file['name'];
-            $file     = $file['tmp_name'];
+            $file = $file['tmp_name'];
         } elseif (is_array($value)) {
             if (!isset($value['tmp_name']) || !isset($value['name'])) {
                 throw new Exception\InvalidArgumentException(
                     'Value array must be in $_FILES format'
                 );
             }
-            $file     = $value['tmp_name'];
+            $file = $value['tmp_name'];
             $filename = $value['name'];
         } else {
-            $file     = $value;
+            $file = $value;
             $filename = basename($file);
         }
         $this->setValue($filename);
@@ -255,38 +259,39 @@ class Size extends AbstractValidator
         // Is file readable ?
         if (empty($file) || false === stream_resolve_include_path($file)) {
             $this->error(self::NOT_FOUND);
+
             return false;
         }
 
         // limited to 4GB files
         ErrorHandler::start();
-        $size = sprintf("%u", filesize($file));
+        $size = sprintf('%u', filesize($file));
         ErrorHandler::stop();
         $this->size = $size;
 
         // Check to see if it's smaller than min size
         $min = $this->getMin(true);
         $max = $this->getMax(true);
-        if (($min !== null) && ($size < $min)) {
+        if ((null !== $min) && ($size < $min)) {
             if ($this->getByteString()) {
                 $this->options['min'] = $this->toByteString($min);
-                $this->size          = $this->toByteString($size);
+                $this->size = $this->toByteString($size);
                 $this->error(self::TOO_SMALL);
                 $this->options['min'] = $min;
-                $this->size          = $size;
+                $this->size = $size;
             } else {
                 $this->error(self::TOO_SMALL);
             }
         }
 
         // Check to see if it's larger than max size
-        if (($max !== null) && ($max < $size)) {
+        if ((null !== $max) && ($max < $size)) {
             if ($this->getByteString()) {
                 $this->options['max'] = $this->toByteString($max);
-                $this->size          = $this->toByteString($size);
+                $this->size = $this->toByteString($size);
                 $this->error(self::TOO_BIG);
                 $this->options['max'] = $max;
-                $this->size          = $size;
+                $this->size = $size;
             } else {
                 $this->error(self::TOO_BIG);
             }
@@ -307,8 +312,8 @@ class Size extends AbstractValidator
      */
     protected function toByteString($size)
     {
-        $sizes = array('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
-        for ($i=0; $size >= 1024 && $i < 9; $i++) {
+        $sizes = ['B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+        for ($i = 0; $size >= 1024 && $i < 9; $i++) {
             $size /= 1024;
         }
 
@@ -327,14 +332,14 @@ class Size extends AbstractValidator
             return (int) $size;
         }
 
-        $type  = trim(substr($size, -2, 1));
+        $type = trim(mb_substr($size, -2, 1));
 
-        $value = substr($size, 0, -1);
+        $value = mb_substr($size, 0, -1);
         if (!is_numeric($value)) {
-            $value = substr($value, 0, -1);
+            $value = mb_substr($value, 0, -1);
         }
 
-        switch (strtoupper($type)) {
+        switch (mb_strtoupper($type)) {
             case 'Y':
                 $value *= (1024 * 1024 * 1024 * 1024 * 1024 * 1024 * 1024 * 1024);
                 break;

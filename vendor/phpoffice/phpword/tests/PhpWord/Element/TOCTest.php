@@ -31,12 +31,12 @@ class TOCTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructWithStyleArray()
     {
-        $expected = array(
+        $expected = [
             'position' => 9062,
-            'leader'   => \PhpOffice\PhpWord\Style\Tab::TAB_LEADER_DOT,
-            'indent'   => 200,
-        );
-        $object = new TOC(array('size' => 11), array('position' => $expected['position']));
+            'leader' => \PhpOffice\PhpWord\Style\Tab::TAB_LEADER_DOT,
+            'indent' => 200,
+        ];
+        $object = new TOC(['size' => 11], ['position' => $expected['position']]);
         $tocStyle = $object->getStyleTOC();
 
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Style\\TOC', $tocStyle);
@@ -75,12 +75,12 @@ class TOCTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetGetMinMaxDepth()
     {
-        $titles = array(
+        $titles = [
             'Heading 1' => 1,
             'Heading 2' => 2,
             'Heading 3' => 3,
             'Heading 4' => 4,
-        );
+        ];
 
         $phpWord = new PhpWord();
         foreach ($titles as $text => $depth) {

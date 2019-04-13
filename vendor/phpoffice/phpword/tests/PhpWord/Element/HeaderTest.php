@@ -29,7 +29,7 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructDefault()
     {
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oHeader = new Header($iVal);
 
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Element\\Header', $oHeader);
@@ -79,7 +79,7 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
     public function testAddTextBreakWithParams()
     {
         $oHeader = new Header(1);
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oHeader->addTextBreak($iVal);
         $this->assertCount($iVal, $oHeader->getElements());
     }
@@ -153,7 +153,7 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(1, $oHeader->getElements());
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Element\\PreserveText', $element);
-        $this->assertEquals(array('ééé'), $element->getText());
+        $this->assertEquals(['ééé'], $element->getText());
     }
 
     /**
@@ -186,7 +186,7 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
     {
         $oHeader = new Header(1);
 
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oHeader->setRelationId($iVal);
         $this->assertEquals($iVal, $oHeader->getRelationId());
     }
@@ -227,11 +227,11 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Add footnote exception
-     *
-     * @expectedException BadMethodCallException
      */
     public function testAddFootnoteException()
     {
+        $this->expectException(\BadMethodCallException::class);
+
         $header = new Header(1);
         $header->addFootnote();
     }

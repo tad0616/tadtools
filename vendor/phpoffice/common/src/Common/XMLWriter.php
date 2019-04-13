@@ -50,11 +50,12 @@ class XMLWriter extends \XMLWriter
      *
      * @param int $pTemporaryStorage Temporary storage location
      * @param string $pTemporaryStorageDir Temporary storage folder
+     * @param mixed $compatibility
      */
     public function __construct($pTemporaryStorage = self::STORAGE_MEMORY, $pTemporaryStorageDir = null, $compatibility = false)
     {
         // Open temporary storage
-        if ($pTemporaryStorage == self::STORAGE_MEMORY) {
+        if (self::STORAGE_MEMORY == $pTemporaryStorage) {
             $this->openMemory();
         } else {
             if (!is_dir($pTemporaryStorageDir)) {
@@ -85,8 +86,8 @@ class XMLWriter extends \XMLWriter
         if (empty($this->tempFileName)) {
             return;
         }
-        if (PHP_OS != 'WINNT' && @unlink($this->tempFileName) === false) {
-            throw new \Exception('The file '.$this->tempFileName.' could not be deleted.');
+        if (PHP_OS != 'WINNT' && false === @unlink($this->tempFileName)) {
+            throw new \Exception('The file ' . $this->tempFileName . ' could not be deleted.');
         }
     }
 
@@ -97,14 +98,14 @@ class XMLWriter extends \XMLWriter
      */
     public function getData()
     {
-        if ($this->tempFileName == '') {
+        if ('' == $this->tempFileName) {
             return $this->outputMemory(true);
         }
 
         $this->flush();
+
         return file_get_contents($this->tempFileName);
     }
-
 
     /**
      * Write simple element and attribute(s) block
@@ -122,7 +123,7 @@ class XMLWriter extends \XMLWriter
     {
         $this->startElement($element);
         if (!is_array($attributes)) {
-            $attributes = array($attributes => $value);
+            $attributes = [$attributes => $value];
         }
         foreach ($attributes as $attribute => $value) {
             $this->writeAttribute($attribute, $value);
@@ -141,8 +142,8 @@ class XMLWriter extends \XMLWriter
      */
     public function writeElementIf($condition, $element, $attribute = null, $value = null)
     {
-        if ($condition == true) {
-            if (is_null($attribute)) {
+        if (true == $condition) {
+            if (null === $attribute) {
                 $this->writeElement($element, $value);
             } else {
                 $this->startElement($element);
@@ -162,7 +163,7 @@ class XMLWriter extends \XMLWriter
      */
     public function writeAttributeIf($condition, $attribute, $value)
     {
-        if ($condition == true) {
+        if (true == $condition) {
             $this->writeAttribute($attribute, $value);
         }
     }
@@ -177,6 +178,7 @@ class XMLWriter extends \XMLWriter
         if (is_float($value)) {
             $value = json_encode($value);
         }
+
         return parent::writeAttribute($name, $value);
     }
 }

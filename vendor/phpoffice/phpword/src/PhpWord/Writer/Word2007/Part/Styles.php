@@ -56,12 +56,12 @@ class Styles extends AbstractPart
         // Write styles
         if (count($styles) > 0) {
             foreach ($styles as $styleName => $style) {
-                if ($styleName == 'Normal') {
+                if ('Normal' == $styleName) {
                     continue;
                 }
 
                 // Get style class and execute if the private method exists
-                $styleClass = substr(get_class($style), strrpos(get_class($style), '\\') + 1);
+                $styleClass = mb_substr(get_class($style), mb_strrpos(get_class($style), '\\') + 1);
                 $method = "write{$styleClass}Style";
                 if (method_exists($this, $method)) {
                     $this->$method($xmlWriter, $styleName, $style);
@@ -77,7 +77,6 @@ class Styles extends AbstractPart
     /**
      * Write default font and other default styles.
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
      * @param \PhpOffice\PhpWord\Style\AbstractStyle[] $styles
      * @return void
      */
@@ -142,17 +141,15 @@ class Styles extends AbstractPart
     /**
      * Write font style.
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
      * @param string $styleName
-     * @param \PhpOffice\PhpWord\Style\Font $style
      * @return void
      */
     private function writeFontStyle(XMLWriter $xmlWriter, $styleName, FontStyle $style)
     {
         $paragraphStyle = $style->getParagraph();
         $styleType = $style->getStyleType();
-        $type = ($styleType == 'title') ? 'paragraph' : 'character';
-        if (!is_null($paragraphStyle)) {
+        $type = ('title' == $styleType) ? 'paragraph' : 'character';
+        if (null !== $paragraphStyle) {
             $type = 'paragraph';
         }
 
@@ -160,7 +157,7 @@ class Styles extends AbstractPart
         $xmlWriter->writeAttribute('w:type', $type);
 
         // Heading style
-        if ($styleType == 'title') {
+        if ('title' == $styleType) {
             $arrStyle = explode('_', $styleName);
             $styleId = 'Heading' . $arrStyle[1];
             $styleName = 'heading ' . $arrStyle[1];
@@ -178,10 +175,10 @@ class Styles extends AbstractPart
         $xmlWriter->endElement();
 
         // Parent style
-        $xmlWriter->writeElementIf(!is_null($paragraphStyle), 'w:basedOn', 'w:val', 'Normal');
+        $xmlWriter->writeElementIf(null !== $paragraphStyle, 'w:basedOn', 'w:val', 'Normal');
 
         // w:pPr
-        if (!is_null($paragraphStyle)) {
+        if (null !== $paragraphStyle) {
             $styleWriter = new ParagraphStyleWriter($xmlWriter, $paragraphStyle);
             $styleWriter->write();
         }
@@ -196,9 +193,7 @@ class Styles extends AbstractPart
     /**
      * Write paragraph style.
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
      * @param string $styleName
-     * @param \PhpOffice\PhpWord\Style\Paragraph $style
      * @return void
      */
     private function writeParagraphStyle(XMLWriter $xmlWriter, $styleName, ParagraphStyle $style)
@@ -213,11 +208,11 @@ class Styles extends AbstractPart
 
         // Parent style
         $basedOn = $style->getBasedOn();
-        $xmlWriter->writeElementIf(!is_null($basedOn), 'w:basedOn', 'w:val', $basedOn);
+        $xmlWriter->writeElementIf(null !== $basedOn, 'w:basedOn', 'w:val', $basedOn);
 
         // Next paragraph style
         $next = $style->getNext();
-        $xmlWriter->writeElementIf(!is_null($next), 'w:next', 'w:val', $next);
+        $xmlWriter->writeElementIf(null !== $next, 'w:next', 'w:val', $next);
 
         // w:pPr
         $styleWriter = new ParagraphStyleWriter($xmlWriter, $style);
@@ -229,9 +224,7 @@ class Styles extends AbstractPart
     /**
      * Write table style.
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
      * @param string $styleName
-     * @param \PhpOffice\PhpWord\Style\Table $style
      * @return void
      */
     private function writeTableStyle(XMLWriter $xmlWriter, $styleName, TableStyle $style)

@@ -25,7 +25,6 @@
  * @version        ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPExcel_Chart_Layout
  *
@@ -139,11 +138,11 @@ class PHPExcel_Chart_Layout
      */
     private $showLeaderLines;
 
-
     /**
      * Create a new PHPExcel_Chart_Layout
+     * @param mixed $layout
      */
-    public function __construct($layout = array())
+    public function __construct($layout = [])
     {
         if (isset($layout['layoutTarget'])) {
             $this->layoutTarget = $layout['layoutTarget'];
@@ -187,6 +186,7 @@ class PHPExcel_Chart_Layout
     public function setLayoutTarget($value)
     {
         $this->layoutTarget = $value;
+
         return $this;
     }
 
@@ -209,6 +209,7 @@ class PHPExcel_Chart_Layout
     public function setXMode($value)
     {
         $this->xMode = $value;
+
         return $this;
     }
 
@@ -231,6 +232,7 @@ class PHPExcel_Chart_Layout
     public function setYMode($value)
     {
         $this->yMode = $value;
+
         return $this;
     }
 
@@ -253,6 +255,7 @@ class PHPExcel_Chart_Layout
     public function setXPosition($value)
     {
         $this->xPos = $value;
+
         return $this;
     }
 
@@ -275,6 +278,7 @@ class PHPExcel_Chart_Layout
     public function setYPosition($value)
     {
         $this->yPos = $value;
+
         return $this;
     }
 
@@ -297,6 +301,7 @@ class PHPExcel_Chart_Layout
     public function setWidth($value)
     {
         $this->width = $value;
+
         return $this;
     }
 
@@ -319,9 +324,9 @@ class PHPExcel_Chart_Layout
     public function setHeight($value)
     {
         $this->height = $value;
+
         return $this;
     }
-
 
     /**
      * Get show legend key
@@ -337,12 +342,13 @@ class PHPExcel_Chart_Layout
      * Set show legend key
      * Specifies that legend keys should be shown in data labels.
      *
-     * @param boolean $value        Show legend key
+     * @param bool $value        Show legend key
      * @return PHPExcel_Chart_Layout
      */
     public function setShowLegendKey($value)
     {
         $this->showLegendKey = $value;
+
         return $this;
     }
 
@@ -360,12 +366,13 @@ class PHPExcel_Chart_Layout
      * Set show val
      * Specifies that the value should be shown in data labels.
      *
-     * @param boolean $value        Show val
+     * @param bool $value        Show val
      * @return PHPExcel_Chart_Layout
      */
     public function setShowVal($value)
     {
         $this->showVal = $value;
+
         return $this;
     }
 
@@ -383,12 +390,13 @@ class PHPExcel_Chart_Layout
      * Set show cat name
      * Specifies that the category name should be shown in data labels.
      *
-     * @param boolean $value        Show cat name
+     * @param bool $value        Show cat name
      * @return PHPExcel_Chart_Layout
      */
     public function setShowCatName($value)
     {
         $this->showCatName = $value;
+
         return $this;
     }
 
@@ -406,12 +414,13 @@ class PHPExcel_Chart_Layout
      * Set show ser name
      * Specifies that the series name should be shown in data labels.
      *
-     * @param boolean $value        Show series name
+     * @param bool $value        Show series name
      * @return PHPExcel_Chart_Layout
      */
     public function setShowSerName($value)
     {
         $this->showSerName = $value;
+
         return $this;
     }
 
@@ -429,12 +438,13 @@ class PHPExcel_Chart_Layout
      * Set show percentage
      * Specifies that the percentage should be shown in data labels.
      *
-     * @param boolean $value        Show percentage
+     * @param bool $value        Show percentage
      * @return PHPExcel_Chart_Layout
      */
     public function setShowPercent($value)
     {
         $this->showPercent = $value;
+
         return $this;
     }
 
@@ -452,12 +462,13 @@ class PHPExcel_Chart_Layout
      * Set show bubble size
      * Specifies that the bubble size should be shown in data labels.
      *
-     * @param boolean $value        Show bubble size
+     * @param bool $value        Show bubble size
      * @return PHPExcel_Chart_Layout
      */
     public function setShowBubbleSize($value)
     {
         $this->showBubbleSize = $value;
+
         return $this;
     }
 
@@ -475,12 +486,13 @@ class PHPExcel_Chart_Layout
      * Set show leader lines
      * Specifies that leader lines should be shown in data labels.
      *
-     * @param boolean $value        Show leader lines
+     * @param bool $value        Show leader lines
      * @return PHPExcel_Chart_Layout
      */
     public function setShowLeaderLines($value)
     {
         $this->showLeaderLines = $value;
+
         return $this;
     }
 }

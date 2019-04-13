@@ -45,8 +45,8 @@ class PHPExcel_CachedObjectStorage_PHPTemp extends PHPExcel_CachedObjectStorage_
      * Store cell data in cache for the current cell object if it's "dirty",
      *     and the 'nullify' the current cell object
      *
-     * @return    void
      * @throws    PHPExcel_Exception
+     * @return    void
      */
     protected function storeData()
     {
@@ -55,27 +55,26 @@ class PHPExcel_CachedObjectStorage_PHPTemp extends PHPExcel_CachedObjectStorage_
 
             fseek($this->fileHandle, 0, SEEK_END);
 
-            $this->cellCache[$this->currentObjectID] = array(
+            $this->cellCache[$this->currentObjectID] = [
                 'ptr' => ftell($this->fileHandle),
-                'sz'  => fwrite($this->fileHandle, serialize($this->currentObject))
-            );
+                'sz' => fwrite($this->fileHandle, serialize($this->currentObject)),
+            ];
             $this->currentCellIsDirty = false;
         }
         $this->currentObjectID = $this->currentObject = null;
     }
-
 
     /**
      * Add or Update a cell in cache identified by coordinate address
      *
      * @param    string            $pCoord        Coordinate address of the cell to update
      * @param    PHPExcel_Cell    $cell        Cell to update
-     * @return    PHPExcel_Cell
      * @throws    PHPExcel_Exception
+     * @return    PHPExcel_Cell
      */
     public function addCacheData($pCoord, PHPExcel_Cell $cell)
     {
-        if (($pCoord !== $this->currentObjectID) && ($this->currentObjectID !== null)) {
+        if (($pCoord !== $this->currentObjectID) && (null !== $this->currentObjectID)) {
             $this->storeData();
         }
 
@@ -85,7 +84,6 @@ class PHPExcel_CachedObjectStorage_PHPTemp extends PHPExcel_CachedObjectStorage_
 
         return $cell;
     }
-
 
     /**
      * Get cell at a specific coordinate
@@ -125,7 +123,7 @@ class PHPExcel_CachedObjectStorage_PHPTemp extends PHPExcel_CachedObjectStorage_
      */
     public function getCellList()
     {
-        if ($this->currentObjectID !== null) {
+        if (null !== $this->currentObjectID) {
             $this->storeData();
         }
 
@@ -142,7 +140,7 @@ class PHPExcel_CachedObjectStorage_PHPTemp extends PHPExcel_CachedObjectStorage_
     {
         parent::copyCellCollection($parent);
         //    Open a new stream for the cell cache data
-        $newFileHandle = fopen('php://temp/maxmemory:' . $this->memoryCacheSize, 'a+');
+        $newFileHandle = fopen('php://temp/maxmemory:' . $this->memoryCacheSize, 'a+b');
         //    Copy the existing cell cache data to the new stream
         fseek($this->fileHandle, 0);
         while (!feof($this->fileHandle)) {
@@ -158,11 +156,11 @@ class PHPExcel_CachedObjectStorage_PHPTemp extends PHPExcel_CachedObjectStorage_
      */
     public function unsetWorksheetCells()
     {
-        if (!is_null($this->currentObject)) {
+        if (null !== $this->currentObject) {
             $this->currentObject->detach();
             $this->currentObject = $this->currentObjectID = null;
         }
-        $this->cellCache = array();
+        $this->cellCache = [];
 
         //    detach ourself from the worksheet, so that it can then delete this object successfully
         $this->parent = null;
@@ -182,8 +180,8 @@ class PHPExcel_CachedObjectStorage_PHPTemp extends PHPExcel_CachedObjectStorage_
         $this->memoryCacheSize = (isset($arguments['memoryCacheSize'])) ? $arguments['memoryCacheSize'] : '1MB';
 
         parent::__construct($parent);
-        if (is_null($this->fileHandle)) {
-            $this->fileHandle = fopen('php://temp/maxmemory:' . $this->memoryCacheSize, 'a+');
+        if (null === $this->fileHandle) {
+            $this->fileHandle = fopen('php://temp/maxmemory:' . $this->memoryCacheSize, 'a+b');
         }
     }
 
@@ -192,7 +190,7 @@ class PHPExcel_CachedObjectStorage_PHPTemp extends PHPExcel_CachedObjectStorage_
      */
     public function __destruct()
     {
-        if (!is_null($this->fileHandle)) {
+        if (null !== $this->fileHandle) {
             fclose($this->fileHandle);
         }
         $this->fileHandle = null;

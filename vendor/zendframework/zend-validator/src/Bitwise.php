@@ -16,9 +16,9 @@ class Bitwise extends AbstractValidator
     const OP_AND = 'and';
     const OP_XOR = 'xor';
 
-    const NOT_AND        = 'notAnd';
+    const NOT_AND = 'notAnd';
     const NOT_AND_STRICT = 'notAndStrict';
-    const NOT_XOR        = 'notXor';
+    const NOT_XOR = 'notXor';
 
     /**
      * @var integer
@@ -30,20 +30,20 @@ class Bitwise extends AbstractValidator
      *
      * @var array
      */
-    protected $messageTemplates = array(
-        self::NOT_AND        => "The input has no common bit set with '%control%'",
+    protected $messageTemplates = [
+        self::NOT_AND => "The input has no common bit set with '%control%'",
         self::NOT_AND_STRICT => "The input doesn't have the same bits set as '%control%'",
-        self::NOT_XOR        => "The input has common bit set with '%control%'",
-    );
+        self::NOT_XOR => "The input has common bit set with '%control%'",
+    ];
 
     /**
      * Additional variables available for validation failure messages
      *
      * @var array
      */
-    protected $messageVariables = array(
+    protected $messageVariables = [
         'control' => 'control',
-    );
+    ];
 
     /**
      * @var integer
@@ -136,12 +136,11 @@ class Bitwise extends AbstractValidator
                 $this->error(self::NOT_AND_STRICT);
 
                 return (bool) (($this->control & $value) == $value);
-            } else {
-                // At least one of the bits must be common between value and control
-                $this->error(self::NOT_AND);
-
-                return (bool) ($this->control & $value);
             }
+            // At least one of the bits must be common between value and control
+            $this->error(self::NOT_AND);
+
+            return (bool) ($this->control & $value);
         } elseif (self::OP_XOR === $this->operator) {
             $this->error(self::NOT_XOR);
 
@@ -154,7 +153,7 @@ class Bitwise extends AbstractValidator
     /**
      * Sets the control parameter.
      *
-     * @param  integer $control
+     * @param  int $control
      * @return Bitwise
      */
     public function setControl($control)
@@ -180,7 +179,7 @@ class Bitwise extends AbstractValidator
     /**
      * Sets the strict parameter.
      *
-     * @param  boolean $strict
+     * @param  bool $strict
      * @return Bitwise
      */
     public function setStrict($strict)

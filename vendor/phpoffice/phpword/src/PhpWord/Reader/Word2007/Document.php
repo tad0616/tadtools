@@ -39,7 +39,6 @@ class Document extends AbstractPart
     /**
      * Read document.xml.
      *
-     * @param \PhpOffice\PhpWord\PhpWord $phpWord
      * @return void
      */
     public function read(PhpWord $phpWord)
@@ -47,7 +46,7 @@ class Document extends AbstractPart
         $this->phpWord = $phpWord;
         $xmlReader = new XMLReader();
         $xmlReader->getDomFromZip($this->docFile, $this->xmlFile);
-        $readMethods = array('w:p' => 'readWPNode', 'w:tbl' => 'readTable', 'w:sectPr' => 'readWSectPrNode');
+        $readMethods = ['w:p' => 'readWPNode', 'w:tbl' => 'readTable', 'w:sectPr' => 'readWSectPrNode'];
 
         $nodes = $xmlReader->getElements('w:body/*');
         if ($nodes->length > 0) {
@@ -70,7 +69,7 @@ class Document extends AbstractPart
      */
     private function readHeaderFooter($settings, Section &$section)
     {
-        $readMethods = array('w:p' => 'readParagraph', 'w:tbl' => 'readTable');
+        $readMethods = ['w:p' => 'readParagraph', 'w:tbl' => 'readTable'];
 
         if (is_array($settings) && isset($settings['hf'])) {
             foreach ($settings['hf'] as $rId => $hfSetting) {
@@ -99,40 +98,38 @@ class Document extends AbstractPart
     /**
      * Read w:sectPr
      *
-     * @param \PhpOffice\Common\XMLReader $xmlReader
-     * @param \DOMElement $domNode
      * @ignoreScrutinizerPatch
      * @return array
      */
     private function readSectionStyle(XMLReader $xmlReader, \DOMElement $domNode)
     {
-        $styleDefs = array(
-            'breakType'     => array(self::READ_VALUE, 'w:type'),
-            'pageSizeW'     => array(self::READ_VALUE, 'w:pgSz', 'w:w'),
-            'pageSizeH'     => array(self::READ_VALUE, 'w:pgSz', 'w:h'),
-            'orientation'   => array(self::READ_VALUE, 'w:pgSz', 'w:orient'),
-            'colsNum'       => array(self::READ_VALUE, 'w:cols', 'w:num'),
-            'colsSpace'     => array(self::READ_VALUE, 'w:cols', 'w:space'),
-            'topMargin'     => array(self::READ_VALUE, 'w:pgMar', 'w:top'),
-            'leftMargin'    => array(self::READ_VALUE, 'w:pgMar', 'w:left'),
-            'bottomMargin'  => array(self::READ_VALUE, 'w:pgMar', 'w:bottom'),
-            'rightMargin'   => array(self::READ_VALUE, 'w:pgMar', 'w:right'),
-            'headerHeight'  => array(self::READ_VALUE, 'w:pgMar', 'w:header'),
-            'footerHeight'  => array(self::READ_VALUE, 'w:pgMar', 'w:footer'),
-            'gutter'        => array(self::READ_VALUE, 'w:pgMar', 'w:gutter'),
-        );
+        $styleDefs = [
+            'breakType' => [self::READ_VALUE, 'w:type'],
+            'pageSizeW' => [self::READ_VALUE, 'w:pgSz', 'w:w'],
+            'pageSizeH' => [self::READ_VALUE, 'w:pgSz', 'w:h'],
+            'orientation' => [self::READ_VALUE, 'w:pgSz', 'w:orient'],
+            'colsNum' => [self::READ_VALUE, 'w:cols', 'w:num'],
+            'colsSpace' => [self::READ_VALUE, 'w:cols', 'w:space'],
+            'topMargin' => [self::READ_VALUE, 'w:pgMar', 'w:top'],
+            'leftMargin' => [self::READ_VALUE, 'w:pgMar', 'w:left'],
+            'bottomMargin' => [self::READ_VALUE, 'w:pgMar', 'w:bottom'],
+            'rightMargin' => [self::READ_VALUE, 'w:pgMar', 'w:right'],
+            'headerHeight' => [self::READ_VALUE, 'w:pgMar', 'w:header'],
+            'footerHeight' => [self::READ_VALUE, 'w:pgMar', 'w:footer'],
+            'gutter' => [self::READ_VALUE, 'w:pgMar', 'w:gutter'],
+        ];
         $styles = $this->readStyleDefs($xmlReader, $domNode, $styleDefs);
 
         // Header and footer
         // @todo Cleanup this part
         $nodes = $xmlReader->getElements('*', $domNode);
         foreach ($nodes as $node) {
-            if ($node->nodeName == 'w:headerReference' || $node->nodeName == 'w:footerReference') {
+            if ('w:headerReference' == $node->nodeName || 'w:footerReference' == $node->nodeName) {
                 $id = $xmlReader->getAttribute('r:id', $node);
-                $styles['hf'][$id] = array(
+                $styles['hf'][$id] = [
                     'method' => str_replace('w:', '', str_replace('Reference', '', $node->nodeName)),
                     'type' => $xmlReader->getAttribute('w:type', $node),
-                );
+                ];
             }
         }
 
@@ -142,8 +139,6 @@ class Document extends AbstractPart
     /**
      * Read w:p node.
      *
-     * @param \PhpOffice\Common\XMLReader $xmlReader
-     * @param \DOMElement $node
      * @param \PhpOffice\PhpWord\Element\Section &$section
      * @return void
      *
@@ -152,7 +147,7 @@ class Document extends AbstractPart
     private function readWPNode(XMLReader $xmlReader, \DOMElement $node, Section &$section)
     {
         // Page break
-        if ($xmlReader->getAttribute('w:type', $node, 'w:r/w:br') == 'page') {
+        if ('page' == $xmlReader->getAttribute('w:type', $node, 'w:r/w:br')) {
             $section->addPageBreak(); // PageBreak
         }
 
@@ -162,7 +157,7 @@ class Document extends AbstractPart
         // Section properties
         if ($xmlReader->elementExists('w:pPr/w:sectPr', $node)) {
             $sectPrNode = $xmlReader->getElement('w:pPr/w:sectPr', $node);
-            if ($sectPrNode !== null) {
+            if (null !== $sectPrNode) {
                 $this->readWSectPrNode($xmlReader, $sectPrNode, $section);
             }
             $section = $this->phpWord->addSection();
@@ -172,8 +167,6 @@ class Document extends AbstractPart
     /**
      * Read w:sectPr node.
      *
-     * @param \PhpOffice\Common\XMLReader $xmlReader
-     * @param \DOMElement $node
      * @param \PhpOffice\PhpWord\Element\Section &$section
      * @return void
      */

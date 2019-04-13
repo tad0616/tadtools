@@ -30,7 +30,6 @@ class Content extends AbstractPart
     /**
      * Read content.xml.
      *
-     * @param \PhpOffice\PhpWord\PhpWord $phpWord
      * @return void
      */
     public function read(PhpWord $phpWord)
@@ -44,16 +43,13 @@ class Content extends AbstractPart
             foreach ($nodes as $node) {
                 // $styleName = $xmlReader->getAttribute('text:style-name', $node);
                 switch ($node->nodeName) {
-
                     case 'text:h': // Heading
                         $depth = $xmlReader->getAttribute('text:outline-level', $node);
                         $section->addTitle($node->nodeValue, $depth);
                         break;
-
                     case 'text:p': // Paragraph
                         $section->addText($node->nodeValue);
                         break;
-
                     case 'text:list': // List
                         $listItems = $xmlReader->getElements('text:list-item/text:p', $node);
                         foreach ($listItems as $listItem) {

@@ -32,7 +32,7 @@ class ExtractEvent extends Event
     /**
      * @var array
      */
-    protected $extractedData = array();
+    protected $extractedData = [];
 
     /**
      * @param object $target
@@ -40,7 +40,7 @@ class ExtractEvent extends Event
      */
     public function __construct($target, $extractionObject)
     {
-        $this->target           = $target;
+        $this->target = $target;
         $this->extractionObject = $extractionObject;
     }
 
@@ -75,8 +75,6 @@ class ExtractEvent extends Event
     }
 
     /**
-     * @param array $extractedData
-     *
      * @return void
      */
     public function setExtractedData(array $extractedData)
@@ -87,7 +85,6 @@ class ExtractEvent extends Event
     /**
      * Merge provided data with the extracted data
      *
-     * @param array $additionalData
      *
      * @return void
      */

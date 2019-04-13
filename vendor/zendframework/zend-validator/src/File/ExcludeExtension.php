@@ -20,15 +20,15 @@ class ExcludeExtension extends Extension
      * @const string Error constants
      */
     const FALSE_EXTENSION = 'fileExcludeExtensionFalse';
-    const NOT_FOUND       = 'fileExcludeExtensionNotFound';
+    const NOT_FOUND = 'fileExcludeExtensionNotFound';
 
     /**
      * @var array Error message templates
      */
-    protected $messageTemplates = array(
-        self::FALSE_EXTENSION => "File has an incorrect extension",
-        self::NOT_FOUND       => "File is not readable or does not exist",
-    );
+    protected $messageTemplates = [
+        self::FALSE_EXTENSION => 'File has an incorrect extension',
+        self::NOT_FOUND => 'File is not readable or does not exist',
+    ];
 
     /**
      * Returns true if and only if the file extension of $value is not included in the
@@ -43,17 +43,17 @@ class ExcludeExtension extends Extension
         if (is_string($value) && is_array($file)) {
             // Legacy Zend\Transfer API support
             $filename = $file['name'];
-            $file     = $file['tmp_name'];
+            $file = $file['tmp_name'];
         } elseif (is_array($value)) {
             if (!isset($value['tmp_name']) || !isset($value['name'])) {
                 throw new Exception\InvalidArgumentException(
                     'Value array must be in $_FILES format'
                 );
             }
-            $file     = $value['tmp_name'];
+            $file = $value['tmp_name'];
             $filename = $value['name'];
         } else {
-            $file     = $value;
+            $file = $value;
             $filename = basename($file);
         }
         $this->setValue($filename);
@@ -61,18 +61,20 @@ class ExcludeExtension extends Extension
         // Is file readable ?
         if (empty($file) || false === stream_resolve_include_path($file)) {
             $this->error(self::NOT_FOUND);
+
             return false;
         }
 
-        $extension  = substr($filename, strrpos($filename, '.') + 1);
+        $extension = mb_substr($filename, mb_strrpos($filename, '.') + 1);
         $extensions = $this->getExtension();
 
-        if ($this->getCase() && (!in_array($extension, $extensions))) {
+        if ($this->getCase() && (!in_array($extension, $extensions, true))) {
             return true;
         } elseif (!$this->getCase()) {
             foreach ($extensions as $ext) {
-                if (strtolower($ext) == strtolower($extension)) {
+                if (mb_strtolower($ext) == mb_strtolower($extension)) {
                     $this->error(self::FALSE_EXTENSION);
+
                     return false;
                 }
             }
@@ -81,6 +83,7 @@ class ExcludeExtension extends Extension
         }
 
         $this->error(self::FALSE_EXTENSION);
+
         return false;
     }
 }

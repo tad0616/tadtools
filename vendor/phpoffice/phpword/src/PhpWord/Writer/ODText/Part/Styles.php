@@ -63,7 +63,6 @@ class Styles extends AbstractPart
     /**
      * Write default styles.
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
      * @return void
      */
     private function writeDefault(XMLWriter $xmlWriter)
@@ -108,7 +107,6 @@ class Styles extends AbstractPart
     /**
      * Write named styles.
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
      * @return void
      */
     private function writeNamed(XMLWriter $xmlWriter)
@@ -116,10 +114,10 @@ class Styles extends AbstractPart
         $styles = Style::getStyles();
         if (count($styles) > 0) {
             foreach ($styles as $style) {
-                if ($style->isAuto() === false) {
+                if (false === $style->isAuto()) {
                     $styleClass = str_replace('\\Style\\', '\\Writer\\ODText\\Style\\', get_class($style));
                     if (class_exists($styleClass)) {
-                        /** @var $styleWriter \PhpOffice\PhpWord\Writer\ODText\Style\AbstractStyle Type hint */
+                        /** @var \PhpOffice\PhpWord\Writer\ODText\Style\AbstractStyle $styleWriter Type hint */
                         $styleWriter = new $styleClass($xmlWriter, $style);
                         $styleWriter->write();
                     }
@@ -127,10 +125,10 @@ class Styles extends AbstractPart
             }
         }
     }
+
     /**
      * Write page layout styles.
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
      * @return void
      */
     private function writePageLayout(XMLWriter $xmlWriter)
@@ -139,7 +137,7 @@ class Styles extends AbstractPart
         $xmlWriter->writeAttribute('style:name', 'Mpm1');
 
         $xmlWriter->startElement('style:page-layout-properties');
-        $xmlWriter->writeAttribute('fo:page-width', "21.001cm");
+        $xmlWriter->writeAttribute('fo:page-width', '21.001cm');
         $xmlWriter->writeAttribute('fo:page-height', '29.7cm');
         $xmlWriter->writeAttribute('style:num-format', '1');
         $xmlWriter->writeAttribute('style:print-orientation', 'portrait');
@@ -170,7 +168,6 @@ class Styles extends AbstractPart
 
         $xmlWriter->endElement(); // style:page-layout-properties
 
-
         $xmlWriter->startElement('style:header-style');
         $xmlWriter->endElement(); // style:header-style
 
@@ -183,7 +180,6 @@ class Styles extends AbstractPart
     /**
      * Write master style.
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
      * @return void
      */
     private function writeMaster(XMLWriter $xmlWriter)

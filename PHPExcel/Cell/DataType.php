@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPExcel_Cell_DataType
  *
@@ -36,36 +35,37 @@
 class PHPExcel_Cell_DataType
 {
     /* Data types */
-    const TYPE_STRING2  = 'str';
-    const TYPE_STRING   = 's';
-    const TYPE_FORMULA  = 'f';
-    const TYPE_NUMERIC  = 'n';
-    const TYPE_BOOL     = 'b';
-    const TYPE_NULL     = 'null';
-    const TYPE_INLINE   = 'inlineStr';
-    const TYPE_ERROR    = 'e';
+    const TYPE_STRING2 = 'str';
+    const TYPE_STRING = 's';
+    const TYPE_FORMULA = 'f';
+    const TYPE_NUMERIC = 'n';
+    const TYPE_BOOL = 'b';
+    const TYPE_NULL = 'null';
+    const TYPE_INLINE = 'inlineStr';
+    const TYPE_ERROR = 'e';
 
     /**
      * List of error codes
      *
      * @var array
      */
-    private static $_errorCodes = array(
-        '#NULL!'  => 0,
+    private static $_errorCodes = [
+        '#NULL!' => 0,
         '#DIV/0!' => 1,
         '#VALUE!' => 2,
-        '#REF!'   => 3,
-        '#NAME?'  => 4,
-        '#NUM!'   => 5,
-        '#N/A'    => 6
-    );
+        '#REF!' => 3,
+        '#NAME?' => 4,
+        '#NUM!' => 5,
+        '#N/A' => 6,
+    ];
 
     /**
      * Get list of error codes
      *
      * @return array
      */
-    public static function getErrorCodes() {
+    public static function getErrorCodes()
+    {
         return self::$_errorCodes;
     }
 
@@ -76,7 +76,8 @@ class PHPExcel_Cell_DataType
      * @param       mixed  $pValue
      * @return      string
      */
-    public static function dataTypeForValue($pValue = null) {
+    public static function dataTypeForValue($pValue = null)
+    {
         return PHPExcel_Cell_DefaultValueBinder::dataTypeForValue($pValue);
     }
 
@@ -84,6 +85,7 @@ class PHPExcel_Cell_DataType
      * Check a string that it satisfies Excel requirements
      *
      * @param  mixed  Value to sanitize to an Excel string
+     * @param null|mixed $pValue
      * @return mixed  Sanitized value
      */
     public static function checkString($pValue = null)
@@ -97,7 +99,7 @@ class PHPExcel_Cell_DataType
         $pValue = PHPExcel_Shared_String::Substring($pValue, 0, 32767);
 
         // we require that newline is represented as "\n" in core, not as "\r\n" or "\r"
-        $pValue = str_replace(array("\r\n", "\r"), "\n", $pValue);
+        $pValue = str_replace(["\r\n", "\r"], "\n", $pValue);
 
         return $pValue;
     }
@@ -106,17 +108,17 @@ class PHPExcel_Cell_DataType
      * Check a value that it is a valid error code
      *
      * @param  mixed   Value to sanitize to an Excel error code
+     * @param null|mixed $pValue
      * @return string  Sanitized value
      */
     public static function checkErrorCode($pValue = null)
     {
         $pValue = (string) $pValue;
 
-        if ( !array_key_exists($pValue, self::$_errorCodes) ) {
+        if (!array_key_exists($pValue, self::$_errorCodes)) {
             $pValue = '#NULL!';
         }
 
         return $pValue;
     }
-
 }

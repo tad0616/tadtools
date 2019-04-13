@@ -21,14 +21,14 @@ class Explode extends AbstractValidator implements ValidatorPluginManagerAwareIn
     /**
      * @var array
      */
-    protected $messageTemplates = array(
-        self::INVALID => "Invalid type given",
-    );
+    protected $messageTemplates = [
+        self::INVALID => 'Invalid type given',
+    ];
 
     /**
      * @var array
      */
-    protected $messageVariables = array();
+    protected $messageVariables = [];
 
     /**
      * @var string
@@ -54,6 +54,7 @@ class Explode extends AbstractValidator implements ValidatorPluginManagerAwareIn
     public function setValueDelimiter($delimiter)
     {
         $this->valueDelimiter = $delimiter;
+
         return $this;
     }
 
@@ -69,8 +70,6 @@ class Explode extends AbstractValidator implements ValidatorPluginManagerAwareIn
 
     /**
      * Set validator plugin manager
-     *
-     * @param ValidatorPluginManager $pluginManager
      */
     public function setValidatorPluginManager(ValidatorPluginManager $pluginManager)
     {
@@ -107,7 +106,7 @@ class Explode extends AbstractValidator implements ValidatorPluginManagerAwareIn
                 );
             }
             $name = $validator['name'];
-            $options = isset($validator['options']) ? $validator['options'] : array();
+            $options = isset($validator['options']) ? $validator['options'] : [];
             $validator = $this->getValidatorPluginManager()->get($name, $options);
         }
 
@@ -118,6 +117,7 @@ class Explode extends AbstractValidator implements ValidatorPluginManagerAwareIn
         }
 
         $this->validator = $validator;
+
         return $this;
     }
 
@@ -140,6 +140,7 @@ class Explode extends AbstractValidator implements ValidatorPluginManagerAwareIn
     public function setBreakOnFirstFailure($break)
     {
         $this->breakOnFirstFailure = (bool) $break;
+
         return $this;
     }
 
@@ -160,8 +161,8 @@ class Explode extends AbstractValidator implements ValidatorPluginManagerAwareIn
      *
      * @param  mixed $value
      * @param  mixed $context Extra "context" to provide the composed validator
-     * @return bool
      * @throws Exception\RuntimeException
+     * @return bool
      */
     public function isValid($value, $context = null)
     {
@@ -181,9 +182,9 @@ class Explode extends AbstractValidator implements ValidatorPluginManagerAwareIn
             // single values (ie. MultiCheckbox form behavior)
             $values = (null !== $delimiter)
                       ? explode($this->valueDelimiter, $value)
-                      : array($value);
+                      : [$value];
         } else {
-            $values = array($value);
+            $values = [$value];
         }
 
         $validator = $this->getValidator();
@@ -205,6 +206,6 @@ class Explode extends AbstractValidator implements ValidatorPluginManagerAwareIn
             }
         }
 
-        return count($this->abstractOptions['messages']) == 0;
+        return 0 == count($this->abstractOptions['messages']);
     }
 }

@@ -25,7 +25,6 @@
  * @version    Beta 0.6.3, 08.07.2011
  */
 
-
 /**
  * PHPWord_Style_Cell
  *
@@ -33,280 +32,311 @@
  * @package    PHPWord_Style
  * @copyright  Copyright (c) 2011 PHPWord
  */
-class PHPWord_Style_Cell {
+class PHPWord_Style_Cell
+{
+    const TEXT_DIR_BTLR = 'btLr';
+    const TEXT_DIR_TBRL = 'tbRl';
 
-	const TEXT_DIR_BTLR = 'btLr';
-	const TEXT_DIR_TBRL = 'tbRl';
+    /**
+     * Vertical align
+     *
+     * @var string
+     */
+    private $_valign;
 
-	/**
-	 * Vertical align
-	 *
-	 * @var string
-	 */
-	private $_valign;
+    /**
+     * Text Direction
+     *
+     * @var string
+     */
+    private $_textDirection;
 
-	/**
-	 * Text Direction
-	 *
-	 * @var string
-	 */
-	private $_textDirection;
+    /**
+     * Background-Color
+     *
+     * @var string
+     */
+    private $_bgColor;
 
-	/**
-	 * Background-Color
-	 *
-	 * @var string
-	 */
-	private $_bgColor;
+    /**
+     * Border Top Size
+     *
+     * @var int
+     */
+    private $_borderTopSize;
 
-	/**
-	 * Border Top Size
-	 *
-	 * @var int
-	 */
-	private $_borderTopSize;
+    /**
+     * Border Top Color
+     *
+     * @var string
+     */
+    private $_borderTopColor;
 
-	/**
-	 * Border Top Color
-	 *
-	 * @var string
-	 */
-	private $_borderTopColor;
+    /**
+     * Border Left Size
+     *
+     * @var int
+     */
+    private $_borderLeftSize;
 
-	/**
-	 * Border Left Size
-	 *
-	 * @var int
-	 */
-	private $_borderLeftSize;
+    /**
+     * Border Left Color
+     *
+     * @var string
+     */
+    private $_borderLeftColor;
 
-	/**
-	 * Border Left Color
-	 *
-	 * @var string
-	 */
-	private $_borderLeftColor;
+    /**
+     * Border Right Size
+     *
+     * @var int
+     */
+    private $_borderRightSize;
 
-	/**
-	 * Border Right Size
-	 *
-	 * @var int
-	 */
-	private $_borderRightSize;
+    /**
+     * Border Right Color
+     *
+     * @var string
+     */
+    private $_borderRightColor;
 
-	/**
-	 * Border Right Color
-	 *
-	 * @var string
-	 */
-	private $_borderRightColor;
+    /**
+     * Border Bottom Size
+     *
+     * @var int
+     */
+    private $_borderBottomSize;
 
-	/**
-	 * Border Bottom Size
-	 *
-	 * @var int
-	 */
-	private $_borderBottomSize;
+    /**
+     * Border Bottom Color
+     *
+     * @var string
+     */
+    private $_borderBottomColor;
 
-	/**
-	 * Border Bottom Color
-	 *
-	 * @var string
-	 */
-	private $_borderBottomColor;
+    /**
+     * Border Default Color
+     *
+     * @var string
+     */
+    private $_defaultBorderColor;
 
-	/**
-	 * Border Default Color
-	 *
-	 * @var string
-	 */
-	private $_defaultBorderColor;
+    private $_gridSpan; // for the colspan
+    private $_vMerge; // for the rowspan
 
+    /**
+     * Create a new Cell Style
+     */
+    public function __construct()
+    {
+        $this->_valign = null;
+        $this->_textDirection = null;
+        $this->_bgColor = null;
+        $this->_borderTopSize = null;
+        $this->_borderTopColor = null;
+        $this->_borderLeftSize = null;
+        $this->_borderLeftColor = null;
+        $this->_borderRightSize = null;
+        $this->_borderRightColor = null;
+        $this->_borderBottomSize = null;
+        $this->_borderBottomColor = null;
+        $this->_defaultBorderColor = '000000';
+        $this->_gridSpan = null;
+        $this->_vMerge = null;
+    }
 
-	private $_gridSpan;// for the colspan
-	private $_vMerge;// for the rowspan
+    /**
+     * Set style value
+     *
+     * @var string $key
+     * @var mixed $value
+     * @param mixed $key
+     * @param mixed $value
+     */
+    public function setStyleValue($key, $value)
+    {
+        if ('_borderSize' == $key) {
+            $this->setBorderSize($value);
+        } elseif ('_borderColor' == $key) {
+            $this->setBorderColor($value);
+        } else {
+            $this->$key = $value;
+        }
+    }
 
-	/**
-	 * Create a new Cell Style
-	 */
-	public function __construct() {
-		$this->_valign = null;
-		$this->_textDirection = null;
-		$this->_bgColor = null;
-		$this->_borderTopSize = null;
-		$this->_borderTopColor = null;
-		$this->_borderLeftSize = null;
-		$this->_borderLeftColor = null;
-		$this->_borderRightSize = null;
-		$this->_borderRightColor = null;
-		$this->_borderBottomSize = null;
-		$this->_borderBottomColor = null;
-		$this->_defaultBorderColor = '000000';
-		$this->_gridSpan=null;
-		$this->_vMerge=null;
-	}
+    public function getVAlign()
+    {
+        return $this->_valign;
+    }
 
-	/**
-	 * Set style value
-	 *
-	 * @var string $key
-	 * @var mixed $value
-	 */
-	public function setStyleValue($key, $value) {
-		if($key == '_borderSize') {
-			$this->setBorderSize($value);
-		} elseif($key == '_borderColor') {
-			$this->setBorderColor($value);
-		} else {
-			$this->$key = $value;
-		}
-	}
+    public function setVAlign($pValue = null)
+    {
+        $this->_valign = $pValue;
+    }
 
-	public function getVAlign() {
-		return $this->_valign;
-	}
+    public function getTextDirection()
+    {
+        return $this->_textDirection;
+    }
 
-	public function setVAlign($pValue = null) {
-		$this->_valign = $pValue;
-	}
+    public function setTextDirection($pValue = null)
+    {
+        $this->_textDirection = $pValue;
+    }
 
-	public function getTextDirection() {
-		return $this->_textDirection;
-	}
+    public function getBgColor()
+    {
+        return $this->_bgColor;
+    }
 
-	public function setTextDirection($pValue = null) {
-		$this->_textDirection = $pValue;
-	}
+    public function setBgColor($pValue = null)
+    {
+        $this->_bgColor = $pValue;
+    }
 
-	public function getBgColor() {
-		return $this->_bgColor;
-	}
+    public function setHeight($pValue = null)
+    {
+        $this->_height = $pValue;
+    }
 
-	public function setBgColor($pValue = null) {
-	   $this->_bgColor = $pValue;
-	}
+    public function setBorderSize($pValue = null)
+    {
+        $this->_borderTopSize = $pValue;
+        $this->_borderLeftSize = $pValue;
+        $this->_borderRightSize = $pValue;
+        $this->_borderBottomSize = $pValue;
+    }
 
-	public function setHeight($pValue = null) {
-	   $this->_height = $pValue;
-	}
+    public function getBorderSize()
+    {
+        $t = $this->getBorderTopSize();
+        $l = $this->getBorderLeftSize();
+        $r = $this->getBorderRightSize();
+        $b = $this->getBorderBottomSize();
 
-	public function setBorderSize($pValue = null) {
-		$this->_borderTopSize = $pValue;
-		$this->_borderLeftSize = $pValue;
-		$this->_borderRightSize = $pValue;
-		$this->_borderBottomSize = $pValue;
-	}
+        return [$t, $l, $r, $b];
+    }
 
-	public function getBorderSize() {
-		$t = $this->getBorderTopSize();
-		$l = $this->getBorderLeftSize();
-		$r = $this->getBorderRightSize();
-		$b = $this->getBorderBottomSize();
+    public function setBorderColor($pValue = null)
+    {
+        $this->_borderTopColor = $pValue;
+        $this->_borderLeftColor = $pValue;
+        $this->_borderRightColor = $pValue;
+        $this->_borderBottomColor = $pValue;
+    }
 
-		return array($t, $l, $r, $b);
-	}
+    public function getBorderColor()
+    {
+        $t = $this->getBorderTopColor();
+        $l = $this->getBorderLeftColor();
+        $r = $this->getBorderRightColor();
+        $b = $this->getBorderBottomColor();
 
-	public function setBorderColor($pValue = null) {
-		$this->_borderTopColor = $pValue;
-		$this->_borderLeftColor = $pValue;
-		$this->_borderRightColor = $pValue;
-		$this->_borderBottomColor = $pValue;
-	}
+        return [$t, $l, $r, $b];
+    }
 
-	public function getBorderColor() {
-		$t = $this->getBorderTopColor();
-		$l = $this->getBorderLeftColor();
-		$r = $this->getBorderRightColor();
-		$b = $this->getBorderBottomColor();
+    public function setBorderTopSize($pValue = null)
+    {
+        $this->_borderTopSize = $pValue;
+    }
 
-		return array($t, $l, $r, $b);
-	}
+    public function getBorderTopSize()
+    {
+        return $this->_borderTopSize;
+    }
 
-	public function setBorderTopSize($pValue = null) {
-		$this->_borderTopSize = $pValue;
-	}
+    public function setBorderTopColor($pValue = null)
+    {
+        $this->_borderTopColor = $pValue;
+    }
 
-	public function getBorderTopSize() {
-		return $this->_borderTopSize;
-	}
+    public function getBorderTopColor()
+    {
+        return $this->_borderTopColor;
+    }
 
-	public function setBorderTopColor($pValue = null) {
-		$this->_borderTopColor = $pValue;
-	}
+    public function setBorderLeftSize($pValue = null)
+    {
+        $this->_borderLeftSize = $pValue;
+    }
 
-	public function getBorderTopColor() {
-		return $this->_borderTopColor;
-	}
+    public function getBorderLeftSize()
+    {
+        return $this->_borderLeftSize;
+    }
 
+    public function setBorderLeftColor($pValue = null)
+    {
+        $this->_borderLeftColor = $pValue;
+    }
 
-	public function setBorderLeftSize($pValue = null) {
-		$this->_borderLeftSize = $pValue;
-	}
+    public function getBorderLeftColor()
+    {
+        return $this->_borderLeftColor;
+    }
 
-	public function getBorderLeftSize() {
-		return $this->_borderLeftSize;
-	}
+    public function setBorderRightSize($pValue = null)
+    {
+        $this->_borderRightSize = $pValue;
+    }
 
-	public function setBorderLeftColor($pValue = null) {
-		$this->_borderLeftColor = $pValue;
-	}
+    public function getBorderRightSize()
+    {
+        return $this->_borderRightSize;
+    }
 
-	public function getBorderLeftColor() {
-		return $this->_borderLeftColor;
-	}
+    public function setBorderRightColor($pValue = null)
+    {
+        $this->_borderRightColor = $pValue;
+    }
 
+    public function getBorderRightColor()
+    {
+        return $this->_borderRightColor;
+    }
 
-	public function setBorderRightSize($pValue = null) {
-		$this->_borderRightSize = $pValue;
-	}
+    public function setBorderBottomSize($pValue = null)
+    {
+        $this->_borderBottomSize = $pValue;
+    }
 
-	public function getBorderRightSize() {
-		return $this->_borderRightSize;
-	}
+    public function getBorderBottomSize()
+    {
+        return $this->_borderBottomSize;
+    }
 
-	public function setBorderRightColor($pValue = null) {
-		$this->_borderRightColor = $pValue;
-	}
+    public function setBorderBottomColor($pValue = null)
+    {
+        $this->_borderBottomColor = $pValue;
+    }
 
-	public function getBorderRightColor() {
-		return $this->_borderRightColor;
-	}
+    public function getBorderBottomColor()
+    {
+        return $this->_borderBottomColor;
+    }
 
+    public function getDefaultBorderColor()
+    {
+        return $this->_defaultBorderColor;
+    }
 
-	public function setBorderBottomSize($pValue = null) {
-		$this->_borderBottomSize = $pValue;
-	}
+    public function setGridSpan($pValue = null)
+    {
+        $this->_gridSpan = $pValue;
+    }
 
-	public function getBorderBottomSize() {
-		return $this->_borderBottomSize;
-	}
+    public function getGridSpan()
+    {
+        return $this->_gridSpan;
+    }
 
-	public function setBorderBottomColor($pValue = null) {
-		$this->_borderBottomColor = $pValue;
-	}
+    public function setVMerge($pValue = null)
+    {
+        $this->_vMerge = $pValue;
+    }
 
-	public function getBorderBottomColor() {
-		return $this->_borderBottomColor;
-	}
-
-	public function getDefaultBorderColor() {
-		return $this->_defaultBorderColor;
-	}
-
-	public function setGridSpan($pValue = null)
-	{
-	   $this->_gridSpan = $pValue;
-	}
-	public function getGridSpan()
-	{
-	   return $this->_gridSpan;
-	}
-	public function setVMerge($pValue = null)
-	{
-	   $this->_vMerge = $pValue;
-	}
-	public function getVMerge()
-	{
-	   return $this->_vMerge;
-	}
+    public function getVMerge()
+    {
+        return $this->_vMerge;
+    }
 }

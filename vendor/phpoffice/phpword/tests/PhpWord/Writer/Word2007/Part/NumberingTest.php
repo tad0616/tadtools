@@ -14,6 +14,7 @@
  * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
 namespace PhpOffice\PhpWord\Writer\Word2007\Part;
 
 use PhpOffice\PhpWord\PhpWord;
@@ -32,7 +33,7 @@ class NumberingTest extends \PHPUnit_Framework_TestCase
     /**
      * Executed before each method of the class
      */
-    public function tearDown()
+    protected function tearDown()
     {
         TestHelperDOCX::clear();
     }
@@ -47,24 +48,24 @@ class NumberingTest extends \PHPUnit_Framework_TestCase
         $phpWord = new PhpWord();
         $phpWord->addNumberingStyle(
             'numStyle',
-            array(
-                'type'   => 'multilevel',
-                'levels' => array(
-                    array(
-                        'start'     => 1,
-                        'format'    => 'decimal',
-                        'restart'   => 1,
-                        'suffix'    => 'space',
-                        'text'      => '%1.',
+            [
+                'type' => 'multilevel',
+                'levels' => [
+                    [
+                        'start' => 1,
+                        'format' => 'decimal',
+                        'restart' => 1,
+                        'suffix' => 'space',
+                        'text' => '%1.',
                         'alignment' => Jc::START,
-                        'left'      => 360,
-                        'hanging'   => 360,
-                        'tabPos'    => 360,
-                        'font'      => 'Arial',
-                        'hint'      => 'default',
-                    ),
-                )
-            )
+                        'left' => 360,
+                        'hanging' => 360,
+                        'tabPos' => 360,
+                        'font' => 'Arial',
+                        'hint' => 'default',
+                    ],
+                ],
+            ]
         );
 
         $doc = TestHelperDOCX::getDocument($phpWord, 'Word2007');

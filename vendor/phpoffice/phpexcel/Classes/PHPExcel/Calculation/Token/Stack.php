@@ -32,7 +32,7 @@ class PHPExcel_Calculation_Token_Stack
      *
      *  @var mixed[]
      */
-    private $stack = array();
+    private $stack = [];
 
     /**
      *  Count of entries in the parser stack
@@ -60,12 +60,12 @@ class PHPExcel_Calculation_Token_Stack
      */
     public function push($type, $value, $reference = null)
     {
-        $this->stack[$this->count++] = array(
-            'type'      => $type,
-            'value'     => $value,
-            'reference' => $reference
-        );
-        if ($type == 'Function') {
+        $this->stack[$this->count++] = [
+            'type' => $type,
+            'value' => $value,
+            'reference' => $reference,
+        ];
+        if ('Function' == $type) {
             $localeFunction = PHPExcel_Calculation::localeFunc($value);
             if ($localeFunction != $value) {
                 $this->stack[($this->count - 1)]['localeValue'] = $localeFunction;
@@ -83,13 +83,14 @@ class PHPExcel_Calculation_Token_Stack
         if ($this->count > 0) {
             return $this->stack[--$this->count];
         }
+
         return null;
     }
 
     /**
      * Return an entry from the stack without removing it
      *
-     * @param   integer  $n  number indicating how far back in the stack we want to look
+     * @param   int  $n  number indicating how far back in the stack we want to look
      * @return  mixed
      */
     public function last($n = 1)
@@ -97,6 +98,7 @@ class PHPExcel_Calculation_Token_Stack
         if ($this->count - $n < 0) {
             return null;
         }
+
         return $this->stack[$this->count - $n];
     }
 
@@ -105,7 +107,7 @@ class PHPExcel_Calculation_Token_Stack
      */
     public function clear()
     {
-        $this->stack = array();
+        $this->stack = [];
         $this->count = 0;
     }
 }

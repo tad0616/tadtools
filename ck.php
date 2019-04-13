@@ -1,60 +1,61 @@
 <?php
-include_once "tadtools_header.php";
+include_once 'tadtools_header.php';
 
 class CKEditor
 {
     public $xoopsDirName;
     public $ColName;
     public $CustomConfigurationsPath;
-    public $ToolbarSet = "my";
-    public $Width      = '100%';
-    public $Height     = 300;
+    public $ToolbarSet = 'my';
+    public $Width = '100%';
+    public $Height = 300;
     public $Value;
-    public $ContentsCss   = [];
-    public $demopublickey = "";
+    public $ContentsCss = [];
+    public $demopublickey = '';
 
     //建構函數
-    public function __construct($xoopsDirName = "", $ColName = "", $Value = "")
+    public function __construct($xoopsDirName = '', $ColName = '', $Value = '')
     {
         $TadToolsModuleConfig = TadToolsXoopsModuleConfig();
-        $this->xoopsDirName   = $xoopsDirName;
-        $this->ColName        = $ColName;
-        $this->Value          = $Value;
+        $this->xoopsDirName = $xoopsDirName;
+        $this->ColName = $ColName;
+        $this->Value = $Value;
         if (!empty($TadToolsModuleConfig['uploadcare_publickey'])) {
             $this->set_demopublickey($TadToolsModuleConfig['uploadcare_publickey']);
         }
     }
 
     //設定自定義設定檔
-    public function setCustomConfigurationsPath($path = "")
+    public function setCustomConfigurationsPath($path = '')
     {
         $this->CustomConfigurationsPath = $path;
     }
 
     //設定自定義工具列
-    public function setToolbarSet($ToolbarSet = "")
+    public function setToolbarSet($ToolbarSet = '')
     {
         $this->ToolbarSet = $ToolbarSet;
     }
 
     //設定自定義設寬度
-    public function setWidth($Width = "")
+    public function setWidth($Width = '')
     {
         $this->Width = $Width;
     }
 
     //設定自定義設高度
-    public function setHeight($Height = "")
+    public function setHeight($Height = '')
     {
         $this->Height = $Height;
     }
 
     //新增樣式
-    public function setContentCss($ContentsCss = "")
+    public function setContentCss($ContentsCss = '')
     {
         $this->ContentsCss[] = $ContentsCss;
     }
-    public function set_demopublickey($demopublickey = "")
+
+    public function set_demopublickey($demopublickey = '')
     {
         $this->demopublickey = $demopublickey;
     }
@@ -72,7 +73,7 @@ class CKEditor
         $content = str_replace('[', '&#91;', $content);
 
         if ($xoTheme) {
-            $editor = "";
+            $editor = '';
             $xoTheme->addScript('modules/tadtools/ckeditor/ckeditor.js');
         } else {
             $editor = "
@@ -87,15 +88,15 @@ class CKEditor
         $demopublickey_js = $extra_uploadcare = $uploadcare_setup = '';
         if ($this->demopublickey) {
             $demopublickey_js = "UPLOADCARE_PUBLIC_KEY = '{$this->demopublickey}',";
-            $extra_uploadcare = ",uploadcare";
-            $uploadcare_setup = "
+            $extra_uploadcare = ',uploadcare';
+            $uploadcare_setup = '
                 uploadcare: {
                     multiple: true
-                },";
+                },';
         }
 
         $TadToolsModuleConfig = TadToolsXoopsModuleConfig();
-        $codemirror           = $TadToolsModuleConfig['use_codemirror'] ? ',codemirror' : '';
+        $codemirror = $TadToolsModuleConfig['use_codemirror'] ? ',codemirror' : '';
 
         $editor .= "
         <textarea name='{$this->ColName}' id='editor_{$this->ColName}' class='ckeditor_css'>{$content}</textarea>
@@ -111,12 +112,12 @@ class CKEditor
             contentsCss : ['" . TADTOOLS_URL . "/bootstrap3/css/bootstrap.css','" . TADTOOLS_URL . "/css/font-awesome/css/font-awesome.css'{$other_css}],
             extraPlugins: 'syntaxhighlight,dialog,oembed,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak,fontawesome,prism,codesnippet{$codemirror}{$extra_uploadcare}',
             {$uploadcare_setup}
-            filebrowserBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=file&mod_dir=" . $this->xoopsDirName . "',
-            filebrowserImageBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=image&mod_dir=" . $this->xoopsDirName . "',
-            filebrowserFlashBrowseUrl : '" . TADTOOLS_URL . "/elFinder/elfinder.php?type=flash&mod_dir=" . $this->xoopsDirName . "',
-            filebrowserUploadUrl : '" . TADTOOLS_URL . "/upload.php?type=file&mod_dir=" . $this->xoopsDirName . "',
-            filebrowserImageUploadUrl : '" . TADTOOLS_URL . "/upload.php?type=image&mod_dir=" . $this->xoopsDirName . "',
-            filebrowserFlashUploadUrl : '" . TADTOOLS_URL . "/upload.php?type=flash&mod_dir=" . $this->xoopsDirName . "',
+            filebrowserBrowseUrl : '" . TADTOOLS_URL . '/elFinder/elfinder.php?type=file&mod_dir=' . $this->xoopsDirName . "',
+            filebrowserImageBrowseUrl : '" . TADTOOLS_URL . '/elFinder/elfinder.php?type=image&mod_dir=' . $this->xoopsDirName . "',
+            filebrowserFlashBrowseUrl : '" . TADTOOLS_URL . '/elFinder/elfinder.php?type=flash&mod_dir=' . $this->xoopsDirName . "',
+            filebrowserUploadUrl : '" . TADTOOLS_URL . '/upload.php?type=file&mod_dir=' . $this->xoopsDirName . "',
+            filebrowserImageUploadUrl : '" . TADTOOLS_URL . '/upload.php?type=image&mod_dir=' . $this->xoopsDirName . "',
+            filebrowserFlashUploadUrl : '" . TADTOOLS_URL . '/upload.php?type=flash&mod_dir=' . $this->xoopsDirName . "',
             qtRows: 10, // Count of rows
             qtColumns: 10, // Count of columns
             qtBorder: '1', // Border of inserted table
@@ -132,9 +133,9 @@ class CKEditor
         </script>
         <script>CKEDITOR.dtd.\$removeEmpty['span'] = false;</script>
             ";
+
         return $editor;
     }
-
 }
 
 /*

@@ -27,7 +27,6 @@
  */
 class PHPExcel_Chart_Title
 {
-
     /**
      * Title Caption
      *
@@ -44,6 +43,7 @@ class PHPExcel_Chart_Title
 
     /**
      * Create a new PHPExcel_Chart_Title
+     * @param null|mixed $caption
      */
     public function __construct($caption = null, PHPExcel_Chart_Layout $layout = null)
     {
@@ -70,7 +70,7 @@ class PHPExcel_Chart_Title
     public function setCaption($caption = null)
     {
         $this->caption = $caption;
-        
+
         return $this;
     }
 

@@ -43,10 +43,10 @@ final class JcTable
     {
         // todo: consider caching validator instances.
         return new InArray(
-            array (
-                'haystack' => array(self::START, self::CENTER, self::END),
-                'strict'   => InArray::COMPARE_STRICT,
-            )
+            [
+                'haystack' => [self::START, self::CENTER, self::END],
+                'strict' => InArray::COMPARE_STRICT,
+            ]
         );
     }
 }

@@ -14,6 +14,7 @@
  * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
 namespace PhpOffice\PhpWord\Writer\Word2007\Part;
 
 use PhpOffice\PhpWord\PhpWord;
@@ -29,7 +30,7 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
     /**
      * Executed before each method of the class
      */
-    public function tearDown()
+    protected function tearDown()
     {
         TestHelperDOCX::clear();
     }

@@ -37,10 +37,10 @@ class Shadow extends AbstractStyle
         }
         $xmlWriter = $this->getXmlWriter();
 
-        $xmlWriter->startElement("v:shadow");
+        $xmlWriter->startElement('v:shadow');
         $xmlWriter->writeAttribute('on', 't');
-        $xmlWriter->writeAttributeIf($style->getColor() !== null, 'color', $style->getColor());
-        $xmlWriter->writeAttributeIf($style->getOffset() !== null, 'offset', $style->getOffset());
+        $xmlWriter->writeAttributeIf(null !== $style->getColor(), 'color', $style->getColor());
+        $xmlWriter->writeAttributeIf(null !== $style->getOffset(), 'offset', $style->getOffset());
         $xmlWriter->endElement();
     }
 }

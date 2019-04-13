@@ -22,12 +22,12 @@ namespace PhpOffice\PhpWord\Shared;
  */
 class Converter
 {
-    const INCH_TO_CM        = 2.54;
-    const INCH_TO_TWIP      = 1440;
-    const INCH_TO_PIXEL     = 96;
-    const INCH_TO_POINT     = 72;
-    const PIXEL_TO_EMU      = 9525;
-    const DEGREE_TO_ANGLE   = 60000;
+    const INCH_TO_CM = 2.54;
+    const INCH_TO_TWIP = 1440;
+    const INCH_TO_PIXEL = 96;
+    const INCH_TO_POINT = 72;
+    const PIXEL_TO_EMU = 9525;
+    const DEGREE_TO_ANGLE = 60000;
 
     /**
      * Convert centimeter to twip
@@ -257,14 +257,14 @@ class Converter
      */
     public static function htmlToRgb($value)
     {
-        if ($value[0] == '#') {
-            $value = substr($value, 1);
+        if ('#' == $value[0]) {
+            $value = mb_substr($value, 1);
         }
 
-        if (strlen($value) == 6) {
-            list($red, $green, $blue) = array($value[0] . $value[1], $value[2] . $value[3], $value[4] . $value[5]);
-        } elseif (strlen($value) == 3) {
-            list($red, $green, $blue) = array($value[0] . $value[0], $value[1] . $value[1], $value[2] . $value[2]);
+        if (6 == mb_strlen($value)) {
+            list($red, $green, $blue) = [$value[0] . $value[1], $value[2] . $value[3], $value[4] . $value[5]];
+        } elseif (3 == mb_strlen($value)) {
+            list($red, $green, $blue) = [$value[0] . $value[0], $value[1] . $value[1], $value[2] . $value[2]];
         } else {
             return false;
         }
@@ -273,6 +273,6 @@ class Converter
         $green = hexdec($green);
         $blue = hexdec($blue);
 
-        return array($red, $green, $blue);
+        return [$red, $green, $blue];
     }
 }

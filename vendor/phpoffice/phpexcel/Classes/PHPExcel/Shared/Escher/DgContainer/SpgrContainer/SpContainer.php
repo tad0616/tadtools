@@ -134,7 +134,7 @@ class PHPExcel_Shared_Escher_DgContainer_SpgrContainer_SpContainer
     /**
      * Set whether this is a group shape
      *
-     * @param boolean $value
+     * @param bool $value
      */
     public function setSpgr($value = false)
     {
@@ -233,6 +233,7 @@ class PHPExcel_Shared_Escher_DgContainer_SpgrContainer_SpContainer
         if (isset($this->OPT[$property])) {
             return $this->OPT[$property];
         }
+
         return null;
     }
 
@@ -329,7 +330,7 @@ class PHPExcel_Shared_Escher_DgContainer_SpgrContainer_SpContainer
     /**
      * Set offset in x-direction of bottom-right corner of shape measured in 1/1024 of column width
      *
-     * @param int $startOffsetX
+     * @param mixed $endOffsetX
      */
     public function setEndOffsetX($endOffsetX = 0)
     {

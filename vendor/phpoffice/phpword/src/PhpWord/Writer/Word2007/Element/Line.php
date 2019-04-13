@@ -22,7 +22,6 @@ use PhpOffice\PhpWord\Writer\Word2007\Style\Line as LineStyleWriter;
 
 /**
  * Line element writer
- *
  */
 class Line extends AbstractElement
 {
@@ -34,7 +33,7 @@ class Line extends AbstractElement
     public function write()
     {
         $xmlWriter = $this->getXmlWriter();
-        $element   = $this->getElement();
+        $element = $this->getElement();
         if (!$element instanceof LineElement) {
             return;
         }
@@ -53,7 +52,7 @@ class Line extends AbstractElement
         $xmlWriter->startElement('w:pict');
 
         // Shapetype could be defined for each line separately, but then a unique id would be necessary
-        if ($elementId == 1) {
+        if (1 == $elementId) {
             $xmlWriter->startElement('v:shapetype');
             $xmlWriter->writeAttribute('id', '_x0000_t32');
             $xmlWriter->writeAttribute('coordsize', '21600,21600');

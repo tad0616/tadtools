@@ -31,7 +31,7 @@ trait ArrayOrTraversableGuardTrait
     ) {
         if (!is_array($data) && !($data instanceof Traversable)) {
             $message = sprintf(
-                "%s must be an array or Traversable, [%s] given",
+                '%s must be an array or Traversable, [%s] given',
                 $dataName,
                 is_object($data) ? get_class($data) : gettype($data)
             );

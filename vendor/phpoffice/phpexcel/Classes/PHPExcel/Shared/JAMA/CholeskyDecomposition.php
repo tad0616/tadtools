@@ -22,7 +22,7 @@ class CholeskyDecomposition
      *    @var array
      *    @access private
      */
-    private $L = array();
+    private $L = [];
 
     /**
      *    Matrix row and column dimension
@@ -43,6 +43,7 @@ class CholeskyDecomposition
      *
      *    Class constructor - decomposes symmetric positive definite matrix
      *    @param mixed Matrix square symmetric positive definite matrix
+     * @param null|mixed $A
      */
     public function __construct($A = null)
     {
@@ -62,20 +63,22 @@ class CholeskyDecomposition
                             $this->isspd = false;
                         }
                     } else {
-                        if ($this->L[$i][$i] != 0) {
+                        if (0 != $this->L[$i][$i]) {
                             $this->L[$j][$i] = $sum / $this->L[$i][$i];
                         }
                     }
                 }
 
-                for ($k = $i+1; $k < $this->m; ++$k) {
+                for ($k = $i + 1; $k < $this->m; ++$k) {
                     $this->L[$i][$k] = 0.0;
                 }
             }
         } else {
             throw new PHPExcel_Calculation_Exception(JAMAError(ARGUMENT_TYPE_EXCEPTION));
         }
-    }    //    function __construct()
+    }
+
+    //    function __construct()
 
     /**
      *    Is the matrix symmetric and positive definite?
@@ -85,7 +88,9 @@ class CholeskyDecomposition
     public function isSPD()
     {
         return $this->isspd;
-    }    //    function isSPD()
+    }
+
+    //    function isSPD()
 
     /**
      *    getL
@@ -96,7 +101,9 @@ class CholeskyDecomposition
     public function getL()
     {
         return new Matrix($this->L);
-    }    //    function getL()
+    }
+
+    //    function getL()
 
     /**
      *    Solve A*X = B
@@ -109,7 +116,7 @@ class CholeskyDecomposition
         if ($B instanceof Matrix) {
             if ($B->getRowDimension() == $this->m) {
                 if ($this->isspd) {
-                    $X  = $B->getArrayCopy();
+                    $X = $B->getArrayCopy();
                     $nx = $B->getColumnDimension();
 
                     for ($k = 0; $k < $this->m; ++$k) {
@@ -135,14 +142,13 @@ class CholeskyDecomposition
                     }
 
                     return new Matrix($X, $this->m, $nx);
-                } else {
-                    throw new PHPExcel_Calculation_Exception(JAMAError(MatrixSPDException));
                 }
-            } else {
-                throw new PHPExcel_Calculation_Exception(JAMAError(MATRIX_DIMENSION_EXCEPTION));
+                throw new PHPExcel_Calculation_Exception(JAMAError(MatrixSPDException));
             }
-        } else {
-            throw new PHPExcel_Calculation_Exception(JAMAError(ARGUMENT_TYPE_EXCEPTION));
+            throw new PHPExcel_Calculation_Exception(JAMAError(MATRIX_DIMENSION_EXCEPTION));
         }
-    }    //    function solve()
+        throw new PHPExcel_Calculation_Exception(JAMAError(ARGUMENT_TYPE_EXCEPTION));
+    }
+
+    //    function solve()
 }

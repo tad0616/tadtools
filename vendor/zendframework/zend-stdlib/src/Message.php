@@ -16,7 +16,7 @@ class Message implements MessageInterface
     /**
      * @var array
      */
-    protected $metadata = array();
+    protected $metadata = [];
 
     /**
      * @var string
@@ -38,6 +38,7 @@ class Message implements MessageInterface
     {
         if (is_scalar($spec)) {
             $this->metadata[$spec] = $value;
+
             return $this;
         }
         if (!is_array($spec) && !$spec instanceof Traversable) {
@@ -49,6 +50,7 @@ class Message implements MessageInterface
         foreach ($spec as $key => $value) {
             $this->metadata[$key] = $value;
         }
+
         return $this;
     }
 
@@ -86,6 +88,7 @@ class Message implements MessageInterface
     public function setContent($value)
     {
         $this->content = $value;
+
         return $this;
     }
 
@@ -113,6 +116,7 @@ class Message implements MessageInterface
             );
         }
         $request .= "\r\n" . $this->getContent();
+
         return $request;
     }
 }

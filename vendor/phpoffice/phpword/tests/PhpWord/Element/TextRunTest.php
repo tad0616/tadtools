@@ -55,7 +55,7 @@ class TextRunTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructArray()
     {
-        $oTextRun = new TextRun(array('spacing' => 100));
+        $oTextRun = new TextRun(['spacing' => 100]);
 
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Element\\TextRun', $oTextRun);
         $this->assertCount(0, $oTextRun->getElements());

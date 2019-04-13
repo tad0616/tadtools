@@ -11,9 +11,9 @@ namespace Zend\Validator;
 
 class Isbn extends AbstractValidator
 {
-    const AUTO    = 'auto';
-    const ISBN10  = '10';
-    const ISBN13  = '13';
+    const AUTO = 'auto';
+    const ISBN10 = '10';
+    const ISBN13 = '13';
     const INVALID = 'isbnInvalid';
     const NO_ISBN = 'isbnNoIsbn';
 
@@ -22,15 +22,15 @@ class Isbn extends AbstractValidator
      *
      * @var array
      */
-    protected $messageTemplates = array(
-        self::INVALID => "Invalid type given. String or integer expected",
-        self::NO_ISBN => "The input is not a valid ISBN number",
-    );
+    protected $messageTemplates = [
+        self::INVALID => 'Invalid type given. String or integer expected',
+        self::NO_ISBN => 'The input is not a valid ISBN number',
+    ];
 
-    protected $options = array(
-        'type'      => self::AUTO, // Allowed type
+    protected $options = [
+        'type' => self::AUTO, // Allowed type
         'separator' => '',         // Separator character
-    );
+    ];
 
     /**
      * Detect input format.
@@ -40,47 +40,45 @@ class Isbn extends AbstractValidator
     protected function detectFormat()
     {
         // prepare separator and pattern list
-        $sep      = quotemeta($this->getSeparator());
-        $patterns = array();
-        $lengths  = array();
-        $type     = $this->getType();
+        $sep = quotemeta($this->getSeparator());
+        $patterns = [];
+        $lengths = [];
+        $type = $this->getType();
 
         // check for ISBN-10
-        if ($type == self::ISBN10 || $type == self::AUTO) {
+        if (self::ISBN10 == $type || self::AUTO == $type) {
             if (empty($sep)) {
                 $pattern = '/^[0-9]{9}[0-9X]{1}$/';
-                $length  = 10;
+                $length = 10;
             } else {
                 $pattern = "/^[0-9]{1,7}[{$sep}]{1}[0-9]{1,7}[{$sep}]{1}[0-9]{1,7}[{$sep}]{1}[0-9X]{1}$/";
-                $length  = 13;
+                $length = 13;
             }
 
             $patterns[$pattern] = self::ISBN10;
-            $lengths[$pattern]  = $length;
+            $lengths[$pattern] = $length;
         }
 
         // check for ISBN-13
-        if ($type == self::ISBN13 || $type == self::AUTO) {
+        if (self::ISBN13 == $type || self::AUTO == $type) {
             if (empty($sep)) {
                 $pattern = '/^[0-9]{13}$/';
-                $length  = 13;
+                $length = 13;
             } else {
                 $pattern = "/^[0-9]{1,9}[{$sep}]{1}[0-9]{1,5}[{$sep}]{1}[0-9]{1,9}[{$sep}]{1}[0-9]{1,9}[{$sep}]{1}[0-9]{1}$/";
-                $length  = 17;
+                $length = 17;
             }
 
             $patterns[$pattern] = self::ISBN13;
-            $lengths[$pattern]  = $length;
+            $lengths[$pattern] = $length;
         }
 
         // check pattern list
         foreach ($patterns as $pattern => $type) {
-            if ((strlen($this->getValue()) == $lengths[$pattern]) && preg_match($pattern, $this->getValue())) {
+            if ((mb_strlen($this->getValue()) == $lengths[$pattern]) && preg_match($pattern, $this->getValue())) {
                 return $type;
             }
         }
-
-        return;
     }
 
     /**
@@ -93,6 +91,7 @@ class Isbn extends AbstractValidator
     {
         if (!is_string($value) && !is_int($value)) {
             $this->error(self::INVALID);
+
             return false;
         }
 
@@ -103,48 +102,49 @@ class Isbn extends AbstractValidator
             case self::ISBN10:
                 // sum
                 $isbn10 = str_replace($this->getSeparator(), '', $value);
-                $sum    = 0;
+                $sum = 0;
                 for ($i = 0; $i < 9; $i++) {
-                    $sum += (10 - $i) * $isbn10{$i};
+                    $sum += (10 - $i) * $isbn10[$i];
                 }
 
                 // checksum
                 $checksum = 11 - ($sum % 11);
-                if ($checksum == 11) {
+                if (11 == $checksum) {
                     $checksum = '0';
-                } elseif ($checksum == 10) {
+                } elseif (10 == $checksum) {
                     $checksum = 'X';
                 }
                 break;
-
             case self::ISBN13:
                 // sum
                 $isbn13 = str_replace($this->getSeparator(), '', $value);
-                $sum    = 0;
+                $sum = 0;
                 for ($i = 0; $i < 12; $i++) {
-                    if ($i % 2 == 0) {
-                        $sum += $isbn13{$i};
+                    if (0 == $i % 2) {
+                        $sum += $isbn13[$i];
                     } else {
-                        $sum += 3 * $isbn13{$i};
+                        $sum += 3 * $isbn13[$i];
                     }
                 }
                 // checksum
                 $checksum = 10 - ($sum % 10);
-                if ($checksum == 10) {
+                if (10 == $checksum) {
                     $checksum = '0';
                 }
                 break;
-
             default:
                 $this->error(self::NO_ISBN);
+
                 return false;
         }
 
         // validate
-        if (substr($this->getValue(), -1) != $checksum) {
+        if (mb_substr($this->getValue(), -1) != $checksum) {
             $this->error(self::NO_ISBN);
+
             return false;
         }
+
         return true;
     }
 
@@ -160,11 +160,12 @@ class Isbn extends AbstractValidator
     public function setSeparator($separator)
     {
         // check separator
-        if (!in_array($separator, array('-', ' ', ''))) {
+        if (!in_array($separator, ['-', ' ', ''], true)) {
             throw new Exception\InvalidArgumentException('Invalid ISBN separator.');
         }
 
         $this->options['separator'] = $separator;
+
         return $this;
     }
 
@@ -188,11 +189,12 @@ class Isbn extends AbstractValidator
     public function setType($type)
     {
         // check type
-        if (!in_array($type, array(self::AUTO, self::ISBN10, self::ISBN13))) {
+        if (!in_array($type, [self::AUTO, self::ISBN10, self::ISBN13], true)) {
             throw new Exception\InvalidArgumentException('Invalid ISBN type');
         }
 
         $this->options['type'] = $type;
+
         return $this;
     }
 

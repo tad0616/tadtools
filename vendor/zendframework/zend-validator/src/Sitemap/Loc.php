@@ -23,20 +23,19 @@ class Loc extends AbstractValidator
 {
     /**
      * Validation key for not valid
-     *
      */
     const NOT_VALID = 'sitemapLocNotValid';
-    const INVALID   = 'sitemapLocInvalid';
+    const INVALID = 'sitemapLocInvalid';
 
     /**
      * Validation failure message template definitions
      *
      * @var array
      */
-    protected $messageTemplates = array(
-        self::NOT_VALID => "The input is not a valid sitemap location",
-        self::INVALID   => "Invalid type given. String expected",
-    );
+    protected $messageTemplates = [
+        self::NOT_VALID => 'The input is not a valid sitemap location',
+        self::INVALID => 'Invalid type given. String expected',
+    ];
 
     /**
      * Validates if a string is valid as a sitemap location
@@ -50,6 +49,7 @@ class Loc extends AbstractValidator
     {
         if (!is_string($value)) {
             $this->error(self::INVALID);
+
             return false;
         }
 
@@ -57,6 +57,7 @@ class Loc extends AbstractValidator
         $uri = Uri\UriFactory::factory($value);
         if (!$uri->isValid()) {
             $this->error(self::NOT_VALID);
+
             return false;
         }
 

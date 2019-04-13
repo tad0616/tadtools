@@ -29,9 +29,9 @@ class SDTTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstruct()
     {
-        $types = array('comboBox', 'dropDownList', 'date');
-        $type = $types[rand(0, 2)];
-        $value = rand(0, 100);
+        $types = ['comboBox', 'dropDownList', 'date'];
+        $type = $types[mt_rand(0, 2)];
+        $value = mt_rand(0, 100);
         $object = new SDT($type);
         $object->setValue($value);
         $object->setListItems($types);
@@ -44,12 +44,12 @@ class SDTTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test set type exception
-     *
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Invalid style value
      */
     public function testSetTypeException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid style value');
+
         $object = new SDT('comboBox');
         $object->setType('foo');
     }

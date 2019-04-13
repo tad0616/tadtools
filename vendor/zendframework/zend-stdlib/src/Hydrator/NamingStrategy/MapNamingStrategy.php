@@ -18,14 +18,14 @@ class MapNamingStrategy implements NamingStrategyInterface
      *
      * @var array
      */
-    protected $mapping = array();
+    protected $mapping = [];
 
     /**
      * Reversed map for extract name conversion.
      *
      * @var array
      */
-    protected $reverse = array();
+    protected $reverse = [];
 
     /**
      * Initialize.
@@ -43,8 +43,8 @@ class MapNamingStrategy implements NamingStrategyInterface
      * Safelly flip mapping array.
      *
      * @param  array                    $array Array to flip
-     * @return array                    Flipped array
      * @throws InvalidArgumentException
+     * @return array                    Flipped array
      */
     protected function flipMapping(array $array)
     {

@@ -31,7 +31,7 @@ class Manifest extends AbstractPart
      */
     public function write()
     {
-        $parts = array('content.xml', 'meta.xml', 'styles.xml');
+        $parts = ['content.xml', 'meta.xml', 'styles.xml'];
         $xmlWriter = $this->getXmlWriter();
 
         $xmlWriter->startDocument('1.0', 'UTF-8');
@@ -56,7 +56,7 @@ class Manifest extends AbstractPart
         // Media files
         $media = Media::getElements('section');
         foreach ($media as $medium) {
-            if ($medium['type'] == 'image') {
+            if ('image' == $medium['type']) {
                 $xmlWriter->startElement('manifest:file-entry');
                 $xmlWriter->writeAttribute('manifest:media-type', $medium['imageType']);
                 $xmlWriter->writeAttribute('manifest:full-path', 'Pictures/' . $medium['target']);

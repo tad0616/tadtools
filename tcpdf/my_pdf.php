@@ -82,7 +82,6 @@ class my_pdf extends TCPDF
         if ($this->GetY() + $h > $this->PageBreakTrigger) {
             $this->AddPage($this->CurOrientation);
         }
-
     }
 
     public function NbLines($w, $txt)
@@ -132,7 +131,6 @@ class my_pdf extends TCPDF
                     if ($i == $j) {
                         $i++;
                     }
-
                 } else {
                     $i = $sep + 1;
                 }
@@ -144,7 +142,6 @@ class my_pdf extends TCPDF
             } else {
                 $i++;
             }
-
         }
         return $nl;
     }

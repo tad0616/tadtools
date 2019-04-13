@@ -59,14 +59,14 @@ class PhpWord
      *
      * @var \PhpOffice\PhpWord\Element\Section[]
      */
-    private $sections = array();
+    private $sections = [];
 
     /**
      * Collections
      *
      * @var array
      */
-    private $collections = array();
+    private $collections = [];
 
     /**
      * Metadata
@@ -74,7 +74,7 @@ class PhpWord
      * @var array
      * @since 0.12.0
      */
-    private $metadata = array();
+    private $metadata = [];
 
     /**
      * Create new instance
@@ -84,14 +84,14 @@ class PhpWord
     public function __construct()
     {
         // Collection
-        $collections = array('Bookmarks', 'Titles', 'Footnotes', 'Endnotes', 'Charts');
+        $collections = ['Bookmarks', 'Titles', 'Footnotes', 'Endnotes', 'Charts'];
         foreach ($collections as $collection) {
             $class = 'PhpOffice\\PhpWord\\Collection\\' . $collection;
             $this->collections[$collection] = new $class();
         }
 
         // Metadata
-        $metadata = array('DocInfo', 'Protection', 'Compatibility');
+        $metadata = ['DocInfo', 'Protection', 'Compatibility'];
         foreach ($metadata as $meta) {
             $class = 'PhpOffice\\PhpWord\\Metadata\\' . $meta;
             $this->metadata[$meta] = new $class();
@@ -106,38 +106,37 @@ class PhpWord
      * @param mixed $function
      * @param mixed $args
      *
-     * @return mixed
-     *
      * @throws \BadMethodCallException
+     * @return mixed
      */
     public function __call($function, $args)
     {
-        $function = strtolower($function);
+        $function = mb_strtolower($function);
 
-        $getCollection = array();
-        $addCollection = array();
-        $addStyle = array();
+        $getCollection = [];
+        $addCollection = [];
+        $addStyle = [];
 
-        $collections = array('Bookmark', 'Title', 'Footnote', 'Endnote', 'Chart');
+        $collections = ['Bookmark', 'Title', 'Footnote', 'Endnote', 'Chart'];
         foreach ($collections as $collection) {
-            $getCollection[] = strtolower("get{$collection}s");
-            $addCollection[] = strtolower("add{$collection}");
+            $getCollection[] = mb_strtolower("get{$collection}s");
+            $addCollection[] = mb_strtolower("add{$collection}");
         }
 
-        $styles = array('Paragraph', 'Font', 'Table', 'Numbering', 'Link', 'Title');
+        $styles = ['Paragraph', 'Font', 'Table', 'Numbering', 'Link', 'Title'];
         foreach ($styles as $style) {
-            $addStyle[] = strtolower("add{$style}Style");
+            $addStyle[] = mb_strtolower("add{$style}Style");
         }
 
         // Run get collection method
-        if (in_array($function, $getCollection)) {
+        if (in_array($function, $getCollection, true)) {
             $key = ucfirst(str_replace('get', '', $function));
 
             return $this->collections[$key];
         }
 
         // Run add collection item method
-        if (in_array($function, $addCollection)) {
+        if (in_array($function, $addCollection, true)) {
             $key = ucfirst(str_replace('add', '', $function) . 's');
 
             /** @var \PhpOffice\PhpWord\Collection\AbstractCollection $collectionObject */
@@ -147,8 +146,8 @@ class PhpWord
         }
 
         // Run add style method
-        if (in_array($function, $addStyle)) {
-            return forward_static_call_array(array('PhpOffice\\PhpWord\\Style', $function), $args);
+        if (in_array($function, $addStyle, true)) {
+            return forward_static_call_array(['PhpOffice\\PhpWord\\Style', $function], $args);
         }
 
         // Exception
@@ -272,9 +271,9 @@ class PhpWord
      *
      * @param  string $filename Fully qualified filename.
      *
+     * @throws \PhpOffice\PhpWord\Exception\Exception
      * @return TemplateProcessor
      *
-     * @throws \PhpOffice\PhpWord\Exception\Exception
      *
      * @codeCoverageIgnore
      */
@@ -282,9 +281,8 @@ class PhpWord
     {
         if (file_exists($filename)) {
             return new TemplateProcessor($filename);
-        } else {
-            throw new Exception("Template file {$filename} not found.");
         }
+        throw new Exception("Template file {$filename} not found.");
     }
 
     /**
@@ -299,18 +297,18 @@ class PhpWord
      */
     public function save($filename, $format = 'Word2007', $download = false)
     {
-        $mime = array(
-            'Word2007'  => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-            'ODText'    => 'application/vnd.oasis.opendocument.text',
-            'RTF'       => 'application/rtf',
-            'HTML'      => 'text/html',
-            'PDF'       => 'application/pdf',
-        );
+        $mime = [
+            'Word2007' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'ODText' => 'application/vnd.oasis.opendocument.text',
+            'RTF' => 'application/rtf',
+            'HTML' => 'text/html',
+            'PDF' => 'application/pdf',
+        ];
 
         $writer = IOFactory::createWriter($this, $format);
 
-        if ($download === true) {
-            header("Content-Description: File Transfer");
+        if (true === $download) {
+            header('Content-Description: File Transfer');
             header('Content-Disposition: attachment; filename="' . $filename . '"');
             header('Content-Type: ' . $mime[$format]);
             header('Content-Transfer-Encoding: binary');

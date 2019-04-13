@@ -32,14 +32,14 @@ class LineTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Line();
 
-        $properties = array(
+        $properties = [
             'connectorType' => \PhpOffice\PhpWord\Style\Line::CONNECTOR_TYPE_STRAIGHT,
-            'beginArrow'    => \PhpOffice\PhpWord\Style\Line::ARROW_STYLE_BLOCK,
-            'endArrow'      => \PhpOffice\PhpWord\Style\Line::ARROW_STYLE_OVAL,
-            'dash'          => \PhpOffice\PhpWord\Style\Line::DASH_STYLE_LONG_DASH_DOT_DOT,
-            'weight'        => 10,
-            'color'         => 'red',
-        );
+            'beginArrow' => \PhpOffice\PhpWord\Style\Line::ARROW_STYLE_BLOCK,
+            'endArrow' => \PhpOffice\PhpWord\Style\Line::ARROW_STYLE_OVAL,
+            'dash' => \PhpOffice\PhpWord\Style\Line::DASH_STYLE_LONG_DASH_DOT_DOT,
+            'weight' => 10,
+            'color' => 'red',
+        ];
         foreach ($properties as $key => $value) {
             $set = "set{$key}";
             $get = "get{$key}";
@@ -55,14 +55,14 @@ class LineTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Line();
 
-        $properties = array(
+        $properties = [
             'connectorType' => \PhpOffice\PhpWord\Style\Line::CONNECTOR_TYPE_STRAIGHT,
-            'beginArrow'    => \PhpOffice\PhpWord\Style\Line::ARROW_STYLE_BLOCK,
-            'endArrow'      => \PhpOffice\PhpWord\Style\Line::ARROW_STYLE_OVAL,
-            'dash'          => \PhpOffice\PhpWord\Style\Line::DASH_STYLE_LONG_DASH_DOT_DOT,
-            'weight'        => 10,
-            'color'         => 'red',
-        );
+            'beginArrow' => \PhpOffice\PhpWord\Style\Line::ARROW_STYLE_BLOCK,
+            'endArrow' => \PhpOffice\PhpWord\Style\Line::ARROW_STYLE_OVAL,
+            'dash' => \PhpOffice\PhpWord\Style\Line::DASH_STYLE_LONG_DASH_DOT_DOT,
+            'weight' => 10,
+            'color' => 'red',
+        ];
         foreach ($properties as $key => $value) {
             $get = "get{$key}";
             $object->setStyleValue("{$key}", $value);

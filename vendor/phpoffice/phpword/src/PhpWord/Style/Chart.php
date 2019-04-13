@@ -24,7 +24,6 @@ namespace PhpOffice\PhpWord\Style;
  */
 class Chart extends AbstractStyle
 {
-
     /**
      * Width (in EMU)
      *
@@ -51,7 +50,7 @@ class Chart extends AbstractStyle
      *
      * @param array $style
      */
-    public function __construct($style = array())
+    public function __construct($style = [])
     {
         $this->setStyleByArray($style);
     }

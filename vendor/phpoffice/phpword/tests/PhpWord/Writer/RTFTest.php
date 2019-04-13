@@ -14,6 +14,7 @@
  * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
 namespace PhpOffice\PhpWord\Writer;
 
 use PhpOffice\PhpWord\PhpWord;
@@ -31,19 +32,19 @@ class RTFTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstruct()
     {
-        $object = new RTF(new PhpWord);
+        $object = new RTF(new PhpWord());
 
         $this->assertInstanceOf('PhpOffice\\PhpWord\\PhpWord', $object->getPhpWord());
     }
 
     /**
      * Construct with null
-     *
-     * @expectedException \PhpOffice\PhpWord\Exception\Exception
-     * @expectedExceptionMessage No PhpWord assigned.
      */
     public function testConstructWithNull()
     {
+        $this->expectException(\PhpOffice\PhpWord\Exception\Exception::class);
+        $this->expectExceptionMessage('No PhpWord assigned.');
+
         $object = new RTF();
         $object->getPhpWord();
     }
@@ -60,21 +61,21 @@ class RTFTest extends \PHPUnit_Framework_TestCase
         $phpWord = new PhpWord();
         $phpWord->addFontStyle(
             'Font',
-            array('name' => 'Verdana', 'size' => 11, 'color' => 'FF0000', 'fgColor' => '00FF00')
+            ['name' => 'Verdana', 'size' => 11, 'color' => 'FF0000', 'fgColor' => '00FF00']
         );
-        $phpWord->addParagraphStyle('Paragraph', array('alignment' => Jc::CENTER));
+        $phpWord->addParagraphStyle('Paragraph', ['alignment' => Jc::CENTER]);
         $section = $phpWord->addSection();
         $section->addText(htmlspecialchars('Test 1', ENT_COMPAT, 'UTF-8'), 'Font', 'Paragraph');
         $section->addTextBreak();
-        $section->addText(htmlspecialchars('Test 2', ENT_COMPAT, 'UTF-8'), array('name' => 'Tahoma', 'bold' => true, 'italic' => true));
+        $section->addText(htmlspecialchars('Test 2', ENT_COMPAT, 'UTF-8'), ['name' => 'Tahoma', 'bold' => true, 'italic' => true]);
         $section->addLink('https://github.com/PHPOffice/PHPWord');
         $section->addTitle(htmlspecialchars('Test', ENT_COMPAT, 'UTF-8'), 1);
         $section->addPageBreak();
 
         // Rowspan
         $table = $section->addTable();
-        $table->addRow()->addCell(null, array('vMerge' => 'restart'))->addText('Test');
-        $table->addRow()->addCell(null, array('vMerge' => 'continue'))->addText('Test');
+        $table->addRow()->addCell(null, ['vMerge' => 'restart'])->addText('Test');
+        $table->addRow()->addCell(null, ['vMerge' => 'continue'])->addText('Test');
 
         // Nested table
         $cell = $section->addTable()->addRow()->addCell();
@@ -91,7 +92,7 @@ class RTFTest extends \PHPUnit_Framework_TestCase
         $writer = new RTF($phpWord);
         $writer->save($file);
 
-        $this->assertTrue(file_exists($file));
+        $this->assertFileExists($file);
 
         @unlink($file);
     }

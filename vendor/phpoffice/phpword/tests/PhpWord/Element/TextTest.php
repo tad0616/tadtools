@@ -58,7 +58,7 @@ class TextTest extends \PHPUnit_Framework_TestCase
         $oText = new Text('text', 'fontStyle');
         $this->assertEquals('fontStyle', $oText->getFontStyle());
 
-        $oText->setFontStyle(array('bold' => true, 'italic' => true, 'size' => 16));
+        $oText->setFontStyle(['bold' => true, 'italic' => true, 'size' => 16]);
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Style\\Font', $oText->getFontStyle());
     }
 
@@ -80,7 +80,7 @@ class TextTest extends \PHPUnit_Framework_TestCase
         $oText = new Text('text', 'fontStyle', 'paragraphStyle');
         $this->assertEquals('paragraphStyle', $oText->getParagraphStyle());
 
-        $oText->setParagraphStyle(array('alignment' => Jc::CENTER, 'spaceAfter' => 100));
+        $oText->setParagraphStyle(['alignment' => Jc::CENTER, 'spaceAfter' => 100]);
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Style\\Paragraph', $oText->getParagraphStyle());
     }
 }

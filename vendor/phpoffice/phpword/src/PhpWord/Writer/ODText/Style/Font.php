@@ -44,8 +44,8 @@ class Font extends AbstractStyle
 
         // Name
         $font = $style->getName();
-        $xmlWriter->writeAttributeIf($font != '', 'style:font-name', $font);
-        $xmlWriter->writeAttributeIf($font != '', 'style:font-name-complex', $font);
+        $xmlWriter->writeAttributeIf('' != $font, 'style:font-name', $font);
+        $xmlWriter->writeAttributeIf('' != $font, 'style:font-name-complex', $font);
         $size = $style->getSize();
 
         // Size
@@ -55,7 +55,7 @@ class Font extends AbstractStyle
 
         // Color
         $color = $style->getColor();
-        $xmlWriter->writeAttributeIf($color != '', 'fo:color', '#' . $color);
+        $xmlWriter->writeAttributeIf('' != $color, 'fo:color', '#' . $color);
 
         // Bold & italic
         $xmlWriter->writeAttributeIf($style->isBold(), 'fo:font-weight', 'bold');
@@ -67,7 +67,7 @@ class Font extends AbstractStyle
         // Underline
         // @todo Various mode of underline
         $underline = $style->getUnderline();
-        $xmlWriter->writeAttributeIf($underline != 'none', 'style:text-underline-style', 'solid');
+        $xmlWriter->writeAttributeIf('none' != $underline, 'style:text-underline-style', 'solid');
 
         // Strikethrough, double strikethrough
         $xmlWriter->writeAttributeIf($style->isStrikethrough(), 'style:text-line-through-type', 'single');

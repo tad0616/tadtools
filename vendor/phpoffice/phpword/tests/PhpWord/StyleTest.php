@@ -30,31 +30,31 @@ class StyleTest extends \PHPUnit_Framework_TestCase
     /**
      * Add and get paragraph, font, link, title, and table styles
      *
-     * @covers ::addParagraphStyle
      * @covers ::addFontStyle
      * @covers ::addLinkStyle
-     * @covers ::addTitleStyle
+     * @covers ::addParagraphStyle
      * @covers ::addTableStyle
-     * @covers ::setDefaultParagraphStyle
+     * @covers ::addTitleStyle
      * @covers ::countStyles
      * @covers ::getStyle
-     * @covers ::resetStyles
      * @covers ::getStyles
+     * @covers ::resetStyles
+     * @covers ::setDefaultParagraphStyle
      * @test
      */
     public function testStyles()
     {
-        $paragraph = array('alignment' => Jc::CENTER);
-        $font = array('italic' => true, '_bold' => true);
-        $table = array('bgColor' => 'CCCCCC');
-        $styles = array(
+        $paragraph = ['alignment' => Jc::CENTER];
+        $font = ['italic' => true, '_bold' => true];
+        $table = ['bgColor' => 'CCCCCC'];
+        $styles = [
             'Paragraph' => 'Paragraph',
-            'Font'      => 'Font',
-            'Link'      => 'Font',
-            'Table'     => 'Table',
+            'Font' => 'Font',
+            'Link' => 'Font',
+            'Table' => 'Table',
             'Heading_1' => 'Font',
-            'Normal'    => 'Paragraph',
-        );
+            'Normal' => 'Paragraph',
+        ];
 
         Style::addParagraphStyle('Paragraph', $paragraph);
         Style::addFontStyle('Font', $font);
@@ -82,7 +82,7 @@ class StyleTest extends \PHPUnit_Framework_TestCase
      */
     public function testDefaultParagraphStyle()
     {
-        $paragraph = array('alignment' => Jc::CENTER);
+        $paragraph = ['alignment' => Jc::CENTER];
 
         Style::setDefaultParagraphStyle($paragraph);
 

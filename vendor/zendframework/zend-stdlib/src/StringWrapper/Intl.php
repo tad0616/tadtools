@@ -18,7 +18,7 @@ class Intl extends AbstractStringWrapper
      *
      * @var string[]
      */
-    protected static $encodings = array('UTF-8');
+    protected static $encodings = ['UTF-8'];
 
     /**
      * Get a list of supported character encodings
@@ -66,7 +66,7 @@ class Intl extends AbstractStringWrapper
     public function substr($str, $offset = 0, $length = null)
     {
         // Due fix of PHP #62759 The third argument returns an empty string if is 0 or null.
-        if ($length !== null) {
+        if (null !== $length) {
             return grapheme_substr($str, $offset, $length);
         }
 

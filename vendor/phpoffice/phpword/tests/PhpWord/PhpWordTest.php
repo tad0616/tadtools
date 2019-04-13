@@ -77,7 +77,7 @@ class PhpWordTest extends \PHPUnit_Framework_TestCase
     public function testSetDefaultParagraphStyle()
     {
         $phpWord = new PhpWord();
-        $phpWord->setDefaultParagraphStyle(array());
+        $phpWord->setDefaultParagraphStyle([]);
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Style\\Paragraph', Style::getStyle('Normal'));
     }
 
@@ -87,19 +87,18 @@ class PhpWordTest extends \PHPUnit_Framework_TestCase
     public function testAddStyles()
     {
         $phpWord = new PhpWord();
-        $styles = array(
+        $styles = [
             'Paragraph' => 'Paragraph',
-            'Font'      => 'Font',
-            'Table'     => 'Table',
-            'Link'      => 'Font',
-        );
+            'Font' => 'Font',
+            'Table' => 'Table',
+            'Link' => 'Font',
+        ];
         foreach ($styles as $key => $value) {
             $method = "add{$key}Style";
             $styleId = "{$key} Style";
-            $phpWord->$method($styleId, array());
+            $phpWord->$method($styleId, []);
             $this->assertInstanceOf("PhpOffice\\PhpWord\\Style\\{$value}", Style::getStyle($styleId));
         }
-
     }
 
     /**
@@ -110,7 +109,7 @@ class PhpWordTest extends \PHPUnit_Framework_TestCase
         $phpWord = new PhpWord();
         $titleLevel = 1;
         $titleName = "Heading_{$titleLevel}";
-        $phpWord->addTitleStyle($titleLevel, array());
+        $phpWord->addTitleStyle($titleLevel, []);
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Style\\Font', Style::getStyle($titleName));
     }
 
@@ -134,14 +133,14 @@ class PhpWordTest extends \PHPUnit_Framework_TestCase
      * Test load template exception
      *
      * @deprecated 0.12.0
-     *
-     * @expectedException \PhpOffice\PhpWord\Exception\Exception
      */
     public function testLoadTemplateException()
     {
-        $templateFqfn = join(
+        $this->expectException(\PhpOffice\PhpWord\Exception\Exception::class);
+
+        $templateFqfn = implode(
             DIRECTORY_SEPARATOR,
-            array(PHPWORD_TESTS_BASE_DIR, 'PhpWord', 'Tests', '_files', 'templates', 'blanks.docx')
+            [PHPWORD_TESTS_BASE_DIR, 'PhpWord', 'Tests', '_files', 'templates', 'blanks.docx']
         );
         $phpWord = new PhpWord();
         $phpWord->loadTemplate($templateFqfn);
@@ -161,12 +160,12 @@ class PhpWordTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test calling undefined method
-     *
-     * @expectedException \BadMethodCallException
-     * @expectedExceptionMessage is not defined
      */
     public function testCallUndefinedMethod()
     {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('is not defined');
+
         $phpWord = new PhpWord();
         $phpWord->undefinedMethod();
     }

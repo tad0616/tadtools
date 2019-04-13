@@ -14,7 +14,7 @@ use Zend\Stdlib\ArrayUtils;
 
 class LessThan extends AbstractValidator
 {
-    const NOT_LESS           = 'notLessThan';
+    const NOT_LESS = 'notLessThan';
     const NOT_LESS_INCLUSIVE = 'notLessThanInclusive';
 
     /**
@@ -22,19 +22,19 @@ class LessThan extends AbstractValidator
      *
      * @var array
      */
-    protected $messageTemplates = array(
-        self::NOT_LESS           => "The input is not less than '%max%'",
-        self::NOT_LESS_INCLUSIVE => "The input is not less or equal than '%max%'"
-    );
+    protected $messageTemplates = [
+        self::NOT_LESS => "The input is not less than '%max%'",
+        self::NOT_LESS_INCLUSIVE => "The input is not less or equal than '%max%'",
+    ];
 
     /**
      * Additional variables available for validation failure messages
      *
      * @var array
      */
-    protected $messageVariables = array(
-        'max' => 'max'
-    );
+    protected $messageVariables = [
+        'max' => 'max',
+    ];
 
     /**
      * Maximum value
@@ -108,6 +108,7 @@ class LessThan extends AbstractValidator
     public function setMax($max)
     {
         $this->max = $max;
+
         return $this;
     }
 
@@ -130,6 +131,7 @@ class LessThan extends AbstractValidator
     public function setInclusive($inclusive)
     {
         $this->inclusive = $inclusive;
+
         return $this;
     }
 
@@ -147,11 +149,13 @@ class LessThan extends AbstractValidator
         if ($this->inclusive) {
             if ($value > $this->max) {
                 $this->error(self::NOT_LESS_INCLUSIVE);
+
                 return false;
             }
         } else {
             if ($value >= $this->max) {
                 $this->error(self::NOT_LESS);
+
                 return false;
             }
         }

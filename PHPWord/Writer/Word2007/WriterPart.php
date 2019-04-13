@@ -24,20 +24,20 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    Beta 0.6.3, 08.07.2011
  */
+abstract class PHPWord_Writer_Word2007_WriterPart
+{
+    private $_parentWriter;
 
+    public function setParentWriter(PHPWord_Writer_IWriter $pWriter = null)
+    {
+        $this->_parentWriter = $pWriter;
+    }
 
-abstract class PHPWord_Writer_Word2007_WriterPart {
-	private $_parentWriter;
-	
-	public function setParentWriter(PHPWord_Writer_IWriter $pWriter = null) {
-		$this->_parentWriter = $pWriter;
-	}
-	
-	public function getParentWriter() {
-		if (!is_null($this->_parentWriter)) {
-			return $this->_parentWriter;
-		} else {
-			throw new Exception("No parent PHPWord_Writer_IWriter assigned.");
-		}
-	}
+    public function getParentWriter()
+    {
+        if (null !== $this->_parentWriter) {
+            return $this->_parentWriter;
+        }
+        throw new Exception('No parent PHPWord_Writer_IWriter assigned.');
+    }
 }

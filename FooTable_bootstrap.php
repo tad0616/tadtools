@@ -1,12 +1,12 @@
 <?php
-include_once "tadtools_header.php";
+include_once 'tadtools_header.php';
 
 class FooTable
 {
     public $selector = '.footable';
 
     //建構函數
-    public function __construct($selector = ".footable")
+    public function __construct($selector = '.footable')
     {
         $this->selector = $selector;
     }
@@ -15,9 +15,9 @@ class FooTable
     public function render($need_jquery = true)
     {
         global $xoTheme;
-        include_once "jquery.php";
+        include_once 'jquery.php';
 
-        $jquery = $need_jquery ? get_jquery() : "";
+        $jquery = $need_jquery ? get_jquery() : '';
         if ($xoTheme) {
             $xoTheme->addStylesheet('modules/tadtools/footable-bootstrap/css/footable.bootstrap.min.css');
             $xoTheme->addScript('modules/tadtools/footable-bootstrap/js/footable.min.js');
@@ -30,7 +30,6 @@ class FooTable
               })(jQuery);
             ");
         } else {
-
             $FooTable = "
             <link href='" . TADTOOLS_URL . "/footable-bootstrap/css/footable.bootstrap.min.css' rel='stylesheet' type='text/css' >
             $jquery
@@ -41,6 +40,7 @@ class FooTable
               });
             </script>
             ";
+
             return $FooTable;
         }
     }

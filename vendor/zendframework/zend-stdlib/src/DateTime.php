@@ -34,11 +34,11 @@ class DateTime extends \DateTime
     public static function createFromISO8601($time, DateTimeZone $timezone = null)
     {
         $format = self::ISO8601;
-        if (isset($time[19]) && $time[19] === '.') {
+        if (isset($time[19]) && '.' === $time[19]) {
             $format = 'Y-m-d\TH:i:s.uO';
         }
 
-        if ($timezone !== null) {
+        if (null !== $timezone) {
             return self::createFromFormat($format, $time, $timezone);
         }
 

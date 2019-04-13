@@ -44,7 +44,7 @@ class Row extends AbstractStyle
         $xmlWriter = $this->getXmlWriter();
         $xmlWriter->startElement('w:trPr');
 
-        if ($this->height !== null) {
+        if (null !== $this->height) {
             $xmlWriter->startElement('w:trHeight');
             $xmlWriter->writeAttribute('w:val', $this->height);
             $xmlWriter->writeAttribute('w:hRule', ($style->isExactHeight() ? 'exact' : 'atLeast'));

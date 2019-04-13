@@ -1,7 +1,7 @@
 <?php
-include_once "tadtools_header.php";
-include_once "tad_function.php";
-include_once "jquery.php";
+include_once 'tadtools_header.php';
+include_once 'tad_function.php';
+include_once 'jquery.php';
 
 class slider
 {
@@ -12,29 +12,29 @@ class slider
     //建構函數
     public function __construct($word_num = 60, $show_jquery = true)
     {
-        $this->word_num    = $word_num;
+        $this->word_num = $word_num;
         $this->show_jquery = $show_jquery;
     }
 
-    public function add_content($sn = "", $title = "", $content = "", $image = "", $date = "", $url = "", $width = "", $height = "", $target = "")
+    public function add_content($sn = '', $title = '', $content = '', $image = '', $date = '', $url = '', $width = '', $height = '', $target = '')
     {
-        $this->item[$sn]['title']   = $title;
+        $this->item[$sn]['title'] = $title;
         $this->item[$sn]['content'] = $content;
-        $this->item[$sn]['image']   = $image;
-        $this->item[$sn]['date']    = $date;
-        $this->item[$sn]['url']     = $url;
-        $this->item[$sn]['width']   = $width;
-        $this->item[$sn]['height']  = $height;
-        $this->item[$sn]['target']  = $target;
+        $this->item[$sn]['image'] = $image;
+        $this->item[$sn]['date'] = $date;
+        $this->item[$sn]['url'] = $url;
+        $this->item[$sn]['width'] = $width;
+        $this->item[$sn]['height'] = $height;
+        $this->item[$sn]['target'] = $target;
     }
 
     //產生語法
-    public function render($id = "", $margin_top = 0)
+    public function render($id = '', $margin_top = 0)
     {
         global $xoTheme;
 
         $randStr = randStr(6, 'CHAR');
-        $id      = "{$id}{$randStr}";
+        $id = "{$id}{$randStr}";
 
         $utf8_word_num = $this->word_num * 3;
         if (empty($utf8_word_num)) {
@@ -43,17 +43,17 @@ class slider
 
         get_jquery();
 
-        $all = $nav = "";
-        $i   = 1;
+        $all = $nav = '';
+        $i = 1;
         foreach ($this->item as $sn => $item_content) {
-            $title   = xoops_substr(strip_tags($item_content['title']), 0, 180);
+            $title = xoops_substr(strip_tags($item_content['title']), 0, 180);
             $content = xoops_substr(strip_tags($item_content['content']), 0, $utf8_word_num);
 
-            $pi    = ($i % 2) ? "1" : "2";
+            $pi = ($i % 2) ? '1' : '2';
             $image = empty($item_content['image']) ? TADTOOLS_URL . "/ResponsiveSlides/images/demo{$pi}.jpg" : $item_content['image'];
 
-            $content_div = $content ? "<div style='font-size:1em;'>{$content}</div>" : "";
-            $caption     = ($content or $title) ? "
+            $content_div = $content ? "<div style='font-size:1em;'>{$content}</div>" : '';
+            $caption = ($content or $title) ? "
             <div class='caption'>
               <div style='font-size:1.2em;color:yellow;font-weight:bold;'>{$title}</div>
               {$content_div}
@@ -61,9 +61,9 @@ class slider
             <div class='caption_txt'>
               <div style='font-size:1.2em;color:yellow;font-weight:bold;'>{$title}</div>
               {$content_div}
-            </div>" : "";
+            </div>" : '';
 
-            if (strtolower(substr($image, -3)) == "swf") {
+            if ('swf' == mb_strtolower(mb_substr($image, -3))) {
                 //exactfit,default
                 $all .= "
                 <li>
@@ -80,8 +80,8 @@ class slider
                 </li>
                 ";
             } else {
-                $alt          = empty($title) ? 'slider image ' . $sn : $title;
-                $caption_link = $caption ? "<a href='{$item_content['url']}' {$item_content['target']}>$caption</a>" : "";
+                $alt = empty($title) ? 'slider image ' . $sn : $title;
+                $caption_link = $caption ? "<a href='{$item_content['url']}' {$item_content['target']}>$caption</a>" : '';
                 $all .= "
                     <li>
                         <a href='{$item_content['url']}' {$item_content['target']}><img src='$image' alt='{$alt}'></a>

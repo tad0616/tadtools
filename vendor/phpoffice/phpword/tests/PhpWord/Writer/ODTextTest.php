@@ -14,6 +14,7 @@
  * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
 namespace PhpOffice\PhpWord\Writer;
 
 use PhpOffice\PhpWord\PhpWord;
@@ -36,7 +37,7 @@ class ODTextTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpWord\\PhpWord', $object->getPhpWord());
 
         $this->assertEquals('./', $object->getDiskCachingDirectory());
-        foreach (array('Content', 'Manifest', 'Meta', 'Mimetype', 'Styles') as $part) {
+        foreach (['Content', 'Manifest', 'Meta', 'Mimetype', 'Styles'] as $part) {
             $this->assertInstanceOf(
                 "PhpOffice\\PhpWord\\Writer\\ODText\\Part\\{$part}",
                 $object->getWriterPart($part)
@@ -50,12 +51,12 @@ class ODTextTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Construct with null
-     *
-     * @expectedException \PhpOffice\PhpWord\Exception\Exception
-     * @expectedExceptionMessage No PhpWord assigned.
      */
     public function testConstructWithNull()
     {
+        $this->expectException(\PhpOffice\PhpWord\Exception\Exception::class);
+        $this->expectExceptionMessage('No PhpWord assigned.');
+
         $object = new ODText();
         $object->getPhpWord();
     }
@@ -70,8 +71,8 @@ class ODTextTest extends \PHPUnit_Framework_TestCase
         $file = __DIR__ . '/../_files/temp.odt';
 
         $phpWord = new PhpWord();
-        $phpWord->addFontStyle('Font', array('size' => 11));
-        $phpWord->addParagraphStyle('Paragraph', array('alignment' => Jc::CENTER));
+        $phpWord->addFontStyle('Font', ['size' => 11]);
+        $phpWord->addParagraphStyle('Paragraph', ['alignment' => Jc::CENTER]);
         $section = $phpWord->addSection();
         $section->addText('Test 1', 'Font');
         $section->addTextBreak();
@@ -90,7 +91,7 @@ class ODTextTest extends \PHPUnit_Framework_TestCase
         $writer = new ODText($phpWord);
         $writer->save($file);
 
-        $this->assertTrue(file_exists($file));
+        $this->assertFileExists($file);
 
         unlink($file);
     }
@@ -131,12 +132,12 @@ class ODTextTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Use disk caching exception
-     *
-     * @expectedException \PhpOffice\PhpWord\Exception\Exception
      */
     public function testSetUseDiskCachingException()
     {
-        $dir = join(DIRECTORY_SEPARATOR, array(PHPWORD_TESTS_BASE_DIR, 'foo'));
+        $this->expectException(\PhpOffice\PhpWord\Exception\Exception::class);
+
+        $dir = implode(DIRECTORY_SEPARATOR, [PHPWORD_TESTS_BASE_DIR, 'foo']);
 
         $object = new ODText();
         $object->setUseDiskCaching(true, $dir);

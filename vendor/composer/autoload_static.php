@@ -4,67 +4,66 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit3a174a201981f08cadb422e14df65907
+class autoload_static
 {
-    public static $prefixLengthsPsr4 = array (
-        'Z' => 
-        array (
+    public static $prefixLengthsPsr4 = [
+        'Z' =>
+        [
             'Zend\\Validator\\' => 15,
             'Zend\\Stdlib\\' => 12,
             'Zend\\Escaper\\' => 13,
-        ),
-        'P' => 
-        array (
+        ],
+        'P' =>
+        [
             'PhpOffice\\PhpWord\\' => 18,
             'PhpOffice\\Common\\' => 17,
-        ),
-    );
+        ],
+    ];
 
-    public static $prefixDirsPsr4 = array (
-        'Zend\\Validator\\' => 
-        array (
+    public static $prefixDirsPsr4 = [
+        'Zend\\Validator\\' =>
+        [
             0 => __DIR__ . '/..' . '/zendframework/zend-validator/src',
-        ),
-        'Zend\\Stdlib\\' => 
-        array (
+        ],
+        'Zend\\Stdlib\\' =>
+        [
             0 => __DIR__ . '/..' . '/zendframework/zend-stdlib/src',
-        ),
-        'Zend\\Escaper\\' => 
-        array (
+        ],
+        'Zend\\Escaper\\' =>
+        [
             0 => __DIR__ . '/..' . '/zendframework/zend-escaper/src',
-        ),
-        'PhpOffice\\PhpWord\\' => 
-        array (
+        ],
+        'PhpOffice\\PhpWord\\' =>
+        [
             0 => __DIR__ . '/..' . '/phpoffice/phpword/src/PhpWord',
-        ),
-        'PhpOffice\\Common\\' => 
-        array (
+        ],
+        'PhpOffice\\Common\\' =>
+        [
             0 => __DIR__ . '/..' . '/phpoffice/common/src/Common',
-        ),
-    );
+        ],
+    ];
 
-    public static $prefixesPsr0 = array (
-        'P' => 
-        array (
-            'PHPExcel' => 
-            array (
+    public static $prefixesPsr0 = [
+        'P' =>
+        [
+            'PHPExcel' =>
+            [
                 0 => __DIR__ . '/..' . '/phpoffice/phpexcel/Classes',
-            ),
-        ),
-    );
+            ],
+        ],
+    ];
 
-    public static $classMap = array (
+    public static $classMap = [
         'PclZip' => __DIR__ . '/..' . '/pclzip/pclzip/pclzip.lib.php',
-    );
+    ];
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit3a174a201981f08cadb422e14df65907::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit3a174a201981f08cadb422e14df65907::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit3a174a201981f08cadb422e14df65907::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit3a174a201981f08cadb422e14df65907::$classMap;
-
+            $loader->prefixLengthsPsr4 = self::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = self::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = self::$prefixesPsr0;
+            $loader->classMap = self::$classMap;
         }, null, ClassLoader::class);
     }
 }

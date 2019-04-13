@@ -34,8 +34,8 @@ class PHPExcel_Shared_Excel5
      *
      * @param PHPExcel_Worksheet $sheet The sheet
      * @param string $col The column
-     * @return integer The width in pixels
-    */
+     * @return int The width in pixels
+     */
     public static function sizeCol($sheet, $col = 'A')
     {
         // default font of the workbook
@@ -44,12 +44,12 @@ class PHPExcel_Shared_Excel5
         $columnDimensions = $sheet->getColumnDimensions();
 
         // first find the true column width in pixels (uncollapsed and unhidden)
-        if (isset($columnDimensions[$col]) and $columnDimensions[$col]->getWidth() != -1) {
+        if (isset($columnDimensions[$col]) and -1 != $columnDimensions[$col]->getWidth()) {
             // then we have column dimension with explicit width
             $columnDimension = $columnDimensions[$col];
             $width = $columnDimension->getWidth();
             $pixelWidth = PHPExcel_Shared_Drawing::cellDimensionToPixels($width, $font);
-        } elseif ($sheet->getDefaultColumnDimension()->getWidth() != -1) {
+        } elseif (-1 != $sheet->getDefaultColumnDimension()->getWidth()) {
             // then we have default column dimension with explicit width
             $defaultColumnDimension = $sheet->getDefaultColumnDimension();
             $width = $defaultColumnDimension->getWidth();
@@ -75,8 +75,8 @@ class PHPExcel_Shared_Excel5
      * use the default value. If the row is hidden we use a value of zero.
      *
      * @param PHPExcel_Worksheet $sheet The sheet
-     * @param integer $row The row index (1-based)
-     * @return integer The width in pixels
+     * @param int $row The row index (1-based)
+     * @return int The width in pixels
      */
     public static function sizeRow($sheet, $row = 1)
     {
@@ -86,12 +86,12 @@ class PHPExcel_Shared_Excel5
         $rowDimensions = $sheet->getRowDimensions();
 
         // first find the true row height in pixels (uncollapsed and unhidden)
-        if (isset($rowDimensions[$row]) and $rowDimensions[$row]->getRowHeight() != -1) {
+        if (isset($rowDimensions[$row]) and -1 != $rowDimensions[$row]->getRowHeight()) {
             // then we have a row dimension
             $rowDimension = $rowDimensions[$row];
             $rowHeight = $rowDimension->getRowHeight();
             $pixelRowHeight = (int) ceil(4 * $rowHeight / 3); // here we assume Arial 10
-        } elseif ($sheet->getDefaultRowDimension()->getRowHeight() != -1) {
+        } elseif (-1 != $sheet->getDefaultRowDimension()->getRowHeight()) {
             // then we have a default row dimension with explicit height
             $defaultRowDimension = $sheet->getDefaultRowDimension();
             $rowHeight = $defaultRowDimension->getRowHeight();
@@ -116,12 +116,11 @@ class PHPExcel_Shared_Excel5
      * Get the horizontal distance in pixels between two anchors
      * The distanceX is found as sum of all the spanning columns widths minus correction for the two offsets
      *
-     * @param PHPExcel_Worksheet $sheet
      * @param string $startColumn
-     * @param integer $startOffsetX Offset within start cell measured in 1/1024 of the cell width
+     * @param int $startOffsetX Offset within start cell measured in 1/1024 of the cell width
      * @param string $endColumn
-     * @param integer $endOffsetX Offset within end cell measured in 1/1024 of the cell width
-     * @return integer Horizontal measured in pixels
+     * @param int $endOffsetX Offset within end cell measured in 1/1024 of the cell width
+     * @return int Horizontal measured in pixels
      */
     public static function getDistanceX(PHPExcel_Worksheet $sheet, $startColumn = 'A', $startOffsetX = 0, $endColumn = 'A', $endOffsetX = 0)
     {
@@ -147,12 +146,11 @@ class PHPExcel_Shared_Excel5
      * Get the vertical distance in pixels between two anchors
      * The distanceY is found as sum of all the spanning rows minus two offsets
      *
-     * @param PHPExcel_Worksheet $sheet
-     * @param integer $startRow (1-based)
-     * @param integer $startOffsetY Offset within start cell measured in 1/256 of the cell height
-     * @param integer $endRow (1-based)
-     * @param integer $endOffsetY Offset within end cell measured in 1/256 of the cell height
-     * @return integer Vertical distance measured in pixels
+     * @param int $startRow (1-based)
+     * @param int $startOffsetY Offset within start cell measured in 1/256 of the cell height
+     * @param int $endRow (1-based)
+     * @param int $endOffsetY Offset within end cell measured in 1/256 of the cell height
+     * @return int Vertical distance measured in pixels
      */
     public static function getDistanceY(PHPExcel_Worksheet $sheet, $startRow = 1, $startOffsetY = 0, $endRow = 1, $endOffsetY = 0)
     {
@@ -218,10 +216,10 @@ class PHPExcel_Shared_Excel5
      *
      * @param PHPExcel_Worksheet $sheet
      * @param string $coordinates E.g. 'A1'
-     * @param integer $offsetX Horizontal offset in pixels
-     * @param integer $offsetY Vertical offset in pixels
-     * @param integer $width Width in pixels
-     * @param integer $height Height in pixels
+     * @param int $offsetX Horizontal offset in pixels
+     * @param int $offsetY Vertical offset in pixels
+     * @param int $width Width in pixels
+     * @param int $height Height in pixels
      * @return array
      */
     public static function oneAnchor2twoAnchor($sheet, $coordinates, $offsetX, $offsetY, $width, $height)
@@ -234,8 +232,8 @@ class PHPExcel_Shared_Excel5
         $y1 = $offsetY;
 
         // Initialise end cell to the same as the start cell
-        $col_end    = $col_start;  // Col containing lower right corner of object
-        $row_end    = $row_start;  // Row containing bottom right corner of object
+        $col_end = $col_start;  // Col containing lower right corner of object
+        $row_end = $row_start;  // Row containing bottom right corner of object
 
         // Zero the specified offset if greater than the cell dimensions
         if ($x1 >= self::sizeCol($sheet, PHPExcel_Cell::stringFromColumnIndex($col_start))) {
@@ -245,8 +243,8 @@ class PHPExcel_Shared_Excel5
             $y1 = 0;
         }
 
-        $width      = $width  + $x1 -1;
-        $height     = $height + $y1 -1;
+        $width = $width + $x1 - 1;
+        $height = $height + $y1 - 1;
 
         // Subtract the underlying cell widths to find the end cell of the image
         while ($width >= self::sizeCol($sheet, PHPExcel_Cell::stringFromColumnIndex($col_end))) {
@@ -262,36 +260,36 @@ class PHPExcel_Shared_Excel5
 
         // Bitmap isn't allowed to start or finish in a hidden cell, i.e. a cell
         // with zero height or width.
-        if (self::sizeCol($sheet, PHPExcel_Cell::stringFromColumnIndex($col_start)) == 0) {
+        if (0 == self::sizeCol($sheet, PHPExcel_Cell::stringFromColumnIndex($col_start))) {
             return;
         }
-        if (self::sizeCol($sheet, PHPExcel_Cell::stringFromColumnIndex($col_end))   == 0) {
+        if (0 == self::sizeCol($sheet, PHPExcel_Cell::stringFromColumnIndex($col_end))) {
             return;
         }
-        if (self::sizeRow($sheet, $row_start + 1) == 0) {
+        if (0 == self::sizeRow($sheet, $row_start + 1)) {
             return;
         }
-        if (self::sizeRow($sheet, $row_end + 1)   == 0) {
+        if (0 == self::sizeRow($sheet, $row_end + 1)) {
             return;
         }
 
         // Convert the pixel values to the percentage value expected by Excel
-        $x1 = $x1     / self::sizeCol($sheet, PHPExcel_Cell::stringFromColumnIndex($col_start))   * 1024;
-        $y1 = $y1     / self::sizeRow($sheet, $row_start + 1)   *  256;
-        $x2 = ($width + 1)  / self::sizeCol($sheet, PHPExcel_Cell::stringFromColumnIndex($col_end))     * 1024; // Distance to right side of object
-        $y2 = ($height + 1) / self::sizeRow($sheet, $row_end + 1)     *  256; // Distance to bottom of object
+        $x1 = $x1 / self::sizeCol($sheet, PHPExcel_Cell::stringFromColumnIndex($col_start)) * 1024;
+        $y1 = $y1 / self::sizeRow($sheet, $row_start + 1) * 256;
+        $x2 = ($width + 1) / self::sizeCol($sheet, PHPExcel_Cell::stringFromColumnIndex($col_end)) * 1024; // Distance to right side of object
+        $y2 = ($height + 1) / self::sizeRow($sheet, $row_end + 1) * 256; // Distance to bottom of object
 
         $startCoordinates = PHPExcel_Cell::stringFromColumnIndex($col_start) . ($row_start + 1);
         $endCoordinates = PHPExcel_Cell::stringFromColumnIndex($col_end) . ($row_end + 1);
 
-        $twoAnchor = array(
+        $twoAnchor = [
             'startCoordinates' => $startCoordinates,
             'startOffsetX' => $x1,
             'startOffsetY' => $y1,
             'endCoordinates' => $endCoordinates,
             'endOffsetX' => $x2,
             'endOffsetY' => $y2,
-        );
+        ];
 
         return  $twoAnchor;
     }

@@ -32,7 +32,7 @@ class DocPropsCore extends AbstractPart
      *
      * @var array
      */
-    protected $mapping = array(
+    protected $mapping = [
         'dc:creator' => 'setCreator',
         'dc:title' => 'setTitle',
         'dc:description' => 'setDescription',
@@ -42,19 +42,18 @@ class DocPropsCore extends AbstractPart
         'cp:lastModifiedBy' => 'setLastModifiedBy',
         'dcterms:created' => 'setCreated',
         'dcterms:modified' => 'setModified',
-    );
+    ];
 
     /**
      * Callback functions
      *
      * @var array
      */
-    protected $callbacks = array('dcterms:created' => 'strtotime', 'dcterms:modified' => 'strtotime');
+    protected $callbacks = ['dcterms:created' => 'strtotime', 'dcterms:modified' => 'strtotime'];
 
     /**
      * Read core/extended document properties.
      *
-     * @param \PhpOffice\PhpWord\PhpWord $phpWord
      * @return void
      */
     public function read(PhpWord $phpWord)
@@ -71,7 +70,7 @@ class DocPropsCore extends AbstractPart
                     continue;
                 }
                 $method = $this->mapping[$node->nodeName];
-                $value = $node->nodeValue == '' ? null : $node->nodeValue;
+                $value = '' == $node->nodeValue ? null : $node->nodeValue;
                 if (isset($this->callbacks[$node->nodeName])) {
                     $value = $this->callbacks[$node->nodeName]($value);
                 }

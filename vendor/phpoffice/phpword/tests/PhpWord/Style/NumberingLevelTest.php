@@ -33,21 +33,21 @@ class NumberingLevelTest extends \PHPUnit_Framework_TestCase
     {
         $object = new NumberingLevel();
 
-        $attributes = array(
-            'level'     => 1,
-            'start'     => 1,
-            'format'    => 'decimal',
-            'restart'   => 1,
-            'pStyle'    => 'pStyle',
-            'suffix'    => 'space',
-            'text'      => '%1.',
+        $attributes = [
+            'level' => 1,
+            'start' => 1,
+            'format' => 'decimal',
+            'restart' => 1,
+            'pStyle' => 'pStyle',
+            'suffix' => 'space',
+            'text' => '%1.',
             'alignment' => Jc::START,
-            'left'      => 360,
-            'hanging'   => 360,
-            'tabPos'    => 360,
-            'font'      => 'Arial',
-            'hint'      => 'default',
-        );
+            'left' => 360,
+            'hanging' => 360,
+            'tabPos' => 360,
+            'font' => 'Arial',
+            'hint' => 'default',
+        ];
         foreach ($attributes as $key => $value) {
             $set = "set{$key}";
             $get = "get{$key}";

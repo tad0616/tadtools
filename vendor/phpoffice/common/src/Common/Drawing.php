@@ -42,9 +42,10 @@ class Drawing
      */
     public static function emuToPixels($pValue = 0)
     {
-        if ($pValue == 0) {
+        if (0 == $pValue) {
             return 0;
         }
+
         return round($pValue / 9525);
     }
 
@@ -67,12 +68,13 @@ class Drawing
      */
     public static function pointsToCentimeters($pValue = 0)
     {
-        if ($pValue == 0) {
+        if (0 == $pValue) {
             return 0;
         }
+
         return ((($pValue * 1.333333333) / self::DPI_96) * 2.54);
     }
-    
+
     /**
      * Convert points width to pixels
      *
@@ -81,9 +83,10 @@ class Drawing
      */
     public static function pointsToPixels($pValue = 0)
     {
-        if ($pValue == 0) {
+        if (0 == $pValue) {
             return 0;
         }
+
         return $pValue * 1.333333333;
     }
 
@@ -107,9 +110,10 @@ class Drawing
      */
     public static function centimetersToPixels($pValue = 0)
     {
-        if ($pValue == 0) {
+        if (0 == $pValue) {
             return 0;
         }
+
         return ($pValue / 2.54) * self::DPI_96;
     }
 
@@ -132,79 +136,85 @@ class Drawing
      */
     public static function angleToDegrees($pValue = 0)
     {
-        if ($pValue == 0) {
+        if (0 == $pValue) {
             return 0;
         }
+
         return round($pValue / 60000);
     }
 
     /**
      * Convert centimeters width to twips
      *
-     * @param integer $pValue
+     * @param int $pValue
      * @return float
      */
     public static function centimetersToTwips($pValue = 0)
     {
-        if ($pValue == 0) {
+        if (0 == $pValue) {
             return 0;
         }
+
         return $pValue * 566.928;
     }
 
     /**
      * Convert twips width to centimeters
      *
-     * @param integer $pValue
+     * @param int $pValue
      * @return float
      */
     public static function twipsToCentimeters($pValue = 0)
     {
-        if ($pValue == 0) {
+        if (0 == $pValue) {
             return 0;
         }
+
         return $pValue / 566.928;
     }
 
     /**
      * Convert inches width to twips
      *
-     * @param integer $pValue
+     * @param int $pValue
      * @return float
      */
     public static function inchesToTwips($pValue = 0)
     {
-        if ($pValue == 0) {
+        if (0 == $pValue) {
             return 0;
         }
+
         return $pValue * 1440;
     }
 
     /**
      * Convert twips width to inches
      *
-     * @param integer $pValue
+     * @param int $pValue
      * @return float
      */
     public static function twipsToInches($pValue = 0)
     {
-        if ($pValue == 0) {
+        if (0 == $pValue) {
             return 0;
         }
+
         return $pValue / 1440;
     }
 
     /**
      * Convert twips width to pixels
      *
-     * @param integer $pValue
+     * @param int $pValue
      * @return float
      */
     public static function twipsToPixels($pValue = 0)
     {
-        if ($pValue == 0) {
+        if (0 == $pValue) {
             return 0;
         }
+
         return round($pValue / 15.873984);
     }
 
@@ -216,14 +226,14 @@ class Drawing
      */
     public static function htmlToRGB($pValue)
     {
-        if ($pValue[0] == '#') {
-            $pValue = substr($pValue, 1);
+        if ('#' == $pValue[0]) {
+            $pValue = mb_substr($pValue, 1);
         }
 
-        if (strlen($pValue) == 6) {
-            list($colorR, $colorG, $colorB) = array($pValue[0] . $pValue[1], $pValue[2] . $pValue[3], $pValue[4] . $pValue[5]);
-        } elseif (strlen($pValue) == 3) {
-            list($colorR, $colorG, $colorB) = array($pValue[0] . $pValue[0], $pValue[1] . $pValue[1], $pValue[2] . $pValue[2]);
+        if (6 == mb_strlen($pValue)) {
+            list($colorR, $colorG, $colorB) = [$pValue[0] . $pValue[1], $pValue[2] . $pValue[3], $pValue[4] . $pValue[5]];
+        } elseif (3 == mb_strlen($pValue)) {
+            list($colorR, $colorG, $colorB) = [$pValue[0] . $pValue[0], $pValue[1] . $pValue[1], $pValue[2] . $pValue[2]];
         } else {
             return false;
         }
@@ -232,6 +242,6 @@ class Drawing
         $colorG = hexdec($colorG);
         $colorB = hexdec($colorB);
 
-        return array($colorR, $colorG, $colorB);
+        return [$colorR, $colorG, $colorB];
     }
 }

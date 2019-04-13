@@ -14,6 +14,7 @@
  * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
 namespace PhpOffice\PhpWord\Writer\Word2007;
 
 use PhpOffice\Common\XMLWriter;
@@ -28,11 +29,11 @@ class StyleTest extends \PHPUnit_Framework_TestCase
      */
     public function testEmptyStyles()
     {
-        $styles = array(
+        $styles = [
             'Cell', 'Font', 'Image', 'Indentation', 'LineNumbering',
             'Paragraph', 'Row', 'Section', 'Shading', 'Spacing', 'Tab', 'Table',
             'TextBox', 'Line', 'Shape', 'Frame', 'Outline', 'Fill', 'Shadow', 'Extrusion',
-        );
+        ];
         foreach ($styles as $style) {
             $objectClass = 'PhpOffice\\PhpWord\\Writer\\Word2007\\Style\\' . $style;
             $xmlWriter = new XMLWriter();
@@ -48,11 +49,11 @@ class StyleTest extends \PHPUnit_Framework_TestCase
      */
     public function testMethodExceptions()
     {
-        $styles = array(
-            'Frame'     => 'writeAlignment',
-            'Line'      => 'writeStroke',
-            'TextBox'   => 'writeBorder',
-        );
+        $styles = [
+            'Frame' => 'writeAlignment',
+            'Line' => 'writeStroke',
+            'TextBox' => 'writeBorder',
+        ];
         foreach ($styles as $style => $method) {
             $objectClass = 'PhpOffice\\PhpWord\\Writer\\Word2007\\Style\\' . $style;
             $xmlWriter = new XMLWriter();

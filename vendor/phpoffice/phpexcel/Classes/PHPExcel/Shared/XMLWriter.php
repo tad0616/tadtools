@@ -36,15 +36,15 @@ if (!defined('DEBUGMODE_ENABLED')) {
 class PHPExcel_Shared_XMLWriter extends XMLWriter
 {
     /** Temporary storage method */
-    const STORAGE_MEMORY    = 1;
-    const STORAGE_DISK      = 2;
+    const STORAGE_MEMORY = 1;
+    const STORAGE_DISK = 2;
 
     /**
      * Temporary filename
      *
      * @var string
      */
-    private $tempFileName  = '';
+    private $tempFileName = '';
 
     /**
      * Create a new PHPExcel_Shared_XMLWriter instance
@@ -55,17 +55,17 @@ class PHPExcel_Shared_XMLWriter extends XMLWriter
     public function __construct($pTemporaryStorage = self::STORAGE_MEMORY, $pTemporaryStorageFolder = null)
     {
         // Open temporary storage
-        if ($pTemporaryStorage == self::STORAGE_MEMORY) {
+        if (self::STORAGE_MEMORY == $pTemporaryStorage) {
             $this->openMemory();
         } else {
             // Create temporary filename
-            if ($pTemporaryStorageFolder === null) {
+            if (null === $pTemporaryStorageFolder) {
                 $pTemporaryStorageFolder = PHPExcel_Shared_File::sys_get_temp_dir();
             }
             $this->tempFileName = @tempnam($pTemporaryStorageFolder, 'xml');
 
             // Open storage
-            if ($this->openUri($this->tempFileName) === false) {
+            if (false === $this->openUri($this->tempFileName)) {
                 // Fallback to memory...
                 $this->openMemory();
             }
@@ -83,7 +83,7 @@ class PHPExcel_Shared_XMLWriter extends XMLWriter
     public function __destruct()
     {
         // Unlink temporary files
-        if ($this->tempFileName != '') {
+        if ('' != $this->tempFileName) {
             @unlink($this->tempFileName);
         }
     }
@@ -95,12 +95,12 @@ class PHPExcel_Shared_XMLWriter extends XMLWriter
      */
     public function getData()
     {
-        if ($this->tempFileName == '') {
+        if ('' == $this->tempFileName) {
             return $this->outputMemory(true);
-        } else {
-            $this->flush();
-            return file_get_contents($this->tempFileName);
         }
+        $this->flush();
+
+        return file_get_contents($this->tempFileName);
     }
 
     /**

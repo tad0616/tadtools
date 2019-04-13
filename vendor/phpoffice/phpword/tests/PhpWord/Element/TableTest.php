@@ -35,7 +35,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Element\\Table', $oTable);
         $this->assertNull($oTable->getStyle());
         $this->assertNull($oTable->getWidth());
-        $this->assertEquals(array(), $oTable->getRows());
+        $this->assertEquals([], $oTable->getRows());
         $this->assertCount(0, $oTable->getRows());
     }
 
@@ -54,7 +54,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
      */
     public function testStyleArray()
     {
-        $oTable = new Table(array('borderSize' => 6, 'borderColor' => '006699', 'cellMargin' => 80));
+        $oTable = new Table(['borderSize' => 6, 'borderColor' => '006699', 'cellMargin' => 80]);
 
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Style\\Table', $oTable->getStyle());
     }
@@ -65,7 +65,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
     public function testWidth()
     {
         $oTable = new Table();
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oTable->setWidth($iVal);
         $this->assertEquals($iVal, $oTable->getWidth());
     }

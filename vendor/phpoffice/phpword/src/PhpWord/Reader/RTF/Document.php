@@ -113,14 +113,14 @@ class Document
      *
      * @var array
      */
-    private $groups = array();
+    private $groups = [];
 
     /**
      * Parser flags; not used
      *
      * @var array
      */
-    private $flags = array();
+    private $flags = [];
 
     /**
      * Parse RTF content
@@ -130,30 +130,29 @@ class Document
      * - Builds control words and control symbols
      * - Pushes every other character into the text queue
      *
-     * @param \PhpOffice\PhpWord\PhpWord $phpWord
      * @return void
      * @todo Use `fread` stream for scalability
      */
     public function read(PhpWord $phpWord)
     {
-        $markers = array(
+        $markers = [
             123 => 'markOpening',   // {
             125 => 'markClosing',   // }
-            92  => 'markBackslash', // \
-            10  => 'markNewline',   // LF
-            13  => 'markNewline',   // CR
-        );
+            92 => 'markBackslash', // \
+            10 => 'markNewline',   // LF
+            13 => 'markNewline',   // CR
+        ];
 
         $this->phpWord = $phpWord;
         $this->section = $phpWord->addSection();
         $this->textrun = $this->section->addTextRun();
-        $this->length = strlen($this->rtf);
+        $this->length = mb_strlen($this->rtf);
 
         $this->flags['paragraph'] = true; // Set paragraph flag from the beginning
 
         // Walk each characters
         while ($this->offset < $this->length) {
-            $char  = $this->rtf[$this->offset];
+            $char = $this->rtf[$this->offset];
             $ascii = ord($char);
 
             if (isset($markers[$ascii])) { // Marker found: {, }, \, LF, or CR
@@ -163,7 +162,7 @@ class Document
                 if (false === $this->isControl) { // Non control word: Push character
                     $this->pushText($char);
                 } else {
-                    if (preg_match("/^[a-zA-Z0-9-]?$/", $char)) { // No delimiter: Buffer control
+                    if (preg_match('/^[a-zA-Z0-9-]?$/', $char)) { // No delimiter: Buffer control
                         $this->control .= $char;
                         $this->isFirst = false;
                     } else { // Delimiter found: Parse buffered control
@@ -256,7 +255,7 @@ class Document
      */
     private function flushControl($isControl = false)
     {
-        if (1 === preg_match("/^([A-Za-z]+)(-?[0-9]*) ?$/", $this->control, $match)) {
+        if (1 === preg_match('/^([A-Za-z]+)(-?[0-9]*) ?$/', $this->control, $match)) {
             list(, $control, $parameter) = $match;
             $this->parseControl($control, $parameter);
         }
@@ -273,7 +272,7 @@ class Document
      */
     private function flushText()
     {
-        if ($this->text != '') {
+        if ('' != $this->text) {
             if (isset($this->flags['property'])) { // Set property
                 $this->flags['value'] = $this->text;
             } else { // Set text
@@ -313,9 +312,9 @@ class Document
     private function pushText($char)
     {
         if ('<' == $char) {
-            $this->text .= "&lt;";
+            $this->text .= '&lt;';
         } elseif ('>' == $char) {
-            $this->text .= "&gt;";
+            $this->text .= '&gt;';
         } else {
             $this->text .= $char;
         }
@@ -330,27 +329,27 @@ class Document
      */
     private function parseControl($control, $parameter)
     {
-        $controls = array(
-            'par'       => array(self::PARA,    'paragraph',    true),
-            'b'         => array(self::STYL,    'font',         'bold',         true),
-            'i'         => array(self::STYL,    'font',         'italic',       true),
-            'u'         => array(self::STYL,    'font',         'underline',    true),
-            'strike'    => array(self::STYL,    'font',         'strikethrough',true),
-            'fs'        => array(self::STYL,    'font',         'size',         $parameter),
-            'qc'        => array(self::STYL,    'paragraph',    'alignment',    Jc::CENTER),
-            'sa'        => array(self::STYL,    'paragraph',    'spaceAfter',   $parameter),
-            'fonttbl'   => array(self::SKIP,    'fonttbl',      null),
-            'colortbl'  => array(self::SKIP,    'colortbl',     null),
-            'info'      => array(self::SKIP,    'info',         null),
-            'generator' => array(self::SKIP,    'generator',    null),
-            'title'     => array(self::SKIP,    'title',        null),
-            'subject'   => array(self::SKIP,    'subject',      null),
-            'category'  => array(self::SKIP,    'category',     null),
-            'keywords'  => array(self::SKIP,    'keywords',     null),
-            'comment'   => array(self::SKIP,    'comment',      null),
-            'shppict'   => array(self::SKIP,    'pic',          null),
-            'fldinst'   => array(self::SKIP,    'link',         null),
-        );
+        $controls = [
+            'par' => [self::PARA,    'paragraph',    true],
+            'b' => [self::STYL,    'font',         'bold',         true],
+            'i' => [self::STYL,    'font',         'italic',       true],
+            'u' => [self::STYL,    'font',         'underline',    true],
+            'strike' => [self::STYL,    'font',         'strikethrough', true],
+            'fs' => [self::STYL,    'font',         'size',         $parameter],
+            'qc' => [self::STYL,    'paragraph',    'alignment',    Jc::CENTER],
+            'sa' => [self::STYL,    'paragraph',    'spaceAfter',   $parameter],
+            'fonttbl' => [self::SKIP,    'fonttbl',      null],
+            'colortbl' => [self::SKIP,    'colortbl',     null],
+            'info' => [self::SKIP,    'info',         null],
+            'generator' => [self::SKIP,    'generator',    null],
+            'title' => [self::SKIP,    'title',        null],
+            'subject' => [self::SKIP,    'subject',      null],
+            'category' => [self::SKIP,    'category',     null],
+            'keywords' => [self::SKIP,    'keywords',     null],
+            'comment' => [self::SKIP,    'comment',      null],
+            'shppict' => [self::SKIP,    'pic',          null],
+            'fldinst' => [self::SKIP,    'link',         null],
+        ];
 
         if (isset($controls[$control])) {
             list($function) = $controls[$control];

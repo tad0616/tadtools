@@ -30,12 +30,12 @@ class SpacingTest extends \PHPUnit_Framework_TestCase
     public function testGetSetProperties()
     {
         $object = new Spacing();
-        $properties = array(
-            'before' => array(null, 10),
-            'after'  => array(null, 10),
-            'line'   => array(null, 10),
-            'rule'   => array('auto', 'exact'),
-        );
+        $properties = [
+            'before' => [null, 10],
+            'after' => [null, 10],
+            'line' => [null, 10],
+            'rule' => ['auto', 'exact'],
+        ];
         foreach ($properties as $property => $value) {
             list($default, $expected) = $value;
             $get = "get{$property}";

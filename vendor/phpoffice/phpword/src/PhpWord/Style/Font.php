@@ -72,7 +72,7 @@ class Font extends AbstractStyle
      *
      * @var array
      */
-    protected $aliases = array('line-height' => 'lineHeight');
+    protected $aliases = ['line-height' => 'lineHeight'];
 
     /**
      * Font style type
@@ -248,35 +248,35 @@ class Font extends AbstractStyle
      */
     public function getStyleValues()
     {
-        $styles = array(
-            'name'          => $this->getStyleName(),
-            'basic'         => array(
-                'name'      => $this->getName(),
-                'size'      => $this->getSize(),
-                'color'     => $this->getColor(),
-                'hint'      => $this->getHint(),
-            ),
-            'style'         => array(
-                'bold'      => $this->isBold(),
-                'italic'    => $this->isItalic(),
+        $styles = [
+            'name' => $this->getStyleName(),
+            'basic' => [
+                'name' => $this->getName(),
+                'size' => $this->getSize(),
+                'color' => $this->getColor(),
+                'hint' => $this->getHint(),
+            ],
+            'style' => [
+                'bold' => $this->isBold(),
+                'italic' => $this->isItalic(),
                 'underline' => $this->getUnderline(),
-                'strike'    => $this->isStrikethrough(),
-                'dStrike'   => $this->isDoubleStrikethrough(),
-                'super'     => $this->isSuperScript(),
-                'sub'       => $this->isSubScript(),
+                'strike' => $this->isStrikethrough(),
+                'dStrike' => $this->isDoubleStrikethrough(),
+                'super' => $this->isSuperScript(),
+                'sub' => $this->isSubScript(),
                 'smallCaps' => $this->isSmallCaps(),
-                'allCaps'   => $this->isAllCaps(),
-                'fgColor'   => $this->getFgColor(),
-            ),
-            'spacing'       => array(
-                'scale'     => $this->getScale(),
-                'spacing'   => $this->getSpacing(),
-                'kerning'   => $this->getKerning(),
-            ),
-            'paragraph'     => $this->getParagraph(),
-            'rtl'           => $this->isRTL(),
-            'shading'       => $this->getShading(),
-        );
+                'allCaps' => $this->isAllCaps(),
+                'fgColor' => $this->getFgColor(),
+            ],
+            'spacing' => [
+                'scale' => $this->getScale(),
+                'spacing' => $this->getSpacing(),
+                'kerning' => $this->getKerning(),
+            ],
+            'paragraph' => $this->getParagraph(),
+            'rtl' => $this->isRTL(),
+            'shading' => $this->getShading(),
+        ];
 
         return $styles;
     }
@@ -619,7 +619,7 @@ class Font extends AbstractStyle
      */
     public function setBgColor($value = null)
     {
-        $this->setShading(array('fill' => $value));
+        $this->setShading(['fill' => $value]);
     }
 
     /**
@@ -709,7 +709,7 @@ class Font extends AbstractStyle
      */
     public function setLineHeight($value)
     {
-        $this->setParagraph(array('lineHeight' => $value));
+        $this->setParagraph(['lineHeight' => $value]);
 
         return $this;
     }

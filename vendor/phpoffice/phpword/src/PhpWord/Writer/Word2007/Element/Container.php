@@ -47,8 +47,8 @@ class Container extends AbstractElement
         if (!$container instanceof ContainerElement) {
             return;
         }
-        $containerClass = substr(get_class($container), strrpos(get_class($container), '\\') + 1);
-        $withoutP = in_array($containerClass, array('TextRun', 'Footnote', 'Endnote', 'ListItemRun')) ? true : false;
+        $containerClass = mb_substr(get_class($container), mb_strrpos(get_class($container), '\\') + 1);
+        $withoutP = in_array($containerClass, ['TextRun', 'Footnote', 'Endnote', 'ListItemRun'], true) ? true : false;
         $xmlWriter = $this->getXmlWriter();
 
         // Loop through elements
@@ -61,7 +61,7 @@ class Container extends AbstractElement
         // Special case for Cell: They have to contain a w:p element at the end.
         // The $elementClass contains the last element name. If it's empty string
         // or Table, the last element is not w:p
-        $writeLastTextBreak = ($containerClass == 'Cell') && ($elementClass == '' || $elementClass == 'Table');
+        $writeLastTextBreak = ('Cell' == $containerClass) && ('' == $elementClass || 'Table' == $elementClass);
         if ($writeLastTextBreak) {
             $writerClass = $this->namespace . '\\TextBreak';
             /** @var \PhpOffice\PhpWord\Writer\Word2007\Element\AbstractElement $writer Type hint */
@@ -73,14 +73,12 @@ class Container extends AbstractElement
     /**
      * Write individual element
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
-     * @param \PhpOffice\PhpWord\Element\AbstractElement $element
      * @param bool $withoutP
      * @return string
      */
     private function writeElement(XMLWriter $xmlWriter, Element $element, $withoutP)
     {
-        $elementClass = substr(get_class($element), strrpos(get_class($element), '\\') + 1);
+        $elementClass = mb_substr(get_class($element), mb_strrpos(get_class($element), '\\') + 1);
         $writerClass = $this->namespace . '\\' . $elementClass;
 
         if (class_exists($writerClass)) {

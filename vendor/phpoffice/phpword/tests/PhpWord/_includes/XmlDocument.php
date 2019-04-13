@@ -78,6 +78,7 @@ class XmlDocument
         $file = $this->path . '/' . $file;
         $this->dom = new \DOMDocument();
         $this->dom->load($file);
+
         return $this->dom;
     }
 
@@ -96,7 +97,6 @@ class XmlDocument
 
         if (null === $this->xpath) {
             $this->xpath = new \DOMXpath($this->dom);
-
         }
 
         return $this->xpath->query($path);
@@ -159,6 +159,7 @@ class XmlDocument
     public function elementExists($path, $file = 'word/document.xml')
     {
         $nodeList = $this->getNodeList($path, $file);
-        return !($nodeList->length == 0);
+
+        return !(0 == $nodeList->length);
     }
 }

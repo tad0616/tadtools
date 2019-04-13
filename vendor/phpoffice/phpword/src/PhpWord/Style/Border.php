@@ -85,12 +85,12 @@ class Border extends AbstractStyle
      */
     public function getBorderSize()
     {
-        return array(
+        return [
             $this->getBorderTopSize(),
             $this->getBorderLeftSize(),
             $this->getBorderRightSize(),
             $this->getBorderBottomSize(),
-        );
+        ];
     }
 
     /**
@@ -116,12 +116,12 @@ class Border extends AbstractStyle
      */
     public function getBorderColor()
     {
-        return array(
+        return [
             $this->getBorderTopColor(),
             $this->getBorderLeftColor(),
             $this->getBorderRightColor(),
             $this->getBorderBottomColor(),
-        );
+        ];
     }
 
     /**

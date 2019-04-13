@@ -44,8 +44,8 @@ class Container extends AbstractElement
         if (!$container instanceof ContainerElement) {
             return '';
         }
-        $containerClass = substr(get_class($container), strrpos(get_class($container), '\\') + 1);
-        $withoutP = in_array($containerClass, array('TextRun', 'Footnote', 'Endnote')) ? true : false;
+        $containerClass = mb_substr(get_class($container), mb_strrpos(get_class($container), '\\') + 1);
+        $withoutP = in_array($containerClass, ['TextRun', 'Footnote', 'Endnote'], true) ? true : false;
         $content = '';
 
         $elements = $container->getElements();

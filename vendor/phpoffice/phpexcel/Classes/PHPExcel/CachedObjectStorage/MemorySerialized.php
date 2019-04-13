@@ -31,8 +31,8 @@ class PHPExcel_CachedObjectStorage_MemorySerialized extends PHPExcel_CachedObjec
      * Store cell data in cache for the current cell object if it's "dirty",
      *     and the 'nullify' the current cell object
      *
-     * @return    void
      * @throws    PHPExcel_Exception
+     * @return    void
      */
     protected function storeData()
     {
@@ -50,12 +50,12 @@ class PHPExcel_CachedObjectStorage_MemorySerialized extends PHPExcel_CachedObjec
      *
      * @param    string            $pCoord        Coordinate address of the cell to update
      * @param    PHPExcel_Cell    $cell        Cell to update
-     * @return    PHPExcel_Cell
      * @throws    PHPExcel_Exception
+     * @return    PHPExcel_Cell
      */
     public function addCacheData($pCoord, PHPExcel_Cell $cell)
     {
-        if (($pCoord !== $this->currentObjectID) && ($this->currentObjectID !== null)) {
+        if (($pCoord !== $this->currentObjectID) && (null !== $this->currentObjectID)) {
             $this->storeData();
         }
 
@@ -103,7 +103,7 @@ class PHPExcel_CachedObjectStorage_MemorySerialized extends PHPExcel_CachedObjec
      */
     public function getCellList()
     {
-        if ($this->currentObjectID !== null) {
+        if (null !== $this->currentObjectID) {
             $this->storeData();
         }
 
@@ -117,11 +117,11 @@ class PHPExcel_CachedObjectStorage_MemorySerialized extends PHPExcel_CachedObjec
      */
     public function unsetWorksheetCells()
     {
-        if (!is_null($this->currentObject)) {
+        if (null !== $this->currentObject) {
             $this->currentObject->detach();
             $this->currentObject = $this->currentObjectID = null;
         }
-        $this->cellCache = array();
+        $this->cellCache = [];
 
         //    detach ourself from the worksheet, so that it can then delete this object successfully
         $this->parent = null;

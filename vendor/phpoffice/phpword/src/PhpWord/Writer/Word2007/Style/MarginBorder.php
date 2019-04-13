@@ -31,21 +31,21 @@ class MarginBorder extends AbstractStyle
      *
      * @var integer[]
      */
-    private $sizes = array();
+    private $sizes = [];
 
     /**
      * Colors
      *
      * @var string[]
      */
-    private $colors = array();
+    private $colors = [];
 
     /**
      * Other attributes
      *
      * @var array
      */
-    private $attributes = array();
+    private $attributes = [];
 
     /**
      * Write style.
@@ -56,10 +56,10 @@ class MarginBorder extends AbstractStyle
     {
         $xmlWriter = $this->getXmlWriter();
 
-        $sides = array('top', 'left', 'right', 'bottom', 'insideH', 'insideV');
+        $sides = ['top', 'left', 'right', 'bottom', 'insideH', 'insideV'];
 
         foreach ($this->sizes as $i => $size) {
-            if ($size !== null) {
+            if (null !== $size) {
                 $color = null;
                 if (isset($this->colors[$i])) {
                     $color = $this->colors[$i];
@@ -72,7 +72,6 @@ class MarginBorder extends AbstractStyle
     /**
      * Write side.
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
      * @param string $side
      * @param int $width
      * @param string $color
@@ -82,7 +81,7 @@ class MarginBorder extends AbstractStyle
     {
         $xmlWriter->startElement('w:' . $side);
         if (!empty($this->colors)) {
-            if ($color === null && !empty($this->attributes)) {
+            if (null === $color && !empty($this->attributes)) {
                 if (isset($this->attributes['defaultColor'])) {
                     $color = $this->attributes['defaultColor'];
                 }
@@ -105,7 +104,7 @@ class MarginBorder extends AbstractStyle
     /**
      * Set sizes.
      *
-     * @param integer[] $value
+     * @param int[] $value
      * @return void
      */
     public function setSizes($value)

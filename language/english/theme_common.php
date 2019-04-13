@@ -1,9 +1,9 @@
 <?php
 define('THEME_MODULE0', 'Main menu');
 define('THEME_MODULE1', 'Home');
-define("THEME_LOGIN", "Username");
-define("THEME_PASS", "Password");
-define("THEME_SEARCH_TEXT", "keyword");
+define('THEME_LOGIN', 'Username');
+define('THEME_PASS', 'Password');
+define('THEME_SEARCH_TEXT', 'keyword');
 define('TF_USER_ID', 'Username');
 define('TF_USER_PASS', 'Password');
 define('TF_USER_S_ID', 'Username:');

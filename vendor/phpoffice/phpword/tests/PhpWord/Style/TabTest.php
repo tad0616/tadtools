@@ -30,11 +30,11 @@ class TabTest extends \PHPUnit_Framework_TestCase
     public function testGetSetProperties()
     {
         $object = new Tab();
-        $properties = array(
-            'type'     => array(Tab::TAB_STOP_CLEAR, Tab::TAB_STOP_RIGHT),
-            'leader'   => array(Tab::TAB_LEADER_NONE, Tab::TAB_LEADER_DOT),
-            'position' => array(0, 10),
-        );
+        $properties = [
+            'type' => [Tab::TAB_STOP_CLEAR, Tab::TAB_STOP_RIGHT],
+            'leader' => [Tab::TAB_LEADER_NONE, Tab::TAB_LEADER_DOT],
+            'position' => [0, 10],
+        ];
         foreach ($properties as $property => $value) {
             list($default, $expected) = $value;
             $get = "get{$property}";

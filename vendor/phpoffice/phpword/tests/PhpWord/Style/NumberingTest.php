@@ -30,10 +30,10 @@ class NumberingTest extends \PHPUnit_Framework_TestCase
     public function testGetSetProperties()
     {
         $this->object = new Numbering();
-        $this->properties = array(
-            'numId' => array(null, 1),
-            'type'  => array(null, 'singleLevel'),
-        );
+        $this->properties = [
+            'numId' => [null, 1],
+            'type' => [null, 'singleLevel'],
+        ];
         foreach ($this->properties as $property => $value) {
             list($default, $expected) = $value;
             $get = "get{$property}";

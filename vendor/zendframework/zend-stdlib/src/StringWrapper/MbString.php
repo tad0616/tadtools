@@ -28,12 +28,12 @@ class MbString extends AbstractStringWrapper
      */
     public static function getSupportedEncodings()
     {
-        if (static::$encodings === null) {
+        if (null === static::$encodings) {
             static::$encodings = array_map('strtoupper', mb_list_encodings());
 
             // FIXME: Converting € (UTF-8) to ISO-8859-16 gives a wrong result
             $indexIso885916 = array_search('ISO-8859-16', static::$encodings, true);
-            if ($indexIso885916 !== false) {
+            if (false !== $indexIso885916) {
                 unset(static::$encodings[$indexIso885916]);
             }
         }
@@ -101,10 +101,10 @@ class MbString extends AbstractStringWrapper
      */
     public function convert($str, $reverse = false)
     {
-        $encoding        = $this->getEncoding();
+        $encoding = $this->getEncoding();
         $convertEncoding = $this->getConvertEncoding();
 
-        if ($convertEncoding === null) {
+        if (null === $convertEncoding) {
             throw new Exception\LogicException(
                 'No convert encoding defined'
             );
@@ -115,7 +115,8 @@ class MbString extends AbstractStringWrapper
         }
 
         $fromEncoding = $reverse ? $convertEncoding : $encoding;
-        $toEncoding   = $reverse ? $encoding : $convertEncoding;
+        $toEncoding = $reverse ? $encoding : $convertEncoding;
+
         return mb_convert_encoding($str, $toEncoding, $fromEncoding);
     }
 }

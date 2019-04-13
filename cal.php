@@ -1,13 +1,11 @@
 <?php
-include_once "tadtools_header.php";
+include_once 'tadtools_header.php';
 
 class My97DatePicker
 {
-
     //建構函數
     public function __construct()
     {
-
     }
 
     //產生月曆
@@ -19,6 +17,7 @@ class My97DatePicker
             $xoTheme->addScript('modules/tadtools/My97DatePicker/WdatePicker.js');
         } else {
             $cal = "<script type='text/javascript' src='" . TADTOOLS_URL . "/My97DatePicker/WdatePicker.js'></script>";
+
             return $cal;
         }
     }

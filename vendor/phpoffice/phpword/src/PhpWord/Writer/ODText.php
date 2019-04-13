@@ -38,25 +38,25 @@ class ODText extends AbstractWriter implements WriterInterface
         $this->setPhpWord($phpWord);
 
         // Create parts
-        $this->parts = array(
-            'Mimetype'  => 'mimetype',
-            'Content'   => 'content.xml',
-            'Meta'      => 'meta.xml',
-            'Styles'    => 'styles.xml',
-            'Manifest'  => 'META-INF/manifest.xml',
-        );
+        $this->parts = [
+            'Mimetype' => 'mimetype',
+            'Content' => 'content.xml',
+            'Meta' => 'meta.xml',
+            'Styles' => 'styles.xml',
+            'Manifest' => 'META-INF/manifest.xml',
+        ];
         foreach (array_keys($this->parts) as $partName) {
             $partClass = get_class($this) . '\\Part\\' . $partName;
             if (class_exists($partClass)) {
-                /** @var $partObject \PhpOffice\PhpWord\Writer\ODText\Part\AbstractPart Type hint */
+                /** @var \PhpOffice\PhpWord\Writer\ODText\Part\AbstractPart $partObject Type hint */
                 $partObject = new $partClass();
                 $partObject->setParentWriter($this);
-                $this->writerParts[strtolower($partName)] = $partObject;
+                $this->writerParts[mb_strtolower($partName)] = $partObject;
             }
         }
 
         // Set package paths
-        $this->mediaPaths = array('image' => 'Pictures/');
+        $this->mediaPaths = ['image' => 'Pictures/'];
     }
 
     /**
@@ -78,7 +78,7 @@ class ODText extends AbstractWriter implements WriterInterface
 
         // Write parts
         foreach ($this->parts as $partName => $fileName) {
-            if ($fileName != '') {
+            if ('' != $fileName) {
                 $zip->addFromString($fileName, $this->getWriterPart($partName)->write());
             }
         }

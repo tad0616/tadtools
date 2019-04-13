@@ -51,7 +51,7 @@ class FootnoteTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructArray()
     {
-        $oFootnote = new Footnote(array('spacing' => 100));
+        $oFootnote = new Footnote(['spacing' => 100]);
 
         $this->assertInstanceOf(
             'PhpOffice\\PhpWord\\Style\\Paragraph',
@@ -101,7 +101,7 @@ class FootnoteTest extends \PHPUnit_Framework_TestCase
     {
         $oFootnote = new Footnote();
 
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oFootnote->setRelationId($iVal);
         $this->assertEquals($iVal, $oFootnote->getRelationId());
     }

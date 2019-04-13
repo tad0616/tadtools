@@ -29,7 +29,7 @@ class Settings extends AbstractPart
      *
      * @var array
      */
-    private $settings = array();
+    private $settings = [];
 
     /**
      * Write part
@@ -71,14 +71,14 @@ class Settings extends AbstractPart
      */
     protected function writeSetting($xmlWriter, $settingKey, $settingValue)
     {
-        if ($settingValue == '') {
+        if ('' == $settingValue) {
             $xmlWriter->writeElement($settingKey);
         } else {
             $xmlWriter->startElement($settingKey);
 
             /** @var array $settingValue Type hint */
             foreach ($settingValue as $childKey => $childValue) {
-                if ($childKey == '@attributes') {
+                if ('@attributes' == $childKey) {
                     foreach ($childValue as $key => $val) {
                         $xmlWriter->writeAttribute($key, $val);
                     }
@@ -98,30 +98,30 @@ class Settings extends AbstractPart
     private function getSettings()
     {
         // Default settings
-        $this->settings = array(
-            'w:zoom' => array('@attributes' => array('w:percent' => '100')),
-            'w:defaultTabStop' => array('@attributes' => array('w:val' => '708')),
-            'w:hyphenationZone' => array('@attributes' => array('w:val' => '425')),
-            'w:characterSpacingControl' => array('@attributes' => array('w:val' => 'doNotCompress')),
-            'w:themeFontLang' => array('@attributes' => array('w:val' => 'en-US')),
-            'w:decimalSymbol' => array('@attributes' => array('w:val' => '.')),
-            'w:listSeparator' => array('@attributes' => array('w:val' => ';')),
+        $this->settings = [
+            'w:zoom' => ['@attributes' => ['w:percent' => '100']],
+            'w:defaultTabStop' => ['@attributes' => ['w:val' => '708']],
+            'w:hyphenationZone' => ['@attributes' => ['w:val' => '425']],
+            'w:characterSpacingControl' => ['@attributes' => ['w:val' => 'doNotCompress']],
+            'w:themeFontLang' => ['@attributes' => ['w:val' => 'en-US']],
+            'w:decimalSymbol' => ['@attributes' => ['w:val' => '.']],
+            'w:listSeparator' => ['@attributes' => ['w:val' => ';']],
             'w:compat' => '',
-            'm:mathPr' => array(
-                'm:mathFont' => array('@attributes' => array('m:val' => 'Cambria Math')),
-                'm:brkBin' => array('@attributes' => array('m:val' => 'before')),
-                'm:brkBinSub' => array('@attributes' => array('m:val' => '--')),
-                'm:smallFrac' => array('@attributes' => array('m:val' => 'off')),
+            'm:mathPr' => [
+                'm:mathFont' => ['@attributes' => ['m:val' => 'Cambria Math']],
+                'm:brkBin' => ['@attributes' => ['m:val' => 'before']],
+                'm:brkBinSub' => ['@attributes' => ['m:val' => '--']],
+                'm:smallFrac' => ['@attributes' => ['m:val' => 'off']],
                 'm:dispDef' => '',
-                'm:lMargin' => array('@attributes' => array('m:val' => '0')),
-                'm:rMargin' => array('@attributes' => array('m:val' => '0')),
-                'm:defJc' => array('@attributes' => array('m:val' => 'centerGroup')),
-                'm:wrapIndent' => array('@attributes' => array('m:val' => '1440')),
-                'm:intLim' => array('@attributes' => array('m:val' => 'subSup')),
-                'm:naryLim' => array('@attributes' => array('m:val' => 'undOvr')),
-            ),
-            'w:clrSchemeMapping' => array(
-                '@attributes' => array(
+                'm:lMargin' => ['@attributes' => ['m:val' => '0']],
+                'm:rMargin' => ['@attributes' => ['m:val' => '0']],
+                'm:defJc' => ['@attributes' => ['m:val' => 'centerGroup']],
+                'm:wrapIndent' => ['@attributes' => ['m:val' => '1440']],
+                'm:intLim' => ['@attributes' => ['m:val' => 'subSup']],
+                'm:naryLim' => ['@attributes' => ['m:val' => 'undOvr']],
+            ],
+            'w:clrSchemeMapping' => [
+                '@attributes' => [
                     'w:bg1' => 'light1',
                     'w:t1' => 'dark1',
                     'w:bg2' => 'light2',
@@ -134,9 +134,9 @@ class Settings extends AbstractPart
                     'w:accent6' => 'accent6',
                     'w:hyperlink' => 'hyperlink',
                     'w:followedHyperlink' => 'followedHyperlink',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
 
         // Other settings
         $this->getProtection();
@@ -151,13 +151,13 @@ class Settings extends AbstractPart
     private function getProtection()
     {
         $protection = $this->getParentWriter()->getPhpWord()->getProtection();
-        if ($protection->getEditing() !== null) {
-            $this->settings['w:documentProtection'] = array(
-                '@attributes' => array(
+        if (null !== $protection->getEditing()) {
+            $this->settings['w:documentProtection'] = [
+                '@attributes' => [
                     'w:enforcement' => 1,
                     'w:edit' => $protection->getEditing(),
-                )
-            );
+                ],
+            ];
         }
     }
 
@@ -169,12 +169,12 @@ class Settings extends AbstractPart
     private function getCompatibility()
     {
         $compatibility = $this->getParentWriter()->getPhpWord()->getCompatibility();
-        if ($compatibility->getOoxmlVersion() !== null) {
-            $this->settings['w:compat']['w:compatSetting'] = array('@attributes' => array(
-                'w:name'    => 'compatibilityMode',
-                'w:uri'     => 'http://schemas.microsoft.com/office/word',
-                'w:val'     => $compatibility->getOoxmlVersion(),
-            ));
+        if (null !== $compatibility->getOoxmlVersion()) {
+            $this->settings['w:compat']['w:compatSetting'] = ['@attributes' => [
+                'w:name' => 'compatibilityMode',
+                'w:uri' => 'http://schemas.microsoft.com/office/word',
+                'w:val' => $compatibility->getOoxmlVersion(),
+            ]];
         }
     }
 }

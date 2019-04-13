@@ -32,8 +32,8 @@ interface PHPExcel_CachedObjectStorage_ICache
      *
      * @param    string            $pCoord        Coordinate address of the cell to update
      * @param    PHPExcel_Cell    $cell        Cell to update
-     * @return    PHPExcel_Cell
      * @throws    PHPExcel_Exception
+     * @return    PHPExcel_Cell
      */
     public function addCacheData($pCoord, PHPExcel_Cell $cell);
 
@@ -41,8 +41,8 @@ interface PHPExcel_CachedObjectStorage_ICache
      * Add or Update a cell in cache
      *
      * @param    PHPExcel_Cell    $cell        Cell to update
-     * @return    PHPExcel_Cell
      * @throws    PHPExcel_Exception
+     * @return    PHPExcel_Cell
      */
     public function updateCacheData(PHPExcel_Cell $cell);
 
@@ -50,8 +50,8 @@ interface PHPExcel_CachedObjectStorage_ICache
      * Fetch a cell from cache identified by coordinate address
      *
      * @param    string            $pCoord        Coordinate address of the cell to retrieve
-     * @return PHPExcel_Cell     Cell that was found, or null if not found
      * @throws    PHPExcel_Exception
+     * @return PHPExcel_Cell     Cell that was found, or null if not found
      */
     public function getCacheData($pCoord);
 

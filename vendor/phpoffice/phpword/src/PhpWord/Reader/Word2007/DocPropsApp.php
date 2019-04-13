@@ -29,12 +29,12 @@ class DocPropsApp extends DocPropsCore
      *
      * @var array
      */
-    protected $mapping = array('Company' => 'setCompany', 'Manager' => 'setManager');
+    protected $mapping = ['Company' => 'setCompany', 'Manager' => 'setManager'];
 
     /**
      * Callback functions
      *
      * @var array
      */
-    protected $callbacks = array();
+    protected $callbacks = [];
 }

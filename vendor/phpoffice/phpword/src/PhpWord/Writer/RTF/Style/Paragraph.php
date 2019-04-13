@@ -47,25 +47,25 @@ class Paragraph extends AbstractStyle
             return '';
         }
 
-        $alignments = array(
-            Jc::START  => '\ql',
-            Jc::END    => '\qr',
+        $alignments = [
+            Jc::START => '\ql',
+            Jc::END => '\qr',
             Jc::CENTER => '\qc',
-            Jc::BOTH   => '\qj',
-        );
+            Jc::BOTH => '\qj',
+        ];
 
         $spaceAfter = $style->getSpaceAfter();
         $spaceBefore = $style->getSpaceBefore();
 
         $content = '';
-        if ($this->nestedLevel == 0) {
+        if (0 == $this->nestedLevel) {
             $content .= '\pard\nowidctlpar ';
         }
         if (isset($alignments[$style->getAlignment()])) {
             $content .= $alignments[$style->getAlignment()];
         }
-        $content .= $this->getValueIf($spaceBefore !== null, '\sb' . $spaceBefore);
-        $content .= $this->getValueIf($spaceAfter !== null, '\sa' . $spaceAfter);
+        $content .= $this->getValueIf(null !== $spaceBefore, '\sb' . $spaceBefore);
+        $content .= $this->getValueIf(null !== $spaceAfter, '\sa' . $spaceAfter);
 
         return $content;
     }

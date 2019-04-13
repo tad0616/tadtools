@@ -78,7 +78,7 @@ define('_TAD_CENTER_ZONE', 'Center Zone');
 define('_TAD_LEFT_ZONE', 'Left Zone');
 define('_TAD_RIGHT_ZONE', 'Right Zone');
 
-define("_TAD_SLIDE_DEFAULT_DESCRIPT", "You can upload slider images from tad_theme admin. You can edit descript for images with HTML tag.");
+define('_TAD_SLIDE_DEFAULT_DESCRIPT', 'You can upload slider images from tad_theme admin. You can edit descript for images with HTML tag.');
 
 define('TADTOOLS_CALENDAR_TODAY', 'Today');
 define('TADTOOLS_CALENDAR_PREV_MONTH', 'Prev Month');

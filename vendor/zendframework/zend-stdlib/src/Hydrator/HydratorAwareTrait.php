@@ -22,7 +22,6 @@ trait HydratorAwareTrait
     /**
      * Set hydrator
      *
-     * @param  HydratorInterface $hydrator
      * @return self
      * @access public
      */

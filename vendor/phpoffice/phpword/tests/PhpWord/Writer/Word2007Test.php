@@ -14,6 +14,7 @@
  * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
 namespace PhpOffice\PhpWord\Writer;
 
 use PhpOffice\PhpWord\PhpWord;
@@ -30,7 +31,7 @@ class Word2007Test extends \PHPUnit_Framework_TestCase
     /**
      * Tear down after each test
      */
-    public function tearDown()
+    protected function tearDown()
     {
         TestHelperDOCX::clear();
     }
@@ -42,20 +43,20 @@ class Word2007Test extends \PHPUnit_Framework_TestCase
     {
         $object = new Word2007(new PhpWord());
 
-        $writerParts = array(
+        $writerParts = [
             'ContentTypes' => 'ContentTypes',
-            'Rels'         => 'Rels',
-            'DocPropsApp'  => 'DocPropsApp',
-            'Document'     => 'Document',
-            'Styles'       => 'Styles',
-            'Numbering'    => 'Numbering',
-            'Settings'     => 'Settings',
-            'WebSettings'  => 'WebSettings',
-            'Header'       => 'Header',
-            'Footer'       => 'Footer',
-            'Footnotes'    => 'Footnotes',
-            'Endnotes'     => 'Footnotes',
-        );
+            'Rels' => 'Rels',
+            'DocPropsApp' => 'DocPropsApp',
+            'Document' => 'Document',
+            'Styles' => 'Styles',
+            'Numbering' => 'Numbering',
+            'Settings' => 'Settings',
+            'WebSettings' => 'WebSettings',
+            'Header' => 'Header',
+            'Footer' => 'Footer',
+            'Footnotes' => 'Footnotes',
+            'Endnotes' => 'Footnotes',
+        ];
         foreach ($writerParts as $part => $type) {
             $this->assertInstanceOf(
                 "PhpOffice\\PhpWord\\Writer\\Word2007\\Part\\{$type}",
@@ -76,8 +77,8 @@ class Word2007Test extends \PHPUnit_Framework_TestCase
         $localImage = __DIR__ . '/../_files/images/earth.jpg';
         $remoteImage = 'http://php.net//images/logos/php-med-trans-light.gif';
         $phpWord = new PhpWord();
-        $phpWord->addFontStyle('Font', array('size' => 11));
-        $phpWord->addParagraphStyle('Paragraph', array('alignment' => Jc::CENTER));
+        $phpWord->addFontStyle('Font', ['size' => 11]);
+        $phpWord->addParagraphStyle('Paragraph', ['alignment' => Jc::CENTER]);
         $section = $phpWord->addSection();
         $section->addText('Test 1', 'Font', 'Paragraph');
         $section->addTextBreak();
@@ -96,7 +97,7 @@ class Word2007Test extends \PHPUnit_Framework_TestCase
         $file = __DIR__ . '/../_files/temp.docx';
         $writer->save($file);
 
-        $this->assertTrue(file_exists($file));
+        $this->assertFileExists($file);
 
         unlink($file);
     }
@@ -117,7 +118,7 @@ class Word2007Test extends \PHPUnit_Framework_TestCase
         $file = __DIR__ . '/../_files/temp.docx';
         $writer->save($file);
 
-        $this->assertTrue(file_exists($file));
+        $this->assertFileExists($file);
 
         unlink($file);
     }
@@ -127,14 +128,14 @@ class Word2007Test extends \PHPUnit_Framework_TestCase
      */
     public function testCheckContentTypes()
     {
-        $images = array(
-            'mars_noext_jpg'    => '1.jpg',
-            'mars.jpg'          => '2.jpg',
-            'mario.gif'         => '3.gif',
-            'firefox.png'       => '4.png',
-            'duke_nukem.bmp'    => '5.bmp',
+        $images = [
+            'mars_noext_jpg' => '1.jpg',
+            'mars.jpg' => '2.jpg',
+            'mario.gif' => '3.gif',
+            'firefox.png' => '4.png',
+            'duke_nukem.bmp' => '5.bmp',
             'angela_merkel.tif' => '6.tif',
-        );
+        ];
         $phpWord = new PhpWord();
         $section = $phpWord->addSection();
         foreach ($images as $source => $target) {
@@ -178,12 +179,12 @@ class Word2007Test extends \PHPUnit_Framework_TestCase
 
     /**
      * Use disk caching exception
-     *
-     * @expectedException \PhpOffice\PhpWord\Exception\Exception
      */
     public function testSetUseDiskCachingException()
     {
-        $dir = join(DIRECTORY_SEPARATOR, array(PHPWORD_TESTS_BASE_DIR, 'foo'));
+        $this->expectException(\PhpOffice\PhpWord\Exception\Exception::class);
+
+        $dir = implode(DIRECTORY_SEPARATOR, [PHPWORD_TESTS_BASE_DIR, 'foo']);
 
         $object = new Word2007();
         $object->setUseDiskCaching(true, $dir);

@@ -39,6 +39,6 @@ class PageBreak extends TextBreak
             return '<pagebreak style="page-break-before: always;" pagebreak="true"></pagebreak>';
         }
 
-        return "";
+        return '';
     }
 }

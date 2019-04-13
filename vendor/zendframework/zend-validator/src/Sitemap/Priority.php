@@ -20,20 +20,19 @@ class Priority extends AbstractValidator
 {
     /**
      * Validation key for not valid
-     *
      */
     const NOT_VALID = 'sitemapPriorityNotValid';
-    const INVALID   = 'sitemapPriorityInvalid';
+    const INVALID = 'sitemapPriorityInvalid';
 
     /**
      * Validation failure message template definitions
      *
      * @var array
      */
-    protected $messageTemplates = array(
-        self::NOT_VALID => "The input is not a valid sitemap priority",
-        self::INVALID   => "Invalid type given. Numeric string, integer or float expected",
-    );
+    protected $messageTemplates = [
+        self::NOT_VALID => 'The input is not a valid sitemap priority',
+        self::INVALID => 'Invalid type given. Numeric string, integer or float expected',
+    ];
 
     /**
      * Validates if a string is valid as a sitemap priority
@@ -47,6 +46,7 @@ class Priority extends AbstractValidator
     {
         if (!is_numeric($value)) {
             $this->error(self::INVALID);
+
             return false;
         }
 
@@ -54,6 +54,7 @@ class Priority extends AbstractValidator
         $value = (float) $value;
         if ($value < 0 || $value > 1) {
             $this->error(self::NOT_VALID);
+
             return false;
         }
 

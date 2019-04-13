@@ -186,11 +186,11 @@ abstract class AbstractElement
     private function getMediaPart()
     {
         $mediaPart = $this->docPart;
-        if ($mediaPart == 'Header' || $mediaPart == 'Footer') {
+        if ('Header' == $mediaPart || 'Footer' == $mediaPart) {
             $mediaPart .= $this->docPartId;
         }
 
-        return strtolower($mediaPart);
+        return mb_strtolower($mediaPart);
     }
 
     /**
@@ -231,7 +231,7 @@ abstract class AbstractElement
      */
     public function setElementId()
     {
-        $this->elementId = substr(md5(rand()), 0, 6);
+        $this->elementId = mb_substr(md5(mt_rand()), 0, 6);
     }
 
     /**
@@ -273,13 +273,13 @@ abstract class AbstractElement
      * @param \PhpOffice\PhpWord\Element\AbstractElement $container
      * @return void
      */
-    public function setParentContainer(AbstractElement $container)
+    public function setParentContainer(self $container)
     {
-        $this->parentContainer = substr(get_class($container), strrpos(get_class($container), '\\') + 1);
+        $this->parentContainer = mb_substr(get_class($container), mb_strrpos(get_class($container), '\\') + 1);
 
         // Set nested level
         $this->nestedLevel = $container->getNestedLevel();
-        if ($this->parentContainer == 'Cell') {
+        if ('Cell' == $this->parentContainer) {
             $this->nestedLevel++;
         }
 
@@ -309,14 +309,14 @@ abstract class AbstractElement
             return;
         }
 
-        $elementName = substr(get_class($this), strrpos(get_class($this), '\\') + 1);
+        $elementName = mb_substr(get_class($this), mb_strrpos(get_class($this), '\\') + 1);
         $mediaPart = $this->getMediaPart();
         $source = $this->getSource();
         $image = null;
         if ($this instanceof Image) {
             $image = $this;
         }
-        $rId = Media::addElement($mediaPart, strtolower($elementName), $source, $image);
+        $rId = Media::addElement($mediaPart, mb_strtolower($elementName), $source, $image);
         $this->setRelationId($rId);
 
         if ($this instanceof Object) {
@@ -333,8 +333,8 @@ abstract class AbstractElement
      */
     private function setCollectionRelation()
     {
-        if ($this->collectionRelation === true && $this->phpWord instanceof PhpWord) {
-            $elementName = substr(get_class($this), strrpos(get_class($this), '\\') + 1);
+        if (true === $this->collectionRelation && $this->phpWord instanceof PhpWord) {
+            $elementName = mb_substr(get_class($this), mb_strrpos(get_class($this), '\\') + 1);
             $addMethod = "add{$elementName}";
             $rId = $this->phpWord->$addMethod($this);
             $this->setRelationId($rId);
@@ -348,7 +348,7 @@ abstract class AbstractElement
      */
     public function isInSection()
     {
-        return ($this->docPart == 'Section');
+        return ('Section' == $this->docPart);
     }
 
     /**
@@ -361,7 +361,7 @@ abstract class AbstractElement
      */
     protected function setNewStyle($styleObject, $styleValue = null, $returnObject = false)
     {
-        if (!is_null($styleValue) && is_array($styleValue)) {
+        if (null !== $styleValue && is_array($styleValue)) {
             $styleObject->setStyleByArray($styleValue);
             $style = $styleObject;
         } else {
@@ -378,17 +378,17 @@ abstract class AbstractElement
      * @param array $enum
      * @param mixed $default
      *
+     * @throws \InvalidArgumentException
      * @return mixed
      *
-     * @throws \InvalidArgumentException
      *
      * @todo Merge with the same method in AbstractStyle
      */
-    protected function setEnumVal($value = null, $enum = array(), $default = null)
+    protected function setEnumVal($value = null, $enum = [], $default = null)
     {
-        if ($value != null && trim($value) != '' && !empty($enum) && !in_array($value, $enum)) {
+        if (null != $value && '' != trim($value) && !empty($enum) && !in_array($value, $enum, true)) {
             throw new \InvalidArgumentException("Invalid style value: {$value}");
-        } elseif ($value === null || trim($value) == '') {
+        } elseif (null === $value || '' == trim($value)) {
             $value = $default;
         }
 

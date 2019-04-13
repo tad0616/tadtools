@@ -96,14 +96,14 @@ class Paper extends AbstractStyle
      *
      * @var array
      */
-    private $sizes = array(
-        'A3'        => array(297, 420, 'mm'),
-        'A4'        => array(210, 297, 'mm'),
-        'A5'        => array(148, 210, 'mm'),
-        'Folio'     => array(8.5, 13, 'in'),
-        'Legal'     => array(8.5, 14, 'in'),
-        'Letter'    => array(8.5, 11, 'in'),
-    );
+    private $sizes = [
+        'A3' => [297, 420, 'mm'],
+        'A4' => [210, 297, 'mm'],
+        'A5' => [148, 210, 'mm'],
+        'Folio' => [8.5, 13, 'in'],
+        'Legal' => [8.5, 14, 'in'],
+        'Letter' => [8.5, 11, 'in'],
+    ];
 
     /**
      * Paper size
@@ -157,7 +157,7 @@ class Paper extends AbstractStyle
         $this->size = $this->setEnumVal($size, array_keys($this->sizes), $this->size);
 
         list($width, $height, $unit) = $this->sizes[$this->size];
-        $multipliers = array('mm' => 56.5217, 'in' => 1440);
+        $multipliers = ['mm' => 56.5217, 'in' => 1440];
         $multiplier = $multipliers[$unit];
 
         $this->width = (int)round($width * $multiplier);

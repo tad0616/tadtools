@@ -55,8 +55,8 @@ class TextBreakTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructWithStyleArray()
     {
-        $fStyle = array('size' => 12);
-        $pStyle = array('spacing' => 240);
+        $fStyle = ['size' => 12];
+        $pStyle = ['spacing' => 240];
         $object = new TextBreak($fStyle, $pStyle);
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Style\\Font', $object->getFontStyle());
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Style\\Paragraph', $object->getParagraphStyle());

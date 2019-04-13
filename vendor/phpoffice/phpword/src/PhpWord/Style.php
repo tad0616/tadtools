@@ -33,7 +33,7 @@ class Style
      *
      * @var array
      */
-    private static $styles = array();
+    private static $styles = [];
 
     /**
      * Add paragraph style
@@ -131,7 +131,7 @@ class Style
      */
     public static function resetStyles()
     {
-        self::$styles = array();
+        self::$styles = [];
     }
 
     /**
@@ -165,9 +165,9 @@ class Style
     {
         if (isset(self::$styles[$styleName])) {
             return self::$styles[$styleName];
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**
@@ -183,7 +183,7 @@ class Style
     private static function setStyleValues($name, $style, $value = null)
     {
         if (!isset(self::$styles[$name])) {
-            if ($value !== null) {
+            if (null !== $value) {
                 if (is_array($value)) {
                     $style->setStyleByArray($value);
                 } elseif ($value instanceof AbstractStyle) {

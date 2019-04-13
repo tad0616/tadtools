@@ -13,8 +13,6 @@ interface ValidatorPluginManagerAwareInterface
 {
     /**
      * Set validator plugin manager
-     *
-     * @param ValidatorPluginManager $pluginManager
      */
     public function setValidatorPluginManager(ValidatorPluginManager $pluginManager);
 

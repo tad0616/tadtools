@@ -26,7 +26,7 @@ class Text
      *
      * @var string[]
      */
-    private static $controlCharacters = array();
+    private static $controlCharacters = [];
 
     /**
      * Build control characters array
@@ -34,9 +34,9 @@ class Text
     private static function buildControlCharacters()
     {
         for ($i = 0; $i <= 19; ++$i) {
-            if ($i != 9 && $i != 10 && $i != 13) {
-                $find                            = '_x' . sprintf('%04s', strtoupper(dechex($i))) . '_';
-                $replace                         = chr($i);
+            if (9 != $i && 10 != $i && 13 != $i) {
+                $find = '_x' . sprintf('%04s', mb_strtoupper(dechex($i))) . '_';
+                $replace = chr($i);
                 self::$controlCharacters[$find] = $replace;
             }
         }
@@ -68,7 +68,7 @@ class Text
     /**
      * Return a number formatted for being integrated in xml files
      * @param float $number
-     * @param integer $decimals
+     * @param int $decimals
      */
     public static function numberFormat($number, $decimals)
     {
@@ -82,18 +82,19 @@ class Text
      */
     public static function chr($dec)
     {
-        if ($dec<=0x7F) {
+        if ($dec <= 0x7F) {
             return chr($dec);
         }
-        if ($dec<=0x7FF) {
-            return chr(($dec>>6)+192).chr(($dec&63)+128);
+        if ($dec <= 0x7FF) {
+            return chr(($dec >> 6) + 192) . chr(($dec & 63) + 128);
         }
-        if ($dec<=0xFFFF) {
-            return chr(($dec>>12)+224).chr((($dec>>6)&63)+128).chr(($dec&63)+128);
+        if ($dec <= 0xFFFF) {
+            return chr(($dec >> 12) + 224) . chr((($dec >> 6) & 63) + 128) . chr(($dec & 63) + 128);
         }
-        if ($dec<=0x1FFFFF) {
-            return chr(($dec>>18)+240).chr((($dec>>12)&63)+128).chr((($dec>>6)&63)+128).chr(($dec&63)+128);
+        if ($dec <= 0x1FFFFF) {
+            return chr(($dec >> 18) + 240) . chr((($dec >> 12) & 63) + 128) . chr((($dec >> 6) & 63) + 128) . chr(($dec & 63) + 128);
         }
+
         return '';
     }
 
@@ -120,7 +121,7 @@ class Text
      */
     public static function isUTF8($value = '')
     {
-        return is_string($value) && ($value === '' || preg_match('/^./su', $value) == 1);
+        return is_string($value) && ('' === $value || 1 == preg_match('/^./su', $value));
     }
 
     /**
@@ -131,7 +132,7 @@ class Text
      */
     public static function toUTF8($value = '')
     {
-        if (!is_null($value) && !self::isUTF8($value)) {
+        if (null !== $value && !self::isUTF8($value)) {
             $value = utf8_encode($value);
         }
 
@@ -162,28 +163,28 @@ class Text
      */
     public static function utf8ToUnicode($text)
     {
-        $unicode = array();
-        $values = array();
+        $unicode = [];
+        $values = [];
         $lookingFor = 1;
 
         // Gets unicode for each character
-        for ($i = 0; $i < strlen($text); $i++) {
+        for ($i = 0; $i < mb_strlen($text); $i++) {
             $thisValue = ord($text[$i]);
             if ($thisValue < 128) {
                 $unicode[] = $thisValue;
             } else {
-                if (count($values) == 0) {
+                if (0 == count($values)) {
                     $lookingFor = $thisValue < 224 ? 2 : 3;
                 }
                 $values[] = $thisValue;
                 if (count($values) == $lookingFor) {
-                    if ($lookingFor == 3) {
+                    if (3 == $lookingFor) {
                         $number = (($values[0] % 16) * 4096) + (($values[1] % 64) * 64) + ($values[2] % 64);
                     } else {
                         $number = (($values[0] % 32) * 64) + ($values[1] % 64);
                     }
                     $unicode[] = $number;
-                    $values = array();
+                    $values = [];
                     $lookingFor = 1;
                 }
             }
@@ -205,7 +206,7 @@ class Text
         $entities = '';
 
         foreach ($unicode as $value) {
-            if ($value != 65279) {
+            if (65279 != $value) {
                 $entities .= $value > 127 ? '\uc0{\u' . $value . '}' : chr($value);
             }
         }
@@ -221,9 +222,9 @@ class Text
      */
     public static function removeUnderscorePrefix($value)
     {
-        if (!is_null($value)) {
-            if (substr($value, 0, 1) == '_') {
-                $value = substr($value, 1);
+        if (null !== $value) {
+            if ('_' == mb_substr($value, 0, 1)) {
+                $value = mb_substr($value, 1);
             }
         }
 

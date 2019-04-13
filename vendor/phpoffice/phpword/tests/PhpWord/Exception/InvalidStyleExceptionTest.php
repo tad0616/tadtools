@@ -28,11 +28,12 @@ class InvalidStyleExceptionTest extends \PHPUnit_Framework_TestCase
     /**
      * Throw new exception
      *
-     * @expectedException \PhpOffice\PhpWord\Exception\InvalidStyleException
      * @covers            \PhpOffice\PhpWord\Exception\InvalidStyleException
      */
     public function testThrowException()
     {
-        throw new InvalidStyleException;
+        $this->expectException(\PhpOffice\PhpWord\Exception\InvalidStyleException::class);
+
+        throw new InvalidStyleException();
     }
 }

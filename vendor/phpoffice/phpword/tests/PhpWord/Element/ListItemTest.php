@@ -40,7 +40,7 @@ class ListItemTest extends \PHPUnit_Framework_TestCase
      */
     public function testStyle()
     {
-        $oListItem = new ListItem('text', 1, null, array('listType' => \PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER));
+        $oListItem = new ListItem('text', 1, null, ['listType' => \PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER]);
 
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Style\\ListItem', $oListItem->getStyle());
         $this->assertEquals(\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER, $oListItem->getStyle()->getListType());
@@ -51,7 +51,7 @@ class ListItemTest extends \PHPUnit_Framework_TestCase
      */
     public function testDepth()
     {
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oListItem = new ListItem('text', $iVal);
 
         $this->assertEquals($iVal, $oListItem->getDepth());

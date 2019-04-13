@@ -20,8 +20,6 @@ class DelegatingHydrator implements HydratorInterface
 
     /**
      * Constructor
-     *
-     * @param ServiceLocatorInterface $hydrators
      */
     public function __construct(ServiceLocatorInterface $hydrators)
     {

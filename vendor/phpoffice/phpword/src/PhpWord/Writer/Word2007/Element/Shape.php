@@ -47,7 +47,7 @@ class Shape extends AbstractElement
         $styleWriter = new ShapeStyleWriter($xmlWriter, $style);
 
         $type = $element->getType();
-        if ($type == 'rect' && $style->getRoundness() !== null) {
+        if ('rect' == $type && null !== $style->getRoundness()) {
             $type = 'roundrect';
         }
         $method = "write{$type}";
@@ -78,23 +78,19 @@ class Shape extends AbstractElement
     /**
      * Write arc.
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
-     * @param \PhpOffice\PhpWord\Style\Shape $style
      * @return void
      */
     private function writeArc(XMLWriter $xmlWriter, ShapeStyle $style)
     {
         $points = $this->getPoints('arc', $style->getPoints());
 
-        $xmlWriter->writeAttributeIf($points['start'] !== null, 'startAngle', $points['start']);
-        $xmlWriter->writeAttributeIf($points['end'] !== null, 'endAngle', $points['end']);
+        $xmlWriter->writeAttributeIf(null !== $points['start'], 'startAngle', $points['start']);
+        $xmlWriter->writeAttributeIf(null !== $points['end'], 'endAngle', $points['end']);
     }
 
     /**
      * Write curve.
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
-     * @param \PhpOffice\PhpWord\Style\Shape $style
      * @return void
      */
     private function writeCurve(XMLWriter $xmlWriter, ShapeStyle $style)
@@ -102,42 +98,36 @@ class Shape extends AbstractElement
         $points = $this->getPoints('curve', $style->getPoints());
 
         $this->writeLine($xmlWriter, $style);
-        $xmlWriter->writeAttributeIf($points['point1'] !== null, 'control1', $points['point1']);
-        $xmlWriter->writeAttributeIf($points['point2'] !== null, 'control2', $points['point2']);
+        $xmlWriter->writeAttributeIf(null !== $points['point1'], 'control1', $points['point1']);
+        $xmlWriter->writeAttributeIf(null !== $points['point2'], 'control2', $points['point2']);
     }
 
     /**
      * Write line.
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
-     * @param \PhpOffice\PhpWord\Style\Shape $style
      * @return void
      */
     private function writeLine(XMLWriter $xmlWriter, ShapeStyle $style)
     {
         $points = $this->getPoints('line', $style->getPoints());
 
-        $xmlWriter->writeAttributeIf($points['start'] !== null, 'from', $points['start']);
-        $xmlWriter->writeAttributeIf($points['end'] !== null, 'to', $points['end']);
+        $xmlWriter->writeAttributeIf(null !== $points['start'], 'from', $points['start']);
+        $xmlWriter->writeAttributeIf(null !== $points['end'], 'to', $points['end']);
     }
 
     /**
      * Write polyline.
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
-     * @param \PhpOffice\PhpWord\Style\Shape $style
      * @return void
      */
     private function writePolyline(XMLWriter $xmlWriter, ShapeStyle $style)
     {
-        $xmlWriter->writeAttributeIf($style->getPoints() !== null, 'points', $style->getPoints());
+        $xmlWriter->writeAttributeIf(null !== $style->getPoints(), 'points', $style->getPoints());
     }
 
     /**
      * Write rectangle.
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
-     * @param \PhpOffice\PhpWord\Style\Shape $style
      * @return void
      */
     private function writeRoundRect(XMLWriter $xmlWriter, ShapeStyle $style)
@@ -154,19 +144,19 @@ class Shape extends AbstractElement
      */
     private function getPoints($type, $value)
     {
-        $points = array();
+        $points = [];
 
         switch ($type) {
             case 'arc':
             case 'line':
                 $points = explode(' ', $value);
                 @list($start, $end) = $points;
-                $points = array('start' => $start, 'end' => $end);
+                $points = ['start' => $start, 'end' => $end];
                 break;
             case 'curve':
                 $points = explode(' ', $value);
                 @list($start, $end, $point1, $point2) = $points;
-                $points = array('start' => $start, 'end' => $end, 'point1' => $point1, 'point2' => $point2);
+                $points = ['start' => $start, 'end' => $end, 'point1' => $point1, 'point2' => $point2];
                 break;
         }
 

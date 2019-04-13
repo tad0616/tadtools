@@ -32,13 +32,13 @@ class Field extends Text
     public function write()
     {
         $xmlWriter = $this->getXmlWriter();
-        $element   = $this->getElement();
+        $element = $this->getElement();
         if (!$element instanceof \PhpOffice\PhpWord\Element\Field) {
             return;
         }
 
         $instruction = ' ' . $element->getType() . ' ';
-        $properties  = $element->getProperties();
+        $properties = $element->getProperties();
         foreach ($properties as $propkey => $propval) {
             switch ($propkey) {
                 case 'format':

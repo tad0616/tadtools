@@ -30,7 +30,6 @@ class Styles extends AbstractPart
     /**
      * Read styles.xml.
      *
-     * @param \PhpOffice\PhpWord\PhpWord $phpWord
      * @return void
      */
     public function read(PhpWord $phpWord)
@@ -43,13 +42,12 @@ class Styles extends AbstractPart
             foreach ($nodes as $node) {
                 $type = $xmlReader->getAttribute('w:type', $node);
                 $name = $xmlReader->getAttribute('w:styleId', $node);
-                if (is_null($name)) {
+                if (null === $name) {
                     $name = $xmlReader->getAttribute('w:val', $node, 'w:name');
                 }
                 preg_match('/Heading(\d)/', $name, $headingMatches);
                 // $default = ($xmlReader->getAttribute('w:default', $node) == 1);
                 switch ($type) {
-
                     case 'paragraph':
                         $paragraphStyle = $this->readParagraphStyle($xmlReader, $node);
                         $fontStyle = $this->readFontStyle($xmlReader, $node);
@@ -65,14 +63,12 @@ class Styles extends AbstractPart
                             }
                         }
                         break;
-
                     case 'character':
                         $fontStyle = $this->readFontStyle($xmlReader, $node);
                         if (!empty($fontStyle)) {
                             $phpWord->addFontStyle($name, $fontStyle);
                         }
                         break;
-
                     case 'table':
                         $tStyle = $this->readTableStyle($xmlReader, $node);
                         if (!empty($tStyle)) {

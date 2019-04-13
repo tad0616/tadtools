@@ -38,10 +38,10 @@ class ODText extends AbstractReader implements ReaderInterface
         $phpWord = new PhpWord();
         $relationships = $this->readRelationships($docFile);
 
-        $readerParts = array(
+        $readerParts = [
             'content.xml' => 'Content',
             'meta.xml' => 'Meta',
-        );
+        ];
 
         foreach ($readerParts as $xmlFile => $partName) {
             $this->readPart($phpWord, $relationships, $partName, $docFile, $xmlFile);
@@ -53,7 +53,6 @@ class ODText extends AbstractReader implements ReaderInterface
     /**
      * Read document part.
      *
-     * @param \PhpOffice\PhpWord\PhpWord $phpWord
      * @param array $relationships
      * @param string $partName
      * @param string $docFile
@@ -79,7 +78,7 @@ class ODText extends AbstractReader implements ReaderInterface
      */
     private function readRelationships($docFile)
     {
-        $rels = array();
+        $rels = [];
         $xmlFile = 'META-INF/manifest.xml';
         $xmlReader = new XMLReader();
         $xmlReader->getDomFromZip($docFile, $xmlFile);
@@ -87,7 +86,7 @@ class ODText extends AbstractReader implements ReaderInterface
         foreach ($nodes as $node) {
             $type = $xmlReader->getAttribute('manifest:media-type', $node);
             $target = $xmlReader->getAttribute('manifest:full-path', $node);
-            $rels[] = array('type' => $type, 'target' => $target);
+            $rels[] = ['type' => $type, 'target' => $target];
         }
 
         return $rels;

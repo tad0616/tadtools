@@ -60,33 +60,32 @@ class PHPExcel_Writer_PDF_tcPDF extends PHPExcel_Writer_PDF_Core implements PHPE
         $paperSize = 'LETTER';    //    Letter    (8.5 in. by 11 in.)
 
         //  Check for paper size and page orientation
-        if (is_null($this->getSheetIndex())) {
-            $orientation = ($this->phpExcel->getSheet(0)->getPageSetup()->getOrientation()
-                == PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE) ? 'L' : 'P';
+        if (null === $this->getSheetIndex()) {
+            $orientation = (PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE
+                == $this->phpExcel->getSheet(0)->getPageSetup()->getOrientation()) ? 'L' : 'P';
             $printPaperSize = $this->phpExcel->getSheet(0)->getPageSetup()->getPaperSize();
             $printMargins = $this->phpExcel->getSheet(0)->getPageMargins();
         } else {
-            $orientation = ($this->phpExcel->getSheet($this->getSheetIndex())->getPageSetup()->getOrientation()
-                == PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE) ? 'L' : 'P';
+            $orientation = (PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE
+                == $this->phpExcel->getSheet($this->getSheetIndex())->getPageSetup()->getOrientation()) ? 'L' : 'P';
             $printPaperSize = $this->phpExcel->getSheet($this->getSheetIndex())->getPageSetup()->getPaperSize();
             $printMargins = $this->phpExcel->getSheet($this->getSheetIndex())->getPageMargins();
         }
 
         //  Override Page Orientation
-        if (!is_null($this->getOrientation())) {
-            $orientation = ($this->getOrientation() == PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE)
+        if (null !== $this->getOrientation()) {
+            $orientation = (PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE == $this->getOrientation())
                 ? 'L'
                 : 'P';
         }
         //  Override Paper Size
-        if (!is_null($this->getPaperSize())) {
+        if (null !== $this->getPaperSize()) {
             $printPaperSize = $this->getPaperSize();
         }
 
         if (isset(self::$paperSizes[$printPaperSize])) {
             $paperSize = self::$paperSizes[$printPaperSize];
         }
-
 
         //  Create PDF
         $pdf = new TCPDF($orientation, 'pt', $paperSize);

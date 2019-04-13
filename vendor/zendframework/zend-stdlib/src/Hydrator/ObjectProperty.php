@@ -9,16 +9,16 @@
 
 namespace Zend\Stdlib\Hydrator;
 
-use Zend\Stdlib\Exception;
 use ReflectionClass;
 use ReflectionProperty;
+use Zend\Stdlib\Exception;
 
 class ObjectProperty extends AbstractHydrator
 {
     /**
      * @var array[] indexed by class name and then property name
      */
-    private static $skippedPropertiesCache = array();
+    private static $skippedPropertiesCache = [];
 
     /**
      * {@inheritDoc}
@@ -35,12 +35,12 @@ class ObjectProperty extends AbstractHydrator
             );
         }
 
-        $data   = get_object_vars($object);
+        $data = get_object_vars($object);
         $filter = $this->getFilter();
 
         foreach ($data as $name => $value) {
             // Filter keys, removing any we don't want
-            if (! $filter->filter($name)) {
+            if (!$filter->filter($name)) {
                 unset($data[$name]);
                 continue;
             }
@@ -76,9 +76,9 @@ class ObjectProperty extends AbstractHydrator
             );
         }
 
-        $properties = & self::$skippedPropertiesCache[get_class($object)];
+        $properties = &self::$skippedPropertiesCache[get_class($object)];
 
-        if (! isset($properties)) {
+        if (!isset($properties)) {
             $reflection = new ReflectionClass($object);
             $properties = array_fill_keys(
                 array_map(

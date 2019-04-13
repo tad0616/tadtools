@@ -40,5 +40,5 @@ define('_MI_TADTOOLS_IMAGE_MAX_WIDTH_DESC', '請填數字，單位為px');
 define('_MI_TADTOOLS_IMAGE_MAX_HEIGHT', 'CK編輯器上傳圖片的最大高度');
 define('_MI_TADTOOLS_IMAGE_MAX_HEIGHT_DESC', '請填數字，單位為px');
 
-define('_MI_TADTOOLS_MIME_TYPE_CHECK', "上傳檔案時需要進行檔案的 MIME TYPE 檢查");
-define('_MI_TADTOOLS_MIME_TYPE_CHECK_DESC', "此檢查是避免有檔案掛羊頭賣狗肉，若檔案無法上傳，可以取消此檢查試試");
+define('_MI_TADTOOLS_MIME_TYPE_CHECK', '上傳檔案時需要進行檔案的 MIME TYPE 檢查');
+define('_MI_TADTOOLS_MIME_TYPE_CHECK_DESC', '此檢查是避免有檔案掛羊頭賣狗肉，若檔案無法上傳，可以取消此檢查試試');
