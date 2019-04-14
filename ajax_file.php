@@ -4,7 +4,7 @@ include_once 'tadtools_header.php';
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $mod_name = system_CleanVars($_REQUEST, 'mod_name', '', 'string');
-$files_sn = system_CleanVars($_REQUEST, 'files_sn', '', 'int');
+$files_sn = system_CleanVars($_REQUEST, 'files_sn', 0, 'int');
 
 switch ($op) {
     case 'remove_file':

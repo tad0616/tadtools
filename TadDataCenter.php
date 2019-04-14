@@ -845,7 +845,7 @@ if (isset($_REQUEST['dcq_op'])) {
     $dcq_op = system_CleanVars($_REQUEST, 'dcq_op', '', 'string');
     $dirname = system_CleanVars($_REQUEST, 'dirname', '', 'string');
     $col_name = system_CleanVars($_REQUEST, 'col_name', '', 'string');
-    $col_sn = system_CleanVars($_REQUEST, 'col_sn', '', 'int');
+    $col_sn = system_CleanVars($_REQUEST, 'col_sn', 0, 'int');
     $data_name = system_CleanVars($_REQUEST, 'data_name', '', 'string');
     $col_id = system_CleanVars($_REQUEST, 'col_id', '', 'string');
 
