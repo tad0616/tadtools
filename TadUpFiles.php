@@ -188,9 +188,9 @@ class TadUpFiles
         $this->TadUpFilesTblName = $xoopsDB->prefix("{$this->prefix}_files_center");
 
         $modhandler            = xoops_getHandler('module');
-//        $xoopsModule           = $modhandler->getByDirname("tadtools");
+        $xoopsModule           = $modhandler->getByDirname("tadtools");
         $config_handler        = xoops_getHandler('config');
-        $xoopsModuleConfig     = $config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
+        $xoopsModuleConfig     = $config_handler->getConfigsByCat(0, $xoopsModule->mid());
         $this->auto_charset    = $xoopsModuleConfig['auto_charset'];
         $this->mime_type_check = $xoopsModuleConfig['mime_type_check'];
 
