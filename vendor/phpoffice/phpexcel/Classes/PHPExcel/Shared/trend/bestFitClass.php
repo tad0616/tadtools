@@ -53,14 +53,14 @@ class PHPExcel_Best_Fit
      *
      * @var    float[]
      **/
-    protected $xValues = array();
+    protected $xValues = [];
 
     /**
      * Y-value dataseries of values
      *
      * @var    float[]
      **/
-    protected $yValues = array();
+    protected $yValues = [];
 
     /**
      * Flag indicating whether values should be adjusted to Y=0
@@ -74,7 +74,7 @@ class PHPExcel_Best_Fit
      *
      * @var    float[]
      **/
-    protected $yBestFitValues = array();
+    protected $yBestFitValues = [];
 
     protected $goodnessOfFit = 1;
 
@@ -104,12 +104,10 @@ class PHPExcel_Best_Fit
 
     protected $yOffset = 0;
 
-
     public function getError()
     {
         return $this->error;
     }
-
 
     public function getBestFitType()
     {
@@ -167,9 +165,10 @@ class PHPExcel_Best_Fit
      */
     public function getSlope($dp = 0)
     {
-        if ($dp != 0) {
+        if (0 != $dp) {
             return round($this->slope, $dp);
         }
+
         return $this->slope;
     }
 
@@ -181,9 +180,10 @@ class PHPExcel_Best_Fit
      */
     public function getSlopeSE($dp = 0)
     {
-        if ($dp != 0) {
+        if (0 != $dp) {
             return round($this->slopeSE, $dp);
         }
+
         return $this->slopeSE;
     }
 
@@ -195,9 +195,10 @@ class PHPExcel_Best_Fit
      */
     public function getIntersect($dp = 0)
     {
-        if ($dp != 0) {
+        if (0 != $dp) {
             return round($this->intersect, $dp);
         }
+
         return $this->intersect;
     }
 
@@ -209,9 +210,10 @@ class PHPExcel_Best_Fit
      */
     public function getIntersectSE($dp = 0)
     {
-        if ($dp != 0) {
+        if (0 != $dp) {
             return round($this->intersectSE, $dp);
         }
+
         return $this->intersectSE;
     }
 
@@ -223,17 +225,19 @@ class PHPExcel_Best_Fit
      */
     public function getGoodnessOfFit($dp = 0)
     {
-        if ($dp != 0) {
+        if (0 != $dp) {
             return round($this->goodnessOfFit, $dp);
         }
+
         return $this->goodnessOfFit;
     }
 
     public function getGoodnessOfFitPercent($dp = 0)
     {
-        if ($dp != 0) {
+        if (0 != $dp) {
             return round($this->goodnessOfFit * 100, $dp);
         }
+
         return $this->goodnessOfFit * 100;
     }
 
@@ -245,57 +249,64 @@ class PHPExcel_Best_Fit
      */
     public function getStdevOfResiduals($dp = 0)
     {
-        if ($dp != 0) {
+        if (0 != $dp) {
             return round($this->stdevOfResiduals, $dp);
         }
+
         return $this->stdevOfResiduals;
     }
 
     public function getSSRegression($dp = 0)
     {
-        if ($dp != 0) {
+        if (0 != $dp) {
             return round($this->SSRegression, $dp);
         }
+
         return $this->SSRegression;
     }
 
     public function getSSResiduals($dp = 0)
     {
-        if ($dp != 0) {
+        if (0 != $dp) {
             return round($this->SSResiduals, $dp);
         }
+
         return $this->SSResiduals;
     }
 
     public function getDFResiduals($dp = 0)
     {
-        if ($dp != 0) {
+        if (0 != $dp) {
             return round($this->DFResiduals, $dp);
         }
+
         return $this->DFResiduals;
     }
 
     public function getF($dp = 0)
     {
-        if ($dp != 0) {
+        if (0 != $dp) {
             return round($this->f, $dp);
         }
+
         return $this->f;
     }
 
     public function getCovariance($dp = 0)
     {
-        if ($dp != 0) {
+        if (0 != $dp) {
             return round($this->covariance, $dp);
         }
+
         return $this->covariance;
     }
 
     public function getCorrelation($dp = 0)
     {
-        if ($dp != 0) {
+        if (0 != $dp) {
             return round($this->correlation, $dp);
         }
+
         return $this->correlation;
     }
 
@@ -327,12 +338,12 @@ class PHPExcel_Best_Fit
         $this->SSResiduals = $SSres;
         $this->DFResiduals = $this->valueCount - 1 - $const;
 
-        if ($this->DFResiduals == 0.0) {
+        if (0.0 == $this->DFResiduals) {
             $this->stdevOfResiduals = 0.0;
         } else {
             $this->stdevOfResiduals = sqrt($SSres / $this->DFResiduals);
         }
-        if (($SStot == 0.0) || ($SSres == $SStot)) {
+        if ((0.0 == $SStot) || ($SSres == $SStot)) {
             $this->goodnessOfFit = 1;
         } else {
             $this->goodnessOfFit = 1 - ($SSres / $SStot);
@@ -343,14 +354,14 @@ class PHPExcel_Best_Fit
         $this->correlation = ($this->valueCount * $sumXY - $sumX * $sumY) / sqrt(($this->valueCount * $sumX2 - pow($sumX, 2)) * ($this->valueCount * $sumY2 - pow($sumY, 2)));
         $this->slopeSE = $this->stdevOfResiduals / sqrt($SSsex);
         $this->intersectSE = $this->stdevOfResiduals * sqrt(1 / ($this->valueCount - ($sumX * $sumX) / $sumX2));
-        if ($this->SSResiduals != 0.0) {
-            if ($this->DFResiduals == 0.0) {
+        if (0.0 != $this->SSResiduals) {
+            if (0.0 == $this->DFResiduals) {
                 $this->f = 0.0;
             } else {
                 $this->f = $this->SSRegression / ($this->SSResiduals / $this->DFResiduals);
             }
         } else {
-            if ($this->DFResiduals == 0.0) {
+            if (0.0 == $this->DFResiduals) {
                 $this->f = 0.0;
             } else {
                 $this->f = $this->SSRegression / $this->DFResiduals;
@@ -400,21 +411,22 @@ class PHPExcel_Best_Fit
      *
      * @param    float[]        $yValues    The set of Y-values for this regression
      * @param    float[]        $xValues    The set of X-values for this regression
-     * @param    boolean        $const
+     * @param    bool        $const
      */
-    public function __construct($yValues, $xValues = array(), $const = true)
+    public function __construct($yValues, $xValues = [], $const = true)
     {
         //    Calculate number of points
         $nY = count($yValues);
         $nX = count($xValues);
 
         //    Define X Values if necessary
-        if ($nX == 0) {
+        if (0 == $nX) {
             $xValues = range(1, $nY);
             $nX = $nY;
         } elseif ($nY != $nX) {
             //    Ensure both arrays of points are the same size
             $this->error = true;
+
             return false;
         }
 

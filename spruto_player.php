@@ -1,5 +1,5 @@
 <?php
-include_once "tadtools_header.php";
+include_once 'tadtools_header.php';
 
 class spruto_player
 {
@@ -16,49 +16,49 @@ class spruto_player
     public $repeat;
 
     //建構函數
-    public function __construct($id = "", $file = "", $image = "", $width = "", $height = "", $skin = "", $mode = "", $display = "", $autostart = false, $repeat = false, $other_code = "")
+    public function __construct($id = '', $file = '', $image = '', $width = '', $height = '', $skin = '', $mode = '', $display = '', $autostart = false, $repeat = false, $other_code = '')
     {
-        $this->width            = (empty($width)) ? "" : $width;
-        $this->play_list_height = ($mode == "playlist" and $display == "bottom") ? $height : 0;
-        $this->height           = (substr($height, -1) == "%") ? $height : 0.6;
-        $this->file             = $file;
-        $this->image            = $image;
-        $this->skin             = (empty($skin)) ? "" : $skin;
+        $this->width = (empty($width)) ? '' : $width;
+        $this->play_list_height = ('playlist' === $mode and 'bottom' === $display) ? $height : 0;
+        $this->height = ('%' === mb_substr($height, -1)) ? $height : 0.6;
+        $this->file = $file;
+        $this->image = $image;
+        $this->skin = (empty($skin)) ? '' : $skin;
         //$this->skin=(empty($skin))?TADTOOLS_URL."/jwplayer/skin/beelden.zip":$skin;
-        $this->mode       = $mode;
-        $this->display    = $display;
-        $this->id         = $id;
-        $this->autostart  = $autostart;
-        $this->repeat     = $repeat;
+        $this->mode = $mode;
+        $this->display = $display;
+        $this->id = $id;
+        $this->autostart = $autostart;
+        $this->repeat = $repeat;
         $this->other_code = $other_code;
     }
 
     //設定自定義設寬度
-    public function setWidth($width = "")
+    public function setWidth($width = '')
     {
         $this->width = $width;
     }
 
     //設定自定義設高度
-    public function setHeight($height = "")
+    public function setHeight($height = '')
     {
         $this->height = $height;
     }
 
     //設定自定義影片檔
-    public function setFile($file = "")
+    public function setFile($file = '')
     {
         $this->file = $file;
     }
 
     //設定自定義縮圖
-    public function setImage($image = "")
+    public function setImage($image = '')
     {
         $this->image = $image;
     }
 
     //設定自定佈景
-    public function setSkin($skin = "")
+    public function setSkin($skin = '')
     {
         $this->skin = $skin;
     }
@@ -67,18 +67,18 @@ class spruto_player
     public function render()
     {
         global $xoTheme;
-        $playlistfile = $playlist_setup = "";
+        $playlistfile = $playlist_setup = '';
 
-        if ($this->mode == "playlist") {
-            $file  = "playlist:'{$this->file}',";
-            $image = "";
+        if ('playlist' === $this->mode) {
+            $file = "playlist:'{$this->file}',";
+            $image = '';
 
-            if ($this->display == "bottom") {
+            if ('bottom' === $this->display) {
                 $playlist_size = $this->play_list_height;
             } else {
-                $playlist_size          = "playlist_size";
+                $playlist_size = 'playlist_size';
                 $this->play_list_height = 0;
-                $this->height           = 0.5;
+                $this->height = 0.5;
             }
 
             $playlist_setup = "
@@ -87,7 +87,7 @@ class spruto_player
                 size: {$playlist_size}
               },
               ";
-        } elseif ($this->mode == "youtube") {
+        } elseif ('youtube' === $this->mode) {
             $file = "
                 'UserID':'FqVJ7iYqUESxz-xTdKMihw2',
                 'AlbumID':19209,
@@ -111,23 +111,20 @@ class spruto_player
             //    'thumbnail_height' => 360,
             // ))
         } else {
-
-            $file  = "VideoURL:'{$this->file}',";
+            $file = "VideoURL:'{$this->file}',";
             $image = "image:'{$this->image}',";
-
         }
 
-        $screen_width = empty($this->width) ? "screen_width" : "'{$this->width}'";
-        $rate_height  = substr($this->height, -1) == "%" ? "'{$this->height}'" : "rate_height";
+        $screen_width = empty($this->width) ? 'screen_width' : "'{$this->width}'";
+        $rate_height = '%' === mb_substr($this->height, -1) ? "'{$this->height}'" : 'rate_height';
 
-        $repeat    = empty($this->repeat) ? "" : "repeat: $this->repeat,";
-        $autostart = empty($this->autostart) ? "" : "autostart: $this->autostart,";
+        $repeat = empty($this->repeat) ? '' : "repeat: $this->repeat,";
+        $autostart = empty($this->autostart) ? '' : "autostart: $this->autostart,";
 
         if ($xoTheme) {
             $xoTheme->addScript('modules/tadtools/spruto_player/player.js');
-            $player = "";
+            $player = '';
         } else {
-
             $player = "<script type='text/javascript' src='" . TADTOOLS_URL . "/spruto_player/player.js'></script>
             ";
         }
@@ -149,6 +146,5 @@ class spruto_player
         ";
 
         return $player;
-
     }
 }

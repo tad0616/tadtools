@@ -48,7 +48,7 @@ class Numbering extends AbstractStyle
      *
      * @var NumberingLevel[]
      */
-    private $levels = array();
+    private $levels = [];
 
     /**
      * Get Id
@@ -63,7 +63,7 @@ class Numbering extends AbstractStyle
     /**
      * Set Id
      *
-     * @param integer $value
+     * @param int $value
      * @return self
      */
     public function setNumId($value)
@@ -91,7 +91,7 @@ class Numbering extends AbstractStyle
      */
     public function setType($value)
     {
-        $enum = array('singleLevel', 'multilevel', 'hybridMultilevel');
+        $enum = ['singleLevel', 'multilevel', 'hybridMultilevel'];
         $this->type = $this->setEnumVal($value, $enum, $this->type);
 
         return $this;

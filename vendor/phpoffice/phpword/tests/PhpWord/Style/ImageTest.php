@@ -34,14 +34,14 @@ class ImageTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Image();
 
-        $properties = array(
-            'width'         => 200,
-            'height'        => 200,
-            'alignment'     => Jc::START,
-            'marginTop'     => 240,
-            'marginLeft'    => 240,
+        $properties = [
+            'width' => 200,
+            'height' => 200,
+            'alignment' => Jc::START,
+            'marginTop' => 240,
+            'marginLeft' => 240,
             'wrappingStyle' => 'inline',
-        );
+        ];
         foreach ($properties as $key => $value) {
             $set = "set{$key}";
             $get = "get{$key}";
@@ -57,18 +57,18 @@ class ImageTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Image();
 
-        $properties = array(
-            'width'            => 200,
-            'height'           => 200,
-            'alignment'        => Jc::START,
-            'marginTop'        => 240,
-            'marginLeft'       => 240,
-            'positioning'      => \PhpOffice\PhpWord\Style\Image::POSITION_ABSOLUTE,
-            'posHorizontal'    => \PhpOffice\PhpWord\Style\Image::POSITION_HORIZONTAL_CENTER,
-            'posVertical'      => \PhpOffice\PhpWord\Style\Image::POSITION_VERTICAL_TOP,
+        $properties = [
+            'width' => 200,
+            'height' => 200,
+            'alignment' => Jc::START,
+            'marginTop' => 240,
+            'marginLeft' => 240,
+            'positioning' => \PhpOffice\PhpWord\Style\Image::POSITION_ABSOLUTE,
+            'posHorizontal' => \PhpOffice\PhpWord\Style\Image::POSITION_HORIZONTAL_CENTER,
+            'posVertical' => \PhpOffice\PhpWord\Style\Image::POSITION_VERTICAL_TOP,
             'posHorizontalRel' => \PhpOffice\PhpWord\Style\Image::POSITION_RELATIVE_TO_COLUMN,
-            'posVerticalRel'   => \PhpOffice\PhpWord\Style\Image::POSITION_RELATIVE_TO_IMARGIN,
-        );
+            'posVerticalRel' => \PhpOffice\PhpWord\Style\Image::POSITION_RELATIVE_TO_IMARGIN,
+        ];
         foreach ($properties as $key => $value) {
             $get = "get{$key}";
             $object->setStyleValue("{$key}", $value);
@@ -78,11 +78,11 @@ class ImageTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test setWrappingStyle exception
-     *
-     * @expectedException \InvalidArgumentException
      */
     public function testSetWrappingStyleException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $object = new Image();
         $object->setWrappingStyle('foo');
     }

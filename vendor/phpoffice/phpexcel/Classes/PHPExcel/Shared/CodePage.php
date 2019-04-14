@@ -31,9 +31,9 @@ class PHPExcel_Shared_CodePage
      * Convert Microsoft Code Page Identifier to Code Page Name which iconv
      * and mbstring understands
      *
-     * @param integer $codePage Microsoft Code Page Indentifier
-     * @return string Code Page Name
+     * @param int $codePage Microsoft Code Page Indentifier
      * @throws PHPExcel_Exception
+     * @return string Code Page Name
      */
     public static function NumberToName($codePage = 1252)
     {
@@ -116,7 +116,7 @@ class PHPExcel_Shared_CodePage
                 return 'CP950';    //    Macintosh Chinese Traditional
             case 10003:
                 return 'CP1361';   //    Macintosh Korean
-            case 10004:	
+            case 10004:
                 return 'MACARABIC';  //	Apple Arabic
             case 10005:
                 return 'MACHEBREW';		//	Apple Hebrew

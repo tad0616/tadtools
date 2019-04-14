@@ -57,8 +57,6 @@ abstract class AbstractElement
     /**
      * Create new instance
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
-     * @param \PhpOffice\PhpWord\Element\AbstractElement $element
      * @param bool $withoutP
      */
     public function __construct(XMLWriter $xmlWriter, Element $element, $withoutP = false)
@@ -136,7 +134,6 @@ abstract class AbstractElement
     {
         $this->writeTextStyle('Font');
     }
-
 
     /**
      * Write text style.

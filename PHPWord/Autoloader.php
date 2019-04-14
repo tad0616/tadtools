@@ -24,24 +24,25 @@
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    Beta 0.6.3, 08.07.2011
  */
-
 class PHPWord_Autoloader
 {
-	public static function Register() {
-		return spl_autoload_register(array('PHPWord_Autoloader', 'Load'));
-	}
+    public static function Register()
+    {
+        return spl_autoload_register(['PHPWord_Autoloader', 'Load']);
+    }
 
-	public static function Load($strObjectName) {
-		if((class_exists($strObjectName)) || (strpos($strObjectName, 'PHPWord') === false)) {
-			return false;
-		}
+    public static function Load($strObjectName)
+    {
+        if ((class_exists($strObjectName)) || (false === mb_strpos($strObjectName, 'PHPWord'))) {
+            return false;
+        }
 
-		$strObjectFilePath = PHPWORD_BASE_PATH . str_replace('_', '/', $strObjectName) . '.php';
-		
-		if((file_exists($strObjectFilePath) === false) || (is_readable($strObjectFilePath) === false)) {
-			return false;
-		}
-		
-		require($strObjectFilePath);
-	}
+        $strObjectFilePath = PHPWORD_BASE_PATH . str_replace('_', '/', $strObjectName) . '.php';
+
+        if ((false === file_exists($strObjectFilePath)) || (false === is_readable($strObjectFilePath))) {
+            return false;
+        }
+
+        require($strObjectFilePath);
+    }
 }

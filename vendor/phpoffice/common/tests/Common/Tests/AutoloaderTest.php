@@ -30,7 +30,7 @@ class AutoloaderTest extends \PHPUnit\Framework\TestCase
     {
         Autoloader::register();
         $this->assertContains(
-            array('PhpOffice\\Common\\Autoloader', 'autoload'),
+            ['PhpOffice\\Common\\Autoloader', 'autoload'],
             spl_autoload_functions()
         );
     }

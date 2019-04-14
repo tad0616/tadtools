@@ -98,10 +98,10 @@ abstract class AbstractStyle
      */
     protected function assembleCss($css)
     {
-        $pairs = array();
+        $pairs = [];
         $string = '';
         foreach ($css as $key => $value) {
-            if ($value != '') {
+            if ('' != $value) {
                 $pairs[] = $key . ': ' . $value;
             }
         }
@@ -121,6 +121,6 @@ abstract class AbstractStyle
      */
     protected function getValueIf($condition, $value)
     {
-        return $condition == true ? $value : '';
+        return true == $condition ? $value : '';
     }
 }

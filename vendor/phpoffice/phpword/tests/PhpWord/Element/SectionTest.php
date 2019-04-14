@@ -34,7 +34,7 @@ class SectionTest extends \PHPUnit_Framework_TestCase
     {
         $expected = 'landscape';
         $object = new Section(0);
-        $object->setStyle(array('orientation' => $expected, 'foo' => null));
+        $object->setStyle(['orientation' => $expected, 'foo' => null]);
         $this->assertEquals($expected, $object->getStyle()->getOrientation());
     }
 
@@ -63,7 +63,7 @@ class SectionTest extends \PHPUnit_Framework_TestCase
         $section->addTOC();
 
         $elementCollection = $section->getElements();
-        $elementTypes = array(
+        $elementTypes = [
             'Text',
             'Link',
             'TextBreak',
@@ -77,7 +77,7 @@ class SectionTest extends \PHPUnit_Framework_TestCase
             'Footnote',
             'CheckBox',
             'TOC',
-        );
+        ];
         $elmCount = 0;
         foreach ($elementTypes as $elementType) {
             $this->assertInstanceOf("PhpOffice\\PhpWord\\Element\\{$elementType}", $elementCollection[$elmCount]);
@@ -87,10 +87,11 @@ class SectionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @coversNothing
-     * @expectedException \PhpOffice\PhpWord\Exception\InvalidObjectException
      */
     public function testAddObjectException()
     {
+        $this->expectException(\PhpOffice\PhpWord\Exception\InvalidObjectException::class);
+
         $source = __DIR__ . '/_files/xsl/passthrough.xsl';
         $section = new Section(0);
         $section->addObject($source);
@@ -103,7 +104,7 @@ class SectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddTitleWithStyle()
     {
-        Style::addTitleStyle(1, array('size' => 14));
+        Style::addTitleStyle(1, ['size' => 14]);
         $section = new Section(0);
         $section->setPhpWord(new PhpWord());
         $section->addTitle('Test', 1);
@@ -113,14 +114,14 @@ class SectionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::addHeader
      * @covers ::addFooter
+     * @covers ::addHeader
      * @covers ::hasDifferentFirstPage
      */
     public function testAddHeaderFooter()
     {
         $object = new Section(0);
-        $elements = array('Header', 'Footer');
+        $elements = ['Header', 'Footer'];
 
         foreach ($elements as $element) {
             $method = "add{$element}";
@@ -143,11 +144,12 @@ class SectionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ::addHeader
-     * @expectedException \Exception
-     * @expectedExceptionMessage Invalid header/footer type.
      */
     public function testAddHeaderException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Invalid header/footer type.');
+
         $object = new Section(1);
         $object->addHeader('ODD');
     }

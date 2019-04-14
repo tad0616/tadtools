@@ -78,10 +78,9 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(sys_get_temp_dir(), Settings::getTempDir());
     }
 
-
     /**
-     * @covers ::setTempDir
      * @covers ::getTempDir
+     * @covers ::setTempDir
      * @depends testPhpTempDirIsUsedByDefault
      * @test
      */
@@ -119,15 +118,15 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadConfig()
     {
-        $expected = array(
-            'compatibility'         => true,
-            'zipClass'              => 'ZipArchive',
-            'pdfRendererName'       => 'DomPDF',
-            'pdfRendererPath'       => '',
-            'defaultFontName'       => 'Arial',
-            'defaultFontSize'       => 10,
+        $expected = [
+            'compatibility' => true,
+            'zipClass' => 'ZipArchive',
+            'pdfRendererName' => 'DomPDF',
+            'pdfRendererPath' => '',
+            'defaultFontName' => 'Arial',
+            'defaultFontSize' => 10,
             'outputEscapingEnabled' => false,
-        );
+        ];
 
         // Test default value
         $this->assertEquals($expected, Settings::loadConfig());

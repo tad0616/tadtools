@@ -26,8 +26,8 @@ namespace PhpOffice\PhpWord\Style;
 class LineNumbering extends AbstractStyle
 {
     /** @const string Line numbering restart setting http://www.schemacentral.com/sc/ooxml/a-w_restart-1.html */
-    const LINE_NUMBERING_CONTINUOUS  = 'continuous';
-    const LINE_NUMBERING_NEW_PAGE    = 'newPage';
+    const LINE_NUMBERING_CONTINUOUS = 'continuous';
+    const LINE_NUMBERING_NEW_PAGE = 'newPage';
     const LINE_NUMBERING_NEW_SECTION = 'newSection';
 
     /**
@@ -64,7 +64,7 @@ class LineNumbering extends AbstractStyle
      *
      * @param array $style
      */
-    public function __construct($style = array())
+    public function __construct($style = [])
     {
         $this->setStyleByArray($style);
     }
@@ -156,7 +156,7 @@ class LineNumbering extends AbstractStyle
      */
     public function setRestart($value = null)
     {
-        $enum = array(self::LINE_NUMBERING_CONTINUOUS, self::LINE_NUMBERING_NEW_PAGE, self::LINE_NUMBERING_NEW_SECTION);
+        $enum = [self::LINE_NUMBERING_CONTINUOUS, self::LINE_NUMBERING_NEW_PAGE, self::LINE_NUMBERING_NEW_SECTION];
         $this->restart = $this->setEnumVal($value, $enum, $this->restart);
 
         return $this;

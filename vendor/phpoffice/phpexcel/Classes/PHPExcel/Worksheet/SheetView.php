@@ -27,17 +27,16 @@
  */
 class PHPExcel_Worksheet_SheetView
 {
-
     /* Sheet View types */
-    const SHEETVIEW_NORMAL             = 'normal';
-    const SHEETVIEW_PAGE_LAYOUT        = 'pageLayout';
+    const SHEETVIEW_NORMAL = 'normal';
+    const SHEETVIEW_PAGE_LAYOUT = 'pageLayout';
     const SHEETVIEW_PAGE_BREAK_PREVIEW = 'pageBreakPreview';
 
-    private static $sheetViewTypes = array(
+    private static $sheetViewTypes = [
         self::SHEETVIEW_NORMAL,
         self::SHEETVIEW_PAGE_LAYOUT,
         self::SHEETVIEW_PAGE_BREAK_PREVIEW,
-    );
+    ];
 
     /**
      * ZoomScale
@@ -96,11 +95,12 @@ class PHPExcel_Worksheet_SheetView
     {
         // Microsoft Office Excel 2007 only allows setting a scale between 10 and 400 via the user interface,
         // but it is apparently still able to handle any scale >= 1
-        if (($pValue >= 1) || is_null($pValue)) {
+        if (($pValue >= 1) || null === $pValue) {
             $this->zoomScale = $pValue;
         } else {
-            throw new PHPExcel_Exception("Scale must be greater than or equal to 1.");
+            throw new PHPExcel_Exception('Scale must be greater than or equal to 1.');
         }
+
         return $this;
     }
 
@@ -125,11 +125,12 @@ class PHPExcel_Worksheet_SheetView
      */
     public function setZoomScaleNormal($pValue = 100)
     {
-        if (($pValue >= 1) || is_null($pValue)) {
+        if (($pValue >= 1) || null === $pValue) {
             $this->zoomScaleNormal = $pValue;
         } else {
-            throw new PHPExcel_Exception("Scale must be greater than or equal to 1.");
+            throw new PHPExcel_Exception('Scale must be greater than or equal to 1.');
         }
+
         return $this;
     }
 
@@ -158,13 +159,13 @@ class PHPExcel_Worksheet_SheetView
     public function setView($pValue = null)
     {
         // MS Excel 2007 allows setting the view to 'normal', 'pageLayout' or 'pageBreakPreview' via the user interface
-        if ($pValue === null) {
+        if (null === $pValue) {
             $pValue = self::SHEETVIEW_NORMAL;
         }
-        if (in_array($pValue, self::$sheetViewTypes)) {
+        if (in_array($pValue, self::$sheetViewTypes, true)) {
             $this->sheetviewType = $pValue;
         } else {
-            throw new PHPExcel_Exception("Invalid sheetview layout type.");
+            throw new PHPExcel_Exception('Invalid sheetview layout type.');
         }
 
         return $this;

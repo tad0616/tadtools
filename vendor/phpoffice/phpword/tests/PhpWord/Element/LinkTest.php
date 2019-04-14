@@ -49,8 +49,8 @@ class LinkTest extends \PHPUnit_Framework_TestCase
         $oLink = new Link(
             'https://github.com/PHPOffice/PHPWord',
             'PHPWord on GitHub',
-            array('color' => '0000FF', 'underline' => Font::UNDERLINE_SINGLE),
-            array('marginLeft' => 600, 'marginRight' => 600, 'marginTop' => 600, 'marginBottom' => 600)
+            ['color' => '0000FF', 'underline' => Font::UNDERLINE_SINGLE],
+            ['marginLeft' => 600, 'marginRight' => 600, 'marginTop' => 600, 'marginBottom' => 600]
         );
 
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Element\\Link', $oLink);
@@ -78,7 +78,7 @@ class LinkTest extends \PHPUnit_Framework_TestCase
     {
         $oLink = new Link('https://github.com/PHPOffice/PHPWord');
 
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oLink->setRelationId($iVal);
         $this->assertEquals($iVal, $oLink->getRelationId());
     }

@@ -30,12 +30,12 @@ class IndentationTest extends \PHPUnit_Framework_TestCase
     public function testGetSetProperties()
     {
         $object = new Indentation();
-        $properties = array(
-            'left'      => array(0, 10),
-            'right'     => array(0, 10),
-            'firstLine' => array(null, 20),
-            'hanging'   => array(null, 20),
-        );
+        $properties = [
+            'left' => [0, 10],
+            'right' => [0, 10],
+            'firstLine' => [null, 20],
+            'hanging' => [null, 20],
+        ];
         foreach ($properties as $property => $value) {
             list($default, $expected) = $value;
             $get = "get{$property}";

@@ -16,7 +16,7 @@ class Ean8 extends AbstractAdapter
      */
     public function __construct()
     {
-        $this->setLength(array(7, 8));
+        $this->setLength([7, 8]);
         $this->setCharacters('0123456789');
         $this->setChecksum('gtin');
     }
@@ -29,7 +29,7 @@ class Ean8 extends AbstractAdapter
      */
     public function hasValidLength($value)
     {
-        if (strlen($value) == 7) {
+        if (7 == mb_strlen($value)) {
             $this->useChecksum(false);
         } else {
             $this->useChecksum(true);

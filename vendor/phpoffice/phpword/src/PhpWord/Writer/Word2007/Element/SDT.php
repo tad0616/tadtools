@@ -50,7 +50,7 @@ class SDT extends Text
 
         // Properties
         $xmlWriter->startElement('w:sdtPr');
-        $xmlWriter->writeElementBlock('w:id', 'w:val', rand(100000000, 999999999));
+        $xmlWriter->writeElementBlock('w:id', 'w:val', mt_rand(100000000, 999999999));
         $xmlWriter->writeElementBlock('w:lock', 'w:val', 'sdtLocked');
         $this->$writeFormField($xmlWriter, $element);
         $xmlWriter->endElement(); // w:sdtPr
@@ -71,8 +71,6 @@ class SDT extends Text
      * Write combo box.
      *
      * @link http://www.datypic.com/sc/ooxml/t-w_CT_SdtComboBox.html
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
-     * @param \PhpOffice\PhpWord\Element\SDT $element
      * @return void
      */
     private function writeComboBox(XMLWriter $xmlWriter, SDTElement $element)
@@ -82,7 +80,7 @@ class SDT extends Text
 
         $xmlWriter->startElement("w:{$type}");
         foreach ($listItems as $key => $val) {
-            $xmlWriter->writeElementBlock('w:listItem', array('w:value' => $key, 'w:displayText' => $val));
+            $xmlWriter->writeElementBlock('w:listItem', ['w:value' => $key, 'w:displayText' => $val]);
         }
         $xmlWriter->endElement(); // w:{$type}
     }
@@ -91,8 +89,6 @@ class SDT extends Text
      * Write drop down list.
      *
      * @link http://www.datypic.com/sc/ooxml/t-w_CT_SdtDropDownList.html
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
-     * @param \PhpOffice\PhpWord\Element\SDT $element
      * @return void
      */
     private function writeDropDownList(XMLWriter $xmlWriter, SDTElement $element)
@@ -104,8 +100,6 @@ class SDT extends Text
      * Write date.
      *
      * @link http://www.datypic.com/sc/ooxml/t-w_CT_SdtDate.html
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
-     * @param \PhpOffice\PhpWord\Element\SDT $element
      * @return void
      */
     private function writeDate(XMLWriter $xmlWriter, SDTElement $element)

@@ -52,7 +52,7 @@ class Extrusion extends AbstractStyle
      *
      * @param array $style
      */
-    public function __construct($style = array())
+    public function __construct($style = [])
     {
         $this->setStyleByArray($style);
     }
@@ -75,7 +75,7 @@ class Extrusion extends AbstractStyle
      */
     public function setType($value = null)
     {
-        $enum = array(self::EXTRUSION_PARALLEL, self::EXTRUSION_PERSPECTIVE);
+        $enum = [self::EXTRUSION_PARALLEL, self::EXTRUSION_PERSPECTIVE];
         $this->type = $this->setEnumVal($value, $enum, null);
 
         return $this;

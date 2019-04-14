@@ -58,7 +58,7 @@ class Indentation extends AbstractStyle
      *
      * @param array $style
      */
-    public function __construct($style = array())
+    public function __construct($style = [])
     {
         $this->setStyleByArray($style);
     }

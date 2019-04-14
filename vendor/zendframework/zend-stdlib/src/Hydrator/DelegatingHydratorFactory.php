@@ -17,7 +17,6 @@ class DelegatingHydratorFactory implements FactoryInterface
     /**
      * Creates DelegatingHydrator
      *
-     * @param  ServiceLocatorInterface $serviceLocator
      * @return DelegatingHydrator
      */
     public function createService(ServiceLocatorInterface $serviceLocator)

@@ -65,6 +65,7 @@ class PHPExcel_Worksheet_Drawing extends PHPExcel_Worksheet_BaseDrawing implemen
     {
         $fileName = $this->getFilename();
         $fileName = str_replace(' ', '_', $fileName);
+
         return str_replace('.' . $this->getExtension(), '', $fileName) . $this->getImageIndex() . '.' . $this->getExtension();
     }
 
@@ -75,7 +76,8 @@ class PHPExcel_Worksheet_Drawing extends PHPExcel_Worksheet_BaseDrawing implemen
      */
     public function getExtension()
     {
-        $exploded = explode(".", basename($this->path));
+        $exploded = explode('.', basename($this->path));
+
         return $exploded[count($exploded) - 1];
     }
 
@@ -93,7 +95,7 @@ class PHPExcel_Worksheet_Drawing extends PHPExcel_Worksheet_BaseDrawing implemen
      * Set Path
      *
      * @param     string         $pValue            File path
-     * @param     boolean        $pVerifyFile    Verify file
+     * @param     bool        $pVerifyFile    Verify file
      * @throws     PHPExcel_Exception
      * @return PHPExcel_Worksheet_Drawing
      */
@@ -103,7 +105,7 @@ class PHPExcel_Worksheet_Drawing extends PHPExcel_Worksheet_BaseDrawing implemen
             if (file_exists($pValue)) {
                 $this->path = $pValue;
 
-                if ($this->width == 0 && $this->height == 0) {
+                if (0 == $this->width && 0 == $this->height) {
                     // Get width/height
                     list($this->width, $this->height) = getimagesize($pValue);
                 }
@@ -113,6 +115,7 @@ class PHPExcel_Worksheet_Drawing extends PHPExcel_Worksheet_BaseDrawing implemen
         } else {
             $this->path = $pValue;
         }
+
         return $this;
     }
 

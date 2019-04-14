@@ -57,12 +57,12 @@ class Font extends AbstractStyle
 
         $content .= $this->getValueIf($style->isBold(), '\b');
         $content .= $this->getValueIf($style->isItalic(), '\i');
-        $content .= $this->getValueIf($style->getUnderline() != FontStyle::UNDERLINE_NONE, '\ul');
+        $content .= $this->getValueIf(FontStyle::UNDERLINE_NONE != $style->getUnderline(), '\ul');
         $content .= $this->getValueIf($style->isStrikethrough(), '\strike');
         $content .= $this->getValueIf($style->isSuperScript(), '\super');
         $content .= $this->getValueIf($style->isSubScript(), '\sub');
 
-        return $content .  ' ';
+        return $content . ' ';
     }
 
     /**

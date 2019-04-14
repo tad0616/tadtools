@@ -37,15 +37,15 @@ class Outline extends AbstractStyle
         }
         $xmlWriter = $this->getXmlWriter();
 
-        $xmlWriter->startElement("v:stroke");
+        $xmlWriter->startElement('v:stroke');
         $xmlWriter->writeAttribute('on', 't');
-        $xmlWriter->writeAttributeIf($style->getColor() !== null, 'color', $style->getColor());
-        $xmlWriter->writeAttributeIf($style->getWeight() !== null, 'weight', $style->getWeight() . $style->getUnit());
-        $xmlWriter->writeAttributeIf($style->getDash() !== null, 'dashstyle', $style->getDash());
-        $xmlWriter->writeAttributeIf($style->getLine() !== null, 'linestyle', $style->getLine());
-        $xmlWriter->writeAttributeIf($style->getEndCap() !== null, 'endcap', $style->getEndCap());
-        $xmlWriter->writeAttributeIf($style->getStartArrow() !== null, 'startarrow', $style->getStartArrow());
-        $xmlWriter->writeAttributeIf($style->getEndArrow() !== null, 'endarrow', $style->getEndArrow());
+        $xmlWriter->writeAttributeIf(null !== $style->getColor(), 'color', $style->getColor());
+        $xmlWriter->writeAttributeIf(null !== $style->getWeight(), 'weight', $style->getWeight() . $style->getUnit());
+        $xmlWriter->writeAttributeIf(null !== $style->getDash(), 'dashstyle', $style->getDash());
+        $xmlWriter->writeAttributeIf(null !== $style->getLine(), 'linestyle', $style->getLine());
+        $xmlWriter->writeAttributeIf(null !== $style->getEndCap(), 'endcap', $style->getEndCap());
+        $xmlWriter->writeAttributeIf(null !== $style->getStartArrow(), 'startarrow', $style->getStartArrow());
+        $xmlWriter->writeAttributeIf(null !== $style->getEndArrow(), 'endarrow', $style->getEndArrow());
         $xmlWriter->endElement();
     }
 }

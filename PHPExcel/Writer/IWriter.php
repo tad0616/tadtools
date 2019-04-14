@@ -25,7 +25,6 @@
  *  @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  *  PHPExcel_Writer_IWriter
  *
@@ -41,6 +40,5 @@ interface PHPExcel_Writer_IWriter
      *  @param   string       $pFilename  Name of the file to save
      *  @throws  PHPExcel_Writer_Exception
      */
-    public function save($pFilename = NULL);
-
+    public function save($pFilename = null);
 }

@@ -75,8 +75,8 @@ final class Jc
     {
         // todo: consider caching validator instances.
         return new InArray(
-            array (
-                'haystack' => array(
+            [
+                'haystack' => [
                     self::START,
                     self::CENTER,
                     self::END,
@@ -90,9 +90,9 @@ final class Jc
                     self::LEFT,
                     self::RIGHT,
                     self::JUSTIFY,
-                ),
-                'strict'   => InArray::COMPARE_STRICT,
-            )
+                ],
+                'strict' => InArray::COMPARE_STRICT,
+            ]
         );
     }
 }

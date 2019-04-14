@@ -9,9 +9,9 @@
 
 namespace Zend\Stdlib\Hydrator\Strategy;
 
-use Zend\Stdlib\Exception\InvalidArgumentException;
 use Zend\Serializer\Adapter\AdapterInterface as SerializerAdapter;
 use Zend\Serializer\Serializer as SerializerFactory;
+use Zend\Stdlib\Exception\InvalidArgumentException;
 
 class SerializableStrategy implements StrategyInterface
 {
@@ -23,10 +23,9 @@ class SerializableStrategy implements StrategyInterface
     /**
      * @var array
      */
-    protected $serializerOptions = array();
+    protected $serializerOptions = [];
 
     /**
-     *
      * @param mixed $serializer string or SerializerAdapter
      * @param mixed $serializerOptions
      */
@@ -47,6 +46,7 @@ class SerializableStrategy implements StrategyInterface
     public function extract($value)
     {
         $serializer = $this->getSerializer();
+
         return $serializer->serialize($value);
     }
 
@@ -59,6 +59,7 @@ class SerializableStrategy implements StrategyInterface
     public function hydrate($value)
     {
         $serializer = $this->getSerializer();
+
         return $serializer->unserialize($value);
     }
 
@@ -79,6 +80,7 @@ class SerializableStrategy implements StrategyInterface
             ));
         }
         $this->serializer = $serializer;
+
         return $this;
     }
 
@@ -108,6 +110,7 @@ class SerializableStrategy implements StrategyInterface
     public function setSerializerOptions($serializerOptions)
     {
         $this->serializerOptions = $serializerOptions;
+
         return $this;
     }
 

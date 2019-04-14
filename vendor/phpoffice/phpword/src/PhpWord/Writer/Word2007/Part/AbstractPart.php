@@ -60,17 +60,15 @@ abstract class AbstractPart
     /**
      * Get parent writer
      *
-     * @return \PhpOffice\PhpWord\Writer\AbstractWriter
-     *
      * @throws \PhpOffice\PhpWord\Exception\Exception
+     * @return \PhpOffice\PhpWord\Writer\AbstractWriter
      */
     public function getParentWriter()
     {
-        if (!is_null($this->parentWriter)) {
+        if (null !== $this->parentWriter) {
             return $this->parentWriter;
-        } else {
-            throw new Exception('No parent WriterInterface assigned.');
         }
+        throw new Exception('No parent WriterInterface assigned.');
     }
 
     /**
@@ -81,15 +79,15 @@ abstract class AbstractPart
     protected function getXmlWriter()
     {
         $useDiskCaching = false;
-        if (!is_null($this->parentWriter)) {
+        if (null !== $this->parentWriter) {
             if ($this->parentWriter->isUseDiskCaching()) {
                 $useDiskCaching = true;
             }
         }
         if ($useDiskCaching) {
             return new XMLWriter(XMLWriter::STORAGE_DISK, $this->parentWriter->getDiskCachingDirectory(), Settings::hasCompatibility());
-        } else {
-            return new XMLWriter(XMLWriter::STORAGE_MEMORY, './', Settings::hasCompatibility());
         }
+
+        return new XMLWriter(XMLWriter::STORAGE_MEMORY, './', Settings::hasCompatibility());
     }
 }

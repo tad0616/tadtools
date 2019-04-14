@@ -1,12 +1,12 @@
 <?php
-include_once "../../../mainfile.php";
+include_once '../../../mainfile.php';
 if (!$xoopsUser) {
     exit;
 }
 
-$LANGCODE = str_replace("-", "_", _LANGCODE);
+$LANGCODE = str_replace('-', '_', _LANGCODE);
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$type    = system_CleanVars($_REQUEST, 'type', '', 'string');
+$type = system_CleanVars($_REQUEST, 'type', '', 'string');
 $mod_dir = system_CleanVars($_REQUEST, 'mod_dir', '', 'string');
 
 ?>

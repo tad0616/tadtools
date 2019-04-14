@@ -42,12 +42,12 @@ class XMLReader
      *
      * @param string $zipFile
      * @param string $xmlFile
-     * @return \DOMDocument|false
      * @throws \Exception
+     * @return \DOMDocument|false
      */
     public function getDomFromZip($zipFile, $xmlFile)
     {
-        if (file_exists($zipFile) === false) {
+        if (false === file_exists($zipFile)) {
             throw new \Exception('Cannot find archive file.');
         }
 
@@ -56,7 +56,7 @@ class XMLReader
         $content = $zip->getFromName($xmlFile);
         $zip->close();
 
-        if ($content === false) {
+        if (false === $content) {
             return false;
         }
 
@@ -87,14 +87,14 @@ class XMLReader
      */
     public function getElements($path, \DOMElement $contextNode = null)
     {
-        if ($this->dom === null) {
-            return array();
+        if (null === $this->dom) {
+            return [];
         }
-        if ($this->xpath === null) {
+        if (null === $this->xpath) {
             $this->xpath = new \DOMXpath($this->dom);
         }
 
-        if (is_null($contextNode)) {
+        if (null === $contextNode) {
             return $this->xpath->query($path);
         }
 
@@ -106,17 +106,18 @@ class XMLReader
      *
      * @param string $prefix The prefix
      * @param string $namespaceURI The URI of the namespace
-     * @return bool true on success or false on failure
      * @throws \InvalidArgumentException If called before having loaded the DOM document
+     * @return bool true on success or false on failure
      */
     public function registerNamespace($prefix, $namespaceURI)
     {
-        if ($this->dom === null) {
+        if (null === $this->dom) {
             throw new \InvalidArgumentException('Dom needs to be loaded before registering a namespace');
         }
-        if ($this->xpath === null) {
+        if (null === $this->xpath) {
             $this->xpath = new \DOMXpath($this->dom);
         }
+
         return $this->xpath->registerNamespace($prefix, $namespaceURI);
     }
 
@@ -148,7 +149,7 @@ class XMLReader
     public function getAttribute($attribute, \DOMElement $contextNode = null, $path = null)
     {
         $return = null;
-        if ($path !== null) {
+        if (null !== $path) {
             $elements = $this->getElements($path, $contextNode);
             if ($elements->length > 0) {
                 /** @var \DOMElement $node Type hint */
@@ -156,12 +157,12 @@ class XMLReader
                 $return = $node->getAttribute($attribute);
             }
         } else {
-            if ($contextNode !== null) {
+            if (null !== $contextNode) {
                 $return = $contextNode->getAttribute($attribute);
             }
         }
 
-        return ($return == '') ? null : $return;
+        return ('' == $return) ? null : $return;
     }
 
     /**

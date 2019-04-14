@@ -14,6 +14,7 @@
  * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
 namespace PhpOffice\PhpWord\Style;
 
 /**
@@ -114,7 +115,7 @@ class Line extends Image
     /**
      * Set flip
      *
-     * @param boolean $value
+     * @param bool $value
      * @return self
      */
     public function setFlip($value = false)
@@ -142,9 +143,9 @@ class Line extends Image
      */
     public function setConnectorType($value = null)
     {
-        $enum = array(
-            self::CONNECTOR_TYPE_STRAIGHT
-        );
+        $enum = [
+            self::CONNECTOR_TYPE_STRAIGHT,
+        ];
         $this->connectorType = $this->setEnumVal($value, $enum, $this->connectorType);
 
         return $this;
@@ -214,10 +215,10 @@ class Line extends Image
      */
     public function setBeginArrow($value = null)
     {
-        $enum = array(
+        $enum = [
             self::ARROW_STYLE_BLOCK, self::ARROW_STYLE_CLASSIC, self::ARROW_STYLE_DIAMOND,
-            self::ARROW_STYLE_OPEN, self::ARROW_STYLE_OVAL
-        );
+            self::ARROW_STYLE_OPEN, self::ARROW_STYLE_OVAL,
+        ];
         $this->beginArrow = $this->setEnumVal($value, $enum, $this->beginArrow);
 
         return $this;
@@ -241,10 +242,10 @@ class Line extends Image
      */
     public function setEndArrow($value = null)
     {
-        $enum = array(
+        $enum = [
             self::ARROW_STYLE_BLOCK, self::ARROW_STYLE_CLASSIC, self::ARROW_STYLE_DIAMOND,
-            self::ARROW_STYLE_OPEN, self::ARROW_STYLE_OVAL
-        );
+            self::ARROW_STYLE_OPEN, self::ARROW_STYLE_OVAL,
+        ];
         $this->endArrow = $this->setEnumVal($value, $enum, $this->endArrow);
 
         return $this;
@@ -268,11 +269,11 @@ class Line extends Image
      */
     public function setDash($value = null)
     {
-        $enum = array(
+        $enum = [
             self::DASH_STYLE_DASH, self::DASH_STYLE_DASH_DOT, self::DASH_STYLE_LONG_DASH,
             self::DASH_STYLE_LONG_DASH_DOT, self::DASH_STYLE_LONG_DASH_DOT_DOT, self::DASH_STYLE_ROUND_DOT,
-            self::DASH_STYLE_SQUARE_DOT
-        );
+            self::DASH_STYLE_SQUARE_DOT,
+        ];
         $this->dash = $this->setEnumVal($value, $enum, $this->dash);
 
         return $this;

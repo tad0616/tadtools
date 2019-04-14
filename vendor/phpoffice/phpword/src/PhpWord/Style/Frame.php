@@ -176,7 +176,7 @@ class Frame extends AbstractStyle
      *
      * @param array $style
      */
-    public function __construct($style = array())
+    public function __construct($style = [])
     {
         $this->setStyleByArray($style);
     }
@@ -366,10 +366,10 @@ class Frame extends AbstractStyle
      */
     public function setPos($value)
     {
-        $enum = array(
+        $enum = [
             self::POS_ABSOLUTE,
             self::POS_RELATIVE,
-        );
+        ];
         $this->pos = $this->setEnumVal($value, $enum, $this->pos);
 
         return $this;
@@ -395,14 +395,14 @@ class Frame extends AbstractStyle
      */
     public function setHPos($value)
     {
-        $enum = array(
+        $enum = [
             self::POS_ABSOLUTE,
             self::POS_LEFT,
             self::POS_CENTER,
             self::POS_RIGHT,
             self::POS_INSIDE,
             self::POS_OUTSIDE,
-        );
+        ];
         $this->hPos = $this->setEnumVal($value, $enum, $this->hPos);
 
         return $this;
@@ -428,14 +428,14 @@ class Frame extends AbstractStyle
      */
     public function setVPos($value)
     {
-        $enum = array(
+        $enum = [
             self::POS_ABSOLUTE,
             self::POS_TOP,
             self::POS_CENTER,
             self::POS_BOTTOM,
             self::POS_INSIDE,
             self::POS_OUTSIDE,
-        );
+        ];
         $this->vPos = $this->setEnumVal($value, $enum, $this->vPos);
 
         return $this;
@@ -459,7 +459,7 @@ class Frame extends AbstractStyle
      */
     public function setHPosRelTo($value)
     {
-        $enum = array(
+        $enum = [
             self::POS_RELTO_MARGIN,
             self::POS_RELTO_PAGE,
             self::POS_RELTO_COLUMN,
@@ -468,7 +468,7 @@ class Frame extends AbstractStyle
             self::POS_RELTO_RMARGIN,
             self::POS_RELTO_IMARGIN,
             self::POS_RELTO_OMARGIN,
-        );
+        ];
         $this->hPosRelTo = $this->setEnumVal($value, $enum, $this->hPosRelTo);
 
         return $this;
@@ -492,7 +492,7 @@ class Frame extends AbstractStyle
      */
     public function setVPosRelTo($value)
     {
-        $enum = array(
+        $enum = [
             self::POS_RELTO_MARGIN,
             self::POS_RELTO_PAGE,
             self::POS_RELTO_TEXT,
@@ -501,7 +501,7 @@ class Frame extends AbstractStyle
             self::POS_RELTO_BMARGIN,
             self::POS_RELTO_IMARGIN,
             self::POS_RELTO_OMARGIN,
-        );
+        ];
         $this->vPosRelTo = $this->setEnumVal($value, $enum, $this->vPosRelTo);
 
         return $this;
@@ -525,7 +525,7 @@ class Frame extends AbstractStyle
      */
     public function setWrap($value)
     {
-        $enum = array(
+        $enum = [
             self::WRAP_INLINE,
             self::WRAP_SQUARE,
             self::WRAP_TIGHT,
@@ -533,7 +533,7 @@ class Frame extends AbstractStyle
             self::WRAP_TOPBOTTOM,
             self::WRAP_BEHIND,
             self::WRAP_INFRONT,
-        );
+        ];
         $this->wrap = $this->setEnumVal($value, $enum, $this->wrap);
 
         return $this;

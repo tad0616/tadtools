@@ -28,8 +28,8 @@ class Code128 extends AbstractAdapter
     public function __construct()
     {
         $this->setLength(-1);
-        $this->setCharacters(array(
-            'A' => array(
+        $this->setCharacters([
+            'A' => [
                  0 => ' ',  1 => '!',  2 => '"',  3 => '#',  4 => '$',  5 => '%',  6 => '&',  7 => "'",
                  8 => '(',  9 => ')', 10 => '*', 11 => '+', 12 => ',', 13 => '-', 14 => '.', 15 => '/',
                 16 => '0', 17 => '1', 18 => '2', 19 => '3', 20 => '4', 21 => '5', 22 => '6', 23 => '7',
@@ -38,13 +38,13 @@ class Code128 extends AbstractAdapter
                 40 => 'H', 41 => 'I', 42 => 'J', 43 => 'K', 44 => 'L', 45 => 'M', 46 => 'N', 47 => 'O',
                 48 => 'P', 49 => 'Q', 50 => 'R', 51 => 'S', 52 => 'T', 53 => 'U', 54 => 'V', 55 => 'W',
                 56 => 'X', 57 => 'Y', 58 => 'Z', 59 => '[', 60 => '\\', 61 => ']', 62 => '^', 63 => '_',
-                64 =>0x00, 65 =>0x01, 66 =>0x02, 67 =>0x03, 68 =>0x04, 69 =>0x05, 70 =>0x06, 71 =>0x07,
-                72 =>0x08, 73 =>0x09, 74 =>0x0A, 75 =>0x0B, 76 =>0x0C, 77 =>0x0D, 78 =>0x0E, 79 =>0x0F,
-                80 =>0x10, 81 =>0x11, 82 =>0x12, 83 =>0x13, 84 =>0x14, 85 =>0x15, 86 =>0x16, 87 =>0x17,
-                88 =>0x18, 89 =>0x19, 90 =>0x1A, 91 =>0x1B, 92 =>0x1C, 93 =>0x1D, 94 =>0x1E, 95 =>0x1F,
+                64 => 0x00, 65 => 0x01, 66 => 0x02, 67 => 0x03, 68 => 0x04, 69 => 0x05, 70 => 0x06, 71 => 0x07,
+                72 => 0x08, 73 => 0x09, 74 => 0x0A, 75 => 0x0B, 76 => 0x0C, 77 => 0x0D, 78 => 0x0E, 79 => 0x0F,
+                80 => 0x10, 81 => 0x11, 82 => 0x12, 83 => 0x13, 84 => 0x14, 85 => 0x15, 86 => 0x16, 87 => 0x17,
+                88 => 0x18, 89 => 0x19, 90 => 0x1A, 91 => 0x1B, 92 => 0x1C, 93 => 0x1D, 94 => 0x1E, 95 => 0x1F,
                 96 => 'Ç', 97 => 'ü', 98 => 'é', 99 => 'â', 100 => 'ä', 101 => 'à', 102 => 'å', 103 => '‡',
-               104 => 'ˆ', 105 => '‰', 106 => 'Š'),
-            'B' => array(
+               104 => 'ˆ', 105 => '‰', 106 => 'Š', ],
+            'B' => [
                  0 => ' ',  1 => '!',  2 => '"',  3 => '#',  4 => '$',  5 => '%',  6 => '&',  7 => "'",
                  8 => '(',  9 => ')', 10 => '*', 11 => '+', 12 => ',', 13 => '-', 14 => '.', 15 => '/',
                 16 => '0', 17 => '1', 18 => '2', 19 => '3', 20 => '4', 21 => '5', 22 => '6', 23 => '7',
@@ -56,10 +56,10 @@ class Code128 extends AbstractAdapter
                 64 => '`', 65 => 'a', 66 => 'b', 67 => 'c', 68 => 'd', 69 => 'e', 70 => 'f', 71 => 'g',
                 72 => 'h', 73 => 'i', 74 => 'j', 75 => 'k', 76 => 'l', 77 => 'm', 78 => 'n', 79 => 'o',
                 80 => 'p', 81 => 'q', 82 => 'r', 83 => 's', 84 => 't', 85 => 'u', 86 => 'v', 87 => 'w',
-                88 => 'x', 89 => 'y', 90 => 'z', 91 => '{', 92 => '|', 93 => '}', 94 => '~', 95 =>0x7F,
+                88 => 'x', 89 => 'y', 90 => 'z', 91 => '{', 92 => '|', 93 => '}', 94 => '~', 95 => 0x7F,
                 96 => 'Ç', 97 => 'ü', 98 => 'é', 99 => 'â', 100 => 'ä', 101 => 'à', 102 => 'å', 103 => '‡',
-               104 => 'ˆ', 105 => '‰', 106 => 'Š'),
-            'C' => array(
+               104 => 'ˆ', 105 => '‰', 106 => 'Š', ],
+            'C' => [
                  0 => '00',  1 => '01',  2 => '02',  3 => '03',  4 => '04',  5 => '05',  6 => '06',  7 => '07',
                  8 => '08',  9 => '09', 10 => '10', 11 => '11', 12 => '12', 13 => '13', 14 => '14', 15 => '15',
                 16 => '16', 17 => '17', 18 => '18', 19 => '19', 20 => '20', 21 => '21', 22 => '22', 23 => '23',
@@ -73,8 +73,8 @@ class Code128 extends AbstractAdapter
                 80 => '80', 81 => '81', 82 => '82', 83 => '83', 84 => '84', 85 => '85', 86 => '86', 87 => '87',
                 88 => '88', 89 => '89', 90 => '90', 91 => '91', 92 => '92', 93 => '93', 94 => '94', 95 => '95',
                 96 => '96', 97 => '97', 98 => '98', 99 => '99', 100 => 'ä', 101 => 'à', 102 => 'å', 103 => '‡',
-               104 => 'ˆ', 105 => '‰', 106 => 'Š')
-        ));
+               104 => 'ˆ', 105 => '‰', 106 => 'Š', ],
+        ]);
         $this->setChecksum('code128');
     }
 
@@ -82,7 +82,7 @@ class Code128 extends AbstractAdapter
     {
         if (!$utf8StringWrapper->isSupported('UTF-8')) {
             throw new Exception\InvalidArgumentException(
-                "The string wrapper needs to support UTF-8 character encoding"
+                'The string wrapper needs to support UTF-8 character encoding'
             );
         }
         $this->utf8StringWrapper = $utf8StringWrapper;
@@ -98,6 +98,7 @@ class Code128 extends AbstractAdapter
         if (!$this->utf8StringWrapper) {
             $this->utf8StringWrapper = StringUtils::getWrapper('UTF-8');
         }
+
         return $this->utf8StringWrapper;
     }
 
@@ -117,14 +118,14 @@ class Code128 extends AbstractAdapter
         $strWrapper = $this->getUtf8StringWrapper();
 
         // detect starting charset
-        $set        = $this->getCodingSet($value);
-        $read       = $set;
-        if ($set != '') {
+        $set = $this->getCodingSet($value);
+        $read = $set;
+        if ('' != $set) {
             $value = $strWrapper->substr($value, 1, null);
         }
 
         // process barcode
-        while ($value != '') {
+        while ('' != $value) {
             $char = $strWrapper->substr($value, 0, 1);
 
             switch ($char) {
@@ -133,47 +134,40 @@ class Code128 extends AbstractAdapter
                 case 'ü':
                 case 'å':
                     break;
-
                 // Switch 1 char between A and B
                 case 'é':
-                    if ($set == 'A') {
+                    if ('A' == $set) {
                         $read = 'B';
-                    } elseif ($set == 'B') {
+                    } elseif ('B' == $set) {
                         $read = 'A';
                     }
                     break;
-
                 // Switch to C
                 case 'â':
                     $set = 'C';
                     $read = 'C';
                     break;
-
                 // Switch to B
                 case 'ä':
-                    $set  = 'B';
+                    $set = 'B';
                     $read = 'B';
                     break;
-
                 // Switch to A
                 case 'à':
-                    $set  = 'A';
+                    $set = 'A';
                     $read = 'A';
                     break;
-
                 // Doubled start character
                 case '‡':
                 case 'ˆ':
                 case '‰':
                     return false;
-
                 // Chars after the stop character
                 case 'Š':
                     break 2;
-
                 default:
                     // Does the char exist within the charset to read?
-                    if ($this->ord128($char, $read) == -1) {
+                    if (-1 == $this->ord128($char, $read)) {
                         return false;
                     }
 
@@ -181,10 +175,10 @@ class Code128 extends AbstractAdapter
             }
 
             $value = $strWrapper->substr($value, 1, null);
-            $read  = $set;
+            $read = $set;
         }
 
-        if (($value != '') && ($strWrapper->strlen($value) != 1)) {
+        if (('' != $value) && (1 != $strWrapper->strlen($value))) {
             return false;
         }
 
@@ -199,28 +193,28 @@ class Code128 extends AbstractAdapter
      */
     protected function code128($value)
     {
-        $sum        = 0;
-        $pos        = 1;
-        $set        = $this->getCodingSet($value);
-        $read       = $set;
-        $usecheck   = $this->useChecksum(null);
+        $sum = 0;
+        $pos = 1;
+        $set = $this->getCodingSet($value);
+        $read = $set;
+        $usecheck = $this->useChecksum(null);
         $strWrapper = $this->getUtf8StringWrapper();
-        $char       = $strWrapper->substr($value, 0, 1);
-        if ($char == '‡') {
+        $char = $strWrapper->substr($value, 0, 1);
+        if ('‡' == $char) {
             $sum = 103;
-        } elseif ($char == 'ˆ') {
+        } elseif ('ˆ' == $char) {
             $sum = 104;
-        } elseif ($char == '‰') {
+        } elseif ('‰' == $char) {
             $sum = 105;
-        } elseif ($usecheck == true) {
+        } elseif (true == $usecheck) {
             // no start value, unable to detect a proper checksum
             return false;
         }
 
         $value = $strWrapper->substr($value, 1, null);
-        while ($strWrapper->strpos($value, 'Š') || ($value != '')) {
+        while ($strWrapper->strpos($value, 'Š') || ('' != $value)) {
             $char = $strWrapper->substr($value, 0, 1);
-            if ($read == 'C') {
+            if ('C' == $read) {
                 $char = $strWrapper->substr($value, 0, 2);
             }
 
@@ -231,46 +225,40 @@ class Code128 extends AbstractAdapter
                 case 'å':
                     $sum += ($pos * $this->ord128($char, $set));
                     break;
-
                 case 'é':
                     $sum += ($pos * $this->ord128($char, $set));
-                    if ($set == 'A') {
+                    if ('A' == $set) {
                         $read = 'B';
-                    } elseif ($set == 'B') {
+                    } elseif ('B' == $set) {
                         $read = 'A';
                     }
                     break;
-
                 // Switch to C
                 case 'â':
                     $sum += ($pos * $this->ord128($char, $set));
                     $set = 'C';
                     $read = 'C';
                     break;
-
                 // Switch to B
                 case 'ä':
                     $sum += ($pos * $this->ord128($char, $set));
-                    $set  = 'B';
+                    $set = 'B';
                     $read = 'B';
                     break;
-
                 // Switch to A
                 case 'à':
                     $sum += ($pos * $this->ord128($char, $set));
-                    $set  = 'A';
+                    $set = 'A';
                     $read = 'A';
                     break;
-
                 case '‡':
                 case 'ˆ':
                 case '‰':
                     return false;
                     break;
-
                 default:
                     // Does the char exist within the charset to read?
-                    if ($this->ord128($char, $read) == -1) {
+                    if (-1 == $this->ord128($char, $read)) {
                         return false;
                     }
 
@@ -280,14 +268,14 @@ class Code128 extends AbstractAdapter
 
             $value = $strWrapper->substr($value, 1);
             ++$pos;
-            if (($strWrapper->strpos($value, 'Š') == 1) && ($strWrapper->strlen($value) == 2)) {
+            if ((1 == $strWrapper->strpos($value, 'Š')) && (2 == $strWrapper->strlen($value))) {
                 // break by stop and checksum char
                 break;
             }
-            $read  = $set;
+            $read = $set;
         }
 
-        if (($strWrapper->strpos($value, 'Š') != 1) || ($strWrapper->strlen($value) != 2)) {
+        if ((1 != $strWrapper->strpos($value, 'Š')) || (2 != $strWrapper->strlen($value))) {
             // return false if checksum is not readable and true if no startvalue is detected
             return (!$usecheck);
         }
@@ -349,42 +337,41 @@ class Code128 extends AbstractAdapter
     protected function ord128($value, $set)
     {
         $ord = ord($value);
-        if ($set == 'A') {
+        if ('A' == $set) {
             if ($ord < 32) {
                 return ($ord + 64);
             } elseif ($ord < 96) {
                 return ($ord - 32);
             } elseif ($ord > 138) {
                 return -1;
-            } else {
-                return ($ord - 32);
             }
-        } elseif ($set == 'B') {
+
+            return ($ord - 32);
+        } elseif ('B' == $set) {
             if ($ord < 32) {
                 return -1;
             } elseif ($ord <= 138) {
                 return ($ord - 32);
-            } else {
-                return -1;
             }
-        } elseif ($set == 'C') {
+
+            return -1;
+        } elseif ('C' == $set) {
             $val = (int) $value;
             if (($val >= 0) && ($val <= 99)) {
                 return $val;
             } elseif (($ord >= 132) && ($ord <= 138)) {
                 return ($ord - 32);
-            } else {
-                return -1;
             }
-        } else {
-            if ($ord < 32) {
-                return ($ord +64);
-            } elseif ($ord <= 138) {
-                return ($ord - 32);
-            } else {
-                return -1;
-            }
+
+            return -1;
         }
+        if ($ord < 32) {
+            return ($ord + 64);
+        } elseif ($ord <= 138) {
+            return ($ord - 32);
+        }
+
+        return -1;
     }
 
     /**
@@ -411,38 +398,37 @@ class Code128 extends AbstractAdapter
      */
     protected function chr128($value, $set)
     {
-        if ($set == 'A') {
+        if ('A' == $set) {
             if ($value < 64) {
                 return chr($value + 32);
             } elseif ($value < 96) {
                 return chr($value - 64);
             } elseif ($value > 106) {
                 return -1;
-            } else {
-                return chr($value + 32);
             }
-        } elseif ($set == 'B') {
+
+            return chr($value + 32);
+        } elseif ('B' == $set) {
             if ($value > 106) {
                 return -1;
-            } else {
-                return chr($value + 32);
             }
-        } elseif ($set == 'C') {
+
+            return chr($value + 32);
+        } elseif ('C' == $set) {
             if (($value >= 0) && ($value <= 9)) {
-                return "0" . (string) $value;
+                return '0' . (string) $value;
             } elseif ($value <= 99) {
                 return (string) $value;
             } elseif ($value <= 106) {
                 return chr($value + 32);
-            } else {
-                return -1;
             }
-        } else {
-            if ($value <= 106) {
-                return ($value + 32);
-            } else {
-                return -1;
-            }
+
+            return -1;
         }
+        if ($value <= 106) {
+            return ($value + 32);
+        }
+
+        return -1;
     }
 }

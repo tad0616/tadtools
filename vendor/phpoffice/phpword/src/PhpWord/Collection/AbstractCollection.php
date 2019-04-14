@@ -29,7 +29,7 @@ abstract class AbstractCollection
      *
      * @var array
      */
-    private $items = array();
+    private $items = [];
 
     /**
      * Get items
@@ -51,9 +51,9 @@ abstract class AbstractCollection
     {
         if (array_key_exists($index, $this->items)) {
             return $this->items[$index];
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**

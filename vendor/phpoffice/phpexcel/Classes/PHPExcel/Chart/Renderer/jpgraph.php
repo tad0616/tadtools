@@ -1,6 +1,6 @@
 <?php
 
-require_once(PHPExcel_Settings::getChartRendererPath().'/jpgraph.php');
+require_once(PHPExcel_Settings::getChartRendererPath() . '/jpgraph.php');
 
 /**
  * PHPExcel_Chart_Renderer_jpgraph
@@ -29,30 +29,29 @@ require_once(PHPExcel_Settings::getChartRendererPath().'/jpgraph.php');
  */
 class PHPExcel_Chart_Renderer_jpgraph
 {
-    private static $width    = 640;
+    private static $width = 640;
 
-    private static $height    = 480;
+    private static $height = 480;
 
-    private static $colourSet = array(
+    private static $colourSet = [
         'mediumpurple1',    'palegreen3',     'gold1',          'cadetblue1',
         'darkmagenta',      'coral',          'dodgerblue3',    'eggplant',
         'mediumblue',       'magenta',        'sandybrown',     'cyan',
         'firebrick1',       'forestgreen',    'deeppink4',      'darkolivegreen',
-        'goldenrod2'
-    );
+        'goldenrod2',
+    ];
 
-    private static $markSet = array(
-        'diamond'  => MARK_DIAMOND,
-        'square'   => MARK_SQUARE,
+    private static $markSet = [
+        'diamond' => MARK_DIAMOND,
+        'square' => MARK_SQUARE,
         'triangle' => MARK_UTRIANGLE,
-        'x'        => MARK_X,
-        'star'     => MARK_STAR,
-        'dot'      => MARK_FILLEDCIRCLE,
-        'dash'     => MARK_DTRIANGLE,
-        'circle'   => MARK_CIRCLE,
-        'plus'     => MARK_CROSS
-    );
-
+        'x' => MARK_X,
+        'star' => MARK_STAR,
+        'dot' => MARK_FILLEDCIRCLE,
+        'dash' => MARK_DTRIANGLE,
+        'circle' => MARK_CIRCLE,
+        'plus' => MARK_CROSS,
+    ];
 
     private $chart;
 
@@ -62,15 +61,14 @@ class PHPExcel_Chart_Renderer_jpgraph
 
     private static $plotMark = 0;
 
-
     private function formatPointMarker($seriesPlot, $markerID)
     {
         $plotMarkKeys = array_keys(self::$markSet);
-        if (is_null($markerID)) {
+        if (null === $markerID) {
             //    Use default plot marker (next marker in the series)
             self::$plotMark %= count(self::$markSet);
             $seriesPlot->mark->SetType(self::$markSet[$plotMarkKeys[self::$plotMark++]]);
-        } elseif ($markerID !== 'none') {
+        } elseif ('none' !== $markerID) {
             //    Use specified plot marker (if it exists)
             if (isset(self::$markSet[$markerID])) {
                 $seriesPlot->mark->SetType(self::$markSet[$markerID]);
@@ -90,11 +88,10 @@ class PHPExcel_Chart_Renderer_jpgraph
         return $seriesPlot;
     }
 
-
     private function formatDataSetLabels($groupID, $datasetLabels, $labelCount, $rotation = '')
     {
         $datasetLabelFormatCode = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotCategoryByIndex(0)->getFormatCode();
-        if (!is_null($datasetLabelFormatCode)) {
+        if (null !== $datasetLabelFormatCode) {
             //    Retrieve any label formatting code
             $datasetLabelFormatCode = stripslashes($datasetLabelFormatCode);
         }
@@ -102,15 +99,15 @@ class PHPExcel_Chart_Renderer_jpgraph
         $testCurrentIndex = 0;
         foreach ($datasetLabels as $i => $datasetLabel) {
             if (is_array($datasetLabel)) {
-                if ($rotation == 'bar') {
-                    $datasetLabels[$i] = implode(" ", $datasetLabel);
+                if ('bar' == $rotation) {
+                    $datasetLabels[$i] = implode(' ', $datasetLabel);
                 } else {
                     $datasetLabel = array_reverse($datasetLabel);
                     $datasetLabels[$i] = implode("\n", $datasetLabel);
                 }
             } else {
                 //    Format labels according to any formatting code
-                if (!is_null($datasetLabelFormatCode)) {
+                if (null !== $datasetLabelFormatCode) {
                     $datasetLabels[$i] = PHPExcel_Style_NumberFormat::toFormattedString($datasetLabel, $datasetLabelFormatCode);
                 }
             }
@@ -120,12 +117,11 @@ class PHPExcel_Chart_Renderer_jpgraph
         return $datasetLabels;
     }
 
-
     private function percentageSumCalculation($groupID, $seriesCount)
     {
         //    Adjust our values to a percentage value across all series in the group
         for ($i = 0; $i < $seriesCount; ++$i) {
-            if ($i == 0) {
+            if (0 == $i) {
                 $sumValues = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotValuesByIndex($i)->getDataValues();
             } else {
                 $nextValues = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotValuesByIndex($i)->getDataValues();
@@ -142,7 +138,6 @@ class PHPExcel_Chart_Renderer_jpgraph
         return $sumValues;
     }
 
-
     private function percentageAdjustValues($dataValues, $sumValues)
     {
         foreach ($dataValues as $k => $dataValue) {
@@ -152,36 +147,34 @@ class PHPExcel_Chart_Renderer_jpgraph
         return $dataValues;
     }
 
-
     private function getCaption($captionElement)
     {
         //    Read any caption
-        $caption = (!is_null($captionElement)) ? $captionElement->getCaption() : null;
+        $caption = (null !== $captionElement) ? $captionElement->getCaption() : null;
         //    Test if we have a title caption to display
-        if (!is_null($caption)) {
+        if (null !== $caption) {
             //    If we do, it could be a plain string or an array
             if (is_array($caption)) {
                 //    Implode an array to a plain string
                 $caption = implode('', $caption);
             }
         }
+
         return $caption;
     }
-
 
     private function renderTitle()
     {
         $title = $this->getCaption($this->chart->getTitle());
-        if (!is_null($title)) {
+        if (null !== $title) {
             $this->graph->title->Set($title);
         }
     }
 
-
     private function renderLegend()
     {
         $legend = $this->chart->getLegend();
-        if (!is_null($legend)) {
+        if (null !== $legend) {
             $legendPosition = $legend->getPosition();
             $legendOverlay = $legend->getOverlay();
             switch ($legendPosition) {
@@ -209,7 +202,6 @@ class PHPExcel_Chart_Renderer_jpgraph
         }
     }
 
-
     private function renderCartesianPlotArea($type = 'textlin')
     {
         $this->graph = new Graph(self::$width, self::$height);
@@ -219,12 +211,12 @@ class PHPExcel_Chart_Renderer_jpgraph
 
         //    Rotate for bar rather than column chart
         $rotation = $this->chart->getPlotArea()->getPlotGroupByIndex(0)->getPlotDirection();
-        $reverse = ($rotation == 'bar') ? true : false;
+        $reverse = ('bar' == $rotation) ? true : false;
 
         $xAxisLabel = $this->chart->getXAxisLabel();
-        if (!is_null($xAxisLabel)) {
+        if (null !== $xAxisLabel) {
             $title = $this->getCaption($xAxisLabel);
-            if (!is_null($title)) {
+            if (null !== $title) {
                 $this->graph->xaxis->SetTitle($title, 'center');
                 $this->graph->xaxis->title->SetMargin(35);
                 if ($reverse) {
@@ -235,9 +227,9 @@ class PHPExcel_Chart_Renderer_jpgraph
         }
 
         $yAxisLabel = $this->chart->getYAxisLabel();
-        if (!is_null($yAxisLabel)) {
+        if (null !== $yAxisLabel) {
             $title = $this->getCaption($yAxisLabel);
-            if (!is_null($title)) {
+            if (null !== $title) {
                 $this->graph->yaxis->SetTitle($title, 'center');
                 if ($reverse) {
                     $this->graph->yaxis->title->SetAngle(0);
@@ -247,14 +239,12 @@ class PHPExcel_Chart_Renderer_jpgraph
         }
     }
 
-
     private function renderPiePlotArea($doughnut = false)
     {
         $this->graph = new PieGraph(self::$width, self::$height);
 
         $this->renderTitle();
     }
-
 
     private function renderRadarPlotArea()
     {
@@ -263,7 +253,6 @@ class PHPExcel_Chart_Renderer_jpgraph
 
         $this->renderTitle();
     }
-
 
     private function renderPlotLine($groupID, $filled = false, $combination = false, $dimensions = '2d')
     {
@@ -277,8 +266,8 @@ class PHPExcel_Chart_Renderer_jpgraph
         }
 
         $seriesCount = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotSeriesCount();
-        $seriesPlots = array();
-        if ($grouping == 'percentStacked') {
+        $seriesPlots = [];
+        if ('percentStacked' == $grouping) {
             $sumValues = $this->percentageSumCalculation($groupID, $seriesCount);
         }
 
@@ -287,7 +276,7 @@ class PHPExcel_Chart_Renderer_jpgraph
             $dataValues = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotValuesByIndex($i)->getDataValues();
             $marker = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotValuesByIndex($i)->getPointMarker();
 
-            if ($grouping == 'percentStacked') {
+            if ('percentStacked' == $grouping) {
                 $dataValues = $this->percentageAdjustValues($dataValues, $sumValues);
             }
 
@@ -320,7 +309,7 @@ class PHPExcel_Chart_Renderer_jpgraph
             $seriesPlots[] = $seriesPlot;
         }
 
-        if ($grouping == 'standard') {
+        if ('standard' == $grouping) {
             $groupPlot = $seriesPlots;
         } else {
             $groupPlot = new AccLinePlot($seriesPlots);
@@ -328,12 +317,11 @@ class PHPExcel_Chart_Renderer_jpgraph
         $this->graph->Add($groupPlot);
     }
 
-
     private function renderPlotBar($groupID, $dimensions = '2d')
     {
         $rotation = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotDirection();
         //    Rotate for bar rather than column chart
-        if (($groupID == 0) && ($rotation == 'bar')) {
+        if ((0 == $groupID) && ('bar' == $rotation)) {
             $this->graph->Set90AndMargin();
         }
         $grouping = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotGrouping();
@@ -343,7 +331,7 @@ class PHPExcel_Chart_Renderer_jpgraph
             $datasetLabels = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotCategoryByIndex(0)->getDataValues();
             $datasetLabels = $this->formatDataSetLabels($groupID, $datasetLabels, $labelCount, $rotation);
             //    Rotate for bar rather than column chart
-            if ($rotation == 'bar') {
+            if ('bar' == $rotation) {
                 $datasetLabels = array_reverse($datasetLabels);
                 $this->graph->yaxis->SetPos('max');
                 $this->graph->yaxis->SetLabelAlign('center', 'top');
@@ -352,17 +340,16 @@ class PHPExcel_Chart_Renderer_jpgraph
             $this->graph->xaxis->SetTickLabels($datasetLabels);
         }
 
-
         $seriesCount = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotSeriesCount();
-        $seriesPlots = array();
-        if ($grouping == 'percentStacked') {
+        $seriesPlots = [];
+        if ('percentStacked' == $grouping) {
             $sumValues = $this->percentageSumCalculation($groupID, $seriesCount);
         }
 
         //    Loop through each data series in turn
         for ($j = 0; $j < $seriesCount; ++$j) {
             $dataValues = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotValuesByIndex($j)->getDataValues();
-            if ($grouping == 'percentStacked') {
+            if ('percentStacked' == $grouping) {
                 $dataValues = $this->percentageAdjustValues($dataValues, $sumValues);
             }
 
@@ -377,13 +364,13 @@ class PHPExcel_Chart_Renderer_jpgraph
             }
 
             //    Reverse the $dataValues order for bar rather than column chart
-            if ($rotation == 'bar') {
+            if ('bar' == $rotation) {
                 $dataValues = array_reverse($dataValues);
             }
             $seriesPlot = new BarPlot($dataValues);
             $seriesPlot->SetColor('black');
             $seriesPlot->SetFillColor(self::$colourSet[self::$plotColour++]);
-            if ($dimensions == '3d') {
+            if ('3d' == $dimensions) {
                 $seriesPlot->SetShadow();
             }
             if (!$this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotLabelByIndex($j)) {
@@ -396,17 +383,17 @@ class PHPExcel_Chart_Renderer_jpgraph
             $seriesPlots[] = $seriesPlot;
         }
         //    Reverse the plot order for bar rather than column chart
-        if (($rotation == 'bar') && (!($grouping == 'percentStacked'))) {
+        if (('bar' == $rotation) && (!('percentStacked' == $grouping))) {
             $seriesPlots = array_reverse($seriesPlots);
         }
 
-        if ($grouping == 'clustered') {
+        if ('clustered' == $grouping) {
             $groupPlot = new GroupBarPlot($seriesPlots);
-        } elseif ($grouping == 'standard') {
+        } elseif ('standard' == $grouping) {
             $groupPlot = new GroupBarPlot($seriesPlots);
         } else {
             $groupPlot = new AccBarPlot($seriesPlots);
-            if ($dimensions == '3d') {
+            if ('3d' == $dimensions) {
                 $groupPlot->SetShadow();
             }
         }
@@ -414,14 +401,13 @@ class PHPExcel_Chart_Renderer_jpgraph
         $this->graph->Add($groupPlot);
     }
 
-
     private function renderPlotScatter($groupID, $bubble)
     {
         $grouping = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotGrouping();
         $scatterStyle = $bubbleSize = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotStyle();
 
         $seriesCount = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotSeriesCount();
-        $seriesPlots = array();
+        $seriesPlots = [];
 
         //    Loop through each data series in turn
         for ($i = 0; $i < $seriesCount; ++$i) {
@@ -433,10 +419,10 @@ class PHPExcel_Chart_Renderer_jpgraph
             }
 
             $seriesPlot = new ScatterPlot($dataValuesX, $dataValuesY);
-            if ($scatterStyle == 'lineMarker') {
+            if ('lineMarker' == $scatterStyle) {
                 $seriesPlot->SetLinkPoints();
                 $seriesPlot->link->SetColor(self::$colourSet[self::$plotColour]);
-            } elseif ($scatterStyle == 'smoothMarker') {
+            } elseif ('smoothMarker' == $scatterStyle) {
                 $spline = new Spline($dataValuesY, $dataValuesX);
                 list($splineDataY, $splineDataX) = $spline->Get(count($dataValuesX) * self::$width / 20);
                 $lplot = new LinePlot($splineDataX, $splineDataY);
@@ -460,13 +446,12 @@ class PHPExcel_Chart_Renderer_jpgraph
         }
     }
 
-
     private function renderPlotRadar($groupID)
     {
         $radarStyle = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotStyle();
 
         $seriesCount = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotSeriesCount();
-        $seriesPlots = array();
+        $seriesPlots = [];
 
         //    Loop through each data series in turn
         for ($i = 0; $i < $seriesCount; ++$i) {
@@ -474,7 +459,7 @@ class PHPExcel_Chart_Renderer_jpgraph
             $dataValuesX = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotValuesByIndex($i)->getDataValues();
             $marker = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotValuesByIndex($i)->getPointMarker();
 
-            $dataValues = array();
+            $dataValues = [];
             foreach ($dataValuesY as $k => $dataValueY) {
                 $dataValues[$k] = implode(' ', array_reverse($dataValueY));
             }
@@ -489,7 +474,7 @@ class PHPExcel_Chart_Renderer_jpgraph
 
             $dataLabel = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotLabelByIndex($i)->getDataValue();
             $seriesPlot->SetColor(self::$colourSet[self::$plotColour++]);
-            if ($radarStyle == 'filled') {
+            if ('filled' == $radarStyle) {
                 $seriesPlot->SetFillColor(self::$colourSet[self::$plotColour]);
             }
             $this->formatPointMarker($seriesPlot, $marker);
@@ -499,15 +484,14 @@ class PHPExcel_Chart_Renderer_jpgraph
         }
     }
 
-
     private function renderPlotContour($groupID)
     {
         $contourStyle = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotStyle();
 
         $seriesCount = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotSeriesCount();
-        $seriesPlots = array();
+        $seriesPlots = [];
 
-        $dataValues = array();
+        $dataValues = [];
         //    Loop through each data series in turn
         for ($i = 0; $i < $seriesCount; ++$i) {
             $dataValuesY = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotCategoryByIndex($i)->getDataValues();
@@ -520,13 +504,12 @@ class PHPExcel_Chart_Renderer_jpgraph
         $this->graph->Add($seriesPlot);
     }
 
-
     private function renderPlotStock($groupID)
     {
         $seriesCount = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotSeriesCount();
         $plotOrder = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotOrder();
 
-        $dataValues = array();
+        $dataValues = [];
         //    Loop through each data series in turn and build the plot arrays
         foreach ($plotOrder as $i => $v) {
             $dataValuesX = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotValuesByIndex($v)->getDataValues();
@@ -538,7 +521,7 @@ class PHPExcel_Chart_Renderer_jpgraph
             return;
         }
 
-        $dataValuesPlot = array();
+        $dataValuesPlot = [];
         // Flatten the plot arrays to a single dimensional array to work with jpgraph
         for ($j = 0; $j < count($dataValues[0]); ++$j) {
             for ($i = 0; $i < $seriesCount; ++$i) {
@@ -560,10 +543,9 @@ class PHPExcel_Chart_Renderer_jpgraph
         $this->graph->Add($seriesPlot);
     }
 
-
     private function renderAreaChart($groupCount, $dimensions = '2d')
     {
-        require_once(PHPExcel_Settings::getChartRendererPath().'jpgraph_line.php');
+        require_once(PHPExcel_Settings::getChartRendererPath() . 'jpgraph_line.php');
 
         $this->renderCartesianPlotArea();
 
@@ -572,10 +554,9 @@ class PHPExcel_Chart_Renderer_jpgraph
         }
     }
 
-
     private function renderLineChart($groupCount, $dimensions = '2d')
     {
-        require_once(PHPExcel_Settings::getChartRendererPath().'jpgraph_line.php');
+        require_once(PHPExcel_Settings::getChartRendererPath() . 'jpgraph_line.php');
 
         $this->renderCartesianPlotArea();
 
@@ -584,10 +565,9 @@ class PHPExcel_Chart_Renderer_jpgraph
         }
     }
 
-
     private function renderBarChart($groupCount, $dimensions = '2d')
     {
-        require_once(PHPExcel_Settings::getChartRendererPath().'jpgraph_bar.php');
+        require_once(PHPExcel_Settings::getChartRendererPath() . 'jpgraph_bar.php');
 
         $this->renderCartesianPlotArea();
 
@@ -596,12 +576,11 @@ class PHPExcel_Chart_Renderer_jpgraph
         }
     }
 
-
     private function renderScatterChart($groupCount)
     {
-        require_once(PHPExcel_Settings::getChartRendererPath().'jpgraph_scatter.php');
-        require_once(PHPExcel_Settings::getChartRendererPath().'jpgraph_regstat.php');
-        require_once(PHPExcel_Settings::getChartRendererPath().'jpgraph_line.php');
+        require_once(PHPExcel_Settings::getChartRendererPath() . 'jpgraph_scatter.php');
+        require_once(PHPExcel_Settings::getChartRendererPath() . 'jpgraph_regstat.php');
+        require_once(PHPExcel_Settings::getChartRendererPath() . 'jpgraph_line.php');
 
         $this->renderCartesianPlotArea('linlin');
 
@@ -610,10 +589,9 @@ class PHPExcel_Chart_Renderer_jpgraph
         }
     }
 
-
     private function renderBubbleChart($groupCount)
     {
-        require_once(PHPExcel_Settings::getChartRendererPath().'jpgraph_scatter.php');
+        require_once(PHPExcel_Settings::getChartRendererPath() . 'jpgraph_scatter.php');
 
         $this->renderCartesianPlotArea('linlin');
 
@@ -622,12 +600,11 @@ class PHPExcel_Chart_Renderer_jpgraph
         }
     }
 
-
     private function renderPieChart($groupCount, $dimensions = '2d', $doughnut = false, $multiplePlots = false)
     {
-        require_once(PHPExcel_Settings::getChartRendererPath().'jpgraph_pie.php');
-        if ($dimensions == '3d') {
-            require_once(PHPExcel_Settings::getChartRendererPath().'jpgraph_pie3d.php');
+        require_once(PHPExcel_Settings::getChartRendererPath() . 'jpgraph_pie.php');
+        if ('3d' == $dimensions) {
+            require_once(PHPExcel_Settings::getChartRendererPath() . 'jpgraph_pie3d.php');
         }
 
         $this->renderPiePlotArea($doughnut);
@@ -636,7 +613,7 @@ class PHPExcel_Chart_Renderer_jpgraph
         for ($groupID = 0; $groupID < $iLimit; ++$groupID) {
             $grouping = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotGrouping();
             $exploded = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotStyle();
-            if ($groupID == 0) {
+            if (0 == $groupID) {
                 $labelCount = count($this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotValuesByIndex(0)->getPointCount());
                 if ($labelCount > 0) {
                     $datasetLabels = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotCategoryByIndex(0)->getDataValues();
@@ -645,7 +622,7 @@ class PHPExcel_Chart_Renderer_jpgraph
             }
 
             $seriesCount = $this->chart->getPlotArea()->getPlotGroupByIndex($groupID)->getPlotSeriesCount();
-            $seriesPlots = array();
+            $seriesPlots = [];
             //    For pie charts, we only display the first series: doughnut charts generally display all series
             $jLimit = ($multiplePlots) ? $seriesCount : 1;
             //    Loop through each data series in turn
@@ -662,7 +639,7 @@ class PHPExcel_Chart_Renderer_jpgraph
                     ++$testCurrentIndex;
                 }
 
-                if ($dimensions == '3d') {
+                if ('3d' == $dimensions) {
                     $seriesPlot = new PiePlot3D($dataValues);
                 } else {
                     if ($doughnut) {
@@ -673,7 +650,7 @@ class PHPExcel_Chart_Renderer_jpgraph
                 }
 
                 if ($multiplePlots) {
-                    $seriesPlot->SetSize(($jLimit-$j) / ($jLimit * 4));
+                    $seriesPlot->SetSize(($jLimit - $j) / ($jLimit * 4));
                 }
 
                 if ($doughnut) {
@@ -684,10 +661,10 @@ class PHPExcel_Chart_Renderer_jpgraph
                 if (count($datasetLabels) > 0) {
                     $seriesPlot->SetLabels(array_fill(0, count($datasetLabels), ''));
                 }
-                if ($dimensions != '3d') {
+                if ('3d' != $dimensions) {
                     $seriesPlot->SetGuideLines(false);
                 }
-                if ($j == 0) {
+                if (0 == $j) {
                     if ($exploded) {
                         $seriesPlot->ExplodeAll();
                     }
@@ -699,10 +676,9 @@ class PHPExcel_Chart_Renderer_jpgraph
         }
     }
 
-
     private function renderRadarChart($groupCount)
     {
-        require_once(PHPExcel_Settings::getChartRendererPath().'jpgraph_radar.php');
+        require_once(PHPExcel_Settings::getChartRendererPath() . 'jpgraph_radar.php');
 
         $this->renderRadarPlotArea();
 
@@ -711,10 +687,9 @@ class PHPExcel_Chart_Renderer_jpgraph
         }
     }
 
-
     private function renderStockChart($groupCount)
     {
-        require_once(PHPExcel_Settings::getChartRendererPath().'jpgraph_stock.php');
+        require_once(PHPExcel_Settings::getChartRendererPath() . 'jpgraph_stock.php');
 
         $this->renderCartesianPlotArea('intint');
 
@@ -723,10 +698,9 @@ class PHPExcel_Chart_Renderer_jpgraph
         }
     }
 
-
     private function renderContourChart($groupCount, $dimensions)
     {
-        require_once(PHPExcel_Settings::getChartRendererPath().'jpgraph_contour.php');
+        require_once(PHPExcel_Settings::getChartRendererPath() . 'jpgraph_contour.php');
 
         $this->renderCartesianPlotArea('intint');
 
@@ -735,14 +709,13 @@ class PHPExcel_Chart_Renderer_jpgraph
         }
     }
 
-
     private function renderCombinationChart($groupCount, $dimensions, $outputDestination)
     {
-        require_once(PHPExcel_Settings::getChartRendererPath().'jpgraph_line.php');
-        require_once(PHPExcel_Settings::getChartRendererPath().'jpgraph_bar.php');
-        require_once(PHPExcel_Settings::getChartRendererPath().'jpgraph_scatter.php');
-        require_once(PHPExcel_Settings::getChartRendererPath().'jpgraph_regstat.php');
-        require_once(PHPExcel_Settings::getChartRendererPath().'jpgraph_line.php');
+        require_once(PHPExcel_Settings::getChartRendererPath() . 'jpgraph_line.php');
+        require_once(PHPExcel_Settings::getChartRendererPath() . 'jpgraph_bar.php');
+        require_once(PHPExcel_Settings::getChartRendererPath() . 'jpgraph_scatter.php');
+        require_once(PHPExcel_Settings::getChartRendererPath() . 'jpgraph_regstat.php');
+        require_once(PHPExcel_Settings::getChartRendererPath() . 'jpgraph_line.php');
 
         $this->renderCartesianPlotArea();
 
@@ -776,6 +749,7 @@ class PHPExcel_Chart_Renderer_jpgraph
                     break;
                 default:
                     $this->graph = null;
+
                     return false;
             }
         }
@@ -783,9 +757,9 @@ class PHPExcel_Chart_Renderer_jpgraph
         $this->renderLegend();
 
         $this->graph->Stroke($outputDestination);
+
         return true;
     }
-
 
     public function render($outputDestination)
     {
@@ -794,18 +768,19 @@ class PHPExcel_Chart_Renderer_jpgraph
         $groupCount = $this->chart->getPlotArea()->getPlotGroupCount();
 
         $dimensions = null;
-        if ($groupCount == 1) {
+        if (1 == $groupCount) {
             $chartType = $this->chart->getPlotArea()->getPlotGroupByIndex(0)->getPlotType();
         } else {
-            $chartTypes = array();
+            $chartTypes = [];
             for ($i = 0; $i < $groupCount; ++$i) {
                 $chartTypes[] = $this->chart->getPlotArea()->getPlotGroupByIndex($i)->getPlotType();
             }
             $chartTypes = array_unique($chartTypes);
-            if (count($chartTypes) == 1) {
+            if (1 == count($chartTypes)) {
                 $chartType = array_pop($chartTypes);
-            } elseif (count($chartTypes) == 0) {
+            } elseif (0 == count($chartTypes)) {
                 echo 'Chart is not yet implemented<br />';
+
                 return false;
             } else {
                 return $this->renderCombinationChart($groupCount, $dimensions, $outputDestination);
@@ -862,22 +837,23 @@ class PHPExcel_Chart_Renderer_jpgraph
                 $this->renderStockChart($groupCount, $dimensions);
                 break;
             default:
-                echo $chartType.' is not yet implemented<br />';
+                echo $chartType . ' is not yet implemented<br />';
+
                 return false;
         }
         $this->renderLegend();
 
         $this->graph->Stroke($outputDestination);
+
         return true;
     }
-
 
     /**
      * Create a new PHPExcel_Chart_Renderer_jpgraph
      */
     public function __construct(PHPExcel_Chart $chart)
     {
-        $this->graph    = null;
-        $this->chart    = $chart;
+        $this->graph = null;
+        $this->chart = $chart;
     }
 }

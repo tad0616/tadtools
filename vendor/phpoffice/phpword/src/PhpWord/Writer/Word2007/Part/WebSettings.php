@@ -29,9 +29,9 @@ class WebSettings extends Settings
      */
     public function write()
     {
-        $settings = array(
+        $settings = [
             'w:optimizeForBrowser' => '',
-        );
+        ];
 
         $xmlWriter = $this->getXmlWriter();
 

@@ -66,17 +66,17 @@ class CheckBox extends Text
         $xmlWriter->startElement('w:instrText');
         $xmlWriter->writeAttribute('xml:space', 'preserve');
         $xmlWriter->text(' FORMCHECKBOX ');
-        $xmlWriter->endElement();// w:instrText
+        $xmlWriter->endElement(); // w:instrText
         $xmlWriter->endElement(); // w:r
         $xmlWriter->startElement('w:r');
         $xmlWriter->startElement('w:fldChar');
         $xmlWriter->writeAttribute('w:fldCharType', 'separate');
-        $xmlWriter->endElement();// w:fldChar
+        $xmlWriter->endElement(); // w:fldChar
         $xmlWriter->endElement(); // w:r
         $xmlWriter->startElement('w:r');
         $xmlWriter->startElement('w:fldChar');
         $xmlWriter->writeAttribute('w:fldCharType', 'end');
-        $xmlWriter->endElement();// w:fldChar
+        $xmlWriter->endElement(); // w:fldChar
         $xmlWriter->endElement(); // w:r
 
         $xmlWriter->startElement('w:r');

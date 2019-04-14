@@ -66,7 +66,6 @@ class Table extends AbstractElement
     /**
      * Write column
      *
-     * @param \PhpOffice\PhpWord\Element\Row $row
      * @return string
      */
     private function writeRowDef(RowElement $row)
@@ -77,7 +76,7 @@ class Table extends AbstractElement
         foreach ($row->getCells() as $cell) {
             $width = $cell->getWidth();
             $vMerge = $this->getVMerge($cell->getStyle()->getVMerge());
-            if ($width === null) {
+            if (null === $width) {
                 $width = 720; // Arbitrary default width
             }
             $rightMargin += $width;
@@ -90,7 +89,6 @@ class Table extends AbstractElement
     /**
      * Write row
      *
-     * @param \PhpOffice\PhpWord\Element\Row $row
      * @return string
      */
     private function writeRow(RowElement $row)
@@ -108,7 +106,6 @@ class Table extends AbstractElement
     /**
      * Write cell
      *
-     * @param \PhpOffice\PhpWord\Element\Cell $cell
      * @return string
      */
     private function writeCell(CellElement $cell)
@@ -134,9 +131,9 @@ class Table extends AbstractElement
     private function getVMerge($value)
     {
         $style = '';
-        if ($value == 'restart') {
+        if ('restart' == $value) {
             $style = '\clvmgf';
-        } elseif ($value == 'continue') {
+        } elseif ('continue' == $value) {
             $style = '\clvmrg';
         }
 

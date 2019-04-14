@@ -1,23 +1,21 @@
 <?php
-include_once "tadtools_header.php";
+include_once 'tadtools_header.php';
 
 class fullcalendar
 {
-
-    public $js_parameter   = array();
-    public $json_parameter = array();
-    public $quotation      = array();
+    public $js_parameter = [];
+    public $json_parameter = [];
+    public $quotation = [];
 
     //建構函數
     public function __construct()
     {
-
     }
 
     public function add_js_parameter($key = '', $val = '', $quotation = true)
     {
         $this->js_parameter[$key] = $val;
-        $this->quotation[$key]    = $quotation;
+        $this->quotation[$key] = $quotation;
     }
 
     public function add_json_parameter($key = '', $val = '')
@@ -48,17 +46,17 @@ class fullcalendar
             <script src='" . TADTOOLS_URL . "/fullcalendar/locale-all.js' type='text/javascript'></script>";
         }
 
-        $js_parameter = "";
+        $js_parameter = '';
         if (!empty($this->js_parameter)) {
             foreach ($this->js_parameter as $key => $value) {
                 $js_parameter .= $this->quotation[$key] ? "{$key}: '{$value}'," : "{$key}: {$value},";
             }
         }
 
-        $get_event = "";
+        $get_event = '';
         if ($json_file) {
             // $json_parameter = "start: start.format(), end: end.format(), ";
-            $json_parameter = "";
+            $json_parameter = '';
 
             if (!empty($this->json_parameter)) {
                 foreach ($this->json_parameter as $key => $value) {
@@ -102,6 +100,7 @@ class fullcalendar
               })
           });
         </script>";
+
         return $fullcalendar;
     }
 }

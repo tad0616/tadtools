@@ -31,14 +31,14 @@ abstract class StringUtils
      *
      * @var string[]
      */
-    protected static $singleByteEncodings = array(
+    protected static $singleByteEncodings = [
         'ASCII', '7BIT', '8BIT',
         'ISO-8859-1', 'ISO-8859-2', 'ISO-8859-3', 'ISO-8859-4', 'ISO-8859-5',
         'ISO-8859-6', 'ISO-8859-7', 'ISO-8859-8', 'ISO-8859-9', 'ISO-8859-10',
         'ISO-8859-11', 'ISO-8859-13', 'ISO-8859-14', 'ISO-8859-15', 'ISO-8859-16',
         'CP-1251', 'CP-1252',
         // TODO
-    );
+    ];
 
     /**
      * Is PCRE compiled with Unicode support?
@@ -54,8 +54,8 @@ abstract class StringUtils
      */
     public static function getRegisteredWrappers()
     {
-        if (static::$wrapperRegistry === null) {
-            static::$wrapperRegistry = array();
+        if (null === static::$wrapperRegistry) {
+            static::$wrapperRegistry = [];
 
             if (extension_loaded('intl')) {
                 static::$wrapperRegistry[] = 'Zend\Stdlib\StringWrapper\Intl';
@@ -98,7 +98,7 @@ abstract class StringUtils
     public static function unregisterWrapper($wrapper)
     {
         $index = array_search((string) $wrapper, static::$wrapperRegistry, true);
-        if ($index !== false) {
+        if (false !== $index) {
             unset(static::$wrapperRegistry[$index]);
         }
     }
@@ -119,8 +119,8 @@ abstract class StringUtils
      *
      * @param string      $encoding        Character encoding to support
      * @param string|null $convertEncoding OPTIONAL character encoding to convert in
-     * @return StringWrapperInterface
      * @throws Exception\RuntimeException If no wrapper supports given character encodings
+     * @return StringWrapperInterface
      */
     public static function getWrapper($encoding = 'UTF-8', $convertEncoding = null)
     {
@@ -128,13 +128,14 @@ abstract class StringUtils
             if ($wrapperClass::isSupported($encoding, $convertEncoding)) {
                 $wrapper = new $wrapperClass($encoding, $convertEncoding);
                 $wrapper->setEncoding($encoding, $convertEncoding);
+
                 return $wrapper;
             }
         }
 
         throw new Exception\RuntimeException(
             'No wrapper found supporting "' . $encoding . '"'
-            . (($convertEncoding !== null) ? ' and "' . $convertEncoding . '"' : '')
+            . ((null !== $convertEncoding) ? ' and "' . $convertEncoding . '"' : '')
         );
     }
 
@@ -156,7 +157,7 @@ abstract class StringUtils
      */
     public static function isSingleByteEncoding($encoding)
     {
-        return in_array(strtoupper($encoding), static::$singleByteEncodings);
+        return in_array(mb_strtoupper($encoding), static::$singleByteEncodings, true);
     }
 
     /**
@@ -167,7 +168,7 @@ abstract class StringUtils
      */
     public static function isValidUtf8($str)
     {
-        return is_string($str) && ($str === '' || preg_match('/^./su', $str) == 1);
+        return is_string($str) && ('' === $str || 1 == preg_match('/^./su', $str));
     }
 
     /**
@@ -177,11 +178,12 @@ abstract class StringUtils
      */
     public static function hasPcreUnicodeSupport()
     {
-        if (static::$hasPcreUnicodeSupport === null) {
+        if (null === static::$hasPcreUnicodeSupport) {
             ErrorHandler::start();
-            static::$hasPcreUnicodeSupport = defined('PREG_BAD_UTF8_OFFSET_ERROR') && preg_match('/\pL/u', 'a') == 1;
+            static::$hasPcreUnicodeSupport = defined('PREG_BAD_UTF8_OFFSET_ERROR') && 1 == preg_match('/\pL/u', 'a');
             ErrorHandler::stop();
         }
+
         return static::$hasPcreUnicodeSupport;
     }
 }

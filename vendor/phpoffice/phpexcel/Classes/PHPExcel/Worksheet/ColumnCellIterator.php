@@ -53,8 +53,8 @@ class PHPExcel_Worksheet_ColumnCellIterator extends PHPExcel_Worksheet_CellItera
      *
      * @param    PHPExcel_Worksheet    $subject        The worksheet to iterate over
      * @param   string              $columnIndex    The column that we want to iterate
-     * @param    integer                $startRow        The row number at which to start iterating
-     * @param    integer                $endRow            Optionally, the row number at which to stop iterating
+     * @param    int                $startRow        The row number at which to start iterating
+     * @param    int                $endRow            Optionally, the row number at which to stop iterating
      */
     public function __construct(PHPExcel_Worksheet $subject = null, $columnIndex = 'A', $startRow = 1, $endRow = null)
     {
@@ -76,9 +76,9 @@ class PHPExcel_Worksheet_ColumnCellIterator extends PHPExcel_Worksheet_CellItera
     /**
      * (Re)Set the start row and the current row pointer
      *
-     * @param integer    $startRow    The row number at which to start iterating
-     * @return PHPExcel_Worksheet_ColumnCellIterator
+     * @param int    $startRow    The row number at which to start iterating
      * @throws PHPExcel_Exception
+     * @return PHPExcel_Worksheet_ColumnCellIterator
      */
     public function resetStart($startRow = 1)
     {
@@ -92,9 +92,9 @@ class PHPExcel_Worksheet_ColumnCellIterator extends PHPExcel_Worksheet_CellItera
     /**
      * (Re)Set the end row
      *
-     * @param integer    $endRow    The row number at which to stop iterating
-     * @return PHPExcel_Worksheet_ColumnCellIterator
+     * @param int    $endRow    The row number at which to stop iterating
      * @throws PHPExcel_Exception
+     * @return PHPExcel_Worksheet_ColumnCellIterator
      */
     public function resetEnd($endRow = null)
     {
@@ -107,9 +107,9 @@ class PHPExcel_Worksheet_ColumnCellIterator extends PHPExcel_Worksheet_CellItera
     /**
      * Set the row pointer to the selected row
      *
-     * @param integer    $row    The row number to set the current pointer at
-     * @return PHPExcel_Worksheet_ColumnCellIterator
+     * @param int    $row    The row number to set the current pointer at
      * @throws PHPExcel_Exception
+     * @return PHPExcel_Worksheet_ColumnCellIterator
      */
     public function seek($row = 1)
     {

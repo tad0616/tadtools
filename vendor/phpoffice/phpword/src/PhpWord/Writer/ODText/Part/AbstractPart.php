@@ -36,7 +36,6 @@ abstract class AbstractPart extends Word2007AbstractPart
     /**
      * Write common root attributes.
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
      * @return void
      */
     protected function writeCommonRootAttributes(XMLWriter $xmlWriter)
@@ -73,13 +72,12 @@ abstract class AbstractPart extends Word2007AbstractPart
     /**
      * Write font faces declaration.
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
      * @return void
      */
     protected function writeFontFaces(XMLWriter $xmlWriter)
     {
         $xmlWriter->startElement('office:font-face-decls');
-        $fontTable = array();
+        $fontTable = [];
         $styles = Style::getStyles();
         $numFonts = 0;
         if (count($styles) > 0) {
@@ -88,7 +86,7 @@ abstract class AbstractPart extends Word2007AbstractPart
                 if ($style instanceof Font) {
                     $numFonts++;
                     $name = $style->getName();
-                    if (!in_array($name, $fontTable)) {
+                    if (!in_array($name, $fontTable, true)) {
                         $fontTable[] = $name;
 
                         // style:font-face
@@ -100,7 +98,7 @@ abstract class AbstractPart extends Word2007AbstractPart
                 }
             }
         }
-        if (!in_array(Settings::getDefaultFontName(), $fontTable)) {
+        if (!in_array(Settings::getDefaultFontName(), $fontTable, true)) {
             $xmlWriter->startElement('style:font-face');
             $xmlWriter->writeAttribute('style:name', Settings::getDefaultFontName());
             $xmlWriter->writeAttribute('svg:font-family', Settings::getDefaultFontName());

@@ -1,6 +1,6 @@
 <?php
-include_once "tadtools_header.php";
-include_once "jquery.php";
+include_once 'tadtools_header.php';
+include_once 'jquery.php';
 
 class jeditable
 {
@@ -14,10 +14,10 @@ class jeditable
     }
 
     //設定文字欄位 $submitdata="{'sn':$the_sn}
-    public function setTextCol($selector, $file, $width = '100%', $height = '12px', $submitdata = "", $tooltip = "")
+    public function setTextCol($selector, $file, $width = '100%', $height = '12px', $submitdata = '', $tooltip = '')
     {
-        $submitdata_set = (empty($submitdata)) ? "" : "submitdata:$submitdata,";
-        $this->cols[]   = "
+        $submitdata_set = (empty($submitdata)) ? '' : "submitdata:$submitdata,";
+        $this->cols[] = "
         $('$selector').editable('$file', {
           type : 'text',
           indicator : 'Saving...',
@@ -32,10 +32,10 @@ class jeditable
     }
 
     //設定大量文字欄位 $submitdata="{'sn':$the_sn}
-    public function setTextAreaCol($selector, $file, $width = '100%', $height = '50px', $submitdata = "", $tooltip = "")
+    public function setTextAreaCol($selector, $file, $width = '100%', $height = '50px', $submitdata = '', $tooltip = '')
     {
-        $submitdata_set = (empty($submitdata)) ? "" : "submitdata:$submitdata,";
-        $this->cols[]   = "
+        $submitdata_set = (empty($submitdata)) ? '' : "submitdata:$submitdata,";
+        $this->cols[] = "
         $('$selector').editable('$file', {
           type : 'textarea',
           indicator : 'Saving...',
@@ -50,10 +50,10 @@ class jeditable
     }
 
     //設定下拉欄位 $submitdata="{'sn':$the_sn},$data="{'男生':'男生' , '女生':'女生'}";
-    public function setSelectCol($selector, $file, $data = '', $submitdata = "", $tooltip = "")
+    public function setSelectCol($selector, $file, $data = '', $submitdata = '', $tooltip = '')
     {
-        $submitdata_set = (empty($submitdata)) ? "" : "submitdata:$submitdata,";
-        $this->cols[]   = "
+        $submitdata_set = (empty($submitdata)) ? '' : "submitdata:$submitdata,";
+        $this->cols[] = "
         $('$selector').editable('$file', {
           type : 'select',
           indicator : 'Saving...',
@@ -67,16 +67,16 @@ class jeditable
     }
 
     //產生路徑工具
-    public function render($mode = "")
+    public function render($mode = '')
     {
         global $xoTheme;
 
         if (is_array($this->cols)) {
             $all_col = implode("\n", $this->cols);
         }
-        $jquery = ($this->show_jquery) ? get_jquery() : "";
+        $jquery = ($this->show_jquery) ? get_jquery() : '';
 
-        if ($xoTheme and $mode != 'force') {
+        if ($xoTheme and 'force' !== $mode) {
             $xoTheme->addScript('modules/tadtools/jeditable/jquery.jeditable.mini.js');
 
             $xoTheme->addScript('', null, "
@@ -87,7 +87,6 @@ class jeditable
               })(jQuery);
             ");
         } else {
-
             $main = "
             $jquery
             <script src='" . TADTOOLS_URL . "/jeditable/jquery.jeditable.mini.js' type='text/javascript' language='JavaScript'></script>
@@ -97,6 +96,7 @@ class jeditable
                $all_col
              })
             </script>";
+
             return $main;
         }
     }

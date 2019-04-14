@@ -58,8 +58,8 @@ class TextBox extends Frame
         $xmlWriter = $this->getXmlWriter();
 
         $xmlWriter->startElement('v:stroke');
-        $xmlWriter->writeAttributeIf($style->getBorderSize() !== null, 'weight', $style->getBorderSize() . 'pt');
-        $xmlWriter->writeAttributeIf($style->getBorderColor() !== null, 'color', $style->getBorderColor());
+        $xmlWriter->writeAttributeIf(null !== $style->getBorderSize(), 'weight', $style->getBorderSize() . 'pt');
+        $xmlWriter->writeAttributeIf(null !== $style->getBorderColor(), 'color', $style->getBorderColor());
         $xmlWriter->endElement(); // v:stroke
     }
 }

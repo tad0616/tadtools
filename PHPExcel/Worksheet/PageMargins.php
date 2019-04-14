@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPExcel_Worksheet_PageMargins
  *
@@ -35,47 +34,47 @@
  */
 class PHPExcel_Worksheet_PageMargins
 {
-	/**
-	 * Left
-	 *
-	 * @var double
-	 */
-	private $_left		= 0.7;
+    /**
+     * Left
+     *
+     * @var float
+     */
+    private $_left = 0.7;
 
-	/**
-	 * Right
-	 *
-	 * @var double
-	 */
-	private $_right		= 0.7;
+    /**
+     * Right
+     *
+     * @var float
+     */
+    private $_right = 0.7;
 
-	/**
-	 * Top
-	 *
-	 * @var double
-	 */
-	private $_top		= 0.75;
+    /**
+     * Top
+     *
+     * @var float
+     */
+    private $_top = 0.75;
 
-	/**
-	 * Bottom
-	 *
-	 * @var double
-	 */
-	private $_bottom	= 0.75;
+    /**
+     * Bottom
+     *
+     * @var float
+     */
+    private $_bottom = 0.75;
 
-	/**
-	 * Header
-	 *
-	 * @var double
-	 */
-	private $_header 	= 0.3;
+    /**
+     * Header
+     *
+     * @var float
+     */
+    private $_header = 0.3;
 
-	/**
-	 * Footer
-	 *
-	 * @var double
-	 */
-	private $_footer 	= 0.3;
+    /**
+     * Footer
+     *
+     * @var float
+     */
+    private $_footer = 0.3;
 
     /**
      * Create a new PHPExcel_Worksheet_PageMargins
@@ -87,134 +86,153 @@ class PHPExcel_Worksheet_PageMargins
     /**
      * Get Left
      *
-     * @return double
+     * @return float
      */
-    public function getLeft() {
-    	return $this->_left;
+    public function getLeft()
+    {
+        return $this->_left;
     }
 
     /**
      * Set Left
      *
-     * @param double $pValue
+     * @param float $pValue
      * @return PHPExcel_Worksheet_PageMargins
      */
-    public function setLeft($pValue) {
-    	$this->_left = $pValue;
-    	return $this;
+    public function setLeft($pValue)
+    {
+        $this->_left = $pValue;
+
+        return $this;
     }
 
     /**
      * Get Right
      *
-     * @return double
+     * @return float
      */
-    public function getRight() {
-    	return $this->_right;
+    public function getRight()
+    {
+        return $this->_right;
     }
 
     /**
      * Set Right
      *
-     * @param double $pValue
+     * @param float $pValue
      * @return PHPExcel_Worksheet_PageMargins
      */
-    public function setRight($pValue) {
-    	$this->_right = $pValue;
-    	return $this;
+    public function setRight($pValue)
+    {
+        $this->_right = $pValue;
+
+        return $this;
     }
 
     /**
      * Get Top
      *
-     * @return double
+     * @return float
      */
-    public function getTop() {
-    	return $this->_top;
+    public function getTop()
+    {
+        return $this->_top;
     }
 
     /**
      * Set Top
      *
-     * @param double $pValue
+     * @param float $pValue
      * @return PHPExcel_Worksheet_PageMargins
      */
-    public function setTop($pValue) {
-    	$this->_top = $pValue;
-    	return $this;
+    public function setTop($pValue)
+    {
+        $this->_top = $pValue;
+
+        return $this;
     }
 
     /**
      * Get Bottom
      *
-     * @return double
+     * @return float
      */
-    public function getBottom() {
-    	return $this->_bottom;
+    public function getBottom()
+    {
+        return $this->_bottom;
     }
 
     /**
      * Set Bottom
      *
-     * @param double $pValue
+     * @param float $pValue
      * @return PHPExcel_Worksheet_PageMargins
      */
-    public function setBottom($pValue) {
-    	$this->_bottom = $pValue;
-    	return $this;
+    public function setBottom($pValue)
+    {
+        $this->_bottom = $pValue;
+
+        return $this;
     }
 
     /**
      * Get Header
      *
-     * @return double
+     * @return float
      */
-    public function getHeader() {
-    	return $this->_header;
+    public function getHeader()
+    {
+        return $this->_header;
     }
 
     /**
      * Set Header
      *
-     * @param double $pValue
+     * @param float $pValue
      * @return PHPExcel_Worksheet_PageMargins
      */
-    public function setHeader($pValue) {
-    	$this->_header = $pValue;
-    	return $this;
+    public function setHeader($pValue)
+    {
+        $this->_header = $pValue;
+
+        return $this;
     }
 
     /**
      * Get Footer
      *
-     * @return double
+     * @return float
      */
-    public function getFooter() {
-    	return $this->_footer;
+    public function getFooter()
+    {
+        return $this->_footer;
     }
 
     /**
      * Set Footer
      *
-     * @param double $pValue
+     * @param float $pValue
      * @return PHPExcel_Worksheet_PageMargins
      */
-    public function setFooter($pValue) {
-    	$this->_footer = $pValue;
-    	return $this;
+    public function setFooter($pValue)
+    {
+        $this->_footer = $pValue;
+
+        return $this;
     }
 
-	/**
-	 * Implement PHP __clone to create a deep clone, not just a shallow copy.
-	 */
-	public function __clone() {
-		$vars = get_object_vars($this);
-		foreach ($vars as $key => $value) {
-			if (is_object($value)) {
-				$this->$key = clone $value;
-			} else {
-				$this->$key = $value;
-			}
-		}
-	}
+    /**
+     * Implement PHP __clone to create a deep clone, not just a shallow copy.
+     */
+    public function __clone()
+    {
+        $vars = get_object_vars($this);
+        foreach ($vars as $key => $value) {
+            if (is_object($value)) {
+                $this->$key = clone $value;
+            } else {
+                $this->$key = $value;
+            }
+        }
+    }
 }

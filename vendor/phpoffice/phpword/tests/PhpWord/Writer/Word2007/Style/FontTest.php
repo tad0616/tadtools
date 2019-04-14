@@ -14,6 +14,7 @@
  * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
 namespace PhpOffice\PhpWord\Writer\Word2007\Style;
 
 use PhpOffice\PhpWord\TestHelperDOCX;
@@ -29,7 +30,7 @@ class FontTest extends \PHPUnit_Framework_TestCase
     /**
      * Executed before each method of the class
      */
-    public function tearDown()
+    protected function tearDown()
     {
         TestHelperDOCX::clear();
     }
@@ -42,7 +43,7 @@ class FontTest extends \PHPUnit_Framework_TestCase
         $phpWord = new \PhpOffice\PhpWord\PhpWord();
         $section = $phpWord->addSection();
         $textrun = $section->addTextRun();
-        $textrun->addText('سلام این یک پاراگراف راست به چپ است', array('rtl' => true));
+        $textrun->addText('سلام این یک پاراگراف راست به چپ است', ['rtl' => true]);
         $doc = TestHelperDOCX::getDocument($phpWord, 'Word2007');
 
         $file = 'word/document.xml';

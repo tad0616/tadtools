@@ -30,12 +30,12 @@ class LineNumberingTest extends \PHPUnit_Framework_TestCase
     public function testGetSetProperties()
     {
         $object = new LineNumbering();
-        $properties = array(
-            'start'     => array(1, 2),
-            'increment' => array(1, 10),
-            'distance'  => array(null, 10),
-            'restart'   => array(null, 'continuous'),
-        );
+        $properties = [
+            'start' => [1, 2],
+            'increment' => [1, 10],
+            'distance' => [null, 10],
+            'restart' => [null, 'continuous'],
+        ];
         foreach ($properties as $property => $value) {
             list($default, $expected) = $value;
             $get = "get{$property}";

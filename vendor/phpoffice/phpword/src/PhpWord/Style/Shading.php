@@ -66,7 +66,7 @@ class Shading extends AbstractStyle
      *
      * @param array $style
      */
-    public function __construct($style = array())
+    public function __construct($style = [])
     {
         $this->setStyleByArray($style);
     }
@@ -89,10 +89,10 @@ class Shading extends AbstractStyle
      */
     public function setPattern($value = null)
     {
-        $enum = array(
+        $enum = [
             self::PATTERN_CLEAR, self::PATTERN_SOLID, self::PATTERN_HSTRIPE,
-            self::PATTERN_VSTRIPE, self::PATTERN_DSTRIPE, self::PATTERN_HCROSS, self::PATTERN_DCROSS
-        );
+            self::PATTERN_VSTRIPE, self::PATTERN_DSTRIPE, self::PATTERN_HCROSS, self::PATTERN_DCROSS,
+        ];
         $this->pattern = $this->setEnumVal($value, $enum, $this->pattern);
 
         return $this;

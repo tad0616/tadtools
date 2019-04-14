@@ -38,9 +38,9 @@ class InArray extends AbstractValidator
     /**
      * @var array
      */
-    protected $messageTemplates = array(
+    protected $messageTemplates = [
         self::NOT_IN_ARRAY => 'The input was not found in the haystack',
-    );
+    ];
 
     /**
      * Haystack of possible values
@@ -69,14 +69,15 @@ class InArray extends AbstractValidator
     /**
      * Returns the haystack option
      *
-     * @return mixed
      * @throws Exception\RuntimeException if haystack option is not set
+     * @return mixed
      */
     public function getHaystack()
     {
-        if ($this->haystack === null) {
+        if (null === $this->haystack) {
             throw new Exception\RuntimeException('haystack option is mandatory');
         }
+
         return $this->haystack;
     }
 
@@ -89,6 +90,7 @@ class InArray extends AbstractValidator
     public function setHaystack(array $haystack)
     {
         $this->haystack = $haystack;
+
         return $this;
     }
 
@@ -100,11 +102,12 @@ class InArray extends AbstractValidator
     public function getStrict()
     {
         // To keep BC with new strict modes
-        if ($this->strict == self::COMPARE_NOT_STRICT_AND_PREVENT_STR_TO_INT_VULNERABILITY
-            || $this->strict == self::COMPARE_STRICT
+        if (self::COMPARE_NOT_STRICT_AND_PREVENT_STR_TO_INT_VULNERABILITY == $this->strict
+            || self::COMPARE_STRICT == $this->strict
         ) {
             return (bool) $this->strict;
         }
+
         return $this->strict;
     }
 
@@ -113,23 +116,24 @@ class InArray extends AbstractValidator
      * InArray::COMPARE_STRICT | InArray::COMPARE_NOT_STRICT_AND_PREVENT_STR_TO_INT_VULNERABILITY | InArray::COMPARE_NOT_STRICT
      *
      * @param  int $strict
-     * @return InArray Provides a fluent interface
      * @throws Exception\InvalidArgumentException
+     * @return InArray Provides a fluent interface
      */
     public function setStrict($strict)
     {
-        $checkTypes = array(
+        $checkTypes = [
             self::COMPARE_NOT_STRICT_AND_PREVENT_STR_TO_INT_VULNERABILITY,    // 0
             self::COMPARE_STRICT,                                             // 1
-            self::COMPARE_NOT_STRICT                                          // -1
-        );
+            self::COMPARE_NOT_STRICT,                                          // -1
+        ];
 
         // validate strict value
-        if (!in_array($strict, $checkTypes)) {
+        if (!in_array($strict, $checkTypes, true)) {
             throw new Exception\InvalidArgumentException('Strict option must be one of the COMPARE_ constants');
         }
 
         $this->strict = $strict;
+
         return $this;
     }
 
@@ -152,6 +156,7 @@ class InArray extends AbstractValidator
     public function setRecursive($recursive)
     {
         $this->recursive = (bool) $recursive;
+
         return $this;
     }
 
@@ -223,6 +228,7 @@ class InArray extends AbstractValidator
         }
 
         $this->error(self::NOT_IN_ARRAY);
+
         return false;
     }
 }

@@ -20,7 +20,7 @@ $dtree_code=$dtree->render("11pt",true);
 $xoopsTpl->assign('dtree_code',$dtree_code);
 
  */
-include_once "tadtools_header.php";
+include_once 'tadtools_header.php';
 
 class dtree
 {
@@ -31,22 +31,22 @@ class dtree
     public $home;
 
     //�غc���
-    public function __construct($name = "", $home = "", $title_arr = "", $cate_arr = "", $url_arr = "")
+    public function __construct($name = '', $home = '', $title_arr = '', $cate_arr = '', $url_arr = '')
     {
-        $this->name      = $name;
+        $this->name = $name;
         $this->title_opt = $title_arr;
-        $this->cate_opt  = $cate_arr;
-        $this->url_opt   = $url_arr;
-        $this->home      = $home;
+        $this->cate_opt = $cate_arr;
+        $this->url_opt = $url_arr;
+        $this->home = $home;
     }
 
     //���Ϳ��
-    public function render($fontsize = "12px", $open = false, $useLines = true)
+    public function render($fontsize = '12px', $open = false, $useLines = true)
     {
         global $xoTheme;
 
         if ($xoTheme) {
-            $dtree = "";
+            $dtree = '';
             $xoTheme->addStylesheet('modules/tadtools/dtree/dtree.css');
             $xoTheme->addScript('modules/tadtools/dtree/dtree.js');
         } else {
@@ -61,7 +61,7 @@ class dtree
             $opt = "{$this->name}.add({$this->home['sn']},-1,'{$this->home['title']}','{$this->home['url']}');\n";
         }
 
-        if ($open == '' or is_null($open)) {
+        if ('' == $open or null === $open) {
             $open = false;
         }
 
@@ -86,8 +86,9 @@ class dtree
           document.getElementById('tree_{$this->name}').innerHTML={$this->name};
         </script>
 
-        <a href='javascript: {$this->name}.openAll();' style='font-size:11px;'>" . _TAD_EXPAND_ALL . "</a> | <a href='javascript: {$this->name}.closeAll();' style='font-size:11px;'>" . _TAD_CONTACT_ALL . "</a>
-        ";
+        <a href='javascript: {$this->name}.openAll();' style='font-size:11px;'>" . _TAD_EXPAND_ALL . "</a> | <a href='javascript: {$this->name}.closeAll();' style='font-size:11px;'>" . _TAD_CONTACT_ALL . '</a>
+        ';
+
         return $dtree;
     }
 }

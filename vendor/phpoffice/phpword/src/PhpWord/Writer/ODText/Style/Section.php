@@ -40,7 +40,7 @@ class Section extends AbstractStyle
 
         $xmlWriter->startElement('style:style');
         $xmlWriter->writeAttribute('style:name', $style->getStyleName());
-        $xmlWriter->writeAttribute('style:family', "section");
+        $xmlWriter->writeAttribute('style:family', 'section');
         $xmlWriter->startElement('style:section-properties');
 
         $xmlWriter->startElement('style:columns');

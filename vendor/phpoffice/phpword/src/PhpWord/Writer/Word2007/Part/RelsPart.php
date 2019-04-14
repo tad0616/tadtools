@@ -29,7 +29,7 @@ class RelsPart extends Rels
      *
      * @var array
      */
-    private $media = array();
+    private $media = [];
 
     /**
      * Write part
@@ -39,7 +39,7 @@ class RelsPart extends Rels
     public function write()
     {
         $xmlWriter = $this->getXmlWriter();
-        $this->writeRels($xmlWriter, array(), $this->media);
+        $this->writeRels($xmlWriter, [], $this->media);
 
         return $xmlWriter->getData();
     }

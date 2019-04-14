@@ -31,8 +31,8 @@ class PHPExcel_Writer_Excel2007_Rels extends PHPExcel_Writer_Excel2007_WriterPar
      * Write relationships to XML format
      *
      * @param     PHPExcel    $pPHPExcel
-     * @return     string         XML Output
      * @throws     PHPExcel_Writer_Exception
+     * @return     string         XML Output
      */
     public function writeRelationships(PHPExcel $pPHPExcel = null)
     {
@@ -60,7 +60,6 @@ class PHPExcel_Writer_Excel2007_Rels extends PHPExcel_Writer_Excel2007_WriterPar
                 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties',
                 'docProps/custom.xml'
             );
-
         }
 
         // Relationship docProps/app.xml
@@ -105,8 +104,8 @@ class PHPExcel_Writer_Excel2007_Rels extends PHPExcel_Writer_Excel2007_WriterPar
      * Write workbook relationships to XML format
      *
      * @param     PHPExcel    $pPHPExcel
-     * @return     string         XML Output
      * @throws     PHPExcel_Writer_Exception
+     * @return     string         XML Output
      */
     public function writeWorkbookRelationships(PHPExcel $pPHPExcel = null)
     {
@@ -168,7 +167,7 @@ class PHPExcel_Writer_Excel2007_Rels extends PHPExcel_Writer_Excel2007_WriterPar
                 'http://schemas.microsoft.com/office/2006/relationships/vbaProject',
                 'vbaProject.bin'
             );
-            ++$i;//increment i if needed for an another relation
+            ++$i; //increment i if needed for an another relation
         }
 
         $objWriter->endElement();
@@ -185,9 +184,9 @@ class PHPExcel_Writer_Excel2007_Rels extends PHPExcel_Writer_Excel2007_WriterPar
      *
      * @param     PHPExcel_Worksheet    $pWorksheet
      * @param     int                    $pWorksheetId
-     * @param    boolean                $includeCharts    Flag indicating if we should write charts
-     * @return     string                 XML Output
+     * @param    bool                $includeCharts    Flag indicating if we should write charts
      * @throws     PHPExcel_Writer_Exception
+     * @return     string                 XML Output
      */
     public function writeWorksheetRelationships(PHPExcel_Worksheet $pWorksheet = null, $pWorksheetId = 1, $includeCharts = false)
     {
@@ -211,7 +210,7 @@ class PHPExcel_Writer_Excel2007_Rels extends PHPExcel_Writer_Excel2007_WriterPar
         if ($includeCharts) {
             $charts = $pWorksheet->getChartCollection();
         } else {
-            $charts = array();
+            $charts = [];
         }
         if (($pWorksheet->getDrawingCollection()->count() > 0) ||
             (count($charts) > 0)) {
@@ -293,9 +292,9 @@ class PHPExcel_Writer_Excel2007_Rels extends PHPExcel_Writer_Excel2007_WriterPar
      *
      * @param     PHPExcel_Worksheet    $pWorksheet
      * @param    int                    &$chartRef        Chart ID
-     * @param    boolean                $includeCharts    Flag indicating if we should write charts
-     * @return     string                 XML Output
+     * @param    bool                $includeCharts    Flag indicating if we should write charts
      * @throws     PHPExcel_Writer_Exception
+     * @return     string                 XML Output
      */
     public function writeDrawingRelationships(PHPExcel_Worksheet $pWorksheet = null, &$chartRef, $includeCharts = false)
     {
@@ -357,8 +356,8 @@ class PHPExcel_Writer_Excel2007_Rels extends PHPExcel_Writer_Excel2007_WriterPar
      * Write header/footer drawing relationships to XML format
      *
      * @param     PHPExcel_Worksheet            $pWorksheet
-     * @return     string                         XML Output
      * @throws     PHPExcel_Writer_Exception
+     * @return     string                         XML Output
      */
     public function writeHeaderFooterDrawingRelationships(PHPExcel_Worksheet $pWorksheet = null)
     {
@@ -405,20 +404,20 @@ class PHPExcel_Writer_Excel2007_Rels extends PHPExcel_Writer_Excel2007_WriterPar
      */
     private function writeRelationship(PHPExcel_Shared_XMLWriter $objWriter = null, $pId = 1, $pType = '', $pTarget = '', $pTargetMode = '')
     {
-        if ($pType != '' && $pTarget != '') {
+        if ('' != $pType && '' != $pTarget) {
             // Write relationship
             $objWriter->startElement('Relationship');
             $objWriter->writeAttribute('Id', 'rId' . $pId);
             $objWriter->writeAttribute('Type', $pType);
             $objWriter->writeAttribute('Target', $pTarget);
 
-            if ($pTargetMode != '') {
+            if ('' != $pTargetMode) {
                 $objWriter->writeAttribute('TargetMode', $pTargetMode);
             }
 
             $objWriter->endElement();
         } else {
-            throw new PHPExcel_Writer_Exception("Invalid parameters passed.");
+            throw new PHPExcel_Writer_Exception('Invalid parameters passed.');
         }
     }
 }

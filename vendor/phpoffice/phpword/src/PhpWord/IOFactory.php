@@ -26,16 +26,14 @@ abstract class IOFactory
     /**
      * Create new writer
      *
-     * @param PhpWord $phpWord
      * @param string $name
      *
-     * @return WriterInterface
-     *
      * @throws \PhpOffice\PhpWord\Exception\Exception
+     * @return WriterInterface
      */
     public static function createWriter(PhpWord $phpWord, $name = 'Word2007')
     {
-        if ($name !== 'WriterInterface' && !in_array($name, array('ODText', 'RTF', 'Word2007', 'HTML', 'PDF'), true)) {
+        if ('WriterInterface' !== $name && !in_array($name, ['ODText', 'RTF', 'Word2007', 'HTML', 'PDF'], true)) {
             throw new Exception("\"{$name}\" is not a valid writer.");
         }
 
@@ -49,9 +47,8 @@ abstract class IOFactory
      *
      * @param string $name
      *
-     * @return ReaderInterface
-     *
      * @throws Exception
+     * @return ReaderInterface
      */
     public static function createReader($name = 'Word2007')
     {
@@ -65,19 +62,18 @@ abstract class IOFactory
      * @param string $name
      * @param \PhpOffice\PhpWord\PhpWord $phpWord
      *
-     * @return \PhpOffice\PhpWord\Writer\WriterInterface|\PhpOffice\PhpWord\Reader\ReaderInterface
-     *
      * @throws \PhpOffice\PhpWord\Exception\Exception
+     * @return \PhpOffice\PhpWord\Writer\WriterInterface|\PhpOffice\PhpWord\Reader\ReaderInterface
      */
     private static function createObject($type, $name, $phpWord = null)
     {
         $class = "PhpOffice\\PhpWord\\{$type}\\{$name}";
         if (class_exists($class) && self::isConcreteClass($class)) {
             return new $class($phpWord);
-        } else {
-            throw new Exception("\"{$name}\" is not a valid {$type}.");
         }
+        throw new Exception("\"{$name}\" is not a valid {$type}.");
     }
+
     /**
      * Loads PhpWord from file
      *
@@ -89,8 +85,10 @@ abstract class IOFactory
     {
         /** @var \PhpOffice\PhpWord\Reader\ReaderInterface $reader */
         $reader = self::createReader($readerName);
+
         return $reader->load($filename);
     }
+
     /**
      * Check if it's a concrete class (not abstract nor interface)
      *
@@ -100,6 +98,7 @@ abstract class IOFactory
     private static function isConcreteClass($class)
     {
         $reflection = new \ReflectionClass($class);
+
         return !$reflection->isAbstract() && !$reflection->isInterface();
     }
 }

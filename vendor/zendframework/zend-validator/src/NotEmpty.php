@@ -14,67 +14,67 @@ use Zend\Stdlib\ArrayUtils;
 
 class NotEmpty extends AbstractValidator
 {
-    const BOOLEAN       = 0x001;
-    const INTEGER       = 0x002;
-    const FLOAT         = 0x004;
-    const STRING        = 0x008;
-    const ZERO          = 0x010;
-    const EMPTY_ARRAY   = 0x020;
-    const NULL          = 0x040;
-    const PHP           = 0x07F;
-    const SPACE         = 0x080;
-    const OBJECT        = 0x100;
+    const BOOLEAN = 0x001;
+    const INTEGER = 0x002;
+    const FLOAT = 0x004;
+    const STRING = 0x008;
+    const ZERO = 0x010;
+    const EMPTY_ARRAY = 0x020;
+    const NULL = 0x040;
+    const PHP = 0x07F;
+    const SPACE = 0x080;
+    const OBJECT = 0x100;
     const OBJECT_STRING = 0x200;
-    const OBJECT_COUNT  = 0x400;
-    const ALL           = 0x7FF;
+    const OBJECT_COUNT = 0x400;
+    const ALL = 0x7FF;
 
-    const INVALID  = 'notEmptyInvalid';
+    const INVALID = 'notEmptyInvalid';
     const IS_EMPTY = 'isEmpty';
 
-    protected $constants = array(
-        self::BOOLEAN       => 'boolean',
-        self::INTEGER       => 'integer',
-        self::FLOAT         => 'float',
-        self::STRING        => 'string',
-        self::ZERO          => 'zero',
-        self::EMPTY_ARRAY   => 'array',
-        self::NULL          => 'null',
-        self::PHP           => 'php',
-        self::SPACE         => 'space',
-        self::OBJECT        => 'object',
+    protected $constants = [
+        self::BOOLEAN => 'boolean',
+        self::INTEGER => 'integer',
+        self::FLOAT => 'float',
+        self::STRING => 'string',
+        self::ZERO => 'zero',
+        self::EMPTY_ARRAY => 'array',
+        self::NULL => 'null',
+        self::PHP => 'php',
+        self::SPACE => 'space',
+        self::OBJECT => 'object',
         self::OBJECT_STRING => 'objectstring',
-        self::OBJECT_COUNT  => 'objectcount',
-        self::ALL           => 'all',
-    );
+        self::OBJECT_COUNT => 'objectcount',
+        self::ALL => 'all',
+    ];
 
     /**
      * Default value for types; value = 0b000111101001
      *
      * @var array
      */
-    protected $defaultType = array(
+    protected $defaultType = [
         self::OBJECT,
         self::SPACE,
         self::NULL,
         self::EMPTY_ARRAY,
         self::STRING,
-        self::BOOLEAN
-    );
+        self::BOOLEAN,
+    ];
 
     /**
      * @var array
      */
-    protected $messageTemplates = array(
+    protected $messageTemplates = [
         self::IS_EMPTY => "Value is required and can't be empty",
-        self::INVALID  => "Invalid type given. String, integer, float, boolean or array expected",
-    );
+        self::INVALID => 'Invalid type given. String, integer, float, boolean or array expected',
+    ];
 
     /**
      * Options for this validator
      *
      * @var array
      */
-    protected $options = array();
+    protected $options = [];
 
     /**
      * Constructor
@@ -91,7 +91,7 @@ class NotEmpty extends AbstractValidator
 
         if (!is_array($options)) {
             $options = func_get_args();
-            $temp    = array();
+            $temp = [];
             if (!empty($options)) {
                 $temp['type'] = array_shift($options);
             }
@@ -102,11 +102,11 @@ class NotEmpty extends AbstractValidator
         if (is_array($options)) {
             if (!array_key_exists('type', $options)) {
                 $detected = 0;
-                $found    = false;
+                $found = false;
                 foreach ($options as $option) {
                     if (in_array($option, $this->constants, true)) {
                         $found = true;
-                        $detected += array_search($option, $this->constants);
+                        $detected += array_search($option, $this->constants, true);
                     }
                 }
 
@@ -148,14 +148,14 @@ class NotEmpty extends AbstractValidator
             foreach ($type as $value) {
                 if (is_int($value)) {
                     $detected |= $value;
-                } elseif (in_array($value, $this->constants)) {
-                    $detected |= array_search($value, $this->constants);
+                } elseif (in_array($value, $this->constants, true)) {
+                    $detected |= array_search($value, $this->constants, true);
                 }
             }
 
             $type = $detected;
-        } elseif (is_string($type) && in_array($type, $this->constants)) {
-            $type = array_search($type, $this->constants);
+        } elseif (is_string($type) && in_array($type, $this->constants, true)) {
+            $type = array_search($type, $this->constants, true);
         }
 
         return $type;
@@ -189,23 +189,25 @@ class NotEmpty extends AbstractValidator
      */
     public function isValid($value)
     {
-        if ($value !== null && !is_string($value) && !is_int($value) && !is_float($value) &&
+        if (null !== $value && !is_string($value) && !is_int($value) && !is_float($value) &&
             !is_bool($value) && !is_array($value) && !is_object($value)
         ) {
             $this->error(self::INVALID);
+
             return false;
         }
 
-        $type    = $this->getType();
+        $type = $this->getType();
         $this->setValue($value);
-        $object  = false;
+        $object = false;
 
         // OBJECT_COUNT (countable object)
         if ($type & self::OBJECT_COUNT) {
             $object = true;
 
-            if (is_object($value) && ($value instanceof \Countable) && (count($value) == 0)) {
+            if (is_object($value) && ($value instanceof \Countable) && (0 == count($value))) {
                 $this->error(self::IS_EMPTY);
+
                 return false;
             }
         }
@@ -215,8 +217,9 @@ class NotEmpty extends AbstractValidator
             $object = true;
 
             if ((is_object($value) && (!method_exists($value, '__toString'))) ||
-                (is_object($value) && (method_exists($value, '__toString')) && (((string) $value) == ""))) {
+                (is_object($value) && (method_exists($value, '__toString')) && ('' == ((string) $value)))) {
                 $this->error(self::IS_EMPTY);
+
                 return false;
             }
         }
@@ -224,10 +227,11 @@ class NotEmpty extends AbstractValidator
         // OBJECT (object)
         if ($type & self::OBJECT) {
             // fall trough, objects are always not empty
-        } elseif ($object === false) {
+        } elseif (false === $object) {
             // object not allowed but object given -> return false
             if (is_object($value)) {
                 $this->error(self::IS_EMPTY);
+
                 return false;
             }
         }
@@ -236,62 +240,70 @@ class NotEmpty extends AbstractValidator
         if ($type & self::SPACE) {
             if (is_string($value) && (preg_match('/^\s+$/s', $value))) {
                 $this->error(self::IS_EMPTY);
+
                 return false;
             }
         }
 
         // NULL (null)
         if ($type & self::NULL) {
-            if ($value === null) {
+            if (null === $value) {
                 $this->error(self::IS_EMPTY);
+
                 return false;
             }
         }
 
         // EMPTY_ARRAY (array())
         if ($type & self::EMPTY_ARRAY) {
-            if (is_array($value) && ($value == array())) {
+            if (is_array($value) && ($value == [])) {
                 $this->error(self::IS_EMPTY);
+
                 return false;
             }
         }
 
         // ZERO ('0')
         if ($type & self::ZERO) {
-            if (is_string($value) && ($value == '0')) {
+            if (is_string($value) && ('0' == $value)) {
                 $this->error(self::IS_EMPTY);
+
                 return false;
             }
         }
 
         // STRING ('')
         if ($type & self::STRING) {
-            if (is_string($value) && ($value == '')) {
+            if (is_string($value) && ('' == $value)) {
                 $this->error(self::IS_EMPTY);
+
                 return false;
             }
         }
 
         // FLOAT (0.0)
         if ($type & self::FLOAT) {
-            if (is_float($value) && ($value == 0.0)) {
+            if (is_float($value) && (0.0 == $value)) {
                 $this->error(self::IS_EMPTY);
+
                 return false;
             }
         }
 
         // INTEGER (0)
         if ($type & self::INTEGER) {
-            if (is_int($value) && ($value == 0)) {
+            if (is_int($value) && (0 == $value)) {
                 $this->error(self::IS_EMPTY);
+
                 return false;
             }
         }
 
         // BOOLEAN (false)
         if ($type & self::BOOLEAN) {
-            if (is_bool($value) && ($value == false)) {
+            if (is_bool($value) && (false == $value)) {
                 $this->error(self::IS_EMPTY);
+
                 return false;
             }
         }

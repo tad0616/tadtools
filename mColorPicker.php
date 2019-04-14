@@ -12,25 +12,23 @@ $xoopsTpl->assign('mColorPicker_code',$mColorPicker_code);
 <input type='text' name='color' class='color' value='{$act['color']}' data-text='hidden' data-hex='true' style='height:20px;width:20px;' />
 
  */
-include_once "tadtools_header.php";
-include_once "jquery.php";
+include_once 'tadtools_header.php';
+include_once 'jquery.php';
 
 class mColorPicker
 {
     public $name;
 
-    //
-    public function __construct($name = ".color", $show_jquery = true)
+    public function __construct($name = '.color', $show_jquery = true)
     {
-        $this->name        = $name;
+        $this->name = $name;
         $this->show_jquery = $show_jquery;
     }
 
-    //
     public function render()
     {
         global $xoTheme;
-        $jquery = $this->show_jquery ? get_jquery() : "";
+        $jquery = $this->show_jquery ? get_jquery() : '';
 
         if ($xoTheme) {
             $xoTheme->addScript('modules/tadtools/mColorPicker/javascripts/mColorPicker.js');

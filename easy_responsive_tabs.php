@@ -22,39 +22,38 @@ $responsive_tabs->rander();
 </div>
 
  */
-include_once "tadtools_header.php";
-include_once "jquery.php";
+include_once 'tadtools_header.php';
+include_once 'jquery.php';
 
 class easy_responsive_tabs
 {
     public $name;
-    public $type                        = 'default';
-    public $activetab_bg                = '#FFFFFF';
-    public $inactive_bg                 = '#E0D9D9';
-    public $active_border_color         = '#9C905C';
+    public $type = 'default';
+    public $activetab_bg = '#FFFFFF';
+    public $inactive_bg = '#E0D9D9';
+    public $active_border_color = '#9C905C';
     public $active_content_border_color = '#9C905C';
 
-    public function __construct($name = "#demoTab", $type = 'default', $activetab_bg = '#FFFFFF', $inactive_bg = '#E0D9D9', $active_border_color = '#9C905C', $active_content_border_color = '#9C905C')
+    public function __construct($name = '#demoTab', $type = 'default', $activetab_bg = '#FFFFFF', $inactive_bg = '#E0D9D9', $active_border_color = '#9C905C', $active_content_border_color = '#9C905C')
     {
-        $this->name                        = $name;
-        $this->type                        = $type;
-        $this->activetab_bg                = $activetab_bg;
-        $this->inactive_bg                 = $inactive_bg;
-        $this->active_border_color         = $active_border_color;
+        $this->name = $name;
+        $this->type = $type;
+        $this->activetab_bg = $activetab_bg;
+        $this->inactive_bg = $inactive_bg;
+        $this->active_border_color = $active_border_color;
         $this->active_content_border_color = $active_content_border_color;
-
     }
 
     public function rander($tabidentify = 'vert', $function = '')
     {
         global $xoTheme;
-        $jquery          = get_jquery();
+        $jquery = get_jquery();
         $responsive_tabs = '';
         if ($xoTheme) {
             $xoTheme->addScript('modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js');
             $xoTheme->addScript('modules/tadtools/jqueryCookie/js.cookie.min.js');
             $xoTheme->addStylesheet('modules/tadtools/Easy-Responsive-Tabs/css/easy-responsive-tabs.css');
-            $cookie_name = substr($this->name, 1) . '_baseURI';
+            $cookie_name = mb_substr($this->name, 1) . '_baseURI';
             $xoTheme->addScript('', null, "
                 $(document).ready(function(){
                   $('" . $this->name . "').easyResponsiveTabs({
@@ -74,7 +73,6 @@ class easy_responsive_tabs
                     });
                 });
             ");
-
         } else {
             $responsive_tabs = "
                 {$jquery}
@@ -101,8 +99,8 @@ class easy_responsive_tabs
             </script>
             ";
         }
-        return $responsive_tabs;
 
+        return $responsive_tabs;
     }
 }
 

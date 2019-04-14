@@ -39,12 +39,12 @@ class HTMLTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test load exception
-     *
-     * @expectedException \Exception
-     * @expectedExceptionMessage Cannot read
      */
     public function testLoadException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Cannot read');
+
         $filename = __DIR__ . '/../_files/documents/foo.html';
         IOFactory::load($filename, 'HTML');
     }

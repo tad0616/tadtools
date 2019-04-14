@@ -14,6 +14,7 @@
  * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
 namespace PhpOffice\PhpWord\Writer\ODText;
 
 use PhpOffice\Common\XMLWriter;
@@ -28,7 +29,7 @@ class ElementTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnmatchedElements()
     {
-        $elements = array('Image', 'Link', 'Table', 'Text', 'Title');
+        $elements = ['Image', 'Link', 'Table', 'Text', 'Title'];
         foreach ($elements as $element) {
             $objectClass = 'PhpOffice\\PhpWord\\Writer\\ODText\\Element\\' . $element;
             $xmlWriter = new XMLWriter();

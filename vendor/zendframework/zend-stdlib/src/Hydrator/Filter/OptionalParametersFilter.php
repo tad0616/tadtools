@@ -6,6 +6,7 @@
  * @copyright      Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license        http://framework.zend.com/license/new-bsd New BSD License
  */
+
 namespace Zend\Stdlib\Hydrator\Filter;
 
 use InvalidArgumentException;
@@ -25,7 +26,7 @@ class OptionalParametersFilter implements FilterInterface
      *
      * @var bool[]
      */
-    protected static $propertiesCache = array();
+    protected static $propertiesCache = [];
 
     /**
      * {@inheritDoc}
@@ -45,7 +46,7 @@ class OptionalParametersFilter implements FilterInterface
         $mandatoryParameters = array_filter(
             $reflectionMethod->getParameters(),
             function (ReflectionParameter $parameter) {
-                return ! $parameter->isOptional();
+                return !$parameter->isOptional();
             }
         );
 

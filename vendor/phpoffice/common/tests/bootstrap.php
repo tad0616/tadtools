@@ -13,7 +13,6 @@
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  * @link        https://github.com/PHPOffice/Common
  */
-
 date_default_timezone_set('UTC');
 
 // defining base dir for tests
@@ -23,24 +22,24 @@ if (!defined('PHPOFFICE_COMMON_TESTS_BASE_DIR')) {
 
 $vendor = realpath(__DIR__ . '/../vendor');
 
-if (file_exists($vendor . "/autoload.php")) {
-    require $vendor . "/autoload.php";
+if (file_exists($vendor . '/autoload.php')) {
+    require $vendor . '/autoload.php';
 } else {
     $vendor = realpath(__DIR__ . '/../../../');
-    if (file_exists($vendor . "/autoload.php")) {
-        require $vendor . "/autoload.php";
+    if (file_exists($vendor . '/autoload.php')) {
+        require $vendor . '/autoload.php';
     } else {
-        throw new Exception("Unable to load dependencies");
+        throw new Exception('Unable to load dependencies');
     }
 }
 
 spl_autoload_register(function ($class) {
     $class = ltrim($class, '\\');
     $prefix = 'PhpOffice\\Common\\Tests';
-    if (strpos($class, $prefix) === 0) {
+    if (0 === mb_strpos($class, $prefix)) {
         $class = str_replace('\\', DIRECTORY_SEPARATOR, $class);
-        $class = join(DIRECTORY_SEPARATOR, array('Common', 'Tests', '_includes')) .
-        substr($class, strlen($prefix));
+        $class = implode(DIRECTORY_SEPARATOR, ['Common', 'Tests', '_includes']) .
+        mb_substr($class, mb_strlen($prefix));
         $file = __DIR__ . DIRECTORY_SEPARATOR . $class . '.php';
         if (file_exists($file)) {
             require_once $file;
@@ -48,5 +47,5 @@ spl_autoload_register(function ($class) {
     }
 });
 
-require_once __DIR__ . "/../src/Common/Autoloader.php";
+require_once __DIR__ . '/../src/Common/Autoloader.php';
 \PhpOffice\Common\Autoloader::register();

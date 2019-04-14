@@ -25,7 +25,6 @@
  *  @version     ##VERSION##, ##DATE##
  */
 
-
 /**  Require tcPDF library */
 $pdfRendererClassFile = PHPExcel_Settings::getPdfRendererPath() . '/tcpdf.php';
 if (file_exists($pdfRendererClassFile)) {
@@ -60,7 +59,7 @@ class PHPExcel_Writer_PDF_tcPDF extends PHPExcel_Writer_PDF_Core implements PHPE
      *  @param     string     $pFilename   Name of the file to save as
      *  @throws    PHPExcel_Writer_Exception
      */
-    public function save($pFilename = NULL)
+    public function save($pFilename = null)
     {
         $fileHandle = parent::prepareForSave($pFilename);
 
@@ -68,16 +67,16 @@ class PHPExcel_Writer_PDF_tcPDF extends PHPExcel_Writer_PDF_Core implements PHPE
         $paperSize = 'LETTER';    //    Letter    (8.5 in. by 11 in.)
 
         //  Check for paper size and page orientation
-        if (is_null($this->getSheetIndex())) {
-            $orientation = ($this->_phpExcel->getSheet(0)->getPageSetup()->getOrientation()
-                == PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE)
+        if (null === $this->getSheetIndex()) {
+            $orientation = (PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE
+                == $this->_phpExcel->getSheet(0)->getPageSetup()->getOrientation())
                     ? 'L'
                     : 'P';
             $printPaperSize = $this->_phpExcel->getSheet(0)->getPageSetup()->getPaperSize();
             $printMargins = $this->_phpExcel->getSheet(0)->getPageMargins();
         } else {
-            $orientation = ($this->_phpExcel->getSheet($this->getSheetIndex())->getPageSetup()->getOrientation()
-                == PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE)
+            $orientation = (PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE
+                == $this->_phpExcel->getSheet($this->getSheetIndex())->getPageSetup()->getOrientation())
                     ? 'L'
                     : 'P';
             $printPaperSize = $this->_phpExcel->getSheet($this->getSheetIndex())->getPageSetup()->getPaperSize();
@@ -85,13 +84,13 @@ class PHPExcel_Writer_PDF_tcPDF extends PHPExcel_Writer_PDF_Core implements PHPE
         }
 
         //  Override Page Orientation
-        if (!is_null($this->getOrientation())) {
-            $orientation = ($this->getOrientation() == PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE)
+        if (null !== $this->getOrientation()) {
+            $orientation = (PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE == $this->getOrientation())
                 ? 'L'
                 : 'P';
         }
         //  Override Paper Size
-        if (!is_null($this->getPaperSize())) {
+        if (null !== $this->getPaperSize()) {
             $printPaperSize = $this->getPaperSize();
         }
 
@@ -99,23 +98,22 @@ class PHPExcel_Writer_PDF_tcPDF extends PHPExcel_Writer_PDF_Core implements PHPE
             $paperSize = self::$_paperSizes[$printPaperSize];
         }
 
-
         //  Create PDF
         $pdf = new TCPDF($orientation, 'pt', $paperSize);
-        $pdf->setFontSubsetting(FALSE);
+        $pdf->setFontSubsetting(false);
         //    Set margins, converting inches to points (using 72 dpi)
         $pdf->SetMargins($printMargins->getLeft() * 72, $printMargins->getTop() * 72, $printMargins->getRight() * 72);
-        $pdf->SetAutoPageBreak(TRUE, $printMargins->getBottom() * 72);
+        $pdf->SetAutoPageBreak(true, $printMargins->getBottom() * 72);
 
-        $pdf->setPrintHeader(FALSE);
-        $pdf->setPrintFooter(FALSE);
+        $pdf->setPrintHeader(false);
+        $pdf->setPrintFooter(false);
 
         $pdf->AddPage();
 
         //  Set the appropriate font
         $pdf->SetFont($this->getFont());
         $pdf->writeHTML(
-            $this->generateHTMLHeader(FALSE) .
+            $this->generateHTMLHeader(false) .
             $this->generateSheetData() .
             $this->generateHTMLFooter()
         );
@@ -130,7 +128,6 @@ class PHPExcel_Writer_PDF_tcPDF extends PHPExcel_Writer_PDF_Core implements PHPE
         //  Write to file
         fwrite($fileHandle, $pdf->output($pFilename, 'S'));
 
-		parent::restoreStateAfterSave($fileHandle);
+        parent::restoreStateAfterSave($fileHandle);
     }
-
 }

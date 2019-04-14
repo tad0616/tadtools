@@ -1,5 +1,5 @@
 <?php
-include_once "tadtools_header.php";
+include_once 'tadtools_header.php';
 
 class JwPlayer
 {
@@ -16,50 +16,50 @@ class JwPlayer
     public $repeat;
 
     //建構函數
-    public function __construct($id = "", $file = "", $image = "", $width = "", $height = "", $skin = "", $mode = "", $display = "", $autostart = false, $repeat = false, $other_code = "")
+    public function __construct($id = '', $file = '', $image = '', $width = '', $height = '', $skin = '', $mode = '', $display = '', $autostart = false, $repeat = false, $other_code = '')
     {
-        $this->width            = (empty($width)) ? "" : $width;
-        $this->play_list_height = ($mode == "playlist" and $display == "bottom") ? $height : 0;
-        $this->height           = (substr($height, -1) == "%") ? $height : 0.6;
-        $this->file             = $file;
-        $this->youtube_id       = $this->getYTid($file);
-        $this->image            = empty($image) ? "https://i3.ytimg.com/vi/{$this->youtube_id}/0.jpg" : $image;
-        $this->skin             = (empty($skin)) ? "" : $skin;
+        $this->width = (empty($width)) ? '' : $width;
+        $this->play_list_height = ('playlist' === $mode and 'bottom' === $display) ? $height : 0;
+        $this->height = ('%' === mb_substr($height, -1)) ? $height : 0.6;
+        $this->file = $file;
+        $this->youtube_id = $this->getYTid($file);
+        $this->image = empty($image) ? "https://i3.ytimg.com/vi/{$this->youtube_id}/0.jpg" : $image;
+        $this->skin = (empty($skin)) ? '' : $skin;
         //$this->skin=(empty($skin))?TADTOOLS_URL."/jwplayer/skin/beelden.zip":$skin;
-        $this->mode       = $mode;
-        $this->display    = $display;
-        $this->id         = $id;
-        $this->autostart  = $autostart;
-        $this->repeat     = $repeat;
+        $this->mode = $mode;
+        $this->display = $display;
+        $this->id = $id;
+        $this->autostart = $autostart;
+        $this->repeat = $repeat;
         $this->other_code = $other_code;
     }
 
     //設定自定義設寬度
-    public function setWidth($width = "")
+    public function setWidth($width = '')
     {
         $this->width = $width;
     }
 
     //設定自定義設高度
-    public function setHeight($height = "")
+    public function setHeight($height = '')
     {
         $this->height = $height;
     }
 
     //設定自定義影片檔
-    public function setFile($file = "")
+    public function setFile($file = '')
     {
         $this->file = $file;
     }
 
     //設定自定義縮圖
-    public function setImage($image = "")
+    public function setImage($image = '')
     {
         $this->image = $image;
     }
 
     //設定自定佈景
-    public function setSkin($skin = "")
+    public function setSkin($skin = '')
     {
         $this->skin = $skin;
     }
@@ -68,18 +68,18 @@ class JwPlayer
     public function render()
     {
         global $xoTheme;
-        $playlistfile = $playlist_setup = "";
+        $playlistfile = $playlist_setup = '';
 
-        if ($this->mode == "playlist") {
-            $file  = "playlist:'{$this->file}',";
-            $image = "";
+        if ('playlist' === $this->mode) {
+            $file = "playlist:'{$this->file}',";
+            $image = '';
 
-            if ($this->display == "bottom") {
+            if ('bottom' === $this->display) {
                 $playlist_size = $this->play_list_height;
             } else {
-                $playlist_size          = "playlist_size";
+                $playlist_size = 'playlist_size';
                 $this->play_list_height = 0;
-                $this->height           = 0.5;
+                $this->height = 0.5;
             }
 
             $playlist_setup = "
@@ -117,17 +117,17 @@ class JwPlayer
 
             ";
         } else {
-            $file  = "file:'{$this->file}',";
+            $file = "file:'{$this->file}',";
             $image = "image:'{$this->image}',";
         }
 
-        $screen_width = empty($this->width) ? "screen_width" : "'{$this->width}'";
-        $rate_height  = substr($this->height, -1) == "%" ? "'{$this->height}'" : "rate_height";
+        $screen_width = empty($this->width) ? 'screen_width' : "'{$this->width}'";
+        $rate_height = '%' === mb_substr($this->height, -1) ? "'{$this->height}'" : 'rate_height';
 
-        $repeat    = empty($this->repeat) ? "" : "repeat: $this->repeat,";
-        $autostart = empty($this->autostart) ? "" : "autostart: $this->autostart,";
+        $repeat = empty($this->repeat) ? '' : "repeat: $this->repeat,";
+        $autostart = empty($this->autostart) ? '' : "autostart: $this->autostart,";
 
-        $player = "
+        $player = '
         <style>
         li.list-group-item >a {
             color: black;
@@ -135,7 +135,7 @@ class JwPlayer
         li.active > a {
             color: white;
         }
-        </style>";
+        </style>';
 
         if ($xoTheme) {
             $xoTheme->addScript('modules/tadtools/jwplayer/jwplayer.js');
@@ -145,7 +145,7 @@ class JwPlayer
         }
         $player .= "<script>jwplayer.key='oLChm0Lmsd2wPANnbFZEpiNs0zOdS8qmJNlfyA==';</script>";
 
-        $player .= ($this->mode == "playlist") ? "
+        $player .= ('playlist' === $this->mode) ? "
         <div id='playlist_zone_{$this->id}' class='row' style='min-height:320px;'>
             <div class='col-sm-8' id='jw_zone_{$this->id}'>
                 <div id='jw_{$this->id}'>Loading the player ...</div>
@@ -187,22 +187,20 @@ class JwPlayer
 
         </script>
         ";
-        return $player;
 
+        return $player;
     }
 
     //抓取 Youtube ID
-    public function getYTid($ytURL = "")
+    public function getYTid($ytURL = '')
     {
-        if (substr($ytURL, 0, 16) == 'https://youtu.be/') {
-            return substr($ytURL, 16);
-        } else {
-            parse_str(parse_url($ytURL, PHP_URL_QUERY), $params);
-
-            return $params['v'];
+        if ('https://youtu.be/' === mb_substr($ytURL, 0, 17)) {
+            return mb_substr($ytURL, 16);
         }
-    }
+        parse_str(parse_url($ytURL, PHP_URL_QUERY), $params);
 
+        return $params['v'];
+    }
 }
 
 // if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/jwplayer_new.php")) {

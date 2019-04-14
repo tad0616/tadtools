@@ -25,16 +25,14 @@ use PhpOffice\Common\Text;
  */
 class TextTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     */
     public function testControlCharacters()
     {
         $this->assertEquals('', Text::controlCharacterPHP2OOXML());
         $this->assertEquals('aeiou', Text::controlCharacterPHP2OOXML('aeiou'));
         $this->assertEquals('àéîöù', Text::controlCharacterPHP2OOXML('àéîöù'));
 
-        $value = rand(0, 8);
-        $this->assertEquals('_x'.sprintf('%04s', strtoupper(dechex($value))).'_', Text::controlCharacterPHP2OOXML(chr($value)));
+        $value = mt_rand(0, 8);
+        $this->assertEquals('_x' . sprintf('%04s', mb_strtoupper(dechex($value))) . '_', Text::controlCharacterPHP2OOXML(chr($value)));
 
         $this->assertEquals('', Text::controlCharacterOOXML2PHP(''));
         $this->assertEquals(chr(0x08), Text::controlCharacterOOXML2PHP('_x0008_'));
@@ -59,6 +57,7 @@ class TextTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('🌃', Text::chr(0x1F303));
         $this->assertEquals('', Text::chr(2097152));
     }
+
     /**
      * Is UTF8
      */

@@ -6,10 +6,10 @@ function xoops_module_update_tadtools(&$module, $old_version)
 {
     global $xoopsDB;
 
-    Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tadtools");
-    Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tadtools/file");
-    Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tadtools/image");
-    Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tadtools/image/.thumbs");
+    Utility::mk_dir(XOOPS_ROOT_PATH . '/uploads/tadtools');
+    Utility::mk_dir(XOOPS_ROOT_PATH . '/uploads/tadtools/file');
+    Utility::mk_dir(XOOPS_ROOT_PATH . '/uploads/tadtools/image');
+    Utility::mk_dir(XOOPS_ROOT_PATH . '/uploads/tadtools/image/.thumbs');
 
     if (!Utility::chk_chk1()) {
         Utility::go_update1();
@@ -49,6 +49,6 @@ function xoops_module_update_tadtools(&$module, $old_version)
     }
      */
     Utility::chk_tadtools_block();
+
     return true;
 }
-

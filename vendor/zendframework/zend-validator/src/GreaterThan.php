@@ -14,7 +14,7 @@ use Zend\Stdlib\ArrayUtils;
 
 class GreaterThan extends AbstractValidator
 {
-    const NOT_GREATER           = 'notGreaterThan';
+    const NOT_GREATER = 'notGreaterThan';
     const NOT_GREATER_INCLUSIVE = 'notGreaterThanInclusive';
 
     /**
@@ -22,17 +22,17 @@ class GreaterThan extends AbstractValidator
      *
      * @var array
      */
-    protected $messageTemplates = array(
+    protected $messageTemplates = [
         self::NOT_GREATER => "The input is not greater than '%min%'",
-        self::NOT_GREATER_INCLUSIVE => "The input is not greater or equal than '%min%'"
-    );
+        self::NOT_GREATER_INCLUSIVE => "The input is not greater or equal than '%min%'",
+    ];
 
     /**
      * @var array
      */
-    protected $messageVariables = array(
-        'min' => 'min'
-    );
+    protected $messageVariables = [
+        'min' => 'min',
+    ];
 
     /**
      * Minimum value
@@ -106,6 +106,7 @@ class GreaterThan extends AbstractValidator
     public function setMin($min)
     {
         $this->min = $min;
+
         return $this;
     }
 
@@ -128,6 +129,7 @@ class GreaterThan extends AbstractValidator
     public function setInclusive($inclusive)
     {
         $this->inclusive = $inclusive;
+
         return $this;
     }
 
@@ -144,11 +146,13 @@ class GreaterThan extends AbstractValidator
         if ($this->inclusive) {
             if ($this->min > $value) {
                 $this->error(self::NOT_GREATER_INCLUSIVE);
+
                 return false;
             }
         } else {
             if ($this->min >= $value) {
                 $this->error(self::NOT_GREATER);
+
                 return false;
             }
         }

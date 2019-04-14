@@ -16,20 +16,19 @@
  * @author       Tad
  * @version      $Id $
  **/
-
 require_once '../../../include/cp_header.php';
 include 'header.php';
 
-include_once XOOPS_ROOT_PATH . "/modules/" . $xoopsModule->getVar("dirname") . "/class/admin.php";
+include_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname') . '/class/admin.php';
 
 $index_admin = new ModuleAdmin();
 
 $index_admin->addConfigLabel(_AM_XDIR_CONFIG_CHECK);
-$index_admin->addLineConfigLabel(_AM_XDIR_CONFIG_PHP, $xoopsModule->getInfo("min_php"), 'php');
-$index_admin->addLineConfigLabel(_AM_XDIR_CONFIG_XOOPS, $xoopsModule->getInfo("min_xoops"), 'xoops');
+$index_admin->addLineConfigLabel(_AM_XDIR_CONFIG_PHP, $xoopsModule->getInfo('min_php'), 'php');
+$index_admin->addLineConfigLabel(_AM_XDIR_CONFIG_XOOPS, $xoopsModule->getInfo('min_xoops'), 'xoops');
 
 echo $index_admin->addNavigation('index.php');
 echo $index_admin->renderIndex();
 
-include "footer.php";
+include 'footer.php';
 xoops_cp_footer();

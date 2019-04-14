@@ -39,12 +39,13 @@ class PHPExcel_Chart_PlotArea
      *
      * @var array of PHPExcel_Chart_DataSeries
      */
-    private $plotSeries = array();
+    private $plotSeries = [];
 
     /**
      * Create a new PHPExcel_Chart_PlotArea
+     * @param mixed $plotSeries
      */
-    public function __construct(PHPExcel_Chart_Layout $layout = null, $plotSeries = array())
+    public function __construct(PHPExcel_Chart_Layout $layout = null, $plotSeries = [])
     {
         $this->layout = $layout;
         $this->plotSeries = $plotSeries;
@@ -81,6 +82,7 @@ class PHPExcel_Chart_PlotArea
         foreach ($this->plotSeries as $plot) {
             $seriesCount += $plot->getPlotSeriesCount();
         }
+
         return $seriesCount;
     }
 
@@ -97,6 +99,7 @@ class PHPExcel_Chart_PlotArea
     /**
      * Get Plot Series by Index
      *
+     * @param mixed $index
      * @return PHPExcel_Chart_DataSeries
      */
     public function getPlotGroupByIndex($index)
@@ -108,12 +111,13 @@ class PHPExcel_Chart_PlotArea
      * Set Plot Series
      *
      * @param [PHPExcel_Chart_DataSeries]
+     * @param mixed $plotSeries
      * @return PHPExcel_Chart_PlotArea
      */
-    public function setPlotSeries($plotSeries = array())
+    public function setPlotSeries($plotSeries = [])
     {
         $this->plotSeries = $plotSeries;
-        
+
         return $this;
     }
 

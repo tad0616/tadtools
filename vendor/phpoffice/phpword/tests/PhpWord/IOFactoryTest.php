@@ -37,11 +37,11 @@ class IOFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Create non-existing writer
-     *
-     * @expectedException \PhpOffice\PhpWord\Exception\Exception
      */
     public function testNonexistentWriterCanNotBeCreated()
     {
+        $this->expectException(\PhpOffice\PhpWord\Exception\Exception::class);
+
         IOFactory::createWriter(new PhpWord(), 'Word2006');
     }
 
@@ -58,11 +58,11 @@ class IOFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Create non-existing reader
-     *
-     * @expectedException \PhpOffice\PhpWord\Exception\Exception
      */
     public function testNonexistentReaderCanNotBeCreated()
     {
+        $this->expectException(\PhpOffice\PhpWord\Exception\Exception::class);
+
         IOFactory::createReader('Word2006');
     }
 

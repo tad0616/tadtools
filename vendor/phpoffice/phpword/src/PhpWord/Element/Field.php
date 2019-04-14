@@ -31,29 +31,29 @@ class Field extends AbstractElement
      *
      * @var array
      */
-    protected $fieldsArray = array(
-        'PAGE'=>array(
-           'properties'=>array(
-               'format' => array('Arabic', 'ArabicDash', 'alphabetic', 'ALPHABETIC', 'roman', 'ROMAN'),
-           ),
-           'options'=>array('PreserveFormat')
-        ),
-        'NUMPAGES'=>array(
-           'properties'=>array(
-               'format' => array('Arabic', 'ArabicDash', 'alphabetic', 'ALPHABETIC', 'roman', 'ROMAN'),
-               'numformat' => array('0', '0,00', '#.##0', '#.##0,00', '€ #.##0,00(€ #.##0,00)', '0%', '0,00%')
-           ),
-           'options'=>array('PreserveFormat')
-        ),
-        'DATE'=>array(
-            'properties'=> array(
-               'dateformat' =>array('d-M-yyyy', 'dddd d MMMM yyyy', 'd MMMM yyyy', 'd-M-yy', 'yyyy-MM-dd',
+    protected $fieldsArray = [
+        'PAGE' => [
+           'properties' => [
+               'format' => ['Arabic', 'ArabicDash', 'alphabetic', 'ALPHABETIC', 'roman', 'ROMAN'],
+           ],
+           'options' => ['PreserveFormat'],
+        ],
+        'NUMPAGES' => [
+           'properties' => [
+               'format' => ['Arabic', 'ArabicDash', 'alphabetic', 'ALPHABETIC', 'roman', 'ROMAN'],
+               'numformat' => ['0', '0,00', '#.##0', '#.##0,00', '€ #.##0,00(€ #.##0,00)', '0%', '0,00%'],
+           ],
+           'options' => ['PreserveFormat'],
+        ],
+        'DATE' => [
+            'properties' => [
+               'dateformat' => ['d-M-yyyy', 'dddd d MMMM yyyy', 'd MMMM yyyy', 'd-M-yy', 'yyyy-MM-dd',
                     'd-MMM-yy', 'd/M/yyyy', 'd MMM. yy', 'd/M/yy', 'MMM-yy', 'd-M-yyy H:mm', 'd-M-yyyy H:mm:ss',
-                    'h:mm am/pm', 'h:mm:ss am/pm', 'HH:mm', 'HH:mm:ss')
-            ),
-            'options'=>array('PreserveFormat', 'LunarCalendar', 'SakaEraCalendar', 'LastUsedFormat')
-        )
-    );
+                    'h:mm am/pm', 'h:mm:ss am/pm', 'HH:mm', 'HH:mm:ss', ],
+            ],
+            'options' => ['PreserveFormat', 'LunarCalendar', 'SakaEraCalendar', 'LastUsedFormat'],
+        ],
+    ];
 
     /**
      * Field type
@@ -67,14 +67,14 @@ class Field extends AbstractElement
      *
      * @var array
      */
-    protected $properties = array();
+    protected $properties = [];
 
     /**
      * Field options
      *
      * @var array
      */
-    protected $options = array();
+    protected $options = [];
 
     /**
      * Create a new Field Element
@@ -83,7 +83,7 @@ class Field extends AbstractElement
      * @param array $properties
      * @param array $options
      */
-    public function __construct($type = null, $properties = array(), $options = array())
+    public function __construct($type = null, $properties = [], $options = [])
     {
         $this->setType($type);
         $this->setProperties($properties);
@@ -95,9 +95,8 @@ class Field extends AbstractElement
      *
      * @param string $type
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException
+     * @return string
      */
     public function setType($type = null)
     {
@@ -105,9 +104,10 @@ class Field extends AbstractElement
             if (isset($this->fieldsArray[$type])) {
                 $this->type = $type;
             } else {
-                throw new \InvalidArgumentException("Invalid type");
+                throw new \InvalidArgumentException('Invalid type');
             }
         }
+
         return $this->type;
     }
 
@@ -126,20 +126,20 @@ class Field extends AbstractElement
      *
      * @param array $properties
      *
-     * @return self
-     *
      * @throws \InvalidArgumentException
+     * @return self
      */
-    public function setProperties($properties = array())
+    public function setProperties($properties = [])
     {
         if (is_array($properties)) {
             foreach (array_keys($properties) as $propkey) {
                 if (!(isset($this->fieldsArray[$this->type]['properties'][$propkey]))) {
-                    throw new \InvalidArgumentException("Invalid property");
+                    throw new \InvalidArgumentException('Invalid property');
                 }
             }
             $this->properties = array_merge($this->properties, $properties);
         }
+
         return $this->properties;
     }
 
@@ -158,20 +158,20 @@ class Field extends AbstractElement
      *
      * @param array $options
      *
-     * @return self
-     *
      * @throws \InvalidArgumentException
+     * @return self
      */
-    public function setOptions($options = array())
+    public function setOptions($options = [])
     {
         if (is_array($options)) {
             foreach (array_keys($options) as $optionkey) {
                 if (!(isset($this->fieldsArray[$this->type]['options'][$optionkey]))) {
-                    throw new \InvalidArgumentException("Invalid option");
+                    throw new \InvalidArgumentException('Invalid option');
                 }
             }
             $this->options = array_merge($this->options, $options);
         }
+
         return $this->options;
     }
 

@@ -30,11 +30,11 @@ class ShadingTest extends \PHPUnit_Framework_TestCase
     public function testGetSetProperties()
     {
         $object = new Shading();
-        $properties = array(
-            'pattern' => array('clear', 'solid'),
-            'color'   => array(null, 'FF0000'),
-            'fill'    => array(null, 'FF0000'),
-        );
+        $properties = [
+            'pattern' => ['clear', 'solid'],
+            'color' => [null, 'FF0000'],
+            'fill' => [null, 'FF0000'],
+        ];
         foreach ($properties as $property => $value) {
             list($default, $expected) = $value;
             $get = "get{$property}";

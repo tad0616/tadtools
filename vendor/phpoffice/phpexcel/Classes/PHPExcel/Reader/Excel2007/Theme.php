@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPExcel_Reader_Excel2007_Theme
  *
@@ -56,7 +55,6 @@ class PHPExcel_Reader_Excel2007_Theme
      */
     private $colourMapValues;
 
-
     /**
      * Colour Map
      *
@@ -64,17 +62,19 @@ class PHPExcel_Reader_Excel2007_Theme
      */
     private $colourMap;
 
-
     /**
      * Create a new PHPExcel_Theme
      *
+     * @param mixed $themeName
+     * @param mixed $colourSchemeName
+     * @param mixed $colourMap
      */
     public function __construct($themeName, $colourSchemeName, $colourMap)
     {
         // Initialise values
-        $this->themeName        = $themeName;
+        $this->themeName = $themeName;
         $this->colourSchemeName = $colourSchemeName;
-        $this->colourMap        = $colourMap;
+        $this->colourMap = $colourMap;
     }
 
     /**
@@ -100,6 +100,7 @@ class PHPExcel_Reader_Excel2007_Theme
     /**
      * Get colour Map Value by Position
      *
+     * @param mixed $index
      * @return string
      */
     public function getColourByIndex($index = 0)
@@ -107,6 +108,7 @@ class PHPExcel_Reader_Excel2007_Theme
         if (isset($this->colourMap[$index])) {
             return $this->colourMap[$index];
         }
+
         return null;
     }
 
@@ -117,7 +119,7 @@ class PHPExcel_Reader_Excel2007_Theme
     {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
-            if ((is_object($value)) && ($key != '_parent')) {
+            if ((is_object($value)) && ('_parent' != $key)) {
                 $this->$key = clone $value;
             } else {
                 $this->$key = $value;

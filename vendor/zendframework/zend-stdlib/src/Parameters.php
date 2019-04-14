@@ -24,7 +24,7 @@ class Parameters extends PhpArrayObject implements ParametersInterface
     public function __construct(array $values = null)
     {
         if (null === $values) {
-            $values = array();
+            $values = [];
         }
         parent::__construct($values, ArrayObject::ARRAY_AS_PROPS);
     }
@@ -32,7 +32,6 @@ class Parameters extends PhpArrayObject implements ParametersInterface
     /**
      * Populate from native PHP array
      *
-     * @param  array $values
      * @return void
      */
     public function fromArray(array $values)
@@ -48,7 +47,7 @@ class Parameters extends PhpArrayObject implements ParametersInterface
      */
     public function fromString($string)
     {
-        $array = array();
+        $array = [];
         parse_str($string, $array);
         $this->fromArray($array);
     }
@@ -86,7 +85,6 @@ class Parameters extends PhpArrayObject implements ParametersInterface
         if ($this->offsetExists($name)) {
             return parent::offsetGet($name);
         }
-        return;
     }
 
     /**
@@ -99,6 +97,7 @@ class Parameters extends PhpArrayObject implements ParametersInterface
         if ($this->offsetExists($name)) {
             return parent::offsetGet($name);
         }
+
         return $default;
     }
 
@@ -110,6 +109,7 @@ class Parameters extends PhpArrayObject implements ParametersInterface
     public function set($name, $value)
     {
         $this[$name] = $value;
+
         return $this;
     }
 }

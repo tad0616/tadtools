@@ -16,8 +16,8 @@ id or name ：主索引的名稱
 value ：預設值，如果是空白，就是以原本內容為主
 
  */
-include_once "tadtools_header.php";
-include_once "jquery.php";
+include_once 'tadtools_header.php';
+include_once 'jquery.php';
 
 class bootstrap3_editable
 {
@@ -30,11 +30,11 @@ class bootstrap3_editable
     }
 
     //產生語法
-    public function render($name = ".editable", $url = "ajax.php")
+    public function render($name = '.editable', $url = 'ajax.php')
     {
         global $xoTheme;
 
-        $jquery = $this->show_jquery ? get_jquery() : "";
+        $jquery = $this->show_jquery ? get_jquery() : '';
 
         if ($xoTheme) {
             $xoTheme->addStylesheet('modules/tadtools/bootstrap3-editable/css/bootstrap-editable.css');

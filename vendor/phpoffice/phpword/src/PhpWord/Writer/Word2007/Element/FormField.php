@@ -49,15 +49,15 @@ class FormField extends Text
         }
 
         $type = $element->getType();
-        $instructions = array('textinput' => 'FORMTEXT', 'checkbox' => 'FORMCHECKBOX', 'dropdown' => 'FORMDROPDOWN');
+        $instructions = ['textinput' => 'FORMTEXT', 'checkbox' => 'FORMCHECKBOX', 'dropdown' => 'FORMDROPDOWN'];
         $instruction = $instructions[$type];
         $writeFormField = "write{$type}";
         $name = $element->getName();
-        if ($name === null) {
+        if (null === $name) {
             $name = $type . $element->getElementId();
         }
         $value = $element->getValue();
-        if ($value === null) {
+        if (null === $value) {
             $value = str_repeat(' ', self::FILLER_LENGTH);
         }
 
@@ -80,7 +80,7 @@ class FormField extends Text
         $xmlWriter->startElement('w:instrText');
         $xmlWriter->writeAttribute('xml:space', 'preserve');
         $xmlWriter->text("{$instruction}");
-        $xmlWriter->endElement();// w:instrText
+        $xmlWriter->endElement(); // w:instrText
         $xmlWriter->endElement(); // w:r
 
         $xmlWriter->startElement('w:r');
@@ -112,8 +112,6 @@ class FormField extends Text
      * Write textinput.
      *
      * @link http://www.datypic.com/sc/ooxml/t-w_CT_FFTextInput.html
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
-     * @param \PhpOffice\PhpWord\Element\FormField $element
      * @return void
      */
     private function writeTextInput(XMLWriter $xmlWriter, FormFieldElement $element)
@@ -129,15 +127,13 @@ class FormField extends Text
      * Write checkbox.
      *
      * @link http://www.datypic.com/sc/ooxml/t-w_CT_FFCheckBox.html
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
-     * @param \PhpOffice\PhpWord\Element\FormField $element
      * @return void
      */
     private function writeCheckBox(XMLWriter $xmlWriter, FormFieldElement $element)
     {
         $default = $element->getDefault() ? 1 : 0;
         $value = $element->getValue();
-        if ($value == null) {
+        if (null == $value) {
             $value = $default;
         }
         $value = $value ? 1 : 0;
@@ -153,15 +149,13 @@ class FormField extends Text
      * Write dropdown.
      *
      * @link http://www.datypic.com/sc/ooxml/t-w_CT_FFDDList.html
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
-     * @param \PhpOffice\PhpWord\Element\FormField $element
      * @return void
      */
     private function writeDropDown(XMLWriter $xmlWriter, FormFieldElement $element)
     {
         $default = $element->getDefault();
         $value = $element->getValue();
-        if ($value == null) {
+        if (null == $value) {
             $value = $default;
         }
         $entries = $element->getEntries();

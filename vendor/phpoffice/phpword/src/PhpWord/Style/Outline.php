@@ -123,7 +123,7 @@ class Outline extends AbstractStyle
      *
      * @param array $style
      */
-    public function __construct($style = array())
+    public function __construct($style = [])
     {
         $this->setStyleByArray($style);
     }
@@ -225,8 +225,8 @@ class Outline extends AbstractStyle
      */
     public function setLine($value = null)
     {
-        $enum = array(self::LINE_SINGLE, self::LINE_THIN_THIN, self::LINE_THIN_THICK,
-            self::LINE_THICK_THIN, self::LINE_THICK_BETWEEN_THIN);
+        $enum = [self::LINE_SINGLE, self::LINE_THIN_THIN, self::LINE_THIN_THICK,
+            self::LINE_THICK_THIN, self::LINE_THICK_BETWEEN_THIN, ];
         $this->line = $this->setEnumVal($value, $enum, null);
 
         return $this;
@@ -250,7 +250,7 @@ class Outline extends AbstractStyle
      */
     public function setEndCap($value = null)
     {
-        $enum = array(self::ENDCAP_FLAT, self::ENDCAP_SQUARE, self::ENDCAP_ROUND);
+        $enum = [self::ENDCAP_FLAT, self::ENDCAP_SQUARE, self::ENDCAP_ROUND];
         $this->endCap = $this->setEnumVal($value, $enum, null);
 
         return $this;
@@ -274,8 +274,8 @@ class Outline extends AbstractStyle
      */
     public function setStartArrow($value = null)
     {
-        $enum = array(self::ARROW_NONE, self::ARROW_BLOCK, self::ARROW_CLASSIC,
-            self::ARROW_OVAL, self::ARROW_DIAMOND, self::ARROW_OPEN);
+        $enum = [self::ARROW_NONE, self::ARROW_BLOCK, self::ARROW_CLASSIC,
+            self::ARROW_OVAL, self::ARROW_DIAMOND, self::ARROW_OPEN, ];
         $this->startArrow = $this->setEnumVal($value, $enum, null);
 
         return $this;
@@ -299,8 +299,8 @@ class Outline extends AbstractStyle
      */
     public function setEndArrow($value = null)
     {
-        $enum = array(self::ARROW_NONE, self::ARROW_BLOCK, self::ARROW_CLASSIC,
-            self::ARROW_OVAL, self::ARROW_DIAMOND, self::ARROW_OPEN);
+        $enum = [self::ARROW_NONE, self::ARROW_BLOCK, self::ARROW_CLASSIC,
+            self::ARROW_OVAL, self::ARROW_DIAMOND, self::ARROW_OPEN, ];
         $this->endArrow = $this->setEnumVal($value, $enum, null);
 
         return $this;

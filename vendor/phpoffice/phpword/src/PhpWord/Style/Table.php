@@ -130,7 +130,7 @@ class Table extends Border
     public function __construct($tableStyle = null, $firstRowStyle = null)
     {
         // Clone first row from table style, but with certain properties disabled
-        if ($firstRowStyle !== null && is_array($firstRowStyle)) {
+        if (null !== $firstRowStyle && is_array($firstRowStyle)) {
             $this->firstRowStyle = clone $this;
             $this->firstRowStyle->isFirstRow = true;
             unset($this->firstRowStyle->firstRowStyle);
@@ -145,7 +145,7 @@ class Table extends Border
             $this->firstRowStyle->setStyleByArray($firstRowStyle);
         }
 
-        if ($tableStyle !== null && is_array($tableStyle)) {
+        if (null !== $tableStyle && is_array($tableStyle)) {
             $this->setStyleByArray($tableStyle);
         }
     }
@@ -167,7 +167,7 @@ class Table extends Border
      */
     public function getBgColor()
     {
-        if ($this->shading !== null) {
+        if (null !== $this->shading) {
             return $this->shading->getFill();
         }
 
@@ -182,7 +182,7 @@ class Table extends Border
      */
     public function setBgColor($value = null)
     {
-        $this->setShading(array('fill' => $value));
+        $this->setShading(['fill' => $value]);
 
         return $this;
     }
@@ -194,14 +194,14 @@ class Table extends Border
      */
     public function getBorderSize()
     {
-        return array(
+        return [
             $this->getBorderTopSize(),
             $this->getBorderLeftSize(),
             $this->getBorderRightSize(),
             $this->getBorderBottomSize(),
             $this->getBorderInsideHSize(),
             $this->getBorderInsideVSize(),
-        );
+        ];
     }
 
     /**
@@ -229,14 +229,14 @@ class Table extends Border
      */
     public function getBorderColor()
     {
-        return array(
+        return [
             $this->getBorderTopColor(),
             $this->getBorderLeftColor(),
             $this->getBorderRightColor(),
             $this->getBorderBottomColor(),
             $this->getBorderInsideHColor(),
             $this->getBorderInsideVColor(),
-        );
+        ];
     }
 
     /**
@@ -432,12 +432,12 @@ class Table extends Border
      */
     public function getCellMargin()
     {
-        return array(
+        return [
             $this->cellMarginTop,
             $this->cellMarginLeft,
             $this->cellMarginRight,
-            $this->cellMarginBottom
-        );
+            $this->cellMarginBottom,
+        ];
     }
 
     /**
@@ -584,7 +584,7 @@ class Table extends Border
      */
     public function setUnit($value = null)
     {
-        $enum = array(self::WIDTH_AUTO, self::WIDTH_PERCENT, self::WIDTH_TWIP);
+        $enum = [self::WIDTH_AUTO, self::WIDTH_PERCENT, self::WIDTH_TWIP];
         $this->unit = $this->setEnumVal($value, $enum, $this->unit);
 
         return $this;

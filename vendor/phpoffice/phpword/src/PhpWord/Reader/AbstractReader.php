@@ -62,6 +62,7 @@ abstract class AbstractReader implements ReaderInterface
     public function setReadDataOnly($value = true)
     {
         $this->readDataOnly = $value;
+
         return $this;
     }
 
@@ -70,21 +71,20 @@ abstract class AbstractReader implements ReaderInterface
      *
      * @param string $filename
      *
-     * @return resource
-     *
      * @throws \PhpOffice\PhpWord\Exception\Exception
+     * @return resource
      */
     protected function openFile($filename)
     {
         // Check if file exists
         if (!file_exists($filename) || !is_readable($filename)) {
-            throw new Exception("Could not open " . $filename . " for reading! File does not exist.");
+            throw new Exception('Could not open ' . $filename . ' for reading! File does not exist.');
         }
 
         // Open file
-        $this->fileHandle = fopen($filename, 'r');
-        if ($this->fileHandle === false) {
-            throw new Exception("Could not open file " . $filename . " for reading.");
+        $this->fileHandle = fopen($filename, 'rb');
+        if (false === $this->fileHandle) {
+            throw new Exception('Could not open file ' . $filename . ' for reading.');
         }
     }
 

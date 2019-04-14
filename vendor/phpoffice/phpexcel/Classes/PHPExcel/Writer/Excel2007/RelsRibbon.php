@@ -31,8 +31,8 @@ class PHPExcel_Writer_Excel2007_RelsRibbon extends PHPExcel_Writer_Excel2007_Wri
      * Write relationships for additional objects of custom UI (ribbon)
      *
      * @param     PHPExcel    $pPHPExcel
-     * @return     string         XML Output
      * @throws     PHPExcel_Writer_Exception
+     * @return     string         XML Output
      */
     public function writeRibbonRelationships(PHPExcel $pPHPExcel = null)
     {

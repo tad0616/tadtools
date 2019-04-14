@@ -34,25 +34,25 @@ class TextBoxTest extends \PHPUnit_Framework_TestCase
     {
         $object = new TextBox();
 
-        $properties = array(
-            'width'             => 200,
-            'height'            => 200,
-            'alignment'         => Jc::START,
-            'marginTop'         => 240,
-            'marginLeft'        => 240,
-            'wrappingStyle'     => 'inline',
-            'positioning'       => 'absolute',
-            'posHorizontal'     => 'center',
-            'posVertical'       => 'top',
-            'posHorizontalRel'  => 'margin',
-            'posVerticalRel'    => 'page',
-            'innerMarginTop'    => '5',
-            'innerMarginRight'  => '5',
+        $properties = [
+            'width' => 200,
+            'height' => 200,
+            'alignment' => Jc::START,
+            'marginTop' => 240,
+            'marginLeft' => 240,
+            'wrappingStyle' => 'inline',
+            'positioning' => 'absolute',
+            'posHorizontal' => 'center',
+            'posVertical' => 'top',
+            'posHorizontalRel' => 'margin',
+            'posVerticalRel' => 'page',
+            'innerMarginTop' => '5',
+            'innerMarginRight' => '5',
             'innerMarginBottom' => '5',
-            'innerMarginLeft'   => '5',
-            'borderSize'        => '2',
-            'borderColor'       => 'red',
-        );
+            'innerMarginLeft' => '5',
+            'borderSize' => '2',
+            'borderColor' => 'red',
+        ];
         foreach ($properties as $key => $value) {
             $set = "set{$key}";
             $get = "get{$key}";
@@ -68,25 +68,25 @@ class TextBoxTest extends \PHPUnit_Framework_TestCase
     {
         $object = new TextBox();
 
-        $properties = array(
-            'width'             => 200,
-            'height'            => 200,
-            'alignment'         => Jc::START,
-            'marginTop'         => 240,
-            'marginLeft'        => 240,
-            'wrappingStyle'     => 'inline',
-            'positioning'       => 'absolute',
-            'posHorizontal'     => 'center',
-            'posVertical'       => 'top',
-            'posHorizontalRel'  => 'margin',
-            'posVerticalRel'    => 'page',
-            'innerMarginTop'    => '5',
-            'innerMarginRight'  => '5',
+        $properties = [
+            'width' => 200,
+            'height' => 200,
+            'alignment' => Jc::START,
+            'marginTop' => 240,
+            'marginLeft' => 240,
+            'wrappingStyle' => 'inline',
+            'positioning' => 'absolute',
+            'posHorizontal' => 'center',
+            'posVertical' => 'top',
+            'posHorizontalRel' => 'margin',
+            'posVerticalRel' => 'page',
+            'innerMarginTop' => '5',
+            'innerMarginRight' => '5',
             'innerMarginBottom' => '5',
-            'innerMarginLeft'   => '5',
-            'borderSize'        => '2',
-            'borderColor'       => 'red',
-        );
+            'innerMarginLeft' => '5',
+            'borderSize' => '2',
+            'borderColor' => 'red',
+        ];
         foreach ($properties as $key => $value) {
             $get = "get{$key}";
             $object->setStyleValue("{$key}", $value);
@@ -96,11 +96,11 @@ class TextBoxTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test setWrappingStyle exception
-     *
-     * @expectedException \InvalidArgumentException
      */
     public function testSetWrappingStyleException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $object = new TextBox();
         $object->setWrappingStyle('foo');
     }
@@ -238,7 +238,6 @@ class TextBoxTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $object->getPosVerticalRel());
     }
 
-
     /**
      * Test set/get innerMarginRight
      */
@@ -280,7 +279,7 @@ class TextBoxTest extends \PHPUnit_Framework_TestCase
         $expected = 5;
         $object = new TextBox();
         $object->setInnerMargin($expected);
-        $this->assertEquals(array($expected, $expected, $expected, $expected), $object->getInnerMargin());
+        $this->assertEquals([$expected, $expected, $expected, $expected], $object->getInnerMargin());
     }
 
     /**

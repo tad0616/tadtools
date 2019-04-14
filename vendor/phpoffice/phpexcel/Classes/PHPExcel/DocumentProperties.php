@@ -30,9 +30,9 @@ class PHPExcel_DocumentProperties
     /** constants */
     const PROPERTY_TYPE_BOOLEAN = 'b';
     const PROPERTY_TYPE_INTEGER = 'i';
-    const PROPERTY_TYPE_FLOAT   = 'f';
-    const PROPERTY_TYPE_DATE    = 'd';
-    const PROPERTY_TYPE_STRING  = 's';
+    const PROPERTY_TYPE_FLOAT = 'f';
+    const PROPERTY_TYPE_DATE = 'd';
+    const PROPERTY_TYPE_STRING = 's';
     const PROPERTY_TYPE_UNKNOWN = 'u';
 
     /**
@@ -117,8 +117,7 @@ class PHPExcel_DocumentProperties
      *
      * @var string
      */
-    private $customProperties = array();
-
+    private $customProperties = [];
 
     /**
      * Create a new PHPExcel_DocumentProperties
@@ -127,7 +126,7 @@ class PHPExcel_DocumentProperties
     {
         // Initialise values
         $this->lastModifiedBy = $this->creator;
-        $this->created  = time();
+        $this->created = time();
         $this->modified = time();
     }
 
@@ -150,6 +149,7 @@ class PHPExcel_DocumentProperties
     public function setCreator($pValue = '')
     {
         $this->creator = $pValue;
+
         return $this;
     }
 
@@ -172,6 +172,7 @@ class PHPExcel_DocumentProperties
     public function setLastModifiedBy($pValue = '')
     {
         $this->lastModifiedBy = $pValue;
+
         return $this;
     }
 
@@ -193,7 +194,7 @@ class PHPExcel_DocumentProperties
      */
     public function setCreated($pValue = null)
     {
-        if ($pValue === null) {
+        if (null === $pValue) {
             $pValue = time();
         } elseif (is_string($pValue)) {
             if (is_numeric($pValue)) {
@@ -204,6 +205,7 @@ class PHPExcel_DocumentProperties
         }
 
         $this->created = $pValue;
+
         return $this;
     }
 
@@ -225,7 +227,7 @@ class PHPExcel_DocumentProperties
      */
     public function setModified($pValue = null)
     {
-        if ($pValue === null) {
+        if (null === $pValue) {
             $pValue = time();
         } elseif (is_string($pValue)) {
             if (is_numeric($pValue)) {
@@ -236,6 +238,7 @@ class PHPExcel_DocumentProperties
         }
 
         $this->modified = $pValue;
+
         return $this;
     }
 
@@ -258,6 +261,7 @@ class PHPExcel_DocumentProperties
     public function setTitle($pValue = '')
     {
         $this->title = $pValue;
+
         return $this;
     }
 
@@ -280,6 +284,7 @@ class PHPExcel_DocumentProperties
     public function setDescription($pValue = '')
     {
         $this->description = $pValue;
+
         return $this;
     }
 
@@ -302,6 +307,7 @@ class PHPExcel_DocumentProperties
     public function setSubject($pValue = '')
     {
         $this->subject = $pValue;
+
         return $this;
     }
 
@@ -324,6 +330,7 @@ class PHPExcel_DocumentProperties
     public function setKeywords($pValue = '')
     {
         $this->keywords = $pValue;
+
         return $this;
     }
 
@@ -346,6 +353,7 @@ class PHPExcel_DocumentProperties
     public function setCategory($pValue = '')
     {
         $this->category = $pValue;
+
         return $this;
     }
 
@@ -368,6 +376,7 @@ class PHPExcel_DocumentProperties
     public function setCompany($pValue = '')
     {
         $this->company = $pValue;
+
         return $this;
     }
 
@@ -390,6 +399,7 @@ class PHPExcel_DocumentProperties
     public function setManager($pValue = '')
     {
         $this->manager = $pValue;
+
         return $this;
     }
 
@@ -425,7 +435,6 @@ class PHPExcel_DocumentProperties
         if (isset($this->customProperties[$propertyName])) {
             return $this->customProperties[$propertyName]['value'];
         }
-
     }
 
     /**
@@ -439,7 +448,6 @@ class PHPExcel_DocumentProperties
         if (isset($this->customProperties[$propertyName])) {
             return $this->customProperties[$propertyName]['type'];
         }
-
     }
 
     /**
@@ -457,12 +465,12 @@ class PHPExcel_DocumentProperties
      */
     public function setCustomProperty($propertyName, $propertyValue = '', $propertyType = null)
     {
-        if (($propertyType === null) || (!in_array($propertyType, array(self::PROPERTY_TYPE_INTEGER,
+        if ((null === $propertyType) || (!in_array($propertyType, [self::PROPERTY_TYPE_INTEGER,
                                                                         self::PROPERTY_TYPE_FLOAT,
                                                                         self::PROPERTY_TYPE_STRING,
                                                                         self::PROPERTY_TYPE_DATE,
-                                                                        self::PROPERTY_TYPE_BOOLEAN)))) {
-            if ($propertyValue === null) {
+                                                                        self::PROPERTY_TYPE_BOOLEAN, ], true))) {
+            if (null === $propertyValue) {
                 $propertyType = self::PROPERTY_TYPE_STRING;
             } elseif (is_float($propertyValue)) {
                 $propertyType = self::PROPERTY_TYPE_FLOAT;
@@ -475,10 +483,11 @@ class PHPExcel_DocumentProperties
             }
         }
 
-        $this->customProperties[$propertyName] = array(
+        $this->customProperties[$propertyName] = [
             'value' => $propertyValue,
-            'type' => $propertyType
-        );
+            'type' => $propertyType,
+        ];
+
         return $this;
     }
 
@@ -535,7 +544,7 @@ class PHPExcel_DocumentProperties
                 return strtotime($propertyValue);
                 break;
             case 'bool':     //    Boolean
-                return ($propertyValue == 'true') ? true : false;
+                return ('true' == $propertyValue) ? true : false;
                 break;
             case 'cy':       //    Currency
             case 'error':    //    Error Status Code
@@ -553,6 +562,7 @@ class PHPExcel_DocumentProperties
                 return $propertyValue;
                 break;
         }
+
         return $propertyValue;
     }
 
@@ -606,6 +616,7 @@ class PHPExcel_DocumentProperties
                 return self::PROPERTY_TYPE_UNKNOWN;
                 break;
         }
+
         return self::PROPERTY_TYPE_UNKNOWN;
     }
 }

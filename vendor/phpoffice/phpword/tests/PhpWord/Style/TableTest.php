@@ -35,8 +35,8 @@ class TableTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstruct()
     {
-        $styleTable = array('bgColor' => 'FF0000');
-        $styleFirstRow = array('borderBottomSize' => 3);
+        $styleTable = ['bgColor' => 'FF0000'];
+        $styleFirstRow = ['borderBottomSize' => 3];
 
         $object = new Table();
         $this->assertNull($object->getBgColor());
@@ -56,28 +56,28 @@ class TableTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Table();
 
-        $attributes = array(
-            'bgColor'            => 'FF0000',
-            'borderTopSize'      => 4,
-            'borderTopColor'     => 'FF0000',
-            'borderLeftSize'     => 4,
-            'borderLeftColor'    => 'FF0000',
-            'borderRightSize'    => 4,
-            'borderRightColor'   => 'FF0000',
-            'borderBottomSize'   => 4,
-            'borderBottomColor'  => 'FF0000',
-            'borderInsideHSize'  => 4,
+        $attributes = [
+            'bgColor' => 'FF0000',
+            'borderTopSize' => 4,
+            'borderTopColor' => 'FF0000',
+            'borderLeftSize' => 4,
+            'borderLeftColor' => 'FF0000',
+            'borderRightSize' => 4,
+            'borderRightColor' => 'FF0000',
+            'borderBottomSize' => 4,
+            'borderBottomColor' => 'FF0000',
+            'borderInsideHSize' => 4,
             'borderInsideHColor' => 'FF0000',
-            'borderInsideVSize'  => 4,
+            'borderInsideVSize' => 4,
             'borderInsideVColor' => 'FF0000',
-            'cellMarginTop'      => 240,
-            'cellMarginLeft'     => 240,
-            'cellMarginRight'    => 240,
-            'cellMarginBottom'   => 240,
-            'alignment'          => JcTable::CENTER,
-            'width'              => 100,
-            'unit'               => 'pct',
-        );
+            'cellMarginTop' => 240,
+            'cellMarginLeft' => 240,
+            'cellMarginRight' => 240,
+            'cellMarginBottom' => 240,
+            'alignment' => JcTable::CENTER,
+            'width' => 100,
+            'unit' => 'pct',
+        ];
         foreach ($attributes as $key => $value) {
             $set = "set{$key}";
             $get = "get{$key}";
@@ -95,7 +95,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
     public function testBorderColor()
     {
         $object = new Table();
-        $parts = array('Top', 'Left', 'Right', 'Bottom', 'InsideH', 'InsideV');
+        $parts = ['Top', 'Left', 'Right', 'Bottom', 'InsideH', 'InsideV'];
 
         $value = 'FF0000';
         $object->setBorderColor($value);
@@ -117,7 +117,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
     public function testBorderSize()
     {
         $object = new Table();
-        $parts = array('Top', 'Left', 'Right', 'Bottom', 'InsideH', 'InsideV');
+        $parts = ['Top', 'Left', 'Right', 'Bottom', 'InsideH', 'InsideV'];
 
         $value = 4;
         $object->setBorderSize($value);
@@ -139,7 +139,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
     public function testCellMargin()
     {
         $object = new Table();
-        $parts = array('Top', 'Left', 'Right', 'Bottom');
+        $parts = ['Top', 'Left', 'Right', 'Bottom'];
 
         $value = 240;
         $object->setCellMargin($value);
@@ -162,10 +162,10 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $object->setStyleValue('cellMargin', 240);
         $object->setStyleValue('borderColor', '999999');
 
-        $this->assertEquals(array(120, 120, 120, 120, 120, 120), $object->getBorderSize());
-        $this->assertEquals(array(240, 240, 240, 240), $object->getCellMargin());
+        $this->assertEquals([120, 120, 120, 120, 120, 120], $object->getBorderSize());
+        $this->assertEquals([240, 240, 240, 240], $object->getCellMargin());
         $this->assertEquals(
-            array('999999', '999999', '999999', '999999', '999999', '999999'),
+            ['999999', '999999', '999999', '999999', '999999', '999999'],
             $object->getBorderColor()
         );
     }

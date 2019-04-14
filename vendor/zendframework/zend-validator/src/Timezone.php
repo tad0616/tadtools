@@ -13,54 +13,54 @@ use DateTimeZone;
 
 class Timezone extends AbstractValidator
 {
-    const INVALID                       = 'invalidTimezone';
-    const INVALID_TIMEZONE_LOCATION     = 'invalidTimezoneLocation';
+    const INVALID = 'invalidTimezone';
+    const INVALID_TIMEZONE_LOCATION = 'invalidTimezoneLocation';
     const INVALID_TIMEZONE_ABBREVIATION = 'invalidTimezoneAbbreviation';
 
-    const LOCATION      = 0x01;
-    const ABBREVIATION  = 0x02;
-    const ALL           = 0x03;
+    const LOCATION = 0x01;
+    const ABBREVIATION = 0x02;
+    const ALL = 0x03;
 
     /**
      * @var array
      */
-    protected $constants = array(
-        self::LOCATION       => 'location',
-        self::ABBREVIATION   => 'abbreviation',
-    );
+    protected $constants = [
+        self::LOCATION => 'location',
+        self::ABBREVIATION => 'abbreviation',
+    ];
 
     /**
      * Default value for types; value = 3
      *
      * @var array
      */
-    protected $defaultType = array(
+    protected $defaultType = [
         self::LOCATION,
         self::ABBREVIATION,
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $messageTemplates = array(
-        self::INVALID                       => 'Invalid timezone given.',
-        self::INVALID_TIMEZONE_LOCATION     => 'Invalid timezone location given.',
+    protected $messageTemplates = [
+        self::INVALID => 'Invalid timezone given.',
+        self::INVALID_TIMEZONE_LOCATION => 'Invalid timezone location given.',
         self::INVALID_TIMEZONE_ABBREVIATION => 'Invalid timezone abbreviation given.',
-    );
+    ];
 
     /**
      * Options for this validator
      *
      * @var array
      */
-    protected $options = array();
+    protected $options = [];
 
     /**
      * Constructor
      *
      * @param array|int $options OPTIONAL
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         $opts['type'] = $this->defaultType;
 
@@ -68,7 +68,7 @@ class Timezone extends AbstractValidator
             if (array_key_exists('type', $options)) {
                 $opts['type'] = $options['type'];
             }
-        } elseif (! empty($options)) {
+        } elseif (!empty($options)) {
             $opts['type'] = $options;
         }
 
@@ -107,8 +107,9 @@ class Timezone extends AbstractValidator
      */
     public function isValid($value)
     {
-        if ($value !== null && !is_string($value)) {
+        if (null !== $value && !is_string($value)) {
             $this->error(self::INVALID);
+
             return false;
         }
 
@@ -121,28 +122,29 @@ class Timezone extends AbstractValidator
                 $abbrs = DateTimeZone::listAbbreviations();
                 $locations = DateTimeZone::listIdentifiers();
 
-                if (!array_key_exists($value, $abbrs) && !in_array($value, $locations)) {
+                if (!array_key_exists($value, $abbrs) && !in_array($value, $locations, true)) {
                     $this->error(self::INVALID);
+
                     return false;
                 }
                 break;
-
             // Check only in locations
             case ($type & self::LOCATION):
                 $locations = DateTimeZone::listIdentifiers();
 
-                if (!in_array($value, $locations)) {
+                if (!in_array($value, $locations, true)) {
                     $this->error(self::INVALID_TIMEZONE_LOCATION);
+
                     return false;
                 }
                 break;
-
             // Check only in abbreviations
             case ($type & self::ABBREVIATION):
                 $abbrs = DateTimeZone::listAbbreviations();
 
                 if (!array_key_exists($value, $abbrs)) {
                     $this->error(self::INVALID_TIMEZONE_ABBREVIATION);
+
                     return false;
                 }
                 break;
@@ -158,14 +160,14 @@ class Timezone extends AbstractValidator
      */
     protected function calculateTypeValue($type)
     {
-        $types    = (array) $type;
+        $types = (array) $type;
         $detected = 0;
 
         foreach ($types as $value) {
             if (is_int($value)) {
                 $detected |= $value;
-            } elseif (false !== ($position = array_search($value, $this->constants))) {
-                $detected |= array_search($value, $this->constants);
+            } elseif (false !== ($position = array_search($value, $this->constants, true))) {
+                $detected |= array_search($value, $this->constants, true);
             }
         }
 

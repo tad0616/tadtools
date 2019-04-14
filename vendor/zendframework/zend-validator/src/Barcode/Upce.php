@@ -16,7 +16,7 @@ class Upce extends AbstractAdapter
      */
     public function __construct()
     {
-        $this->setLength(array(6, 7, 8));
+        $this->setLength([6, 7, 8]);
         $this->setCharacters('0123456789');
         $this->setChecksum('gtin');
     }
@@ -29,7 +29,7 @@ class Upce extends AbstractAdapter
      */
     public function hasValidLength($value)
     {
-        if (strlen($value) != 8) {
+        if (8 != mb_strlen($value)) {
             $this->useChecksum(false);
         } else {
             $this->useChecksum(true);

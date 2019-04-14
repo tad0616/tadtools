@@ -6,6 +6,7 @@
  * @copyright      Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license        http://framework.zend.com/license/new-bsd New BSD License
  */
+
 namespace Zend\Stdlib\Hydrator\Filter;
 
 use ArrayObject;
@@ -40,7 +41,7 @@ class FilterComposite implements FilterInterface
      * @param  array $andFilter
      * @throws InvalidArgumentException
      */
-    public function __construct($orFilter = array(), $andFilter = array())
+    public function __construct($orFilter = [], $andFilter = [])
     {
         array_walk(
             $orFilter,
@@ -101,9 +102,9 @@ class FilterComposite implements FilterInterface
             );
         }
 
-        if ($condition === self::CONDITION_OR) {
+        if (self::CONDITION_OR === $condition) {
             $this->orFilter[$name] = $filter;
-        } elseif ($condition === self::CONDITION_AND) {
+        } elseif (self::CONDITION_AND === $condition) {
             $this->andFilter[$name] = $filter;
         }
 
@@ -153,9 +154,9 @@ class FilterComposite implements FilterInterface
         $andCount = count($this->andFilter);
         $orCount = count($this->orFilter);
         // return true if no filters are registered
-        if ($orCount === 0 && $andCount === 0) {
+        if (0 === $orCount && 0 === $andCount) {
             return true;
-        } elseif ($orCount === 0 && $andCount !== 0) {
+        } elseif (0 === $orCount && 0 !== $andCount) {
             $returnValue = true;
         } else {
             $returnValue = false;
@@ -164,30 +165,28 @@ class FilterComposite implements FilterInterface
         // Check if 1 from the or filters return true
         foreach ($this->orFilter as $filter) {
             if (is_callable($filter)) {
-                if ($filter($property) === true) {
+                if (true === $filter($property)) {
                     $returnValue = true;
                     break;
                 }
                 continue;
-            } else {
-                if ($filter->filter($property) === true) {
-                    $returnValue = true;
-                    break;
-                }
+            }
+            if (true === $filter->filter($property)) {
+                $returnValue = true;
+                break;
             }
         }
 
         // Check if all of the and condition return true
         foreach ($this->andFilter as $filter) {
             if (is_callable($filter)) {
-                if ($filter($property) === false) {
+                if (false === $filter($property)) {
                     return false;
                 }
                 continue;
-            } else {
-                if ($filter->filter($property) === false) {
-                    return false;
-                }
+            }
+            if (false === $filter->filter($property)) {
+                return false;
             }
         }
 

@@ -97,8 +97,6 @@ class Numbering extends AbstractPart
     /**
      * Write level.
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
-     * @param \PhpOffice\PhpWord\Style\NumberingLevel $level
      * @return void
      */
     private function writeLevel(XMLWriter $xmlWriter, NumberingLevel $level)
@@ -107,19 +105,19 @@ class Numbering extends AbstractPart
         $xmlWriter->writeAttribute('w:ilvl', $level->getLevel());
 
         // Numbering level properties
-        $properties = array(
-            'start'     => 'start',
-            'format'    => 'numFmt',
-            'restart'   => 'lvlRestart',
-            'pStyle'    => 'pStyle',
-            'suffix'    => 'suff',
-            'text'      => 'lvlText',
+        $properties = [
+            'start' => 'start',
+            'format' => 'numFmt',
+            'restart' => 'lvlRestart',
+            'pStyle' => 'pStyle',
+            'suffix' => 'suff',
+            'text' => 'lvlText',
             'alignment' => 'lvlJc',
-        );
+        ];
         foreach ($properties as $property => $nodeName) {
             $getMethod = "get{$property}";
             if ('' !== $level->$getMethod()         // this condition is now supported by `alignment` only
-                && !is_null($level->$getMethod())) {
+                && null !== $level->$getMethod()) {
                 $xmlWriter->startElement("w:{$nodeName}");
                 $xmlWriter->writeAttribute('w:val', $level->$getMethod());
                 $xmlWriter->endElement(); // w:start
@@ -138,8 +136,6 @@ class Numbering extends AbstractPart
      *
      * @since 0.11.0
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
-     * @param \PhpOffice\PhpWord\Style\NumberingLevel $level
      * @return void
      * @todo Use paragraph style writer
      */
@@ -154,13 +150,13 @@ class Numbering extends AbstractPart
         $xmlWriter->startElement('w:tabs');
         $xmlWriter->startElement('w:tab');
         $xmlWriter->writeAttribute('w:val', 'num');
-        $xmlWriter->writeAttributeIf($tabPos !== null, 'w:pos', $tabPos);
+        $xmlWriter->writeAttributeIf(null !== $tabPos, 'w:pos', $tabPos);
         $xmlWriter->endElement(); // w:tab
         $xmlWriter->endElement(); // w:tabs
 
         $xmlWriter->startElement('w:ind');
-        $xmlWriter->writeAttributeIf($left !== null, 'w:left', $left);
-        $xmlWriter->writeAttributeIf($hanging !== null, 'w:hanging', $hanging);
+        $xmlWriter->writeAttributeIf(null !== $left, 'w:left', $left);
+        $xmlWriter->writeAttributeIf(null !== $hanging, 'w:hanging', $hanging);
         $xmlWriter->endElement(); // w:ind
 
         $xmlWriter->endElement(); // w:pPr
@@ -171,8 +167,6 @@ class Numbering extends AbstractPart
      *
      * @since 0.11.0
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
-     * @param \PhpOffice\PhpWord\Style\NumberingLevel $level
      * @return void
      * @todo Use font style writer
      */
@@ -183,10 +177,10 @@ class Numbering extends AbstractPart
 
         $xmlWriter->startElement('w:rPr');
         $xmlWriter->startElement('w:rFonts');
-        $xmlWriter->writeAttributeIf($font !== null, 'w:ascii', $font);
-        $xmlWriter->writeAttributeIf($font !== null, 'w:hAnsi', $font);
-        $xmlWriter->writeAttributeIf($font !== null, 'w:cs', $font);
-        $xmlWriter->writeAttributeIf($hint !== null, 'w:hint', $hint);
+        $xmlWriter->writeAttributeIf(null !== $font, 'w:ascii', $font);
+        $xmlWriter->writeAttributeIf(null !== $font, 'w:hAnsi', $font);
+        $xmlWriter->writeAttributeIf(null !== $font, 'w:cs', $font);
+        $xmlWriter->writeAttributeIf(null !== $hint, 'w:hint', $hint);
         $xmlWriter->endElement(); // w:rFonts
         $xmlWriter->endElement(); // w:rPr
     }
@@ -199,6 +193,6 @@ class Numbering extends AbstractPart
      */
     private function getRandomHexNumber($length = 8)
     {
-        return strtoupper(substr(md5(rand()), 0, $length));
+        return mb_strtoupper(mb_substr(md5(mt_rand()), 0, $length));
     }
 }

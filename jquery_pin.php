@@ -8,8 +8,8 @@ $jquery_pin=new jquery_pin();
 $jquery_pin_code=$jquery_pin->render('.edit_dropdown');
 $xoopsTpl->assign('jquery_pin_code',$jquery_pin_code);
  */
-include_once "tadtools_header.php";
-include_once "jquery.php";
+include_once 'tadtools_header.php';
+include_once 'jquery.php';
 
 class jquery_pin
 {
@@ -22,14 +22,14 @@ class jquery_pin
     }
 
     //產生語法
-    public function render($name = "", $minWidth = 940)
+    public function render($name = '', $minWidth = 940)
     {
         global $xoTheme;
         if (empty($minWidth)) {
             $minWidth = 940;
         }
 
-        $jquery = $this->show_jquery ? get_jquery() : "";
+        $jquery = $this->show_jquery ? get_jquery() : '';
 
         if ($xoTheme) {
             $xoTheme->addScript('modules/tadtools/jquery.pin/jquery.pin.js');

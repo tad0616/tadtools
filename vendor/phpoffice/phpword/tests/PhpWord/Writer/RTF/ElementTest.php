@@ -14,6 +14,7 @@
  * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
 namespace PhpOffice\PhpWord\Writer\RTF;
 
 use PhpOffice\PhpWord\Writer\RTF;
@@ -28,7 +29,7 @@ class ElementTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnmatchedElements()
     {
-        $elements = array('Container', 'Text', 'Title', 'Link', 'Image', 'Table');
+        $elements = ['Container', 'Text', 'Title', 'Link', 'Image', 'Table'];
         foreach ($elements as $element) {
             $objectClass = 'PhpOffice\\PhpWord\\Writer\\RTF\\Element\\' . $element;
             $parentWriter = new RTF();

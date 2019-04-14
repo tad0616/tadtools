@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPExcel_WorksheetIterator
  *
@@ -109,7 +108,7 @@ class PHPExcel_WorksheetIterator implements Iterator
     /**
      * More PHPExcel_Worksheet instances available?
      *
-     * @return boolean
+     * @return bool
      */
     public function valid()
     {

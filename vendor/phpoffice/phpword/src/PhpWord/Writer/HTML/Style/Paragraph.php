@@ -37,7 +37,7 @@ class Paragraph extends AbstractStyle
         if (!$style instanceof \PhpOffice\PhpWord\Style\Paragraph) {
             return '';
         }
-        $css = array();
+        $css = [];
 
         // Alignment
         if ('' !== $style->getAlignment()) {
@@ -49,11 +49,9 @@ class Paragraph extends AbstractStyle
                 case Jc::LEFT:
                     $textAlign = 'left';
                     break;
-
                 case Jc::CENTER:
                     $textAlign = 'center';
                     break;
-
                 case Jc::END:
                 case Jc::MEDIUM_KASHIDA:
                 case Jc::HIGH_KASHIDA:
@@ -61,14 +59,12 @@ class Paragraph extends AbstractStyle
                 case Jc::RIGHT:
                     $textAlign = 'right';
                     break;
-
                 case Jc::BOTH:
                 case Jc::DISTRIBUTE:
                 case Jc::THAI_DISTRIBUTE:
                 case Jc::JUSTIFY:
                     $textAlign = 'justify';
                     break;
-
                 default:
                     $textAlign = 'left';
                     break;
@@ -79,11 +75,11 @@ class Paragraph extends AbstractStyle
 
         // Spacing
         $spacing = $style->getSpace();
-        if (!is_null($spacing)) {
+        if (null !== $spacing) {
             $before = $spacing->getBefore();
             $after = $spacing->getAfter();
-            $css['margin-top'] = $this->getValueIf(!is_null($before), ($before / 20) . 'pt');
-            $css['margin-bottom'] = $this->getValueIf(!is_null($after), ($after / 20) . 'pt');
+            $css['margin-top'] = $this->getValueIf(null !== $before, ($before / 20) . 'pt');
+            $css['margin-bottom'] = $this->getValueIf(null !== $after, ($after / 20) . 'pt');
         }
 
         return $this->assembleCss($css);

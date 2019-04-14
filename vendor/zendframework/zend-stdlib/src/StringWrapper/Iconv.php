@@ -19,7 +19,7 @@ class Iconv extends AbstractStringWrapper
      * @var string[]
      * @link http://www.gnu.org/software/libiconv/
      */
-    protected static $encodings = array(
+    protected static $encodings = [
         // European languages
         'ASCII',
         'ISO-8859-1',
@@ -195,7 +195,7 @@ class Iconv extends AbstractStringWrapper
         // Platform specifics
         'ATARIST',
         'RISCOS-LATIN1',
-    );
+    ];
 
     /**
      * Get a list of supported character encodings
@@ -267,9 +267,9 @@ class Iconv extends AbstractStringWrapper
      */
     public function convert($str, $reverse = false)
     {
-        $encoding        = $this->getEncoding();
+        $encoding = $this->getEncoding();
         $convertEncoding = $this->getConvertEncoding();
-        if ($convertEncoding === null) {
+        if (null === $convertEncoding) {
             throw new Exception\LogicException(
                 'No convert encoding defined'
             );
@@ -280,7 +280,7 @@ class Iconv extends AbstractStringWrapper
         }
 
         $fromEncoding = $reverse ? $convertEncoding : $encoding;
-        $toEncoding   = $reverse ? $encoding : $convertEncoding;
+        $toEncoding = $reverse ? $encoding : $convertEncoding;
 
         // automatically add "//IGNORE" to not stop converting on invalid characters
         // invalid characters triggers a notice anyway

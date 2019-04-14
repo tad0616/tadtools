@@ -30,8 +30,8 @@ class Settings
      * @const string
      */
     const ZIPARCHIVE = 'ZipArchive';
-    const PCLZIP     = 'PclZip';
-    const OLD_LIB    = 'PhpOffice\\PhpWord\\Shared\\ZipArchive'; // @deprecated 0.11
+    const PCLZIP = 'PclZip';
+    const OLD_LIB = 'PhpOffice\\PhpWord\\Shared\\ZipArchive'; // @deprecated 0.11
 
     /**
      * PDF rendering libraries
@@ -39,8 +39,8 @@ class Settings
      * @const string
      */
     const PDF_RENDERER_DOMPDF = 'DomPDF';
-    const PDF_RENDERER_TCPDF  = 'TCPDF';
-    const PDF_RENDERER_MPDF   = 'MPDF';
+    const PDF_RENDERER_TCPDF = 'TCPDF';
+    const PDF_RENDERER_MPDF = 'MPDF';
 
     /**
      * Measurement units multiplication factor
@@ -53,12 +53,12 @@ class Settings
      *
      * @const string
      */
-    const UNIT_TWIP  = 'twip'; // = 1/20 point
-    const UNIT_CM    = 'cm';
-    const UNIT_MM    = 'mm';
-    const UNIT_INCH  = 'inch';
+    const UNIT_TWIP = 'twip'; // = 1/20 point
+    const UNIT_CM = 'cm';
+    const UNIT_MM = 'mm';
+    const UNIT_INCH = 'inch';
     const UNIT_POINT = 'point'; // = 1/72 inch
-    const UNIT_PICA  = 'pica'; // = 1/6 inch = 12 points
+    const UNIT_PICA = 'pica'; // = 1/6 inch = 12 points
 
     /**
      * Default font settings
@@ -133,7 +133,7 @@ class Settings
      * @var bool
      */
     private static $outputEscapingEnabled = false;
-    
+
     /**
      * Return the compatibility option used by the XMLWriter
      *
@@ -178,8 +178,9 @@ class Settings
      */
     public static function setZipClass($zipClass)
     {
-        if (in_array($zipClass, array(self::PCLZIP, self::ZIPARCHIVE, self::OLD_LIB))) {
+        if (in_array($zipClass, [self::PCLZIP, self::ZIPARCHIVE, self::OLD_LIB], true)) {
             self::$zipClass = $zipClass;
+
             return true;
         }
 
@@ -220,15 +221,14 @@ class Settings
      */
     public static function setPdfRendererName($libraryName)
     {
-        $pdfRenderers = array(self::PDF_RENDERER_DOMPDF, self::PDF_RENDERER_TCPDF, self::PDF_RENDERER_MPDF);
-        if (!in_array($libraryName, $pdfRenderers)) {
+        $pdfRenderers = [self::PDF_RENDERER_DOMPDF, self::PDF_RENDERER_TCPDF, self::PDF_RENDERER_MPDF];
+        if (!in_array($libraryName, $pdfRenderers, true)) {
             return false;
         }
         self::$pdfRendererName = $libraryName;
 
         return true;
     }
-
 
     /**
      * Return the directory path to the PDF Rendering Library.
@@ -274,9 +274,9 @@ class Settings
      */
     public static function setMeasurementUnit($value)
     {
-        $units = array(self::UNIT_TWIP, self::UNIT_CM, self::UNIT_MM, self::UNIT_INCH,
-            self::UNIT_POINT, self::UNIT_PICA);
-        if (!in_array($value, $units)) {
+        $units = [self::UNIT_TWIP, self::UNIT_CM, self::UNIT_MM, self::UNIT_INCH,
+            self::UNIT_POINT, self::UNIT_PICA, ];
+        if (!in_array($value, $units, true)) {
             return false;
         }
         self::$measurementUnit = $value;
@@ -331,7 +331,7 @@ class Settings
     /**
      * @since 0.13.0
      * 
-     * @param boolean $outputEscapingEnabled
+     * @param bool $outputEscapingEnabled
      *
      * @codeCoverageIgnore
      */
@@ -358,8 +358,9 @@ class Settings
      */
     public static function setDefaultFontName($value)
     {
-        if (is_string($value) && trim($value) !== '') {
+        if (is_string($value) && '' !== trim($value)) {
             self::$defaultFontName = $value;
+
             return true;
         }
 
@@ -387,6 +388,7 @@ class Settings
         $value = intval($value);
         if ($value > 0) {
             self::$defaultFontSize = $value;
+
             return true;
         }
 
@@ -404,10 +406,10 @@ class Settings
         // Get config file
         $configFile = null;
         $configPath = __DIR__ . '/../../';
-        if ($filename !== null) {
-            $files = array($filename);
+        if (null !== $filename) {
+            $files = [$filename];
         } else {
-            $files = array("{$configPath}phpword.ini", "{$configPath}phpword.ini.dist");
+            $files = ["{$configPath}phpword.ini", "{$configPath}phpword.ini.dist"];
         }
         foreach ($files as $file) {
             if (file_exists($file)) {
@@ -417,10 +419,10 @@ class Settings
         }
 
         // Parse config file
-        $config = array();
-        if ($configFile !== null) {
+        $config = [];
+        if (null !== $configFile) {
             $config = @parse_ini_file($configFile);
-            if ($config === false) {
+            if (false === $config) {
                 return $config;
             }
         }

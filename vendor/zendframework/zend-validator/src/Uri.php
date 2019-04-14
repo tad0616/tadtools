@@ -22,10 +22,10 @@ class Uri extends AbstractValidator
     /**
      * @var array
      */
-    protected $messageTemplates = array(
-        self::INVALID => "Invalid type given. String expected",
-        self::NOT_URI => "The input does not appear to be a valid Uri",
-    );
+    protected $messageTemplates = [
+        self::INVALID => 'Invalid type given. String expected',
+        self::NOT_URI => 'The input does not appear to be a valid Uri',
+    ];
 
     /**
      * @var UriHandler
@@ -47,7 +47,7 @@ class Uri extends AbstractValidator
      *
      * @param array|Traversable $options
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         if ($options instanceof Traversable) {
             $options = iterator_to_array($options);
@@ -88,10 +88,10 @@ class Uri extends AbstractValidator
             $this->uriHandler = new UriHandler();
         } elseif (is_string($this->uriHandler) && class_exists($this->uriHandler)) {
             // Instantiate string Uri handler that references a class
-            $this->uriHandler = new $this->uriHandler;
+            $this->uriHandler = new $this->uriHandler();
         }
 
-        if (! $this->uriHandler instanceof UriHandler) {
+        if (!$this->uriHandler instanceof UriHandler) {
             throw new InvalidArgumentException('URI handler is expected to be a Zend\Uri\Uri object');
         }
 
@@ -105,11 +105,12 @@ class Uri extends AbstractValidator
      */
     public function setUriHandler($uriHandler)
     {
-        if (! is_subclass_of($uriHandler, 'Zend\Uri\Uri')) {
+        if (!is_subclass_of($uriHandler, 'Zend\Uri\Uri')) {
             throw new InvalidArgumentException('Expecting a subclass name or instance of Zend\Uri\Uri as $uriHandler');
         }
 
         $this->uriHandler = $uriHandler;
+
         return $this;
     }
 
@@ -132,6 +133,7 @@ class Uri extends AbstractValidator
     public function setAllowAbsolute($allowAbsolute)
     {
         $this->allowAbsolute = (bool) $allowAbsolute;
+
         return $this;
     }
 
@@ -154,6 +156,7 @@ class Uri extends AbstractValidator
     public function setAllowRelative($allowRelative)
     {
         $this->allowRelative = (bool) $allowRelative;
+
         return $this;
     }
 
@@ -167,10 +170,12 @@ class Uri extends AbstractValidator
     {
         if (!is_string($value)) {
             $this->error(self::INVALID);
+
             return false;
         }
 
         $uriHandler = $this->getUriHandler();
+
         try {
             $uriHandler->parse($value);
             if ($uriHandler->isValid()) {
@@ -187,6 +192,7 @@ class Uri extends AbstractValidator
         }
 
         $this->error(self::NOT_URI);
+
         return false;
     }
 }

@@ -35,12 +35,12 @@ abstract class AbstractPart
      * @var \Zend\Escaper\Escaper
      */
     protected $escaper;
-    
+
     public function __construct()
     {
         $this->escaper = new Escaper();
     }
-    
+
     /**
      * @return string
      */
@@ -57,16 +57,14 @@ abstract class AbstractPart
     }
 
     /**
-     * @return \PhpOffice\PhpWord\Writer\AbstractWriter
-     *
      * @throws \PhpOffice\PhpWord\Exception\Exception
+     * @return \PhpOffice\PhpWord\Writer\AbstractWriter
      */
     public function getParentWriter()
     {
-        if ($this->parentWriter !== null) {
+        if (null !== $this->parentWriter) {
             return $this->parentWriter;
-        } else {
-            throw new Exception('No parent WriterInterface assigned.');
         }
+        throw new Exception('No parent WriterInterface assigned.');
     }
 }

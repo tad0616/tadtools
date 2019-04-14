@@ -29,14 +29,14 @@ class Border extends AbstractStyle
      *
      * @var array
      */
-    private $sizes = array();
+    private $sizes = [];
 
     /**
      * Colors
      *
      * @var array
      */
-    private $colors = array();
+    private $colors = [];
 
     /**
      * Write style
@@ -47,7 +47,7 @@ class Border extends AbstractStyle
     {
         $content = '';
 
-        $sides = array('top', 'left', 'right', 'bottom');
+        $sides = ['top', 'left', 'right', 'bottom'];
         $sizeCount = count($this->sizes) - 1;
 
         // Page border measure
@@ -55,7 +55,7 @@ class Border extends AbstractStyle
         $content .= '\pgbrdropt32';
 
         for ($i = 0; $i < $sizeCount; $i++) {
-            if ($this->sizes[$i] !== null) {
+            if (null !== $this->sizes[$i]) {
                 $color = null;
                 if (isset($this->colors[$i])) {
                     $color = $this->colors[$i];
@@ -80,17 +80,17 @@ class Border extends AbstractStyle
         /** @var \PhpOffice\PhpWord\Writer\RTF $rtfWriter */
         $rtfWriter = $this->getParentWriter();
         $colorIndex = 0;
-        if ($rtfWriter !== null) {
+        if (null !== $rtfWriter) {
             $colorTable = $rtfWriter->getColorTable();
-            $index = array_search($color, $colorTable);
-            if ($index !== false && $colorIndex !== null) {
+            $index = array_search($color, $colorTable, true);
+            if (false !== $index && null !== $colorIndex) {
                 $colorIndex = $index + 1;
             }
         }
 
         $content = '';
 
-        $content .= '\pgbrdr' . substr($side, 0, 1);
+        $content .= '\pgbrdr' . mb_substr($side, 0, 1);
         $content .= '\brdrs'; // Single-thickness border; @todo Get other type of border
         $content .= '\brdrw' . $width; // Width
         $content .= '\brdrcf' . $colorIndex; // Color
@@ -103,7 +103,7 @@ class Border extends AbstractStyle
     /**
      * Set sizes.
      *
-     * @param integer[] $value
+     * @param int[] $value
      * @return void
      */
     public function setSizes($value)

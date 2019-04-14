@@ -16,25 +16,24 @@ use Zend\Validator\Exception;
 
 /**
  * Validator for the size of all files which will be validated in sum
- *
  */
 class FilesSize extends Size
 {
     /**
      * @const string Error constants
      */
-    const TOO_BIG      = 'fileFilesSizeTooBig';
-    const TOO_SMALL    = 'fileFilesSizeTooSmall';
+    const TOO_BIG = 'fileFilesSizeTooBig';
+    const TOO_SMALL = 'fileFilesSizeTooSmall';
     const NOT_READABLE = 'fileFilesSizeNotReadable';
 
     /**
      * @var array Error message templates
      */
-    protected $messageTemplates = array(
-        self::TOO_BIG      => "All files in sum should have a maximum size of '%max%' but '%size%' were detected",
-        self::TOO_SMALL    => "All files in sum should have a minimum size of '%min%' but '%size%' were detected",
-        self::NOT_READABLE => "One or more files can not be read",
-    );
+    protected $messageTemplates = [
+        self::TOO_BIG => "All files in sum should have a maximum size of '%max%' but '%size%' were detected",
+        self::TOO_SMALL => "All files in sum should have a minimum size of '%min%' but '%size%' were detected",
+        self::NOT_READABLE => 'One or more files can not be read',
+    ];
 
     /**
      * Internal file array
@@ -54,18 +53,18 @@ class FilesSize extends Size
      */
     public function __construct($options = null)
     {
-        $this->files = array();
+        $this->files = [];
         $this->setSize(0);
 
         if ($options instanceof Traversable) {
             $options = ArrayUtils::iteratorToArray($options);
         } elseif (is_scalar($options)) {
-            $options = array('max' => $options);
+            $options = ['max' => $options];
         } elseif (!is_array($options)) {
             throw new Exception\InvalidArgumentException('Invalid options to validator provided');
         }
 
-        if (1 < func_num_args()) {
+        if (func_num_args() > 1) {
             $argv = func_get_args();
             array_shift($argv);
             $options['max'] = array_shift($argv);
@@ -88,13 +87,13 @@ class FilesSize extends Size
     public function isValid($value, $file = null)
     {
         if (is_string($value)) {
-            $value = array($value);
+            $value = [$value];
         } elseif (is_array($value) && isset($value['tmp_name'])) {
-            $value = array($value);
+            $value = [$value];
         }
 
-        $min  = $this->getMin(true);
-        $max  = $this->getMax(true);
+        $min = $this->getMin(true);
+        $max = $this->getMax(true);
         $size = $this->getSize();
         foreach ($value as $files) {
             if (is_array($files)) {
@@ -125,13 +124,13 @@ class FilesSize extends Size
             $size += filesize($files);
             ErrorHandler::stop();
             $this->size = $size;
-            if (($max !== null) && ($max < $size)) {
+            if ((null !== $max) && ($max < $size)) {
                 if ($this->getByteString()) {
                     $this->options['max'] = $this->toByteString($max);
-                    $this->size          = $this->toByteString($size);
+                    $this->size = $this->toByteString($size);
                     $this->throwError($file, self::TOO_BIG);
                     $this->options['max'] = $max;
-                    $this->size          = $size;
+                    $this->size = $size;
                 } else {
                     $this->throwError($file, self::TOO_BIG);
                 }
@@ -139,13 +138,13 @@ class FilesSize extends Size
         }
 
         // Check that aggregate files are >= minimum size
-        if (($min !== null) && ($size < $min)) {
+        if ((null !== $min) && ($size < $min)) {
             if ($this->getByteString()) {
                 $this->options['min'] = $this->toByteString($min);
-                $this->size          = $this->toByteString($size);
+                $this->size = $this->toByteString($size);
                 $this->throwError($file, self::TOO_SMALL);
                 $this->options['min'] = $min;
-                $this->size          = $size;
+                $this->size = $size;
             } else {
                 $this->throwError($file, self::TOO_SMALL);
             }
@@ -167,7 +166,7 @@ class FilesSize extends Size
      */
     protected function throwError($file, $errorType)
     {
-        if ($file !== null) {
+        if (null !== $file) {
             if (is_array($file)) {
                 if (array_key_exists('name', $file)) {
                     $this->value = $file['name'];
@@ -178,6 +177,7 @@ class FilesSize extends Size
         }
 
         $this->error($errorType);
+
         return false;
     }
 }

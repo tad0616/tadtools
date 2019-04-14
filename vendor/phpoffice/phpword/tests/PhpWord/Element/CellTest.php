@@ -40,7 +40,7 @@ class CellTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructWithStyleArray()
     {
-        $oCell = new Cell(null, array('valign' => 'center'));
+        $oCell = new Cell(null, ['valign' => 'center']);
 
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Style\\Cell', $oCell->getStyle());
         $this->assertNull($oCell->getWidth());
@@ -186,11 +186,11 @@ class CellTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test add object exception
-     *
-     * @expectedException \PhpOffice\PhpWord\Exception\InvalidObjectException
      */
     public function testAddObjectException()
     {
+        $this->expectException(\PhpOffice\PhpWord\Exception\InvalidObjectException::class);
+
         $src = __DIR__ . '/../_files/xsl/passthrough.xsl';
         $oCell = new Cell();
         $oCell->addObject($src);
@@ -220,16 +220,16 @@ class CellTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(1, $oCell->getElements());
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Element\\PreserveText', $element);
-        $this->assertEquals(array('ééé'), $element->getText());
+        $this->assertEquals(['ééé'], $element->getText());
     }
 
     /**
      * Add preserve text exception
-     *
-     * @expectedException \BadMethodCallException
      */
     public function testAddPreserveTextException()
     {
+        $this->expectException(\BadMethodCallException::class);
+
         $oCell = new Cell();
         $oCell->setDocPart('Section', 1);
         $oCell->addPreserveText('text');

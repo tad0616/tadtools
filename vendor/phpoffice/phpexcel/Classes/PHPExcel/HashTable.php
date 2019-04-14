@@ -32,14 +32,14 @@ class PHPExcel_HashTable
      *
      * @var array
      */
-    protected $items = array();
+    protected $items = [];
 
     /**
      * HashTable key map
      *
      * @var array
      */
-    protected $keyMap = array();
+    protected $keyMap = [];
 
     /**
      * Create a new PHPExcel_HashTable
@@ -49,7 +49,7 @@ class PHPExcel_HashTable
      */
     public function __construct($pSource = null)
     {
-        if ($pSource !== null) {
+        if (null !== $pSource) {
             // Create HashTable
             $this->addFromSource($pSource);
         }
@@ -64,7 +64,7 @@ class PHPExcel_HashTable
     public function addFromSource($pSource = null)
     {
         // Check if an array was passed
-        if ($pSource == null) {
+        if (null == $pSource) {
             return;
         } elseif (!is_array($pSource)) {
             throw new PHPExcel_Exception('Invalid array parameter passed.');
@@ -118,12 +118,11 @@ class PHPExcel_HashTable
 
     /**
      * Clear HashTable
-     *
      */
     public function clear()
     {
-        $this->items = array();
-        $this->keyMap = array();
+        $this->items = [];
+        $this->keyMap = [];
     }
 
     /**
@@ -144,7 +143,7 @@ class PHPExcel_HashTable
      */
     public function getIndexForHashCode($pHashCode = '')
     {
-        return array_search($pHashCode, $this->keyMap);
+        return array_search($pHashCode, $this->keyMap, true);
     }
 
     /**
@@ -152,7 +151,6 @@ class PHPExcel_HashTable
      *
      * @param    int    $pIndex
      * @return    PHPExcel_IComparable
-     *
      */
     public function getByIndex($pIndex = 0)
     {
@@ -168,7 +166,6 @@ class PHPExcel_HashTable
      *
      * @param    string    $pHashCode
      * @return    PHPExcel_IComparable
-     *
      */
     public function getByHashCode($pHashCode = '')
     {

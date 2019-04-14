@@ -19,7 +19,6 @@ class StaticValidator
     /**
      * Set plugin manager to use for locating validators
      *
-     * @param  ValidatorPluginManager|null $plugins
      * @return void
      */
     public static function setPluginManager(ValidatorPluginManager $plugins = null)
@@ -41,6 +40,7 @@ class StaticValidator
         if (null === static::$plugins) {
             static::setPluginManager(new ValidatorPluginManager());
         }
+
         return static::$plugins;
     }
 
@@ -50,11 +50,12 @@ class StaticValidator
      * @param  array    $args          OPTIONAL
      * @return bool
      */
-    public static function execute($value, $classBaseName, array $args = array())
+    public static function execute($value, $classBaseName, array $args = [])
     {
         $plugins = static::getPluginManager();
 
         $validator = $plugins->get($classBaseName, $args);
+
         return $validator->isValid($value);
     }
 }

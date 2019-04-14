@@ -16,7 +16,7 @@ class Issn extends AbstractAdapter
      */
     public function __construct()
     {
-        $this->setLength(array(8, 13));
+        $this->setLength([8, 13]);
         $this->setCharacters('0123456789X');
         $this->setChecksum('gtin');
     }
@@ -29,8 +29,8 @@ class Issn extends AbstractAdapter
      */
     public function hasValidCharacters($value)
     {
-        if (strlen($value) != 8) {
-            if (strpos($value, 'X') !== false) {
+        if (8 != mb_strlen($value)) {
+            if (false !== mb_strpos($value, 'X')) {
                 return false;
             }
         }
@@ -46,7 +46,7 @@ class Issn extends AbstractAdapter
      */
     public function hasValidChecksum($value)
     {
-        if (strlen($value) == 8) {
+        if (8 == mb_strlen($value)) {
             $this->setChecksum('issn');
         } else {
             $this->setChecksum('gtin');
@@ -64,12 +64,12 @@ class Issn extends AbstractAdapter
      */
     protected function issn($value)
     {
-        $checksum = substr($value, -1, 1);
-        $values   = str_split(substr($value, 0, -1));
-        $check    = 0;
-        $multi    = 8;
+        $checksum = mb_substr($value, -1, 1);
+        $values = str_split(mb_substr($value, 0, -1));
+        $check = 0;
+        $multi = 8;
         foreach ($values as $token) {
-            if ($token == 'X') {
+            if ('X' == $token) {
                 $token = 10;
             }
 
@@ -78,10 +78,10 @@ class Issn extends AbstractAdapter
         }
 
         $check %= 11;
-        $check  = ($check === 0 ? 0 : (11 - $check));
+        $check = (0 === $check ? 0 : (11 - $check));
         if ($check == $checksum) {
             return true;
-        } elseif (($check == 10) && ($checksum == 'X')) {
+        } elseif ((10 == $check) && ('X' == $checksum)) {
             return true;
         }
 

@@ -41,7 +41,6 @@ if (!defined('PHPWORD_BASE_PATH')) {
  */
 class PHPWord
 {
-
     /**
      * Document properties
      *
@@ -68,14 +67,14 @@ class PHPWord
      *
      * @var array
      */
-    private $_sectionCollection = array();
+    private $_sectionCollection = [];
 
     /**
      * Create a new PHPWord Document
      */
     public function __construct()
     {
-        $this->_properties      = new PHPWord_DocumentProperties();
+        $this->_properties = new PHPWord_DocumentProperties();
         $this->_defaultFontName = 'Arial';
         $this->_defaultFontSize = 20;
     }
@@ -92,7 +91,6 @@ class PHPWord
     /**
      * Set properties
      *
-     * @param  PHPWord_DocumentProperties $value
      * @return PHPWord
      */
     public function setProperties(PHPWord_DocumentProperties $value)
@@ -112,7 +110,7 @@ class PHPWord
     {
         $sectionCount = $this->_countSections() + 1;
 
-        $section                    = new PHPWord_Section($sectionCount, $settings);
+        $section = new PHPWord_Section($sectionCount, $settings);
         $this->_sectionCollection[] = $section;
 
         return $section;
@@ -151,7 +149,7 @@ class PHPWord
      */
     public function setDefaultFontSize($pValue)
     {
-        $pValue                 = $pValue * 2;
+        $pValue = $pValue * 2;
         $this->_defaultFontSize = $pValue;
     }
 
@@ -170,7 +168,8 @@ class PHPWord
      * Adds a font style definition to styles.xml
      *
      * @param $styleName string
-     * @param $styles array
+     * @param mixed $styleFont
+     * @param null|mixed $styleParagraph
      */
     public function addFontStyle($styleName, $styleFont, $styleParagraph = null)
     {
@@ -181,7 +180,8 @@ class PHPWord
      * Adds a table style definition to styles.xml
      *
      * @param $styleName string
-     * @param $styles array
+     * @param mixed $styleTable
+     * @param null|mixed $styleFirstRow
      */
     public function addTableStyle($styleName, $styleTable, $styleFirstRow = null)
     {
@@ -192,7 +192,8 @@ class PHPWord
      * Adds a heading style definition to styles.xml
      *
      * @param $titleCount int
-     * @param $styles array
+     * @param mixed $styleFont
+     * @param null|mixed $styleParagraph
      */
     public function addTitleStyle($titleCount, $styleFont, $styleParagraph = null)
     {
@@ -240,8 +241,7 @@ class PHPWord
             $template = new PHPWord_Template($strFilename);
 
             return $template;
-        } else {
-            trigger_error('Template file ' . $strFilename . ' not found.', E_ERROR);
         }
+        trigger_error('Template file ' . $strFilename . ' not found.', E_ERROR);
     }
 }

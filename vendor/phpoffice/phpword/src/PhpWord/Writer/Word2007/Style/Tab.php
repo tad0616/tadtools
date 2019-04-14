@@ -37,9 +37,9 @@ class Tab extends AbstractStyle
         }
         $xmlWriter = $this->getXmlWriter();
 
-        $xmlWriter->startElement("w:tab");
-        $xmlWriter->writeAttribute("w:val", $style->getType());
-        $xmlWriter->writeAttribute("w:leader", $style->getLeader());
+        $xmlWriter->startElement('w:tab');
+        $xmlWriter->writeAttribute('w:val', $style->getType());
+        $xmlWriter->writeAttribute('w:leader', $style->getLeader());
         $xmlWriter->writeAttribute('w:pos', $this->convertTwip($style->getPosition()));
         $xmlWriter->endElement();
     }

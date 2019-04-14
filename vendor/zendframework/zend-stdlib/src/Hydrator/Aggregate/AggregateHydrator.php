@@ -29,7 +29,6 @@ class AggregateHydrator implements HydratorInterface, EventManagerAwareInterface
     /**
      * Attaches the provided hydrator to the list of hydrators to be used while hydrating/extracting data
      *
-     * @param \Zend\Stdlib\Hydrator\HydratorInterface $hydrator
      * @param int                                     $priority
      */
     public function add(HydratorInterface $hydrator, $priority = self::DEFAULT_PRIORITY)
@@ -66,7 +65,7 @@ class AggregateHydrator implements HydratorInterface, EventManagerAwareInterface
      */
     public function setEventManager(EventManagerInterface $eventManager)
     {
-        $eventManager->setIdentifiers(array(__CLASS__, get_class($this)));
+        $eventManager->setIdentifiers([__CLASS__, get_class($this)]);
 
         $this->eventManager = $eventManager;
     }
