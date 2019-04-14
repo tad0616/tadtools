@@ -1,6 +1,6 @@
 <{php}>
 
-global $xoopsDB, $xoopsConfig, $xoopsModule, $aggreg;
+global $xoopsDB, $xoopsConfig, $aggreg;
 
 $left_count       = count($aggreg->blocks['canvas_left']);
 $right_count      = count($aggreg->blocks['canvas_right']);
@@ -12,18 +12,18 @@ $this->assign('right_count', $right_count);
 
 /**** 取得 Tad Themes 偏好設定****/
 $modhandler  = xoops_gethandler('module');
-$xoopsModule = $modhandler->getByDirname("tad_themes");
-$mid         = ($xoopsModule) ? $xoopsModule->getVar('mid') : 0;
+$TadThemesModule = $modhandler->getByDirname("tad_themes");
+$mid         = ($TadThemesModule) ? $TadThemesModule->getVar('mid') : 0;
 $this->assign('mid', $mid);
 $use_default_config = false;
 
 /**** 取得 Tad Login 偏好設定****/
-$TadLoginXoopsModule = $modhandler->getByDirname("tad_login");
-$TadLoginmid         = ($TadLoginXoopsModule) ? $TadLoginXoopsModule->getVar('mid') : 0;
+$TadLoginModule = $modhandler->getByDirname("tad_login");
+$TadLoginmid         = ($TadLoginModule) ? $TadLoginModule->getVar('mid') : 0;
 
 if (empty($TadLoginmid)) {
-    $TadLoginXoopsModule = $modhandler->getByDirname("tn_login");
-    $TadLoginmid         = ($TadLoginXoopsModule) ? $TadLoginXoopsModule->getVar('mid') : 0;
+    $TadLoginModule = $modhandler->getByDirname("tn_login");
+    $TadLoginmid         = ($TadLoginModule) ? $TadLoginModule->getVar('mid') : 0;
 }
 
 $config_handler = xoops_gethandler('config');
@@ -86,10 +86,10 @@ foreach ($default as $k => $v) {
 
 if ($mid) {
 
-    $xoopsModuleConfig = $config_handler->getConfigsByCat(0, $mid);
+    $TadThemesModuleConfig = $config_handler->getConfigsByCat(0, $mid);
 
-    $this->assign('auto_mainmenu', $xoopsModuleConfig['auto_mainmenu']);
-    $this->assign('show_sitename', $xoopsModuleConfig['show_sitename']);
+    $this->assign('auto_mainmenu', $TadThemesModuleConfig['auto_mainmenu']);
+    $this->assign('show_sitename', $TadThemesModuleConfig['show_sitename']);
 
     /****Tad Themes的設定值****/
     if (file_exists(XOOPS_ROOT_PATH . "/modules/tad_themes/xoops_version.php")) {

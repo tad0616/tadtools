@@ -92,7 +92,7 @@ elFinder::$netDrivers['ftp'] = 'FTP';
  **/
 function access($attr, $path, $data, $volume)
 {
-    return 0 === mb_strpos(basename($path), '.')// if file/folder begins with '.' (dot)
+    return 0 === mb_strpos(basename($path), '.') // if file/folder begins with '.' (dot)
      ? !('read' == $attr || 'write' == $attr) // set read+write to false, other (locked+hidden) set to true
      : null; // else elFinder decide it itself
 }
@@ -101,9 +101,9 @@ include_once '../../../../mainfile.php';
 $mdir = $_SESSION['xoops_mod_name'];
 if (!$xoopsModuleConfig) {
     $modhandler = xoops_gethandler('module');
-    $xoopsModule = $modhandler->getByDirname('tadtools');
+    $TadToolsModule = $modhandler->getByDirname('tadtools');
     $config_handler = xoops_gethandler('config');
-    $xoopsModuleConfig = $config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
+    $xoopsModuleConfig = $config_handler->getConfigsByCat(0, $TadToolsModule->getVar('mid'));
 }
 
 $image_max_width = $xoopsModuleConfig['image_max_width'] ? (int) $xoopsModuleConfig['image_max_width'] : 640;

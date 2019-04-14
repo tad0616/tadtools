@@ -1043,7 +1043,7 @@ if (!function_exists('toolbar_bootstrap')) {
                 }
 
                 $urlPath = (empty($moduleName) or 'http://' === mb_substr($url, 0, 7)) ? $url : XOOPS_URL . "/modules/{$moduleName}/{$url}";
-                $urlPath = $url;
+                // $urlPath = $url;
                 // $baseurl = basename($url);
                 //if($baseurl=="index.php" and !preg_match("/admin/", $url))continue;
                 // die($_SERVER['PHP_SELF']);
