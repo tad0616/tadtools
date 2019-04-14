@@ -271,7 +271,7 @@ abstract class PHPExcel_CachedObjectStorage_CacheBase
      */
     public function getHighestColumn($row = null)
     {
-        if (null == $row) {
+        if (null === $row) {
             $colRow = $this->getHighestRowAndColumn();
 
             return $colRow['column'];
@@ -298,7 +298,7 @@ abstract class PHPExcel_CachedObjectStorage_CacheBase
      */
     public function getHighestRow($column = null)
     {
-        if (null == $column) {
+        if (null === $column) {
             $colRow = $this->getHighestRowAndColumn();
 
             return $colRow['row'];

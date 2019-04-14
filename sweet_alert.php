@@ -1,7 +1,7 @@
 <?php
 
-include_once 'tadtools_header.php';
-include_once 'jquery.php';
+require_once __DIR__ . '/tadtools_header.php';
+require_once __DIR__ . '/jquery.php';
 
 class sweet_alert
 {
@@ -43,7 +43,7 @@ class sweet_alert
         } else {
             $main = "
             {$jquery}
-            <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/sweet-alert/sweet-alert.css' />
+            <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/sweet-alert/sweet-alert.css'>
             <script type='text/javascript' src='" . TADTOOLS_URL . "/sweet-alert/sweet-alert.js'></script>
             <script type='text/javascript'>
               function {$func_name}($var){
@@ -83,7 +83,7 @@ location.href="ajax_mk_tbl.php?op=del&modsn=$modsn&mssn=" + mssn;
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/sweet_alert.php")){
 redirect_header("index.php",3, _MA_NEED_TADTOOLS);
 }
-include_once XOOPS_ROOT_PATH."/modules/tadtools/sweet_alert.php";
+require_once XOOPS_ROOT_PATH."/modules/tadtools/sweet_alert.php";
 $sweet_alert=new sweet_alert();
 $sweet_alert->render("del_table","ajax_mk_tbl.php?op=del&modsn=$modsn&mssn=",'mssn');
 

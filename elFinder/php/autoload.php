@@ -1,6 +1,6 @@
 <?php
 
-define('ELFINDER_PHP_ROOT_PATH', dirname(__FILE__));
+define('ELFINDER_PHP_ROOT_PATH', __DIR__);
 
 function elFinderAutoloader($name)
 {

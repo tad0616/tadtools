@@ -8,42 +8,42 @@ $TadUpFiles->set_var("permission", true); //要使用權限控管時才需要
 $TadUpFiles->upload_file($upname,$width,$thumb_width,$files_sn,$desc,$safe_name=false,$hash=false,$return_col,$allow);
 
 //上傳表單（enctype='multipart/form-data'）
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
 $TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="/file",$image="/image",$thumbs="/image/.thumbs");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn); //若 $show_list_del_file ==true 時一定要有
 $upform=$TadUpFiles->upform($show_edit,$upname,$maxlength,$show_list_del_file,$only_type,$thumb);
 
 //儲存：
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
 $TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="/file",$image="/image",$thumbs="/image/.thumbs");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn,$sort);
 $TadUpFiles->upload_file($upname,$width,$thumb_width,$files_sn,$desc,$safe_name=false,$hash=false);
 
 //儲存單一檔案：
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
 $TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="/file",$image="/image",$thumbs="/image/.thumbs");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn,$sort);
 $TadUpFiles->upload_one_file($_FILES['upfile']['name'],$_FILES['upfile']['tmp_name'],$_FILES['upfile']['type'],$_FILES['upfile']['size'],$width,$thumb_width,$files_sn,$desc,$safe_name=false,$hash=false);
 
 //複製匯入單一檔案：
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
 $TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="/file",$image="/image",$thumbs="/image/.thumbs");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn,$sort);
 $TadUpFiles->import_one_file($from="",$new_filename="",$main_width="1280",$thumb_width="120",$files_sn="" ,$desc="" ,$safe_name=false ,$hash=false);
 
 //顯示可刪除列表
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
 $TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="/file",$image="/image",$thumbs="/image/.thumbs");
 $TadUpFiles->set_col($col_name,$col_sn,$sort);
 $TadUpFiles->set_thumb($thumb_width="120px",$thumb_height="70px",$thumb_bg_color="#000");
 $list_del_file=$TadUpFiles->list_del_file($show_edit=false,$mode);
 
 //顯示：
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
 $TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="/file",$image="/image",$thumbs="/image/.thumbs");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn,$sort);
@@ -59,14 +59,14 @@ exit;
 break;
 
 //刪除：
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
 $TadUpFiles=new TadUpFiles("模組名稱");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 //$TadUpFiles->set_col($col_name,$col_sn,$sort); //若要整個刪除
 $TadUpFiles->del_files($files_sn);
 
 //單一檔案圖檔真實路徑：
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
 $TadUpFiles=new TadUpFiles("模組名稱");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn,$sort);
@@ -76,21 +76,21 @@ $TadUpFiles->get_pic_file($showkind[,$kind='url',$files_sn]); //thumb 小圖, im
 $TadUpFiles->rename_file($files_sn,$new_name);
 
 檔案數量：
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
 $TadUpFiles=new TadUpFiles("模組名稱");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn);
 $TadUpFiles->get_file_amount();
 
 //取得檔案資訊
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
 $TadUpFiles=new TadUpFiles("模組名稱");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn,$sort);
 $TadUpFiles->get_file($files_sn="",$limit=NULL,$path,$hash);
 
 //取得檔案資訊 for smarty
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
 $TadUpFiles=new TadUpFiles("模組名稱");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn,$sort);
@@ -187,10 +187,10 @@ class TadUpFiles
 
         $this->TadUpFilesTblName = $xoopsDB->prefix("{$this->prefix}_files_center");
 
-        $modhandler = xoops_getHandler('module');
-//        $xoopsModule           = $modhandler->getByDirname("tadtools");
-        $config_handler = xoops_getHandler('config');
-        $xoopsModuleConfig = $config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
+        $moduleHandler = xoops_getHandler('module');
+//        $xoopsModule           = $moduleHandler->getByDirname("tadtools");
+        $configHandler = xoops_getHandler('config');
+        $xoopsModuleConfig = $configHandler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
         $this->auto_charset = $xoopsModuleConfig['auto_charset'];
         $this->mime_type_check = $xoopsModuleConfig['mime_type_check'];
     }
@@ -377,7 +377,7 @@ class TadUpFiles
 
         $permission = _TUF_PERMISSION_NOTE;
         $groups = [];
-        while (list($groupid, $name) = $xoopsDB->fetchRow($result)) {
+        while (false !== (list($groupid, $name) = $xoopsDB->fetchRow($result))) {
             $groups[$groupid] = $name;
         }
 
@@ -408,7 +408,7 @@ class TadUpFiles
         // die($sql);
         $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         $i = 0;
-        while ($all = $xoopsDB->fetchArray($result)) {
+        while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $files_sn, $col_name, $col_sn, $sort, $kind, $file_name, $file_type, $file_size, $description
             foreach ($all as $k => $v) {
                 $$k = $v;
@@ -486,7 +486,7 @@ class TadUpFiles
                     $sql = 'select gperm_groupid from `' . $xoopsDB->prefix('group_permission') . "` where gperm_name='dl_group' and gperm_itemid='{$files_sn}' order by gperm_groupid";
                     $result = $xoopsDB->query($sql) or web_error($sql);
                     $gperm_groupid_arr = [];
-                    while (list($gperm_groupid) = $xoopsDB->fetchRow($result)) {
+                    while (false !== (list($gperm_groupid) = $xoopsDB->fetchRow($result))) {
                         $gperm_groupid_arr[] = $gperm_groupid;
                     }
                     $permission = _TUF_PERMISSION_NOTE;
@@ -552,7 +552,7 @@ class TadUpFiles
             return;
         }
 
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/fancybox.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tadtools/fancybox.php';
         $fancybox = new fancybox('.fancybox_demo', 640, 480);
         $fancybox_code = $fancybox->render(false, null, false);
 
@@ -608,7 +608,7 @@ class TadUpFiles
               ";
         } elseif ('list' === $show_edit) {
             $files .= "
-            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/css/rounded-list.css' />
+            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/css/rounded-list.css'>
             <div style='height:30px;'></div>
             <div class='row' style='margin-top:10px;'>
                 <div class='col-sm-12'>
@@ -663,7 +663,7 @@ class TadUpFiles
         }
         //die(var_dump($_FILES[$upname]));
         //引入上傳物件
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/upload/class.upload.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tadtools/upload/class.upload.php';
 
         //取消上傳時間限制
         set_time_limit(0);
@@ -672,8 +672,8 @@ class TadUpFiles
 
         // 更新權限
         if ($this->permission) {
-            $modhandler = xoops_getHandler('module');
-            $xoopsModule = $modhandler->getByDirname($this->prefix);
+            $moduleHandler = xoops_getHandler('module');
+            $xoopsModule = $moduleHandler->getByDirname($this->prefix);
             $mod_id = $xoopsModule->mid();
         }
 
@@ -1183,7 +1183,7 @@ class TadUpFiles
 
         //die(var_dump($_FILES[$upname]));
         //引入上傳物件
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/upload/class.upload.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tadtools/upload/class.upload.php';
 
         //取消上傳時間限制
         set_time_limit(0);
@@ -1361,8 +1361,8 @@ class TadUpFiles
     {
         global $xoopsDB, $xoopsUser;
 
-        $modhandler = xoops_getHandler('module');
-        $xoopsModule = $modhandler->getByDirname($this->prefix);
+        $moduleHandler = xoops_getHandler('module');
+        $xoopsModule = $moduleHandler->getByDirname($this->prefix);
         $mod_id = $xoopsModule->mid();
         $isAdmin = is_object($xoopsUser) ? $xoopsUser->isAdmin($mod_id) : false;
 
@@ -1382,7 +1382,7 @@ class TadUpFiles
 
         $my_uid = is_object($xoopsUser) ? $xoopsUser->uid() : 0;
 
-        while ($all = $xoopsDB->fetchArray($result)) {
+        while (false !== ($all = $xoopsDB->fetchArray($result))) {
             foreach ($all as $k => $v) {
                 $$k = $v;
             }
@@ -1468,7 +1468,7 @@ class TadUpFiles
         $sql = "select * from `{$this->TadUpFilesTblName}` $where";
 
         $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-        while ($all = $xoopsDB->fetchArray($result)) {
+        while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $files_sn, $col_name, $col_sn, $sort, $kind, $file_name, $file_type, $file_size, $description
             foreach ($all as $k => $v) {
                 $$k = $v;
@@ -1577,7 +1577,7 @@ class TadUpFiles
         $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         $i = 0;
         $files = [];
-        while ($all = $xoopsDB->fetchArray($result)) {
+        while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $files_sn, $col_name, $col_sn, $sort, $kind, $file_name, $file_type, $file_size, $description
             foreach ($all as $k => $v) {
                 $$k = $v;
@@ -1650,7 +1650,7 @@ class TadUpFiles
         // die($sql);
         $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         $files = [];
-        while ($all = $xoopsDB->fetchArray($result)) {
+        while (false !== ($all = $xoopsDB->fetchArray($result))) {
             //以下會產生這些變數： $files_sn, $col_name, $col_sn, $sort, $kind, $file_name, $file_type, $file_size, $description
             foreach ($all as $k => $v) {
                 $$k = $v;
@@ -1715,7 +1715,7 @@ class TadUpFiles
             if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/fancybox.php')) {
                 redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
             }
-            include_once XOOPS_ROOT_PATH . '/modules/tadtools/fancybox.php';
+            require_once XOOPS_ROOT_PATH . '/modules/tadtools/fancybox.php';
             $fancybox = new fancybox(".fancybox_{$this->col_name}", 640, 480);
             $all_files .= ('file_text_url' === $show_mode or 'file_url' === $show_mode) ? '' : $fancybox->render(false, null, $autoPlay, $playSpeed);
         }
@@ -1849,7 +1849,7 @@ class TadUpFiles
             $sql = 'select gperm_groupid from `' . $xoopsDB->prefix('group_permission') . "` where gperm_name='dl_group' and gperm_itemid='{$files_sn}' order by gperm_groupid";
             $result = $xoopsDB->query($sql) or web_error($sql);
             $gperm_groupid_arr = [];
-            while (list($gperm_groupid) = $xoopsDB->fetchRow($result)) {
+            while (false !== (list($gperm_groupid) = $xoopsDB->fetchRow($result))) {
                 $gperm_groupid_arr[] = $gperm_groupid;
             }
 
@@ -1862,7 +1862,7 @@ class TadUpFiles
                 }
 
                 if (!array_intersect($groups, $gperm_groupid_arr)) {
-                    redirect_header($_SERVER['HTTP_REFERER'], 3, _TAD_PERMISSION_DENIED);
+                    redirect_header(\Xmf\Request::getString('HTTP_REFERER', '', 'SERVER'), 3, _TAD_PERMISSION_DENIED);
                 }
             }
         }

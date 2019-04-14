@@ -1010,7 +1010,7 @@ class elFinderVolumeBox extends elFinderVolumeDriver
 
         $tmbSize = $this->tmbSize;
 
-        if (false == ($s = getimagesize($tmb))) {
+        if (false === ($s = getimagesize($tmb))) {
             return false;
         }
 
@@ -1024,7 +1024,7 @@ class elFinderVolumeBox extends elFinderVolumeDriver
                     $result = $this->imgResize($tmb, $tmbSize, $tmbSize, true, false, 'png');
                 }
 
-                if (false != ($s = getimagesize($tmb))) {
+                if (false !== ($s = getimagesize($tmb))) {
                     $x = $s[0] > $tmbSize ? (int)(($s[0] - $tmbSize) / 2) : 0;
                     $y = $s[1] > $tmbSize ? (int)(($s[1] - $tmbSize) / 2) : 0;
                     $result = $this->imgCrop($tmb, $tmbSize, $tmbSize, $x, $y, 'png');
@@ -1110,7 +1110,7 @@ class elFinderVolumeBox extends elFinderVolumeDriver
      **/
     public function getContentUrl($hash, $options = [])
     {
-        if (false == ($file = $this->file($hash)) || !$file['url'] || 1 == $file['url']) {
+        if (false === ($file = $this->file($hash)) || !$file['url'] || 1 == $file['url']) {
             $path = $this->decode($hash);
 
             list(, $itemId) = $this->_bd_splitPath($path);

@@ -116,7 +116,7 @@ class Utility
     {
         global $xoopsDB;
         //die(var_export($xoopsConfig));
-        include XOOPS_ROOT_PATH . '/modules/tadtools/xoops_version.php';
+        require XOOPS_ROOT_PATH . '/modules/tadtools/xoops_version.php';
 
         //先找出該有的區塊以及對應樣板
         foreach ($modversion['blocks'] as $i => $block) {
@@ -129,7 +129,7 @@ class Utility
         $sql = 'SELECT bid,name,visible,show_func,template FROM `' . $xoopsDB->prefix('newblocks') . "`
     WHERE `dirname` = 'tadtools' ORDER BY `func_num`";
         $result = $xoopsDB->query($sql);
-        while (list($bid, $name, $visible, $show_func, $template) = $xoopsDB->fetchRow($result)) {
+        while (false !== (list($bid, $name, $visible, $show_func, $template) = $xoopsDB->fetchRow($result))) {
             //假如現有的區塊和樣板對不上就刪掉
             if ($template != $tpl_file_arr[$show_func]) {
                 $sql = 'delete from ' . $xoopsDB->prefix('newblocks') . " where bid='{$bid}'";
@@ -201,8 +201,8 @@ class Utility
     public static function chk_chk3()
     {
         global $xoopsDB;
-        $modhandler = xoops_getHandler('module');
-        $xoopsModule = $modhandler->getByDirname('tadtools');
+        $moduleHandler = xoops_getHandler('module');
+        $xoopsModule = $moduleHandler->getByDirname('tadtools');
         $mod_id = $xoopsModule->getVar('mid');
 
         if ($mod_id) {
@@ -220,8 +220,8 @@ class Utility
     public static function go_update3()
     {
         global $xoopsDB;
-        $modhandler = xoops_getHandler('module');
-        $xoopsModule = $modhandler->getByDirname('tadtools');
+        $moduleHandler = xoops_getHandler('module');
+        $xoopsModule = $moduleHandler->getByDirname('tadtools');
         $mod_id = $xoopsModule->getVar('mid');
         if ($mod_id) {
             $sql = 'insert into ' . $xoopsDB->prefix('group_permission') . " (`gperm_groupid`, `gperm_itemid`, `gperm_modid`, `gperm_name`) values(1, '$mod_id' , 1 , 'module_read') , (2, '$mod_id' , 1 , 'module_read') ,(3, '$mod_id' , 1 , 'module_read')";

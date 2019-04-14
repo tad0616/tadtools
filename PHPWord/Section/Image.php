@@ -91,7 +91,7 @@ class PHPWord_Section_Image
                 }
             }
 
-            if (null == $this->_style->getWidth() && null == $this->_style->getHeight()) {
+            if (null === $this->_style->getWidth() && null === $this->_style->getHeight()) {
                 $imgData = getimagesize($this->_src);
                 $this->_style->setWidth($imgData[0]);
                 $this->_style->setHeight($imgData[1]);

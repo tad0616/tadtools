@@ -30,7 +30,7 @@ if (!defined('PHPEXCEL_ROOT')) {
     /**
      * @ignore
      */
-    define('PHPEXCEL_ROOT', dirname(__FILE__) . '/../../');
+    define('PHPEXCEL_ROOT', __DIR__ . '/../../');
     require(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
 }
 
@@ -1738,12 +1738,12 @@ class PHPExcel_Reader_Excel2007 extends PHPExcel_Reader_Abstract implements PHPE
                             $chartElements = simplexml_load_string($this->securityScan($this->_getFromZipArchive($zip, $chartEntryRef)), 'SimpleXMLElement', PHPExcel_Settings::getLibXmlLoaderOptions());
                             $objChart = PHPExcel_Reader_Excel2007_Chart::readChart($chartElements, basename($chartEntryRef, '.xml'));
 
-                            //							echo 'Chart ',$chartEntryRef,'<br />';
+                            //							echo 'Chart ',$chartEntryRef,'<br>';
                             //							var_dump($charts[$chartEntryRef]);
 //
                             if (isset($charts[$chartEntryRef])) {
                                 $chartPositionRef = $charts[$chartEntryRef]['sheet'] . '!' . $charts[$chartEntryRef]['id'];
-                                //								echo 'Position Ref ',$chartPositionRef,'<br />';
+                                //								echo 'Position Ref ',$chartPositionRef,'<br>';
                                 if (isset($chartDetails[$chartPositionRef])) {
                                     //									var_dump($chartDetails[$chartPositionRef]);
 

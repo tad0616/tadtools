@@ -334,28 +334,28 @@ class PHPExcel_Writer_HTML extends PHPExcel_Writer_Abstract implements PHPExcel_
         }
 
         if ($properties->getCreator() > '') {
-            $html .= '	  <meta name="author" content="' . htmlspecialchars($properties->getCreator()) . '" />' . PHP_EOL;
+            $html .= '	  <meta name="author" content="' . htmlspecialchars($properties->getCreator()) . '">' . PHP_EOL;
         }
         if ($properties->getTitle() > '') {
-            $html .= '	  <meta name="title" content="' . htmlspecialchars($properties->getTitle()) . '" />' . PHP_EOL;
+            $html .= '	  <meta name="title" content="' . htmlspecialchars($properties->getTitle()) . '">' . PHP_EOL;
         }
         if ($properties->getDescription() > '') {
-            $html .= '	  <meta name="description" content="' . htmlspecialchars($properties->getDescription()) . '" />' . PHP_EOL;
+            $html .= '	  <meta name="description" content="' . htmlspecialchars($properties->getDescription()) . '">' . PHP_EOL;
         }
         if ($properties->getSubject() > '') {
-            $html .= '	  <meta name="subject" content="' . htmlspecialchars($properties->getSubject()) . '" />' . PHP_EOL;
+            $html .= '	  <meta name="subject" content="' . htmlspecialchars($properties->getSubject()) . '">' . PHP_EOL;
         }
         if ($properties->getKeywords() > '') {
-            $html .= '	  <meta name="keywords" content="' . htmlspecialchars($properties->getKeywords()) . '" />' . PHP_EOL;
+            $html .= '	  <meta name="keywords" content="' . htmlspecialchars($properties->getKeywords()) . '">' . PHP_EOL;
         }
         if ($properties->getCategory() > '') {
-            $html .= '	  <meta name="category" content="' . htmlspecialchars($properties->getCategory()) . '" />' . PHP_EOL;
+            $html .= '	  <meta name="category" content="' . htmlspecialchars($properties->getCategory()) . '">' . PHP_EOL;
         }
         if ($properties->getCompany() > '') {
-            $html .= '	  <meta name="company" content="' . htmlspecialchars($properties->getCompany()) . '" />' . PHP_EOL;
+            $html .= '	  <meta name="company" content="' . htmlspecialchars($properties->getCompany()) . '">' . PHP_EOL;
         }
         if ($properties->getManager() > '') {
-            $html .= '	  <meta name="manager" content="' . htmlspecialchars($properties->getManager()) . '" />' . PHP_EOL;
+            $html .= '	  <meta name="manager" content="' . htmlspecialchars($properties->getManager()) . '">' . PHP_EOL;
         }
 
         if ($pIncludeStyles) {
@@ -478,7 +478,7 @@ class PHPExcel_Writer_HTML extends PHPExcel_Writer_Abstract implements PHPExcel_
             // Writing PDF?
             if ($this->_isPdf) {
                 if (null === $this->_sheetIndex && $sheetId + 1 < $this->_phpExcel->getSheetCount()) {
-                    $html .= '<div style="page-break-before:always" />';
+                    $html .= '<div style="page-break-before:always">';
                 }
             }
 
@@ -639,7 +639,7 @@ class PHPExcel_Writer_HTML extends PHPExcel_Writer_Abstract implements PHPExcel_
                     $html .= '<img style="position: absolute; z-index: 1; left: ' .
                         $drawing->getOffsetX() . 'px; top: ' . $drawing->getOffsetY() . 'px; width: ' .
                         $drawing->getWidth() . 'px; height: ' . $drawing->getHeight() . 'px;" src="' .
-                        $imageData . '" border="0" />';
+                        $imageData . '" border="0">';
                     $html .= '</div>';
                 }
             }
@@ -683,7 +683,7 @@ class PHPExcel_Writer_HTML extends PHPExcel_Writer_Abstract implements PHPExcel_
                         $imageData = 'data:' . $imageDetails['mime'] . ';base64,' . $base64;
 
                         $html .= '<div style="position: relative;">';
-                        $html .= '<img style="position: absolute; z-index: 1; left: ' . $chartCoordinates['xOffset'] . 'px; top: ' . $chartCoordinates['yOffset'] . 'px; width: ' . $imageDetails[0] . 'px; height: ' . $imageDetails[1] . 'px;" src="' . $imageData . '" border="0" />' . PHP_EOL;
+                        $html .= '<img style="position: absolute; z-index: 1; left: ' . $chartCoordinates['xOffset'] . 'px; top: ' . $chartCoordinates['yOffset'] . 'px; width: ' . $imageDetails[0] . 'px; height: ' . $imageDetails[1] . 'px;" src="' . $imageData . '" border="0">' . PHP_EOL;
                         $html .= '</div>';
 
                         unlink($chartFileName);
@@ -1139,7 +1139,7 @@ class PHPExcel_Writer_HTML extends PHPExcel_Writer_Abstract implements PHPExcel_
                     $html .= $this->_generateTableFooter();
 
                     // insert page break
-                    $html .= '<div style="page-break-before:always" />';
+                    $html .= '<div style="page-break-before:always">';
 
                     // open table again: <table> + <col> etc.
                     $html .= $this->_generateTableHeader($pSheet);

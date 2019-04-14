@@ -2,19 +2,19 @@
 /*
 
 //單一表單
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
 $form=$TadDataCenter->getForm($mode, $form_tag, $name, $type, $value, $options, $attr, $sort);
 
 //批次表單
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
 $TadDataCenter->assignBatchForm($form_tag, $data_arr = array(), $type = '')
 
 //儲存資料：
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
 $TadDataCenter->saveData();
@@ -22,7 +22,7 @@ $TadDataCenter->saveData();
 $TadDataCenter->saveCustomData($data_arr = array());
 
 //取得資料陣列：
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
 $data=$TadDataCenter->getData($name,$sort=0);
@@ -30,7 +30,7 @@ $xoopsTpl->assign('TDC', $data);
 <{$TDC.data_name.0}>
 
 //刪除資料：
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
 $TadDataCenter->delData($name,$sort);
@@ -38,45 +38,45 @@ $TadDataCenter->delData($name,$sort);
 //-------------------------------------------------------------------------
 
 //後台自訂問卷界面
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
 $xoopsTpl->assign('CustomSetupForm', $TadDataCenter->getCustomSetupForm($action));
 <{$CustomSetupForm}>
 
 //顯示問卷
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
 $xoopsTpl->assign('CustomForm', $TadDataCenter->getCustomForm($use_form = true, $use_submit = false, $action = '', $lw = 3, $rw = 9));
 <{$CustomForm}>
 
 //後台自訂問卷設定儲存
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
 $TadDataCenter->saveCustomSetupForm();
 
 //前台自訂問卷答案儲存
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
 $TadDataCenter->saveData();
 
 //自訂表單填答列表（表格）
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
 $getCustomAns=$TadDataCenter->getCustomAns();
 
 //自訂表單題目
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
 $CustomSetup      = $TadDataCenter->getCustomSetup();
 
 //自訂表單填答陣列
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
 $getCustomAnsArr=$TadDataCenter->getCustomAnsArr();
@@ -201,7 +201,7 @@ class TadDataCenter
                         $form .= "<label class=\"checkbox\"><input type=\"checkbox\" name=\"TDC[{$name}]{$arr}\" value=\"{$v}\" {$checked} {$attr_str}>{$k}</label>\n";
                     }
                 } elseif ('date' === $type) {
-                    include_once XOOPS_ROOT_PATH . '/modules/tadtools/cal.php';
+                    require_once XOOPS_ROOT_PATH . '/modules/tadtools/cal.php';
                     $cal = new My97DatePicker();
                     $cal->render();
                     $form = "<input type=\"text\" name=\"TDC[{$name}]{$arr}\" value=\"{$value}\" {$attr_str} onClick=\"WdatePicker({dateFmt:'yyyy-MM-dd', startDate:'%y-%M-%d'})\">";
@@ -334,7 +334,7 @@ class TadDataCenter
             return $data_value;
         }
         $values = [];
-        while (list($data_name, $data_sort, $data_value) = $xoopsDB->fetchRow($result)) {
+        while (false !== (list($data_name, $data_sort, $data_value) = $xoopsDB->fetchRow($result))) {
             $values[$data_name][$data_sort] = $data_value;
         }
 
@@ -358,7 +358,7 @@ class TadDataCenter
             return $all;
         }
         $values = [];
-        while ($all = $xoopsDB->fetchArray($result)) {
+        while (false !== ($all = $xoopsDB->fetchArray($result))) {
             $data_sort = $all['data_sort'];
             $values[$data_sort] = $all;
         }
@@ -470,7 +470,7 @@ class TadDataCenter
         $main .= '<div class="text-center" style="margin:10px auto;"><button type="submit" class="btn btn-primary">儲存</button></div>';
         $main .= '</form>';
 
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
         $sweet_alert = new sweet_alert();
         $sweet_alert_code = $sweet_alert->render('del_dcq_col', XOOPS_URL . "/modules/tadtools/TadDataCenter.php?dcq_op=del_dcq_col&col_name={$this->col_name}&col_sn={$this->col_sn}&dirname={$this->module_dirname}&col_id=", 'col_id');
 
@@ -526,7 +526,7 @@ class TadDataCenter
     {
         if ('saveCustomSetupForm' === $_REQUEST['dc_op']) {
             $this->saveDcqData();
-            header("location: {$_SERVER['HTTP_REFERER']}");
+            header("location: {\Xmf\Request::getString('HTTP_REFERER', '', 'SERVER')}");
             exit;
         }
     }
@@ -639,7 +639,7 @@ class TadDataCenter
             }
 
             if ($use_form) {
-                include_once XOOPS_ROOT_PATH . '/modules/tadtools/formValidator.php';
+                require_once XOOPS_ROOT_PATH . '/modules/tadtools/formValidator.php';
                 $formValidator = new formValidator('#myForm', false);
                 $formValidator_code = $formValidator->render('topLeft');
                 $form .= '<form action="' . $action . '" id="myForm" method="post" class="form-horizontal"  enctype="multipart/form-data">';
@@ -755,7 +755,7 @@ class TadDataCenter
 
         if ($del_col_name) {
             $data_name = implode('|', $data_name_arr);
-            include_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
+            require_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
             $sweet_alert = new sweet_alert();
             $sweet_alert_code = $sweet_alert->render('del_dcq_ans', XOOPS_URL . "/modules/tadtools/TadDataCenter.php?dcq_op=del_dcq_ans&data_name={$data_name}&dirname={$this->module_dirname}&col_name={$del_col_name}&col_sn=", 'col_ans_sn');
         }
@@ -793,7 +793,7 @@ class TadDataCenter
                     where `mid`= '{$this->mid}' and `data_name`='{$name}' $and_col_name $and_col_sn order by col_sn";
                 $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
-                while (list($col_sn, $data_sort, $data_value) = $xoopsDB->fetchRow($result)) {
+                while (false !== (list($col_sn, $data_sort, $data_value) = $xoopsDB->fetchRow($result))) {
                     $values[$col_sn][$name][$data_sort] = $data_value;
                 }
             }
@@ -802,7 +802,7 @@ class TadDataCenter
             where `mid`= '{$this->mid}' and `data_name`='{$data_name}' $and_col_name $and_col_sn order by col_sn";
             $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
-            while (list($col_sn, $data_sort, $data_value) = $xoopsDB->fetchRow($result)) {
+            while (false !== (list($col_sn, $data_sort, $data_value) = $xoopsDB->fetchRow($result))) {
                 $values[$col_sn][$data_name][$data_sort] = $data_value;
             }
         }
@@ -829,7 +829,7 @@ class TadDataCenter
         list($usec, $sec) = explode(' ', microtime());
         $seed = (float) $sec + ((float) $usec * 100000);
         // die('seed=' . $seed);
-        mt_srand($seed);
+        // // // // mt_srand($seed);
         $password = '';
         while (mb_strlen($password) < $len) {
             $password .= mb_substr($chars, (mt_rand() % mb_strlen($chars)), 1);
@@ -840,8 +840,8 @@ class TadDataCenter
 }
 
 if (isset($_REQUEST['dcq_op'])) {
-    include_once '../../mainfile.php';
-    include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+    require_once dirname(dirname(__DIR__)) . '/mainfile.php';
+    require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
     $dcq_op = system_CleanVars($_REQUEST, 'dcq_op', '', 'string');
     $dirname = system_CleanVars($_REQUEST, 'dirname', '', 'string');
     $col_name = system_CleanVars($_REQUEST, 'col_name', '', 'string');
@@ -851,12 +851,12 @@ if (isset($_REQUEST['dcq_op'])) {
 
     if ('save_dcq_sort' === $dcq_op) {
         $sql = 'update ' . $xoopsDB->prefix("{$dirname}_data_center") . " set `data_sort`=`data_sort`+1000 where  `col_name`='{$col_name}' and `col_sn`='{$col_sn}'";
-        $xoopsDB->queryF($sql) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
+        $xoopsDB->queryF($sql) || die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
 
         $sort = 0;
         foreach ($_POST['col_id'] as $col_id) {
             $sql = 'update ' . $xoopsDB->prefix("{$dirname}_data_center") . " set `data_sort`='{$sort}' where col_id='{$col_id}' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}'";
-            $xoopsDB->queryF($sql) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
+            $xoopsDB->queryF($sql) || die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
             $sort++;
         }
         echo _TAD_SORTED . '(' . date('Y-m-d H:i:s') . ')';
@@ -864,22 +864,22 @@ if (isset($_REQUEST['dcq_op'])) {
         $data_name_arr = explode('|', $data_name);
         foreach ($data_name_arr as $data_name) {
             $sql = 'delete from ' . $xoopsDB->prefix("{$dirname}_data_center") . " where `data_name`='{$data_name}' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}'";
-            $xoopsDB->queryF($sql) or die(' (' . date('Y-m-d H:i:s') . ')' . $sql);
+            $xoopsDB->queryF($sql) || die(' (' . date('Y-m-d H:i:s') . ')' . $sql);
         }
-        header("location:{$_SERVER['HTTP_REFERER']}");
+        header("location:{\Xmf\Request::getString('HTTP_REFERER', '', 'SERVER')}");
         exit;
     } elseif ('del_dcq_col' === $dcq_op and $_SESSION['isAdmin']) {
         $sql = 'delete from ' . $xoopsDB->prefix("{$dirname}_data_center") . " where `col_id`='{$col_id}'";
-        $xoopsDB->queryF($sql) or die(' (' . date('Y-m-d H:i:s') . ')' . $sql);
+        $xoopsDB->queryF($sql) || die(' (' . date('Y-m-d H:i:s') . ')' . $sql);
         $sql = 'delete from ' . $xoopsDB->prefix("{$dirname}_data_center") . " where `data_name`='{$col_name}_{$col_sn}_dcq_{$col_id}'";
-        $xoopsDB->queryF($sql) or die(' (' . date('Y-m-d H:i:s') . ')' . $sql);
-        header("location:{$_SERVER['HTTP_REFERER']}");
+        $xoopsDB->queryF($sql) || die(' (' . date('Y-m-d H:i:s') . ')' . $sql);
+        header("location:{\Xmf\Request::getString('HTTP_REFERER', '', 'SERVER')}");
         exit;
     } elseif ('saveCustomSetupFormVal' === $dcq_op) {
         $TadDataCenter = new TadDataCenter($dirname);
         $TadDataCenter->set_col($col_name, $col_sn);
         $TadDataCenter->saveData();
-        // header("location:{$_SERVER['HTTP_REFERER']}");
+        // header("location:{\Xmf\Request::getString('HTTP_REFERER', '', 'SERVER')}");
         // exit;
     }
 }

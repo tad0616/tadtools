@@ -186,7 +186,7 @@
 
         /****佈景額外設定****/
         global $xoopsConfig,$xoopsDB;
-        include_once XOOPS_ROOT_PATH."/themes/{$theme_name}/language/{$xoopsConfig['language']}/main.php";
+        require_once XOOPS_ROOT_PATH."/themes/{$theme_name}/language/{$xoopsConfig['language']}/main.php";
         $theme_name=$xoopsConfig['theme_set'];
 
         $sql="select `theme_id` from ".$xoopsDB->prefix("tad_themes")." where `theme_name`='{$theme_name}'";

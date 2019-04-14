@@ -4,7 +4,7 @@ function tadtools_qrcode($options)
 {
     global $xoopsDB;
 
-    include_once XOOPS_ROOT_PATH . '/modules/tadtools/tad_function.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tadtools/tad_function.php';
 
     $protocol = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
     get_jquery();

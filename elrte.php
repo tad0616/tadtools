@@ -1,5 +1,5 @@
 <?php
-include_once 'tadtools_header.php';
+require_once __DIR__ . '/tadtools_header.php';
 
 class elrte
 {
@@ -79,7 +79,7 @@ class elrte
               height       : '{$this->Height}',
               toolbar      : 'web2pyToolbar',
               fmOpen : function(callback) {
-                \$('<div/>').dialogelfinder({
+                \$('<div>').dialogelfinder({
                   url : '" . XOOPS_URL . "/modules/tadtools/elFinder/php/connector.php', // connector URL (REQUIRED)
                   lang: '" . $LANGCODE . "', // elFinder language (OPTIONAL)
                   commandsOptions: {
@@ -125,7 +125,7 @@ class elrte
               height       : '{$this->Height}',
               toolbar      : 'web2pyToolbar',
               fmOpen : function(callback) {
-                $('<div/>').dialogelfinder({
+                $('<div>').dialogelfinder({
                   url : '" . XOOPS_URL . "/modules/tadtools/elFinder/php/connector.php', // connector URL (REQUIRED)
                   lang: '" . $LANGCODE . "', // elFinder language (OPTIONAL)
                   commandsOptions: {

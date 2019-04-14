@@ -1,5 +1,5 @@
 <?php
-include_once 'tadtools_header.php';
+require_once __DIR__ . '/tadtools_header.php';
 
 class qrcode
 {
@@ -19,7 +19,7 @@ class qrcode
         $qrcode = "
         <div style='text-align:center;'>
         <a href='{$protocol}{$_SERVER['HTTP_HOST']}{$url}'>
-        <img src='" . XOOPS_URL . "/uploads/qrcode/{$imgurl}.gif' />
+        <img src='" . XOOPS_URL . "/uploads/qrcode/{$imgurl}.gif'>
         </a>
         </div>
         ";

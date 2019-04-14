@@ -1,6 +1,6 @@
 <?php
-include_once 'tadtools_header.php';
-include_once 'jquery.php';
+require_once __DIR__ . '/tadtools_header.php';
+require_once __DIR__ . '/jquery.php';
 
 class jeditable
 {
@@ -103,7 +103,7 @@ class jeditable
 }
 
 /*
-include_once XOOPS_ROOT_PATH."/modules/tadtools/jeditable.php";
+require_once XOOPS_ROOT_PATH."/modules/tadtools/jeditable.php";
 $file="save.php";
 $jeditable = new jeditable();
 $jeditable->setTextCol("#candidate_note",$file,'140px','12px',"{'vote_sn':$vote_sn,'candidate_id':'$candidate_id','op' : 'save'}","編輯備註");

@@ -1930,7 +1930,7 @@ public $PDFVersion;         //PDF version number
         public function writeHTML($html, $ln = true, $fill = 0, $reseth = false, $cell = false)
         {
             // store some variables
-            $html = strip_tags($html, '<h1><h2><h3><h4><h5><h6><b><u><i><a><img><p><br><br /><strong><em><font><blockquote><li><ul><ol><hr><td><th><tr><table><sup><sub><small><span><div>'); //remove all unsupported tags
+            $html = strip_tags($html, '<h1><h2><h3><h4><h5><h6><b><u><i><a><img><p><br><br><strong><em><font><blockquote><li><ul><ol><hr><td><th><tr><table><sup><sub><small><span><div>'); //remove all unsupported tags
             //replace carriage returns, newlines and tabs
             $repTable = ["\t" => '', "\n" => '', "\r" => '', "\0" => '', "\x0B" => ''];
             $html = strtr($html, $repTable);
@@ -2289,7 +2289,7 @@ public $PDFVersion;         //PDF version number
                     break;
                 }
                 case 'font': {
-                    if (true == $this->issetcolor) {
+                    if (true === $this->issetcolor) {
                         $this->SetTextColor($this->prevTextColor[0], $this->prevTextColor[1], $this->prevTextColor[2]);
                     }
                     if ($this->issetfont) {

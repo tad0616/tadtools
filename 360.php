@@ -1,6 +1,6 @@
 <?php
-include_once 'tadtools_header.php';
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once __DIR__ . '/tadtools_header.php';
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 // $sn    = system_CleanVars($_REQUEST, 'sn', '', 'int');
 $photo = system_CleanVars($_REQUEST, 'photo', '', 'string');
 $photo = filter_var($photo, FILTER_SANITIZE_SPECIAL_CHARS);
@@ -11,7 +11,7 @@ $photo = filter_var($photo, FILTER_SANITIZE_SPECIAL_CHARS);
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A simple example</title>
-    <link rel="stylesheet" href="/modules/tadtools/pannellum/pannellum.css"/>
+    <link rel="stylesheet" href="/modules/tadtools/pannellum/pannellum.css">
     <script type="text/javascript" src="/modules/tadtools/pannellum/pannellum.js"></script>
     <style>
         html, body {

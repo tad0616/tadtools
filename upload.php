@@ -1,12 +1,12 @@
 <?php
 //此檔案是給 ck.php 用的，勿刪
-include_once '../../mainfile.php';
+require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 if (!$xoopsUser) {
     exit;
 }
-include_once 'upload/class.upload.php';
+require_once __DIR__ . '/upload/class.upload.php';
 
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $type = system_CleanVars($_REQUEST, 'type', '', 'string');
 $CKEditorFuncNum = system_CleanVars($_REQUEST, 'CKEditorFuncNum', '', 'int');
 

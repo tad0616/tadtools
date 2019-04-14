@@ -1,7 +1,7 @@
 <?php
-include_once 'tadtools_header.php';
-include_once 'jquery.php';
-include_once 'include/beforeheader.php';
+require_once __DIR__ . '/tadtools_header.php';
+require_once __DIR__ . '/jquery.php';
+require_once __DIR__ . '/include/beforeheader.php';
 get_bootstrap();
 
 //路徑導覽，需搭配 get_模組_cate_path($分類編號);
@@ -68,7 +68,7 @@ if (!function_exists('html5')) {
             $jquery = get_jquery($ui, true);
         }
 
-        $bootstrap_link = $bootstrap ? "<link rel='stylesheet' type='text/css' media='all' href='" . XOOPS_URL . "/modules/tadtools/bootstrap{$bootstrap_version}/css/bootstrap.css' />" : '';
+        $bootstrap_link = $bootstrap ? "<link rel='stylesheet' type='text/css' media='all' href='" . XOOPS_URL . "/modules/tadtools/bootstrap{$bootstrap_version}/css/bootstrap.css'>" : '';
 
         $main = "<!DOCTYPE html>\n";
         $main .= "<html lang='zh-TW'>\n";
@@ -350,7 +350,7 @@ if (!function_exists('mk_qrcode')) {
         $imgurl = mk_qrcode_name($url);
         mk_dir(XOOPS_ROOT_PATH . '/uploads/qrcode');
         if (!file_exists(XOOPS_ROOT_PATH . "/uploads/qrcode/{$imgurl}.gif")) {
-            include_once 'qrcode/qrcode.php';
+            require_once __DIR__ . '/qrcode/qrcode.php';
             $url = chk_qrcode_url($url);
             $a = new QR("{$_SERVER['HTTP_HOST']}{$url}");
             //die(XOOPS_ROOT_PATH."/uploads/qrcode/{$imgurl}.gif");
@@ -408,7 +408,7 @@ if (!function_exists('chk_qrcode_url')) {
 
 //單選回復原始資料函數
 if (!function_exists('chk')) {
-    function chk($DBV = null, $NEED_V = '', $defaul = '', $return = "checked='checked'")
+    function chk($DBV = null, $NEED_V = '', $defaul = '', $return = "checked")
     {
         if ($DBV == $NEED_V) {
             return $return;
@@ -460,13 +460,13 @@ if (!function_exists('power_chk')) {
         }
         // echo var_export($module_id);
         //取得群組權限功能
-        $gperm_handler = xoops_getHandler('groupperm');
+        $gpermHandler = xoops_getHandler('groupperm');
 
         //權限項目編號
         $perm_itemid = (int) $sn;
         // echo var_export($perm_itemid);
         //依據該群組是否對該權限項目有使用權之判斷 ，做不同之處理
-        if ($gperm_handler->checkRight($perm_name, $perm_itemid, $groups, $module_id)) {
+        if ($gpermHandler->checkRight($perm_name, $perm_itemid, $groups, $module_id)) {
             // die('true');
             return true;
         }
@@ -477,7 +477,7 @@ if (!function_exists('power_chk')) {
 
 //把字串換成群組
 if (!function_exists('txt_to_group_name')) {
-    function txt_to_group_name($enable_group = '', $default_txt = '', $syb = '<br />')
+    function txt_to_group_name($enable_group = '', $default_txt = '', $syb = '<br>')
     {
         $groups_array = get_all_groups();
         if (empty($enable_group)) {
@@ -502,7 +502,7 @@ if (!function_exists('get_all_groups')) {
         global $xoopsDB;
         $sql = 'select groupid,name from ' . $xoopsDB->prefix('groups') . '';
         $result = $xoopsDB->query($sql);
-        while (list($groupid, $name) = $xoopsDB->fetchRow($result)) {
+        while (false !== (list($groupid, $name) = $xoopsDB->fetchRow($result))) {
             $data[$groupid] = $name;
         }
 
@@ -590,7 +590,7 @@ if (!function_exists('randStr')) {
         list($usec, $sec) = explode(' ', microtime());
         $seed = (float) $sec + ((float) $usec * 100000);
         // die('seed=' . $seed);
-        mt_srand($seed);
+        // // // // mt_srand($seed);
         $password = '';
         while (mb_strlen($password) < $len) {
             $password .= mb_substr($chars, (mt_rand() % mb_strlen($chars)), 1);

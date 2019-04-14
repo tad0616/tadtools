@@ -8,7 +8,7 @@ $result   = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $x
 
 $count  = tad_link_cate_count();
 $data[] = "{ id:0, pId:0, name:'All', url:'index.php', target:'_self', open:true}";
-while (list($cate_sn, $of_cate_sn, $cate_title) = $xoopsDB->fetchRow($result)) {
+while (false !== (list($cate_sn, $of_cate_sn, $cate_title) = $xoopsDB->fetchRow($result))) {
 $font_style      = $show_cate_sn == $cate_sn ? ", font:{'background-color':'yellow', 'color':'black'}" : '';
 $open            = in_array($cate_sn, $path_arr) ? 'true' : 'false';
 $display_counter = empty($count[$cate_sn]) ? "" : " ({$count[$cate_sn]})";
@@ -19,13 +19,13 @@ $json = implode(',', $data);
 if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/ztree.php")) {
 redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
 }
-include_once XOOPS_ROOT_PATH . "/modules/tadtools/ztree.php";
+require_once XOOPS_ROOT_PATH . "/modules/tadtools/ztree.php";
 $ztree      = new ztree("link_tree", $json, "save_drag.php", "save_sort.php", "of_cate_sn", "cate_sn");
 $ztree_code = $ztree->render();
 $xoopsTpl->assign('ztree_code', $ztree_code);
 
  */
-include_once 'tadtools_header.php';
+require_once __DIR__ . '/tadtools_header.php';
 
 class ztree
 {
@@ -69,7 +69,7 @@ class ztree
 
             $ztree = "
             {$jquery}
-            <link rel='StyleSheet' href='" . TADTOOLS_URL . "/ztree/css/zTreeStyle/zTreeStyle.css' type='text/css' />
+            <link rel='StyleSheet' href='" . TADTOOLS_URL . "/ztree/css/zTreeStyle/zTreeStyle.css' type='text/css'>
             <script type='text/javascript' src='" . TADTOOLS_URL . "/ztree/js/jquery.ztree.core-3.5.js'></script>
             <script type='text/javascript' src='" . TADTOOLS_URL . "/ztree/js/jquery.ztree.excheck-3.5.js'></script>
             $drag_js_file

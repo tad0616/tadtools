@@ -800,7 +800,7 @@ class PHPExcel
      */
     public function addNamedRange(PHPExcel_NamedRange $namedRange)
     {
-        if (null == $namedRange->getScope()) {
+        if (null === $namedRange->getScope()) {
             // global scope
             $this->_namedRanges[$namedRange->getName()] = $namedRange;
         } else {

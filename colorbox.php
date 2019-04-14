@@ -3,13 +3,13 @@
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/colorbox.php")){
 redirect_header("index.php",3, _MA_NEED_TADTOOLS);
 }
-include_once XOOPS_ROOT_PATH."/modules/tadtools/colorbox.php";
+require_once XOOPS_ROOT_PATH."/modules/tadtools/colorbox.php";
 $colorbox=new colorbox('.iframe');
 $colorbox_code=$colorbox->render();
 $xoopsTpl->assign('colorbox_code',$colorbox_code);
  */
-include_once 'tadtools_header.php';
-include_once 'jquery.php';
+require_once __DIR__ . '/tadtools_header.php';
+require_once __DIR__ . '/jquery.php';
 
 class colorbox
 {
@@ -48,7 +48,7 @@ class colorbox
             }
         } else {
             $colorbox = "
-              <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='" . TADTOOLS_URL . "/colorbox/colorbox.css' />
+              <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='" . TADTOOLS_URL . "/colorbox/colorbox.css'>
               {$jquery}
               <script type='text/javascript' src='" . TADTOOLS_URL . "/colorbox/jquery.colorbox.js'></script>
               ";

@@ -14,13 +14,13 @@ $url_arr[$csn]="cate.php?csn={$csn}";
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/dtree.php")){
 redirect_header("index.php",3, _MA_NEED_TADTOOLS);
 }
-include_once XOOPS_ROOT_PATH."/modules/tadtools/dtree.php";
+require_once XOOPS_ROOT_PATH."/modules/tadtools/dtree.php";
 $dtree=new dtree("album_tree","",$title_arr,$cate_arr,$url_arr);
 $dtree_code=$dtree->render("11pt",true);
 $xoopsTpl->assign('dtree_code',$dtree_code);
 
  */
-include_once 'tadtools_header.php';
+require_once __DIR__ . '/tadtools_header.php';
 
 class dtree
 {
@@ -51,7 +51,7 @@ class dtree
             $xoTheme->addScript('modules/tadtools/dtree/dtree.js');
         } else {
             $dtree = "
-              <link rel='StyleSheet' href='" . TADTOOLS_URL . "/dtree/dtree.css' type='text/css' />
+              <link rel='StyleSheet' href='" . TADTOOLS_URL . "/dtree/dtree.css' type='text/css'>
               <script type='text/javascript' src='" . TADTOOLS_URL . "/dtree/dtree.js'></script>";
         }
 

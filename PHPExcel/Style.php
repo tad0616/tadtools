@@ -393,7 +393,7 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
                     case 'ROW':
                         $oldXfIndexes = [];
                         for ($row = $rangeStart[1]; $row <= $rangeEnd[1]; ++$row) {
-                            if (null == $this->getActiveSheet()->getRowDimension($row)->getXfIndex()) {
+                            if (null === $this->getActiveSheet()->getRowDimension($row)->getXfIndex()) {
                                 $oldXfIndexes[0] = true; // row without explicit style should be formatted based on default style
                             } else {
                                 $oldXfIndexes[$this->getActiveSheet()->getRowDimension($row)->getXfIndex()] = true;

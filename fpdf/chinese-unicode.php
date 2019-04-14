@@ -1,5 +1,5 @@
 <?php
-require_once 'chinese.php';
+require_once __DIR__ . '/chinese.php';
 
 define('FPDF_UNICODE_ENCODING', 'UCS-2BE');
 

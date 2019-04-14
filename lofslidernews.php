@@ -1,6 +1,6 @@
 <?php
-include_once 'tadtools_header.php';
-include_once 'jquery.php';
+require_once __DIR__ . '/tadtools_header.php';
+require_once __DIR__ . '/jquery.php';
 
 class lofslidernews
 {
@@ -73,8 +73,8 @@ class lofslidernews
             $main = '';
         } else {
             $main = "
-      <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/lofslidernews/css/reset.css' />
-      <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/lofslidernews/css/style.css' />
+      <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/lofslidernews/css/reset.css'>
+      <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/lofslidernews/css/style.css'>
       $jquery
       <script language='javascript' type='text/javascript' src='" . TADTOOLS_URL . "/lofslidernews/js/jquery.easing.js'></script>
       <script language='javascript' type='text/javascript' src='" . TADTOOLS_URL . "/lofslidernews/js/script.js'></script>

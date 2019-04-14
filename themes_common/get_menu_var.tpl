@@ -46,10 +46,10 @@ function get_theme_menu_items($id = "", $other_menu = true)
         $sql    = "select `menuid`, `itemname`, `itemurl`, `target`, `icon`, `link_cate_name`, `link_cate_sn`, `read_group` from " . $xoopsDB->prefix("tad_themes_menu") . " where of_level='{$id}' and status='1' order by position";
         $result = $xoopsDB->query($sql);
 
-        $modhandler = xoops_gethandler('module');
+        $moduleHandler = xoops_getHandler('module');
         if ($result) {
             $i = 0;
-            while (list($menuid, $itemname, $itemurl, $target, $icon, $link_cate_name, $link_cate_sn, $read_group) = $xoopsDB->fetchRow($result)) {
+            while (false !== (list($menuid, $itemname, $itemurl, $target, $icon, $link_cate_name, $link_cate_sn, $read_group) = $xoopsDB->fetchRow($result))) {
                 if(empty($read_group)){
                     $read_group='1,2,3';
                 }
@@ -60,7 +60,7 @@ function get_theme_menu_items($id = "", $other_menu = true)
                         switch ($link_cate_name) {
 
                             case "tadnews_page_cate":
-                                $TadNewsModule = $modhandler->getByDirname("tadnews");
+                                $TadNewsModule = $moduleHandler->getByDirname("tadnews");
                                 if (!$TadNewsModule) {
                                     continue;
                                 }
@@ -117,7 +117,7 @@ function get_custom_menu_items($link_cate_name, $link_cate_sn)
             $sql      = "select nsn, news_title from " . $xoopsDB->prefix("tad_news") . " where ncsn='{$link_cate_sn}' order by `page_sort`";
             $result   = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
             $ncsn_arr = "";
-            while (list($nsn, $news_title) = $xoopsDB->fetchRow($result)) {
+            while (false !== (list($nsn, $news_title) = $xoopsDB->fetchRow($result))) {
                 $sub_menu[$link_cate_name . $i]['id']      = $i;
                 $sub_menu[$link_cate_name . $i]['title']   = $news_title;
                 $sub_menu[$link_cate_name . $i]['url']     = XOOPS_URL . "/modules/tadnews/page.php?ncsn={$link_cate_sn}&nsn={$nsn}";
@@ -147,7 +147,7 @@ function get_module_menu_item($i)
     }
 
     if (file_exists(XOOPS_ROOT_PATH . "/modules/{$dir}/interface_menu.php")) {
-        include_once XOOPS_ROOT_PATH . "/modules/{$dir}/interface_menu.php";
+        require_once XOOPS_ROOT_PATH . "/modules/{$dir}/interface_menu.php";
         global $interface_menu, $interface_menu_img, $isAdmin, $module_id, $interface_icon;
 
         foreach ($interface_menu as $title => $url) {

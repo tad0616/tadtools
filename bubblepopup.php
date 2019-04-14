@@ -1,6 +1,6 @@
 <?php
-include_once 'tadtools_header.php';
-include_once 'jquery.php';
+require_once __DIR__ . '/tadtools_header.php';
+require_once __DIR__ . '/jquery.php';
 
 class bubblepopup
 {
@@ -55,7 +55,7 @@ class bubblepopup
             // die('bbbbb');
             $main = "
             $jquery
-            <link href='" . TADTOOLS_URL . "/jquery.qtip_2/jquery.qtip.min.css' rel='stylesheet' type='text/css' />
+            <link href='" . TADTOOLS_URL . "/jquery.qtip_2/jquery.qtip.min.css' rel='stylesheet' type='text/css'>
             <script src='" . TADTOOLS_URL . "/jquery.qtip_2/jquery.qtip.min.js' type='text/javascript'></script>
             <script src='" . TADTOOLS_URL . "/jquery.qtip_2/imagesloaded.pkg.min.js' type='text/javascript'></script>
 
@@ -71,7 +71,7 @@ class bubblepopup
 // if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/bubblepopup.php")) {
 //     redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
 // }
-// include_once XOOPS_ROOT_PATH . "/modules/tadtools/bubblepopup.php";
+// require_once XOOPS_ROOT_PATH . "/modules/tadtools/bubblepopup.php";
 // $bubblepopup = new bubblepopup();
 // $bubblepopup->add_tip($id = "", $content = "", $position = "top", $align = "left", $theme = 'all-black', $style = "color:'#FFFFFF'");
 // $bubblepopup->render();

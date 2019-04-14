@@ -3,14 +3,14 @@
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/fancybox.php")){
 redirect_header("index.php",3, _MA_NEED_TADTOOLS);
 }
-include_once XOOPS_ROOT_PATH."/modules/tadtools/fancybox.php";
+require_once XOOPS_ROOT_PATH."/modules/tadtools/fancybox.php";
 $fancybox=new fancybox('.edit_dropdown');
 $fancybox_code=$fancybox->render();
 $xoopsTpl->assign('fancybox_code',$fancybox_code);
 加在連結中：class="edit_dropdown" rel="group"（圖） data-fancybox-type="iframe"（HTML）
  */
-include_once 'tadtools_header.php';
-include_once 'jquery.php';
+require_once __DIR__ . '/tadtools_header.php';
+require_once __DIR__ . '/jquery.php';
 
 class fancybox
 {
@@ -83,7 +83,7 @@ class fancybox
         } else {
             $js = $this->show_js ? "<script type='text/javascript' src='" . TADTOOLS_URL . "/fancyBox/lib/jquery.mousewheel.pack.js'></script>
               <script type='text/javascript' language='javascript' src='" . TADTOOLS_URL . "/fancyBox/source/jquery.fancybox.js'></script>
-              <link rel='stylesheet' href='" . TADTOOLS_URL . "/fancyBox/source/jquery.fancybox.css' type='text/css' media='screen' />" : '';
+              <link rel='stylesheet' href='" . TADTOOLS_URL . "/fancyBox/source/jquery.fancybox.css' type='text/css' media='screen'>" : '';
 
             $fancybox = "
             {$jquery}
@@ -175,10 +175,10 @@ class fancybox
         } else {
             $js = $this->show_js ? "<script type='text/javascript' src='" . TADTOOLS_URL . "/fancyBox/lib/jquery.mousewheel-3.0.6.pack.js'></script>
               <script type='text/javascript' language='javascript' src='" . TADTOOLS_URL . "/fancyBox/source/jquery.fancybox.js?v=2.1.4'></script>
-              <link rel='stylesheet' href='" . TADTOOLS_URL . "/fancyBox/source/jquery.fancybox.css?v=2.1.4' type='text/css' media='screen' />
-              <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-buttons.css?v=1.0.5' />
+              <link rel='stylesheet' href='" . TADTOOLS_URL . "/fancyBox/source/jquery.fancybox.css?v=2.1.4' type='text/css' media='screen'>
+              <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-buttons.css?v=1.0.5'>
               <script type='text/javascript' src='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-buttons.js?v=1.0.5'></script>
-              <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-thumbs.css?v=1.0.7' />
+              <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-thumbs.css?v=1.0.7'>
               <script type='text/javascript' src='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-thumbs.js?v=1.0.7'></script>
               <script type='text/javascript' src='" . TADTOOLS_URL . "/fancyBox/source/helpers/jquery.fancybox-media.js?v=1.0.5'></script>" : '';
 

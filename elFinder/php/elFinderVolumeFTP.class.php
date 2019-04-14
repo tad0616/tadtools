@@ -1583,7 +1583,7 @@ class elFinderVolumeFTP extends elFinderVolumeDriver
      * @throws Exception
      * @return array array of files and folders names relative to the $path
      * or an empty array if the directory $path is empty,
-     * <br />
+     * <br>
      * false if $path is not a directory or does not exist.
      * @internal param string $path path to directory to scan.
      */

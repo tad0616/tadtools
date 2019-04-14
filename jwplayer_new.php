@@ -1,5 +1,5 @@
 <?php
-include_once 'tadtools_header.php';
+require_once __DIR__ . '/tadtools_header.php';
 
 class JwPlayer
 {
@@ -206,7 +206,7 @@ class JwPlayer
 // if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/jwplayer_new.php")) {
 //     redirect_header("index.php", 3, _MD_NEED_TADTOOLS);
 // }
-// include_once XOOPS_ROOT_PATH . "/modules/tadtools/jwplayer_new.php";
+// require_once XOOPS_ROOT_PATH . "/modules/tadtools/jwplayer_new.php";
 // $jw = new JwPlayer($id = "", $file = "", $image = "", $width = "", $height = "", $skin = "", $mode = "", $display = "", $autostart = false, $repeat = false, $other_code = "");
 // $player = $jw->render();
 // public function __construct($id = "", $file = "", $image = "", $width = "", $height = "", $skin = "", $mode = "", $display = "", $autostart = false, $repeat = false, $other_code = "")

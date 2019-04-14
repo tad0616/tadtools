@@ -2,7 +2,7 @@
   <{php}>
   if(file_exists(XOOPS_VAR_PATH."/data/install_chk.php")){
     global $xoopsConfig;
-    include_once XOOPS_ROOT_PATH."/modules/tadtools/language/{$xoopsConfig['language']}/main.php";
+    require_once XOOPS_ROOT_PATH."/modules/tadtools/language/{$xoopsConfig['language']}/main.php";
     echo "
     <div class='alert alert-danger'>
       "._TAD_DEL_INSTALL_CHK."
@@ -14,7 +14,7 @@
 <{/if}>
 
 
-<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{xoAppUrl modules/tadtools/colorbox/colorbox.css}>" />
+<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{xoAppUrl modules/tadtools/colorbox/colorbox.css}>">
 <script type="text/javascript" src="<{xoAppUrl modules/tadtools/colorbox/jquery.colorbox.js}>"></script>
 <script>
   function tad_themes_popup(URL) {

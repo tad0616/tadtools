@@ -61,7 +61,7 @@ if (!defined('PHPEXCEL_ROOT')) {
     /**
      * @ignore
      */
-    define('PHPEXCEL_ROOT', dirname(__FILE__) . '/../../');
+    define('PHPEXCEL_ROOT', __DIR__ . '/../../');
     require(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
 }
 
@@ -857,9 +857,9 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 
             // treat OBJ records
             foreach ($this->_objs as $n => $obj) {
-                //				echo '<hr /><b>Object</b> reference is ',$n,'<br />';
+                //				echo '<hr><b>Object</b> reference is ',$n,'<br>';
                 //				var_dump($obj);
-                //				echo '<br />';
+                //				echo '<br>';
 
                 // the first shape container never has a corresponding OBJ record, hence $n + 1
                 if (isset($allSpContainers[$n + 1]) && is_object($allSpContainers[$n + 1])) {
@@ -889,8 +889,8 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
                     switch ($obj['otObjType']) {
                         case 0x19:
                             // Note
-//							echo 'Cell Annotation Object<br />';
-//							echo 'Object ID is ',$obj['idObjID'],'<br />';
+//							echo 'Cell Annotation Object<br>';
+//							echo 'Object ID is ',$obj['idObjID'],'<br>';
 //
                             if (isset($this->_cellNotes[$obj['idObjID']])) {
                                 $cellNote = $this->_cellNotes[$obj['idObjID']];
@@ -902,7 +902,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
                             }
                             break;
                         case 0x08:
-//							echo 'Picture Object<br />';
+//							echo 'Picture Object<br>';
                             // picture
 
                             // get index to BSE entry (1-based)
@@ -968,9 +968,9 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
                             $noteDetails['objTextData']['text'] = '';
                         }
                     }
-                    //					echo '<b>Cell annotation ',$note,'</b><br />';
+                    //					echo '<b>Cell annotation ',$note,'</b><br>';
                     //					var_dump($noteDetails);
-                    //					echo '<br />';
+                    //					echo '<br>';
                     $cellAddress = str_replace('$', '', $noteDetails['cellRef']);
                     $this->_phpSheet->getComment($cellAddress)
                                                     ->setAuthor($noteDetails['author'])
@@ -1310,21 +1310,21 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
         //	offset: 8;	size: 16
         //	offset: 24;	size: 4;	section count
         $secCount = self::_GetInt4d($this->_documentSummaryInformation, 24);
-        //		echo '$secCount = ',$secCount,'<br />';
+        //		echo '$secCount = ',$secCount,'<br>';
 
         // offset: 28;	size: 16;	first section's class id: 02 d5 cd d5 9c 2e 1b 10 93 97 08 00 2b 2c f9 ae
         // offset: 44;	size: 4;	first section offset
         $secOffset = self::_GetInt4d($this->_documentSummaryInformation, 44);
-        //		echo '$secOffset = ',$secOffset,'<br />';
+        //		echo '$secOffset = ',$secOffset,'<br>';
 
         //	section header
         //	offset: $secOffset;	size: 4;	section length
         $secLength = self::_GetInt4d($this->_documentSummaryInformation, $secOffset);
-        //		echo '$secLength = ',$secLength,'<br />';
+        //		echo '$secLength = ',$secLength,'<br>';
 
         //	offset: $secOffset+4;	size: 4;	property count
         $countProperties = self::_GetInt4d($this->_documentSummaryInformation, $secOffset + 4);
-        //		echo '$countProperties = ',$countProperties,'<br />';
+        //		echo '$countProperties = ',$countProperties,'<br>';
 
         // initialize code page (used to resolve string values)
         $codePage = 'CP1252';
@@ -1332,10 +1332,10 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
         //	offset: ($secOffset+8);	size: var
         //	loop through property decarations and properties
         for ($i = 0; $i < $countProperties; ++$i) {
-            //			echo 'Property ',$i,'<br />';
+            //			echo 'Property ',$i,'<br>';
             //	offset: ($secOffset+8) + (8 * $i);	size: 4;	property ID
             $id = self::_GetInt4d($this->_documentSummaryInformation, ($secOffset + 8) + (8 * $i));
-            //			echo 'ID is ',$id,'<br />';
+            //			echo 'ID is ',$id,'<br>';
 
             // Use value of property id as appropriate
             // offset: 60 + 8 * $i;	size: 4;	offset from beginning of section (48)
@@ -1448,7 +1448,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
      */
     private function _readNote()
     {
-        //		echo '<b>Read Cell Annotation</b><br />';
+        //		echo '<b>Read Cell Annotation</b><br>';
         $length = self::_GetInt2d($this->_data, $this->_pos + 2);
         $recordData = $this->_readRecordData($this->_data, $this->_pos + 4, $length);
 
@@ -1464,9 +1464,9 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
             $noteObjID = self::_GetInt2d($recordData, 6);
             $noteAuthor = self::_readUnicodeStringLong(mb_substr($recordData, 8));
             $noteAuthor = $noteAuthor['value'];
-            //			echo 'Note Address=',$cellAddress,'<br />';
-            //			echo 'Note Object ID=',$noteObjID,'<br />';
-            //			echo 'Note Author=',$noteAuthor,'<hr />';
+            //			echo 'Note Address=',$cellAddress,'<br>';
+            //			echo 'Note Object ID=',$noteObjID,'<br>';
+            //			echo 'Note Author=',$noteAuthor,'<hr>';
 //
             $this->_cellNotes[$noteObjID] = ['cellRef' => $cellAddress,
                                                   'objectID' => $noteObjID,
@@ -1482,13 +1482,13 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
                 $extension = true;
                 $cellAddress = array_pop(array_keys($this->_phpSheet->getComments()));
             }
-            //			echo 'Note Address=',$cellAddress,'<br />';
+            //			echo 'Note Address=',$cellAddress,'<br>';
 
             $cellAddress = str_replace('$', '', $cellAddress);
             $noteLength = self::_GetInt2d($recordData, 4);
             $noteText = trim(mb_substr($recordData, 6));
-            //			echo 'Note Length=',$noteLength,'<br />';
-            //			echo 'Note Text=',$noteText,'<br />';
+            //			echo 'Note Length=',$noteLength,'<br>';
+            //			echo 'Note Text=',$noteText,'<br>';
 
             if ($extension) {
                 //	Concatenate this extension with the currently set comment for the cell
@@ -1538,9 +1538,9 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
                 'rotation' => $rot,
              ];
 
-        //		echo '<b>_readTextObject()</b><br />';
+        //		echo '<b>_readTextObject()</b><br>';
 //		var_dump($this->_textObjects[$this->textObjRef]);
-//		echo '<br />';
+//		echo '<br>';
     }
 
     /**
@@ -2106,13 +2106,13 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
                 $diagonalUp = (0x80000000 & self::_GetInt4d($recordData, 10)) >> 31 ?
                         true : false;
 
-                if (false == $diagonalUp && false == $diagonalDown) {
+                if (false === $diagonalUp && false === $diagonalDown) {
                     $objStyle->getBorders()->setDiagonalDirection(PHPExcel_Style_Borders::DIAGONAL_NONE);
-                } elseif (true == $diagonalUp && false == $diagonalDown) {
+                } elseif (true === $diagonalUp && false === $diagonalDown) {
                     $objStyle->getBorders()->setDiagonalDirection(PHPExcel_Style_Borders::DIAGONAL_UP);
-                } elseif (false == $diagonalUp && true == $diagonalDown) {
+                } elseif (false === $diagonalUp && true === $diagonalDown) {
                     $objStyle->getBorders()->setDiagonalDirection(PHPExcel_Style_Borders::DIAGONAL_DOWN);
-                } elseif (true == $diagonalUp && true == $diagonalDown) {
+                } elseif (true === $diagonalUp && true === $diagonalDown) {
                     $objStyle->getBorders()->setDiagonalDirection(PHPExcel_Style_Borders::DIAGONAL_BOTH);
                 }
 
@@ -4070,9 +4070,9 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
         ];
         $this->textObjRef = $idObjID;
 
-        //		echo '<b>_readObj()</b><br />';
+        //		echo '<b>_readObj()</b><br>';
 //		var_dump(end($this->_objs));
-//		echo '<br />';
+//		echo '<br>';
     }
 
     /**

@@ -108,17 +108,17 @@
  */
 
 // TCPDF configuration
-require_once(dirname(__FILE__).'/tcpdf_autoconfig.php');
+require_once(__DIR__.'/tcpdf_autoconfig.php');
 // TCPDF static font methods and data
-require_once(dirname(__FILE__).'/include/tcpdf_font_data.php');
+require_once(__DIR__.'/include/tcpdf_font_data.php');
 // TCPDF static font methods and data
-require_once(dirname(__FILE__).'/include/tcpdf_fonts.php');
+require_once(__DIR__.'/include/tcpdf_fonts.php');
 // TCPDF static color methods and data
-require_once(dirname(__FILE__).'/include/tcpdf_colors.php');
+require_once(__DIR__.'/include/tcpdf_colors.php');
 // TCPDF static image methods and data
-require_once(dirname(__FILE__).'/include/tcpdf_images.php');
+require_once(__DIR__.'/include/tcpdf_images.php');
 // TCPDF static methods and data
-require_once(dirname(__FILE__).'/include/tcpdf_static.php');
+require_once(__DIR__.'/include/tcpdf_static.php');
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -1830,7 +1830,7 @@ class TCPDF
      * IMPORTANT: Please note that this method sets the mb_internal_encoding to ASCII, so if you are using the mbstring module functions with TCPDF you need to correctly set/unset the mb_internal_encoding when needed.
      *
      * @param $orientation (string) page orientation. Possible values are (case insensitive):<ul><li>P or Portrait (default)</li><li>L or Landscape</li><li>'' (empty string) for automatic orientation</li></ul>
-     * @param $unit (string) User measure unit. Possible values are:<ul><li>pt: point</li><li>mm: millimeter (default)</li><li>cm: centimeter</li><li>in: inch</li></ul><br />A point equals 1/72 of inch, that is to say about 0.35 mm (an inch being 2.54 cm). This is a very common unit in typography; font sizes are expressed in that unit.
+     * @param $unit (string) User measure unit. Possible values are:<ul><li>pt: point</li><li>mm: millimeter (default)</li><li>cm: centimeter</li><li>in: inch</li></ul><br>A point equals 1/72 of inch, that is to say about 0.35 mm (an inch being 2.54 cm). This is a very common unit in typography; font sizes are expressed in that unit.
      * @param $format (mixed) The format used for pages. It can be either: one of the string values specified at getPageSizeFromFormat() or an array of parameters specified at setPageFormat().
      * @param $unicode (boolean) TRUE means that the input text is unicode (default = true)
      * @param $encoding (string) Charset encoding (used only when converting back html entities); default is UTF-8.
@@ -1988,7 +1988,7 @@ class TCPDF
         $this->default_graphic_vars = $this->getGraphicVars();
         $this->header_xobj_autoreset = false;
         $this->custom_xmp = '';
-        // Call cleanup method after script execution finishes or exit() is called.
+        // Call cleanup method after script execution finishes || die() is called.
         // NOTE: This will not be executed if the process is killed with a SIGTERM or SIGKILL signal.
         register_shutdown_function(array($this, '_destroy'), true);
     }
@@ -2006,7 +2006,7 @@ class TCPDF
 
     /**
      * Set the units of measure for the document.
-     * @param $unit (string) User measure unit. Possible values are:<ul><li>pt: point</li><li>mm: millimeter (default)</li><li>cm: centimeter</li><li>in: inch</li></ul><br />A point equals 1/72 of inch, that is to say about 0.35 mm (an inch being 2.54 cm). This is a very common unit in typography; font sizes are expressed in that unit.
+     * @param $unit (string) User measure unit. Possible values are:<ul><li>pt: point</li><li>mm: millimeter (default)</li><li>cm: centimeter</li><li>in: inch</li></ul><br>A point equals 1/72 of inch, that is to say about 0.35 mm (an inch being 2.54 cm). This is a very common unit in typography; font sizes are expressed in that unit.
      * @public
      * @since 3.0.015 (2008-06-06)
      */
@@ -4509,7 +4509,7 @@ class TCPDF
      * The font can be either a standard one or a font added via the AddFont() method. Standard fonts use Windows encoding cp1252 (Western Europe).
      * The method can be called before the first page is created and the font is retained from page to page.
      * If you just wish to change the current font size, it is simpler to call SetFontSize().
-     * Note: for the standard fonts, the font metric files must be accessible. There are three possibilities for this:<ul><li>They are in the current directory (the one where the running script lies)</li><li>They are in one of the directories defined by the include_path parameter</li><li>They are in the directory defined by the K_PATH_FONTS constant</li></ul><br />
+     * Note: for the standard fonts, the font metric files must be accessible. There are three possibilities for this:<ul><li>They are in the current directory (the one where the running script lies)</li><li>They are in one of the directories defined by the include_path parameter</li><li>They are in the directory defined by the K_PATH_FONTS constant</li></ul><br>
      * @param $family (string) Family font. It can be either a name defined by AddFont() or one of the standard Type1 families (case insensitive):<ul><li>times (Times-Roman)</li><li>timesb (Times-Bold)</li><li>timesi (Times-Italic)</li><li>timesbi (Times-BoldItalic)</li><li>helvetica (Helvetica)</li><li>helveticab (Helvetica-Bold)</li><li>helveticai (Helvetica-Oblique)</li><li>helveticabi (Helvetica-BoldOblique)</li><li>courier (Courier)</li><li>courierb (Courier-Bold)</li><li>courieri (Courier-Oblique)</li><li>courierbi (Courier-BoldOblique)</li><li>symbol (Symbol)</li><li>zapfdingbats (ZapfDingbats)</li></ul> It is also possible to pass an empty string. In that case, the current family is retained.
      * @param $style (string) Font style. Possible values are (case insensitive):<ul><li>empty string: regular</li><li>B: bold</li><li>I: italic</li><li>U: underline</li><li>D: line through</li><li>O: overline</li></ul> or any combination. The default value is regular. Bold and italic styles do not apply to Symbol and ZapfDingbats basic fonts or other fonts when not defined.
      * @param $size (float) Font size in points. The default value is the current size. If no size has been specified since the beginning of the document, the value taken is 12
@@ -4782,7 +4782,7 @@ class TCPDF
     }
 
     /**
-     * Creates a new internal link and returns its identifier. An internal link is a clickable area which directs to another place within the document.<br />
+     * Creates a new internal link and returns its identifier. An internal link is a clickable area which directs to another place within the document.<br>
      * The identifier can then be passed to Cell(), Write(), Image() or Link(). The destination is defined with SetLink().
      * @public
      * @since 1.5
@@ -5017,7 +5017,7 @@ class TCPDF
 
     /**
      * Whenever a page break condition is met, the method is called, and the break is issued or not depending on the returned value.
-     * The default implementation returns a value according to the mode selected by SetAutoPageBreak().<br />
+     * The default implementation returns a value according to the mode selected by SetAutoPageBreak().<br>
      * This method is called automatically and should not be called directly by the application.
      * @return boolean
      * @public
@@ -5089,7 +5089,7 @@ class TCPDF
     }
 
     /**
-     * Prints a cell (rectangular area) with optional borders, background color and character string. The upper-left corner of the cell corresponds to the current position. The text can be aligned or centered. After the call, the current position moves to the right or to the next line. It is possible to put a link on the text.<br />
+     * Prints a cell (rectangular area) with optional borders, background color and character string. The upper-left corner of the cell corresponds to the current position. The text can be aligned or centered. After the call, the current position moves to the right or to the next line. It is possible to put a link on the text.<br>
      * If automatic page breaking is enabled and the cell goes beyond the limit, a page break is done before outputting.
      * @param $w (float) Cell width. If 0, the cell extends up to the right margin.
      * @param $h (float) Cell height. Default value: 0.
@@ -5158,7 +5158,7 @@ class TCPDF
     }
 
     /**
-     * Returns the PDF string code to print a cell (rectangular area) with optional borders, background color and character string. The upper-left corner of the cell corresponds to the current position. The text can be aligned or centered. After the call, the current position moves to the right or to the next line. It is possible to put a link on the text.<br />
+     * Returns the PDF string code to print a cell (rectangular area) with optional borders, background color and character string. The upper-left corner of the cell corresponds to the current position. The text can be aligned or centered. After the call, the current position moves to the right or to the next line. It is possible to put a link on the text.<br>
      * If automatic page breaking is enabled and the cell goes beyond the limit, a page break is done before outputting.
      * @param $w (float) Cell width. If 0, the cell extends up to the right margin.
      * @param $h (float) Cell height. Default value: 0.
@@ -5349,7 +5349,7 @@ class TCPDF
                     $unicode = TCPDF_FONTS::UTF8StringToArray($txt, $this->isunicode, $this->CurrentFont); // array of UTF-8 unicode values
                     $unicode = TCPDF_FONTS::utf8Bidi($unicode, '', $this->tmprtl, $this->isunicode, $this->CurrentFont);
                     // replace thai chars (if any)
-                    if (defined('K_THAI_TOPCHARS') and (K_THAI_TOPCHARS == true)) {
+                    if (defined('K_THAI_TOPCHARS') and (K_THAI_TOPCHARS === true)) {
                         // number of chars
                         $numchars = count($unicode);
                         // po pla, for far, for fan
@@ -5851,7 +5851,7 @@ class TCPDF
 
     /**
      * This method allows printing text with line breaks.
-     * They can be automatic (as soon as the text reaches the right border of the cell) or explicit (via the \n character). As many cells as necessary are output, one below the other.<br />
+     * They can be automatic (as soon as the text reaches the right border of the cell) or explicit (via the \n character). As many cells as necessary are output, one below the other.<br>
      * Text can be aligned, centered or justified. The cell block can be framed and the background painted.
      * @param $w (float) Width of cells. If 0, they extend up to the right margin of the page.
      * @param $h (float) Cell minimum height. The cell extends automatically if needed.
@@ -6380,7 +6380,7 @@ class TCPDF
     }
 
     /**
-     * This method prints text from the current position.<br />
+     * This method prints text from the current position.<br>
      * @param $h (float) Line height
      * @param $txt (string) String to print
      * @param $link (mixed) URL or identifier returned by AddLink()
@@ -6920,9 +6920,9 @@ class TCPDF
      * <li>one explicit dimension, the other being calculated automatically in order to keep the original proportions</li>
      * <li>no explicit dimension, in which case the image is put at 72 dpi</li></ul>
      * Supported formats are JPEG and PNG images whitout GD library and all images supported by GD: GD, GD2, GD2PART, GIF, JPEG, PNG, BMP, XBM, XPM;
-     * The format can be specified explicitly or inferred from the file extension.<br />
-     * It is possible to put a link on the image.<br />
-     * Remark: if an image is used several times, only one copy will be embedded in the file.<br />
+     * The format can be specified explicitly or inferred from the file extension.<br>
+     * It is possible to put a link on the image.<br>
+     * Remark: if an image is used several times, only one copy will be embedded in the file.<br>
      * @param $file (string) Name of the file containing the image or a '@' character followed by the image data string. To link an image without embedding it on the document, set an asterisk character before the URL (i.e.: '*http://www.example.com/image.jpg').
      * @param $x (float) Abscissa of the upper-left corner (LTR) or upper-right corner (RTL).
      * @param $y (float) Ordinate of the upper-left corner (LTR) or upper-right corner (RTL).
@@ -7676,7 +7676,7 @@ class TCPDF
 
     /**
      * Send the document to a given destination: string, local file or browser.
-     * In the last case, the plug-in may be used (if present) or a download ("Save as" dialog box) may be forced.<br />
+     * In the last case, the plug-in may be used (if present) or a download ("Save as" dialog box) may be forced.<br>
      * The method first calls Close() if necessary to terminate the document.
      * @param $name (string) The name of the file when saved. Note that special characters are removed and blanks characters are replaced with the underscore character.
      * @param $dest (string) Destination where to send the document. It can take one of the following values:<ul><li>I: send the file inline to the browser (default). The plug-in is used if available. The name given by name is used when one selects the "Save as" option on the link generating the PDF.</li><li>D: send to the browser and force a file download with the name given by name.</li><li>F: save to a local server file with the name given by name.</li><li>S: return the document as a string (name is ignored).</li><li>FI: equivalent to F + I option</li><li>FD: equivalent to F + D option</li><li>E: return the document as base64 mime multi-part email attachment (RFC 2045)</li></ul>
@@ -9813,7 +9813,7 @@ class TCPDF
         // if required, add standard sRGB ICC colour profile
         if ($this->pdfa_mode or $this->force_srgb) {
             $iccobj = $this->_newobj();
-            $icc = file_get_contents(dirname(__FILE__).'/include/sRGB.icc');
+            $icc = file_get_contents(__DIR__.'/include/sRGB.icc');
             $filter = '';
             if ($this->compress) {
                 $filter = ' /Filter /FlateDecode';
@@ -12645,7 +12645,7 @@ class TCPDF
         }
         //Outline items
         $n = $this->n + 1;
-        $nltags = '/<br[\s]?\/>|<\/(blockquote|dd|dl|div|dt|h1|h2|h3|h4|h5|h6|hr|li|ol|p|pre|ul|tcpdf|table|tr|td)>/si';
+        $nltags = '/<br[\s]?\>|<\/(blockquote|dd|dl|div|dt|h1|h2|h3|h4|h5|h6|hr|li|ol|p|pre|ul|tcpdf|table|tr|td)>/si';
         foreach ($this->outlines as $i => $o) {
             $oid = $this->_newobj();
             // covert HTML title to string
@@ -15509,7 +15509,7 @@ class TCPDF
         if (TCPDF_STATIC::empty_string(trim($code))) {
             return;
         }
-        require_once(dirname(__FILE__).'/tcpdf_barcodes_1d.php');
+        require_once(__DIR__.'/tcpdf_barcodes_1d.php');
         // save current graphic settings
         $gvars = $this->getGraphicVars();
         // create new barcode object
@@ -15829,7 +15829,7 @@ class TCPDF
         if (TCPDF_STATIC::empty_string(trim($code))) {
             return;
         }
-        require_once(dirname(__FILE__).'/tcpdf_barcodes_2d.php');
+        require_once(__DIR__.'/tcpdf_barcodes_2d.php');
         // save current graphic settings
         $gvars = $this->getGraphicVars();
         // create new barcode object
@@ -16633,7 +16633,7 @@ class TCPDF
         // define self-closing tags
         $selfclosingtags = array('area','base','basefont','br','hr','input','img','link','meta');
         // remove all unsupported tags (the line below lists all supported tags)
-        $html = strip_tags($html, '<marker/><a><b><blockquote><body><br><br/><dd><del><div><dl><dt><em><font><form><h1><h2><h3><h4><h5><h6><hr><hr/><i><img><input><label><li><ol><option><p><pre><s><select><small><span><strike><strong><sub><sup><table><tablehead><tcpdf><td><textarea><th><thead><tr><tt><u><ul>');
+        $html = strip_tags($html, '<marker><a><b><blockquote><body><br><br><dd><del><div><dl><dt><em><font><form><h1><h2><h3><h4><h5><h6><hr><hr><i><img><input><label><li><ol><option><p><pre><s><select><small><span><strike><strong><sub><sup><table><tablehead><tcpdf><td><textarea><th><thead><tr><tt><u><ul>');
         //replace some blank characters
         $html = preg_replace('/<pre/', '<xre', $html); // preserve pre tag
         $html = preg_replace('/<(table|tr|td|th|tcpdf|blockquote|dd|div|dl|dt|form|h1|h2|h3|h4|h5|h6|br|hr|li|ol|ul|p)([^\>]*)>[\n\r\t]+/', '<\\1\\2>', $html);
@@ -16646,7 +16646,7 @@ class TCPDF
             $html_b = substr($html, $offset, ($pos - $offset + 6));
             while (preg_match("'<xre([^\>]*)>(.*?)\n(.*?)</pre>'si", $html_b)) {
                 // preserve newlines on <pre> tag
-                $html_b = preg_replace("'<xre([^\>]*)>(.*?)\n(.*?)</pre>'si", "<xre\\1>\\2<br />\\3</pre>", $html_b);
+                $html_b = preg_replace("'<xre([^\>]*)>(.*?)\n(.*?)</pre>'si", "<xre\\1>\\2<br>\\3</pre>", $html_b);
             }
             while (preg_match("'<xre([^\>]*)>(.*?)".$this->re_space['p']."(.*?)</pre>'".$this->re_space['m'], $html_b)) {
                 // preserve spaces on <pre> tag
@@ -16682,7 +16682,7 @@ class TCPDF
         }
         if (preg_match("'</select'si", $html)) {
             $html = preg_replace("'<select([^\>]*)>'si", "<select\\1 opt=\"", $html);
-            $html = preg_replace("'#!NwL!#</select>'si", "\" />", $html);
+            $html = preg_replace("'#!NwL!#</select>'si", "\">", $html);
         }
         $html = str_replace("\n", ' ', $html);
         // restore textarea newlines
@@ -16693,26 +16693,26 @@ class TCPDF
         $html = preg_replace('/[\s]+<(tr|td|th|li|dt|dd)/', '<\\1', $html);
         $html = preg_replace('/'.$this->re_space['p'].'+<(ul|ol|dl|br)/'.$this->re_space['m'], '<\\1', $html);
         $html = preg_replace('/<\/(table|tr|td|th|blockquote|dd|dt|dl|div|dt|h1|h2|h3|h4|h5|h6|hr|li|ol|ul|p)>[\s]+</', '</\\1><', $html);
-        $html = preg_replace('/<\/(td|th)>/', '<marker style="font-size:0"/></\\1>', $html);
-        $html = preg_replace('/<\/table>([\s]*)<marker style="font-size:0"\/>/', '</table>', $html);
+        $html = preg_replace('/<\/(td|th)>/', '<marker style="font-size:0"></\\1>', $html);
+        $html = preg_replace('/<\/table>([\s]*)<marker style="font-size:0"\>/', '</table>', $html);
         $html = preg_replace('/'.$this->re_space['p'].'+<img/'.$this->re_space['m'], chr(32).'<img', $html);
         $html = preg_replace('/<img([^\>]*)>[\s]+([^\<])/xi', '<img\\1>&nbsp;\\2', $html);
-        $html = preg_replace('/<img([^\>]*)>/xi', '<img\\1><span><marker style="font-size:0"/></span>', $html);
+        $html = preg_replace('/<img([^\>]*)>/xi', '<img\\1><span><marker style="font-size:0"></span>', $html);
         $html = preg_replace('/<xre/', '<pre', $html); // restore pre tag
-        $html = preg_replace('/<textarea([^\>]*)>([^\<]*)<\/textarea>/xi', '<textarea\\1 value="\\2" />', $html);
+        $html = preg_replace('/<textarea([^\>]*)>([^\<]*)<\/textarea>/xi', '<textarea\\1 value="\\2">', $html);
         $html = preg_replace('/<li([^\>]*)><\/li>/', '<li\\1>&nbsp;</li>', $html);
         $html = preg_replace('/<li([^\>]*)>'.$this->re_space['p'].'*<img/'.$this->re_space['m'], '<li\\1><font size="1">&nbsp;</font><img', $html);
         $html = preg_replace('/<([^\>\/]*)>[\s]/', '<\\1>&nbsp;', $html); // preserve some spaces
         $html = preg_replace('/[\s]<\/([^\>]*)>/', '&nbsp;</\\1>', $html); // preserve some spaces
-        $html = preg_replace('/<su([bp])/', '<zws/><su\\1', $html); // fix sub/sup alignment
-        $html = preg_replace('/<\/su([bp])>/', '</su\\1><zws/>', $html); // fix sub/sup alignment
+        $html = preg_replace('/<su([bp])/', '<zws><su\\1', $html); // fix sub/sup alignment
+        $html = preg_replace('/<\/su([bp])>/', '</su\\1><zws>', $html); // fix sub/sup alignment
         $html = preg_replace('/'.$this->re_space['p'].'+/'.$this->re_space['m'], chr(32), $html); // replace multiple spaces with a single space
         // trim string
         $html = $this->stringTrim($html);
         // fix br tag after li
         $html = preg_replace('/<li><br([^\>]*)>/', '<li> <br\\1>', $html);
         // fix first image tag alignment
-        $html = preg_replace('/^<img/', '<span style="font-size:0"><br /></span> <img', $html, 1);
+        $html = preg_replace('/^<img/', '<span style="font-size:0"><br></span> <img', $html, 1);
         // pattern for generic tag
         $tagpattern = '/(<[^>]+>)/';
         // explodes the string
@@ -17413,7 +17413,7 @@ class TCPDF
 
     /**
      * Prints a cell (rectangular area) with optional borders, background color and html text string.
-     * The upper-left corner of the cell corresponds to the current position. After the call, the current position moves to the right or to the next line.<br />
+     * The upper-left corner of the cell corresponds to the current position. After the call, the current position moves to the right or to the next line.<br>
      * If automatic page breaking is enabled and the cell goes beyond the limit, a page break is done before outputting.
      * IMPORTANT: The HTML must be well formatted - try to clean-up it using an application like HTML-Tidy before submitting.
      * Supported tags are: a, b, blockquote, br, dd, del, div, dl, dt, em, font, h1, h2, h3, h4, h5, h6, hr, i, img, li, ol, p, pre, small, span, strong, sub, sup, table, tcpdf, td, th, thead, tr, tt, u, ul
@@ -17439,7 +17439,7 @@ Putting 1 is equivalent to putting 0 and calling Ln() just after. Default value:
     }
 
     /**
-     * Allows to preserve some HTML formatting (limited support).<br />
+     * Allows to preserve some HTML formatting (limited support).<br>
      * IMPORTANT: The HTML must be well formatted - try to clean-up it using an application like HTML-Tidy before submitting.
      * Supported tags are: a, b, blockquote, br, dd, del, div, dl, dt, em, font, h1, h2, h3, h4, h5, h6, hr, i, img, li, ol, p, pre, small, span, strong, sub, sup, table, tcpdf, td, th, thead, tr, tt, u, ul
      * NOTE: all the HTML attributes must be enclosed in double-quote.
@@ -23343,9 +23343,9 @@ Putting 1 is equivalent to putting 0 and calling Ln() just after. Default value:
         // disable case-folding for this XML parser
         xml_parser_set_option($this->parser, XML_OPTION_CASE_FOLDING, 0);
         // sets the element handler functions for the XML parser
-        xml_set_element_handler($this->parser, 'startSVGElementHandler', 'endSVGElementHandler');
+        xml_set_elementHandler($this->parser, 'startSVGElementHandler', 'endSVGElementHandler');
         // sets the character data handler function for the XML parser
-        xml_set_character_data_handler($this->parser, 'segSVGContentHandler');
+        xml_set_character_dataHandler($this->parser, 'segSVGContentHandler');
         // start parsing an XML document
         if (!xml_parse($this->parser, $svgdata)) {
             $error_message = sprintf('SVG Error: %s at line %d', xml_error_string(xml_get_error_code($this->parser)), xml_get_current_line_number($this->parser));

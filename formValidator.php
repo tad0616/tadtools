@@ -1,6 +1,6 @@
 <?php
-include_once 'tadtools_header.php';
-include_once 'jquery.php';
+require_once __DIR__ . '/tadtools_header.php';
+require_once __DIR__ . '/jquery.php';
 
 class formValidator
 {
@@ -40,7 +40,7 @@ class formValidator
             ");
         } else {
             $main = "
-            <link rel='stylesheet' href='" . TADTOOLS_URL . "/formValidator/css/validationEngine.jquery.css' type='text/css' media='screen' charset='utf-8' />
+            <link rel='stylesheet' href='" . TADTOOLS_URL . "/formValidator/css/validationEngine.jquery.css' type='text/css' media='screen' charset='utf-8'>
 
             $jquery
             <script src='" . TADTOOLS_URL . "/formValidator/js/languages/jquery.validationEngine-{$LANGCODE}.js' type='text/javascript'></script>
@@ -58,6 +58,6 @@ class formValidator
     }
 }
 
-// include_once XOOPS_ROOT_PATH."/modules/tadtools/formValidator.php";
+// require_once XOOPS_ROOT_PATH."/modules/tadtools/formValidator.php";
 // $formValidator= new formValidator("#myForm",false);
 // $formValidator_code=$formValidator->render('topLeft');

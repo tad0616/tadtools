@@ -1,6 +1,6 @@
 <?php
-$xoopsOption['template_main'] = 'tadtools_adm_index.tpl'; //設定樣板檔（必）
-include_once 'header.php'; //引入預設檔頭（必）
+$GLOBALS['xoopsOption']['template_main'] = 'tadtools_adm_index.tpl'; //設定樣板檔（必）
+require_once __DIR__ . '/header.php'; //引入預設檔頭（必）
 
 /*-----------function區--------------*/
 function tadtools_setup()
@@ -12,7 +12,7 @@ function tadtools_setup()
     $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tadtools_setup') . '`';
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     //$tt_theme,$tt_use_bootstrap,$tt_bootstrap_color
-    while (list($tt_theme, $tt_use_bootstrap, $tt_bootstrap_color, $tt_theme_kind) = $xoopsDB->fetchRow($result)) {
+    while (false !== (list($tt_theme, $tt_use_bootstrap, $tt_bootstrap_color, $tt_theme_kind) = $xoopsDB->fetchRow($result))) {
         // $setup[$tt_theme]=array();
         $use_bootstrap[$tt_theme] = $tt_use_bootstrap;
         $bootstrap_color[$tt_theme] = $tt_bootstrap_color;
@@ -32,7 +32,7 @@ function tadtools_setup()
 
         if (file_exists(XOOPS_ROOT_PATH . "/themes/{$theme}/config.php")) {
             $theme_kind = '';
-            include_once XOOPS_ROOT_PATH . "/themes/{$theme}/config.php";
+            require_once XOOPS_ROOT_PATH . "/themes/{$theme}/config.php";
             if (!empty($theme_kind)) {
                 if (empty($tt_theme_kind_arr[$theme]) or 0 == $theme_change) {
                     $sql = 'replace into `' . $xoopsDB->prefix('tadtools_setup') . "` (`tt_theme` , `tt_use_bootstrap`,`tt_bootstrap_color` , `tt_theme_kind`) values('{$theme}', '0', '{$theme_color}', '{$theme_kind}')";
@@ -168,7 +168,7 @@ function save()
     }
 }
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 
 switch ($op) {
@@ -183,4 +183,4 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-include_once 'footer.php';
+require_once __DIR__ . '/footer.php';

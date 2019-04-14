@@ -1,13 +1,13 @@
 <?php
 //給 TadUpFiles.php 用的，讓它可以直接播放影片
-include_once 'tadtools_header.php';
+require_once __DIR__ . '/tadtools_header.php';
 if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/jwplayer_new.php')) {
     redirect_header('index.php', 3, _MD_NEED_TADTOOLS);
 }
-include_once XOOPS_ROOT_PATH . '/modules/tadtools/tad_function.php';
-include_once XOOPS_ROOT_PATH . '/modules/tadtools/jwplayer_new.php';
+require_once XOOPS_ROOT_PATH . '/modules/tadtools/tad_function.php';
+require_once XOOPS_ROOT_PATH . '/modules/tadtools/jwplayer_new.php';
 
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $media = system_CleanVars($_REQUEST, 'file_name', '', 'string');
 $image = XOOPS_URL . '/modules/tadtools/images/video.png';
 $jw = new JwPlayer('video', $media, $image, '100%', null, null, null, null, true);

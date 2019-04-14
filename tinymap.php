@@ -1,6 +1,6 @@
 <?php
-include_once 'tadtools_header.php';
-include_once 'jquery.php';
+require_once __DIR__ . '/tadtools_header.php';
+require_once __DIR__ . '/jquery.php';
 
 class tinymap
 {
@@ -112,7 +112,7 @@ class tinymap
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/tinymap.php")){
 redirect_header("http://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=1",3, _TAD_NEED_TADTOOLS);
 }
-include_once XOOPS_ROOT_PATH."/modules/tadtools/tinymap.php";
+require_once XOOPS_ROOT_PATH."/modules/tadtools/tinymap.php";
 $tinymap=new tinymap($id, $x, $y, $title);
 $tinymap->set_key('xxxx');
 //$tinymap->set_option();

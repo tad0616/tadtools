@@ -40,7 +40,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
 
         if (empty($tt_theme_kind)) {
             if (file_exists(XOOPS_ROOT_PATH . "/themes/{$theme_set}/config.php")) {
-                include_once XOOPS_ROOT_PATH . "/themes/{$theme_set}/config.php";
+                require_once XOOPS_ROOT_PATH . "/themes/{$theme_set}/config.php";
                 if (isset($theme_kind)) {
                     $tt_theme_kind = $theme_kind;
                     $tt_use_bootstrap = 'html' === $theme_kind ? 1 : 0;
@@ -95,6 +95,6 @@ class TadtoolsCorePreload extends XoopsPreloadItem
      */
     public static function eventCoreIncludeCommonEnd($args)
     {
-        include __DIR__ . '/autoloader.php';
+        require __DIR__ . '/autoloader.php';
     }
 }

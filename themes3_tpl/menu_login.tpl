@@ -13,7 +13,7 @@
                 <{$smarty.const.TF_USER_S_ID}>
               </label>
               <div class="col-sm-8">
-                <input type="text" name="uname"  id="uname" placeholder="<{$smarty.const.TF_USER_ID}>"  class="form-control" />
+                <input type="text" name="uname"  id="uname" placeholder="<{$smarty.const.TF_USER_ID}>"  class="form-control">
               </div>
             </div>
 
@@ -22,7 +22,7 @@
                 <{$smarty.const.TF_USER_S_PASS}>
               </label>
               <div class="col-sm-8">
-              <input type="password" name="pass" id="pass" placeholder="<{$smarty.const.TF_USER_PASS}>" class="form-control" />
+              <input type="password" name="pass" id="pass" placeholder="<{$smarty.const.TF_USER_PASS}>" class="form-control">
               </div>
             </div>
 
@@ -30,10 +30,10 @@
               <label class="col-sm-4 control-label">
               </label>
               <div class="col-sm-8">
-                <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>" />
-                <input type="hidden" name="rememberme" value="On" />
-                <input type="hidden" name="op" value="login" />
-                <input type="hidden" name="xoops_login" value="1"/>
+                <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>">
+                <input type="hidden" name="rememberme" value="On">
+                <input type="hidden" name="op" value="login">
+                <input type="hidden" name="xoops_login" value="1">
                 <button type="submit" class="btn btn-primary btn-block"><{$smarty.const.TF_USER_ENTER}></button>
               </div>
             </div>
@@ -67,17 +67,17 @@
       global $xoopsConfig,$xoopsTpl;
 
 
-      $modhandler = xoops_gethandler('module');
-      $config_handler =xoops_gethandler('config');
+      $moduleHandler = xoops_getHandler('module');
+      $configHandler =xoops_gethandler('config');
 
-      $TadLoginXoopsModule = $modhandler->getByDirname("tad_login");
+      $TadLoginXoopsModule = $moduleHandler->getByDirname("tad_login");
 
       if($TadLoginXoopsModule){
-        include_once XOOPS_ROOT_PATH."/modules/tad_login/function.php";
-        include_once XOOPS_ROOT_PATH."/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
+        require_once XOOPS_ROOT_PATH."/modules/tad_login/function.php";
+        require_once XOOPS_ROOT_PATH."/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
 
-        $config_handler =xoops_gethandler('config');
-        $modConfig= &$config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
+        $configHandler =xoops_gethandler('config');
+        $modConfig= &$configHandler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
 
         if (in_array('facebook', $modConfig['auth_method'])) {
             $tad_login['facebook'] = facebook_login('return');
