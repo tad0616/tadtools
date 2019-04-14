@@ -45,7 +45,7 @@ class Row extends AbstractElement
      *
      * @var \PhpOffice\PhpWord\Element\Cell[]
      */
-    private $cells = array();
+    private $cells = [];
 
     /**
      * Create a new table row

@@ -35,7 +35,7 @@ class Image extends AbstractStyle
         if (!$style instanceof \PhpOffice\PhpWord\Style\Image) {
             return '';
         }
-        $css = array();
+        $css = [];
 
         $width = $style->getWidth();
         $height = $style->getHeight();

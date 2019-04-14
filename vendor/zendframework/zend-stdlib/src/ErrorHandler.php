@@ -22,7 +22,7 @@ abstract class ErrorHandler
      *
      * @var array
      */
-    protected static $stack = array();
+    protected static $stack = [];
 
     /**
      * Check if this error handler is active
@@ -52,7 +52,7 @@ abstract class ErrorHandler
     public static function start($errorLevel = \E_WARNING)
     {
         if (!static::$stack) {
-            set_error_handler(array(get_called_class(), 'addError'), $errorLevel);
+            set_error_handler([get_called_class(), 'addError'], $errorLevel);
         }
 
         static::$stack[] = null;
@@ -62,8 +62,8 @@ abstract class ErrorHandler
      * Stopping the error handler
      *
      * @param  bool $throw Throw the ErrorException if any
-     * @return null|ErrorException
      * @throws ErrorException If an error has been catched and $throw is true
+     * @return null|ErrorException
      */
     public static function stop($throw = false)
     {
@@ -95,7 +95,7 @@ abstract class ErrorHandler
             restore_error_handler();
         }
 
-        static::$stack = array();
+        static::$stack = [];
     }
 
     /**
@@ -109,7 +109,7 @@ abstract class ErrorHandler
      */
     public static function addError($errno, $errstr = '', $errfile = '', $errline = 0)
     {
-        $stack = & static::$stack[count(static::$stack) - 1];
+        $stack = &static::$stack[count(static::$stack) - 1];
         $stack = new ErrorException($errstr, 0, $errno, $errfile, $errline, $stack);
     }
 }

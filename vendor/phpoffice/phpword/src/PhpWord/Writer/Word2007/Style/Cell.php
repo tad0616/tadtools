@@ -54,11 +54,11 @@ class Cell extends AbstractStyle
 
         // Text direction
         $textDir = $style->getTextDirection();
-        $xmlWriter->writeElementIf(!is_null($textDir), 'w:textDirection', 'w:val', $textDir);
+        $xmlWriter->writeElementIf(null !== $textDir, 'w:textDirection', 'w:val', $textDir);
 
         // Vertical alignment
         $vAlign = $style->getVAlign();
-        $xmlWriter->writeElementIf(!is_null($vAlign), 'w:vAlign', 'w:val', $vAlign);
+        $xmlWriter->writeElementIf(null !== $vAlign, 'w:vAlign', 'w:val', $vAlign);
 
         // Border
         if ($style->hasBorder()) {
@@ -67,7 +67,7 @@ class Cell extends AbstractStyle
             $styleWriter = new MarginBorder($xmlWriter);
             $styleWriter->setSizes($style->getBorderSize());
             $styleWriter->setColors($style->getBorderColor());
-            $styleWriter->setAttributes(array('defaultColor' => CellStyle::DEFAULT_BORDER_COLOR));
+            $styleWriter->setAttributes(['defaultColor' => CellStyle::DEFAULT_BORDER_COLOR]);
             $styleWriter->write();
 
             $xmlWriter->endElement();
@@ -75,7 +75,7 @@ class Cell extends AbstractStyle
 
         // Shading
         $shading = $style->getShading();
-        if (!is_null($shading)) {
+        if (null !== $shading) {
             $styleWriter = new Shading($xmlWriter, $shading);
             $styleWriter->write();
         }
@@ -83,8 +83,8 @@ class Cell extends AbstractStyle
         // Colspan & rowspan
         $gridSpan = $style->getGridSpan();
         $vMerge = $style->getVMerge();
-        $xmlWriter->writeElementIf(!is_null($gridSpan), 'w:gridSpan', 'w:val', $gridSpan);
-        $xmlWriter->writeElementIf(!is_null($vMerge), 'w:vMerge', 'w:val', $vMerge);
+        $xmlWriter->writeElementIf(null !== $gridSpan, 'w:gridSpan', 'w:val', $gridSpan);
+        $xmlWriter->writeElementIf(null !== $vMerge, 'w:vMerge', 'w:val', $vMerge);
 
         $xmlWriter->endElement(); // w:tcPr
     }

@@ -38,14 +38,14 @@ class Section extends AbstractContainer
      *
      * @var Header[]
      */
-    private $headers = array();
+    private $headers = [];
 
     /**
      * Section footers, indexed from 1, not zero
      *
      * @var Footer[]
      */
-    private $footers = array();
+    private $footers = [];
 
     /**
      * Create new instance
@@ -69,7 +69,7 @@ class Section extends AbstractContainer
      */
     public function setStyle($style = null)
     {
-        if (!is_null($style) && is_array($style)) {
+        if (null !== $style && is_array($style)) {
             $this->style->setStyleByArray($style);
         }
     }
@@ -149,10 +149,11 @@ class Section extends AbstractContainer
     public function hasDifferentFirstPage()
     {
         foreach ($this->headers as $header) {
-            if ($header->getType() == Header::FIRST) {
+            if (Header::FIRST == $header->getType()) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -162,31 +163,29 @@ class Section extends AbstractContainer
      * @since 0.10.0
      *
      * @param string $type
-     * @param boolean $header
-     *
-     * @return Header|Footer
+     * @param bool $header
      *
      * @throws \Exception
+     * @return Header|Footer
      */
     private function addHeaderFooter($type = Header::AUTO, $header = true)
     {
-        $containerClass = substr(get_class($this), 0, strrpos(get_class($this), '\\')) . '\\' .
+        $containerClass = mb_substr(get_class($this), 0, mb_strrpos(get_class($this), '\\')) . '\\' .
             ($header ? 'Header' : 'Footer');
         $collectionArray = $header ? 'headers' : 'footers';
         $collection = &$this->$collectionArray;
 
-        if (in_array($type, array(Header::AUTO, Header::FIRST, Header::EVEN))) {
+        if (in_array($type, [Header::AUTO, Header::FIRST, Header::EVEN], true)) {
             $index = count($collection);
             /** @var \PhpOffice\PhpWord\Element\AbstractContainer $container Type hint */
             $container = new $containerClass($this->sectionId, ++$index, $type);
             $container->setPhpWord($this->phpWord);
 
             $collection[$index] = $container;
-            return $container;
-        } else {
-            throw new \Exception('Invalid header/footer type.');
-        }
 
+            return $container;
+        }
+        throw new \Exception('Invalid header/footer type.');
     }
 
     /**
@@ -258,8 +257,8 @@ class Section extends AbstractContainer
     {
         if (empty($this->footers)) {
             return null;
-        } else {
-            return $this->footers[1];
         }
+
+        return $this->footers[1];
     }
 }

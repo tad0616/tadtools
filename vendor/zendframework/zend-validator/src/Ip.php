@@ -13,28 +13,28 @@ use Traversable;
 
 class Ip extends AbstractValidator
 {
-    const INVALID        = 'ipInvalid';
+    const INVALID = 'ipInvalid';
     const NOT_IP_ADDRESS = 'notIpAddress';
 
     /**
      * @var array
      */
-    protected $messageTemplates = array(
-        self::INVALID        => 'Invalid type given. String expected',
-        self::NOT_IP_ADDRESS => "The input does not appear to be a valid IP address",
-    );
+    protected $messageTemplates = [
+        self::INVALID => 'Invalid type given. String expected',
+        self::NOT_IP_ADDRESS => 'The input does not appear to be a valid IP address',
+    ];
 
     /**
      * Internal options
      *
      * @var array
      */
-    protected $options = array(
-        'allowipv4'      => true, // Enable IPv4 Validation
-        'allowipv6'      => true, // Enable IPv6 Validation
+    protected $options = [
+        'allowipv4' => true, // Enable IPv4 Validation
+        'allowipv6' => true, // Enable IPv6 Validation
         'allowipvfuture' => false, // Enable IPvFuture Validation
-        'allowliteral'   => true, // Enable IPs in literal format (only IPv6 and IPvFuture)
-    );
+        'allowliteral' => true, // Enable IPs in literal format (only IPv6 and IPvFuture)
+    ];
 
     /**
      * Sets the options for this validator
@@ -43,7 +43,7 @@ class Ip extends AbstractValidator
      * @throws Exception\InvalidArgumentException If there is any kind of IP allowed or $options is not an array or Traversable.
      * @return AbstractValidator
      */
-    public function setOptions($options = array())
+    public function setOptions($options = [])
     {
         parent::setOptions($options);
 
@@ -64,6 +64,7 @@ class Ip extends AbstractValidator
     {
         if (!is_string($value)) {
             $this->error(self::INVALID);
+
             return false;
         }
 
@@ -71,21 +72,22 @@ class Ip extends AbstractValidator
 
         if ($this->options['allowipv4'] && $this->validateIPv4($value)) {
             return true;
-        } else {
-            if ((bool) $this->options['allowliteral']) {
-                static $regex = '/^\[(.*)\]$/';
-                if ((bool) preg_match($regex, $value, $matches)) {
-                    $value = $matches[1];
-                }
-            }
-
-            if (($this->options['allowipv6'] && $this->validateIPv6($value)) ||
-                ($this->options['allowipvfuture'] && $this->validateIPvFuture($value))
-            ) {
-                return true;
+        }
+        if ((bool) $this->options['allowliteral']) {
+            static $regex = '/^\[(.*)\]$/';
+            if ((bool) preg_match($regex, $value, $matches)) {
+                $value = $matches[1];
             }
         }
+
+        if (($this->options['allowipv6'] && $this->validateIPv6($value)) ||
+                ($this->options['allowipvfuture'] && $this->validateIPvFuture($value))
+            ) {
+            return true;
+        }
+
         $this->error(self::NOT_IP_ADDRESS);
+
         return false;
     }
 
@@ -99,20 +101,20 @@ class Ip extends AbstractValidator
     {
         if (preg_match('/^([01]{8}.){3}[01]{8}\z/i', $value)) {
             // binary format  00000000.00000000.00000000.00000000
-            $value = bindec(substr($value, 0, 8)) . '.' . bindec(substr($value, 9, 8)) . '.'
-                   . bindec(substr($value, 18, 8)) . '.' . bindec(substr($value, 27, 8));
+            $value = bindec(mb_substr($value, 0, 8)) . '.' . bindec(mb_substr($value, 9, 8)) . '.'
+                   . bindec(mb_substr($value, 18, 8)) . '.' . bindec(mb_substr($value, 27, 8));
         } elseif (preg_match('/^([0-9]{3}.){3}[0-9]{3}\z/i', $value)) {
             // octet format 777.777.777.777
-            $value = (int) substr($value, 0, 3) . '.' . (int) substr($value, 4, 3) . '.'
-                   . (int) substr($value, 8, 3) . '.' . (int) substr($value, 12, 3);
+            $value = (int) mb_substr($value, 0, 3) . '.' . (int) mb_substr($value, 4, 3) . '.'
+                   . (int) mb_substr($value, 8, 3) . '.' . (int) mb_substr($value, 12, 3);
         } elseif (preg_match('/^([0-9a-f]{2}.){3}[0-9a-f]{2}\z/i', $value)) {
             // hex format ff.ff.ff.ff
-            $value = hexdec(substr($value, 0, 2)) . '.' . hexdec(substr($value, 3, 2)) . '.'
-                   . hexdec(substr($value, 6, 2)) . '.' . hexdec(substr($value, 9, 2));
+            $value = hexdec(mb_substr($value, 0, 2)) . '.' . hexdec(mb_substr($value, 3, 2)) . '.'
+                   . hexdec(mb_substr($value, 6, 2)) . '.' . hexdec(mb_substr($value, 9, 2));
         }
 
         $ip2long = ip2long($value);
-        if ($ip2long === false) {
+        if (false === $ip2long) {
             return false;
         }
 
@@ -128,30 +130,30 @@ class Ip extends AbstractValidator
      */
     protected function validateIPv6($value)
     {
-        if (strlen($value) < 3) {
-            return $value == '::';
+        if (mb_strlen($value) < 3) {
+            return '::' == $value;
         }
 
-        if (strpos($value, '.')) {
-            $lastcolon = strrpos($value, ':');
-            if (!($lastcolon && $this->validateIPv4(substr($value, $lastcolon + 1)))) {
+        if (mb_strpos($value, '.')) {
+            $lastcolon = mb_strrpos($value, ':');
+            if (!($lastcolon && $this->validateIPv4(mb_substr($value, $lastcolon + 1)))) {
                 return false;
             }
 
-            $value = substr($value, 0, $lastcolon) . ':0:0';
+            $value = mb_substr($value, 0, $lastcolon) . ':0:0';
         }
 
-        if (strpos($value, '::') === false) {
+        if (false === mb_strpos($value, '::')) {
             return preg_match('/\A(?:[a-f0-9]{1,4}:){7}[a-f0-9]{1,4}\z/i', $value);
         }
 
-        $colonCount = substr_count($value, ':');
+        $colonCount = mb_substr_count($value, ':');
         if ($colonCount < 8) {
             return preg_match('/\A(?::|(?:[a-f0-9]{1,4}:)+):(?:(?:[a-f0-9]{1,4}:)*[a-f0-9]{1,4})?\z/i', $value);
         }
 
         // special case with ending or starting double colon
-        if ($colonCount == 8) {
+        if (8 == $colonCount) {
             return preg_match('/\A(?:::)?(?:[a-f0-9]{1,4}:){6}[a-f0-9]{1,4}(?:::)?\z/i', $value);
         }
 
@@ -184,6 +186,6 @@ class Ip extends AbstractValidator
          * "As such, implementations must not provide the version flag for the
          *  existing IPv4 and IPv6 literal address forms described below."
          */
-        return ($result && $matches[1] != 4 && $matches[1] != 6);
+        return ($result && 4 != $matches[1] && 6 != $matches[1]);
     }
 }

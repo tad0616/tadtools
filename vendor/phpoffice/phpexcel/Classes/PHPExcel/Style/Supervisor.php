@@ -44,7 +44,7 @@ abstract class PHPExcel_Style_Supervisor
     /**
      * Create a new PHPExcel_Style_Alignment
      *
-     * @param    boolean    $isSupervisor    Flag indicating if this is a supervisor or not
+     * @param    bool    $isSupervisor    Flag indicating if this is a supervisor or not
      *                                    Leave this value at default unless you understand exactly what
      *                                        its ramifications are
      */
@@ -58,11 +58,13 @@ abstract class PHPExcel_Style_Supervisor
      * Bind parent. Only used for supervisor
      *
      * @param PHPExcel $parent
+     * @param null|mixed $parentPropertyName
      * @return PHPExcel_Style_Supervisor
      */
     public function bindParent($parent, $parentPropertyName = null)
     {
         $this->parent = $parent;
+
         return $this;
     }
 
@@ -115,7 +117,7 @@ abstract class PHPExcel_Style_Supervisor
     {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
-            if ((is_object($value)) && ($key != 'parent')) {
+            if ((is_object($value)) && ('parent' != $key)) {
                 $this->$key = clone $value;
             } else {
                 $this->$key = $value;

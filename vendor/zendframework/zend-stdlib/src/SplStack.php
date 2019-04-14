@@ -23,10 +23,11 @@ class SplStack extends \SplStack implements Serializable
      */
     public function toArray()
     {
-        $array = array();
+        $array = [];
         foreach ($this as $item) {
             $array[] = $item;
         }
+
         return $array;
     }
 

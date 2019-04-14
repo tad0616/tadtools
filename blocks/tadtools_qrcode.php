@@ -4,12 +4,13 @@ function tadtools_qrcode($options)
 {
     global $xoopsDB;
 
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/tad_function.php";
+    include_once XOOPS_ROOT_PATH . '/modules/tadtools/tad_function.php';
 
     $protocol = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
     get_jquery();
-    $block['url']   = urlencode($protocol . $_SERVER["SERVER_NAME"] . $_SERVER['REQUEST_URI']);
+    $block['url'] = urlencode($protocol . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
     $block['width'] = $options[0] < 50 ? 120 : (int) $options[0];
+
     return $block;
 }
 
@@ -21,5 +22,6 @@ function tadtools_qrcode_edit($options)
         <input type='text' name='options[0]' value='{$options[0]}' class='my-input' size=5>px
     </div>
     ";
+
     return $form;
 }

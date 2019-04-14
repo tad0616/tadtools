@@ -78,6 +78,7 @@ class XmlDocument
         $file = $this->path . '/' . $file;
         $this->dom = new \DOMDocument();
         $this->dom->load($file);
+
         return $this->dom;
     }
 
@@ -90,7 +91,7 @@ class XmlDocument
      */
     public function getNodeList($path, $file = 'word/document.xml')
     {
-        if ($this->dom === null || $file !== $this->file) {
+        if (null === $this->dom || $file !== $this->file) {
             $this->getFileDom($file);
         }
 
@@ -111,6 +112,7 @@ class XmlDocument
     public function getElement($path, $file = 'word/document.xml')
     {
         $elements = $this->getNodeList($path, $file);
+
         return $elements->item(0);
     }
 
@@ -170,6 +172,7 @@ class XmlDocument
     public function elementExists($path, $file = 'word/document.xml')
     {
         $nodeList = $this->getNodeList($path, $file);
-        return !($nodeList->length == 0);
+
+        return !(0 == $nodeList->length);
     }
 }

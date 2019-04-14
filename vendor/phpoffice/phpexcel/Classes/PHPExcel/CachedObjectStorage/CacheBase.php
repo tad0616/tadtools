@@ -61,7 +61,7 @@ abstract class PHPExcel_CachedObjectStorage_CacheBase
      *
      * @var array of mixed
      */
-    protected $cellCache = array();
+    protected $cellCache = [];
 
     /**
      * Initialise this new cell collection
@@ -126,8 +126,8 @@ abstract class PHPExcel_CachedObjectStorage_CacheBase
      * Add or Update a cell in cache
      *
      * @param    PHPExcel_Cell    $cell        Cell to update
-     * @return    PHPExcel_Cell
      * @throws    PHPExcel_Exception
+     * @return    PHPExcel_Cell
      */
     public function updateCacheData(PHPExcel_Cell $cell)
     {
@@ -142,7 +142,7 @@ abstract class PHPExcel_CachedObjectStorage_CacheBase
      */
     public function deleteCacheData($pCoord)
     {
-        if ($pCoord === $this->currentObjectID && !is_null($this->currentObject)) {
+        if ($pCoord === $this->currentObjectID && null !== $this->currentObject) {
             $this->currentObject->detach();
             $this->currentObjectID = $this->currentObject = null;
         }
@@ -171,7 +171,7 @@ abstract class PHPExcel_CachedObjectStorage_CacheBase
      */
     public function getSortedCellList()
     {
-        $sortKeys = array();
+        $sortKeys = [];
         foreach ($this->getCellList() as $coord) {
             sscanf($coord, '%[A-Z]%d', $column, $row);
             $sortKeys[sprintf('%09d%3s', $row, $column)] = $coord;
@@ -189,23 +189,23 @@ abstract class PHPExcel_CachedObjectStorage_CacheBase
     public function getHighestRowAndColumn()
     {
         // Lookup highest column and highest row
-        $col = array('A' => '1A');
-        $row = array(1);
+        $col = ['A' => '1A'];
+        $row = [1];
         foreach ($this->getCellList() as $coord) {
             sscanf($coord, '%[A-Z]%d', $c, $r);
             $row[$r] = $r;
-            $col[$c] = strlen($c).$c;
+            $col[$c] = mb_strlen($c) . $c;
         }
         if (!empty($row)) {
             // Determine highest column and row
             $highestRow = max($row);
-            $highestColumn = substr(max($col), 1);
+            $highestColumn = mb_substr(max($col), 1);
         }
 
-        return array(
-            'row'    => $highestRow,
-            'column' => $highestColumn
-        );
+        return [
+            'row' => $highestRow,
+            'column' => $highestColumn,
+        ];
     }
 
     /**
@@ -226,6 +226,7 @@ abstract class PHPExcel_CachedObjectStorage_CacheBase
     public function getCurrentColumn()
     {
         sscanf($this->currentObjectID, '%[A-Z]%d', $column, $row);
+
         return $column;
     }
 
@@ -237,7 +238,8 @@ abstract class PHPExcel_CachedObjectStorage_CacheBase
     public function getCurrentRow()
     {
         sscanf($this->currentObjectID, '%[A-Z]%d', $column, $row);
-        return (integer) $row;
+
+        return (int) $row;
     }
 
     /**
@@ -249,12 +251,13 @@ abstract class PHPExcel_CachedObjectStorage_CacheBase
      */
     public function getHighestColumn($row = null)
     {
-        if ($row == null) {
+        if (null == $row) {
             $colRow = $this->getHighestRowAndColumn();
+
             return $colRow['column'];
         }
 
-        $columnList = array(1);
+        $columnList = [1];
         foreach ($this->getCellList() as $coord) {
             sscanf($coord, '%[A-Z]%d', $c, $r);
             if ($r != $row) {
@@ -262,6 +265,7 @@ abstract class PHPExcel_CachedObjectStorage_CacheBase
             }
             $columnList[] = PHPExcel_Cell::columnIndexFromString($c);
         }
+
         return PHPExcel_Cell::stringFromColumnIndex(max($columnList) - 1);
     }
 
@@ -274,12 +278,13 @@ abstract class PHPExcel_CachedObjectStorage_CacheBase
      */
     public function getHighestRow($column = null)
     {
-        if ($column == null) {
+        if (null == $column) {
             $colRow = $this->getHighestRowAndColumn();
+
             return $colRow['row'];
         }
 
-        $rowList = array(0);
+        $rowList = [0];
         foreach ($this->getCellList() as $coord) {
             sscanf($coord, '%[A-Z]%d', $c, $r);
             if ($c != $column) {
@@ -303,6 +308,7 @@ abstract class PHPExcel_CachedObjectStorage_CacheBase
         } else {
             $baseUnique = mt_rand();
         }
+
         return uniqid($baseUnique, true);
     }
 
@@ -318,10 +324,12 @@ abstract class PHPExcel_CachedObjectStorage_CacheBase
         $this->storeData();
 
         $this->parent = $parent;
-        if (($this->currentObject !== null) && (is_object($this->currentObject))) {
+        if ((null !== $this->currentObject) && (is_object($this->currentObject))) {
             $this->currentObject->attach($this);
         }
-    }    //    function copyCellCollection()
+    }
+
+    //    function copyCellCollection()
 
     /**
      * Remove a row, deleting all cells in that row

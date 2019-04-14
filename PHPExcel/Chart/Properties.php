@@ -5,31 +5,30 @@
  * Date: 7/2/14
  * Time: 5:45 PM
  */
-
-abstract class PHPExcel_Properties {
-
-  const
+abstract class PHPExcel_Properties
+{
+    const
       EXCEL_COLOR_TYPE_STANDARD = 'prstClr',
       EXCEL_COLOR_TYPE_SCHEME = 'schemeClr',
       EXCEL_COLOR_TYPE_ARGB = 'srgbClr';
 
-  const
+    const
       AXIS_LABELS_LOW = 'low',
       AXIS_LABELS_HIGH = 'high',
       AXIS_LABELS_NEXT_TO = 'nextTo',
       AXIS_LABELS_NONE = 'none';
 
-  const
+    const
       TICK_MARK_NONE = 'none',
       TICK_MARK_INSIDE = 'in',
       TICK_MARK_OUTSIDE = 'out',
       TICK_MARK_CROSS = 'cross';
 
-  const
+    const
       HORIZONTAL_CROSSES_AUTOZERO = 'autoZero',
       HORIZONTAL_CROSSES_MAXIMUM = 'max';
 
-  const
+    const
       FORMAT_CODE_GENERAL = 'General',
       FORMAT_CODE_NUMBER = '#,##0.00',
       FORMAT_CODE_CURRENCY = '$#,##0.00',
@@ -42,11 +41,11 @@ abstract class PHPExcel_Properties {
       FORMAT_CODE_TEXT = '@',
       FORMAT_CODE_SPECIAL = '00000';
 
-  const
+    const
       ORIENTATION_NORMAL = 'minMax',
       ORIENTATION_REVERSED = 'maxMin';
 
-  const
+    const
       LINE_STYLE_COMPOUND_SIMPLE = 'sng',
       LINE_STYLE_COMPOUND_DOUBLE = 'dbl',
       LINE_STYLE_COMPOUND_THICKTHIN = 'thickThin',
@@ -70,7 +69,7 @@ abstract class PHPExcel_Properties {
       LINE_STYLE_JOIN_MITER = 'miter',
       LINE_STYLE_JOIN_BEVEL = 'bevel',
 
-      LINE_STYLE_ARROW_TYPE_NOARROW = NULL,
+      LINE_STYLE_ARROW_TYPE_NOARROW = null,
       LINE_STYLE_ARROW_TYPE_ARROW = 'triangle',
       LINE_STYLE_ARROW_TYPE_OPEN = 'arrow',
       LINE_STYLE_ARROW_TYPE_STEALTH = 'stealth',
@@ -87,8 +86,8 @@ abstract class PHPExcel_Properties {
       LINE_STYLE_ARROW_SIZE_8 = 8,
       LINE_STYLE_ARROW_SIZE_9 = 9;
 
-  const
-      SHADOW_PRESETS_NOSHADOW = NULL,
+    const
+      SHADOW_PRESETS_NOSHADOW = null,
       SHADOW_PRESETS_OUTER_BOTTTOM_RIGHT = 1,
       SHADOW_PRESETS_OUTER_BOTTOM = 2,
       SHADOW_PRESETS_OUTER_BOTTOM_LEFT = 3,
@@ -113,247 +112,252 @@ abstract class PHPExcel_Properties {
       SHADOW_PRESETS_PERSPECTIVE_LOWER_RIGHT = 22,
       SHADOW_PRESETS_PERSPECTIVE_LOWER_LEFT = 23;
 
-  protected function  getExcelPointsWidth($width) {
-    return $width * 12700;
-  }
+    protected function getExcelPointsWidth($width)
+    {
+        return $width * 12700;
+    }
 
-  protected function getExcelPointsAngle($angle) {
-    return $angle * 60000;
-  }
+    protected function getExcelPointsAngle($angle)
+    {
+        return $angle * 60000;
+    }
 
-  protected function getTrueAlpha($alpha) {
-    return (string) 100 - $alpha . '000';
-  }
+    protected function getTrueAlpha($alpha)
+    {
+        return (string) 100 - $alpha . '000';
+    }
 
-  protected function setColorProperties($color, $alpha, $type) {
-    return array(
+    protected function setColorProperties($color, $alpha, $type)
+    {
+        return [
         'type' => (string) $type,
         'value' => (string) $color,
-        'alpha' => (string) $this->getTrueAlpha($alpha)
-    );
-  }
+        'alpha' => (string) $this->getTrueAlpha($alpha),
+    ];
+    }
 
-  protected function getLineStyleArrowSize($array_selector, $array_kay_selector) {
-    $sizes = array(
-        1 => array('w' => 'sm', 'len' => 'sm'),
-        2 => array('w' => 'sm', 'len' => 'med'),
-        3 => array('w' => 'sm', 'len' => 'lg'),
-        4 => array('w' => 'med', 'len' => 'sm'),
-        5 => array('w' => 'med', 'len' => 'med'),
-        6 => array('w' => 'med', 'len' => 'lg'),
-        7 => array('w' => 'lg', 'len' => 'sm'),
-        8 => array('w' => 'lg', 'len' => 'med'),
-        9 => array('w' => 'lg', 'len' => 'lg')
-    );
+    protected function getLineStyleArrowSize($array_selector, $array_kay_selector)
+    {
+        $sizes = [
+        1 => ['w' => 'sm', 'len' => 'sm'],
+        2 => ['w' => 'sm', 'len' => 'med'],
+        3 => ['w' => 'sm', 'len' => 'lg'],
+        4 => ['w' => 'med', 'len' => 'sm'],
+        5 => ['w' => 'med', 'len' => 'med'],
+        6 => ['w' => 'med', 'len' => 'lg'],
+        7 => ['w' => 'lg', 'len' => 'sm'],
+        8 => ['w' => 'lg', 'len' => 'med'],
+        9 => ['w' => 'lg', 'len' => 'lg'],
+    ];
 
-    return $sizes[$array_selector][$array_kay_selector];
-  }
+        return $sizes[$array_selector][$array_kay_selector];
+    }
 
-  protected function getShadowPresetsMap($shadow_presets_option) {
-    $presets_options = array(
+    protected function getShadowPresetsMap($shadow_presets_option)
+    {
+        $presets_options = [
       //OUTER
-      1 => array(
+      1 => [
           'effect' => 'outerShdw',
           'blur' => '50800',
           'distance' => '38100',
           'direction' => '2700000',
           'algn' => 'tl',
-          'rotWithShape' => '0'
-      ),
-      2 => array(
+          'rotWithShape' => '0',
+      ],
+      2 => [
           'effect' => 'outerShdw',
           'blur' => '50800',
           'distance' => '38100',
           'direction' => '5400000',
           'algn' => 't',
-          'rotWithShape' => '0'
-      ),
-      3 => array(
+          'rotWithShape' => '0',
+      ],
+      3 => [
           'effect' => 'outerShdw',
           'blur' => '50800',
           'distance' => '38100',
           'direction' => '8100000',
           'algn' => 'tr',
-          'rotWithShape' => '0'
-      ),
-      4 => array(
+          'rotWithShape' => '0',
+      ],
+      4 => [
           'effect' => 'outerShdw',
           'blur' => '50800',
           'distance' => '38100',
           'algn' => 'l',
-          'rotWithShape' => '0'
-      ),
-      5 => array(
+          'rotWithShape' => '0',
+      ],
+      5 => [
           'effect' => 'outerShdw',
-          'size' => array(
+          'size' => [
               'sx' => '102000',
-              'sy' => '102000'
-          )
+              'sy' => '102000',
+          ]
           ,
           'blur' => '63500',
           'distance' => '38100',
           'algn' => 'ctr',
-          'rotWithShape' => '0'
-      ),
-      6 => array(
+          'rotWithShape' => '0',
+      ],
+      6 => [
           'effect' => 'outerShdw',
           'blur' => '50800',
           'distance' => '38100',
           'direction' => '10800000',
           'algn' => 'r',
-          'rotWithShape' => '0'
-      ),
-      7 => array(
+          'rotWithShape' => '0',
+      ],
+      7 => [
           'effect' => 'outerShdw',
           'blur' => '50800',
           'distance' => '38100',
           'direction' => '18900000',
           'algn' => 'bl',
-          'rotWithShape' => '0'
-      ),
-      8 => array(
+          'rotWithShape' => '0',
+      ],
+      8 => [
           'effect' => 'outerShdw',
           'blur' => '50800',
           'distance' => '38100',
           'direction' => '16200000',
-          'rotWithShape' => '0'
-      ),
-      9 => array(
+          'rotWithShape' => '0',
+      ],
+      9 => [
           'effect' => 'outerShdw',
           'blur' => '50800',
           'distance' => '38100',
           'direction' => '13500000',
           'algn' => 'br',
-          'rotWithShape' => '0'
-      ),
+          'rotWithShape' => '0',
+      ],
       //INNER
-      10 => array(
+      10 => [
           'effect' => 'innerShdw',
           'blur' => '63500',
           'distance' => '50800',
           'direction' => '2700000',
-      ),
-      11 => array(
+      ],
+      11 => [
           'effect' => 'innerShdw',
           'blur' => '63500',
           'distance' => '50800',
           'direction' => '5400000',
-      ),
-      12 => array(
+      ],
+      12 => [
           'effect' => 'innerShdw',
           'blur' => '63500',
           'distance' => '50800',
           'direction' => '8100000',
-      ),
-      13 => array(
+      ],
+      13 => [
           'effect' => 'innerShdw',
           'blur' => '63500',
           'distance' => '50800',
-      ),
-      14 => array(
+      ],
+      14 => [
           'effect' => 'innerShdw',
           'blur' => '114300',
-      ),
-      15 => array(
+      ],
+      15 => [
           'effect' => 'innerShdw',
           'blur' => '63500',
           'distance' => '50800',
           'direction' => '10800000',
-      ),
-      16 => array(
+      ],
+      16 => [
           'effect' => 'innerShdw',
           'blur' => '63500',
           'distance' => '50800',
           'direction' => '18900000',
-      ),
-      17 => array(
+      ],
+      17 => [
           'effect' => 'innerShdw',
           'blur' => '63500',
           'distance' => '50800',
           'direction' => '16200000',
-      ),
-      18 => array(
+      ],
+      18 => [
           'effect' => 'innerShdw',
           'blur' => '63500',
           'distance' => '50800',
           'direction' => '13500000',
-      ),
+      ],
       //perspective
-      19 => array(
+      19 => [
           'effect' => 'outerShdw',
           'blur' => '152400',
           'distance' => '317500',
-          'size' => array(
+          'size' => [
               'sx' => '90000',
               'sy' => '-19000',
-          ),
+          ],
           'direction' => '5400000',
           'rotWithShape' => '0',
-      ),
-      20 => array(
+      ],
+      20 => [
           'effect' => 'outerShdw',
           'blur' => '76200',
           'direction' => '18900000',
-          'size' => array(
+          'size' => [
               'sy' => '23000',
               'kx' => '-1200000',
-          ),
+          ],
           'algn' => 'bl',
           'rotWithShape' => '0',
-      ),
-      21 => array(
+      ],
+      21 => [
           'effect' => 'outerShdw',
           'blur' => '76200',
           'direction' => '13500000',
-          'size' => array(
+          'size' => [
               'sy' => '23000',
               'kx' => '1200000',
-          ),
+          ],
           'algn' => 'br',
           'rotWithShape' => '0',
-      ),
-      22 => array(
+      ],
+      22 => [
           'effect' => 'outerShdw',
           'blur' => '76200',
           'distance' => '12700',
           'direction' => '2700000',
-          'size' => array(
+          'size' => [
               'sy' => '-23000',
               'kx' => '-800400',
-          ),
+          ],
           'algn' => 'bl',
           'rotWithShape' => '0',
-      ),
-      23 => array(
+      ],
+      23 => [
           'effect' => 'outerShdw',
           'blur' => '76200',
           'distance' => '12700',
           'direction' => '8100000',
-          'size' => array(
+          'size' => [
               'sy' => '-23000',
               'kx' => '800400',
-          ),
+          ],
           'algn' => 'br',
           'rotWithShape' => '0',
-      ),
-    );
+      ],
+    ];
 
-    return $presets_options[$shadow_presets_option];
-  }
-
-  protected function getArrayElementsValue($properties, $elements) {
-    $reference = & $properties;
-    if (!is_array($elements)) {
-      return $reference[$elements];
-    } else {
-      foreach ($elements as $keys) {
-        $reference = & $reference[$keys];
-      }
-
-      return $reference;
+        return $presets_options[$shadow_presets_option];
     }
 
-    return $this;
-  }
+    protected function getArrayElementsValue($properties, $elements)
+    {
+        $reference = &$properties;
+        if (!is_array($elements)) {
+            return $reference[$elements];
+        }
+        foreach ($elements as $keys) {
+            $reference = &$reference[$keys];
+        }
 
-} 
+        return $reference;
+
+        return $this;
+    }
+}

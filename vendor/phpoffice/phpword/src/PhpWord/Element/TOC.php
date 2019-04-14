@@ -54,24 +54,23 @@ class TOC extends AbstractElement
      */
     private $maxDepth = 9;
 
-
     /**
      * Create a new Table-of-Contents Element
      *
      * @param mixed $fontStyle
      * @param array $tocStyle
-     * @param integer $minDepth
-     * @param integer $maxDepth
+     * @param int $minDepth
+     * @param int $maxDepth
      */
     public function __construct($fontStyle = null, $tocStyle = null, $minDepth = 1, $maxDepth = 9)
     {
         $this->TOCStyle = new TOCStyle();
 
-        if (!is_null($tocStyle) && is_array($tocStyle)) {
+        if (null !== $tocStyle && is_array($tocStyle)) {
             $this->TOCStyle->setStyleByArray($tocStyle);
         }
 
-        if (!is_null($fontStyle) && is_array($fontStyle)) {
+        if (null !== $fontStyle && is_array($fontStyle)) {
             $this->fontStyle = new Font();
             $this->fontStyle->setStyleByArray($fontStyle);
         } else {
@@ -90,7 +89,7 @@ class TOC extends AbstractElement
     public function getTitles()
     {
         if (!$this->phpWord instanceof PhpWord) {
-            return array();
+            return [];
         }
 
         $titles = $this->phpWord->getTitles()->getItems();
@@ -100,7 +99,7 @@ class TOC extends AbstractElement
             if ($this->minDepth > $depth) {
                 unset($titles[$i]);
             }
-            if (($this->maxDepth != 0) && ($this->maxDepth < $depth)) {
+            if ((0 != $this->maxDepth) && ($this->maxDepth < $depth)) {
                 unset($titles[$i]);
             }
         }

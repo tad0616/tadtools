@@ -29,7 +29,7 @@ class FooterTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstruct()
     {
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oFooter = new Footer($iVal);
 
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Element\\Footer', $oFooter);
@@ -67,7 +67,7 @@ class FooterTest extends \PHPUnit_Framework_TestCase
     public function testAddTextBreak()
     {
         $oFooter = new Footer(1);
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oFooter->addTextBreak($iVal);
 
         $this->assertCount($iVal, $oFooter->getElements());
@@ -144,7 +144,7 @@ class FooterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(1, $oFooter->getElements());
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Element\\PreserveText', $element);
-        $this->assertEquals(array('ééé'), $element->getText());
+        $this->assertEquals(['ééé'], $element->getText());
     }
 
     /**
@@ -164,7 +164,7 @@ class FooterTest extends \PHPUnit_Framework_TestCase
     {
         $oFooter = new Footer(0);
 
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oFooter->setRelationId($iVal);
 
         $this->assertEquals($iVal, $oFooter->getRelationId());

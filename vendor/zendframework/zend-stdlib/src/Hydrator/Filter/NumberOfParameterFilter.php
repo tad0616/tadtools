@@ -31,8 +31,8 @@ class NumberOfParameterFilter implements FilterInterface
 
     /**
      * @param string $property the name of the property
-     * @return bool
      * @throws InvalidArgumentException
+     * @return bool
      */
     public function filter($property)
     {

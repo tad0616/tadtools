@@ -24,7 +24,7 @@ class TableAlignment
 {
     private $name = 'w:jc';
 
-    private $attributes = array();
+    private $attributes = [];
 
     /**
      * @since 0.13.0

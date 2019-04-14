@@ -67,8 +67,6 @@ class TOC extends AbstractElement
     /**
      * Write title
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
-     * @param \PhpOffice\PhpWord\Element\TOC $element
      * @param \PhpOffice\PhpWord\Element\Title $title
      * @param bool $writeFieldMark
      * @return void
@@ -140,8 +138,6 @@ class TOC extends AbstractElement
     /**
      * Write style
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
-     * @param \PhpOffice\PhpWord\Element\TOC $element
      * @param int $indent
      * @return void
      */
@@ -154,7 +150,7 @@ class TOC extends AbstractElement
         $xmlWriter->startElement('w:pPr');
 
         // Paragraph
-        if ($isObject && !is_null($fontStyle->getParagraph())) {
+        if ($isObject && null !== $fontStyle->getParagraph()) {
             $styleWriter = new ParagraphStyleWriter($xmlWriter, $fontStyle->getParagraph());
             $styleWriter->write();
         }
@@ -187,8 +183,6 @@ class TOC extends AbstractElement
     /**
      * Write TOC Field.
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
-     * @param \PhpOffice\PhpWord\Element\TOC $element
      * @return void
      */
     private function writeFieldMark(XMLWriter $xmlWriter, TOCElement $element)

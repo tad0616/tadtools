@@ -48,14 +48,12 @@ class PHPExcel_Worksheet_ColumnIterator implements Iterator
      */
     private $startColumn = 0;
 
-
     /**
      * End position
      *
      * @var int
      */
     private $endColumn = 0;
-
 
     /**
      * Create a new column iterator
@@ -83,9 +81,9 @@ class PHPExcel_Worksheet_ColumnIterator implements Iterator
     /**
      * (Re)Set the start column and the current column pointer
      *
-     * @param integer    $startColumn    The column address at which to start iterating
-     * @return PHPExcel_Worksheet_ColumnIterator
+     * @param int    $startColumn    The column address at which to start iterating
      * @throws PHPExcel_Exception
+     * @return PHPExcel_Worksheet_ColumnIterator
      */
     public function resetStart($startColumn = 'A')
     {
@@ -121,8 +119,8 @@ class PHPExcel_Worksheet_ColumnIterator implements Iterator
      * Set the column pointer to the selected column
      *
      * @param string    $column    The column address to set the current pointer at
-     * @return PHPExcel_Worksheet_ColumnIterator
      * @throws PHPExcel_Exception
+     * @return PHPExcel_Worksheet_ColumnIterator
      */
     public function seek($column = 'A')
     {
@@ -180,9 +178,9 @@ class PHPExcel_Worksheet_ColumnIterator implements Iterator
     {
         if ($this->position <= $this->startColumn) {
             throw new PHPExcel_Exception(
-                "Column is already at the beginning of range (" .
-                PHPExcel_Cell::stringFromColumnIndex($this->endColumn) . " - " .
-                PHPExcel_Cell::stringFromColumnIndex($this->endColumn) . ")"
+                'Column is already at the beginning of range (' .
+                PHPExcel_Cell::stringFromColumnIndex($this->endColumn) . ' - ' .
+                PHPExcel_Cell::stringFromColumnIndex($this->endColumn) . ')'
             );
         }
 

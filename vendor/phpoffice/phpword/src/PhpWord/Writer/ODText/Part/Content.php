@@ -43,7 +43,7 @@ class Content extends AbstractPart
      * @todo Merge font and paragraph styles
      * @var array
      */
-    private $autoStyles = array('Section' => array(), 'Image' => array(), 'Table' => array());
+    private $autoStyles = ['Section' => [], 'Image' => [], 'Table' => []];
 
     /**
      * Write part
@@ -75,7 +75,7 @@ class Content extends AbstractPart
         $xmlWriter->startElement('office:text');
 
         // Sequence declarations
-        $sequences = array('Illustration', 'Table', 'Text', 'Drawing');
+        $sequences = ['Illustration', 'Table', 'Text', 'Drawing'];
         $xmlWriter->startElement('text:sequence-decls');
         foreach ($sequences as $sequence) {
             $xmlWriter->startElement('text:sequence-decl');
@@ -110,7 +110,6 @@ class Content extends AbstractPart
      *
      * @since 0.11.0
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
      * @return void
      */
     private function writeAutoStyles(XMLWriter $xmlWriter)
@@ -121,7 +120,6 @@ class Content extends AbstractPart
         foreach ($this->autoStyles as $element => $styles) {
             $writerClass = 'PhpOffice\\PhpWord\\Writer\\ODText\\Style\\' . $element;
             foreach ($styles as $style) {
-
                 /** @var \PhpOffice\PhpWord\Writer\ODText\Style\AbstractStyle $styleWriter Type hint */
                 $styleWriter = new $writerClass($xmlWriter, $style);
                 $styleWriter->write();
@@ -134,7 +132,6 @@ class Content extends AbstractPart
     /**
      * Write automatic styles.
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
      * @return void
      */
     private function writeTextStyles(XMLWriter $xmlWriter)
@@ -143,7 +140,7 @@ class Content extends AbstractPart
         $paragraphStyleCount = 0;
         if (count($styles) > 0) {
             foreach ($styles as $style) {
-                if ($style->isAuto() === true) {
+                if (true === $style->isAuto()) {
                     $styleClass = str_replace('\\Style\\', '\\Writer\\ODText\\Style\\', get_class($style));
                     if (class_exists($styleClass)) {
                         /** @var \PhpOffice\PhpWord\Writer\ODText\Style\AbstractStyle $styleWriter Type hint */
@@ -155,7 +152,7 @@ class Content extends AbstractPart
                     }
                 }
             }
-            if ($paragraphStyleCount == 0) {
+            if (0 == $paragraphStyleCount) {
                 $style = new Paragraph();
                 $style->setStyleName('P1');
                 $style->setAuto();
@@ -168,7 +165,6 @@ class Content extends AbstractPart
     /**
      * Get automatic styles.
      *
-     * @param \PhpOffice\PhpWord\PhpWord $phpWord
      * @return void
      */
     private function getAutoStyles(PhpWord $phpWord)
@@ -209,7 +205,7 @@ class Content extends AbstractPart
                 $this->autoStyles['Image'][] = $style;
             } elseif ($element instanceof Table) {
                 $style = $element->getStyle();
-                if ($style === null) {
+                if (null === $style) {
                     $style = new TableStyle();
                 } elseif (is_string($style)) {
                     $style = Style::getStyle($style);
@@ -244,7 +240,7 @@ class Content extends AbstractPart
         // Paragraph
         } elseif ($paragraphStyle instanceof Paragraph) {
             $paragraphStyleCount++;
-            $style = $phpWord->addParagraphStyle("P{$paragraphStyleCount}", array());
+            $style = $phpWord->addParagraphStyle("P{$paragraphStyleCount}", []);
             $style->setAuto();
             $element->setParagraphStyle("P{$paragraphStyleCount}");
         }

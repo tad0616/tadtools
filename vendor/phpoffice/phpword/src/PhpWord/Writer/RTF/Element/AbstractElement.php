@@ -85,7 +85,7 @@ abstract class AbstractElement extends HTMLAbstractElement
                 $this->paragraphStyle = Style::getStyle($this->paragraphStyle);
             }
 
-            if ($this->paragraphStyle !== null && !$this->withoutP) {
+            if (null !== $this->paragraphStyle && !$this->withoutP) {
                 if ($parentWriter->getLastParagraphStyle() != $element->getParagraphStyle()) {
                     $parentWriter->setLastParagraphStyle($element->getParagraphStyle());
                 } else {
@@ -112,6 +112,7 @@ abstract class AbstractElement extends HTMLAbstractElement
 
         $styleWriter = new ParagraphStyleWriter($this->paragraphStyle);
         $styleWriter->setNestedLevel($this->element->getNestedLevel());
+
         return $styleWriter->write();
     }
 
@@ -125,9 +126,9 @@ abstract class AbstractElement extends HTMLAbstractElement
     {
         if (Settings::isOutputEscapingEnabled()) {
             return $this->escaper->escape($text);
-        } else {
-            return CommonText::toUnicode($text); // todo: replace with `return $text;` later.
         }
+
+        return CommonText::toUnicode($text); // todo: replace with `return $text;` later.
     }
 
     /**
@@ -160,15 +161,15 @@ abstract class AbstractElement extends HTMLAbstractElement
 
         // Create style writer and set color/name index
         $styleWriter = new FontStyleWriter($this->fontStyle);
-        if ($this->fontStyle->getColor() != null) {
-            $colorIndex = array_search($this->fontStyle->getColor(), $parentWriter->getColorTable());
-            if ($colorIndex !== false) {
+        if (null != $this->fontStyle->getColor()) {
+            $colorIndex = array_search($this->fontStyle->getColor(), $parentWriter->getColorTable(), true);
+            if (false !== $colorIndex) {
                 $styleWriter->setColorIndex($colorIndex + 1);
             }
         }
-        if ($this->fontStyle->getName() != null) {
-            $fontIndex = array_search($this->fontStyle->getName(), $parentWriter->getFontTable());
-            if ($fontIndex !== false) {
+        if (null != $this->fontStyle->getName()) {
+            $fontIndex = array_search($this->fontStyle->getName(), $parentWriter->getFontTable(), true);
+            if (false !== $fontIndex) {
                 $styleWriter->setNameIndex($fontIndex);
             }
         }

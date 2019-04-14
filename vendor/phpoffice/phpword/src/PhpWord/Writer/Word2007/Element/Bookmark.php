@@ -41,7 +41,7 @@ class Bookmark extends AbstractElement
         $xmlWriter->writeAttribute('w:id', $rId);
         $xmlWriter->writeAttribute('w:name', $element->getName());
         $xmlWriter->endElement();
-        
+
         $xmlWriter->startElement('w:bookmarkEnd');
         $xmlWriter->writeAttribute('w:id', $rId);
         $xmlWriter->endElement();

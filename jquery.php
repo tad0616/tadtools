@@ -1,23 +1,22 @@
 <?php
-include_once "tadtools_header.php";
+include_once 'tadtools_header.php';
 
 //取得jquery路徑，$mode="return"
 //$theme=ui-lightness , base
 
 if (!function_exists('get_jquery')) {
-    function get_jquery($ui = false, $mode = "", $theme = 'base')
+    function get_jquery($ui = false, $mode = '', $theme = 'base')
     {
         global $xoTheme;
-        if (!isset($xoTheme) or $mode == "return") {
-            $jqueryui_path = "";
+        if (!isset($xoTheme) or 'return' === $mode) {
+            $jqueryui_path = '';
             if ($ui) {
-
                 $jqueryui_path = "
                 <link href='" . TADTOOLS_URL . "/jquery/themes/{$theme}/jquery.ui.all.css' rel='stylesheet' type='text/css'>
                 <script src='" . TADTOOLS_URL . "/jquery/ui/jquery-ui.js'></script>";
             }
 
-            $ver = (int) str_replace('.', '', substr(XOOPS_VERSION, 6, 5));
+            $ver = (int) str_replace('.', '', mb_substr(XOOPS_VERSION, 6, 5));
             if ($ver >= 259) {
                 $jquery_path = "
                   <script type='text/javascript'>
@@ -41,23 +40,23 @@ if (!function_exists('get_jquery')) {
                   $jqueryui_path
                   ";
             }
+
             return $jquery_path;
-        } else {
+        }
 
-            $xoTheme->addScript('browse.php?Frameworks/jquery/jquery.js');
+        $xoTheme->addScript('browse.php?Frameworks/jquery/jquery.js');
 
-            $ver = (int) str_replace('.', '', substr(XOOPS_VERSION, 6, 5));
+        $ver = (int) str_replace('.', '', mb_substr(XOOPS_VERSION, 6, 5));
 
-            // if ($ver >= 259) {
-            //     $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
-            // } else {
-            //     $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-1.4.1.min.js');
-            // }
+        // if ($ver >= 259) {
+        //     $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
+        // } else {
+        //     $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-1.4.1.min.js');
+        // }
 
-            if ($ui) {
-                $xoTheme->addStylesheet("modules/tadtools/jquery/themes/{$theme}/jquery.ui.all.css");
-                $xoTheme->addScript('browse.php?Frameworks/jquery/plugins/jquery.ui.js');
-            }
+        if ($ui) {
+            $xoTheme->addStylesheet("modules/tadtools/jquery/themes/{$theme}/jquery.ui.all.css");
+            $xoTheme->addScript('browse.php?Frameworks/jquery/plugins/jquery.ui.js');
         }
     }
 }

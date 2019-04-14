@@ -1,6 +1,6 @@
 <?php
-include_once "tadtools_header.php";
-include_once "jquery.php";
+include_once 'tadtools_header.php';
+include_once 'jquery.php';
 
 class lofslidernews
 {
@@ -8,24 +8,24 @@ class lofslidernews
     public $width;
     public $height;
     public $word_num;
-    public $item = array();
+    public $item = [];
 
     //建構函數
     public function __construct($width = '725', $height = '300', $word_num = 60, $show_jquery = true)
     {
-        $this->width       = $width;
-        $this->height      = $height;
-        $this->word_num    = $word_num;
+        $this->width = $width;
+        $this->height = $height;
+        $this->word_num = $word_num;
         $this->show_jquery = $show_jquery;
     }
 
-    public function add_content($sn = "", $title = "", $content = "", $image = "", $date = "", $url = "")
+    public function add_content($sn = '', $title = '', $content = '', $image = '', $date = '', $url = '')
     {
-        $this->item[$sn]['title']   = $title;
+        $this->item[$sn]['title'] = $title;
         $this->item[$sn]['content'] = $content;
-        $this->item[$sn]['image']   = $image;
-        $this->item[$sn]['date']    = $date;
-        $this->item[$sn]['url']     = $url;
+        $this->item[$sn]['image'] = $image;
+        $this->item[$sn]['date'] = $date;
+        $this->item[$sn]['url'] = $url;
     }
 
     //產生語法
@@ -33,16 +33,16 @@ class lofslidernews
     {
         global $xoTheme;
 
-        $randStr       = randStr($len = 6);
+        $randStr = randStr($len = 6);
         $utf8_word_num = $this->word_num * 3;
         if (empty($utf8_word_num)) {
             $utf8_word_num = 90;
         }
 
-        $jquery = ($this->show_jquery) ? get_jquery() : "";
+        $jquery = ($this->show_jquery) ? get_jquery() : '';
 
-        $all = $nav = "";
-        $i   = 1;
+        $all = $nav = '';
+        $i = 1;
 
         if ($xoTheme) {
             $xoTheme->addStylesheet('modules/tadtools/lofslidernews/css/reset.css');
@@ -70,9 +70,8 @@ class lofslidernews
           });
         })(jQuery);
       ");
-            $main = "";
+            $main = '';
         } else {
-
             $main = "
       <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/lofslidernews/css/reset.css' />
       <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/lofslidernews/css/style.css' />
@@ -104,10 +103,10 @@ class lofslidernews
 
         foreach ($this->item as $sn => $item_content) {
             //避免截掉半個中文字
-            $title   = xoops_substr(strip_tags($item_content['title']), 0, 45);
+            $title = xoops_substr(strip_tags($item_content['title']), 0, 45);
             $content = xoops_substr(strip_tags($item_content['content']), 0, $utf8_word_num);
 
-            $pi    = ($i % 2) ? "1" : "2";
+            $pi = ($i % 2) ? '1' : '2';
             $image = empty($item_content['image']) ? TADTOOLS_URL . "/lofslidernews/images/demo{$pi}.jpg" : $item_content['image'];
 
             $all .= "
@@ -152,6 +151,7 @@ class lofslidernews
       <!----------------- END OF NAVIGATOR --------------------->
     </div>
     ";
+
         return $main;
     }
 }

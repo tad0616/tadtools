@@ -21,10 +21,10 @@ class ZipArchiveAdapter implements ZipInterface
         $this->filename = $filename;
         $this->oZipArchive = new ZipArchive();
 
-        if ($this->oZipArchive->open($this->filename, ZipArchive::OVERWRITE) === true) {
+        if (true === $this->oZipArchive->open($this->filename, ZipArchive::OVERWRITE)) {
             return $this;
         }
-        if ($this->oZipArchive->open($this->filename, ZipArchive::CREATE) === true) {
+        if (true === $this->oZipArchive->open($this->filename, ZipArchive::CREATE)) {
             return $this;
         }
         throw new \Exception("Could not open $this->filename for writing.");
@@ -32,16 +32,17 @@ class ZipArchiveAdapter implements ZipInterface
 
     public function close()
     {
-        if ($this->oZipArchive->close() === false) {
+        if (false === $this->oZipArchive->close()) {
             throw new \Exception("Could not close zip file $this->filename.");
         }
+
         return $this;
     }
 
     public function addFromString($localname, $contents)
     {
-        if ($this->oZipArchive->addFromString($localname, $contents) === false) {
-            throw new \Exception("Error zipping files : " . $localname);
+        if (false === $this->oZipArchive->addFromString($localname, $contents)) {
+            throw new \Exception('Error zipping files : ' . $localname);
         }
 
         return $this;

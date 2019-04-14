@@ -47,7 +47,7 @@ abstract class AbstractStyle
      *
      * @var array
      */
-    protected $aliases = array();
+    protected $aliases = [];
 
     /**
      * Is this an automatic style? (Used primarily in OpenDocument driver)
@@ -136,12 +136,13 @@ abstract class AbstractStyle
      */
     public function getChildStyleValue($substyleObject, $substyleProperty)
     {
-        if ($substyleObject !== null) {
+        if (null !== $substyleObject) {
             $method = "get{$substyleProperty}";
+
             return $substyleObject->$method();
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**
@@ -175,7 +176,7 @@ abstract class AbstractStyle
      * @param array $values
      * @return self
      */
-    public function setStyleByArray($values = array())
+    public function setStyleByArray($values = [])
     {
         foreach ($values as $key => $value) {
             $this->setStyleValue($key, $value);
@@ -193,7 +194,7 @@ abstract class AbstractStyle
      */
     protected function setNonEmptyVal($value, $default)
     {
-        if ($value === null || $value == '') {
+        if (null === $value || '' == $value) {
             $value = $default;
         }
 
@@ -241,7 +242,7 @@ abstract class AbstractStyle
      */
     protected function setIntVal($value, $default = null)
     {
-        if (is_string($value) && (preg_match('/[^\d]/', $value) == 0)) {
+        if (is_string($value) && (0 == preg_match('/[^\d]/', $value))) {
             $value = intval($value);
         }
         if (!is_numeric($value)) {
@@ -262,7 +263,7 @@ abstract class AbstractStyle
      */
     protected function setFloatVal($value, $default = null)
     {
-        if (is_string($value) && (preg_match('/[^\d\.\,]/', $value) == 0)) {
+        if (is_string($value) && (0 == preg_match('/[^\d\.\,]/', $value))) {
             $value = floatval($value);
         }
         if (!is_numeric($value)) {
@@ -279,15 +280,14 @@ abstract class AbstractStyle
      * @param array $enum
      * @param mixed $default
      *
-     * @return mixed
-     *
      * @throws \InvalidArgumentException
+     * @return mixed
      */
-    protected function setEnumVal($value = null, $enum = array(), $default = null)
+    protected function setEnumVal($value = null, $enum = [], $default = null)
     {
-        if ($value != null && trim($value) != '' && !empty($enum) && !in_array($value, $enum)) {
-            throw new \InvalidArgumentException("Invalid style value: {$value} Options:".join(',', $enum));
-        } elseif ($value === null || trim($value) == '') {
+        if (null != $value && '' != trim($value) && !empty($enum) && !in_array($value, $enum, true)) {
+            throw new \InvalidArgumentException("Invalid style value: {$value} Options:" . implode(',', $enum));
+        } elseif (null === $value || '' == trim($value)) {
             $value = $default;
         }
 
@@ -304,7 +304,7 @@ abstract class AbstractStyle
      */
     protected function setObjectVal($value, $styleName, &$style)
     {
-        $styleClass = substr(get_class($this), 0, strrpos(get_class($this), '\\')) . '\\' . $styleName;
+        $styleClass = mb_substr(get_class($this), 0, mb_strrpos(get_class($this), '\\')) . '\\' . $styleName;
         if (is_array($value)) {
             /** @var \PhpOffice\PhpWord\Style\AbstractStyle $style Type hint */
             if (!$style instanceof $styleClass) {
@@ -329,7 +329,7 @@ abstract class AbstractStyle
     protected function setPairedVal(&$property, &$pairProperty, $value)
     {
         $property = $this->setBoolVal($value, $property);
-        if ($value == true) {
+        if (true == $value) {
             $pairProperty = false;
         }
 
@@ -341,13 +341,12 @@ abstract class AbstractStyle
      *
      * @deprecated 0.11.0
      *
-     * @param array $style
      *
      * @return self
      *
      * @codeCoverageIgnore
      */
-    public function setArrayStyle(array $style = array())
+    public function setArrayStyle(array $style = [])
     {
         return $this->setStyleByArray($style);
     }

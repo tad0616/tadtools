@@ -28,7 +28,7 @@ abstract class ArrayUtils
     /**
      * Compatibility Flag for ArrayUtils::filter
      */
-    const ARRAY_FILTER_USE_KEY  = 2;
+    const ARRAY_FILTER_USE_KEY = 2;
 
     /**
      * Test whether an array contains one or more string keys
@@ -181,7 +181,6 @@ abstract class ArrayUtils
      * non-strict behaviour is used.
      *
      * @param mixed $needle
-     * @param array $haystack
      * @param int|bool $strict
      * @return bool
      */
@@ -199,6 +198,7 @@ abstract class ArrayUtils
                 }
             }
         }
+
         return in_array($needle, $haystack, $strict);
     }
 
@@ -231,7 +231,7 @@ abstract class ArrayUtils
             return $iterator->toArray();
         }
 
-        $array = array();
+        $array = [];
         foreach ($iterator as $key => $value) {
             if (is_scalar($value)) {
                 $array[$key] = $value;
@@ -261,8 +261,6 @@ abstract class ArrayUtils
      * from the second array will be appended to the first array. If both values are arrays, they
      * are merged together, else the value of the second array overwrites the one of the first array.
      *
-     * @param  array $a
-     * @param  array $b
      * @param  bool  $preserveNumericKeys
      * @return array
      */
@@ -294,14 +292,13 @@ abstract class ArrayUtils
     /**
      * Compatibility Method for array_filter on <5.6 systems
      *
-     * @param array $data
      * @param callable $callback
      * @param null|int $flag
      * @return array
      */
     public static function filter(array $data, $callback, $flag = null)
     {
-        if (! is_callable($callback)) {
+        if (!is_callable($callback)) {
             throw new Exception\InvalidArgumentException(sprintf(
                 'Second parameter of %s must be callable',
                 __METHOD__
@@ -312,16 +309,16 @@ abstract class ArrayUtils
             return array_filter($data, $callback, $flag);
         }
 
-        $output = array();
+        $output = [];
         foreach ($data as $key => $value) {
-            $params = array($value);
+            $params = [$value];
 
             if ($flag === static::ARRAY_FILTER_USE_BOTH) {
                 $params[] = $key;
             }
 
             if ($flag === static::ARRAY_FILTER_USE_KEY) {
-                $params = array($key);
+                $params = [$key];
             }
 
             $response = call_user_func_array($callback, $params);

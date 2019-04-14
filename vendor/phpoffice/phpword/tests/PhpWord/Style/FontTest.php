@@ -31,7 +31,7 @@ class FontTest extends \PHPUnit_Framework_TestCase
     /**
      * Tear down after each test
      */
-    public function tearDown()
+    protected function tearDown()
     {
         TestHelperDOCX::clear();
     }
@@ -41,11 +41,11 @@ class FontTest extends \PHPUnit_Framework_TestCase
      */
     public function testInitiation()
     {
-        $object = new Font('text', array('alignment' => Jc::BOTH));
+        $object = new Font('text', ['alignment' => Jc::BOTH]);
 
         $this->assertEquals('text', $object->getStyleType());
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Style\\Paragraph', $object->getParagraphStyle());
-        $this->assertTrue(is_array($object->getStyleValues()));
+        $this->assertInternalType('array', $object->getStyleValues());
     }
 
     /**
@@ -55,26 +55,26 @@ class FontTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Font();
 
-        $attributes = array(
-            'name'                => null,
-            'size'                => null,
-            'hint'                => null,
-            'color'               => null,
-            'bold'                => false,
-            'italic'              => false,
-            'underline'           => Font::UNDERLINE_NONE,
-            'superScript'         => false,
-            'subScript'           => false,
-            'strikethrough'       => false,
+        $attributes = [
+            'name' => null,
+            'size' => null,
+            'hint' => null,
+            'color' => null,
+            'bold' => false,
+            'italic' => false,
+            'underline' => Font::UNDERLINE_NONE,
+            'superScript' => false,
+            'subScript' => false,
+            'strikethrough' => false,
             'doubleStrikethrough' => false,
-            'smallCaps'           => false,
-            'allCaps'             => false,
-            'fgColor'             => null,
-            'bgColor'             => null,
-            'scale'               => null,
-            'spacing'             => null,
-            'kerning'             => null,
-        );
+            'smallCaps' => false,
+            'allCaps' => false,
+            'fgColor' => null,
+            'bgColor' => null,
+            'scale' => null,
+            'spacing' => null,
+            'kerning' => null,
+        ];
         foreach ($attributes as $key => $default) {
             $get = is_bool($default) ? "is{$key}" : "get{$key}";
             $this->assertEquals($default, $object->$get());
@@ -92,27 +92,27 @@ class FontTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Font();
 
-        $attributes = array(
-            'name'                => 'Times New Roman',
-            'size'                => 9,
-            'color'               => '999999',
-            'hint'                => 'eastAsia',
-            'bold'                => true,
-            'italic'              => true,
-            'underline'           => Font::UNDERLINE_HEAVY,
-            'superScript'         => true,
-            'subScript'           => false,
-            'strikethrough'       => true,
+        $attributes = [
+            'name' => 'Times New Roman',
+            'size' => 9,
+            'color' => '999999',
+            'hint' => 'eastAsia',
+            'bold' => true,
+            'italic' => true,
+            'underline' => Font::UNDERLINE_HEAVY,
+            'superScript' => true,
+            'subScript' => false,
+            'strikethrough' => true,
             'doubleStrikethrough' => false,
-            'smallCaps'           => true,
-            'allCaps'             => false,
-            'fgColor'             => Font::FGCOLOR_YELLOW,
-            'bgColor'             => 'FFFF00',
-            'lineHeight'          => 2,
-            'scale'               => 150,
-            'spacing'             => 240,
-            'kerning'             => 10,
-        );
+            'smallCaps' => true,
+            'allCaps' => false,
+            'fgColor' => Font::FGCOLOR_YELLOW,
+            'bgColor' => 'FFFF00',
+            'lineHeight' => 2,
+            'scale' => 150,
+            'spacing' => 240,
+            'kerning' => 10,
+        ];
         $object->setStyleByArray($attributes);
         foreach ($attributes as $key => $value) {
             $get = is_bool($value) ? "is{$key}" : "get{$key}";
@@ -129,7 +129,7 @@ class FontTest extends \PHPUnit_Framework_TestCase
         $section = $phpWord->addSection();
 
         // Test style array
-        $text = $section->addText('This is a test', array('line-height' => 2.0));
+        $text = $section->addText('This is a test', ['line-height' => 2.0]);
 
         $doc = TestHelperDOCX::getDocument($phpWord);
         $element = $doc->getElement('/w:document/w:body/w:p/w:pPr/w:spacing');
@@ -157,18 +157,18 @@ class FontTest extends \PHPUnit_Framework_TestCase
      */
     public function testLineHeightFloatval()
     {
-        $object = new Font(null, array('alignment' => Jc::CENTER));
+        $object = new Font(null, ['alignment' => Jc::CENTER]);
         $object->setLineHeight('1.5pt');
         $this->assertEquals(1.5, $object->getLineHeight());
     }
 
     /**
      * Test line height exception by using nonnumeric value
-     *
-     * @expectedException \PhpOffice\PhpWord\Exception\InvalidStyleException
      */
     public function testLineHeightException()
     {
+        $this->expectException(\PhpOffice\PhpWord\Exception\InvalidStyleException::class);
+
         $object = new Font();
         $object->setLineHeight('a');
     }

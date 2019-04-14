@@ -83,17 +83,16 @@
  * &O - code for "outline style"
  * &H - code for "shadow style"
  * </code>
- *
  */
 class PHPExcel_Worksheet_HeaderFooter
 {
     /* Header/footer image location */
-    const IMAGE_HEADER_LEFT   = 'LH';
+    const IMAGE_HEADER_LEFT = 'LH';
     const IMAGE_HEADER_CENTER = 'CH';
-    const IMAGE_HEADER_RIGHT  = 'RH';
-    const IMAGE_FOOTER_LEFT   = 'LF';
+    const IMAGE_HEADER_RIGHT = 'RH';
+    const IMAGE_FOOTER_LEFT = 'LF';
     const IMAGE_FOOTER_CENTER = 'CF';
-    const IMAGE_FOOTER_RIGHT  = 'RF';
+    const IMAGE_FOOTER_RIGHT = 'RF';
 
     /**
      * OddHeader
@@ -170,7 +169,7 @@ class PHPExcel_Worksheet_HeaderFooter
      *
      * @var PHPExcel_Worksheet_HeaderFooterDrawing[]
      */
-    private $headerFooterImages = array();
+    private $headerFooterImages = [];
 
     /**
      * Create a new PHPExcel_Worksheet_HeaderFooter
@@ -198,6 +197,7 @@ class PHPExcel_Worksheet_HeaderFooter
     public function setOddHeader($pValue)
     {
         $this->oddHeader = $pValue;
+
         return $this;
     }
 
@@ -220,6 +220,7 @@ class PHPExcel_Worksheet_HeaderFooter
     public function setOddFooter($pValue)
     {
         $this->oddFooter = $pValue;
+
         return $this;
     }
 
@@ -242,6 +243,7 @@ class PHPExcel_Worksheet_HeaderFooter
     public function setEvenHeader($pValue)
     {
         $this->evenHeader = $pValue;
+
         return $this;
     }
 
@@ -264,6 +266,7 @@ class PHPExcel_Worksheet_HeaderFooter
     public function setEvenFooter($pValue)
     {
         $this->evenFooter = $pValue;
+
         return $this;
     }
 
@@ -286,6 +289,7 @@ class PHPExcel_Worksheet_HeaderFooter
     public function setFirstHeader($pValue)
     {
         $this->firstHeader = $pValue;
+
         return $this;
     }
 
@@ -308,6 +312,7 @@ class PHPExcel_Worksheet_HeaderFooter
     public function setFirstFooter($pValue)
     {
         $this->firstFooter = $pValue;
+
         return $this;
     }
 
@@ -324,12 +329,13 @@ class PHPExcel_Worksheet_HeaderFooter
     /**
      * Set DifferentOddEven
      *
-     * @param boolean $pValue
+     * @param bool $pValue
      * @return PHPExcel_Worksheet_HeaderFooter
      */
     public function setDifferentOddEven($pValue = false)
     {
         $this->differentOddEven = $pValue;
+
         return $this;
     }
 
@@ -346,12 +352,13 @@ class PHPExcel_Worksheet_HeaderFooter
     /**
      * Set DifferentFirst
      *
-     * @param boolean $pValue
+     * @param bool $pValue
      * @return PHPExcel_Worksheet_HeaderFooter
      */
     public function setDifferentFirst($pValue = false)
     {
         $this->differentFirst = $pValue;
+
         return $this;
     }
 
@@ -368,12 +375,13 @@ class PHPExcel_Worksheet_HeaderFooter
     /**
      * Set ScaleWithDocument
      *
-     * @param boolean $pValue
+     * @param bool $pValue
      * @return PHPExcel_Worksheet_HeaderFooter
      */
     public function setScaleWithDocument($pValue = true)
     {
         $this->scaleWithDocument = $pValue;
+
         return $this;
     }
 
@@ -390,12 +398,13 @@ class PHPExcel_Worksheet_HeaderFooter
     /**
      * Set AlignWithMargins
      *
-     * @param boolean $pValue
+     * @param bool $pValue
      * @return PHPExcel_Worksheet_HeaderFooter
      */
     public function setAlignWithMargins($pValue = true)
     {
         $this->alignWithMargins = $pValue;
+
         return $this;
     }
 
@@ -410,6 +419,7 @@ class PHPExcel_Worksheet_HeaderFooter
     public function addImage(PHPExcel_Worksheet_HeaderFooterDrawing $image = null, $location = self::IMAGE_HEADER_LEFT)
     {
         $this->headerFooterImages[$location] = $image;
+
         return $this;
     }
 
@@ -425,6 +435,7 @@ class PHPExcel_Worksheet_HeaderFooter
         if (isset($this->headerFooterImages[$location])) {
             unset($this->headerFooterImages[$location]);
         }
+
         return $this;
     }
 
@@ -442,6 +453,7 @@ class PHPExcel_Worksheet_HeaderFooter
         }
 
         $this->headerFooterImages = $images;
+
         return $this;
     }
 
@@ -453,24 +465,24 @@ class PHPExcel_Worksheet_HeaderFooter
     public function getImages()
     {
         // Sort array
-        $images = array();
+        $images = [];
         if (isset($this->headerFooterImages[self::IMAGE_HEADER_LEFT])) {
-            $images[self::IMAGE_HEADER_LEFT] =         $this->headerFooterImages[self::IMAGE_HEADER_LEFT];
+            $images[self::IMAGE_HEADER_LEFT] = $this->headerFooterImages[self::IMAGE_HEADER_LEFT];
         }
         if (isset($this->headerFooterImages[self::IMAGE_HEADER_CENTER])) {
-            $images[self::IMAGE_HEADER_CENTER] =     $this->headerFooterImages[self::IMAGE_HEADER_CENTER];
+            $images[self::IMAGE_HEADER_CENTER] = $this->headerFooterImages[self::IMAGE_HEADER_CENTER];
         }
         if (isset($this->headerFooterImages[self::IMAGE_HEADER_RIGHT])) {
-            $images[self::IMAGE_HEADER_RIGHT] =     $this->headerFooterImages[self::IMAGE_HEADER_RIGHT];
+            $images[self::IMAGE_HEADER_RIGHT] = $this->headerFooterImages[self::IMAGE_HEADER_RIGHT];
         }
         if (isset($this->headerFooterImages[self::IMAGE_FOOTER_LEFT])) {
-            $images[self::IMAGE_FOOTER_LEFT] =         $this->headerFooterImages[self::IMAGE_FOOTER_LEFT];
+            $images[self::IMAGE_FOOTER_LEFT] = $this->headerFooterImages[self::IMAGE_FOOTER_LEFT];
         }
         if (isset($this->headerFooterImages[self::IMAGE_FOOTER_CENTER])) {
-            $images[self::IMAGE_FOOTER_CENTER] =     $this->headerFooterImages[self::IMAGE_FOOTER_CENTER];
+            $images[self::IMAGE_FOOTER_CENTER] = $this->headerFooterImages[self::IMAGE_FOOTER_CENTER];
         }
         if (isset($this->headerFooterImages[self::IMAGE_FOOTER_RIGHT])) {
-            $images[self::IMAGE_FOOTER_RIGHT] =     $this->headerFooterImages[self::IMAGE_FOOTER_RIGHT];
+            $images[self::IMAGE_FOOTER_RIGHT] = $this->headerFooterImages[self::IMAGE_FOOTER_RIGHT];
         }
         $this->headerFooterImages = $images;
 

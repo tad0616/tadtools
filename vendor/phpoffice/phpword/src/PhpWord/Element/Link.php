@@ -75,14 +75,16 @@ class Link extends AbstractElement
      * @param string $text
      * @param mixed $fontStyle
      * @param mixed $paragraphStyle
+     * @param mixed $internal
      */
     public function __construct($source, $text = null, $fontStyle = null, $paragraphStyle = null, $internal = false)
     {
         $this->source = CommonText::toUTF8($source);
-        $this->text = is_null($text) ? $this->source : CommonText::toUTF8($text);
+        $this->text = null === $text ? $this->source : CommonText::toUTF8($text);
         $this->fontStyle = $this->setNewStyle(new Font('text'), $fontStyle);
         $this->paragraphStyle = $this->setNewStyle(new Paragraph(), $paragraphStyle);
         $this->internal = $internal;
+
         return $this;
     }
 

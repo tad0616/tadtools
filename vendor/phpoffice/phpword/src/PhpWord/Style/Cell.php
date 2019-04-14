@@ -111,7 +111,7 @@ class Cell extends Border
      */
     public function setVAlign($value = null)
     {
-        $enum = array(self::VALIGN_TOP, self::VALIGN_CENTER, self::VALIGN_BOTTOM, self::VALIGN_BOTH);
+        $enum = [self::VALIGN_TOP, self::VALIGN_CENTER, self::VALIGN_BOTTOM, self::VALIGN_BOTH];
         $this->vAlign = $this->setEnumVal($value, $enum, $this->vAlign);
 
         return $this;
@@ -135,7 +135,7 @@ class Cell extends Border
      */
     public function setTextDirection($value = null)
     {
-        $enum = array(self::TEXT_DIR_BTLR, self::TEXT_DIR_TBRL);
+        $enum = [self::TEXT_DIR_BTLR, self::TEXT_DIR_TBRL];
         $this->textDirection = $this->setEnumVal($value, $enum, $this->textDirection);
 
         return $this;
@@ -148,11 +148,11 @@ class Cell extends Border
      */
     public function getBgColor()
     {
-        if ($this->shading !== null) {
+        if (null !== $this->shading) {
             return $this->shading->getFill();
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**
@@ -163,7 +163,7 @@ class Cell extends Border
      */
     public function setBgColor($value = null)
     {
-        return $this->setShading(array('fill' => $value));
+        return $this->setShading(['fill' => $value]);
     }
 
     /**
@@ -207,7 +207,7 @@ class Cell extends Border
      */
     public function setVMerge($value = null)
     {
-        $enum = array(self::VMERGE_RESTART, self::VMERGE_CONTINUE);
+        $enum = [self::VMERGE_RESTART, self::VMERGE_CONTINUE];
         $this->vMerge = $this->setEnumVal($value, $enum, $this->vMerge);
 
         return $this;

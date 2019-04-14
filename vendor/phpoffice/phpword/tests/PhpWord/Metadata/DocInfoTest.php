@@ -194,8 +194,8 @@ class DocInfoTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($oProperties->getCustomPropertyValue('key6'));
         $this->assertTrue($oProperties->isCustomPropertySet('key5'));
         // todo: change to assertNotTrue when got upgraded to PHPUnit 4.x
-        $this->assertEquals(false, $oProperties->isCustomPropertySet('key6'));
-        $this->assertEquals(array('key1', 'key2', 'key3', 'key4', 'key5'), $oProperties->getCustomProperties());
+        $this->assertFalse($oProperties->isCustomPropertySet('key6'));
+        $this->assertEquals(['key1', 'key2', 'key3', 'key4', 'key5'], $oProperties->getCustomProperties());
     }
 
     /**
@@ -212,7 +212,7 @@ class DocInfoTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(strtotime('10/11/2013'), DocInfo::convertProperty('10/11/2013', 'date'));
         $this->assertTrue(DocInfo::convertProperty('true', 'bool'));
         // todo: change to assertNotTrue when got upgraded to PHPUnit 4.x
-        $this->assertEquals(false, DocInfo::convertProperty('1', 'bool'));
+        $this->assertFalse(DocInfo::convertProperty('1', 'bool'));
         $this->assertEquals('1', DocInfo::convertProperty('1', 'array'));
         $this->assertEquals('1', DocInfo::convertProperty('1', ''));
 

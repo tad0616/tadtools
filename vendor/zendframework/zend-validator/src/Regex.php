@@ -15,25 +15,25 @@ use Zend\Stdlib\ErrorHandler;
 
 class Regex extends AbstractValidator
 {
-    const INVALID   = 'regexInvalid';
+    const INVALID = 'regexInvalid';
     const NOT_MATCH = 'regexNotMatch';
-    const ERROROUS  = 'regexErrorous';
+    const ERROROUS = 'regexErrorous';
 
     /**
      * @var array
      */
-    protected $messageTemplates = array(
-        self::INVALID   => "Invalid type given. String, integer or float expected",
+    protected $messageTemplates = [
+        self::INVALID => 'Invalid type given. String, integer or float expected',
         self::NOT_MATCH => "The input does not match against pattern '%pattern%'",
-        self::ERROROUS  => "There was an internal error while using the pattern '%pattern%'",
-    );
+        self::ERROROUS => "There was an internal error while using the pattern '%pattern%'",
+    ];
 
     /**
      * @var array
      */
-    protected $messageVariables = array(
-        'pattern' => 'pattern'
-    );
+    protected $messageVariables = [
+        'pattern' => 'pattern',
+    ];
 
     /**
      * Regular expression pattern
@@ -52,7 +52,8 @@ class Regex extends AbstractValidator
     {
         if (is_string($pattern)) {
             $this->setPattern($pattern);
-            parent::__construct(array());
+            parent::__construct([]);
+
             return;
         }
 
@@ -94,8 +95,8 @@ class Regex extends AbstractValidator
     {
         ErrorHandler::start();
         $this->pattern = (string) $pattern;
-        $status        = preg_match($this->pattern, "Test");
-        $error         = ErrorHandler::stop();
+        $status = preg_match($this->pattern, 'Test');
+        $error = ErrorHandler::stop();
 
         if (false === $status) {
             throw new Exception\InvalidArgumentException(
@@ -118,6 +119,7 @@ class Regex extends AbstractValidator
     {
         if (!is_string($value) && !is_int($value) && !is_float($value)) {
             $this->error(self::INVALID);
+
             return false;
         }
 
@@ -128,11 +130,13 @@ class Regex extends AbstractValidator
         ErrorHandler::stop();
         if (false === $status) {
             $this->error(self::ERROROUS);
+
             return false;
         }
 
         if (!$status) {
             $this->error(self::NOT_MATCH);
+
             return false;
         }
 

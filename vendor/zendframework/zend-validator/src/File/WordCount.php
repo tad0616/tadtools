@@ -20,27 +20,27 @@ class WordCount extends AbstractValidator
     /**
      * @const string Error constants
      */
-    const TOO_MUCH  = 'fileWordCountTooMuch';
-    const TOO_LESS  = 'fileWordCountTooLess';
+    const TOO_MUCH = 'fileWordCountTooMuch';
+    const TOO_LESS = 'fileWordCountTooLess';
     const NOT_FOUND = 'fileWordCountNotFound';
 
     /**
      * @var array Error message templates
      */
-    protected $messageTemplates = array(
+    protected $messageTemplates = [
         self::TOO_MUCH => "Too many words, maximum '%max%' are allowed but '%count%' were counted",
         self::TOO_LESS => "Too few words, minimum '%min%' are expected but '%count%' were counted",
-        self::NOT_FOUND => "File is not readable or does not exist",
-    );
+        self::NOT_FOUND => 'File is not readable or does not exist',
+    ];
 
     /**
      * @var array Error message template variables
      */
-    protected $messageVariables = array(
-        'min'   => array('options' => 'min'),
-        'max'   => array('options' => 'max'),
-        'count' => 'count'
-    );
+    protected $messageVariables = [
+        'min' => ['options' => 'min'],
+        'max' => ['options' => 'max'],
+        'count' => 'count',
+    ];
 
     /**
      * Word count
@@ -54,10 +54,10 @@ class WordCount extends AbstractValidator
      *
      * @var array
      */
-    protected $options = array(
+    protected $options = [
         'min' => null,  // Minimum word count, if null there is no minimum word count
         'max' => null,  // Maximum word count, if null there is no maximum word count
-    );
+    ];
 
     /**
      * Sets validator options
@@ -75,10 +75,10 @@ class WordCount extends AbstractValidator
     public function __construct($options = null)
     {
         if (is_string($options) || is_numeric($options)) {
-            $options = array('max' => $options);
+            $options = ['max' => $options];
         }
 
-        if (1 < func_num_args()) {
+        if (func_num_args() > 1) {
             $options['min'] = func_get_arg(0);
             $options['max'] = func_get_arg(1);
         }
@@ -100,8 +100,8 @@ class WordCount extends AbstractValidator
      * Sets the minimum word count
      *
      * @param  int|array $min The minimum word count
-     * @return WordCount Provides a fluent interface
      * @throws Exception\InvalidArgumentException When min is greater than max
+     * @return WordCount Provides a fluent interface
      */
     public function setMin($min)
     {
@@ -114,13 +114,14 @@ class WordCount extends AbstractValidator
         }
 
         $min = (int) $min;
-        if (($this->getMax() !== null) && ($min > $this->getMax())) {
+        if ((null !== $this->getMax()) && ($min > $this->getMax())) {
             throw new Exception\InvalidArgumentException(
                 "The minimum must be less than or equal to the maximum word count, but $min > {$this->getMax()}"
             );
         }
 
         $this->options['min'] = $min;
+
         return $this;
     }
 
@@ -138,8 +139,8 @@ class WordCount extends AbstractValidator
      * Sets the maximum file count
      *
      * @param  int|array $max The maximum word count
-     * @return WordCount Provides a fluent interface
      * @throws Exception\InvalidArgumentException When max is smaller than min
+     * @return WordCount Provides a fluent interface
      */
     public function setMax($max)
     {
@@ -152,13 +153,14 @@ class WordCount extends AbstractValidator
         }
 
         $max = (int) $max;
-        if (($this->getMin() !== null) && ($max < $this->getMin())) {
+        if ((null !== $this->getMin()) && ($max < $this->getMin())) {
             throw new Exception\InvalidArgumentException(
                 "The maximum must be greater than or equal to the minimum word count, but $max < {$this->getMin()}"
             );
         }
 
         $this->options['max'] = $max;
+
         return $this;
     }
 
@@ -175,17 +177,17 @@ class WordCount extends AbstractValidator
         if (is_string($value) && is_array($file)) {
             // Legacy Zend\Transfer API support
             $filename = $file['name'];
-            $file     = $file['tmp_name'];
+            $file = $file['tmp_name'];
         } elseif (is_array($value)) {
             if (!isset($value['tmp_name']) || !isset($value['name'])) {
                 throw new Exception\InvalidArgumentException(
                     'Value array must be in $_FILES format'
                 );
             }
-            $file     = $value['tmp_name'];
+            $file = $value['tmp_name'];
             $filename = $value['name'];
         } else {
-            $file     = $value;
+            $file = $value;
             $filename = basename($file);
         }
         $this->setValue($filename);
@@ -193,18 +195,21 @@ class WordCount extends AbstractValidator
         // Is file readable ?
         if (empty($file) || false === stream_resolve_include_path($file)) {
             $this->error(self::NOT_FOUND);
+
             return false;
         }
 
-        $content     = file_get_contents($file);
+        $content = file_get_contents($file);
         $this->count = str_word_count($content);
-        if (($this->getMax() !== null) && ($this->count > $this->getMax())) {
+        if ((null !== $this->getMax()) && ($this->count > $this->getMax())) {
             $this->error(self::TOO_MUCH);
+
             return false;
         }
 
-        if (($this->getMin() !== null) && ($this->count < $this->getMin())) {
+        if ((null !== $this->getMin()) && ($this->count < $this->getMin())) {
             $this->error(self::TOO_LESS);
+
             return false;
         }
 

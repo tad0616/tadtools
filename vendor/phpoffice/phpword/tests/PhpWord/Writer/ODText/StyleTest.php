@@ -14,6 +14,7 @@
  * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
 namespace PhpOffice\PhpWord\Writer\ODText;
 
 use PhpOffice\Common\XMLWriter;
@@ -28,7 +29,7 @@ class StyleTest extends \PHPUnit_Framework_TestCase
      */
     public function testEmptyStyles()
     {
-        $styles = array('Font', 'Paragraph', 'Image', 'Section', 'Table');
+        $styles = ['Font', 'Paragraph', 'Image', 'Section', 'Table'];
         foreach ($styles as $style) {
             $objectClass = 'PhpOffice\\PhpWord\\Writer\\ODText\\Style\\' . $style;
             $xmlWriter = new XMLWriter();

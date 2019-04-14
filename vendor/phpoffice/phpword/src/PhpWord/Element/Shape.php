@@ -70,7 +70,7 @@ class Shape extends AbstractElement
      */
     public function setType($value = null)
     {
-        $enum = array('arc', 'curve', 'line', 'polyline', 'rect', 'oval');
+        $enum = ['arc', 'curve', 'line', 'polyline', 'rect', 'oval'];
         $this->type = $this->setEnumVal($value, $enum, null);
 
         return $this;

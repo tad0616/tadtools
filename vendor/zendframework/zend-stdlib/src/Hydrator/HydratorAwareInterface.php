@@ -14,7 +14,6 @@ interface HydratorAwareInterface
     /**
      * Set hydrator
      *
-     * @param  HydratorInterface $hydrator
      * @return HydratorAwareInterface
      */
     public function setHydrator(HydratorInterface $hydrator);

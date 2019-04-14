@@ -53,11 +53,11 @@ class Document extends AbstractPart
     private function writeInfo()
     {
         $docProps = $this->getParentWriter()->getPhpWord()->getDocInfo();
-        $properties = array('title', 'subject', 'category', 'keywords', 'comment',
-            'author', 'operator', 'creatim', 'revtim', 'company', 'manager');
-        $mapping = array('comment' => 'description', 'author' => 'creator', 'operator' => 'lastModifiedBy',
-            'creatim' => 'created', 'revtim' => 'modified');
-        $dateFields = array('creatim', 'revtim');
+        $properties = ['title', 'subject', 'category', 'keywords', 'comment',
+            'author', 'operator', 'creatim', 'revtim', 'company', 'manager', ];
+        $mapping = ['comment' => 'description', 'author' => 'creator', 'operator' => 'lastModifiedBy',
+            'creatim' => 'created', 'revtim' => 'modified', ];
+        $dateFields = ['creatim', 'revtim'];
 
         $content = '';
 
@@ -65,12 +65,12 @@ class Document extends AbstractPart
         $content .= '\info';
         foreach ($properties as $property) {
             $method = 'get' . (isset($mapping[$property]) ? $mapping[$property] : $property);
-            if (!in_array($property, $dateFields) && Settings::isOutputEscapingEnabled()) {
+            if (!in_array($property, $dateFields, true) && Settings::isOutputEscapingEnabled()) {
                 $value = $this->escaper->escape($docProps->$method());
             } else {
                 $value = $docProps->$method();
             }
-            $value = in_array($property, $dateFields) ? $this->getDateValue($value) : $value;
+            $value = in_array($property, $dateFields, true) ? $this->getDateValue($value) : $value;
             $content .= "{\\{$property} {$value}}";
         }
         $content .= '}';
@@ -136,14 +136,14 @@ class Document extends AbstractPart
      */
     private function getDateValue($value)
     {
-        $dateParts = array(
+        $dateParts = [
             'Y' => 'yr',
             'm' => 'mo',
             'd' => 'dy',
             'H' => 'hr',
             'i' => 'min',
             's' => 'sec',
-        );
+        ];
         $result = '';
         foreach ($dateParts as $dateFormat => $controlWord) {
             $result .= '\\' . $controlWord . date($dateFormat, $value);

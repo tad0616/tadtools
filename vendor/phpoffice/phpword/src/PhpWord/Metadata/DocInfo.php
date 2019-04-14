@@ -112,24 +112,24 @@ class DocInfo
      *
      * @var array
      */
-    private $customProperties = array();
+    private $customProperties = [];
 
     /**
      * Create new instance
      */
     public function __construct()
     {
-        $this->creator        = '';
+        $this->creator = '';
         $this->lastModifiedBy = $this->creator;
-        $this->created        = time();
-        $this->modified       = time();
-        $this->title          = '';
-        $this->subject        = '';
-        $this->description    = '';
-        $this->keywords       = '';
-        $this->category       = '';
-        $this->company        = '';
-        $this->manager        = '';
+        $this->created = time();
+        $this->modified = time();
+        $this->title = '';
+        $this->subject = '';
+        $this->description = '';
+        $this->keywords = '';
+        $this->category = '';
+        $this->company = '';
+        $this->manager = '';
     }
 
     /**
@@ -416,9 +416,9 @@ class DocInfo
     {
         if ($this->isCustomPropertySet($propertyName)) {
             return $this->customProperties[$propertyName]['value'];
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**
@@ -431,9 +431,9 @@ class DocInfo
     {
         if ($this->isCustomPropertySet($propertyName)) {
             return $this->customProperties[$propertyName]['type'];
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**
@@ -451,15 +451,15 @@ class DocInfo
      */
     public function setCustomProperty($propertyName, $propertyValue = '', $propertyType = null)
     {
-        $propertyTypes = array(
+        $propertyTypes = [
             self::PROPERTY_TYPE_INTEGER,
             self::PROPERTY_TYPE_FLOAT,
             self::PROPERTY_TYPE_STRING,
             self::PROPERTY_TYPE_DATE,
-            self::PROPERTY_TYPE_BOOLEAN
-        );
-        if (($propertyType === null) || (!in_array($propertyType, $propertyTypes))) {
-            if ($propertyValue === null) {
+            self::PROPERTY_TYPE_BOOLEAN,
+        ];
+        if ((null === $propertyType) || (!in_array($propertyType, $propertyTypes, true))) {
+            if (null === $propertyValue) {
                 $propertyType = self::PROPERTY_TYPE_STRING;
             } elseif (is_float($propertyValue)) {
                 $propertyType = self::PROPERTY_TYPE_FLOAT;
@@ -472,10 +472,11 @@ class DocInfo
             }
         }
 
-        $this->customProperties[$propertyName] = array(
+        $this->customProperties[$propertyName] = [
             'value' => $propertyValue,
-            'type' => $propertyType
-        );
+            'type' => $propertyType,
+        ];
+
         return $this;
     }
 
@@ -504,7 +505,7 @@ class DocInfo
             case 'date': // Date
                 return strtotime($propertyValue);
             case 'bool': // Boolean
-                return ($propertyValue == 'true') ? true : false;
+                return ('true' == $propertyValue) ? true : false;
         }
 
         return $propertyValue;
@@ -518,15 +519,15 @@ class DocInfo
      */
     public static function convertPropertyType($propertyType)
     {
-        $typeGroups = array(
-            self::PROPERTY_TYPE_INTEGER => array('i1', 'i2', 'i4', 'i8', 'int', 'ui1', 'ui2', 'ui4', 'ui8', 'uint'),
-            self::PROPERTY_TYPE_FLOAT   => array('r4', 'r8', 'decimal'),
-            self::PROPERTY_TYPE_STRING  => array('empty', 'null', 'lpstr', 'lpwstr', 'bstr'),
-            self::PROPERTY_TYPE_DATE    => array('date', 'filetime'),
-            self::PROPERTY_TYPE_BOOLEAN => array('bool'),
-        );
+        $typeGroups = [
+            self::PROPERTY_TYPE_INTEGER => ['i1', 'i2', 'i4', 'i8', 'int', 'ui1', 'ui2', 'ui4', 'ui8', 'uint'],
+            self::PROPERTY_TYPE_FLOAT => ['r4', 'r8', 'decimal'],
+            self::PROPERTY_TYPE_STRING => ['empty', 'null', 'lpstr', 'lpwstr', 'bstr'],
+            self::PROPERTY_TYPE_DATE => ['date', 'filetime'],
+            self::PROPERTY_TYPE_BOOLEAN => ['bool'],
+        ];
         foreach ($typeGroups as $groupId => $groupMembers) {
-            if (in_array($propertyType, $groupMembers)) {
+            if (in_array($propertyType, $groupMembers, true)) {
                 return $groupId;
             }
         }
@@ -543,7 +544,7 @@ class DocInfo
      */
     private function setValue($value, $default)
     {
-        if ($value === null || $value == '') {
+        if (null === $value || '' == $value) {
             $value = $default;
         }
 
@@ -558,17 +559,17 @@ class DocInfo
      */
     private static function getConversion($propertyType)
     {
-        $conversions = array(
-            'empty' => array('empty'),
-            'null'  => array('null'),
-            'int'   => array('i1', 'i2', 'i4', 'i8', 'int'),
-            'uint'  => array('ui1', 'ui2', 'ui4', 'ui8', 'uint'),
-            'float' => array('r4', 'r8', 'decimal'),
-            'bool'  => array('bool'),
-            'date'  => array('date', 'filetime'),
-        );
+        $conversions = [
+            'empty' => ['empty'],
+            'null' => ['null'],
+            'int' => ['i1', 'i2', 'i4', 'i8', 'int'],
+            'uint' => ['ui1', 'ui2', 'ui4', 'ui8', 'uint'],
+            'float' => ['r4', 'r8', 'decimal'],
+            'bool' => ['bool'],
+            'date' => ['date', 'filetime'],
+        ];
         foreach ($conversions as $conversion => $types) {
-            if (in_array($propertyType, $types)) {
+            if (in_array($propertyType, $types, true)) {
                 return $conversion;
             }
         }

@@ -69,9 +69,9 @@ abstract class AbstractRenderer extends HTML
      *
      * @var array
      */
-    protected static $paperSizes = array(
+    protected static $paperSizes = [
         9 => 'A4', // (210 mm by 297 mm)
-    );
+    ];
 
     /**
      * Create new instance
@@ -141,6 +141,7 @@ abstract class AbstractRenderer extends HTML
     public function setPaperSize($value = 9)
     {
         $this->paperSize = $value;
+
         return $this;
     }
 
@@ -163,6 +164,7 @@ abstract class AbstractRenderer extends HTML
     public function setOrientation($value = 'default')
     {
         $this->orientation = $value;
+
         return $this;
     }
 
@@ -171,16 +173,15 @@ abstract class AbstractRenderer extends HTML
      *
      * @param string $filename Name of the file to save as
      *
-     * @return resource
-     *
      * @throws \PhpOffice\PhpWord\Exception\Exception
+     * @return resource
      */
     protected function prepareForSave($filename = null)
     {
-        $fileHandle = fopen($filename, 'w');
+        $fileHandle = fopen($filename, 'wb');
         // @codeCoverageIgnoreStart
         // Can't find any test case. Uncomment when found.
-        if ($fileHandle === false) {
+        if (false === $fileHandle) {
             throw new Exception("Could not open file $filename for writing.");
         }
         // @codeCoverageIgnoreEnd
@@ -194,9 +195,8 @@ abstract class AbstractRenderer extends HTML
      *
      * @param resource $fileHandle
      *
-     * @return void
-     *
      * @throws Exception
+     * @return void
      */
     protected function restoreStateAfterSave($fileHandle)
     {

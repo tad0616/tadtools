@@ -31,8 +31,8 @@ class PHPExcel_Writer_OpenDocument_Meta extends PHPExcel_Writer_OpenDocument_Wri
      * Write meta.xml to XML format
      *
      * @param   PHPExcel                   $pPHPExcel
-     * @return  string                     XML Output
      * @throws  PHPExcel_Writer_Exception
+     * @return  string                     XML Output
      */
     public function write(PHPExcel $pPHPExcel = null)
     {
@@ -80,7 +80,7 @@ class PHPExcel_Writer_OpenDocument_Meta extends PHPExcel_Writer_OpenDocument_Wri
         $objWriter->writeAttribute('meta:name', 'Company');
         $objWriter->writeRaw($pPHPExcel->getProperties()->getCompany());
         $objWriter->endElement();
- 
+
         $objWriter->startElement('meta:user-defined');
         $objWriter->writeAttribute('meta:name', 'category');
         $objWriter->writeRaw($pPHPExcel->getProperties()->getCategory());

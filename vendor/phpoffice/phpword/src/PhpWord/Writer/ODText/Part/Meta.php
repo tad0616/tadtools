@@ -63,10 +63,10 @@ class Meta extends AbstractPart
         $xmlWriter->writeElement('meta:keyword', $docProps->getKeywords());
 
         // Category, company, and manager are put in meta namespace
-        $properties = array('Category', 'Company', 'Manager');
+        $properties = ['Category', 'Company', 'Manager'];
         foreach ($properties as $property) {
             $method = "get{$property}";
-            if ($docProps->$method() !== null) {
+            if (null !== $docProps->$method()) {
                 $this->writeCustomProperty($xmlWriter, $property, $docProps->$method());
             }
         }
@@ -87,7 +87,6 @@ class Meta extends AbstractPart
     /**
      * Write individual property
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
      * @param string $property
      * @param string $value
      * @return void

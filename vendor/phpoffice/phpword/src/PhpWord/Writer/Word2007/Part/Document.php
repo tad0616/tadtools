@@ -56,7 +56,6 @@ class Document extends AbstractPart
 
         $xmlWriter->startElement('w:body');
 
-
         if ($sectionCount > 0) {
             foreach ($sections as $section) {
                 $currentSection++;
@@ -81,8 +80,6 @@ class Document extends AbstractPart
     /**
      * Write begin section.
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
-     * @param \PhpOffice\PhpWord\Element\Section $section
      * @return void
      */
     private function writeSection(XMLWriter $xmlWriter, Section $section)
@@ -97,8 +94,6 @@ class Document extends AbstractPart
     /**
      * Write end section.
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
-     * @param \PhpOffice\PhpWord\Element\Section $section
      * @return void
      */
     private function writeSectionSettings(XMLWriter $xmlWriter, Section $section)

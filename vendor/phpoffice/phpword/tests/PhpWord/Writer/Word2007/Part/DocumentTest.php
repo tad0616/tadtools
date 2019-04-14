@@ -14,6 +14,7 @@
  * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
 namespace PhpOffice\PhpWord\Writer\Word2007\Part;
 
 use PhpOffice\PhpWord\PhpWord;
@@ -31,7 +32,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     /**
      * Executed before each method of the class
      */
-    public function tearDown()
+    protected function tearDown()
     {
         TestHelperDOCX::clear();
     }
@@ -65,8 +66,8 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $objectSrc = __DIR__ . '/../../../_files/documents/sheet.xls';
 
         $phpWord = new PhpWord();
-        $phpWord->addTitleStyle(1, array('color' => '333333', 'bold' => true));
-        $phpWord->addTitleStyle(2, array('color' => '666666'));
+        $phpWord->addTitleStyle(1, ['color' => '333333', 'bold' => true]);
+        $phpWord->addTitleStyle(2, ['color' => '666666']);
         $section = $phpWord->addSection();
         $section->addTOC();
         $section->addPageBreak();
@@ -79,46 +80,46 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $section = $phpWord->addSection();
         $section->addTitle('Title 2', 2);
         $section->addObject($objectSrc);
-        $section->addTextBox(array());
+        $section->addTextBox([]);
         $section->addTextBox(
-            array(
-                'wrappingStyle'    => 'square',
-                'positioning'      => 'relative',
+            [
+                'wrappingStyle' => 'square',
+                'positioning' => 'relative',
                 'posHorizontalRel' => 'margin',
-                'posVerticalRel'   => 'margin',
-                'innerMargin'      => 10,
-                'borderSize'       => 1,
-                'borderColor'      => '#FF0',
-            )
+                'posVerticalRel' => 'margin',
+                'innerMargin' => 10,
+                'borderSize' => 1,
+                'borderColor' => '#FF0',
+            ]
         );
-        $section->addTextBox(array('wrappingStyle' => 'tight', 'positioning' => 'absolute', 'alignment' => Jc::CENTER));
+        $section->addTextBox(['wrappingStyle' => 'tight', 'positioning' => 'absolute', 'alignment' => Jc::CENTER]);
         $section->addListItemRun()->addText('List item run 1');
         $section->addField(
             'DATE',
-            array('dateformat' => 'dddd d MMMM yyyy H:mm:ss'),
-            array('PreserveFormat', 'LunarCalendar')
+            ['dateformat' => 'dddd d MMMM yyyy H:mm:ss'],
+            ['PreserveFormat', 'LunarCalendar']
         );
         $section->addField(
             'DATE',
-            array('dateformat' => 'dddd d MMMM yyyy H:mm:ss'),
-            array('PreserveFormat', 'SakaEraCalendar')
+            ['dateformat' => 'dddd d MMMM yyyy H:mm:ss'],
+            ['PreserveFormat', 'SakaEraCalendar']
         );
         $section->addField(
             'DATE',
-            array('dateformat' => 'dddd d MMMM yyyy H:mm:ss'),
-            array('PreserveFormat', 'LastUsedFormat')
+            ['dateformat' => 'dddd d MMMM yyyy H:mm:ss'],
+            ['PreserveFormat', 'LastUsedFormat']
         );
-        $section->addField('PAGE', array('format' => 'ArabicDash'));
+        $section->addField('PAGE', ['format' => 'ArabicDash']);
         $section->addLine(
-            array(
-                'width'       => 10,
-                'height'      => 10,
+            [
+                'width' => 10,
+                'height' => 10,
                 'positioning' => 'absolute',
-                'beginArrow'  => 'block',
-                'endArrow'    => 'open',
-                'dash'        => 'rounddot',
-                'weight'      => 10,
-            )
+                'beginArrow' => 'block',
+                'endArrow' => 'open',
+                'dash' => 'rounddot',
+                'weight' => 10,
+            ]
         );
 
         $doc = TestHelperDOCX::getDocument($phpWord);
@@ -153,35 +154,35 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     {
         $objectSrc = __DIR__ . '/../../../_files/documents/sheet.xls';
 
-        $tabs = array(new \PhpOffice\PhpWord\Style\Tab('right', 9090));
+        $tabs = [new \PhpOffice\PhpWord\Style\Tab('right', 9090)];
         $phpWord = new PhpWord();
         $phpWord->addParagraphStyle(
             'pStyle',
-            array(
-                'alignment'  => Jc::CENTER,
-                'tabs'       => $tabs,
-                'shading'    => array('fill' => 'FFFF99'),
+            [
+                'alignment' => Jc::CENTER,
+                'tabs' => $tabs,
+                'shading' => ['fill' => 'FFFF99'],
                 'borderSize' => 4,
-            )
+            ]
         ); // Style #1
         $phpWord->addFontStyle(
             'fStyle',
-            array(
-                'size'    => '20',
-                'bold'    => true,
+            [
+                'size' => '20',
+                'bold' => true,
                 'allCaps' => true,
-                'scale'   => 200,
+                'scale' => 200,
                 'spacing' => 240,
                 'kerning' => 10,
-            )
+            ]
         ); // Style #2
-        $phpWord->addTitleStyle(1, array('color' => '333333', 'doubleStrikethrough' => true)); // Style #3
-        $phpWord->addTableStyle('tStyle', array('borderSize' => 1));
-        $fontStyle = new Font('text', array('alignment' => Jc::CENTER));
+        $phpWord->addTitleStyle(1, ['color' => '333333', 'doubleStrikethrough' => true]); // Style #3
+        $phpWord->addTableStyle('tStyle', ['borderSize' => 1]);
+        $fontStyle = new Font('text', ['alignment' => Jc::CENTER]);
 
         $section = $phpWord->addSection();
         $section->addListItem('List Item', 0, null, null, 'pStyle'); // Style #5
-        $section->addObject($objectSrc, array('alignment' => Jc::CENTER));
+        $section->addObject($objectSrc, ['alignment' => Jc::CENTER]);
         $section->addTOC($fontStyle);
         $section->addTitle('Title 1', 1);
         $section->addTOC('fStyle');
@@ -213,8 +214,8 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $pStyle = 'pStyle';
 
         $phpWord = new PhpWord();
-        $phpWord->addFontStyle($rStyle, array('bold' => true));
-        $phpWord->addParagraphStyle($pStyle, array('hanging' => 120, 'indent' => 120));
+        $phpWord->addFontStyle($rStyle, ['bold' => true]);
+        $phpWord->addParagraphStyle($pStyle, ['hanging' => 120, 'indent' => 120]);
         $section = $phpWord->addSection();
         $section->addText('Test', $rStyle, $pStyle);
         $doc = TestHelperDOCX::getDocument($phpWord);
@@ -231,7 +232,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     public function testWriteTextRun()
     {
         $pStyle = 'pStyle';
-        $aStyle = array('alignment' => Jc::BOTH, 'spaceBefore' => 120, 'spaceAfter' => 120);
+        $aStyle = ['alignment' => Jc::BOTH, 'spaceBefore' => 120, 'spaceAfter' => 120];
         $imageSrc = __DIR__ . '/../../../_files/images/earth.jpg';
 
         $phpWord = new PhpWord();
@@ -242,7 +243,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $textrun->addTextBreak();
         $textrun = $section->addTextRun($aStyle);
         $textrun->addLink('https://github.com/PHPOffice/PHPWord');
-        $textrun->addImage($imageSrc, array('alignment' => Jc::CENTER));
+        $textrun->addImage($imageSrc, ['alignment' => Jc::CENTER]);
         $textrun->addFootnote();
         $doc = TestHelperDOCX::getDocument($phpWord);
 
@@ -257,9 +258,9 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     {
         $phpWord = new PhpWord();
         $section = $phpWord->addSection();
-        $fontStyleArray = array('bold' => true);
+        $fontStyleArray = ['bold' => true];
         $fontStyleName = 'Font Style';
-        $paragraphStyleArray = array('alignment' => Jc::CENTER);
+        $paragraphStyleArray = ['alignment' => Jc::CENTER];
         $paragraphStyleName = 'Paragraph Style';
 
         $expected = 'PHPWord on GitHub';
@@ -281,9 +282,9 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $phpWord = new PhpWord();
         $section = $phpWord->addSection();
         $footer = $section->addFooter();
-        $fontStyleArray = array('bold' => true);
+        $fontStyleArray = ['bold' => true];
         $fontStyleName = 'Font';
-        $paragraphStyleArray = array('alignment' => Jc::END);
+        $paragraphStyleArray = ['alignment' => Jc::END];
         $paragraphStyleName = 'Paragraph';
 
         $footer->addPreserveText('Page {PAGE}');
@@ -302,8 +303,8 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
      */
     public function testWriteTextBreak()
     {
-        $fArray = array('size' => 12);
-        $pArray = array('spacing' => 240);
+        $fArray = ['size' => 12];
+        $pArray = ['spacing' => 240];
         $fName = 'fStyle';
         $pName = 'pStyle';
 
@@ -328,8 +329,8 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     public function testWriteImage()
     {
         $phpWord = new PhpWord();
-        $styles = array('alignment' => Jc::START, 'width' => 40, 'height' => 40, 'marginTop' => -1, 'marginLeft' => -1);
-        $wraps = array('inline', 'behind', 'infront', 'square', 'tight');
+        $styles = ['alignment' => Jc::START, 'width' => 40, 'height' => 40, 'marginTop' => -1, 'marginLeft' => -1];
+        $wraps = ['inline', 'behind', 'infront', 'square', 'tight'];
         $section = $phpWord->addSection();
         foreach ($wraps as $wrap) {
             $styles['wrappingStyle'] = $wrap;
@@ -376,7 +377,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
     public function testWriteTitle()
     {
         $phpWord = new PhpWord();
-        $phpWord->addTitleStyle(1, array('bold' => true), array('spaceAfter' => 240));
+        $phpWord->addTitleStyle(1, ['bold' => true], ['spaceAfter' => 240]);
         $phpWord->addSection()->addTitle('Test', 1);
         $doc = TestHelperDOCX::getDocument($phpWord);
 
@@ -411,15 +412,15 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         // Create the doc
         $phpWord = new PhpWord();
         $section = $phpWord->addSection();
-        $attributes = array(
-            'alignment'       => Jc::END,
-            'widowControl'    => false,
-            'keepNext'        => true,
-            'keepLines'       => true,
+        $attributes = [
+            'alignment' => Jc::END,
+            'widowControl' => false,
+            'keepNext' => true,
+            'keepLines' => true,
             'pageBreakBefore' => true,
-        );
+        ];
         foreach ($attributes as $attribute => $value) {
-            $section->addText('Test', null, array($attribute => $value));
+            $section->addText('Test', null, [$attribute => $value]);
         }
         $doc = TestHelperDOCX::getDocument($phpWord);
 
@@ -427,7 +428,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $attributeCount = 0;
         foreach ($attributes as $key => $value) {
             $attributeCount++;
-            $nodeName = ($key == 'alignment') ? 'jc' : $key;
+            $nodeName = ('alignment' == $key) ? 'jc' : $key;
             $path = "/w:document/w:body/w:p[{$attributeCount}]/w:pPr/w:{$nodeName}";
             if ('alignment' != $key) {
                 $value = $value ? 1 : 0;
@@ -555,7 +556,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $table->addCell(40);
 
         $table->addRow();
-        $cell = $table->addCell(200, array('borderRightColor' => 'FF0000'));
+        $cell = $table->addCell(200, ['borderRightColor' => 'FF0000']);
         $cell->getStyle()->setGridSpan(5);
 
         $doc = TestHelperDOCX::getDocument($phpWord);
@@ -573,7 +574,7 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
         $lineNumberingPath = '/w:document/w:body/w:sectPr/w:lnNumType';
 
         $phpWord = new PhpWord();
-        $phpWord->addSection(array('gutter' => 240, 'lineNumbering' => array()));
+        $phpWord->addSection(['gutter' => 240, 'lineNumbering' => []]);
         $doc = TestHelperDOCX::getDocument($phpWord);
 
         $this->assertEquals(240, $doc->getElement($pageMarginPath)->getAttribute('w:gutter'));

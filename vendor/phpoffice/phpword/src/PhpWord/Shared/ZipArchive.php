@@ -37,7 +37,7 @@ use PhpOffice\PhpWord\Settings;
 class ZipArchive
 {
     /** @const int Flags for open method */
-    const CREATE    = 1; // Emulate \ZipArchive::CREATE
+    const CREATE = 1; // Emulate \ZipArchive::CREATE
     const OVERWRITE = 8; // Emulate \ZipArchive::OVERWRITE
 
     /**
@@ -80,7 +80,7 @@ class ZipArchive
      */
     public function __construct()
     {
-        $this->usePclzip = (Settings::getZipClass() != 'ZipArchive');
+        $this->usePclzip = ('ZipArchive' != Settings::getZipClass());
         if ($this->usePclzip) {
             if (!defined('PCLZIP_TEMPORARY_DIR')) {
                 define('PCLZIP_TEMPORARY_DIR', Settings::getTempDir() . '/');
@@ -112,7 +112,7 @@ class ZipArchive
         // Run function
         $result = false;
         if (method_exists($zipObject, $zipFunction)) {
-            $result = @call_user_func_array(array($zipObject, $zipFunction), $args);
+            $result = @call_user_func_array([$zipObject, $zipFunction], $args);
         }
 
         return $result;
@@ -150,16 +150,16 @@ class ZipArchive
     /**
      * Close the active archive
      *
+     * @throws \PhpOffice\PhpWord\Exception\Exception
      * @return bool
      *
-     * @throws \PhpOffice\PhpWord\Exception\Exception
      *
      * @codeCoverageIgnore Can't find any test case. Uncomment when found.
      */
     public function close()
     {
         if (!$this->usePclzip) {
-            if ($this->zip->close() === false) {
+            if (false === $this->zip->close()) {
                 throw new Exception("Could not close zip file {$this->filename}.");
             }
         }
@@ -183,9 +183,9 @@ class ZipArchive
 
         if (!$this->usePclzip) {
             return $this->zip->extractTo($destination, $entries);
-        } else {
-            return $this->pclzipExtractTo($destination, $entries);
         }
+
+        return $this->pclzipExtractTo($destination, $entries);
     }
 
     /**
@@ -198,8 +198,8 @@ class ZipArchive
     {
         if (!$this->usePclzip) {
             $contents = $this->zip->getFromName($filename);
-            if ($contents === false) {
-                $filename = substr($filename, 1);
+            if (false === $contents) {
+                $filename = mb_substr($filename, 1);
                 $contents = $this->zip->getFromName($filename);
             }
         } else {
@@ -223,7 +223,7 @@ class ZipArchive
 
         // Bugfix GH-261 https://github.com/PHPOffice/PHPWord/pull/261
         $realpathFilename = realpath($filename);
-        if ($realpathFilename !== false) {
+        if (false !== $realpathFilename) {
             $filename = $realpathFilename;
         }
 
@@ -251,7 +251,7 @@ class ZipArchive
             unlink($this->tempDir . DIRECTORY_SEPARATOR . $localnameParts['basename']);
         }
 
-        return ($res == 0) ? false : true;
+        return (0 == $res) ? false : true;
     }
 
     /**
@@ -282,7 +282,7 @@ class ZipArchive
         // Remove temp file
         @unlink($this->tempDir . DIRECTORY_SEPARATOR . $filenameParts['basename']);
 
-        return ($res == 0) ? false : true;
+        return (0 == $res) ? false : true;
     }
 
     /**
@@ -299,14 +299,15 @@ class ZipArchive
         $zip = $this->zip;
 
         // Extract all files
-        if (is_null($entries)) {
+        if (null === $entries) {
             $result = $zip->extract(PCLZIP_OPT_PATH, $destination);
+
             return ($result > 0) ? true : false;
         }
 
         // Extract by entries
         if (!is_array($entries)) {
-            $entries = array($entries);
+            $entries = [$entries];
         }
         foreach ($entries as $entry) {
             $entryIndex = $this->locateName($entry);
@@ -332,14 +333,14 @@ class ZipArchive
         $listIndex = $this->pclzipLocateName($filename);
         $contents = false;
 
-        if ($listIndex !== false) {
+        if (false !== $listIndex) {
             $extracted = $zip->extractByIndex($listIndex, PCLZIP_OPT_EXTRACT_AS_STRING);
         } else {
-            $filename = substr($filename, 1);
+            $filename = mb_substr($filename, 1);
             $listIndex = $this->pclzipLocateName($filename);
             $extracted = $zip->extractByIndex($listIndex, PCLZIP_OPT_EXTRACT_AS_STRING);
         }
-        if ((is_array($extracted)) && ($extracted != 0)) {
+        if ((is_array($extracted)) && (0 != $extracted)) {
             $contents = $extracted[0]['content'];
         }
 
@@ -360,9 +361,9 @@ class ZipArchive
         $list = $zip->listContent();
         if (isset($list[$index])) {
             return $list[$index]['filename'];
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
@@ -379,8 +380,8 @@ class ZipArchive
         $listCount = count($list);
         $listIndex = -1;
         for ($i = 0; $i < $listCount; ++$i) {
-            if (strtolower($list[$i]['filename']) == strtolower($filename) ||
-                strtolower($list[$i]['stored_filename']) == strtolower($filename)) {
+            if (mb_strtolower($list[$i]['filename']) == mb_strtolower($filename) ||
+                mb_strtolower($list[$i]['stored_filename']) == mb_strtolower($filename)) {
                 $listIndex = $i;
                 break;
             }

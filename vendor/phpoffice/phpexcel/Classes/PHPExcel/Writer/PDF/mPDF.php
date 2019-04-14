@@ -59,29 +59,29 @@ class PHPExcel_Writer_PDF_mPDF extends PHPExcel_Writer_PDF_Core implements PHPEx
         $paperSize = 'LETTER';    //    Letter    (8.5 in. by 11 in.)
 
         //  Check for paper size and page orientation
-        if (is_null($this->getSheetIndex())) {
-            $orientation = ($this->phpExcel->getSheet(0)->getPageSetup()->getOrientation()
-                == PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE) ? 'L' : 'P';
+        if (null === $this->getSheetIndex()) {
+            $orientation = (PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE
+                == $this->phpExcel->getSheet(0)->getPageSetup()->getOrientation()) ? 'L' : 'P';
             $printPaperSize = $this->phpExcel->getSheet(0)->getPageSetup()->getPaperSize();
             $printMargins = $this->phpExcel->getSheet(0)->getPageMargins();
         } else {
-            $orientation = ($this->phpExcel->getSheet($this->getSheetIndex())->getPageSetup()->getOrientation()
-                == PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE) ? 'L' : 'P';
+            $orientation = (PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE
+                == $this->phpExcel->getSheet($this->getSheetIndex())->getPageSetup()->getOrientation()) ? 'L' : 'P';
             $printPaperSize = $this->phpExcel->getSheet($this->getSheetIndex())->getPageSetup()->getPaperSize();
             $printMargins = $this->phpExcel->getSheet($this->getSheetIndex())->getPageMargins();
         }
         $this->setOrientation($orientation);
 
         //  Override Page Orientation
-        if (!is_null($this->getOrientation())) {
-            $orientation = ($this->getOrientation() == PHPExcel_Worksheet_PageSetup::ORIENTATION_DEFAULT)
+        if (null !== $this->getOrientation()) {
+            $orientation = (PHPExcel_Worksheet_PageSetup::ORIENTATION_DEFAULT == $this->getOrientation())
                 ? PHPExcel_Worksheet_PageSetup::ORIENTATION_PORTRAIT
                 : $this->getOrientation();
         }
-        $orientation = strtoupper($orientation);
+        $orientation = mb_strtoupper($orientation);
 
         //  Override Paper Size
-        if (!is_null($this->getPaperSize())) {
+        if (null !== $this->getPaperSize()) {
             $printPaperSize = $this->getPaperSize();
         }
 
@@ -89,11 +89,10 @@ class PHPExcel_Writer_PDF_mPDF extends PHPExcel_Writer_PDF_Core implements PHPEx
             $paperSize = self::$paperSizes[$printPaperSize];
         }
 
-
         //  Create PDF
         $pdf = new mpdf();
         $ortmp = $orientation;
-        $pdf->_setPageSize(strtoupper($paperSize), $ortmp);
+        $pdf->_setPageSize(mb_strtoupper($paperSize), $ortmp);
         $pdf->DefOrientation = $orientation;
         $pdf->AddPage($orientation);
 

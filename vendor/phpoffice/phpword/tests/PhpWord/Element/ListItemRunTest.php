@@ -64,7 +64,7 @@ class ListItemRunTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructArray()
     {
-        $oListItemRun = new ListItemRun(0, null, array('spacing' => 100));
+        $oListItemRun = new ListItemRun(0, null, ['spacing' => 100]);
 
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Element\\ListItemRun', $oListItemRun);
         $this->assertCount(0, $oListItemRun->getElements());
@@ -76,7 +76,7 @@ class ListItemRunTest extends \PHPUnit_Framework_TestCase
      */
     public function testStyle()
     {
-        $oListItemRun = new ListItemRun(1, array('listType' => \PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER));
+        $oListItemRun = new ListItemRun(1, ['listType' => \PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER]);
 
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Style\\ListItem', $oListItemRun->getStyle());
         $this->assertEquals(\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER, $oListItemRun->getStyle()->getListType());
@@ -87,7 +87,7 @@ class ListItemRunTest extends \PHPUnit_Framework_TestCase
      */
     public function testDepth()
     {
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oListItemRun = new ListItemRun($iVal);
 
         $this->assertEquals($iVal, $oListItemRun->getDepth());

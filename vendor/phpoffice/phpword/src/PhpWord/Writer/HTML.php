@@ -39,7 +39,7 @@ class HTML extends AbstractWriter implements WriterInterface
      *
      * @var array
      */
-    protected $notes = array();
+    protected $notes = [];
 
     /**
      * Create new instance
@@ -48,14 +48,14 @@ class HTML extends AbstractWriter implements WriterInterface
     {
         $this->setPhpWord($phpWord);
 
-        $this->parts = array('Head', 'Body');
+        $this->parts = ['Head', 'Body'];
         foreach ($this->parts as $partName) {
             $partClass = 'PhpOffice\\PhpWord\\Writer\\HTML\\Part\\' . $partName;
             if (class_exists($partClass)) {
                 /** @var \PhpOffice\PhpWord\Writer\HTML\Part\AbstractPart $part Type hint */
                 $part = new $partClass();
                 $part->setParentWriter($this);
-                $this->writerParts[strtolower($partName)] = $part;
+                $this->writerParts[mb_strtolower($partName)] = $part;
             }
         }
     }
@@ -65,9 +65,8 @@ class HTML extends AbstractWriter implements WriterInterface
      *
      * @param string $filename
      *
-     * @return void
-     *
      * @throws \PhpOffice\PhpWord\Exception\Exception
+     * @return void
      */
     public function save($filename = null)
     {

@@ -64,6 +64,7 @@ class PHPExcel_RichText_Run extends PHPExcel_RichText_TextElement implements PHP
     public function setFont(PHPExcel_Style_Font $pFont = null)
     {
         $this->font = $pFont;
+
         return $this;
     }
 

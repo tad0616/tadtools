@@ -27,25 +27,25 @@ class Tab extends AbstractStyle
      *
      * @const string
      */
-    const TAB_STOP_CLEAR   = 'clear';
-    const TAB_STOP_LEFT    = 'left';
-    const TAB_STOP_CENTER  = 'center';
-    const TAB_STOP_RIGHT   = 'right';
+    const TAB_STOP_CLEAR = 'clear';
+    const TAB_STOP_LEFT = 'left';
+    const TAB_STOP_CENTER = 'center';
+    const TAB_STOP_RIGHT = 'right';
     const TAB_STOP_DECIMAL = 'decimal';
-    const TAB_STOP_BAR     = 'bar';
-    const TAB_STOP_NUM     = 'num';
+    const TAB_STOP_BAR = 'bar';
+    const TAB_STOP_NUM = 'num';
 
     /**
      * Tab leader types
      *
      * @const string
      */
-    const TAB_LEADER_NONE       = 'none';
-    const TAB_LEADER_DOT        = 'dot';
-    const TAB_LEADER_HYPHEN     = 'hyphen';
+    const TAB_LEADER_NONE = 'none';
+    const TAB_LEADER_DOT = 'dot';
+    const TAB_LEADER_HYPHEN = 'hyphen';
     const TAB_LEADER_UNDERSCORE = 'underscore';
-    const TAB_LEADER_HEAVY      = 'heavy';
-    const TAB_LEADER_MIDDLEDOT  = 'middleDot';
+    const TAB_LEADER_HEAVY = 'heavy';
+    const TAB_LEADER_MIDDLEDOT = 'middleDot';
 
     /**
      * Tab stop type
@@ -79,14 +79,14 @@ class Tab extends AbstractStyle
      */
     public function __construct($type = null, $position = 0, $leader = null)
     {
-        $stopTypes = array(
-            self::TAB_STOP_CLEAR, self::TAB_STOP_LEFT,self::TAB_STOP_CENTER,
-            self::TAB_STOP_RIGHT, self::TAB_STOP_DECIMAL, self::TAB_STOP_BAR, self::TAB_STOP_NUM
-        );
-        $leaderTypes = array(
+        $stopTypes = [
+            self::TAB_STOP_CLEAR, self::TAB_STOP_LEFT, self::TAB_STOP_CENTER,
+            self::TAB_STOP_RIGHT, self::TAB_STOP_DECIMAL, self::TAB_STOP_BAR, self::TAB_STOP_NUM,
+        ];
+        $leaderTypes = [
             self::TAB_LEADER_NONE, self::TAB_LEADER_DOT, self::TAB_LEADER_HYPHEN,
-            self::TAB_LEADER_UNDERSCORE, self::TAB_LEADER_HEAVY, self::TAB_LEADER_MIDDLEDOT
-        );
+            self::TAB_LEADER_UNDERSCORE, self::TAB_LEADER_HEAVY, self::TAB_LEADER_MIDDLEDOT,
+        ];
 
         $this->type = $this->setEnumVal($type, $stopTypes, $this->type);
         $this->position = $this->setNumericVal($position, $this->position);
@@ -111,11 +111,11 @@ class Tab extends AbstractStyle
      */
     public function setType($value)
     {
-        $enum = array(
+        $enum = [
             self::TAB_STOP_CLEAR, self::TAB_STOP_LEFT, self::TAB_STOP_CENTER,
             self::TAB_STOP_RIGHT, self::TAB_STOP_DECIMAL, self::TAB_STOP_BAR,
             self::TAB_STOP_NUM,
-        );
+        ];
         $this->type = $this->setEnumVal($value, $enum, $this->type);
 
         return $this;
@@ -139,10 +139,10 @@ class Tab extends AbstractStyle
      */
     public function setLeader($value)
     {
-        $enum = array(
+        $enum = [
             self::TAB_LEADER_NONE, self::TAB_LEADER_DOT, self::TAB_LEADER_HYPHEN,
             self::TAB_LEADER_UNDERSCORE, self::TAB_LEADER_HEAVY, self::TAB_LEADER_MIDDLEDOT,
-        );
+        ];
         $this->leader = $this->setEnumVal($value, $enum, $this->leader);
 
         return $this;

@@ -36,9 +36,9 @@ final class TemplateProcessorTest extends \PHPUnit_Framework_TestCase
 
         $templateProcessor = new TemplateProcessor($templateFqfn);
         $xslDomDocument = new \DOMDocument();
-        $xslDomDocument->load(__DIR__ . "/_files/xsl/remove_tables_by_needle.xsl");
-        foreach (array('${employee.', '${scoreboard.', '${reference.') as $needle) {
-            $templateProcessor->applyXslStyleSheet($xslDomDocument, array('needle' => $needle));
+        $xslDomDocument->load(__DIR__ . '/_files/xsl/remove_tables_by_needle.xsl');
+        foreach (['${employee.', '${scoreboard.', '${reference.'] as $needle) {
+            $templateProcessor->applyXslStyleSheet($xslDomDocument, ['needle' => $needle]);
         }
 
         $documentFqfn = $templateProcessor->save();
@@ -113,12 +113,13 @@ final class TemplateProcessorTest extends \PHPUnit_Framework_TestCase
      * XSL stylesheet cannot be applied on failure in setting parameter value.
      *
      * @covers                   ::applyXslStyleSheet
-     * @expectedException        \PhpOffice\PhpWord\Exception\Exception
-     * @expectedExceptionMessage Could not set values for the given XSL style sheet parameters.
      * @test
      */
     final public function testXslStyleSheetCanNotBeAppliedOnFailureOfSettingParameterValue()
     {
+        $this->expectException(\PhpOffice\PhpWord\Exception\Exception::class);
+        $this->expectExceptionMessage('Could not set values for the given XSL style sheet parameters.');
+
         $templateProcessor = new TemplateProcessor(__DIR__ . '/_files/templates/blank.docx');
 
         $xslDomDocument = new \DOMDocument();
@@ -128,19 +129,20 @@ final class TemplateProcessorTest extends \PHPUnit_Framework_TestCase
          * We have to use error control below, because \XSLTProcessor::setParameter omits warning on failure.
          * This warning fails the test.
          */
-        @$templateProcessor->applyXslStyleSheet($xslDomDocument, array(1 => 'somevalue'));
+        @$templateProcessor->applyXslStyleSheet($xslDomDocument, [1 => 'somevalue']);
     }
 
     /**
      * XSL stylesheet can be applied on failure of loading XML from template.
      *
      * @covers                   ::applyXslStyleSheet
-     * @expectedException        \PhpOffice\PhpWord\Exception\Exception
-     * @expectedExceptionMessage Could not load the given XML document.
      * @test
      */
     final public function testXslStyleSheetCanNotBeAppliedOnFailureOfLoadingXmlFromTemplate()
     {
+        $this->expectException(\PhpOffice\PhpWord\Exception\Exception::class);
+        $this->expectExceptionMessage('Could not load the given XML document.');
+
         $templateProcessor = new TemplateProcessor(__DIR__ . '/_files/templates/corrupted_main_document_part.docx');
 
         $xslDomDocument = new \DOMDocument();
@@ -154,9 +156,9 @@ final class TemplateProcessorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setValue
      * @covers ::cloneRow
      * @covers ::saveAs
+     * @covers ::setValue
      * @test
      */
     public function testCloneRow()
@@ -164,7 +166,7 @@ final class TemplateProcessorTest extends \PHPUnit_Framework_TestCase
         $templateProcessor = new TemplateProcessor(__DIR__ . '/_files/templates/clone-merge.docx');
 
         $this->assertEquals(
-            array('tableHeader', 'userId', 'userName', 'userLocation'),
+            ['tableHeader', 'userId', 'userName', 'userLocation'],
             $templateProcessor->getVariables()
         );
 
@@ -179,18 +181,18 @@ final class TemplateProcessorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::setValue
      * @covers ::saveAs
+     * @covers ::setValue
      * @test
      */
     public function testMacrosCanBeReplacedInHeaderAndFooter()
     {
         $templateProcessor = new TemplateProcessor(__DIR__ . '/_files/templates/header-footer.docx');
 
-        $this->assertEquals(array('documentContent', 'headerValue', 'footerValue'), $templateProcessor->getVariables());
+        $this->assertEquals(['documentContent', 'headerValue', 'footerValue'], $templateProcessor->getVariables());
 
-        $macroNames = array('headerValue', 'documentContent', 'footerValue');
-        $macroValues = array('Header Value', 'Document text.', 'Footer Value');
+        $macroNames = ['headerValue', 'documentContent', 'footerValue'];
+        $macroValues = ['Header Value', 'Document text.', 'Footer Value'];
         $templateProcessor->setValue($macroNames, $macroValues);
 
         $docName = 'header-footer-test-result.docx';
@@ -211,7 +213,7 @@ final class TemplateProcessorTest extends \PHPUnit_Framework_TestCase
         $templateProcessor = new TemplateProcessor(__DIR__ . '/_files/templates/clone-delete-block.docx');
 
         $this->assertEquals(
-            array('DELETEME', '/DELETEME', 'CLONEME', '/CLONEME'),
+            ['DELETEME', '/DELETEME', 'CLONEME', '/CLONEME'],
             $templateProcessor->getVariables()
         );
 

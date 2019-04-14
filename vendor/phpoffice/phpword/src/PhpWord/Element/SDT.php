@@ -43,7 +43,7 @@ class SDT extends Text
      *
      * @var array
      */
-    private $listItems = array();
+    private $listItems = [];
 
     /**
      * Create new instance
@@ -76,7 +76,7 @@ class SDT extends Text
      */
     public function setType($value)
     {
-        $enum = array('comboBox', 'dropDownList', 'date');
+        $enum = ['comboBox', 'dropDownList', 'date'];
         $this->type = $this->setEnumVal($value, $enum, 'comboBox');
 
         return $this;

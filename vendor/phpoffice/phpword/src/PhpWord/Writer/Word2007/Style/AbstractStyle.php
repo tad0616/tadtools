@@ -49,7 +49,6 @@ abstract class AbstractStyle
     /**
      * Create new instance.
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
      * @param string|\PhpOffice\PhpWord\Style\AbstractStyle $style
      */
     public function __construct(XMLWriter $xmlWriter, $style = null)
@@ -87,16 +86,16 @@ abstract class AbstractStyle
      */
     protected function convertTwip($value, $default = 0)
     {
-        $factors = array(
+        $factors = [
             Settings::UNIT_CM => 567,
             Settings::UNIT_MM => 56.7,
             Settings::UNIT_INCH => 1440,
             Settings::UNIT_POINT => 20,
             Settings::UNIT_PICA => 240,
-        );
+        ];
         $unit = Settings::getMeasurementUnit();
         $factor = 1;
-        if (in_array($unit, $factors) && $value != $default) {
+        if (in_array($unit, $factors, true) && $value != $default) {
             $factor = $factors[$unit];
         }
 
@@ -106,15 +105,14 @@ abstract class AbstractStyle
     /**
      * Write child style.
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
      * @param string $name
      * @param mixed $value
      * @return void
      */
     protected function writeChildStyle(XMLWriter $xmlWriter, $name, $value)
     {
-        if ($value !== null) {
-            $class = "PhpOffice\\PhpWord\\Writer\\Word2007\\Style\\" . $name;
+        if (null !== $value) {
+            $class = 'PhpOffice\\PhpWord\\Writer\\Word2007\\Style\\' . $name;
 
             /** @var \PhpOffice\PhpWord\Writer\Word2007\Style\AbstractStyle $writer */
             $writer = new $class($xmlWriter, $value);
@@ -128,11 +126,11 @@ abstract class AbstractStyle
      * @param array $styles
      * @return string
      */
-    protected function assembleStyle($styles = array())
+    protected function assembleStyle($styles = [])
     {
         $style = '';
         foreach ($styles as $key => $value) {
-            if (!is_null($value) && $value != '') {
+            if (null !== $value && '' != $value) {
                 $style .= "{$key}:{$value}; ";
             }
         }

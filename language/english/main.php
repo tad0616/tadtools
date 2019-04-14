@@ -78,7 +78,7 @@ define('_TAD_CENTER_ZONE', 'Center Zone');
 define('_TAD_LEFT_ZONE', 'Left Zone');
 define('_TAD_RIGHT_ZONE', 'Right Zone');
 
-define("_TAD_SLIDE_DEFAULT_DESCRIPT", "You can upload slider images from tad_theme admin. You can edit descript for images with HTML tag.");
+define('_TAD_SLIDE_DEFAULT_DESCRIPT', 'You can upload slider images from tad_theme admin. You can edit descript for images with HTML tag.');
 
 define('TADTOOLS_CALENDAR_TODAY', 'Today');
 define('TADTOOLS_CALENDAR_PREV_MONTH', 'Prev Month');
@@ -93,21 +93,21 @@ define('_TAD_MENU_CONFIG', 'Dorpdown Setup');
 define('_TAD_EMPTY', 'No information available');
 
 //TadDataCenter.php
-Define('_TDC_REQUIRE', 'Required');
-Define('_TDC_INPUT', 'Textbox');
-Define('_TDC_RADIO', 'Radio');
-Define('_TDC_CHECKBOX', 'Checkbox');
-Define('_TDC_SELECT', 'Select');
-Define('_TDC_TEXTAREA', 'Textarea');
+define('_TDC_REQUIRE', 'Required');
+define('_TDC_INPUT', 'Textbox');
+define('_TDC_RADIO', 'Radio');
+define('_TDC_CHECKBOX', 'Checkbox');
+define('_TDC_SELECT', 'Select');
+define('_TDC_TEXTAREA', 'Textarea');
 define('_TDC_DATE', 'Date Picker');
-Define('_TDC_NOTE', 'Description text');
-Define('_TDC_TITLE', 'Title');
-Define('_TDC_INPUT_TITLE', 'Please enter title');
-Define('_TDC_DESCRIPTION', 'Description');
-Define('_TDC_INPUT_DESCRIPTION', 'Enter the relevant description here');
-Define('_TDC_TYPE', 'Type');
-Define('_TDC_OPTIONS', 'Options');
-Define('_TDC_OPTIONS_NOTE', 'Use the ; to separate options. eg, "male;female". If the option value and the option text are different, use = to set it, eg "1=male;0=female"');
+define('_TDC_NOTE', 'Description text');
+define('_TDC_TITLE', 'Title');
+define('_TDC_INPUT_TITLE', 'Please enter title');
+define('_TDC_DESCRIPTION', 'Description');
+define('_TDC_INPUT_DESCRIPTION', 'Enter the relevant description here');
+define('_TDC_TYPE', 'Type');
+define('_TDC_OPTIONS', 'Options');
+define('_TDC_OPTIONS_NOTE', 'Use the ; to separate options. eg, "male;female". If the option value and the option text are different, use = to set it, eg "1=male;0=female"');
 // define('_TDC_', 'Required');
 define('_TDC_FILL_PEOPLE', 'Name');
 define('_TDC_INPUT_COL_ID', 'Do not move, for program');

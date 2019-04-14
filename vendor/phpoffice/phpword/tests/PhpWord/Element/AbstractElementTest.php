@@ -28,7 +28,7 @@ class AbstractElementTest extends \PHPUnit_Framework_TestCase
     public function testElementIndex()
     {
         $stub = $this->getMockForAbstractClass('\PhpOffice\PhpWord\Element\AbstractElement');
-        $ival = rand(0, 100);
+        $ival = mt_rand(0, 100);
         $stub->setElementIndex($ival);
         $this->assertEquals($ival, $stub->getElementIndex());
     }
@@ -40,6 +40,6 @@ class AbstractElementTest extends \PHPUnit_Framework_TestCase
     {
         $stub = $this->getMockForAbstractClass('\PhpOffice\PhpWord\Element\AbstractElement');
         $stub->setElementId();
-        $this->assertEquals(6, strlen($stub->getElementId()));
+        $this->assertEquals(6, mb_strlen($stub->getElementId()));
     }
 }

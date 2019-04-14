@@ -36,25 +36,25 @@ class ContentTypes extends AbstractPart
         $contentTypes = $parentWriter->getContentTypes();
 
         $openXMLPrefix = 'application/vnd.openxmlformats-';
-        $wordMLPrefix  = $openXMLPrefix . 'officedocument.wordprocessingml.';
-        $drawingMLPrefix  = $openXMLPrefix . 'officedocument.drawingml.';
-        $overrides = array(
-            '/docProps/core.xml'     => $openXMLPrefix . 'package.core-properties+xml',
-            '/docProps/app.xml'      => $openXMLPrefix . 'officedocument.extended-properties+xml',
-            '/docProps/custom.xml'   => $openXMLPrefix . 'officedocument.custom-properties+xml',
-            '/word/document.xml'     => $wordMLPrefix  . 'document.main+xml',
-            '/word/styles.xml'       => $wordMLPrefix  . 'styles+xml',
-            '/word/numbering.xml'    => $wordMLPrefix  . 'numbering+xml',
-            '/word/settings.xml'     => $wordMLPrefix  . 'settings+xml',
+        $wordMLPrefix = $openXMLPrefix . 'officedocument.wordprocessingml.';
+        $drawingMLPrefix = $openXMLPrefix . 'officedocument.drawingml.';
+        $overrides = [
+            '/docProps/core.xml' => $openXMLPrefix . 'package.core-properties+xml',
+            '/docProps/app.xml' => $openXMLPrefix . 'officedocument.extended-properties+xml',
+            '/docProps/custom.xml' => $openXMLPrefix . 'officedocument.custom-properties+xml',
+            '/word/document.xml' => $wordMLPrefix . 'document.main+xml',
+            '/word/styles.xml' => $wordMLPrefix . 'styles+xml',
+            '/word/numbering.xml' => $wordMLPrefix . 'numbering+xml',
+            '/word/settings.xml' => $wordMLPrefix . 'settings+xml',
             '/word/theme/theme1.xml' => $openXMLPrefix . 'officedocument.theme+xml',
-            '/word/webSettings.xml'  => $wordMLPrefix  . 'webSettings+xml',
-            '/word/fontTable.xml'    => $wordMLPrefix  . 'fontTable+xml',
-        );
+            '/word/webSettings.xml' => $wordMLPrefix . 'webSettings+xml',
+            '/word/fontTable.xml' => $wordMLPrefix . 'fontTable+xml',
+        ];
 
         $defaults = $contentTypes['default'];
         if (!empty($contentTypes['override'])) {
             foreach ($contentTypes['override'] as $key => $val) {
-                if ($val == 'chart') {
+                if ('chart' == $val) {
                     $overrides[$key] = $drawingMLPrefix . $val . '+xml';
                 } else {
                     $overrides[$key] = $wordMLPrefix . $val . '+xml';
@@ -81,7 +81,7 @@ class ContentTypes extends AbstractPart
      *
      * @param \PhpOffice\Common\XMLWriter $xmlWriter XML Writer
      * @param array $parts
-     * @param boolean $isDefault
+     * @param bool $isDefault
      * @return void
      */
     private function writeContentType(XMLWriter $xmlWriter, $parts, $isDefault)

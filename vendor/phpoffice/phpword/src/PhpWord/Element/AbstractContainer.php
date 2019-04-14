@@ -37,7 +37,7 @@ namespace PhpOffice\PhpWord\Element;
  * @method PageBreak addPageBreak()
  * @method Table addTable(mixed $style = null)
  * @method Image addImage(string $source, mixed $style = null, bool $isWatermark = false)
- * @method Object addObject(string $source, mixed $style = null)
+ * @method object addObject(string $source, mixed $style = null)
  * @method TextBox addTextBox(mixed $style = null)
  * @method Field addField(string $type = null, array $properties = array(), array $options = array())
  * @method Line addLine(mixed $lineStyle = null)
@@ -55,7 +55,7 @@ abstract class AbstractContainer extends AbstractElement
      *
      * @var array
      */
-    protected $elements = array();
+    protected $elements = [];
 
     /**
      * Container type Section|Header|Footer|Footnote|Endnote|Cell|TextRun|TextBox|ListItemRun
@@ -78,38 +78,38 @@ abstract class AbstractContainer extends AbstractElement
      */
     public function __call($function, $args)
     {
-        $elements = array(
+        $elements = [
             'Text', 'TextRun', 'Bookmark', 'Link', 'PreserveText', 'TextBreak',
             'ListItem', 'ListItemRun', 'Table', 'Image', 'Object',
             'Footnote', 'Endnote', 'CheckBox', 'TextBox', 'Field',
             'Line', 'Shape', 'Title', 'TOC', 'PageBreak',
-            'Chart', 'FormField', 'SDT'
-        );
-        $functions = array();
+            'Chart', 'FormField', 'SDT',
+        ];
+        $functions = [];
         foreach ($elements as $element) {
-            $functions['add' . strtolower($element)] = $element;
+            $functions['add' . mb_strtolower($element)] = $element;
         }
 
         // Run valid `add` command
-        $function = strtolower($function);
+        $function = mb_strtolower($function);
         if (isset($functions[$function])) {
             $element = $functions[$function];
 
             // Special case for TextBreak
             // @todo Remove the `$count` parameter in 1.0.0 to make this element similiar to other elements?
-            if ($element == 'TextBreak') {
+            if ('TextBreak' == $element) {
                 @list($count, $fontStyle, $paragraphStyle) = $args; // Suppress error
-                if ($count === null) {
+                if (null === $count) {
                     $count = 1;
                 }
                 for ($i = 1; $i <= $count; $i++) {
                     $this->addElement($element, $fontStyle, $paragraphStyle);
                 }
 
-            // All other elements
+                // All other elements
             } else {
                 array_unshift($args, $element); // Prepend element name to the beginning of args array
-                return call_user_func_array(array($this, 'addElement'), $args);
+                return call_user_func_array([$this, 'addElement'], $args);
             }
         }
 
@@ -131,8 +131,8 @@ abstract class AbstractContainer extends AbstractElement
 
         // Get arguments
         $args = func_get_args();
-        $withoutP = in_array($this->container, array('TextRun', 'Footnote', 'Endnote', 'ListItemRun', 'Field'));
-        if ($withoutP && ($elementName == 'Text' || $elementName == 'PreserveText')) {
+        $withoutP = in_array($this->container, ['TextRun', 'Footnote', 'Endnote', 'ListItemRun', 'Field'], true);
+        if ($withoutP && ('Text' == $elementName || 'PreserveText' == $elementName)) {
             $args[3] = null; // Remove paragraph style for texts in textrun
         }
 
@@ -181,54 +181,53 @@ abstract class AbstractContainer extends AbstractElement
      *
      * @param string $method
      *
-     * @return bool
-     *
      * @throws \BadMethodCallException
+     * @return bool
      */
     private function checkValidity($method)
     {
-        $generalContainers = array(
+        $generalContainers = [
             'Section', 'Header', 'Footer', 'Footnote', 'Endnote', 'Cell', 'TextRun', 'TextBox', 'ListItemRun',
-        );
+        ];
 
-        $validContainers = array(
-            'Text'          => $generalContainers,
-            'Bookmark'      => $generalContainers,
-            'Link'          => $generalContainers,
-            'TextBreak'     => $generalContainers,
-            'Image'         => $generalContainers,
-            'Object'        => $generalContainers,
-            'Field'         => $generalContainers,
-            'Line'          => $generalContainers,
-            'Shape'         => $generalContainers,
-            'FormField'     => $generalContainers,
-            'SDT'           => $generalContainers,
-            'TextRun'       => array('Section', 'Header', 'Footer', 'Cell', 'TextBox'),
-            'ListItem'      => array('Section', 'Header', 'Footer', 'Cell', 'TextBox'),
-            'ListItemRun'   => array('Section', 'Header', 'Footer', 'Cell', 'TextBox'),
-            'Table'         => array('Section', 'Header', 'Footer', 'Cell', 'TextBox'),
-            'CheckBox'      => array('Section', 'Header', 'Footer', 'Cell'),
-            'TextBox'       => array('Section', 'Header', 'Footer', 'Cell'),
-            'Footnote'      => array('Section', 'TextRun', 'Cell'),
-            'Endnote'       => array('Section', 'TextRun', 'Cell'),
-            'PreserveText'  => array('Header', 'Footer', 'Cell'),
-            'Title'         => array('Section'),
-            'TOC'           => array('Section'),
-            'PageBreak'     => array('Section'),
-            'Chart'         => array('Section'),
-        );
+        $validContainers = [
+            'Text' => $generalContainers,
+            'Bookmark' => $generalContainers,
+            'Link' => $generalContainers,
+            'TextBreak' => $generalContainers,
+            'Image' => $generalContainers,
+            'Object' => $generalContainers,
+            'Field' => $generalContainers,
+            'Line' => $generalContainers,
+            'Shape' => $generalContainers,
+            'FormField' => $generalContainers,
+            'SDT' => $generalContainers,
+            'TextRun' => ['Section', 'Header', 'Footer', 'Cell', 'TextBox'],
+            'ListItem' => ['Section', 'Header', 'Footer', 'Cell', 'TextBox'],
+            'ListItemRun' => ['Section', 'Header', 'Footer', 'Cell', 'TextBox'],
+            'Table' => ['Section', 'Header', 'Footer', 'Cell', 'TextBox'],
+            'CheckBox' => ['Section', 'Header', 'Footer', 'Cell'],
+            'TextBox' => ['Section', 'Header', 'Footer', 'Cell'],
+            'Footnote' => ['Section', 'TextRun', 'Cell'],
+            'Endnote' => ['Section', 'TextRun', 'Cell'],
+            'PreserveText' => ['Header', 'Footer', 'Cell'],
+            'Title' => ['Section'],
+            'TOC' => ['Section'],
+            'PageBreak' => ['Section'],
+            'Chart' => ['Section'],
+        ];
 
         // Special condition, e.g. preservetext can only exists in cell when
         // the cell is located in header or footer
-        $validSubcontainers = array(
-            'PreserveText'  => array(array('Cell'), array('Header', 'Footer')),
-            'Footnote'      => array(array('Cell', 'TextRun'), array('Section')),
-            'Endnote'       => array(array('Cell', 'TextRun'), array('Section')),
-        );
+        $validSubcontainers = [
+            'PreserveText' => [['Cell'], ['Header', 'Footer']],
+            'Footnote' => [['Cell', 'TextRun'], ['Section']],
+            'Endnote' => [['Cell', 'TextRun'], ['Section']],
+        ];
 
         // Check if a method is valid for current container
         if (isset($validContainers[$method])) {
-            if (!in_array($this->container, $validContainers[$method])) {
+            if (!in_array($this->container, $validContainers[$method], true)) {
                 throw new \BadMethodCallException("Cannot add {$method} in {$this->container}.");
             }
         }
@@ -239,7 +238,7 @@ abstract class AbstractContainer extends AbstractElement
             $containers = $rules[0];
             $allowedDocParts = $rules[1];
             foreach ($containers as $container) {
-                if ($this->container == $container && !in_array($this->getDocPart(), $allowedDocParts)) {
+                if ($this->container == $container && !in_array($this->getDocPart(), $allowedDocParts, true)) {
                     throw new \BadMethodCallException("Cannot add {$method} in {$this->container}.");
                 }
             }

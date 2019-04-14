@@ -25,7 +25,6 @@
  * @version    Beta 0.6.3, 08.07.2011
  */
 
-
 /**
  * PHPWord_Section_TextBreak
  *
@@ -33,12 +32,13 @@
  * @package    PHPWord_Section
  * @copyright  Copyright (c) 2011 PHPWord
  */
-class PHPWord_Section_TextBreak  {
-	
-	/**
-	 * Create a new TextBreak Element
-	 */
-	public function __construct() {
-		// nothing
-	}
+class PHPWord_Section_TextBreak
+{
+    /**
+     * Create a new TextBreak Element
+     */
+    public function __construct()
+    {
+        // nothing
+    }
 }

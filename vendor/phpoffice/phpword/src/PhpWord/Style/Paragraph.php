@@ -60,7 +60,7 @@ class Paragraph extends Border
      *
      * @var array
      */
-    protected $aliases = array('line-height' => 'lineHeight');
+    protected $aliases = ['line-height' => 'lineHeight'];
 
     /**
      * Parent style
@@ -149,7 +149,7 @@ class Paragraph extends Border
      *
      * @var \PhpOffice\PhpWord\Style\Tab[]
      */
-    private $tabs = array();
+    private $tabs = [];
 
     /**
      * Shading
@@ -189,26 +189,26 @@ class Paragraph extends Border
      */
     public function getStyleValues()
     {
-        $styles = array(
-            'name'              => $this->getStyleName(),
-            'basedOn'           => $this->getBasedOn(),
-            'next'              => $this->getNext(),
-            'alignment'         => $this->getAlignment(),
-            'indentation'       => $this->getIndentation(),
-            'spacing'           => $this->getSpace(),
-            'pagination'        => array(
-                'widowControl'  => $this->hasWidowControl(),
-                'keepNext'      => $this->isKeepNext(),
-                'keepLines'     => $this->isKeepLines(),
-                'pageBreak'     => $this->hasPageBreakBefore(),
-            ),
-            'numbering'         => array(
-                'style'         => $this->getNumStyle(),
-                'level'         => $this->getNumLevel(),
-            ),
-            'tabs'              => $this->getTabs(),
-            'shading'           => $this->getShading(),
-        );
+        $styles = [
+            'name' => $this->getStyleName(),
+            'basedOn' => $this->getBasedOn(),
+            'next' => $this->getNext(),
+            'alignment' => $this->getAlignment(),
+            'indentation' => $this->getIndentation(),
+            'spacing' => $this->getSpace(),
+            'pagination' => [
+                'widowControl' => $this->hasWidowControl(),
+                'keepNext' => $this->isKeepNext(),
+                'keepLines' => $this->isKeepLines(),
+                'pageBreak' => $this->hasPageBreakBefore(),
+            ],
+            'numbering' => [
+                'style' => $this->getNumStyle(),
+                'level' => $this->getNumLevel(),
+            ],
+            'tabs' => $this->getTabs(),
+            'shading' => $this->getShading(),
+        ];
 
         return $styles;
     }
@@ -352,7 +352,7 @@ class Paragraph extends Border
      */
     public function setIndent($value = null)
     {
-        return $this->setIndentation(array('left' => $value));
+        return $this->setIndentation(['left' => $value]);
     }
 
     /**
@@ -373,7 +373,7 @@ class Paragraph extends Border
      */
     public function setHanging($value = null)
     {
-        return $this->setIndentation(array('hanging' => $value));
+        return $this->setIndentation(['hanging' => $value]);
     }
 
     /**
@@ -419,7 +419,7 @@ class Paragraph extends Border
      */
     public function setSpaceBefore($value = null)
     {
-        return $this->setSpace(array('before' => $value));
+        return $this->setSpace(['before' => $value]);
     }
 
     /**
@@ -440,7 +440,7 @@ class Paragraph extends Border
      */
     public function setSpaceAfter($value = null)
     {
-        return $this->setSpace(array('after' => $value));
+        return $this->setSpace(['after' => $value]);
     }
 
     /**
@@ -461,7 +461,7 @@ class Paragraph extends Border
      */
     public function setSpacing($value = null)
     {
-        return $this->setSpace(array('line' => $value));
+        return $this->setSpace(['line' => $value]);
     }
 
     /**
@@ -479,9 +479,8 @@ class Paragraph extends Border
      *
      * @param int|float|string $lineHeight
      *
-     * @return self
-     *
      * @throws \PhpOffice\PhpWord\Exception\InvalidStyleException
+     * @return self
      */
     public function setLineHeight($lineHeight)
     {
@@ -489,12 +488,13 @@ class Paragraph extends Border
             $lineHeight = floatval(preg_replace('/[^0-9\.\,]/', '', $lineHeight));
         }
 
-        if ((!is_integer($lineHeight) && !is_float($lineHeight)) || !$lineHeight) {
+        if ((!is_int($lineHeight) && !is_float($lineHeight)) || !$lineHeight) {
             throw new InvalidStyleException('Line height must be a valid number');
         }
 
         $this->lineHeight = $lineHeight;
         $this->setSpacing($lineHeight * self::LINE_HEIGHT);
+
         return $this;
     }
 

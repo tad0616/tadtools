@@ -45,7 +45,7 @@ class PreserveTextTest extends \PHPUnit_Framework_TestCase
     public function testConstructWithString()
     {
         $oPreserveText = new PreserveText('text', 'styleFont', 'styleParagraph');
-        $this->assertEquals(array('text'), $oPreserveText->getText());
+        $this->assertEquals(['text'], $oPreserveText->getText());
         $this->assertEquals('styleFont', $oPreserveText->getFontStyle());
         $this->assertEquals('styleParagraph', $oPreserveText->getParagraphStyle());
     }
@@ -55,7 +55,7 @@ class PreserveTextTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructWithArray()
     {
-        $oPreserveText = new PreserveText('text', array('size' => 16, 'color' => '1B2232'), array('alignment' => Jc::CENTER));
+        $oPreserveText = new PreserveText('text', ['size' => 16, 'color' => '1B2232'], ['alignment' => Jc::CENTER]);
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Style\\Font', $oPreserveText->getFontStyle());
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Style\\Paragraph', $oPreserveText->getParagraphStyle());
     }

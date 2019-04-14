@@ -36,7 +36,7 @@ class HtmlTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(0, $section->getElements());
 
         // Heading
-        $styles = array('strong', 'em', 'sup', 'sub');
+        $styles = ['strong', 'em', 'sup', 'sub'];
         for ($level = 1; $level <= 6; $level++) {
             $content .= "<h{$level}>Heading {$level}</h{$level}>";
         }

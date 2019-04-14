@@ -42,14 +42,14 @@ class RTF extends AbstractWriter implements WriterInterface
     {
         $this->setPhpWord($phpWord);
 
-        $this->parts = array('Header', 'Document');
+        $this->parts = ['Header', 'Document'];
         foreach ($this->parts as $partName) {
             $partClass = get_class($this) . '\\Part\\' . $partName;
             if (class_exists($partClass)) {
                 /** @var \PhpOffice\PhpWord\Writer\RTF\Part\AbstractPart $part Type hint */
                 $part = new $partClass();
                 $part->setParentWriter($this);
-                $this->writerParts[strtolower($partName)] = $part;
+                $this->writerParts[mb_strtolower($partName)] = $part;
             }
         }
     }
@@ -59,9 +59,8 @@ class RTF extends AbstractWriter implements WriterInterface
      *
      * @param string $filename
      *
-     * @return void
-     *
      * @throws \PhpOffice\PhpWord\Exception\Exception
+     * @return void
      */
     public function save($filename = null)
     {

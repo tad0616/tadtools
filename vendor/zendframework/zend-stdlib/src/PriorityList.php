@@ -14,15 +14,15 @@ use Iterator;
 
 class PriorityList implements Iterator, Countable
 {
-    const EXTR_DATA     = 0x00000001;
+    const EXTR_DATA = 0x00000001;
     const EXTR_PRIORITY = 0x00000002;
-    const EXTR_BOTH     = 0x00000003;
+    const EXTR_BOTH = 0x00000003;
     /**
      * Internal list of all items.
      *
      * @var array[]
      */
-    protected $items = array();
+    protected $items = [];
 
     /**
      * Serial assigned to items to preserve LIFO.
@@ -68,20 +68,19 @@ class PriorityList implements Iterator, Countable
 
         $this->sorted = false;
 
-        $this->items[$name] = array(
-            'data'     => $value,
+        $this->items[$name] = [
+            'data' => $value,
             'priority' => (int) $priority,
-            'serial'   => $this->serial++,
-        );
+            'serial' => $this->serial++,
+        ];
     }
 
     /**
      * @param string $name
      * @param int    $priority
      *
-     * @return $this
-     *
      * @throws \Exception
+     * @return $this
      */
     public function setPriority($name, $priority)
     {
@@ -90,7 +89,7 @@ class PriorityList implements Iterator, Countable
         }
 
         $this->items[$name]['priority'] = (int) $priority;
-        $this->sorted                   = false;
+        $this->sorted = false;
 
         return $this;
     }
@@ -117,9 +116,9 @@ class PriorityList implements Iterator, Countable
      */
     public function clear()
     {
-        $this->items  = array();
+        $this->items = [];
         $this->serial = 0;
-        $this->count  = 0;
+        $this->count = 0;
         $this->sorted = false;
     }
 
@@ -146,7 +145,7 @@ class PriorityList implements Iterator, Countable
     protected function sort()
     {
         if (!$this->sorted) {
-            uasort($this->items, array($this, 'compare'));
+            uasort($this->items, [$this, 'compare']);
             $this->sorted = true;
         }
     }
@@ -154,14 +153,12 @@ class PriorityList implements Iterator, Countable
     /**
      * Compare the priority of two items.
      *
-     * @param  array $item1,
-     * @param  array $item2
      * @return int
      */
     protected function compare(array $item1, array $item2)
     {
         return ($item1['priority'] === $item2['priority'])
-            ? ($item1['serial']   > $item2['serial']   ? -1 : 1) * $this->isLIFO
+            ? ($item1['serial'] > $item2['serial'] ? -1 : 1) * $this->isLIFO
             : ($item1['priority'] > $item2['priority'] ? -1 : 1);
     }
 
@@ -174,8 +171,8 @@ class PriorityList implements Iterator, Countable
      */
     public function isLIFO($flag = null)
     {
-        if ($flag !== null) {
-            $isLifo = $flag === true ? 1 : -1;
+        if (null !== $flag) {
+            $isLifo = true === $flag ? 1 : -1;
 
             if ($isLifo !== $this->isLIFO) {
                 $this->isLIFO = $isLifo;
@@ -212,6 +209,7 @@ class PriorityList implements Iterator, Countable
     public function key()
     {
         $this->sorted || $this->sort();
+
         return key($this->items);
     }
 
@@ -230,7 +228,7 @@ class PriorityList implements Iterator, Countable
      */
     public function valid()
     {
-        return current($this->items) !== false;
+        return false !== current($this->items);
     }
 
     /**
@@ -260,13 +258,13 @@ class PriorityList implements Iterator, Countable
     {
         $this->sort();
 
-        if ($flag == self::EXTR_BOTH) {
+        if (self::EXTR_BOTH == $flag) {
             return $this->items;
         }
 
         return array_map(
             function ($item) use ($flag) {
-                return ($flag == PriorityList::EXTR_PRIORITY) ? $item['priority'] : $item['data'];
+                return (self::EXTR_PRIORITY == $flag) ? $item['priority'] : $item['data'];
             },
             $this->items
         );

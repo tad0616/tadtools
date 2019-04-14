@@ -16,24 +16,24 @@ $xoopsTpl->assign("module_css", '<link rel="stylesheet" href="' . XOOPS_URL . '/
 //  display: none;
 //}
  */
-include_once "tadtools_header.php";
-include_once "jquery.php";
+include_once 'tadtools_header.php';
+include_once 'jquery.php';
 
 class print_preview
 {
     public $name;
 
-    public function __construct($name = "a.print-preview")
+    public function __construct($name = 'a.print-preview')
     {
-        $this->name        = $name;
+        $this->name = $name;
         $this->show_jquery = $show_jquery;
     }
 
-    public function render($mode = "assign")
+    public function render($mode = 'assign')
     {
         global $xoTheme;
 
-        if ($xoTheme and $mode == "assign") {
+        if ($xoTheme and 'assign' === $mode) {
             $xoTheme->addScript('modules/tadtools/jquery-print-preview/jquery.print-preview.js');
 
             $xoTheme->addScript('', null, "

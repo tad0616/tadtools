@@ -50,11 +50,11 @@ class FieldTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructWithTypeProperties()
     {
-        $oField = new Field('DATE', array('dateformat' => 'd-M-yyyy'));
+        $oField = new Field('DATE', ['dateformat' => 'd-M-yyyy']);
 
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Element\\Field', $oField);
         $this->assertEquals('DATE', $oField->getType());
-        $this->assertEquals(array('dateformat' => 'd-M-yyyy'), $oField->getProperties());
+        $this->assertEquals(['dateformat' => 'd-M-yyyy'], $oField->getProperties());
     }
 
     /**
@@ -62,47 +62,47 @@ class FieldTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructWithTypePropertiesOptions()
     {
-        $oField = new Field('DATE', array('dateformat' => 'd-M-yyyy'), array('SakaEraCalendar', 'PreserveFormat'));
+        $oField = new Field('DATE', ['dateformat' => 'd-M-yyyy'], ['SakaEraCalendar', 'PreserveFormat']);
 
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Element\\Field', $oField);
         $this->assertEquals('DATE', $oField->getType());
-        $this->assertEquals(array('dateformat' => 'd-M-yyyy'), $oField->getProperties());
-        $this->assertEquals(array('SakaEraCalendar', 'PreserveFormat'), $oField->getOptions());
+        $this->assertEquals(['dateformat' => 'd-M-yyyy'], $oField->getProperties());
+        $this->assertEquals(['SakaEraCalendar', 'PreserveFormat'], $oField->getOptions());
     }
 
     /**
      * Test setType exception
-     *
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Invalid type
      */
     public function testSetTypeException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid type');
+
         $object = new Field();
         $object->setType('foo');
     }
 
     /**
      * Test setProperties exception
-     *
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Invalid property
      */
     public function testSetPropertiesException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid property');
+
         $object = new Field('PAGE');
-        $object->setProperties(array('foo' => 'bar'));
+        $object->setProperties(['foo' => 'bar']);
     }
 
     /**
      * Test setOptions exception
-     *
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Invalid option
      */
     public function testSetOptionsException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid option');
+
         $object = new Field('PAGE');
-        $object->setOptions(array('foo' => 'bar'));
+        $object->setOptions(['foo' => 'bar']);
     }
 }

@@ -11,8 +11,8 @@ $xoopsTpl->assign('stickytableheaders_code',$stickytableheaders_code);
 表格需有 <thead>及<tbody>
 
  */
-include_once "tadtools_header.php";
-include_once "jquery.php";
+include_once 'tadtools_header.php';
+include_once 'jquery.php';
 
 class stickytableheaders
 {
@@ -25,11 +25,11 @@ class stickytableheaders
     }
 
     //產生語法
-    public function render($name = "", $fixedOffset = "")
+    public function render($name = '', $fixedOffset = '')
     {
         global $xoTheme;
-        $showFixedOffset = empty($fixedOffset) ? "" : "{fixedOffset:$fixedOffset}";
-        $jquery          = $this->show_jquery ? get_jquery() : "";
+        $showFixedOffset = empty($fixedOffset) ? '' : "{fixedOffset:$fixedOffset}";
+        $jquery = $this->show_jquery ? get_jquery() : '';
 
         if ($xoTheme) {
             $xoTheme->addScript('modules/tadtools/stickytableheaders/jquery.stickytableheaders.js');
@@ -54,5 +54,4 @@ class stickytableheaders
             return $main;
         }
     }
-
 }

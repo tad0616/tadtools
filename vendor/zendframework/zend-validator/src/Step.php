@@ -19,10 +19,10 @@ class Step extends AbstractValidator
     /**
      * @var array
      */
-    protected $messageTemplates = array(
-        self::INVALID => "Invalid value given. Scalar expected",
-        self::NOT_STEP => "The input is not a valid step"
-    );
+    protected $messageTemplates = [
+        self::INVALID => 'Invalid value given. Scalar expected',
+        self::NOT_STEP => 'The input is not a valid step',
+    ];
 
     /**
      * @var mixed
@@ -39,7 +39,7 @@ class Step extends AbstractValidator
      *
      * @param array $options
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         if ($options instanceof Traversable) {
             $options = iterator_to_array($options);
@@ -72,6 +72,7 @@ class Step extends AbstractValidator
     public function setBaseValue($baseValue)
     {
         $this->baseValue = $baseValue;
+
         return $this;
     }
 
@@ -94,6 +95,7 @@ class Step extends AbstractValidator
     public function setStep($step)
     {
         $this->step = (float) $step;
+
         return $this;
     }
 
@@ -117,6 +119,7 @@ class Step extends AbstractValidator
     {
         if (!is_numeric($value)) {
             $this->error(self::INVALID);
+
             return false;
         }
 
@@ -124,8 +127,9 @@ class Step extends AbstractValidator
 
         $fmod = $this->fmod($value - $this->baseValue, $this->step);
 
-        if ($fmod !== 0.0 && $fmod !== $this->step) {
+        if (0.0 !== $fmod && $fmod !== $this->step) {
             $this->error(self::NOT_STEP);
+
             return false;
         }
 
@@ -141,14 +145,14 @@ class Step extends AbstractValidator
      */
     protected function fmod($x, $y)
     {
-        if ($y == 0.0) {
+        if (0.0 == $y) {
             return 1.0;
         }
 
         //find the maximum precision from both input params to give accurate results
-        $xFloatSegment = substr($x, strpos($x, '.') + 1) ?: '';
-        $yFloatSegment = substr($y, strpos($y, '.') + 1) ?: '';
-        $precision = strlen($xFloatSegment) + strlen($yFloatSegment);
+        $xFloatSegment = mb_substr($x, mb_strpos($x, '.') + 1) ?: '';
+        $yFloatSegment = mb_substr($y, mb_strpos($y, '.') + 1) ?: '';
+        $precision = mb_strlen($xFloatSegment) + mb_strlen($yFloatSegment);
 
         return round($x - $y * floor($x / $y), $precision);
     }

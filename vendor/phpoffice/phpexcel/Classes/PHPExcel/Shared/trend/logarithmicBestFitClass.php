@@ -35,7 +35,7 @@ class PHPExcel_Logarithmic_Best_Fit extends PHPExcel_Best_Fit
      *
      * @var    string
      **/
-    protected $bestFitType        = 'logarithmic';
+    protected $bestFitType = 'logarithmic';
 
     /**
      * Return the Y-Value for a specified value of X
@@ -70,7 +70,7 @@ class PHPExcel_Logarithmic_Best_Fit extends PHPExcel_Best_Fit
         $slope = $this->getSlope($dp);
         $intersect = $this->getIntersect($dp);
 
-        return 'Y = '.$intersect.' + '.$slope.' * log(X)';
+        return 'Y = ' . $intersect . ' + ' . $slope . ' * log(X)';
     }
 
     /**
@@ -78,7 +78,7 @@ class PHPExcel_Logarithmic_Best_Fit extends PHPExcel_Best_Fit
      *
      * @param     float[]    $yValues    The set of Y-values for this regression
      * @param     float[]    $xValues    The set of X-values for this regression
-     * @param     boolean    $const
+     * @param     bool    $const
      */
     private function logarithmicRegression($yValues, $xValues, $const)
     {
@@ -99,11 +99,11 @@ class PHPExcel_Logarithmic_Best_Fit extends PHPExcel_Best_Fit
      *
      * @param    float[]        $yValues    The set of Y-values for this regression
      * @param    float[]        $xValues    The set of X-values for this regression
-     * @param    boolean        $const
+     * @param    bool        $const
      */
-    public function __construct($yValues, $xValues = array(), $const = true)
+    public function __construct($yValues, $xValues = [], $const = true)
     {
-        if (parent::__construct($yValues, $xValues) !== false) {
+        if (false !== parent::__construct($yValues, $xValues)) {
             $this->logarithmicRegression($yValues, $xValues, $const);
         }
     }

@@ -90,8 +90,8 @@ class Font
     /**
      * Calculate twip based on point size, used mainly for paragraph spacing
      *
-     * @param integer $sizeInPoint Size in point
-     * @return integer Size (in twips)
+     * @param int $sizeInPoint Size in point
+     * @return int Size (in twips)
      */
     public static function pointSizeToTwips($sizeInPoint = 1)
     {

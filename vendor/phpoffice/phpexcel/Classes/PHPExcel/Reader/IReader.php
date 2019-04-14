@@ -39,8 +39,8 @@ interface PHPExcel_Reader_IReader
      * Loads PHPExcel from file
      *
      * @param     string         $pFilename
-     * @return  PHPExcel
      * @throws     PHPExcel_Reader_Exception
+     * @return  PHPExcel
      */
     public function load($pFilename);
 }

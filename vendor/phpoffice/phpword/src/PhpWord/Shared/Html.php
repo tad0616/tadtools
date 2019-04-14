@@ -45,11 +45,11 @@ class Html
 
         // Preprocess: remove all line ends, decode HTML entity,
         // fix ampersand and angle brackets and add body tag for HTML fragments
-        $html = str_replace(array("\n", "\r"), '', $html);
-        $html = str_replace(array('&lt;', '&gt;', '&amp;'), array('_lt_', '_gt_', '_amp_'), $html);
+        $html = str_replace(["\n", "\r"], '', $html);
+        $html = str_replace(['&lt;', '&gt;', '&amp;'], ['_lt_', '_gt_', '_amp_'], $html);
         $html = html_entity_decode($html, ENT_QUOTES, 'UTF-8');
         $html = str_replace('&', '&amp;', $html);
-        $html = str_replace(array('_lt_', '_gt_', '_amp_'), array('&lt;', '&gt;', '&amp;'), $html);
+        $html = str_replace(['_lt_', '_gt_', '_amp_'], ['&lt;', '&gt;', '&amp;'], $html);
 
         if (false === $fullHTML) {
             $html = '<body>' . $html . '</body>';
@@ -71,7 +71,7 @@ class Html
      * @param array $styles is supplied, the inline style attributes are added to the already existing style
      * @return array
      */
-    protected static function parseInlineStyle($node, $styles = array())
+    protected static function parseInlineStyle($node, $styles = [])
     {
         if (XML_ELEMENT_NODE == $node->nodeType) {
             $attributes = $node->attributes; // get all the attributes(eg: id, class)
@@ -97,55 +97,55 @@ class Html
      * @param array $data Array to transport data to a next level in the DOM tree, for example level of listitems
      * @return void
      */
-    protected static function parseNode($node, $element, $styles = array(), $data = array())
+    protected static function parseNode($node, $element, $styles = [], $data = [])
     {
         // Populate styles array
-        $styleTypes = array('font', 'paragraph', 'list');
+        $styleTypes = ['font', 'paragraph', 'list'];
         foreach ($styleTypes as $styleType) {
             if (!isset($styles[$styleType])) {
-                $styles[$styleType] = array();
+                $styles[$styleType] = [];
             }
         }
 
         // Node mapping table
-        $nodes = array(
+        $nodes = [
                               // $method        $node   $element    $styles     $data   $argument1      $argument2
-            'p'         => array('Paragraph',   $node,  $element,   $styles,    null,   null,           null),
-            'h1'        => array('Heading',     null,   $element,   $styles,    null,   'Heading1',     null),
-            'h2'        => array('Heading',     null,   $element,   $styles,    null,   'Heading2',     null),
-            'h3'        => array('Heading',     null,   $element,   $styles,    null,   'Heading3',     null),
-            'h4'        => array('Heading',     null,   $element,   $styles,    null,   'Heading4',     null),
-            'h5'        => array('Heading',     null,   $element,   $styles,    null,   'Heading5',     null),
-            'h6'        => array('Heading',     null,   $element,   $styles,    null,   'Heading6',     null),
-            '#text'     => array('Text',        $node,  $element,   $styles,    null,   null,           null),
-            'strong'    => array('Property',    null,   null,       $styles,    null,   'bold',         true),
-            'em'        => array('Property',    null,   null,       $styles,    null,   'italic',       true),
-            'sup'       => array('Property',    null,   null,       $styles,    null,   'superScript',  true),
-            'sub'       => array('Property',    null,   null,       $styles,    null,   'subScript',    true),
-            'table'     => array('Table',       $node,  $element,   $styles,    null,   'addTable',     true),
-            'tr'        => array('Table',       $node,  $element,   $styles,    null,   'addRow',       true),
-            'td'        => array('Table',       $node,  $element,   $styles,    null,   'addCell',      true),
-            'ul'        => array('List',        null,   null,       $styles,    $data,  3,              null),
-            'ol'        => array('List',        null,   null,       $styles,    $data,  7,              null),
-            'li'        => array('ListItem',    $node,  $element,   $styles,    $data,  null,           null),
-        );
+            'p' => ['Paragraph',   $node,  $element,   $styles,    null,   null,           null],
+            'h1' => ['Heading',     null,   $element,   $styles,    null,   'Heading1',     null],
+            'h2' => ['Heading',     null,   $element,   $styles,    null,   'Heading2',     null],
+            'h3' => ['Heading',     null,   $element,   $styles,    null,   'Heading3',     null],
+            'h4' => ['Heading',     null,   $element,   $styles,    null,   'Heading4',     null],
+            'h5' => ['Heading',     null,   $element,   $styles,    null,   'Heading5',     null],
+            'h6' => ['Heading',     null,   $element,   $styles,    null,   'Heading6',     null],
+            '#text' => ['Text',        $node,  $element,   $styles,    null,   null,           null],
+            'strong' => ['Property',    null,   null,       $styles,    null,   'bold',         true],
+            'em' => ['Property',    null,   null,       $styles,    null,   'italic',       true],
+            'sup' => ['Property',    null,   null,       $styles,    null,   'superScript',  true],
+            'sub' => ['Property',    null,   null,       $styles,    null,   'subScript',    true],
+            'table' => ['Table',       $node,  $element,   $styles,    null,   'addTable',     true],
+            'tr' => ['Table',       $node,  $element,   $styles,    null,   'addRow',       true],
+            'td' => ['Table',       $node,  $element,   $styles,    null,   'addCell',      true],
+            'ul' => ['List',        null,   null,       $styles,    $data,  3,              null],
+            'ol' => ['List',        null,   null,       $styles,    $data,  7,              null],
+            'li' => ['ListItem',    $node,  $element,   $styles,    $data,  null,           null],
+        ];
 
         $newElement = null;
-        $keys = array('node', 'element', 'styles', 'data', 'argument1', 'argument2');
+        $keys = ['node', 'element', 'styles', 'data', 'argument1', 'argument2'];
 
         if (isset($nodes[$node->nodeName])) {
             // Execute method based on node mapping table and return $newElement or null
             // Arguments are passed by reference
-            $arguments = array();
-            $args = array();
+            $arguments = [];
+            $args = [];
             list($method, $args[0], $args[1], $args[2], $args[3], $args[4], $args[5]) = $nodes[$node->nodeName];
             for ($i = 0; $i <= 5; $i++) {
-                if ($args[$i] !== null) {
+                if (null !== $args[$i]) {
                     $arguments[$keys[$i]] = &$args[$i];
                 }
             }
             $method = "parse{$method}";
-            $newElement = call_user_func_array(array('PhpOffice\PhpWord\Shared\Html', $method), $arguments);
+            $newElement = call_user_func_array(['PhpOffice\PhpWord\Shared\Html', $method], $arguments);
 
             // Retrieve back variables from arguments
             foreach ($keys as $key) {
@@ -155,7 +155,7 @@ class Html
             }
         }
 
-        if ($newElement === null) {
+        if (null === $newElement) {
             $newElement = $element;
         }
 
@@ -235,7 +235,7 @@ class Html
         // Commented as source of bug #257. `method_exists` doesn't seems to work properly in this case.
         // @todo Find better error checking for this one
         // if (method_exists($element, 'addText')) {
-            $element->addText($node->nodeValue, $styles['font'], $styles['paragraph']);
+        $element->addText($node->nodeValue, $styles['font'], $styles['paragraph']);
         // }
 
         return null;
@@ -275,14 +275,14 @@ class Html
 
         // $attributes = $node->attributes;
         // if ($attributes->getNamedItem('width') !== null) {
-            // $newElement->setWidth($attributes->getNamedItem('width')->value);
+        // $newElement->setWidth($attributes->getNamedItem('width')->value);
         // }
 
         // if ($attributes->getNamedItem('height') !== null) {
-            // $newElement->setHeight($attributes->getNamedItem('height')->value);
+        // $newElement->setHeight($attributes->getNamedItem('height')->value);
         // }
         // if ($attributes->getNamedItem('width') !== null) {
-            // $newElement=$element->addCell($width=$attributes->getNamedItem('width')->value);
+        // $newElement=$element->addCell($width=$attributes->getNamedItem('width')->value);
         // }
 
         return $newElement;
@@ -326,7 +326,7 @@ class Html
         if (count($cNodes) > 0) {
             $text = '';
             foreach ($cNodes as $cNode) {
-                if ($cNode->nodeName == '#text') {
+                if ('#text' == $cNode->nodeName) {
                     $text = $cNode->nodeValue;
                 }
             }
@@ -364,10 +364,10 @@ class Html
                     $styles['alignment'] = $cValue; // todo: any mapping?
                     break;
                 case 'color':
-                    $styles['color'] = trim($cValue, "#");
+                    $styles['color'] = trim($cValue, '#');
                     break;
                 case 'background-color':
-                    $styles['bgColor'] = trim($cValue, "#");
+                    $styles['bgColor'] = trim($cValue, '#');
                     break;
             }
         }

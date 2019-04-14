@@ -2,7 +2,7 @@
 
 class PHPExcel_Reader_Excel5_Style_Border
 {
-    protected static $map = array(
+    protected static $map = [
         0x00 => PHPExcel_Style_Border::BORDER_NONE,
         0x01 => PHPExcel_Style_Border::BORDER_THIN,
         0x02 => PHPExcel_Style_Border::BORDER_MEDIUM,
@@ -17,7 +17,7 @@ class PHPExcel_Reader_Excel5_Style_Border
         0x0B => PHPExcel_Style_Border::BORDER_DASHDOTDOT,
         0x0C => PHPExcel_Style_Border::BORDER_MEDIUMDASHDOTDOT,
         0x0D => PHPExcel_Style_Border::BORDER_SLANTDASHDOT,
-    );
+    ];
 
     /**
      * Map border style
@@ -31,6 +31,7 @@ class PHPExcel_Reader_Excel5_Style_Border
         if (isset(self::$map[$index])) {
             return self::$map[$index];
         }
+
         return PHPExcel_Style_Border::BORDER_NONE;
     }
 }

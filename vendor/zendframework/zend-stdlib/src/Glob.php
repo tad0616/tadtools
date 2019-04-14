@@ -17,13 +17,13 @@ abstract class Glob
     /**#@+
      * Glob constants.
      */
-    const GLOB_MARK     = 0x01;
-    const GLOB_NOSORT   = 0x02;
-    const GLOB_NOCHECK  = 0x04;
+    const GLOB_MARK = 0x01;
+    const GLOB_NOSORT = 0x02;
+    const GLOB_NOCHECK = 0x04;
     const GLOB_NOESCAPE = 0x08;
-    const GLOB_BRACE    = 0x10;
-    const GLOB_ONLYDIR  = 0x20;
-    const GLOB_ERR      = 0x40;
+    const GLOB_BRACE = 0x10;
+    const GLOB_ONLYDIR = 0x20;
+    const GLOB_ERR = 0x40;
     /**#@-*/
 
     /**
@@ -33,8 +33,8 @@ abstract class Glob
      * @param  string  $pattern
      * @param  int $flags
      * @param  bool $forceFallback
-     * @return array
      * @throws Exception\RuntimeException
+     * @return array
      */
     public static function glob($pattern, $flags = 0, $forceFallback = false)
     {
@@ -50,21 +50,21 @@ abstract class Glob
      *
      * @param  string  $pattern
      * @param  int     $flags
-     * @return array
      * @throws Exception\RuntimeException
+     * @return array
      */
     protected static function systemGlob($pattern, $flags)
     {
         if ($flags) {
-            $flagMap = array(
-                self::GLOB_MARK     => GLOB_MARK,
-                self::GLOB_NOSORT   => GLOB_NOSORT,
-                self::GLOB_NOCHECK  => GLOB_NOCHECK,
+            $flagMap = [
+                self::GLOB_MARK => GLOB_MARK,
+                self::GLOB_NOSORT => GLOB_NOSORT,
+                self::GLOB_NOCHECK => GLOB_NOCHECK,
                 self::GLOB_NOESCAPE => GLOB_NOESCAPE,
-                self::GLOB_BRACE    => GLOB_BRACE,
-                self::GLOB_ONLYDIR  => GLOB_ONLYDIR,
-                self::GLOB_ERR      => GLOB_ERR,
-            );
+                self::GLOB_BRACE => GLOB_BRACE,
+                self::GLOB_ONLYDIR => GLOB_ONLYDIR,
+                self::GLOB_ERR => GLOB_ERR,
+            ];
 
             $globFlags = 0;
 
@@ -80,9 +80,10 @@ abstract class Glob
         ErrorHandler::start();
         $res = glob($pattern, $globFlags);
         $err = ErrorHandler::stop();
-        if ($res === false) {
+        if (false === $res) {
             throw new Exception\RuntimeException("glob('{$pattern}', {$globFlags}) failed", 0, $err);
         }
+
         return $res;
     }
 
@@ -91,8 +92,8 @@ abstract class Glob
      *
      * @param  string  $pattern
      * @param  int     $flags
-     * @return array
      * @throws Exception\RuntimeException
+     * @return array
      */
     protected static function fallbackGlob($pattern, $flags)
     {
@@ -101,11 +102,11 @@ abstract class Glob
         }
 
         $flags &= ~self::GLOB_BRACE;
-        $length = strlen($pattern);
-        $paths  = array();
+        $length = mb_strlen($pattern);
+        $paths = [];
 
         if ($flags & self::GLOB_NOESCAPE) {
-            $begin = strpos($pattern, '{');
+            $begin = mb_strpos($pattern, '{');
         } else {
             $begin = 0;
 
@@ -113,9 +114,9 @@ abstract class Glob
                 if ($begin === $length) {
                     $begin = false;
                     break;
-                } elseif ($pattern[$begin] === '\\' && ($begin + 1) < $length) {
+                } elseif ('\\' === $pattern[$begin] && ($begin + 1) < $length) {
                     $begin++;
-                } elseif ($pattern[$begin] === '{') {
+                } elseif ('{' === $pattern[$begin]) {
                     break;
                 }
 
@@ -123,22 +124,22 @@ abstract class Glob
             }
         }
 
-        if ($begin === false) {
+        if (false === $begin) {
             return static::systemGlob($pattern, $flags);
         }
 
         $next = static::nextBraceSub($pattern, $begin + 1, $flags);
 
-        if ($next === null) {
+        if (null === $next) {
             return static::systemGlob($pattern, $flags);
         }
 
         $rest = $next;
 
-        while ($pattern[$rest] !== '}') {
+        while ('}' !== $pattern[$rest]) {
             $rest = static::nextBraceSub($pattern, $rest + 1, $flags);
 
-            if ($rest === null) {
+            if (null === $rest) {
                 return static::systemGlob($pattern, $flags);
             }
         }
@@ -146,9 +147,9 @@ abstract class Glob
         $p = $begin + 1;
 
         while (true) {
-            $subPattern = substr($pattern, 0, $begin)
-                        . substr($pattern, $p, $next - $p)
-                        . substr($pattern, $rest + 1);
+            $subPattern = mb_substr($pattern, 0, $begin)
+                        . mb_substr($pattern, $p, $next - $p)
+                        . mb_substr($pattern, $rest + 1);
 
             $result = static::fallbackGlob($subPattern, $flags | self::GLOB_BRACE);
 
@@ -156,11 +157,11 @@ abstract class Glob
                 $paths = array_merge($paths, $result);
             }
 
-            if ($pattern[$next] === '}') {
+            if ('}' === $pattern[$next]) {
                 break;
             }
 
-            $p    = $next + 1;
+            $p = $next + 1;
             $next = static::nextBraceSub($pattern, $p, $flags);
         }
 
@@ -177,21 +178,21 @@ abstract class Glob
      */
     protected static function nextBraceSub($pattern, $begin, $flags)
     {
-        $length  = strlen($pattern);
-        $depth   = 0;
+        $length = mb_strlen($pattern);
+        $depth = 0;
         $current = $begin;
 
         while ($current < $length) {
-            if (!$flags & self::GLOB_NOESCAPE && $pattern[$current] === '\\') {
+            if (!$flags & self::GLOB_NOESCAPE && '\\' === $pattern[$current]) {
                 if (++$current === $length) {
                     break;
                 }
 
                 $current++;
             } else {
-                if (($pattern[$current] === '}' && $depth-- === 0) || ($pattern[$current] === ',' && $depth === 0)) {
+                if (('}' === $pattern[$current] && 0 === $depth--) || (',' === $pattern[$current] && 0 === $depth)) {
                     break;
-                } elseif ($pattern[$current++] === '{') {
+                } elseif ('{' === $pattern[$current++]) {
                     $depth++;
                 }
             }

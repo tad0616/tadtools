@@ -66,25 +66,24 @@ class PHPExcel_NamedRange
      * Create a new NamedRange
      *
      * @param string $pName
-     * @param PHPExcel_Worksheet $pWorksheet
      * @param string $pRange
      * @param bool $pLocalOnly
      * @param PHPExcel_Worksheet|null $pScope    Scope. Only applies when $pLocalOnly = true. Null for global scope.
      * @throws PHPExcel_Exception
      */
-    public function __construct($pName = null, PHPExcel_Worksheet $pWorksheet, $pRange = 'A1', $pLocalOnly = false, $pScope = null)
+    public function __construct($pName, PHPExcel_Worksheet $pWorksheet, $pRange = 'A1', $pLocalOnly = false, $pScope = null)
     {
         // Validate data
-        if (($pName === null) || ($pWorksheet === null) || ($pRange === null)) {
+        if ((null === $pName) || (null === $pWorksheet) || (null === $pRange)) {
             throw new PHPExcel_Exception('Parameters can not be null.');
         }
 
         // Set local members
-        $this->name       = $pName;
-        $this->worksheet  = $pWorksheet;
-        $this->range      = $pRange;
-        $this->localOnly  = $pLocalOnly;
-        $this->scope      = ($pLocalOnly == true) ? (($pScope == null) ? $pWorksheet : $pScope) : null;
+        $this->name = $pName;
+        $this->worksheet = $pWorksheet;
+        $this->range = $pRange;
+        $this->localOnly = $pLocalOnly;
+        $this->scope = (true == $pLocalOnly) ? ((null == $pScope) ? $pWorksheet : $pScope) : null;
     }
 
     /**
@@ -105,17 +104,17 @@ class PHPExcel_NamedRange
      */
     public function setName($value = null)
     {
-        if ($value !== null) {
+        if (null !== $value) {
             // Old title
             $oldTitle = $this->name;
 
             // Re-attach
-            if ($this->worksheet !== null) {
+            if (null !== $this->worksheet) {
                 $this->worksheet->getParent()->removeNamedRange($this->name, $this->worksheet);
             }
             $this->name = $value;
 
-            if ($this->worksheet !== null) {
+            if (null !== $this->worksheet) {
                 $this->worksheet->getParent()->addNamedRange($this);
             }
 
@@ -123,6 +122,7 @@ class PHPExcel_NamedRange
             $newTitle = $this->name;
             PHPExcel_ReferenceHelper::getInstance()->updateNamedFormulas($this->worksheet->getParent(), $oldTitle, $newTitle);
         }
+
         return $this;
     }
 
@@ -144,9 +144,10 @@ class PHPExcel_NamedRange
      */
     public function setWorksheet(PHPExcel_Worksheet $value = null)
     {
-        if ($value !== null) {
+        if (null !== $value) {
             $this->worksheet = $value;
         }
+
         return $this;
     }
 
@@ -168,9 +169,10 @@ class PHPExcel_NamedRange
      */
     public function setRange($value = null)
     {
-        if ($value !== null) {
+        if (null !== $value) {
             $this->range = $value;
         }
+
         return $this;
     }
 
@@ -194,6 +196,7 @@ class PHPExcel_NamedRange
     {
         $this->localOnly = $value;
         $this->scope = $value ? $this->worksheet : null;
+
         return $this;
     }
 
@@ -210,13 +213,13 @@ class PHPExcel_NamedRange
     /**
      * Set scope
      *
-     * @param PHPExcel_Worksheet|null $value
      * @return PHPExcel_NamedRange
      */
     public function setScope(PHPExcel_Worksheet $value = null)
     {
         $this->scope = $value;
-        $this->localOnly = ($value == null) ? false : true;
+        $this->localOnly = (null == $value) ? false : true;
+
         return $this;
     }
 
@@ -227,7 +230,7 @@ class PHPExcel_NamedRange
      * @param PHPExcel_Worksheet|null $pSheet Scope. Use null for global scope
      * @return PHPExcel_NamedRange
      */
-    public static function resolveRange($pNamedRange = '', PHPExcel_Worksheet $pSheet)
+    public static function resolveRange($pNamedRange, PHPExcel_Worksheet $pSheet)
     {
         return $pSheet->getParent()->getNamedRange($pNamedRange, $pSheet);
     }

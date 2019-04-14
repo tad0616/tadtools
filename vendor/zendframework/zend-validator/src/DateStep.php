@@ -17,19 +17,19 @@ use Zend\Stdlib\ArrayUtils;
 
 class DateStep extends Date
 {
-    const NOT_STEP       = 'dateStepNotStep';
+    const NOT_STEP = 'dateStepNotStep';
 
     const FORMAT_DEFAULT = DateTime::ISO8601;
 
     /**
      * @var array
      */
-    protected $messageTemplates = array(
-        self::INVALID      => "Invalid type given. String, integer, array or DateTime expected",
-        self::INVALID_DATE => "The input does not appear to be a valid date",
-        self::FALSEFORMAT  => "The input does not fit the date format '%format%'",
-        self::NOT_STEP     => "The input is not a valid step",
-    );
+    protected $messageTemplates = [
+        self::INVALID => 'Invalid type given. String, integer, array or DateTime expected',
+        self::INVALID_DATE => 'The input does not appear to be a valid date',
+        self::FALSEFORMAT => "The input does not fit the date format '%format%'",
+        self::NOT_STEP => 'The input is not a valid step',
+    ];
 
     /**
      * Optional base date value
@@ -59,7 +59,7 @@ class DateStep extends Date
      *
      * @param array $options
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         if ($options instanceof Traversable) {
             $options = ArrayUtils::iteratorToArray($options);
@@ -98,6 +98,7 @@ class DateStep extends Date
     public function setBaseValue($baseValue)
     {
         $this->baseValue = $baseValue;
+
         return $this;
     }
 
@@ -114,12 +115,12 @@ class DateStep extends Date
     /**
      * Sets the step date interval
      *
-     * @param  DateInterval $step
      * @return DateStep
      */
     public function setStep(DateInterval $step)
     {
         $this->step = $step;
+
         return $this;
     }
 
@@ -146,12 +147,12 @@ class DateStep extends Date
     /**
      * Sets the timezone option
      *
-     * @param  DateTimeZone $timezone
      * @return DateStep
      */
     public function setTimezone(DateTimeZone $timezone)
     {
         $this->timezone = $timezone;
+
         return $this;
     }
 
@@ -159,14 +160,16 @@ class DateStep extends Date
      * Supports formats with ISO week (W) definitions
      *
      * @see Date::convertString()
+     * @param mixed $value
+     * @param mixed $addErrors
      */
     protected function convertString($value, $addErrors = true)
     {
         // Custom week format support
-        if (strpos($this->format, 'Y-\WW') === 0
+        if (0 === mb_strpos($this->format, 'Y-\WW')
             && preg_match('/^([0-9]{4})\-W([0-9]{2})/', $value, $matches)
         ) {
-            $date = new DateTime;
+            $date = new DateTime();
             $date->setISODate($matches[1], $matches[2]);
         } else {
             $date = DateTime::createFromFormat($this->format, $value, $this->timezone);
@@ -179,6 +182,7 @@ class DateStep extends Date
             if ($addErrors) {
                 $this->error(self::FALSEFORMAT);
             }
+
             return false;
         }
 
@@ -189,8 +193,8 @@ class DateStep extends Date
      * Returns true if a date is within a valid step
      *
      * @param  string|int|\DateTime $value
-     * @return bool
      * @throws Exception\InvalidArgumentException
+     * @return bool
      */
     public function isValid($value)
     {
@@ -199,8 +203,8 @@ class DateStep extends Date
         }
 
         $valueDate = $this->convertToDateTime($value, false); // avoid duplicate errors
-        $baseDate  = $this->convertToDateTime($this->baseValue, false);
-        $step      = $this->getStep();
+        $baseDate = $this->convertToDateTime($this->baseValue, false);
+        $step = $this->getStep();
 
         // Same date?
         if ($valueDate == $baseDate) {
@@ -210,32 +214,32 @@ class DateStep extends Date
         // Optimization for simple intervals.
         // Handle intervals of just one date or time unit.
         $intervalParts = explode('|', $step->format('%y|%m|%d|%h|%i|%s'));
-        $partCounts    = array_count_values($intervalParts);
+        $partCounts = array_count_values($intervalParts);
 
-        $unitKeys = array('years', 'months', 'days', 'hours', 'minutes', 'seconds');
+        $unitKeys = ['years', 'months', 'days', 'hours', 'minutes', 'seconds'];
         $intervalParts = array_combine($unitKeys, $intervalParts);
 
         // Get absolute time difference to avoid special cases of missing/added time
         $absoluteValueDate = new DateTime($valueDate->format('Y-m-d H:i:s'), new DateTimeZone('UTC'));
         $absoluteBaseDate = new DateTime($baseDate->format('Y-m-d H:i:s'), new DateTimeZone('UTC'));
 
-        $timeDiff  = $absoluteValueDate->diff($absoluteBaseDate, 1);
+        $timeDiff = $absoluteValueDate->diff($absoluteBaseDate, 1);
         $diffParts = array_combine($unitKeys, explode('|', $timeDiff->format('%y|%m|%d|%h|%i|%s')));
 
-        if (5 === $partCounts["0"]) {
+        if (5 === $partCounts['0']) {
             // Find the unit with the non-zero interval
             $intervalUnit = null;
-            $stepValue    = null;
+            $stepValue = null;
             foreach ($intervalParts as $key => $value) {
                 if (0 != $value) {
                     $intervalUnit = $key;
-                    $stepValue    = (int) $value;
+                    $stepValue = (int) $value;
                     break;
                 }
             }
 
             // Check date units
-            if (in_array($intervalUnit, array('years', 'months', 'days'))) {
+            if (in_array($intervalUnit, ['years', 'months', 'days'], true)) {
                 switch ($intervalUnit) {
                     case 'years':
                         if (0 == $diffParts['months'] && 0 == $diffParts['days']
@@ -252,7 +256,7 @@ class DateStep extends Date
                             && 0 == $diffParts['minutes'] && 0 == $diffParts['seconds']
                         ) {
                             $months = ($diffParts['years'] * 12) + $diffParts['months'];
-                            if (($months % $stepValue) === 0) {
+                            if (0 === ($months % $stepValue)) {
                                 return true;
                             }
                         }
@@ -262,18 +266,19 @@ class DateStep extends Date
                             && 0 == $diffParts['seconds']
                         ) {
                             $days = $timeDiff->format('%a'); // Total days
-                            if (($days % $stepValue) === 0) {
+                            if (0 === ($days % $stepValue)) {
                                 return true;
                             }
                         }
                         break;
                 }
                 $this->error(self::NOT_STEP);
+
                 return false;
             }
 
             // Check time units
-            if (in_array($intervalUnit, array('hours', 'minutes', 'seconds'))) {
+            if (in_array($intervalUnit, ['hours', 'minutes', 'seconds'], true)) {
                 // Simple test if $stepValue is 1.
                 if (1 == $stepValue) {
                     if ('hours' === $intervalUnit
@@ -293,7 +298,7 @@ class DateStep extends Date
 
                 // Simple test for same day, when using default baseDate
                 if ($baseDate->format('Y-m-d') == $valueDate->format('Y-m-d')
-                    && $baseDate->format('Y-m-d') == '1970-01-01'
+                    && '1970-01-01' == $baseDate->format('Y-m-d')
                 ) {
                     switch ($intervalUnit) {
                         case 'hours':
@@ -306,7 +311,7 @@ class DateStep extends Date
                         case 'minutes':
                             if (0 == $diffParts['seconds']) {
                                 $minutes = ($diffParts['hours'] * 60) + $diffParts['minutes'];
-                                if (($minutes % $stepValue) === 0) {
+                                if (0 === ($minutes % $stepValue)) {
                                     return true;
                                 }
                             }
@@ -315,12 +320,13 @@ class DateStep extends Date
                             $seconds = ($diffParts['hours'] * 60 * 60)
                                        + ($diffParts['minutes'] * 60)
                                        + $diffParts['seconds'];
-                            if (($seconds % $stepValue) === 0) {
+                            if (0 === ($seconds % $stepValue)) {
                                 return true;
                             }
                             break;
                     }
                     $this->error(self::NOT_STEP);
+
                     return false;
                 }
             }
@@ -339,11 +345,8 @@ class DateStep extends Date
      * iterations by starting at the lower bound of steps needed to reach
      * the target
      *
-     * @param DateTime     $baseDate
-     * @param DateTime     $valueDate
      * @param int[]        $intervalParts
      * @param int[]        $diffParts
-     * @param DateInterval $step
      *
      * @return bool
      */
@@ -355,16 +358,16 @@ class DateStep extends Date
         DateInterval $step
     ) {
         list($minSteps, $requiredIterations) = $this->computeMinStepAndRequiredIterations($intervalParts, $diffParts);
-        $minimumInterval                     = $this->computeMinimumInterval($intervalParts, $minSteps);
-        $isIncrementalStepping               = $baseDate < $valueDate;
-        $dateModificationOperation           = $isIncrementalStepping ? 'add' : 'sub';
+        $minimumInterval = $this->computeMinimumInterval($intervalParts, $minSteps);
+        $isIncrementalStepping = $baseDate < $valueDate;
+        $dateModificationOperation = $isIncrementalStepping ? 'add' : 'sub';
 
         for ($offsetIterations = 0; $offsetIterations < $requiredIterations; $offsetIterations += 1) {
             $baseDate->{$dateModificationOperation}($minimumInterval);
         }
 
         while (($isIncrementalStepping && $baseDate < $valueDate)
-            || (! $isIncrementalStepping && $baseDate > $valueDate)
+            || (!$isIncrementalStepping && $baseDate > $valueDate)
         ) {
             $baseDate->{$dateModificationOperation}($step);
 
@@ -411,17 +414,17 @@ class DateStep extends Date
 
         // If we use PHP_INT_MAX DateInterval::__construct falls over with a bad format error
         // before we reach the max on 64 bit machines
-        $maxInteger             = min(pow(2, 31), PHP_INT_MAX);
+        $maxInteger = min(pow(2, 31), PHP_INT_MAX);
         // check for integer overflow and split $minimum interval if needed
-        $maximumInterval        = max($intervalParts);
+        $maximumInterval = max($intervalParts);
         $requiredStepIterations = 1;
 
         if (($minSteps * $maximumInterval) > $maxInteger) {
             $requiredStepIterations = ceil(($minSteps * $maximumInterval) / $maxInteger);
-            $minSteps               = floor($minSteps / $requiredStepIterations);
+            $minSteps = floor($minSteps / $requiredStepIterations);
         }
 
-        return array($minSteps, $minSteps ? $requiredStepIterations : 0);
+        return [$minSteps, $minSteps ? $requiredStepIterations : 0];
     }
 
     /**

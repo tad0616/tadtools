@@ -19,12 +19,12 @@ class ArraySerializable extends AbstractHydrator
      * Extracts values via the object's getArrayCopy() method.
      *
      * @param  object $object
-     * @return array
      * @throws Exception\BadMethodCallException for an $object not implementing getArrayCopy()
+     * @return array
      */
     public function extract($object)
     {
-        if (!is_callable(array($object, 'getArrayCopy'))) {
+        if (!is_callable([$object, 'getArrayCopy'])) {
             throw new Exception\BadMethodCallException(
                 sprintf('%s expects the provided object to implement getArrayCopy()', __METHOD__)
             );
@@ -56,28 +56,28 @@ class ArraySerializable extends AbstractHydrator
      * Hydrates an object by passing $data to either its exchangeArray() or
      * populate() method.
      *
-     * @param  array $data
      * @param  object $object
-     * @return object
      * @throws Exception\BadMethodCallException for an $object not implementing exchangeArray() or populate()
+     * @return object
      */
     public function hydrate(array $data, $object)
     {
-        $replacement = array();
+        $replacement = [];
         foreach ($data as $key => $value) {
             $name = $this->hydrateName($key, $data);
             $replacement[$name] = $this->hydrateValue($name, $value, $data);
         }
 
-        if (is_callable(array($object, 'exchangeArray'))) {
+        if (is_callable([$object, 'exchangeArray'])) {
             $object->exchangeArray($replacement);
-        } elseif (is_callable(array($object, 'populate'))) {
+        } elseif (is_callable([$object, 'populate'])) {
             $object->populate($replacement);
         } else {
             throw new Exception\BadMethodCallException(
                 sprintf('%s expects the provided object to implement exchangeArray() or populate()', __METHOD__)
             );
         }
+
         return $object;
     }
 }

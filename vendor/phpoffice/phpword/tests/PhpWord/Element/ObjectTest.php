@@ -40,11 +40,11 @@ class ObjectTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Create new instance with non-supported files
-     *
-     * @expectedException \PhpOffice\PhpWord\Exception\InvalidObjectException
      */
     public function testConstructWithNotSupportedFiles()
     {
+        $this->expectException(\PhpOffice\PhpWord\Exception\InvalidObjectException::class);
+
         $src = __DIR__ . '/../_files/xsl/passthrough.xsl';
         $oObject = new Object($src);
         $oObject->getSource();
@@ -56,7 +56,7 @@ class ObjectTest extends \PHPUnit_Framework_TestCase
     public function testConstructWithSupportedFilesAndStyle()
     {
         $src = __DIR__ . '/../_files/documents/sheet.xls';
-        $oObject = new Object($src, array('width' => '230px'));
+        $oObject = new Object($src, ['width' => '230px']);
 
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Element\\Object', $oObject);
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Style\\Image', $oObject->getStyle());
@@ -71,7 +71,7 @@ class ObjectTest extends \PHPUnit_Framework_TestCase
         $src = __DIR__ . '/../_files/documents/sheet.xls';
         $oObject = new Object($src);
 
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oObject->setRelationId($iVal);
         $this->assertEquals($iVal, $oObject->getRelationId());
     }
@@ -84,7 +84,7 @@ class ObjectTest extends \PHPUnit_Framework_TestCase
         $src = __DIR__ . '/../_files/documents/sheet.xls';
         $oObject = new Object($src);
 
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oObject->setImageRelationId($iVal);
         $this->assertEquals($iVal, $oObject->getImageRelationId());
     }

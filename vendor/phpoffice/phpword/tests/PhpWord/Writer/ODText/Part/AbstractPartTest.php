@@ -14,6 +14,7 @@
  * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
 namespace PhpOffice\PhpWord\Writer\ODText\Part;
 
 use PhpOffice\PhpWord\Writer\ODText;
@@ -39,12 +40,12 @@ class AbstractPartTest extends \PHPUnit_Framework_TestCase
 
     /**
      * covers   ::getParentWriter
-     *
-     * @expectedException Exception
-     * @expectedExceptionMessage No parent WriterInterface assigned.
      */
     public function testSetGetParentWriterNull()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('No parent WriterInterface assigned.');
+
         $object = $this->getMockForAbstractClass('PhpOffice\\PhpWord\\Writer\\ODText\\Part\\AbstractPart');
         $object->getParentWriter();
     }

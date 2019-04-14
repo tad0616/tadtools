@@ -8,8 +8,8 @@ $colorbox=new colorbox('.iframe');
 $colorbox_code=$colorbox->render();
 $xoopsTpl->assign('colorbox_code',$colorbox_code);
  */
-include_once "tadtools_header.php";
-include_once "jquery.php";
+include_once 'tadtools_header.php';
+include_once 'jquery.php';
 
 class colorbox
 {
@@ -18,21 +18,20 @@ class colorbox
     public $height;
 
     //$width='auto' ,,$height='auto'
-    public function __construct($name = ".iframe", $width = '80%', $height = '90%', $show_jquery = true)
+    public function __construct($name = '.iframe', $width = '80%', $height = '90%', $show_jquery = true)
     {
-        $this->name        = $name;
-        $this->width       = $width;
-        $this->height      = $height;
+        $this->name = $name;
+        $this->width = $width;
+        $this->height = $height;
         $this->show_jquery = $show_jquery;
     }
 
-    //
     public function render($ready_config = true)
     {
         global $xoTheme;
-        $jquery       = get_jquery();
-        $width_setup  = ($this->width == "auto") ? "" : ", width:'" . $this->width . "'";
-        $height_setup = ($this->height == "auto") ? "" : ", height:'" . $this->height . "'";
+        $jquery = get_jquery();
+        $width_setup = ('auto' === $this->width) ? '' : ", width:'" . $this->width . "'";
+        $height_setup = ('auto' === $this->height) ? '' : ", height:'" . $this->height . "'";
 
         if ($xoTheme) {
             $xoTheme->addStylesheet('modules/tadtools/colorbox/colorbox.css');
@@ -63,6 +62,7 @@ class colorbox
                 </script>
                 ";
             }
+
             return $colorbox;
         }
     }

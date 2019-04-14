@@ -39,28 +39,28 @@ class PHPExcel_Writer_CSV extends PHPExcel_Writer_Abstract implements PHPExcel_W
      *
      * @var string
      */
-    private $delimiter    = ',';
+    private $delimiter = ',';
 
     /**
      * Enclosure
      *
      * @var string
      */
-    private $enclosure    = '"';
+    private $enclosure = '"';
 
     /**
      * Line ending
      *
      * @var string
      */
-    private $lineEnding    = PHP_EOL;
+    private $lineEnding = PHP_EOL;
 
     /**
      * Sheet index to write
      *
      * @var int
      */
-    private $sheetIndex    = 0;
+    private $sheetIndex = 0;
 
     /**
      * Whether to write a BOM (for UTF8).
@@ -91,7 +91,7 @@ class PHPExcel_Writer_CSV extends PHPExcel_Writer_Abstract implements PHPExcel_W
      */
     public function __construct(PHPExcel $phpExcel)
     {
-        $this->phpExcel    = $phpExcel;
+        $this->phpExcel = $phpExcel;
     }
 
     /**
@@ -112,7 +112,7 @@ class PHPExcel_Writer_CSV extends PHPExcel_Writer_Abstract implements PHPExcel_W
 
         // Open file
         $fileHandle = fopen($pFilename, 'wb+');
-        if ($fileHandle === false) {
+        if (false === $fileHandle) {
             throw new PHPExcel_Writer_Exception("Could not open file $pFilename for writing.");
         }
 
@@ -120,7 +120,7 @@ class PHPExcel_Writer_CSV extends PHPExcel_Writer_Abstract implements PHPExcel_W
             $this->setUseBOM(true);                //  Enforce UTF-8 BOM Header
             $this->setIncludeSeparatorLine(true);  //  Set separator line
             $this->setEnclosure('"');              //  Set enclosure to "
-            $this->setDelimiter(";");              //  Set delimiter to a semi-colon
+            $this->setDelimiter(';');              //  Set delimiter to a semi-colon
             $this->setLineEnding("\r\n");
         }
         if ($this->useBOM) {
@@ -139,7 +139,7 @@ class PHPExcel_Writer_CSV extends PHPExcel_Writer_Abstract implements PHPExcel_W
         // Write rows to file
         for ($row = 1; $row <= $maxRow; ++$row) {
             // Convert the row to an array...
-            $cellsArray = $sheet->rangeToArray('A'.$row.':'.$maxCol.$row, '', $this->preCalculateFormulas);
+            $cellsArray = $sheet->rangeToArray('A' . $row . ':' . $maxCol . $row, '', $this->preCalculateFormulas);
             // ... and write to the file
             $this->writeLine($fileHandle, $cellsArray[0]);
         }
@@ -170,6 +170,7 @@ class PHPExcel_Writer_CSV extends PHPExcel_Writer_Abstract implements PHPExcel_W
     public function setDelimiter($pValue = ',')
     {
         $this->delimiter = $pValue;
+
         return $this;
     }
 
@@ -191,10 +192,11 @@ class PHPExcel_Writer_CSV extends PHPExcel_Writer_Abstract implements PHPExcel_W
      */
     public function setEnclosure($pValue = '"')
     {
-        if ($pValue == '') {
+        if ('' == $pValue) {
             $pValue = null;
         }
         $this->enclosure = $pValue;
+
         return $this;
     }
 
@@ -217,6 +219,7 @@ class PHPExcel_Writer_CSV extends PHPExcel_Writer_Abstract implements PHPExcel_W
     public function setLineEnding($pValue = PHP_EOL)
     {
         $this->lineEnding = $pValue;
+
         return $this;
     }
 
@@ -233,12 +236,13 @@ class PHPExcel_Writer_CSV extends PHPExcel_Writer_Abstract implements PHPExcel_W
     /**
      * Set whether BOM should be used
      *
-     * @param    boolean    $pValue        Use UTF-8 byte-order mark? Defaults to false
+     * @param    bool    $pValue        Use UTF-8 byte-order mark? Defaults to false
      * @return PHPExcel_Writer_CSV
      */
     public function setUseBOM($pValue = false)
     {
         $this->useBOM = $pValue;
+
         return $this;
     }
 
@@ -255,12 +259,13 @@ class PHPExcel_Writer_CSV extends PHPExcel_Writer_Abstract implements PHPExcel_W
     /**
      * Set whether a separator line should be included as the first line of the file
      *
-     * @param    boolean    $pValue        Use separator line? Defaults to false
+     * @param    bool    $pValue        Use separator line? Defaults to false
      * @return PHPExcel_Writer_CSV
      */
     public function setIncludeSeparatorLine($pValue = false)
     {
         $this->includeSeparatorLine = $pValue;
+
         return $this;
     }
 
@@ -277,13 +282,14 @@ class PHPExcel_Writer_CSV extends PHPExcel_Writer_Abstract implements PHPExcel_W
     /**
      * Set whether the file should be saved with full Excel Compatibility
      *
-     * @param    boolean    $pValue        Set the file to be written as a fully Excel compatible csv file
+     * @param    bool    $pValue        Set the file to be written as a fully Excel compatible csv file
      *                                Note that this overrides other settings such as useBOM, enclosure and delimiter
      * @return PHPExcel_Writer_CSV
      */
     public function setExcelCompatibility($pValue = false)
     {
         $this->excelCompatibility = $pValue;
+
         return $this;
     }
 
@@ -306,6 +312,7 @@ class PHPExcel_Writer_CSV extends PHPExcel_Writer_Abstract implements PHPExcel_W
     public function setSheetIndex($pValue = 0)
     {
         $this->sheetIndex = $pValue;
+
         return $this;
     }
 
@@ -346,7 +353,7 @@ class PHPExcel_Writer_CSV extends PHPExcel_Writer_Abstract implements PHPExcel_W
             // Write to file
             fwrite($pFileHandle, $line);
         } else {
-            throw new PHPExcel_Writer_Exception("Invalid data row passed to CSV writer.");
+            throw new PHPExcel_Writer_Exception('Invalid data row passed to CSV writer.');
         }
     }
 }

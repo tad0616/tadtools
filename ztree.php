@@ -25,7 +25,7 @@ $ztree_code = $ztree->render();
 $xoopsTpl->assign('ztree_code', $ztree_code);
 
  */
-include_once "tadtools_header.php";
+include_once 'tadtools_header.php';
 
 class ztree
 {
@@ -38,15 +38,15 @@ class ztree
     public $menu_name;
 
     //建構函數
-    public function __construct($name = "", $json = "", $save_drag_file = "", $save_sort_file = "", $of_sn_col = "", $sn_col = "", $menu_name = "")
+    public function __construct($name = '', $json = '', $save_drag_file = '', $save_sort_file = '', $of_sn_col = '', $sn_col = '', $menu_name = '')
     {
-        $this->name           = $name;
-        $this->json           = $json;
+        $this->name = $name;
+        $this->json = $json;
         $this->save_drag_file = $save_drag_file;
         $this->save_sort_file = $save_sort_file;
-        $this->of_sn_col      = $of_sn_col;
-        $this->sn_col         = $sn_col;
-        $this->menu_name      = $menu_name;
+        $this->of_sn_col = $of_sn_col;
+        $this->sn_col = $sn_col;
+        $this->menu_name = $menu_name;
     }
 
     //產生選單
@@ -57,7 +57,7 @@ class ztree
         $jquery = get_jquery();
 
         if ($xoTheme) {
-            $ztree = "";
+            $ztree = '';
             $xoTheme->addStylesheet('modules/tadtools/ztree/css/zTreeStyle/zTreeStyle.css');
             $xoTheme->addScript('modules/tadtools/ztree/js/jquery.ztree.core-3.5.js');
             $xoTheme->addScript('modules/tadtools/ztree/js/jquery.ztree.excheck-3.5.js');
@@ -65,8 +65,7 @@ class ztree
                 $xoTheme->addScript('modules/tadtools/ztree/js/jquery.ztree.exedit-3.5.js');
             }
         } else {
-
-            $drag_js_file = ($this->save_drag_file or $this->save_sort_file) ? "<script type='text/javascript' src='" . TADTOOLS_URL . "/ztree/js/jquery.ztree.exedit-3.5.js'></script>" : "";
+            $drag_js_file = ($this->save_drag_file or $this->save_sort_file) ? "<script type='text/javascript' src='" . TADTOOLS_URL . "/ztree/js/jquery.ztree.exedit-3.5.js'></script>" : '';
 
             $ztree = "
             {$jquery}
@@ -78,7 +77,7 @@ class ztree
         }
 
         if ($this->save_drag_file or $this->save_sort_file) {
-            $onDrop    = "onDrop: onDrop,";
+            $onDrop = 'onDrop: onDrop,';
             $drag_code = "
               function onDrop(event, treeId, treeNodes, targetNode, moveType) {
                 var treeObj = $.fn.zTree.getZTreeObj('{$this->name}');
@@ -98,7 +97,6 @@ class ztree
             }
 
             if ($this->save_drag_file) {
-
                 $drag_code .= "
                 $.post('{$this->save_drag_file}', { {$this->of_sn_col}: treeNodes[0].pId, {$this->sn_col}: treeNodes[0].id },
                   function(data) {
@@ -108,20 +106,19 @@ class ztree
             }
 
             if ($this->save_drag_file or $this->save_sort_file) {
-
-                $drag_code .= "
+                $drag_code .= '
                 return true;
               }
-              ";
+              ';
             }
         } else {
-            $onDrop    = "";
-            $drag_code = "";
+            $onDrop = '';
+            $drag_code = '';
         }
 
-        $style            = "";
-        $style2           = "";
-        $drop_menu_script = "";
+        $style = '';
+        $style2 = '';
+        $drop_menu_script = '';
         if ($drop_menu) {
             $drop_menu_script = '
               function beforeClick(treeId, treeNode) {
@@ -164,17 +161,17 @@ class ztree
                 }
               }
             ';
-            $style = "display:none; position: absolute;z-index: 1000; background: #ffffff;";
-            $mode  = "
+            $style = 'display:none; position: absolute;z-index: 1000; background: #ffffff;';
+            $mode = '
               view: {
                 // addDiyDom: addDiyDom,
                 dblClickExpand: false,
                 fontCss: getFont
               },
-            ";
-            $onClick = "onClick";
+            ';
+            $onClick = 'onClick';
         } else {
-            $mode = "
+            $mode = '
               view: {
                 // addDiyDom: addDiyDom,
                 fontCss: getFont
@@ -184,8 +181,8 @@ class ztree
                 showRemoveBtn: false,
                 showRenameBtn: false
               },
-            ";
-            $onClick = "linkto";
+            ';
+            $onClick = 'linkto';
         }
 
         $ztree .= "
@@ -247,6 +244,7 @@ class ztree
           <ul id='{$this->name}' class='ztree' style='$style2'></ul>
         </div>
         ";
+
         return $ztree;
     }
 }

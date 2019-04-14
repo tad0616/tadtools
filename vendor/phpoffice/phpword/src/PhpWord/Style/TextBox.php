@@ -171,7 +171,7 @@ class TextBox extends Image
      */
     public function getInnerMargin()
     {
-        return array($this->innerMarginLeft, $this->innerMarginTop, $this->innerMarginRight, $this->innerMarginBottom);
+        return [$this->innerMarginLeft, $this->innerMarginTop, $this->innerMarginRight, $this->innerMarginBottom];
     }
 
     /**
@@ -184,7 +184,7 @@ class TextBox extends Image
         $hasInnerMargins = false;
         $margins = $this->getInnerMargin();
         for ($i = 0; $i < count($margins); $i++) {
-            if ($margins[$i] !== null) {
+            if (null !== $margins[$i]) {
                 $hasInnerMargins = true;
             }
         }

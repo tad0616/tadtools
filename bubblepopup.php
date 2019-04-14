@@ -1,10 +1,10 @@
 <?php
-include_once "tadtools_header.php";
-include_once "jquery.php";
+include_once 'tadtools_header.php';
+include_once 'jquery.php';
 
 class bubblepopup
 {
-    public $code = array();
+    public $code = [];
     public $show_jquery;
     public $show_all;
 
@@ -12,13 +12,12 @@ class bubblepopup
     public function __construct($show_jquery = true, $show_all = true)
     {
         $this->show_jquery = $show_jquery;
-        $this->show_all    = $show_all;
+        $this->show_all = $show_all;
     }
 
     //新增提示
-    public function add_tip($selector = "", $content = "", $my = "Bottom Left", $at = "Top Right", $theme = 'qtip-bootstrap qtip-shadow qtip-rounded', $style = "color:'#FFFFFF'")
+    public function add_tip($selector = '', $content = '', $my = 'Bottom Left', $at = 'Top Right', $theme = 'qtip-bootstrap qtip-shadow qtip-rounded', $style = "color:'#FFFFFF'")
     {
-
         $this->code[] = "
         $('{$selector}').qtip({
             content: '$content',
@@ -26,7 +25,6 @@ class bubblepopup
             style: '$theme'
         });
         ";
-
     }
 
     //產生路徑工具
@@ -68,7 +66,6 @@ class bubblepopup
             return $main;
         }
     }
-
 }
 
 // if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/bubblepopup.php")) {

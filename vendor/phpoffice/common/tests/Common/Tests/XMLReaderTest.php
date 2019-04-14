@@ -45,27 +45,27 @@ class XMLReaderTest extends \PHPUnit\Framework\TestCase
      */
     public function testDomFromZip()
     {
-        $pathResources = PHPOFFICE_COMMON_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR;
+        $pathResources = PHPOFFICE_COMMON_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR;
 
         $reader = new XMLReader();
-        $reader->getDomFromZip($pathResources. 'reader.zip', 'test.xml');
+        $reader->getDomFromZip($pathResources . 'reader.zip', 'test.xml');
 
         $this->assertTrue($reader->elementExists('/element/child'));
 
-        $this->assertFalse($reader->getDomFromZip($pathResources. 'reader.zip', 'non_existing_xml_file.xml'));
+        $this->assertFalse($reader->getDomFromZip($pathResources . 'reader.zip', 'non_existing_xml_file.xml'));
     }
 
     /**
      * Test that read from non existing archive throws exception
-     *
-     * @expectedException Exception
      */
     public function testThrowsExceptionOnNonExistingArchive()
     {
-        $pathResources = PHPOFFICE_COMMON_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR;
+        $this->expectException(\Exception::class);
+
+        $pathResources = PHPOFFICE_COMMON_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR;
 
         $reader = new XMLReader();
-        $reader->getDomFromZip($pathResources. 'readers.zip', 'test.xml');
+        $reader->getDomFromZip($pathResources . 'readers.zip', 'test.xml');
     }
 
     /**
@@ -124,11 +124,11 @@ class XMLReaderTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test that xpath fails if custom namespace is not registered
-     *
-     * @expectedException InvalidArgumentException
      */
     public function testShouldThowExceptionIfTryingToRegisterNamespaceBeforeReadingDoc()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $reader = new XMLReader();
         $reader->registerNamespace('test', 'http://phpword.com/my/custom/namespace');
     }

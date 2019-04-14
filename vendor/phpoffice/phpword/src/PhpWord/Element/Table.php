@@ -36,7 +36,7 @@ class Table extends AbstractElement
      *
      * @var \PhpOffice\PhpWord\Element\Row[]
      */
-    private $rows = array();
+    private $rows = [];
 
     /**
      * Table width

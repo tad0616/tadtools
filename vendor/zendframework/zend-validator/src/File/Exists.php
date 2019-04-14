@@ -25,25 +25,25 @@ class Exists extends AbstractValidator
     /**
      * @var array Error message templates
      */
-    protected $messageTemplates = array(
-        self::DOES_NOT_EXIST => "File does not exist",
-    );
+    protected $messageTemplates = [
+        self::DOES_NOT_EXIST => 'File does not exist',
+    ];
 
     /**
      * Options for this validator
      *
      * @var array
      */
-    protected $options = array(
+    protected $options = [
         'directory' => null,  // internal list of directories
-    );
+    ];
 
     /**
      * @var array Error message template variables
      */
-    protected $messageVariables = array(
-        'directory' => array('options' => 'directory'),
-    );
+    protected $messageVariables = [
+        'directory' => ['options' => 'directory'],
+    ];
 
     /**
      * Sets validator options
@@ -57,7 +57,7 @@ class Exists extends AbstractValidator
         }
 
         if (is_array($options) && !array_key_exists('directory', $options)) {
-            $options = array('directory' => $options);
+            $options = ['directory' => $options];
         }
 
         parent::__construct($options);
@@ -71,7 +71,7 @@ class Exists extends AbstractValidator
      */
     public function getDirectory($asArray = false)
     {
-        $asArray   = (bool) $asArray;
+        $asArray = (bool) $asArray;
         $directory = $this->options['directory'];
         if ($asArray && isset($directory)) {
             $directory = explode(',', (string) $directory);
@@ -90,6 +90,7 @@ class Exists extends AbstractValidator
     {
         $this->options['directory'] = null;
         $this->addDirectory($directory);
+
         return $this;
     }
 
@@ -97,14 +98,14 @@ class Exists extends AbstractValidator
      * Adds the file directory which will be checked
      *
      * @param  string|array $directory The directory to add for validation
-     * @return Extension Provides a fluent interface
      * @throws Exception\InvalidArgumentException
+     * @return Extension Provides a fluent interface
      */
     public function addDirectory($directory)
     {
         $directories = $this->getDirectory(true);
         if (!isset($directories)) {
-            $directories = array();
+            $directories = [];
         }
 
         if (is_string($directory)) {
@@ -147,7 +148,7 @@ class Exists extends AbstractValidator
         if (is_string($value) && is_array($file)) {
             // Legacy Zend\Transfer API support
             $filename = $file['name'];
-            $file     = $file['tmp_name'];
+            $file = $file['tmp_name'];
             $this->setValue($filename);
         } elseif (is_array($value)) {
             if (!isset($value['tmp_name']) || !isset($value['name'])) {
@@ -155,11 +156,11 @@ class Exists extends AbstractValidator
                     'Value array must be in $_FILES format'
                 );
             }
-            $file     = $value['tmp_name'];
+            $file = $value['tmp_name'];
             $filename = basename($file);
             $this->setValue($value['name']);
         } else {
-            $file     = $value;
+            $file = $value;
             $filename = basename($file);
             $this->setValue($filename);
         }
@@ -170,6 +171,7 @@ class Exists extends AbstractValidator
             $check = true;
             if (!file_exists($file)) {
                 $this->error(self::DOES_NOT_EXIST);
+
                 return false;
             }
         } else {
@@ -181,6 +183,7 @@ class Exists extends AbstractValidator
                 $check = true;
                 if (!file_exists($directory . DIRECTORY_SEPARATOR . $filename)) {
                     $this->error(self::DOES_NOT_EXIST);
+
                     return false;
                 }
             }
@@ -188,6 +191,7 @@ class Exists extends AbstractValidator
 
         if (!$check) {
             $this->error(self::DOES_NOT_EXIST);
+
             return false;
         }
 

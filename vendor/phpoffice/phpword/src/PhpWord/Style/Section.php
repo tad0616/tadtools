@@ -192,7 +192,7 @@ class Section extends Border
      */
     public function setPaperSize($value = 'A4')
     {
-        if ($this->paper === null) {
+        if (null === $this->paper) {
             $this->paper = new Paper();
         }
         $this->paper->setSize($value);
@@ -222,7 +222,7 @@ class Section extends Border
      */
     public function setOrientation($value = null)
     {
-        $enum = array(self::ORIENTATION_PORTRAIT, self::ORIENTATION_LANDSCAPE);
+        $enum = [self::ORIENTATION_PORTRAIT, self::ORIENTATION_LANDSCAPE];
         $this->orientation = $this->setEnumVal($value, $enum, $this->orientation);
 
         /** @var int|float $longSide Type hint */
@@ -231,7 +231,7 @@ class Section extends Border
         /** @var int|float $shortSide Type hint */
         $shortSide = $this->pageSizeW < $this->pageSizeH ? $this->pageSizeW : $this->pageSizeH;
 
-        if ($this->orientation == self::ORIENTATION_PORTRAIT) {
+        if (self::ORIENTATION_PORTRAIT == $this->orientation) {
             $this->pageSizeW = $shortSide;
             $this->pageSizeH = $longSide;
         } else {
@@ -504,6 +504,7 @@ class Section extends Border
     public function setPageNumberingStart($pageNumberingStart = null)
     {
         $this->pageNumberingStart = $pageNumberingStart;
+
         return $this;
     }
 
@@ -572,6 +573,7 @@ class Section extends Border
     public function setBreakType($value = null)
     {
         $this->breakType = $value;
+
         return $this;
     }
 

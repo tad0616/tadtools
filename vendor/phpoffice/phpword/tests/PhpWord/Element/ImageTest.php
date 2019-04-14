@@ -38,7 +38,7 @@ class ImageTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($src, $oImage->getSource());
         $this->assertEquals(md5($src), $oImage->getMediaId());
         // todo: change to assertNotTrue when got upgraded to PHPUnit 4.x
-        $this->assertEquals(false, $oImage->isWatermark());
+        $this->assertFalse($oImage->isWatermark());
         $this->assertEquals(Image::SOURCE_LOCAL, $oImage->getSourceType());
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Style\\Image', $oImage->getStyle());
     }
@@ -51,12 +51,12 @@ class ImageTest extends \PHPUnit_Framework_TestCase
         $src = __DIR__ . '/../_files/images/firefox.png';
         $oImage = new Image(
             $src,
-            array(
-                'width'         => 210,
-                'height'        => 210,
-                'alignment'     => Jc::CENTER,
+            [
+                'width' => 210,
+                'height' => 210,
+                'alignment' => Jc::CENTER,
                 'wrappingStyle' => \PhpOffice\PhpWord\Style\Image::WRAPPING_STYLE_BEHIND,
-            )
+            ]
         );
 
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Style\\Image', $oImage->getStyle());
@@ -67,13 +67,13 @@ class ImageTest extends \PHPUnit_Framework_TestCase
      */
     public function testImages()
     {
-        $images = array(
-            array('mars.jpg', 'image/jpeg', 'jpg', 'imagecreatefromjpeg', 'imagejpeg'),
-            array('mario.gif', 'image/gif', 'gif', 'imagecreatefromgif', 'imagegif'),
-            array('firefox.png', 'image/png', 'png', 'imagecreatefrompng', 'imagepng'),
-            array('duke_nukem.bmp', 'image/bmp', 'bmp', null, null),
-            array('angela_merkel.tif', 'image/tiff', 'tif', null, null),
-        );
+        $images = [
+            ['mars.jpg', 'image/jpeg', 'jpg', 'imagecreatefromjpeg', 'imagejpeg'],
+            ['mario.gif', 'image/gif', 'gif', 'imagecreatefromgif', 'imagegif'],
+            ['firefox.png', 'image/png', 'png', 'imagecreatefrompng', 'imagepng'],
+            ['duke_nukem.bmp', 'image/bmp', 'bmp', null, null],
+            ['angela_merkel.tif', 'image/tiff', 'tif', null, null],
+        ];
 
         foreach ($images as $imageData) {
             list($source, $type, $extension, $createFunction, $imageFunction) = $imageData;
@@ -97,7 +97,7 @@ class ImageTest extends \PHPUnit_Framework_TestCase
     {
         $oImage = new Image(
             __DIR__ . '/../_files/images/earth.jpg',
-            array('height' => 210, 'alignment' => Jc::CENTER)
+            ['height' => 210, 'alignment' => Jc::CENTER]
         );
 
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Style\\Image', $oImage->getStyle());
@@ -105,32 +105,32 @@ class ImageTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test invalid local image
-     *
-     * @expectedException \PhpOffice\PhpWord\Exception\InvalidImageException
      */
     public function testInvalidImageLocal()
     {
+        $this->expectException(\PhpOffice\PhpWord\Exception\InvalidImageException::class);
+
         new Image(__DIR__ . '/../_files/images/thisisnotarealimage');
     }
 
     /**
      * Test invalid PHP Image
-     *
-     * @expectedException \PhpOffice\PhpWord\Exception\InvalidImageException
      */
     public function testInvalidImagePhp()
     {
+        $this->expectException(\PhpOffice\PhpWord\Exception\InvalidImageException::class);
+
         $object = new Image('test.php');
         $object->getSource();
     }
 
     /**
      * Test unsupported image
-     *
-     * @expectedException \PhpOffice\PhpWord\Exception\UnsupportedImageTypeException
      */
     public function testUnsupportedImage()
     {
+        $this->expectException(\PhpOffice\PhpWord\Exception\UnsupportedImageTypeException::class);
+
         $object = new Image('http://samples.libav.org/image-samples/RACECAR.BMP');
         $object->getSource();
     }
@@ -140,8 +140,8 @@ class ImageTest extends \PHPUnit_Framework_TestCase
      */
     public function testRelationID()
     {
-        $oImage = new Image(__DIR__ . '/../_files/images/earth.jpg', array('width' => 100));
-        $iVal = rand(1, 1000);
+        $oImage = new Image(__DIR__ . '/../_files/images/earth.jpg', ['width' => 100]);
+        $iVal = mt_rand(1, 1000);
         $oImage->setRelationId($iVal);
         $this->assertEquals($iVal, $oImage->getRelationId());
     }

@@ -73,8 +73,6 @@ class Table extends AbstractElement
     /**
      * Write column.
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
-     * @param \PhpOffice\PhpWord\Element\Table $element
      * @return void
      */
     private function writeColumns(XMLWriter $xmlWriter, TableElement $element)
@@ -82,14 +80,14 @@ class Table extends AbstractElement
         $rows = $element->getRows();
         $rowCount = count($rows);
 
-        $cellWidths = array();
+        $cellWidths = [];
         for ($i = 0; $i < $rowCount; $i++) {
             $row = $rows[$i];
             $cells = $row->getCells();
             if (count($cells) <= count($cellWidths)) {
                 continue;
             }
-            $cellWidths = array();
+            $cellWidths = [];
             foreach ($cells as $cell) {
                 $cellWidths[] = $cell->getWidth();
             }
@@ -98,7 +96,7 @@ class Table extends AbstractElement
         $xmlWriter->startElement('w:tblGrid');
         foreach ($cellWidths as $width) {
             $xmlWriter->startElement('w:gridCol');
-            if ($width !== null) {
+            if (null !== $width) {
                 $xmlWriter->writeAttribute('w:w', $width);
                 $xmlWriter->writeAttribute('w:type', 'dxa');
             }
@@ -110,8 +108,6 @@ class Table extends AbstractElement
     /**
      * Write row.
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
-     * @param \PhpOffice\PhpWord\Element\Row $row
      * @return void
      */
     private function writeRow(XMLWriter $xmlWriter, RowElement $row)
@@ -137,13 +133,10 @@ class Table extends AbstractElement
     /**
      * Write cell.
      *
-     * @param \PhpOffice\Common\XMLWriter $xmlWriter
-     * @param \PhpOffice\PhpWord\Element\Cell $cell
      * @return void
      */
     private function writeCell(XMLWriter $xmlWriter, CellElement $cell)
     {
-
         $xmlWriter->startElement('w:tc');
 
         // Write style

@@ -14,6 +14,7 @@
  * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
 namespace PhpOffice\PhpWord\Writer\PDF;
 
 use PhpOffice\PhpWord\PhpWord;
@@ -44,7 +45,7 @@ class MPDFTest extends \PHPUnit_Framework_TestCase
         $writer = new PDF($phpWord);
         $writer->save($file);
 
-        $this->assertTrue(file_exists($file));
+        $this->assertFileExists($file);
 
         unlink($file);
     }

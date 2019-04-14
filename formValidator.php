@@ -1,6 +1,6 @@
 <?php
-include_once "tadtools_header.php";
-include_once "jquery.php";
+include_once 'tadtools_header.php';
+include_once 'jquery.php';
 
 class formValidator
 {
@@ -8,21 +8,21 @@ class formValidator
     public $id;
 
     //建構函數
-    public function __construct($id = "", $show_jquery = true)
+    public function __construct($id = '', $show_jquery = true)
     {
         get_jquery(true);
         $this->show_jquery = $show_jquery;
-        $this->id          = $id;
+        $this->id = $id;
     }
 
     //產生路徑工具
-    public function render($Position = "topRight")
+    public function render($Position = 'topRight')
     {
         global $xoTheme;
 
         get_jquery();
 
-        $LANGCODE = str_replace("-", "_", _LANGCODE);
+        $LANGCODE = str_replace('-', '_', _LANGCODE);
 
         if ($xoTheme) {
             $xoTheme->addStylesheet('modules/tadtools/formValidator/css/validationEngine.jquery.css');
@@ -39,7 +39,6 @@ class formValidator
               })(jQuery);
             ");
         } else {
-
             $main = "
             <link rel='stylesheet' href='" . TADTOOLS_URL . "/formValidator/css/validationEngine.jquery.css' type='text/css' media='screen' charset='utf-8' />
 
@@ -57,7 +56,6 @@ class formValidator
             return $main;
         }
     }
-
 }
 
 // include_once XOOPS_ROOT_PATH."/modules/tadtools/formValidator.php";

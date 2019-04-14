@@ -23,7 +23,7 @@ namespace PhpOffice\PhpWord\Style;
  * @coversDefaultClass \PhpOffice\PhpWord\Element\Section
  * @runTestsInSeparateProcesses
  */
-class SettingsTest extends \PHPUnit_Framework_TestCase
+class SectionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Executed before each method of the class
@@ -42,34 +42,34 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Section::DEFAULT_HEIGHT, $oSettings->getPageSizeW());
         $this->assertEquals(Section::DEFAULT_WIDTH, $oSettings->getPageSizeH());
 
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oSettings->setSettingValue('borderSize', $iVal);
-        $this->assertEquals(array($iVal, $iVal, $iVal, $iVal), $oSettings->getBorderSize());
+        $this->assertEquals([$iVal, $iVal, $iVal, $iVal], $oSettings->getBorderSize());
         $this->assertEquals($iVal, $oSettings->getBorderBottomSize());
         $this->assertEquals($iVal, $oSettings->getBorderLeftSize());
         $this->assertEquals($iVal, $oSettings->getBorderRightSize());
         $this->assertEquals($iVal, $oSettings->getBorderTopSize());
 
         $oSettings->setSettingValue('borderColor', 'FF00AA');
-        $this->assertEquals(array('FF00AA', 'FF00AA', 'FF00AA', 'FF00AA'), $oSettings->getBorderColor());
+        $this->assertEquals(['FF00AA', 'FF00AA', 'FF00AA', 'FF00AA'], $oSettings->getBorderColor());
         $this->assertEquals('FF00AA', $oSettings->getBorderBottomColor());
         $this->assertEquals('FF00AA', $oSettings->getBorderLeftColor());
         $this->assertEquals('FF00AA', $oSettings->getBorderRightColor());
         $this->assertEquals('FF00AA', $oSettings->getBorderTopColor());
 
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oSettings->setSettingValue('headerHeight', $iVal);
         $this->assertEquals($iVal, $oSettings->getHeaderHeight());
 
-        $oSettings->setSettingValue('lineNumbering', array());
+        $oSettings->setSettingValue('lineNumbering', []);
         $oSettings->setSettingValue(
             'lineNumbering',
-            array(
-                'start'     => 1,
+            [
+                'start' => 1,
                 'increment' => 1,
-                'distance'  => 240,
-                'restart'   => 'newPage',
-            )
+                'distance' => 240,
+                'restart' => 'newPage',
+            ]
         );
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Style\\LineNumbering', $oSettings->getLineNumbering());
 
@@ -85,19 +85,19 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
         // Section Settings
         $oSettings = new Section();
 
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oSettings->setMarginTop($iVal);
         $this->assertEquals($iVal, $oSettings->getMarginTop());
 
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oSettings->setMarginBottom($iVal);
         $this->assertEquals($iVal, $oSettings->getMarginBottom());
 
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oSettings->setMarginLeft($iVal);
         $this->assertEquals($iVal, $oSettings->getMarginLeft());
 
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oSettings->setMarginRight($iVal);
         $this->assertEquals($iVal, $oSettings->getMarginRight());
     }
@@ -111,7 +111,7 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
         $oSettings = new Section();
 
         $this->assertEquals(Section::DEFAULT_WIDTH, $oSettings->getPageSizeW());
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oSettings->setSettingValue('pageSizeW', $iVal);
         $this->assertEquals($iVal, $oSettings->getPageSizeW());
     }
@@ -125,7 +125,7 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
         $oSettings = new Section();
 
         $this->assertEquals(Section::DEFAULT_HEIGHT, $oSettings->getPageSizeH());
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oSettings->setSettingValue('pageSizeH', $iVal);
         $this->assertEquals($iVal, $oSettings->getPageSizeH());
     }
@@ -166,27 +166,27 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
         // Section Settings
         $oSettings = new Section();
 
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oSettings->setBorderSize($iVal);
-        $this->assertEquals(array($iVal, $iVal, $iVal, $iVal), $oSettings->getBorderSize());
+        $this->assertEquals([$iVal, $iVal, $iVal, $iVal], $oSettings->getBorderSize());
         $this->assertEquals($iVal, $oSettings->getBorderBottomSize());
         $this->assertEquals($iVal, $oSettings->getBorderLeftSize());
         $this->assertEquals($iVal, $oSettings->getBorderRightSize());
         $this->assertEquals($iVal, $oSettings->getBorderTopSize());
 
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oSettings->setBorderBottomSize($iVal);
         $this->assertEquals($iVal, $oSettings->getBorderBottomSize());
 
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oSettings->setBorderLeftSize($iVal);
         $this->assertEquals($iVal, $oSettings->getBorderLeftSize());
 
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oSettings->setBorderRightSize($iVal);
         $this->assertEquals($iVal, $oSettings->getBorderRightSize());
 
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oSettings->setBorderTopSize($iVal);
         $this->assertEquals($iVal, $oSettings->getBorderTopSize());
     }
@@ -200,7 +200,7 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
         $oSettings = new Section();
 
         $oSettings->setBorderColor('FF00AA');
-        $this->assertEquals(array('FF00AA', 'FF00AA', 'FF00AA', 'FF00AA'), $oSettings->getBorderColor());
+        $this->assertEquals(['FF00AA', 'FF00AA', 'FF00AA', 'FF00AA'], $oSettings->getBorderColor());
         $this->assertEquals('FF00AA', $oSettings->getBorderBottomColor());
         $this->assertEquals('FF00AA', $oSettings->getBorderLeftColor());
         $this->assertEquals('FF00AA', $oSettings->getBorderRightColor());
@@ -229,7 +229,7 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNull($oSettings->getPageNumberingStart());
 
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oSettings->setPageNumberingStart($iVal);
         $this->assertEquals($iVal, $oSettings->getPageNumberingStart());
 
@@ -246,7 +246,7 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(720, $oSettings->getHeaderHeight());
 
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oSettings->setHeaderHeight($iVal);
         $this->assertEquals($iVal, $oSettings->getHeaderHeight());
 
@@ -264,7 +264,7 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(720, $oSettings->getFooterHeight());
 
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oSettings->setFooterHeight($iVal);
         $this->assertEquals($iVal, $oSettings->getFooterHeight());
 
@@ -288,7 +288,7 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $oSettings->getColsNum());
 
         // Random value
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $oSettings->setColsNum($iVal);
         $this->assertEquals($iVal, $oSettings->getColsNum());
     }
@@ -304,7 +304,7 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
         // Default
         $this->assertEquals(720, $oSettings->getColsSpace());
 
-        $iVal = rand(1, 1000);
+        $iVal = mt_rand(1, 1000);
         $this->assertInstanceOf('PhpOffice\\PhpWord\\Style\\Section', $oSettings->setColsSpace($iVal));
         $this->assertEquals($iVal, $oSettings->getColsSpace());
 

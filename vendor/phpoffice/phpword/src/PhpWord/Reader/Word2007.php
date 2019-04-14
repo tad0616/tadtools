@@ -41,22 +41,22 @@ class Word2007 extends AbstractReader implements ReaderInterface
         $phpWord = new PhpWord();
         $relationships = $this->readRelationships($docFile);
 
-        $steps = array(
-            array('stepPart' => 'document', 'stepItems' => array(
-                'styles'    => 'Styles',
+        $steps = [
+            ['stepPart' => 'document', 'stepItems' => [
+                'styles' => 'Styles',
                 'numbering' => 'Numbering',
-            )),
-            array('stepPart' => 'main', 'stepItems' => array(
-                'officeDocument'      => 'Document',
-                'core-properties'     => 'DocPropsCore',
+            ]],
+            ['stepPart' => 'main', 'stepItems' => [
+                'officeDocument' => 'Document',
+                'core-properties' => 'DocPropsCore',
                 'extended-properties' => 'DocPropsApp',
-                'custom-properties'   => 'DocPropsCustom',
-            )),
-            array('stepPart' => 'document', 'stepItems' => array(
-                'endnotes'  => 'Endnotes',
+                'custom-properties' => 'DocPropsCustom',
+            ]],
+            ['stepPart' => 'document', 'stepItems' => [
+                'endnotes' => 'Endnotes',
                 'footnotes' => 'Footnotes',
-            )),
-        );
+            ]],
+        ];
 
         foreach ($steps as $step) {
             $stepPart = $step['stepPart'];
@@ -77,7 +77,6 @@ class Word2007 extends AbstractReader implements ReaderInterface
     /**
      * Read document part.
      *
-     * @param \PhpOffice\PhpWord\PhpWord $phpWord
      * @param array $relationships
      * @param string $partName
      * @param string $docFile
@@ -93,7 +92,6 @@ class Word2007 extends AbstractReader implements ReaderInterface
             $part->setRels($relationships);
             $part->read($phpWord);
         }
-
     }
 
     /**
@@ -104,7 +102,7 @@ class Word2007 extends AbstractReader implements ReaderInterface
      */
     private function readRelationships($docFile)
     {
-        $relationships = array();
+        $relationships = [];
 
         // _rels/.rels
         $relationships['main'] = $this->getRels($docFile, '_rels/.rels');
@@ -112,10 +110,10 @@ class Word2007 extends AbstractReader implements ReaderInterface
         // word/_rels/*.xml.rels
         $wordRelsPath = 'word/_rels/';
         $zip = new ZipArchive();
-        if ($zip->open($docFile) === true) {
+        if (true === $zip->open($docFile)) {
             for ($i = 0; $i < $zip->numFiles; $i++) {
                 $xmlFile = $zip->getNameIndex($i);
-                if ((substr($xmlFile, 0, strlen($wordRelsPath))) == $wordRelsPath && (substr($xmlFile, -1)) != '/') {
+                if ((mb_substr($xmlFile, 0, mb_strlen($wordRelsPath))) == $wordRelsPath && '/' != (mb_substr($xmlFile, -1))) {
                     $docPart = str_replace('.xml.rels', '', str_replace($wordRelsPath, '', $xmlFile));
                     $relationships[$docPart] = $this->getRels($docFile, $xmlFile, 'word/');
                 }
@@ -139,7 +137,7 @@ class Word2007 extends AbstractReader implements ReaderInterface
         $metaPrefix = 'http://schemas.openxmlformats.org/package/2006/relationships/metadata/';
         $officePrefix = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/';
 
-        $rels = array();
+        $rels = [];
 
         $xmlReader = new XMLReader();
         $xmlReader->getDomFromZip($docFile, $xmlFile);
@@ -155,12 +153,12 @@ class Word2007 extends AbstractReader implements ReaderInterface
             $docPart = str_replace('.xml', '', $target);
 
             // Do not add prefix to link source
-            if (!in_array($type, array('hyperlink'))) {
+            if (!in_array($type, ['hyperlink'], true)) {
                 $target = $targetPrefix . $target;
             }
 
             // Push to return array
-            $rels[$rId] = array('type' => $type, 'target' => $target, 'docPart' => $docPart);
+            $rels[$rId] = ['type' => $type, 'target' => $target, 'docPart' => $docPart];
         }
         ksort($rels);
 

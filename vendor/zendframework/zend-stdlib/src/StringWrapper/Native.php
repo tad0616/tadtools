@@ -32,15 +32,15 @@ class Native extends AbstractStringWrapper
      */
     public static function isSupported($encoding, $convertEncoding = null)
     {
-        $encodingUpper      = strtoupper($encoding);
+        $encodingUpper = mb_strtoupper($encoding);
         $supportedEncodings = static::getSupportedEncodings();
 
-        if (!in_array($encodingUpper, $supportedEncodings)) {
+        if (!in_array($encodingUpper, $supportedEncodings, true)) {
             return false;
         }
 
         // This adapter doesn't support to convert between encodings
-        if ($convertEncoding !== null && $encodingUpper !== strtoupper($convertEncoding)) {
+        if (null !== $convertEncoding && $encodingUpper !== mb_strtoupper($convertEncoding)) {
             return false;
         }
 
@@ -68,19 +68,19 @@ class Native extends AbstractStringWrapper
     {
         $supportedEncodings = static::getSupportedEncodings();
 
-        $encodingUpper = strtoupper($encoding);
-        if (!in_array($encodingUpper, $supportedEncodings)) {
+        $encodingUpper = mb_strtoupper($encoding);
+        if (!in_array($encodingUpper, $supportedEncodings, true)) {
             throw new Exception\InvalidArgumentException(
                 'Wrapper doesn\'t support character encoding "' . $encoding . '"'
             );
         }
 
-        if ($encodingUpper !== strtoupper($convertEncoding)) {
+        if ($encodingUpper !== mb_strtoupper($convertEncoding)) {
             $this->convertEncoding = $encodingUpper;
         }
 
-        if ($convertEncoding !== null) {
-            if ($encodingUpper !== strtoupper($convertEncoding)) {
+        if (null !== $convertEncoding) {
+            if ($encodingUpper !== mb_strtoupper($convertEncoding)) {
                 throw new Exception\InvalidArgumentException(
                     'Wrapper doesn\'t support to convert between character encodings'
                 );
@@ -103,7 +103,7 @@ class Native extends AbstractStringWrapper
      */
     public function strlen($str)
     {
-        return strlen($str);
+        return mb_strlen($str);
     }
 
     /**
@@ -116,7 +116,7 @@ class Native extends AbstractStringWrapper
      */
     public function substr($str, $offset = 0, $length = null)
     {
-        return substr($str, $offset, $length);
+        return mb_substr($str, $offset, $length);
     }
 
     /**
@@ -129,6 +129,6 @@ class Native extends AbstractStringWrapper
      */
     public function strpos($haystack, $needle, $offset = 0)
     {
-        return strpos($haystack, $needle, $offset);
+        return mb_strpos($haystack, $needle, $offset);
     }
 }

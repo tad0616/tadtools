@@ -14,6 +14,7 @@
  * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
 namespace PhpOffice\PhpWord\Writer;
 
 use PhpOffice\PhpWord\PhpWord;
@@ -40,19 +41,19 @@ class PDFTest extends \PHPUnit_Framework_TestCase
         $writer = new PDF(new PhpWord());
         $writer->save($file);
 
-        $this->assertTrue(file_exists($file));
+        $this->assertFileExists($file);
 
         unlink($file);
     }
 
     /**
      * Test construct exception
-     *
-     * @expectedException \PhpOffice\PhpWord\Exception\Exception
-     * @expectedExceptionMessage PDF rendering library or library path has not been defined.
      */
     public function testConstructException()
     {
+        $this->expectException(\PhpOffice\PhpWord\Exception\Exception::class);
+        $this->expectExceptionMessage('PDF rendering library or library path has not been defined.');
+
         $writer = new PDF(new PhpWord());
         $writer->save();
     }

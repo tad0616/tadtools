@@ -37,19 +37,19 @@ class Font extends AbstractStyle
         if (!$style instanceof FontStyle) {
             return '';
         }
-        $css = array();
+        $css = [];
 
         $font = $style->getName();
         $size = $style->getSize();
         $color = $style->getColor();
         $fgColor = $style->getFgColor();
-        $underline = $style->getUnderline() != FontStyle::UNDERLINE_NONE;
+        $underline = FontStyle::UNDERLINE_NONE != $style->getUnderline();
         $lineThrough = $style->isStrikethrough() || $style->isDoubleStrikethrough();
 
-        $css['font-family'] = $this->getValueIf($font !== null, "'{$font}'");
-        $css['font-size'] = $this->getValueIf($size !== null, "{$size}pt");
-        $css['color'] = $this->getValueIf($color !== null, "#{$color}");
-        $css['background'] = $this->getValueIf($fgColor != '', $fgColor);
+        $css['font-family'] = $this->getValueIf(null !== $font, "'{$font}'");
+        $css['font-size'] = $this->getValueIf(null !== $size, "{$size}pt");
+        $css['color'] = $this->getValueIf(null !== $color, "#{$color}");
+        $css['background'] = $this->getValueIf('' != $fgColor, $fgColor);
         $css['font-weight'] = $this->getValueIf($style->isBold(), 'bold');
         $css['font-style'] = $this->getValueIf($style->isItalic(), 'italic');
         $css['vertical-align'] = $this->getValueIf($style->isSuperScript(), 'italic');

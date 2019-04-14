@@ -32,7 +32,7 @@ class Generic extends AbstractStyle
     public function write()
     {
         $style = $this->getStyle();
-        $css = array();
+        $css = [];
 
         if (is_array($style) && !empty($style)) {
             $css = $style;

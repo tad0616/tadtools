@@ -32,14 +32,14 @@ class File
         // Sick construction, but it seems that
         // file_exists returns strange values when
         // doing the original file_exists on ZIP archives...
-        if (strtolower(substr($pFilename, 0, 3)) == 'zip') {
+        if ('zip' == mb_strtolower(mb_substr($pFilename, 0, 3))) {
             // Open ZIP file and verify if the file exists
-            $zipFile     = substr($pFilename, 6, strpos($pFilename, '#') - 6);
-            $archiveFile = substr($pFilename, strpos($pFilename, '#') + 1);
+            $zipFile = mb_substr($pFilename, 6, mb_strpos($pFilename, '#') - 6);
+            $archiveFile = mb_substr($pFilename, mb_strpos($pFilename, '#') + 1);
 
             $zip = new \ZipArchive();
-            if ($zip->open($zipFile) === true) {
-                $returnValue = ($zip->getFromName($archiveFile) !== false);
+            if (true === $zip->open($zipFile)) {
+                $returnValue = (false !== $zip->getFromName($archiveFile));
                 $zip->close();
 
                 return $returnValue;
@@ -51,6 +51,7 @@ class File
         // Regular file_exists
         return file_exists($pFilename);
     }
+
     /**
      * Returns the content of a file
      *
@@ -62,17 +63,19 @@ class File
         if (!self::fileExists($pFilename)) {
             return false;
         }
-        if (strtolower(substr($pFilename, 0, 3)) == 'zip') {
+        if ('zip' == mb_strtolower(mb_substr($pFilename, 0, 3))) {
             // Open ZIP file and verify if the file exists
-            $zipFile     = substr($pFilename, 6, strpos($pFilename, '#') - 6);
-            $archiveFile = substr($pFilename, strpos($pFilename, '#') + 1);
+            $zipFile = mb_substr($pFilename, 6, mb_strpos($pFilename, '#') - 6);
+            $archiveFile = mb_substr($pFilename, mb_strpos($pFilename, '#') + 1);
 
             $zip = new \ZipArchive();
-            if ($zip->open($zipFile) === true) {
+            if (true === $zip->open($zipFile)) {
                 $returnValue = $zip->getFromName($archiveFile);
                 $zip->close();
+
                 return $returnValue;
             }
+
             return false;
         }
         // Regular file contents
@@ -91,12 +94,12 @@ class File
         $returnValue = realpath($pFilename);
 
         // Found something?
-        if ($returnValue == '' || is_null($returnValue)) {
+        if ('' == $returnValue || null === $returnValue) {
             $pathArray = explode('/', $pFilename);
-            while (in_array('..', $pathArray) && $pathArray[0] != '..') {
+            while (in_array('..', $pathArray, true) && '..' != $pathArray[0]) {
                 $numPathArray = count($pathArray);
                 for ($i = 0; $i < $numPathArray; ++$i) {
-                    if ($pathArray[$i] == '..' && $i > 0) {
+                    if ('..' == $pathArray[$i] && $i > 0) {
                         unset($pathArray[$i]);
                         unset($pathArray[$i - 1]);
                         break;

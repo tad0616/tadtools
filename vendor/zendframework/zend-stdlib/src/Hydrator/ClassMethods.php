@@ -10,8 +10,8 @@
 namespace Zend\Stdlib\Hydrator;
 
 use Traversable;
-use Zend\Stdlib\Exception;
 use Zend\Stdlib\ArrayUtils;
+use Zend\Stdlib\Exception;
 use Zend\Stdlib\Hydrator\Filter\FilterComposite;
 use Zend\Stdlib\Hydrator\Filter\FilterProviderInterface;
 use Zend\Stdlib\Hydrator\Filter\GetFilter;
@@ -30,7 +30,7 @@ class ClassMethods extends AbstractHydrator implements HydratorOptionsInterface
      *
      * @var string[]|bool[]
      */
-    private $hydrationMethodsCache = array();
+    private $hydrationMethodsCache = [];
 
     /**
      * A map of extraction methods to property name to be used during extraction, indexed
@@ -38,7 +38,7 @@ class ClassMethods extends AbstractHydrator implements HydratorOptionsInterface
      *
      * @var string[][]
      */
-    private $extractionMethodsCache = array();
+    private $extractionMethodsCache = [];
 
     /**
      * Flag defining whether array keys are underscore-separated (true) or camel case (false)
@@ -71,8 +71,8 @@ class ClassMethods extends AbstractHydrator implements HydratorOptionsInterface
 
     /**
      * @param  array|Traversable                 $options
-     * @return ClassMethods
      * @throws Exception\InvalidArgumentException
+     * @return ClassMethods
      */
     public function setOptions($options)
     {
@@ -99,7 +99,7 @@ class ClassMethods extends AbstractHydrator implements HydratorOptionsInterface
         $this->underscoreSeparatedKeys = (bool) $underscoreSeparatedKeys;
 
         if ($this->underscoreSeparatedKeys) {
-            $this->setNamingStrategy(new UnderscoreNamingStrategy);
+            $this->setNamingStrategy(new UnderscoreNamingStrategy());
         } elseif ($this->getNamingStrategy() instanceof UnderscoreNamingStrategy) {
             $this->removeNamingStrategy();
         }
@@ -121,8 +121,8 @@ class ClassMethods extends AbstractHydrator implements HydratorOptionsInterface
      * Extracts the getter/setter of the given $object.
      *
      * @param  object                           $object
-     * @return array
      * @throws Exception\BadMethodCallException for a non-object $object
+     * @return array
      */
     public function extract($object)
     {
@@ -141,29 +141,29 @@ class ClassMethods extends AbstractHydrator implements HydratorOptionsInterface
         }
 
         // pass 1 - finding out which properties can be extracted, with which methods (populate hydration cache)
-        if (! isset($this->extractionMethodsCache[$objectClass])) {
-            $this->extractionMethodsCache[$objectClass] = array();
-            $filter                                     = $this->filterComposite;
-            $methods                                    = get_class_methods($object);
+        if (!isset($this->extractionMethodsCache[$objectClass])) {
+            $this->extractionMethodsCache[$objectClass] = [];
+            $filter = $this->filterComposite;
+            $methods = get_class_methods($object);
 
             if ($object instanceof FilterProviderInterface) {
                 $filter = new FilterComposite(
-                    array($object->getFilter()),
-                    array(new MethodMatchFilter('getFilter'))
+                    [$object->getFilter()],
+                    [new MethodMatchFilter('getFilter')]
                 );
             }
 
             foreach ($methods as $method) {
                 $methodFqn = $objectClass . '::' . $method;
 
-                if (! ($filter->filter($methodFqn) && $this->callableMethodFilter->filter($methodFqn))) {
+                if (!($filter->filter($methodFqn) && $this->callableMethodFilter->filter($methodFqn))) {
                     continue;
                 }
 
                 $attribute = $method;
 
-                if (strpos($method, 'get') === 0) {
-                    $attribute = substr($method, 3);
+                if (0 === mb_strpos($method, 'get')) {
+                    $attribute = mb_substr($method, 3);
                     if (!property_exists($object, $attribute)) {
                         $attribute = lcfirst($attribute);
                     }
@@ -173,11 +173,11 @@ class ClassMethods extends AbstractHydrator implements HydratorOptionsInterface
             }
         }
 
-        $values = array();
+        $values = [];
 
         // pass 2 - actually extract data
         foreach ($this->extractionMethodsCache[$objectClass] as $methodName => $attributeName) {
-            $realAttributeName          = $this->extractName($attributeName, $object);
+            $realAttributeName = $this->extractName($attributeName, $object);
             $values[$realAttributeName] = $this->extractValue($realAttributeName, $object->$methodName(), $object);
         }
 
@@ -189,10 +189,9 @@ class ClassMethods extends AbstractHydrator implements HydratorOptionsInterface
      *
      * Hydrates an object by getter/setter methods of the object.
      *
-     * @param  array                            $data
      * @param  object                           $object
-     * @return object
      * @throws Exception\BadMethodCallException for a non-object $object
+     * @return object
      */
     public function hydrate(array $data, $object)
     {
@@ -208,10 +207,10 @@ class ClassMethods extends AbstractHydrator implements HydratorOptionsInterface
         foreach ($data as $property => $value) {
             $propertyFqn = $objectClass . '::$' . $property;
 
-            if (! isset($this->hydrationMethodsCache[$propertyFqn])) {
+            if (!isset($this->hydrationMethodsCache[$propertyFqn])) {
                 $setterName = 'set' . ucfirst($this->hydrateName($property, $data));
 
-                $this->hydrationMethodsCache[$propertyFqn] = is_callable(array($object, $setterName))
+                $this->hydrationMethodsCache[$propertyFqn] = is_callable([$object, $setterName])
                     ? $setterName
                     : false;
             }
@@ -269,6 +268,6 @@ class ClassMethods extends AbstractHydrator implements HydratorOptionsInterface
      */
     private function resetCaches()
     {
-        $this->hydrationMethodsCache = $this->extractionMethodsCache = array();
+        $this->hydrationMethodsCache = $this->extractionMethodsCache = [];
     }
 }

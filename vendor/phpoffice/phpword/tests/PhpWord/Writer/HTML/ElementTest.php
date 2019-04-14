@@ -14,6 +14,7 @@
  * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
 namespace PhpOffice\PhpWord\Writer\HTML;
 
 use PhpOffice\PhpWord\Element\Text as TextElement;
@@ -30,7 +31,7 @@ class ElementTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnmatchedElements()
     {
-        $elements = array('Container', 'Footnote', 'Image', 'Link', 'ListItem', 'Table', 'Title');
+        $elements = ['Container', 'Footnote', 'Image', 'Link', 'ListItem', 'Table', 'Title'];
         foreach ($elements as $element) {
             $objectClass = 'PhpOffice\\PhpWord\\Writer\\HTML\\Element\\' . $element;
             $parentWriter = new HTML();

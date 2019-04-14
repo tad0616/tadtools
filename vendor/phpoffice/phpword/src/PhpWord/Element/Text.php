@@ -105,12 +105,12 @@ class Text extends AbstractElement
     public function setParagraphStyle($style = null)
     {
         if (is_array($style)) {
-            $this->paragraphStyle = new Paragraph;
+            $this->paragraphStyle = new Paragraph();
             $this->paragraphStyle->setStyleByArray($style);
         } elseif ($style instanceof Paragraph) {
             $this->paragraphStyle = $style;
         } elseif (null === $style) {
-            $this->paragraphStyle = new Paragraph;
+            $this->paragraphStyle = new Paragraph();
         } else {
             $this->paragraphStyle = $style;
         }

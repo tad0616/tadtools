@@ -20,6 +20,10 @@ elFinder::$netDrivers['ftp'] = 'FTP';
  * * PHP OAuth extension: http://pecl.php.net/package/oauth
  * * PEAR's HTTP_OAUTH package: http://pear.php.net/package/http_oauth
  *  * HTTP_OAUTH package require HTTP_Request2 and Net_URL2
+ * @param mixed $attr
+ * @param mixed $path
+ * @param mixed $data
+ * @param mixed $volume
  */
 // // Required for Dropbox.com connector support
 // // On composer
@@ -88,60 +92,60 @@ elFinder::$netDrivers['ftp'] = 'FTP';
  **/
 function access($attr, $path, $data, $volume)
 {
-    return strpos(basename($path), '.') === 0// if file/folder begins with '.' (dot)
-     ? !($attr == 'read' || $attr == 'write') // set read+write to false, other (locked+hidden) set to true
+    return 0 === mb_strpos(basename($path), '.')// if file/folder begins with '.' (dot)
+     ? !('read' == $attr || 'write' == $attr) // set read+write to false, other (locked+hidden) set to true
      : null; // else elFinder decide it itself
 }
 
-include_once "../../../../mainfile.php";
+include_once '../../../../mainfile.php';
 $mdir = $_SESSION['xoops_mod_name'];
 if (!$xoopsModuleConfig) {
-    $modhandler        = xoops_gethandler('module');
-    $xoopsModule       = $modhandler->getByDirname("tadtools");
-    $config_handler    = xoops_gethandler('config');
+    $modhandler = xoops_gethandler('module');
+    $xoopsModule = $modhandler->getByDirname('tadtools');
+    $config_handler = xoops_gethandler('config');
     $xoopsModuleConfig = $config_handler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
 }
 
-$image_max_width  = $xoopsModuleConfig['image_max_width'] ? (int) $xoopsModuleConfig['image_max_width'] : 640;
+$image_max_width = $xoopsModuleConfig['image_max_width'] ? (int) $xoopsModuleConfig['image_max_width'] : 640;
 $image_max_height = $xoopsModuleConfig['image_max_height'] ? (int) $xoopsModuleConfig['image_max_height'] : 640;
 // Documentation for connector options:
 // https://github.com/Studio-42/elFinder/wiki/Connector-configuration-options
-$opts = array(
-    'bind'   => array(
-        'upload.presave' => array(
+$opts = [
+    'bind' => [
+        'upload.presave' => [
             'Plugin.AutoResize.onUpLoadPreSave',
-        ),
-    ),
-    'plugin' => array(
-        'AutoResize' => array(
-            'enable'    => true, // For control by volume driver
-            'maxWidth'  => $image_max_width, // Path to Water mark image
+        ],
+    ],
+    'plugin' => [
+        'AutoResize' => [
+            'enable' => true, // For control by volume driver
+            'maxWidth' => $image_max_width, // Path to Water mark image
             'maxHeight' => $image_max_height, // Margin right pixel
-            'quality'   => 95, // JPEG image save quality
-        ),
-    ),
+            'quality' => 95, // JPEG image save quality
+        ],
+    ],
     // 'debug' => true,
-    "locale" => "zh_TW.UTF-8",
-    'roots'  => array(
-        array(
-            'driver'        => 'LocalFileSystem', // driver for accessing file system (REQUIRED)
-            'path'          => XOOPS_ROOT_PATH . "/uploads/{$mdir}/{$_GET['type']}/", // path to files (REQUIRED)
-            'URL'           => XOOPS_URL . "/uploads/{$mdir}/{$_GET['type']}/", // URL to files (REQUIRED),
-            'plugin'        => array(
-                'AutoResize' => array(
-                    'enable'    => true, // For control by volume driver
-                    'maxWidth'  => $image_max_width, // Path to Water mark image
+    'locale' => 'zh_TW.UTF-8',
+    'roots' => [
+        [
+            'driver' => 'LocalFileSystem', // driver for accessing file system (REQUIRED)
+            'path' => XOOPS_ROOT_PATH . "/uploads/{$mdir}/{$_GET['type']}/", // path to files (REQUIRED)
+            'URL' => XOOPS_URL . "/uploads/{$mdir}/{$_GET['type']}/", // URL to files (REQUIRED),
+            'plugin' => [
+                'AutoResize' => [
+                    'enable' => true, // For control by volume driver
+                    'maxWidth' => $image_max_width, // Path to Water mark image
                     'maxHeight' => $image_max_height, // Margin right pixel
-                ),
-            ),
-            'uploadDeny'    => array('text/php', 'text/x-php', 'application/php', 'application/x-php', 'application/x-httpd-php', 'application/x-httpd-php-source'), // All Mimetypes not allowed to upload
-            'uploadAllow'   => array('all'), // Mimetype `image` and `text/plain` allowed to upload
-            'uploadOrder'   => array('allow', 'deny'), // allowed Mimetype `image` and `text/plain` only
+                ],
+            ],
+            'uploadDeny' => ['text/php', 'text/x-php', 'application/php', 'application/x-php', 'application/x-httpd-php', 'application/x-httpd-php-source'], // All Mimetypes not allowed to upload
+            'uploadAllow' => ['all'], // Mimetype `image` and `text/plain` allowed to upload
+            'uploadOrder' => ['allow', 'deny'], // allowed Mimetype `image` and `text/plain` only
             'accessControl' => 'access', // disable and hide dot starting files (OPTIONAL)
             // 'acceptedName'  => '/^\w[\w\s\.\%\-\(\)\[\]]*$/u',
-        ),
-    ),
-);
+        ],
+    ],
+];
 
 // run elFinder
 $connector = new elFinderConnector(new elFinder($opts));

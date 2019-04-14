@@ -45,7 +45,7 @@ class Chart extends AbstractElement
      *
      * @var array
      */
-    private $series = array();
+    private $series = [];
 
     /**
      * Chart style
@@ -87,7 +87,7 @@ class Chart extends AbstractElement
      */
     public function setType($value)
     {
-        $enum = array('pie', 'doughnut', 'line', 'bar', 'column', 'area', 'radar', 'scatter');
+        $enum = ['pie', 'doughnut', 'line', 'bar', 'column', 'area', 'radar', 'scatter'];
         $this->type = $this->setEnumVal($value, $enum, 'pie');
     }
 
@@ -100,7 +100,7 @@ class Chart extends AbstractElement
      */
     public function addSeries($categories, $values)
     {
-        $this->series[] = array('categories' => $categories, 'values' => $values);
+        $this->series[] = ['categories' => $categories, 'values' => $values];
     }
 
     /**

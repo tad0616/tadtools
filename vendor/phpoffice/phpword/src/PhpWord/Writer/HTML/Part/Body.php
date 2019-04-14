@@ -66,10 +66,10 @@ class Body extends AbstractPart
         $content = '';
 
         if (!empty($notes)) {
-            $content .= "<hr />" . PHP_EOL;
+            $content .= '<hr />' . PHP_EOL;
             foreach ($notes as $noteId => $noteMark) {
                 list($noteType, $noteTypeId) = explode('-', $noteMark);
-                $method = 'get' . ($noteType == 'endnote' ? 'Endnotes' : 'Footnotes');
+                $method = 'get' . ('endnote' == $noteType ? 'Endnotes' : 'Footnotes');
                 $collection = $phpWord->$method()->getItems();
 
                 if (isset($collection[$noteTypeId])) {

@@ -14,6 +14,7 @@
  * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
 namespace PhpOffice\PhpWord\Writer\HTML;
 
 /**
@@ -26,7 +27,7 @@ class StyleTest extends \PHPUnit_Framework_TestCase
      */
     public function testEmptyStyles()
     {
-        $styles = array('Font', 'Paragraph', 'Image');
+        $styles = ['Font', 'Paragraph', 'Image'];
         foreach ($styles as $style) {
             $objectClass = 'PhpOffice\\PhpWord\\Writer\\HTML\\Style\\' . $style;
             $object = new $objectClass();

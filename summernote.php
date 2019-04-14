@@ -1,5 +1,5 @@
 <?php
-include_once "tadtools_header.php";
+include_once 'tadtools_header.php';
 
 class summernote
 {
@@ -8,14 +8,14 @@ class summernote
     public $Height = 300;
 
     //建構函數
-    public function __construct($ColName = "", $Value = "")
+    public function __construct($ColName = '', $Value = '')
     {
         $this->ColName = $ColName;
-        $this->Value   = $Value;
+        $this->Value = $Value;
     }
 
     //設定自定義設高度
-    public function setHeight($Height = "")
+    public function setHeight($Height = '')
     {
         $this->Height = $Height;
     }
@@ -24,7 +24,7 @@ class summernote
     public function render()
     {
         global $xoTheme;
-        $editor = "";
+        $editor = '';
         if ($xoTheme) {
             $xoTheme->addStylesheet('modules/tadtools/summernote/summernote.css');
             $xoTheme->addScript('modules/tadtools/summernote/summernote.min.js');
@@ -39,12 +39,11 @@ class summernote
           });
         })(jQuery);
       ");
-
         } else {
             $editor = "
       <link href='" . TADTOOLS_URL . "/summernote/summernote.css' rel='stylesheet'>
       <script src='" . TADTOOLS_URL . "/summernote/summernote.min.js'></script>
-      <script src='" . TADTOOLS_URL . "/summernote/summernote-" . _LANGCODE . ".js'></script>
+      <script src='" . TADTOOLS_URL . '/summernote/summernote-' . _LANGCODE . ".js'></script>
       <script>
       $(document).ready(function() {
         $('#editor_{$this->ColName}').summernote({
@@ -62,5 +61,4 @@ class summernote
 
         return $editor;
     }
-
 }

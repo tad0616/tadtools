@@ -43,18 +43,18 @@ namespace Composer\Autoload;
 class ClassLoader
 {
     // PSR-4
-    private $prefixLengthsPsr4 = array();
-    private $prefixDirsPsr4 = array();
-    private $fallbackDirsPsr4 = array();
+    private $prefixLengthsPsr4 = [];
+    private $prefixDirsPsr4 = [];
+    private $fallbackDirsPsr4 = [];
 
     // PSR-0
-    private $prefixesPsr0 = array();
-    private $fallbackDirsPsr0 = array();
+    private $prefixesPsr0 = [];
+    private $fallbackDirsPsr0 = [];
 
     private $useIncludePath = false;
-    private $classMap = array();
+    private $classMap = [];
     private $classMapAuthoritative = false;
-    private $missingClasses = array();
+    private $missingClasses = [];
     private $apcuPrefix;
 
     public function getPrefixes()
@@ -63,7 +63,7 @@ class ClassLoader
             return call_user_func_array('array_merge', $this->prefixesPsr0);
         }
 
-        return array();
+        return [];
     }
 
     public function getPrefixesPsr4()
@@ -170,9 +170,9 @@ class ClassLoader
             }
         } elseif (!isset($this->prefixDirsPsr4[$prefix])) {
             // Register directories for a new namespace.
-            $length = strlen($prefix);
+            $length = mb_strlen($prefix);
             if ('\\' !== $prefix[$length - 1]) {
-                throw new \InvalidArgumentException("A non-empty PSR-4 prefix must end with a namespace separator.");
+                throw new \InvalidArgumentException('A non-empty PSR-4 prefix must end with a namespace separator.');
             }
             $this->prefixLengthsPsr4[$prefix[0]][$prefix] = $length;
             $this->prefixDirsPsr4[$prefix] = (array) $paths;
@@ -221,9 +221,9 @@ class ClassLoader
         if (!$prefix) {
             $this->fallbackDirsPsr4 = (array) $paths;
         } else {
-            $length = strlen($prefix);
+            $length = mb_strlen($prefix);
             if ('\\' !== $prefix[$length - 1]) {
-                throw new \InvalidArgumentException("A non-empty PSR-4 prefix must end with a namespace separator.");
+                throw new \InvalidArgumentException('A non-empty PSR-4 prefix must end with a namespace separator.');
             }
             $this->prefixLengthsPsr4[$prefix[0]][$prefix] = $length;
             $this->prefixDirsPsr4[$prefix] = (array) $paths;
@@ -299,7 +299,7 @@ class ClassLoader
      */
     public function register($prepend = false)
     {
-        spl_autoload_register(array($this, 'loadClass'), true, $prepend);
+        spl_autoload_register([$this, 'loadClass'], true, $prepend);
     }
 
     /**
@@ -307,7 +307,7 @@ class ClassLoader
      */
     public function unregister()
     {
-        spl_autoload_unregister(array($this, 'loadClass'));
+        spl_autoload_unregister([$this, 'loadClass']);
     }
 
     /**
@@ -342,7 +342,7 @@ class ClassLoader
             return false;
         }
         if (null !== $this->apcuPrefix) {
-            $file = apcu_fetch($this->apcuPrefix.$class, $hit);
+            $file = apcu_fetch($this->apcuPrefix . $class, $hit);
             if ($hit) {
                 return $file;
             }
@@ -356,7 +356,7 @@ class ClassLoader
         }
 
         if (null !== $this->apcuPrefix) {
-            apcu_add($this->apcuPrefix.$class, $file);
+            apcu_add($this->apcuPrefix . $class, $file);
         }
 
         if (false === $file) {
@@ -375,11 +375,11 @@ class ClassLoader
         $first = $class[0];
         if (isset($this->prefixLengthsPsr4[$first])) {
             $subPath = $class;
-            while (false !== $lastPos = strrpos($subPath, '\\')) {
-                $subPath = substr($subPath, 0, $lastPos);
+            while (false !== $lastPos = mb_strrpos($subPath, '\\')) {
+                $subPath = mb_substr($subPath, 0, $lastPos);
                 $search = $subPath . '\\';
                 if (isset($this->prefixDirsPsr4[$search])) {
-                    $pathEnd = DIRECTORY_SEPARATOR . substr($logicalPathPsr4, $lastPos + 1);
+                    $pathEnd = DIRECTORY_SEPARATOR . mb_substr($logicalPathPsr4, $lastPos + 1);
                     foreach ($this->prefixDirsPsr4[$search] as $dir) {
                         if (file_exists($file = $dir . $pathEnd)) {
                             return $file;
@@ -397,10 +397,10 @@ class ClassLoader
         }
 
         // PSR-0 lookup
-        if (false !== $pos = strrpos($class, '\\')) {
+        if (false !== $pos = mb_strrpos($class, '\\')) {
             // namespaced class name
-            $logicalPathPsr0 = substr($logicalPathPsr4, 0, $pos + 1)
-                . strtr(substr($logicalPathPsr4, $pos + 1), '_', DIRECTORY_SEPARATOR);
+            $logicalPathPsr0 = mb_substr($logicalPathPsr4, 0, $pos + 1)
+                . strtr(mb_substr($logicalPathPsr4, $pos + 1), '_', DIRECTORY_SEPARATOR);
         } else {
             // PEAR-like class name
             $logicalPathPsr0 = strtr($class, '_', DIRECTORY_SEPARATOR) . $ext;
@@ -408,7 +408,7 @@ class ClassLoader
 
         if (isset($this->prefixesPsr0[$first])) {
             foreach ($this->prefixesPsr0[$first] as $prefix => $dirs) {
-                if (0 === strpos($class, $prefix)) {
+                if (0 === mb_strpos($class, $prefix)) {
                     foreach ($dirs as $dir) {
                         if (file_exists($file = $dir . DIRECTORY_SEPARATOR . $logicalPathPsr0)) {
                             return $file;
@@ -438,6 +438,7 @@ class ClassLoader
  * Scope isolated include.
  *
  * Prevents access to $this/self from included files.
+ * @param mixed $file
  */
 function includeFile($file)
 {

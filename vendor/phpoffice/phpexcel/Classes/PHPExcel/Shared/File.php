@@ -35,57 +35,54 @@ class PHPExcel_Shared_File
      */
     protected static $useUploadTempDirectory = false;
 
-
     /**
      * Set the flag indicating whether the File Upload Temp directory should be used for temporary files
      *
-     * @param     boolean    $useUploadTempDir        Use File Upload Temporary directory (true or false)
+     * @param     bool    $useUploadTempDir        Use File Upload Temporary directory (true or false)
      */
     public static function setUseUploadTempDirectory($useUploadTempDir = false)
     {
-        self::$useUploadTempDirectory = (boolean) $useUploadTempDir;
+        self::$useUploadTempDirectory = (bool) $useUploadTempDir;
     }
-
 
     /**
      * Get the flag indicating whether the File Upload Temp directory should be used for temporary files
      *
-     * @return     boolean    Use File Upload Temporary directory (true or false)
+     * @return     bool    Use File Upload Temporary directory (true or false)
      */
     public static function getUseUploadTempDirectory()
     {
         return self::$useUploadTempDirectory;
     }
 
-
     /**
-      * Verify if a file exists
-      *
-      * @param     string    $pFilename    Filename
-      * @return bool
-      */
+     * Verify if a file exists
+     *
+     * @param     string    $pFilename    Filename
+     * @return bool
+     */
     public static function file_exists($pFilename)
     {
         // Sick construction, but it seems that
         // file_exists returns strange values when
         // doing the original file_exists on ZIP archives...
-        if (strtolower(substr($pFilename, 0, 3)) == 'zip') {
+        if ('zip' == mb_strtolower(mb_substr($pFilename, 0, 3))) {
             // Open ZIP file and verify if the file exists
-            $zipFile     = substr($pFilename, 6, strpos($pFilename, '#') - 6);
-            $archiveFile = substr($pFilename, strpos($pFilename, '#') + 1);
+            $zipFile = mb_substr($pFilename, 6, mb_strpos($pFilename, '#') - 6);
+            $archiveFile = mb_substr($pFilename, mb_strpos($pFilename, '#') + 1);
 
             $zip = new ZipArchive();
-            if ($zip->open($zipFile) === true) {
-                $returnValue = ($zip->getFromName($archiveFile) !== false);
+            if (true === $zip->open($zipFile)) {
+                $returnValue = (false !== $zip->getFromName($archiveFile));
                 $zip->close();
+
                 return $returnValue;
-            } else {
-                return false;
             }
-        } else {
-            // Regular file_exists
-            return file_exists($pFilename);
+
+            return false;
         }
+        // Regular file_exists
+        return file_exists($pFilename);
     }
 
     /**
@@ -105,11 +102,11 @@ class PHPExcel_Shared_File
         }
 
         // Found something?
-        if ($returnValue == '' || ($returnValue === null)) {
+        if ('' == $returnValue || (null === $returnValue)) {
             $pathArray = explode('/', $pFilename);
-            while (in_array('..', $pathArray) && $pathArray[0] != '..') {
+            while (in_array('..', $pathArray, true) && '..' != $pathArray[0]) {
                 for ($i = 0; $i < count($pathArray); ++$i) {
-                    if ($pathArray[$i] == '..' && $i > 0) {
+                    if ('..' == $pathArray[$i] && $i > 0) {
                         unset($pathArray[$i]);
                         unset($pathArray[$i - 1]);
                         break;
@@ -133,7 +130,7 @@ class PHPExcel_Shared_File
         if (self::$useUploadTempDirectory) {
             //  use upload-directory when defined to allow running on environments having very restricted
             //      open_basedir configs
-            if (ini_get('upload_tmp_dir') !== false) {
+            if (false !== ini_get('upload_tmp_dir')) {
                 if ($temp = ini_get('upload_tmp_dir')) {
                     if (file_exists($temp)) {
                         return realpath($temp);
@@ -166,6 +163,7 @@ class PHPExcel_Shared_File
             $temp = tempnam(__FILE__, '');
             if (file_exists($temp)) {
                 unlink($temp);
+
                 return realpath(dirname($temp));
             }
 

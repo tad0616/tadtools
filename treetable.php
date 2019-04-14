@@ -1,6 +1,6 @@
 <?php
-include_once "tadtools_header.php";
-include_once "jquery.php";
+include_once 'tadtools_header.php';
+include_once 'jquery.php';
 
 class treetable
 {
@@ -17,19 +17,19 @@ class treetable
     public $expanded;
 
     //建構函數
-    public function __construct($show_jquery = true, $sn = "cat_sn", $of_sn = "of_cat_sn", $tbl_id = "#tbl", $post_url = "", $folder_class = ".folder", $msg = "#save_msg", $expanded = true, $sort_id = "", $sort_url = "save_sort.php", $sort_msg = "#save_msg2")
+    public function __construct($show_jquery = true, $sn = 'cat_sn', $of_sn = 'of_cat_sn', $tbl_id = '#tbl', $post_url = '', $folder_class = '.folder', $msg = '#save_msg', $expanded = true, $sort_id = '', $sort_url = 'save_sort.php', $sort_msg = '#save_msg2')
     {
-        $this->show_jquery  = $show_jquery;
-        $this->tbl_id       = $tbl_id;
-        $this->post_url     = $post_url;
+        $this->show_jquery = $show_jquery;
+        $this->tbl_id = $tbl_id;
+        $this->post_url = $post_url;
         $this->folder_class = $folder_class;
-        $this->sn           = $sn;
-        $this->of_sn        = $of_sn;
-        $this->msg          = $msg;
-        $this->sort_id      = $sort_id;
-        $this->sort_url     = $sort_url;
-        $this->sort_msg     = $sort_msg;
-        $this->expanded     = $expanded;
+        $this->sn = $sn;
+        $this->of_sn = $of_sn;
+        $this->msg = $msg;
+        $this->sort_id = $sort_id;
+        $this->sort_url = $sort_url;
+        $this->sort_msg = $sort_msg;
+        $this->expanded = $expanded;
     }
 
     //產生路徑工具
@@ -37,11 +37,11 @@ class treetable
     {
         global $xoTheme;
 
-        $jquery = ($this->show_jquery) ? get_jquery(true) : "";
+        $jquery = ($this->show_jquery) ? get_jquery(true) : '';
 
-        $expanded = ($this->expanded) ? ",initialState: 'expanded'" : "";
+        $expanded = ($this->expanded) ? ",initialState: 'expanded'" : '';
 
-        $sort_code = "";
+        $sort_code = '';
         if (!empty($this->sort_id)) {
             $sort_code = "
             $('{$this->sort_id}').sortable({
@@ -64,7 +64,7 @@ class treetable
             });";
         }
 
-        $drag_code = "";
+        $drag_code = '';
         if (!empty($this->post_url)) {
             $drag_code = "
             // Configure draggable nodes
@@ -126,7 +126,6 @@ class treetable
                 })(jQuery);
             ");
         } else {
-
             $main = "
             $jquery
             <link href='" . TADTOOLS_URL . "/treeTable/stylesheets/jquery.treetable.css' rel='stylesheet'  />

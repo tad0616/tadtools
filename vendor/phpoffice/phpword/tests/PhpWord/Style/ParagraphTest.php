@@ -30,7 +30,7 @@ class ParagraphTest extends \PHPUnit_Framework_TestCase
     /**
      * Tear down after each test
      */
-    public function tearDown()
+    protected function tearDown()
     {
         TestHelperDOCX::clear();
     }
@@ -42,12 +42,12 @@ class ParagraphTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Paragraph();
 
-        $attributes = array(
-            'widowControl'    => true,
-            'keepNext'        => false,
-            'keepLines'       => false,
+        $attributes = [
+            'widowControl' => true,
+            'keepNext' => false,
+            'keepLines' => false,
             'pageBreakBefore' => false,
-        );
+        ];
         foreach ($attributes as $key => $default) {
             $get = "get{$key}";
             $object->setStyleValue($key, null);
@@ -64,21 +64,21 @@ class ParagraphTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Paragraph();
 
-        $attributes = array(
-            'spaceAfter'      => 240,
-            'spaceBefore'     => 240,
-            'indent'          => 1,
-            'hanging'         => 1,
-            'spacing'         => 120,
-            'basedOn'         => 'Normal',
-            'next'            => 'Normal',
-            'numStyle'        => 'numStyle',
-            'numLevel'        => 1,
-            'widowControl'    => false,
-            'keepNext'        => true,
-            'keepLines'       => true,
+        $attributes = [
+            'spaceAfter' => 240,
+            'spaceBefore' => 240,
+            'indent' => 1,
+            'hanging' => 1,
+            'spacing' => 120,
+            'basedOn' => 'Normal',
+            'next' => 'Normal',
+            'numStyle' => 'numStyle',
+            'numLevel' => 1,
+            'widowControl' => false,
+            'keepNext' => true,
+            'keepLines' => true,
             'pageBreakBefore' => true,
-        );
+        ];
         foreach ($attributes as $key => $value) {
             $get = "get{$key}";
             $object->setStyleValue("$key", $value);
@@ -98,7 +98,7 @@ class ParagraphTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Paragraph();
 
-        $attributes = array('spacing', 'indent', 'hanging', 'spaceBefore', 'spaceAfter');
+        $attributes = ['spacing', 'indent', 'hanging', 'spaceBefore', 'spaceAfter'];
         foreach ($attributes as $key) {
             $get = "get{$key}";
             $this->assertNull($object->$get());
@@ -111,7 +111,7 @@ class ParagraphTest extends \PHPUnit_Framework_TestCase
     public function testTabs()
     {
         $object = new Paragraph();
-        $object->setTabs(array(new Tab('left', 1550), new Tab('right', 5300)));
+        $object->setTabs([new Tab('left', 1550), new Tab('right', 5300)]);
         $this->assertCount(2, $object->getTabs());
     }
 
@@ -124,7 +124,7 @@ class ParagraphTest extends \PHPUnit_Framework_TestCase
         $section = $phpWord->addSection();
 
         // Test style array
-        $text = $section->addText('This is a test', array(), array('line-height' => 2.0));
+        $text = $section->addText('This is a test', [], ['line-height' => 2.0]);
 
         $doc = TestHelperDOCX::getDocument($phpWord);
         $element = $doc->getElement('/w:document/w:body/w:p/w:pPr/w:spacing');
@@ -159,11 +159,11 @@ class ParagraphTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test line height exception by using nonnumeric value
-     *
-     * @expectedException \PhpOffice\PhpWord\Exception\InvalidStyleException
      */
     public function testLineHeightException()
     {
+        $this->expectException(\PhpOffice\PhpWord\Exception\InvalidStyleException::class);
+
         $object = new Paragraph();
         $object->setLineHeight('a');
     }

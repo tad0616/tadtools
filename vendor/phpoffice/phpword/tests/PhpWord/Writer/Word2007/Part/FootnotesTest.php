@@ -14,6 +14,7 @@
  * @copyright   2010-2016 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
 namespace PhpOffice\PhpWord\Writer\Word2007\Part;
 
 use PhpOffice\PhpWord\PhpWord;
@@ -26,7 +27,7 @@ use PhpOffice\PhpWord\TestHelperDOCX;
  */
 class FootnotesTest extends \PHPUnit_Framework_TestCase
 {
-    public function tearDown()
+    protected function tearDown()
     {
         TestHelperDOCX::clear();
     }
@@ -34,14 +35,14 @@ class FootnotesTest extends \PHPUnit_Framework_TestCase
     public function testWriteFootnotes()
     {
         $phpWord = new PhpWord();
-        $phpWord->addParagraphStyle('pStyle', array('alignment' => Jc::START));
+        $phpWord->addParagraphStyle('pStyle', ['alignment' => Jc::START]);
         $section = $phpWord->addSection();
         $section->addText('Text');
         $footnote1 = $section->addFootnote('pStyle');
         $footnote1->addText('Footnote');
         $footnote1->addTextBreak();
         $footnote1->addLink('https://github.com/PHPOffice/PHPWord');
-        $footnote2 = $section->addEndnote(array('alignment' => Jc::START));
+        $footnote2 = $section->addEndnote(['alignment' => Jc::START]);
         $footnote2->addText('Endnote');
         $doc = TestHelperDOCX::getDocument($phpWord);
 

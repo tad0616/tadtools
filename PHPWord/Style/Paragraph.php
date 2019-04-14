@@ -34,7 +34,6 @@
  */
 class PHPWord_Style_Paragraph
 {
-
     /**
      * Paragraph alignment
      *
@@ -79,13 +78,13 @@ class PHPWord_Style_Paragraph
      */
     public function __construct()
     {
-        $this->_align                = null;
-        $this->_spaceBefore          = null;
-        $this->_spaceAfter           = null;
-        $this->_spacing              = null;
-        $this->_indentLeft           = null;
-        $this->_indentRight          = null;
-        $this->_indentFirstLine      = null;
+        $this->_align = null;
+        $this->_spaceBefore = null;
+        $this->_spaceAfter = null;
+        $this->_spacing = null;
+        $this->_indentLeft = null;
+        $this->_indentRight = null;
+        $this->_indentFirstLine = null;
         $this->_indentFirstLineChars = null;
     }
 
@@ -97,7 +96,7 @@ class PHPWord_Style_Paragraph
      */
     public function setStyleValue($key, $value)
     {
-        if ($key == '_spacing') {
+        if ('_spacing' == $key) {
             $value += 240; // because line height of 1 matches 240 twips
         }
         $this->$key = $value;
@@ -121,11 +120,12 @@ class PHPWord_Style_Paragraph
      */
     public function setAlign($pValue = null)
     {
-        if (strtolower($pValue) == 'justify') {
+        if ('justify' == mb_strtolower($pValue)) {
             // justify becames both
             $pValue = 'both';
         }
         $this->_align = $pValue;
+
         return $this;
     }
 
@@ -148,6 +148,7 @@ class PHPWord_Style_Paragraph
     public function setSpaceBefore($pValue = null)
     {
         $this->_spaceBefore = $pValue;
+
         return $this;
     }
 
@@ -170,6 +171,7 @@ class PHPWord_Style_Paragraph
     public function setSpaceAfter($pValue = null)
     {
         $this->_spaceAfter = $pValue;
+
         return $this;
     }
 
@@ -192,6 +194,7 @@ class PHPWord_Style_Paragraph
     public function setSpacing($pValue = null)
     {
         $this->_spacing = $pValue;
+
         return $this;
     }
 
@@ -205,6 +208,7 @@ class PHPWord_Style_Paragraph
     public function setIndentLeft($pValue = null)
     {
         $this->_indentLeft = $pValue;
+
         return $this;
     }
 
@@ -218,12 +222,15 @@ class PHPWord_Style_Paragraph
     public function setIndentRight($pValue = null)
     {
         $this->_indentRight = $pValue;
+
         return $this;
     }
+
     // 首行縮進相關方法
     public function setIndentFirstLine($pValue = null)
     {
         $this->_indentFirstLine = $pValue;
+
         return $this;
     }
 
@@ -235,6 +242,7 @@ class PHPWord_Style_Paragraph
     public function setIndentFirstLineChars($pValue = null)
     {
         $this->_indentFirstLineChars = $pValue;
+
         return $this;
     }
 

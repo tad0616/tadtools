@@ -41,14 +41,14 @@ class PreserveText extends Text
 
         $texts = $element->getText();
         if (!is_array($texts)) {
-            $texts = array($texts);
+            $texts = [$texts];
         }
 
         $this->startElementP();
 
         foreach ($texts as $text) {
-            if (substr($text, 0, 1) == '{') {
-                $text = substr($text, 1, -1);
+            if ('{' == mb_substr($text, 0, 1)) {
+                $text = mb_substr($text, 1, -1);
 
                 $xmlWriter->startElement('w:r');
                 $xmlWriter->startElement('w:fldChar');
