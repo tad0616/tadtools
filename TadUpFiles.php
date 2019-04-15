@@ -1,4 +1,7 @@
 <?php
+
+use XoopsModules\Tadtools\Utility;
+
 /*
 $TadUpFiles->set_var("permission", true); //要使用權限控管時才需要
 
@@ -191,8 +194,12 @@ class TadUpFiles
 //        $xoopsModule           = $moduleHandler->getByDirname("tadtools");
         $configHandler = xoops_getHandler('config');
         $xoopsModuleConfig = $configHandler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
-        $this->auto_charset = $xoopsModuleConfig['auto_charset'];
-        $this->mime_type_check = $xoopsModuleConfig['mime_type_check'];
+        if (isset($xoopsModuleConfig['auto_charset'])) {
+            $this->auto_charset = $xoopsModuleConfig['auto_charset'];
+        }
+        if (isset($xoopsModuleConfig['mime_type_check'])) {
+            $this->mime_type_check = $xoopsModuleConfig['mime_type_check'];
+        }
     }
 
     //設定路徑
@@ -480,6 +487,7 @@ class TadUpFiles
                 $w2 = 'list-style-position: outside;';
             }
             $filename_label = '';
+            $permission = '';
             if (true === $show_edit or 'full' === $show_edit) {
                 // 權限設定
                 if ($this->permission) {
@@ -1940,11 +1948,11 @@ class TadUpFiles
             $file_display = $real_filename;
         }
 
-        mk_dir(XOOPS_ROOT_PATH . "/uploads/{$this->prefix}");
-        mk_dir(XOOPS_ROOT_PATH . "/uploads/{$this->prefix}/tmp");
+        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/{$this->prefix}");
+        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/{$this->prefix}/tmp");
         $tmp_dir = XOOPS_ROOT_PATH . "/uploads/{$this->prefix}/tmp/{$file['files_sn']}";
         $tmp_url = XOOPS_URL . "/uploads/{$this->prefix}/tmp/{$file['files_sn']}";
-        mk_dir($tmp_dir);
+        Utility::mk_dir($tmp_dir);
         $tmp_file = $tmp_dir . '/' . $file_display;
         $tmp_file_url = $tmp_url . '/' . $file_display;
 
@@ -1962,7 +1970,7 @@ class TadUpFiles
                 $path = mb_substr($path, 0, -1);
             }
             if (!is_dir($path)) {
-                mk_dir($path);
+                Utility::mk_dir($path);
             }
             rename($tmp_file, $path . '/' . $file_display);
         } else {

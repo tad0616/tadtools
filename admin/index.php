@@ -19,16 +19,16 @@
 require_once dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
 require __DIR__ . '/header.php';
 
-require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname') . '/class/admin.php';
+// require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname') . '/class/admin.php';
 
-$index_admin = \Xmf\Module\Admin::getInstance();
+$adminObject = \Xmf\Module\Admin::getInstance();
 
-$index_admin->addConfigLabel(_AM_XDIR_CONFIG_CHECK);
-$index_admin->addLineConfigLabel(_AM_XDIR_CONFIG_PHP, $xoopsModule->getInfo('min_php'), 'php');
-$index_admin->addLineConfigLabel(_AM_XDIR_CONFIG_XOOPS, $xoopsModule->getInfo('min_xoops'), 'xoops');
+//$index_admin->addConfigLabel(_AM_XDIR_CONFIG_CHECK);
+//$index_admin->addLineConfigLabel(_AM_XDIR_CONFIG_PHP, $xoopsModule->getInfo('min_php'), 'php');
+//$index_admin->addLineConfigLabel(_AM_XDIR_CONFIG_XOOPS, $xoopsModule->getInfo('min_xoops'), 'xoops');
 
-echo $index_admin->displayNavigation('index.php');
-echo $index_admin->displayIndex();
+$adminObject->displayNavigation(basename(__FILE__));
+$adminObject->displayIndex();
 
 require __DIR__ . '/footer.php';
 xoops_cp_footer();

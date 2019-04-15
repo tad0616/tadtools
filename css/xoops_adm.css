@@ -8,7 +8,7 @@ a,
 li,
 td,
 th {
-  font-size: 12px;
+  /*font-size: 12px;*/
 }
 
 .tooltip {

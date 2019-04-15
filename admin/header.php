@@ -18,14 +18,12 @@
  **/
 require dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
 
-defined('FRAMEWORKS_ART_FUNCTIONS_INI') || require_once XOOPS_ROOT_PATH . '/Frameworks/art/functions.ini.php';
-require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname') . '/class/admin.php';
+//defined('FRAMEWORKS_ART_FUNCTIONS_INI') || require_once XOOPS_ROOT_PATH . '/Frameworks/art/functions.ini.php';
+// require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname') . '/class/admin.php';
 
-load_functions('admin');
+// load_functions('admin');
 
-if (!@require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname') . '/language/' . $xoopsConfig['language'] . '/main.php') {
-    require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname') . '/language/english/main.php';
-}
+xoops_loadLanguage('main', $xoopsModule->getVar('dirname'));
 if (!isset($xoopsTpl) || !is_object($xoopsTpl)) {
     require_once XOOPS_ROOT_PATH . '/class/template.php';
     $xoopsTpl = new XoopsTpl();

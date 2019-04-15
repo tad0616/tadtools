@@ -1,4 +1,7 @@
 <?php
+
+use XoopsModules\Tadtools\Utility;
+
 require_once __DIR__ . '/tadtools_header.php';
 require_once __DIR__ . '/jquery.php';
 require_once __DIR__ . '/include/beforeheader.php';
@@ -348,7 +351,7 @@ if (!function_exists('mk_qrcode')) {
     function mk_qrcode($url)
     {
         $imgurl = mk_qrcode_name($url);
-        mk_dir(XOOPS_ROOT_PATH . '/uploads/qrcode');
+        Utility::mk_dir(XOOPS_ROOT_PATH . '/uploads/qrcode');
         if (!file_exists(XOOPS_ROOT_PATH . "/uploads/qrcode/{$imgurl}.gif")) {
             require_once __DIR__ . '/qrcode/qrcode.php';
             $url = chk_qrcode_url($url);

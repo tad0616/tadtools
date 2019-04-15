@@ -62,7 +62,7 @@ function get_theme_menu_items($id = "", $other_menu = true)
                             case "tadnews_page_cate":
                                 $TadNewsModule = $moduleHandler->getByDirname("tadnews");
                                 if (!$TadNewsModule) {
-                                    continue;
+                                    continue 2;
                                 }
                                 break;
                         }
