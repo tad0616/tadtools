@@ -96,7 +96,7 @@ if (!function_exists('html5')) {
 
 //自訂錯誤訊息
 if (!function_exists('web_error')) {
-    function web_error($sql, $file = '', $line = '')
+    function /** @scrutinizer ignore-call */web_error($sql, $file = '', $line = '')
     {
         global $xoopsDB, $xoopsModule, $xoopsUser;
         $isAdmin = ($xoopsUser and $xoopsModule) ? $xoopsUser->isAdmin($xoopsModule->mid()) : false;
