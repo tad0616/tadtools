@@ -24,7 +24,7 @@ if (empty($CKEditorFuncNum)) {
 
 $fn = $CKEditorFuncNum;
 
-if (!in_array($type, $type_arr, true)) {
+if (!in_array($type, $type_arr)) {
     mkhtml(1, '', "{$type} -{$CKEditorFuncNum} error");
 }
 

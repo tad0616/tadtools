@@ -425,7 +425,7 @@ if (!function_exists('chk')) {
 if (!function_exists('chk2')) {
     function chk2($default_array = '', $NEED_V = '', $default = 0)
     {
-        if (in_array($NEED_V, $default_array, true)) {
+        if (in_array($NEED_V, $default_array)) {
             return 'checked';
         } elseif (empty($default_array) && '1' == $default) {
             return 'checked';
