@@ -126,10 +126,9 @@ class Utility
         }
 
         //找出目前所有的樣板檔
-        $sql = 'SELECT bid,name,visible,show_func,template FROM `' . $xoopsDB->prefix('newblocks') . "`
-    WHERE `dirname` = 'tadtools' ORDER BY `func_num`";
+        $sql = 'SELECT bid,name,visible,show_func,template FROM `' . $xoopsDB->prefix('newblocks') . '`  WHERE `dirname` = "tadtools" ORDER BY `func_num`';
         $result = $xoopsDB->query($sql);
-        while (false !== (list($bid, $name, $visible, $show_func, $template) = $xoopsDB->fetchRow($result))) {
+        while (list($bid, $name, $visible, $show_func, $template) = $xoopsDB->fetchRow($result)) {
             //假如現有的區塊和樣板對不上就刪掉
             if ($template != $tpl_file_arr[$show_func]) {
                 $sql = 'delete from ' . $xoopsDB->prefix('newblocks') . " where bid='{$bid}'";
@@ -164,13 +163,13 @@ class Utility
     public static function go_update1()
     {
         global $xoopsDB;
-        $sql = 'CREATE TABLE `' . $xoopsDB->prefix('tadtools_setup') . "` (
+        $sql = 'CREATE TABLE `' . $xoopsDB->prefix('tadtools_setup') . '` (
   `tt_sn` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `tt_theme`  varchar(255) NOT NULL default '',
   `tt_use_bootstrap`  varchar(255) NOT NULL default '',
   PRIMARY KEY  (`tt_sn`),
   UNIQUE KEY `tt_theme` (`tt_theme`)
-  ) ENGINE = MYISAM";
+        ) ENGINE = MYISAM';
 
         $xoopsDB->queryF($sql);
     }
@@ -202,8 +201,8 @@ class Utility
     {
         global $xoopsDB;
         $moduleHandler = xoops_getHandler('module');
-        $xoopsModule = $moduleHandler->getByDirname('tadtools');
-        $mod_id = $xoopsModule->getVar('mid');
+        $TadToolsModule = $moduleHandler->getByDirname('tadtools');
+        $mod_id = $TadToolsModule->getVar('mid');
 
         if ($mod_id) {
             $sql = 'select count(*) from ' . $xoopsDB->prefix('group_permission') . " where gperm_itemid='$mod_id' and `gperm_modid`='1' gperm_name='module_read'";
@@ -221,8 +220,8 @@ class Utility
     {
         global $xoopsDB;
         $moduleHandler = xoops_getHandler('module');
-        $xoopsModule = $moduleHandler->getByDirname('tadtools');
-        $mod_id = $xoopsModule->getVar('mid');
+        $TadToolsModule = $moduleHandler->getByDirname('tadtools');
+        $mod_id = $TadToolsModule->getVar('mid');
         if ($mod_id) {
             $sql = 'insert into ' . $xoopsDB->prefix('group_permission') . " (`gperm_groupid`, `gperm_itemid`, `gperm_modid`, `gperm_name`) values(1, '$mod_id' , 1 , 'module_read') , (2, '$mod_id' , 1 , 'module_read') ,(3, '$mod_id' , 1 , 'module_read')";
             $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . '/modules/system/admin.php?fct=modulesadmin', 30, $xoopsDB->error());

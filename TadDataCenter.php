@@ -167,7 +167,7 @@ class TadDataCenter
         }
 
         if (empty($attr)) {
-            if (in_array($type, ['radio', 'checkbox', 'checkbox-radio'], true)) {
+            if (in_array($type, ['radio', 'checkbox', 'checkbox-radio'])) {
                 $attr = ['id' => $name];
             } else {
                 $attr = ['class' => 'my-input my-100', 'id' => $name];
@@ -191,13 +191,13 @@ class TadDataCenter
                 } elseif ('checkbox' === $type) {
                     $form = '';
                     foreach ($options as $k => $v) {
-                        $checked = in_array($v, $value, true) ? 'checked' : '';
+                        $checked = in_array($v, $value) ? 'checked' : '';
                         $form .= "<label class=\"checkbox-inline\"><input type=\"{$type}\" name=\"TDC[{$name}]{$arr}[]\" value=\"{$v}\" {$checked} {$attr_str}>{$k}</label>\n";
                     }
                 } elseif ('checkbox-radio' === $type) {
                     $form = '';
                     foreach ($options as $k => $v) {
-                        $checked = in_array($v, $value, true) ? 'checked' : '';
+                        $checked = in_array($v, $value) ? 'checked' : '';
                         $form .= "<label class=\"checkbox\"><input type=\"checkbox\" name=\"TDC[{$name}]{$arr}\" value=\"{$v}\" {$checked} {$attr_str}>{$k}</label>\n";
                     }
                 } elseif ('date' === $type) {
@@ -621,7 +621,7 @@ class TadDataCenter
             }
 
             $require = 1 == $dcq['require'] ? ' validate[required]' : '';
-            if (in_array($type, ['radio', 'checkbox', 'checkbox-radio'], true)) {
+            if (in_array($type, ['radio', 'checkbox', 'checkbox-radio'])) {
                 $attr_arr = ['class' => $require, 'id' => $name];
             } else {
                 $attr_arr = ['class' => "my-input my-100 $require", 'id' => $name, 'placeholder' => $dcq['placeholder']];
@@ -845,7 +845,7 @@ if (isset($_REQUEST['dcq_op'])) {
     $dcq_op = system_CleanVars($_REQUEST, 'dcq_op', '', 'string');
     $dirname = system_CleanVars($_REQUEST, 'dirname', '', 'string');
     $col_name = system_CleanVars($_REQUEST, 'col_name', '', 'string');
-    $col_sn = system_CleanVars($_REQUEST, 'col_sn', '', 'int');
+    $col_sn = system_CleanVars($_REQUEST, 'col_sn', 0, 'int');
     $data_name = system_CleanVars($_REQUEST, 'data_name', '', 'string');
     $col_id = system_CleanVars($_REQUEST, 'col_id', '', 'string');
 

@@ -1,6 +1,6 @@
 <{php}>
 
-global $xoopsDB, $xoopsConfig, $xoopsModule, $aggreg;
+global $xoopsDB, $xoopsConfig, $aggreg;
 
 $left_count       = count($aggreg->blocks['canvas_left']);
 $right_count      = count($aggreg->blocks['canvas_right']);
@@ -12,18 +12,18 @@ $this->assign('right_count', $right_count);
 
 /**** 取得 Tad Themes 偏好設定****/
 $moduleHandler  = xoops_getHandler('module');
-$xoopsModule = $moduleHandler->getByDirname("tad_themes");
-$mid         = ($xoopsModule) ? $xoopsModule->getVar('mid') : 0;
+$TadThemesModule = $moduleHandler->getByDirname("tad_themes");
+$mid         = ($TadThemesModule) ? $TadThemesModule->getVar('mid') : 0;
 $this->assign('mid', $mid);
 $use_default_config = false;
 
 /**** 取得 Tad Login 偏好設定****/
-$TadLoginXoopsModule = $moduleHandler->getByDirname("tad_login");
-$TadLoginmid         = ($TadLoginXoopsModule) ? $TadLoginXoopsModule->getVar('mid') : 0;
+$TadLoginModule = $moduleHandler->getByDirname("tad_login");
+$TadLoginmid         = ($TadLoginModule) ? $TadLoginModule->getVar('mid') : 0;
 
 if (empty($TadLoginmid)) {
-    $TadLoginXoopsModule = $moduleHandler->getByDirname("tn_login");
-    $TadLoginmid         = ($TadLoginXoopsModule) ? $TadLoginXoopsModule->getVar('mid') : 0;
+    $TadLoginModule = $moduleHandler->getByDirname("tn_login");
+    $TadLoginmid         = ($TadLoginModule) ? $TadLoginModule->getVar('mid') : 0;
 }
 
 $configHandler = xoops_getHandler('config');
@@ -88,8 +88,8 @@ if ($mid) {
 
     $xoopsModuleConfig = $configHandler->getConfigsByCat(0, $mid);
 
-    $this->assign('auto_mainmenu', $xoopsModuleConfig['auto_mainmenu']);
-    $this->assign('show_sitename', $xoopsModuleConfig['show_sitename']);
+    $this->assign('auto_mainmenu', $TadThemesModuleConfig['auto_mainmenu']);
+    $this->assign('show_sitename', $TadThemesModuleConfig['show_sitename']);
 
     /****Tad Themes的設定值****/
     if (file_exists(XOOPS_ROOT_PATH . "/modules/tad_themes/xoops_version.php")) {
@@ -426,7 +426,7 @@ foreach($config2_files as $config2_file){
         if ($mid) {
             $sql    = "select `name`, `type`, `value` from " . $xoopsDB->prefix("tad_themes_config2") . " where `theme_id`='{$theme_id}'";
             $result = $xoopsDB->query($sql);
-            while (false !== (list($name, $type, $value) = $xoopsDB->fetchRow($result))) {
+            while (list($name, $type, $value) = $xoopsDB->fetchRow($result)) {
                 $config2[$name] = $value;
             }
         }

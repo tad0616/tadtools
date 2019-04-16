@@ -101,9 +101,9 @@ require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
 $mdir = $_SESSION['xoops_mod_name'];
 if (!$xoopsModuleConfig) {
     $moduleHandler = xoops_getHandler('module');
-    $xoopsModule = $moduleHandler->getByDirname('tadtools');
+    $TadToolsModule = $moduleHandler->getByDirname('tadtools');
     $configHandler = xoops_getHandler('config');
-    $xoopsModuleConfig = $configHandler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
+    $xoopsModuleConfig = $configHandler->getConfigsByCat(0, $TadToolsModule->getVar('mid'));
 }
 
 $image_max_width = $xoopsModuleConfig['image_max_width'] ? (int) $xoopsModuleConfig['image_max_width'] : 640;

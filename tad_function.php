@@ -99,7 +99,7 @@ if (!function_exists('html5')) {
 
 //自訂錯誤訊息
 if (!function_exists('web_error')) {
-    function web_error($sql, $file = '', $line = '')
+    function /** @scrutinizer ignore-call */web_error($sql, $file = '', $line = '')
     {
         global $xoopsDB, $xoopsModule, $xoopsUser;
         $isAdmin = ($xoopsUser and $xoopsModule) ? $xoopsUser->isAdmin($xoopsModule->mid()) : false;
@@ -238,7 +238,8 @@ if (!function_exists('autolink')) {
     {
         // grab anything that looks like a URL...
         $urls = _autolink_find_URLS($text);
-        if (!empty($urls)) { // i.e. there were some URLS found in the text
+        if (!empty($urls)) {
+            // i.e. there were some URLS found in the text
             array_walk($urls, '_autolink_create_html_tags', ['target' => $target, 'nofollow' => $nofollow]);
             $text = strtr($text, $urls);
         }
@@ -427,7 +428,7 @@ if (!function_exists('chk')) {
 if (!function_exists('chk2')) {
     function chk2($default_array = '', $NEED_V = '', $default = 0)
     {
-        if (in_array($NEED_V, $default_array, true)) {
+        if (in_array($NEED_V, $default_array)) {
             return 'checked';
         } elseif (empty($default_array) && '1' == $default) {
             return 'checked';
@@ -1045,7 +1046,8 @@ if (!function_exists('toolbar_bootstrap')) {
                 }
 
                 $urlPath = (empty($moduleName) or 'http://' === mb_substr($url, 0, 7)) ? $url : XOOPS_URL . "/modules/{$moduleName}/{$url}";
-                $baseurl = basename($url);
+                // $urlPath = $url;
+                // $baseurl = basename($url);
                 //if($baseurl=="index.php" and !preg_match("/admin/", $url))continue;
                 // die($_SERVER['PHP_SELF']);
                 if (false !== mb_strpos($_SERVER['REQUEST_URI'], $url)) {

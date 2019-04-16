@@ -3,7 +3,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
 {
     public static function eventCoreFooterStart($args)
     {
-        global $xoopsConfig, $xoopsDB, $xoTheme, $xoopsTpl, $xoopsUser;
+        global $xoopsConfig, $xoopsDB, $xoTheme, $xoopsTpl, $xoopsUser, $xoTheme;
         $xoTheme->addScript('browse.php?Frameworks/jquery/jquery.js');
 
         $ver = (int)str_replace('.', '', mb_substr(XOOPS_VERSION, 6, 5));

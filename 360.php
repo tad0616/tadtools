@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/tadtools_header.php';
 require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-// $sn    = system_CleanVars($_REQUEST, 'sn', '', 'int');
+// $sn    = system_CleanVars($_REQUEST, 'sn', 0, 'int');
 $photo = system_CleanVars($_REQUEST, 'photo', '', 'string');
 $photo = filter_var($photo, FILTER_SANITIZE_SPECIAL_CHARS);
 ?>

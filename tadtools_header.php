@@ -21,12 +21,12 @@ if (!function_exists('TadToolsXoopsModuleConfig')) {
     function TadToolsXoopsModuleConfig()
     {
         $moduleHandler = xoops_getHandler('module');
-        $xoopsModule = $moduleHandler->getByDirname('tadtools');
-        if (is_object($xoopsModule)) {
+        $TadToolsModule = $moduleHandler->getByDirname('tadtools');
+        if (is_object($TadToolsModule)) {
             $configHandler = xoops_getHandler('config');
-            $xoopsModuleConfig = $configHandler->getConfigsByCat(0, $xoopsModule->getVar('mid'));
+            $TadToolsModuleConfig = $configHandler->getConfigsByCat(0, $TadToolsModule->getVar('mid'));
 
-            return $xoopsModuleConfig;
+            return $TadToolsModuleConfig;
         }
 
         return false;

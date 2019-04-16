@@ -8,7 +8,7 @@ require_once __DIR__ . '/upload/class.upload.php';
 
 require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $type = system_CleanVars($_REQUEST, 'type', '', 'string');
-$CKEditorFuncNum = system_CleanVars($_REQUEST, 'CKEditorFuncNum', '', 'int');
+$CKEditorFuncNum = system_CleanVars($_REQUEST, 'CKEditorFuncNum', 0, 'int');
 
 $mdir = $_SESSION['xoops_mod_name'];
 $path = XOOPS_ROOT_PATH . "/uploads/{$mdir}/{$type}/";
@@ -24,7 +24,7 @@ if (empty($CKEditorFuncNum)) {
 
 $fn = $CKEditorFuncNum;
 
-if (!in_array($type, $type_arr, true)) {
+if (!in_array($type, $type_arr)) {
     mkhtml(1, '', "{$type} -{$CKEditorFuncNum} error");
 }
 
