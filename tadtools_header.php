@@ -15,20 +15,3 @@ if (!defined('TADTOOLS_URL')) {
 
 global $xoopsConfig;
 include_once TADTOOLS_PATH . "/language/{$xoopsConfig['language']}/main.php";
-
-//取得TadTools的$XoopsModuleConfig
-if (!function_exists('TadToolsXoopsModuleConfig')) {
-    function TadToolsXoopsModuleConfig()
-    {
-        $modhandler = xoops_getHandler('module');
-        $TadToolsModule = $modhandler->getByDirname('tadtools');
-        if (is_object($TadToolsModule)) {
-            $config_handler = xoops_getHandler('config');
-            $TadToolsModuleConfig = $config_handler->getConfigsByCat(0, $TadToolsModule->getVar('mid'));
-
-            return $TadToolsModuleConfig;
-        }
-
-        return false;
-    }
-}

@@ -1,4 +1,6 @@
 <?php
+use XoopsModules\Tadtools\Utility;
+
 include_once 'tadtools_header.php';
 
 class syntaxhighlighter
@@ -13,7 +15,7 @@ class syntaxhighlighter
     {
         global $xoTheme;
         get_jquery();
-        $TadToolsModuleConfig = TadToolsXoopsModuleConfig();
+        $TadToolsModuleConfig = Utility::TadToolsXoopsModuleConfig();
         $syntaxhighlighter_themes = !empty($TadToolsModuleConfig['syntaxhighlighter_themes']) ? $TadToolsModuleConfig['syntaxhighlighter_themes'] : 'shThemeDefault';
 
         if ($xoTheme) {

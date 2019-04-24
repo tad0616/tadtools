@@ -1,4 +1,6 @@
 <?php
+use XoopsModules\Tadtools\Utility;
+
 include_once 'tadtools_header.php';
 
 class CKEditor
@@ -16,7 +18,7 @@ class CKEditor
     //建構函數
     public function __construct($xoopsDirName = '', $ColName = '', $Value = '')
     {
-        $TadToolsModuleConfig = TadToolsXoopsModuleConfig();
+        $TadToolsModuleConfig = Utility::TadToolsXoopsModuleConfig();
         $this->xoopsDirName = $xoopsDirName;
         $this->ColName = $ColName;
         $this->Value = $Value;
@@ -95,7 +97,7 @@ class CKEditor
                 },';
         }
 
-        $TadToolsModuleConfig = TadToolsXoopsModuleConfig();
+        $TadToolsModuleConfig = Utility::TadToolsXoopsModuleConfig();
         $codemirror = $TadToolsModuleConfig['use_codemirror'] ? ',codemirror' : '';
 
         $editor .= "

@@ -833,4 +833,18 @@ class Utility
         file_put_contents($filename, $json);
     }
 
+    public static function TadToolsXoopsModuleConfig()
+    {
+        $modhandler = xoops_getHandler('module');
+        $TadToolsModule = $modhandler->getByDirname('tadtools');
+        if (is_object($TadToolsModule)) {
+            $config_handler = xoops_getHandler('config');
+            $TadToolsModuleConfig = $config_handler->getConfigsByCat(0, $TadToolsModule->getVar('mid'));
+
+            return $TadToolsModuleConfig;
+        }
+
+        return false;
+    }
+
 }
