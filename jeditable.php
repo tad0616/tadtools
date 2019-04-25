@@ -1,6 +1,9 @@
 <?php
-include_once 'tadtools_header.php';
-include_once 'jquery.php';
+
+use XoopsModules\Tadtools\Utility;
+
+// include_once 'tadtools_header.php';
+// include_once 'jquery.php';
 
 class jeditable
 {
@@ -74,7 +77,7 @@ class jeditable
         if (is_array($this->cols)) {
             $all_col = implode("\n", $this->cols);
         }
-        $jquery = ($this->show_jquery) ? get_jquery() : '';
+        $jquery = ($this->show_jquery) ? Utility::get_jquery() : '';
 
         if ($xoTheme and 'force' !== $mode) {
             $xoTheme->addScript('modules/tadtools/jeditable/jquery.jeditable.mini.js');

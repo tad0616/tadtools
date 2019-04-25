@@ -1,6 +1,9 @@
 <?php
-include_once 'tadtools_header.php';
-include_once 'jquery.php';
+
+use XoopsModules\Tadtools\Utility;
+
+// include_once 'tadtools_header.php';
+// include_once 'jquery.php';
 
 /*
 建立
@@ -158,7 +161,7 @@ class rating
     public function render($show_all = true)
     {
         global $xoTheme;
-        $jquery = get_jquery();
+        $jquery = Utility::get_jquery();
 
         $all_code = implode("\n", $this->code);
 

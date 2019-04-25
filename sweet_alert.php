@@ -1,7 +1,9 @@
 <?php
 
-include_once 'tadtools_header.php';
-include_once 'jquery.php';
+use XoopsModules\Tadtools\Utility;
+
+// include_once 'tadtools_header.php';
+// include_once 'jquery.php';
 
 class sweet_alert
 {
@@ -17,7 +19,7 @@ class sweet_alert
     public function render($func_name = '', $url = '', $var = '', $title = _TAD_DEL_CONFIRM_TITLE, $text = _TAD_DEL_CONFIRM_TEXT, $confirmButtonText = _TAD_DEL_CONFIRM_BTN, $type = 'warning', $showCancelButton = true)
     {
         global $xoTheme;
-        $jquery = $this->show_jquery ? get_jquery() : '';
+        $jquery = $this->show_jquery ? Utility::get_jquery() : '';
 
         if ($xoTheme) {
             $xoTheme->addStylesheet('modules/tadtools/sweet-alert/sweet-alert.css');

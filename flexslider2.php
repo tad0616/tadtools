@@ -1,6 +1,9 @@
 <?php
-include_once 'tadtools_header.php';
-include_once 'jquery.php';
+
+use XoopsModules\Tadtools\Utility;
+
+// include_once 'tadtools_header.php';
+// include_once 'jquery.php';
 
 class flexslider
 {
@@ -34,7 +37,7 @@ class flexslider
             $utf8_word_num = 90;
         }
 
-        $jquery = ($this->show_jquery) ? get_jquery() : '';
+        $jquery = ($this->show_jquery) ? Utility::get_jquery() : '';
 
         $all = $nav = '';
         $i = 1;

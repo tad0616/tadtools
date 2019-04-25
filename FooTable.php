@@ -1,5 +1,8 @@
 <?php
-include_once 'tadtools_header.php';
+
+use XoopsModules\Tadtools\Utility;
+
+// include_once 'tadtools_header.php';
 
 class FooTable
 {
@@ -17,7 +20,7 @@ class FooTable
         global $xoTheme;
         include_once 'jquery.php';
 
-        $jquery = $need_jquery ? get_jquery() : '';
+        $jquery = $need_jquery ? Utility::get_jquery() : '';
         if ($xoTheme) {
             $xoTheme->addStylesheet('modules/tadtools/FooTable/css/footable-0.1.css');
             $xoTheme->addScript('modules/tadtools/FooTable/js/footable-0.1.js');

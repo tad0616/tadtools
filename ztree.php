@@ -1,4 +1,7 @@
 <?php
+
+use XoopsModules\Tadtools\Utility;
+
 /*
 
 $path     = get_tad_link_cate_path($show_cate_sn);
@@ -25,7 +28,7 @@ $ztree_code = $ztree->render();
 $xoopsTpl->assign('ztree_code', $ztree_code);
 
  */
-include_once 'tadtools_header.php';
+// include_once 'tadtools_header.php';
 
 class ztree
 {
@@ -54,7 +57,7 @@ class ztree
     {
         global $xoTheme;
 
-        $jquery = get_jquery();
+        $jquery = Utility::get_jquery();
 
         if ($xoTheme) {
             $ztree = '';

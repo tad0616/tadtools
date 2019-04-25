@@ -1,6 +1,9 @@
 <?php
-include_once 'tadtools_header.php';
-include_once 'jquery.php';
+
+use XoopsModules\Tadtools\Utility;
+
+// include_once 'tadtools_header.php';
+// include_once 'jquery.php';
 
 class formValidator
 {
@@ -10,7 +13,7 @@ class formValidator
     //建構函數
     public function __construct($id = '', $show_jquery = true)
     {
-        get_jquery(true);
+        Utility::get_jquery(true);
         $this->show_jquery = $show_jquery;
         $this->id = $id;
     }
@@ -20,7 +23,7 @@ class formValidator
     {
         global $xoTheme;
 
-        get_jquery();
+        Utility::get_jquery();
 
         $LANGCODE = str_replace('-', '_', _LANGCODE);
 

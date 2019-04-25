@@ -153,7 +153,7 @@ class Utility
         $xoopsTpl->assign('xoops_pagetitle', $title);
     }
 
-//解決 basename 抓不到中文檔名的問題
+    //解決 basename 抓不到中文檔名的問題
     public static function get_basename($filename)
     {
         $filename = preg_replace('/^.+[\\\\\\/]/', '', $filename);
@@ -166,7 +166,7 @@ class Utility
     {
         $jquery = '';
         if ($use_jquery) {
-            $jquery = get_jquery($ui, true);
+            $jquery = self::get_jquery($ui, true);
         }
 
         $bootstrap_link = $bootstrap ? "<link rel='stylesheet' type='text/css' media='all' href='" . XOOPS_URL . "/modules/tadtools/bootstrap{$bootstrap_version}/css/bootstrap.css' />" : '';
@@ -194,8 +194,8 @@ class Utility
         return $main;
     }
 
-//自訂錯誤訊息
-    public static function /** @scrutinizer ignore-call */web_error($sql, $file = '', $line = '')
+    //自訂錯誤訊息
+    public static function web_error($sql, $file = '', $line = '')
     {
         global $xoopsDB, $xoopsModule, $xoopsUser;
         $isAdmin = ($xoopsUser and $xoopsModule) ? $xoopsUser->isAdmin($xoopsModule->mid()) : false;
@@ -213,7 +213,7 @@ class Utility
         die(html5($main));
     }
 
-//載入 bootstrap，目前僅後台用得到
+    //載入 bootstrap，目前僅後台用得到
     public static function get_bootstrap($mode = '')
     {
         global $xoopsConfig, $xoopsDB, $xoTheme, $xoopsTpl;
@@ -307,7 +307,7 @@ class Utility
         return $_SESSION['ez_url'];
     }
 
-//自動取得實體位置
+    //自動取得實體位置
     public static function get_xoops_path()
     {
         if (preg_match('/\/modules/', $_SERVER['SCRIPT_FILENAME'])) {
@@ -377,7 +377,7 @@ class Utility
         if (!$enable) {
             return;
         }
-        $jquery = get_jquery();
+        $jquery = self::get_jquery();
         $protocol = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
 
         $main = "
@@ -386,19 +386,19 @@ class Utility
         <script src='" . XOOPS_URL . "/modules/tadtools/social-likes/social-likes.min.js'></script>
         <script type='text/javascript'>
         $().ready(function() {
-          $('.social-likes').socialLikes({
-            url: '{$protocol}{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}',
-            title: '{$xoopsConfig['sitename']}',
-            counters: true,
-            singleTitle: 'Share it!'
-          });
+            $('.social-likes').socialLikes({
+                url: '{$protocol}{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}',
+                title: '{$xoopsConfig['sitename']}',
+                counters: true,
+                singleTitle: 'Share it!'
+            });
         });
         </script>
         <ul class='social-likes'>
-          <li class='facebook' title='Share link on Facebook'>Facebook</li>
-          <li class='twitter' title='Share link on Twitter'>Twitter</li>
-          <li class='plusone' title='Share link on Google+'>Google+</li>
-          <div class='pinterest' title='Share image on Pinterest' data-media=''>Pinterest</div>
+            <li class='facebook' title='Share link on Facebook'>Facebook</li>
+            <li class='twitter' title='Share link on Twitter'>Twitter</li>
+            <li class='plusone' title='Share link on Google+'>Google+</li>
+            <div class='pinterest' title='Share image on Pinterest' data-media=''>Pinterest</div>
         </ul>
         ";
 
@@ -418,11 +418,11 @@ class Utility
         $main = "
         <div id=\"fb-root\"></div>
         <script>(function(d, s, id) {
-          var js, fjs = d.getElementsByTagName(s)[0];
-          if (d.getElementById(id)) return;
-          js = d.createElement(s); js.id = id;
-          js.src = \"//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.9&appId=1825513194361728\";
-          fjs.parentNode.insertBefore(js, fjs);
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = \"//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.9&appId=1825513194361728\";
+            fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));</script>
 
         <div class='fb-comments' data-href='{$url}' data-width='100%' data-numposts='10' data-colorscheme='light' data-order-by='reverse_time'></div>
@@ -432,7 +432,7 @@ class Utility
         return $main;
     }
 
-//產生QR Code
+    //產生QR Code
     public static function mk_qrcode($url)
     {
         $imgurl = mk_qrcode_name($url);
@@ -446,10 +446,10 @@ class Utility
         }
     }
 
-//產生QR Code檔案的名稱
+    //產生QR Code檔案的名稱
     public static function mk_qrcode_name($url = '')
     {
-        $url = chk_qrcode_url($url);
+        $url = self::chk_qrcode_url($url);
         $imgurl = str_replace(XOOPS_URL, '', $url);
         $imgurl = str_replace('modules/', '', $imgurl);
         $imgurl = str_replace('/', '_', $imgurl);
@@ -489,7 +489,7 @@ class Utility
         return $url;
     }
 
-//單選回復原始資料函數
+    //單選回復原始資料函數
     public static function chk($DBV = null, $NEED_V = '', $defaul = '', $return = "checked='checked'")
     {
         if ($DBV == $NEED_V) {
@@ -501,7 +501,7 @@ class Utility
         return '';
     }
 
-//複選回復原始資料函數
+    //複選回復原始資料函數
     public static function chk2($default_array = '', $NEED_V = '', $default = 0)
     {
         if (in_array($NEED_V, $default_array)) {
@@ -513,16 +513,13 @@ class Utility
         return '';
     }
 
-//細部權限判斷
+    //細部權限判斷
     public static function power_chk($perm_name = '', $sn = '')
     {
         global $xoopsUser, $xoopsModule;
         if (!$xoopsModule) {
             return;
         }
-
-        // echo var_export($perm_name);
-        // echo var_export($sn);
 
         //取得目前使用者的群組編號
         if ($xoopsUser) {
@@ -552,10 +549,10 @@ class Utility
         return false;
     }
 
-//把字串換成群組
-    public static function txt_to_group_name($enable_group = '', $default_txt = '', $syb = '<br />')
+    //把字串換成群組
+    public static function txt_to_group_name($enable_group = '', $default_txt = '', $syb = '<br>')
     {
-        $groups_array = get_all_groups();
+        $groups_array = self::get_all_groups();
         if (empty($enable_group)) {
             $g_txt_all = $default_txt;
         } else {
@@ -570,7 +567,7 @@ class Utility
         return $g_txt_all;
     }
 
-//取得所有群組
+    //取得所有群組
     public static function get_all_groups()
     {
         global $xoopsDB;
@@ -583,7 +580,7 @@ class Utility
         return $data;
     }
 
-//輸出為UTF8
+    //輸出為UTF8
     public static function to_utf8($buffer = '')
     {
         if (_CHARSET === 'UTF-8') {
@@ -594,7 +591,7 @@ class Utility
         return $buffer;
     }
 
-//判斷字串是否為utf8
+    //判斷字串是否為utf8
     public static function is_utf8($str)
     {
         $i = 0;
@@ -622,7 +619,7 @@ class Utility
         return 1;
     }
 
-//轉換編碼 （_CHARSET 在後面時，$OS2Web 為 true，預設）
+    //轉換編碼 （_CHARSET 在後面時，$OS2Web 為 true，預設）
     public static function auto_charset($str = '', $OS_or_Web = 'web')
     {
         $os_charset = (PATH_SEPARATOR === ':') ? 'UTF-8' : 'Big5';
@@ -636,7 +633,7 @@ class Utility
         return $new_str;
     }
 
-//亂數字串
+    //亂數字串
     public static function randStr($len = 6, $format = 'ALL')
     {
         switch ($format) {
@@ -750,7 +747,7 @@ class Utility
 
         self::make_menu_json($interface_menu, $moduleName);
 
-        get_jquery();
+        self::get_jquery();
 
         $options = "<li><a href='index.php' title='" . _TAD_HOME . "'><i class='fa fa-home'></i></a></li>";
         if (is_array($interface_menu)) {
@@ -847,4 +844,51 @@ class Utility
         return false;
     }
 
+    public static function get_jquery($ui = false, $mode = '', $theme = 'base')
+    {
+        global $xoTheme;
+        if (!isset($xoTheme) or 'return' === $mode) {
+            $jqueryui_path = '';
+            if ($ui) {
+                $jqueryui_path = "
+                <link href='" . XOOPS_URL . "/modules/tadtools/jquery/themes/{$theme}/jquery.ui.all.css' rel='stylesheet' type='text/css'>
+                <script src='" . XOOPS_URL . "/modules/tadtools/jquery/ui/jquery-ui.js'></script>";
+            }
+
+            $ver = (int) str_replace('.', '', mb_substr(XOOPS_VERSION, 6, 5));
+            if ($ver >= 259) {
+                $jquery_path = "
+                <script type='text/javascript'>
+                if(typeof jQuery == 'undefined') {
+                document.write(\"<script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/jquery/jquery-3.2.1.js'><\/script>\");
+                // document.write(\"<script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/jquery/jquery-migrate-3.0.0.min.js'><\/script>\");
+                // document.write(\"<script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/jquery/jquery.jgrowl.js'><\/script>\");
+                }
+                </script>
+                $jqueryui_path
+                ";
+            } else {
+                $jquery_path = "
+                <script type='text/javascript'>
+                if(typeof jQuery == 'undefined') {
+                document.write(\"<script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/jquery/jquery-3.2.1.js'><\/script>\");
+                // document.write(\"<script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/jquery/jquery-migrate-1.4.1.min.js'><\/script>\");
+                // document.write(\"<script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/jquery/jquery.jgrowl.js'><\/script>\");
+                }
+                </script>
+                $jqueryui_path
+                ";
+            }
+
+            return $jquery_path;
+        } else {
+            $xoTheme->addScript('browse.php?Frameworks/jquery/jquery.js');
+            $ver = (int) str_replace('.', '', mb_substr(XOOPS_VERSION, 6, 5));
+
+            if ($ui) {
+                $xoTheme->addStylesheet("modules/tadtools/jquery/themes/{$theme}/jquery.ui.all.css");
+                $xoTheme->addScript('browse.php?Frameworks/jquery/plugins/jquery.ui.js');
+            }
+        }
+    }
 }

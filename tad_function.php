@@ -45,10 +45,10 @@ if (!function_exists('web_error')) {
 }
 
 //載入 bootstrap，目前僅後台用得到
-// function get_bootstrap($mode = '')
-// {
-//     return Utility::get_bootstrap($mode);
-// }
+function get_bootstrap($mode = '')
+{
+    return Utility::get_bootstrap($mode);
+}
 
 //自動取得網址
 if (!function_exists('get_xoops_url')) {

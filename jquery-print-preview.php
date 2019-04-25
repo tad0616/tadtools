@@ -1,4 +1,7 @@
 <?php
+
+use XoopsModules\Tadtools\Utility;
+
 /*
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/jquery.print-preview.php")){
 redirect_header("index.php",3, _MA_NEED_TADTOOLS);
@@ -16,8 +19,8 @@ $xoopsTpl->assign("module_css", '<link rel="stylesheet" href="' . XOOPS_URL . '/
 //  display: none;
 //}
  */
-include_once 'tadtools_header.php';
-include_once 'jquery.php';
+// include_once 'tadtools_header.php';
+// include_once 'jquery.php';
 
 class print_preview
 {
@@ -45,7 +48,7 @@ class print_preview
             ");
             $xoTheme->addStylesheet('modules/tadtools/jquery-print-preview/css/print-preview.css');
         } else {
-            $jquery = get_jquery();
+            $jquery = Utility::get_jquery();
 
             $print_preview = "
             {$jquery}

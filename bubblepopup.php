@@ -1,4 +1,7 @@
 <?php
+
+use XoopsModules\Tadtools\Utility;
+
 include_once 'tadtools_header.php';
 include_once 'jquery.php';
 
@@ -31,7 +34,7 @@ class bubblepopup
     public function render()
     {
         global $xoTheme;
-        get_jquery(true);
+        Utility::get_jquery(true);
 
         $all_code = implode("\n", $this->code);
 

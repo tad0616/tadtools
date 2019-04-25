@@ -1,7 +1,9 @@
 <?php
-include_once 'tadtools_header.php';
-include_once 'tad_function.php';
-include_once 'jquery.php';
+use XoopsModules\Tadtools\Utility;
+
+// include_once 'tadtools_header.php';
+// include_once 'tad_function.php';
+// include_once 'jquery.php';
 
 class smoothslides
 {
@@ -32,7 +34,7 @@ class smoothslides
     {
         global $xoTheme;
 
-        $randStr = randStr(6, 'CHAR');
+        $randStr = Utility::randStr(6, 'CHAR');
         $id = "{$id}{$randStr}";
 
         $utf8_word_num = $this->word_num * 3;

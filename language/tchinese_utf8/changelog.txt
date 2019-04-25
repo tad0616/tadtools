@@ -843,7 +843,7 @@ TadTools 1.2 (2010-11-04 釋出)
 2. 加入水平路徑工具 jBreadCrumb
 3. 加入影片播放套件 jw player 5.3
 4. 修正引入mainfile.php 路徑
-5. 加入取得 jquery 函數 get_jquery()
+5. 加入取得 jquery 函數  Utility::get_jquery()
 6. 加入jeditable，點擊編輯功能
 
 

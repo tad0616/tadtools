@@ -5,7 +5,7 @@ $home['title']=$home_title;
 $home['url']=$home_url;
 
 $sql = "select csn,of_csn,title from ".$xoopsDB->prefix("tad_gallery_cate")." order by sort";
-$result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+$result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 while(list($csn,$of_csn,$title)=$xoopsDB->fetchRow($result)){
 $title_arr[$csn]=$title;
 $cate_arr[$csn]=$of_csn;
@@ -20,7 +20,7 @@ $dtree_code=$dtree->render("11pt",true);
 $xoopsTpl->assign('dtree_code',$dtree_code);
 
  */
-include_once 'tadtools_header.php';
+// include_once 'tadtools_header.php';
 
 class dtree
 {

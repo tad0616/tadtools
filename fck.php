@@ -1,7 +1,7 @@
 <?php
 use XoopsModules\Tadtools\Utility;
 
-include_once 'tadtools_header.php';
+// include_once 'tadtools_header.php';
 
 class CKEditor
 {
@@ -75,7 +75,7 @@ class CKEditor
             $summernote = new summernote($this->ColName, $this->Value);
             $editor = $summernote->render();
         } else {
-            get_jquery();
+            Utility::get_jquery();
             $_SESSION['xoops_mod_name'] = $this->xoopsDirName;
 
             // before being fed to the textarea of CKEditor

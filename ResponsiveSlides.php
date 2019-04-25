@@ -1,7 +1,10 @@
 <?php
-include_once 'tadtools_header.php';
-include_once 'tad_function.php';
-include_once 'jquery.php';
+
+use XoopsModules\Tadtools\Utility;
+
+// include_once 'tadtools_header.php';
+// include_once 'tad_function.php';
+// include_once 'jquery.php';
 
 class slider
 {
@@ -33,7 +36,7 @@ class slider
     {
         global $xoTheme;
 
-        $randStr = randStr(6, 'CHAR');
+        $randStr = Utility::randStr(6, 'CHAR');
         $id = "{$id}{$randStr}";
 
         $utf8_word_num = $this->word_num * 3;
@@ -41,7 +44,7 @@ class slider
             $utf8_word_num = 90;
         }
 
-        get_jquery();
+        Utility::get_jquery();
 
         $all = $nav = '';
         $i = 1;

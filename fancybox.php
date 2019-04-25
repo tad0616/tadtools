@@ -1,4 +1,6 @@
 <?php
+use XoopsModules\Tadtools\Utility;
+
 /*
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/fancybox.php")){
 redirect_header("index.php",3, _MA_NEED_TADTOOLS);
@@ -9,8 +11,8 @@ $fancybox_code=$fancybox->render();
 $xoopsTpl->assign('fancybox_code',$fancybox_code);
 加在連結中：class="edit_dropdown" rel="group"（圖） data-fancybox-type="iframe"（HTML）
  */
-include_once 'tadtools_header.php';
-include_once 'jquery.php';
+// include_once 'tadtools_header.php';
+// include_once 'jquery.php';
 
 class fancybox
 {
@@ -22,7 +24,6 @@ class fancybox
     //建構函數
     public function __construct($name = '', $width = '90%', $height = null, $show_jquery = true, $show_js = true)
     {
-        //$this->name=randStr();
         $this->name = $name;
         $this->width = $width;
 
@@ -56,7 +57,7 @@ class fancybox
         $autoPlay = $auto_play ? 'autoPlay: true,' : '';
         $playSpeed = $playSpeed ? "playSpeed: {$playSpeed}," : '';
 
-        $jquery = $this->show_jquery ? get_jquery() : '';
+        $jquery = $this->show_jquery ? Utility::get_jquery() : '';
 
         if ($xoTheme) {
             $xoTheme->addScript('modules/tadtools/fancyBox/lib/jquery.mousewheel.pack.js');
@@ -115,7 +116,7 @@ class fancybox
     public function renderForm($url = '', $reload = true, $prevent_closed_outside = false, $autoPlay = false, $playSpeed = 0)
     {
         global $xoTheme;
-        $jquery = $this->show_jquery ? get_jquery() : '';
+        $jquery = $this->show_jquery ? Utility::get_jquery() : '';
 
         $reload_code = $reload ? ',
         afterClose  :function () {

@@ -1,4 +1,5 @@
 <?php
+use XoopsModules\Tadtools\Utility;
 $xoopsOption['template_main'] = 'tadtools_adm_index.tpl'; //設定樣板檔（必）
 include_once 'header.php'; //引入預設檔頭（必）
 
@@ -10,7 +11,7 @@ function tadtools_setup()
     $use_bootstrap = $bootstrap_color = '';
 
     $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tadtools_setup') . '`';
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     //$tt_theme,$tt_use_bootstrap,$tt_bootstrap_color
     while (list($tt_theme, $tt_use_bootstrap, $tt_bootstrap_color, $tt_theme_kind) = $xoopsDB->fetchRow($result)) {
         // $setup[$tt_theme]=array();
@@ -37,7 +38,7 @@ function tadtools_setup()
                 if (empty($tt_theme_kind_arr[$theme]) or 0 == $theme_change) {
                     $sql = 'replace into `' . $xoopsDB->prefix('tadtools_setup') . "` (`tt_theme` , `tt_use_bootstrap`,`tt_bootstrap_color` , `tt_theme_kind`) values('{$theme}', '0', '{$theme_color}', '{$theme_kind}')";
                     //die($sql);
-                    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+                    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
                     $themes[$i]['theme_kind'] = $theme_kind;
                     $themes[$i]['use_bootstrap'] = '0';
@@ -104,7 +105,7 @@ function mk_bootstrap_menu_options($theme_kind = '', $mode = 'light')
 
     $dir = XOOPS_ROOT_PATH . "/modules/tadtools/{$theme_kind}/themes/{$mode}/";
     $theme_array[$theme_kind]['kind'] = $theme_kind;
-    $theme_array[$theme_kind]['theme_path'] = (string)($theme_kind);
+    $theme_array[$theme_kind]['theme_path'] = (string) ($theme_kind);
     $theme_array[$theme_kind]['theme'] = $theme_kind;
     $theme_array[$theme_kind]['color'] = _TT_COLOR_DEFAULT;
     if (is_dir($dir)) {
@@ -164,7 +165,7 @@ function save()
     global $xoopsDB;
     foreach ($_POST['tt_use_bootstrap'] as $tt_theme => $tt_use_bootstrap) {
         $sql = 'replace into `' . $xoopsDB->prefix('tadtools_setup') . "` (`tt_theme` , `tt_use_bootstrap`,`tt_bootstrap_color` , `tt_theme_kind`) values('{$tt_theme}', '{$tt_use_bootstrap}', '{$_POST['tt_bootstrap_color'][$tt_theme]}', '{$_POST['tt_theme_kind'][$tt_theme]}')";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 }
 /*-----------執行動作判斷區----------*/

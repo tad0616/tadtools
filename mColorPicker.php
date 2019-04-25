@@ -1,4 +1,7 @@
 <?php
+
+use XoopsModules\Tadtools\Utility;
+
 /*
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/mColorPicker.php")){
 redirect_header("index.php",3, _MA_NEED_TADTOOLS);
@@ -12,8 +15,8 @@ $xoopsTpl->assign('mColorPicker_code',$mColorPicker_code);
 <input type='text' name='color' class='color' value='{$act['color']}' data-text='hidden' data-hex='true' style='height:20px;width:20px;' />
 
  */
-include_once 'tadtools_header.php';
-include_once 'jquery.php';
+// include_once 'tadtools_header.php';
+// include_once 'jquery.php';
 
 class mColorPicker
 {
@@ -28,7 +31,7 @@ class mColorPicker
     public function render()
     {
         global $xoTheme;
-        $jquery = $this->show_jquery ? get_jquery() : '';
+        $jquery = $this->show_jquery ? Utility::get_jquery() : '';
 
         if ($xoTheme) {
             $xoTheme->addScript('modules/tadtools/mColorPicker/javascripts/mColorPicker.js');

@@ -1,4 +1,6 @@
 <?php
+
+use XoopsModules\Tadtools\Utility;
 /*
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/colorbox.php")){
 redirect_header("index.php",3, _MA_NEED_TADTOOLS);
@@ -29,7 +31,7 @@ class colorbox
     public function render($ready_config = true)
     {
         global $xoTheme;
-        $jquery = get_jquery();
+        $jquery = Utility::get_jquery();
         $width_setup = ('auto' === $this->width) ? '' : ", width:'" . $this->width . "'";
         $height_setup = ('auto' === $this->height) ? '' : ", height:'" . $this->height . "'";
 

@@ -1,4 +1,7 @@
 <?php
+
+use XoopsModules\Tadtools\Utility;
+
 /*
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/easy_responsive_tabs.php")){
 redirect_header("index.php",3, _MA_NEED_TADTOOLS);
@@ -22,8 +25,8 @@ $responsive_tabs->rander();
 </div>
 
  */
-include_once 'tadtools_header.php';
-include_once 'jquery.php';
+// include_once 'tadtools_header.php';
+// include_once 'jquery.php';
 
 class easy_responsive_tabs
 {
@@ -47,7 +50,7 @@ class easy_responsive_tabs
     public function rander($tabidentify = 'vert', $function = '')
     {
         global $xoTheme;
-        $jquery = get_jquery();
+        $jquery = Utility::get_jquery();
         $responsive_tabs = '';
         if ($xoTheme) {
             $xoTheme->addScript('modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js');

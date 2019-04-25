@@ -1,5 +1,5 @@
 <?php
-include_once 'tadtools_header.php';
+// include_once 'tadtools_header.php';
 
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');

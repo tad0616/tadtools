@@ -67,7 +67,7 @@ class CKEditor
     {
         global $xoTheme, $TadToolsModuleConfig;
 
-        get_jquery();
+        Utility::get_jquery();
         $_SESSION['xoops_mod_name'] = $this->xoopsDirName;
 
         // before being fed to the textarea of CKEditor

@@ -1,4 +1,6 @@
 <?php
+
+use XoopsModules\Tadtools\Utility;
 /*
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/bootstrap3-editable.php")){
 redirect_header("index.php",3, _MA_NEED_TADTOOLS);
@@ -34,7 +36,7 @@ class bootstrap3_editable
     {
         global $xoTheme;
 
-        $jquery = $this->show_jquery ? get_jquery() : '';
+        $jquery = $this->show_jquery ? Utility::get_jquery() : '';
 
         if ($xoTheme) {
             $xoTheme->addStylesheet('modules/tadtools/bootstrap3-editable/css/bootstrap-editable.css');

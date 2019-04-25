@@ -1,4 +1,6 @@
 <?php
+use XoopsModules\Tadtools\Utility;
+
 /*
 
 //單一表單
@@ -129,7 +131,7 @@ class TadDataCenter
         global $xoopsDB, $xoopsModule;
         if ('' != $this->module_dirname) {
             $sql = 'select mid from ' . $xoopsDB->prefix('modules') . " where dirname='{$this->module_dirname}'";
-            $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+            $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             list($this->mid) = $xoopsDB->fetchRow($result);
         } elseif ($xoopsModule) {
             $this->mid = $xoopsModule->mid();
@@ -280,7 +282,7 @@ class TadDataCenter
                 $sql = "insert into `{$this->TadDataCenterTblName}`
                 (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`, `col_id`, `update_time`)
                 values('{$this->mid}' , '{$this->col_name}' , '{$this->col_sn}' , '{$name}' , '{$val}' , '{$sort}', '', now())";
-                $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+                $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             }
         }
     }
@@ -308,7 +310,7 @@ class TadDataCenter
                 $sql = "insert into `{$this->TadDataCenterTblName}`
                 (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`, `col_id`, `update_time`)
                 values('{$this->mid}' , '{$this->col_name}' , '{$this->col_sn}' , '{$name}' , '{$val}' , '{$sort}', '{$v['col_id']}', now())";
-                $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+                $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             }
         }
     }
@@ -327,7 +329,7 @@ class TadDataCenter
         $sql = "select `data_name`,`data_sort`, `data_value` from `{$this->TadDataCenterTblName}`
             where `mid`= '{$this->mid}' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}' {$and_name} {$and_sort} order by data_sort";
 
-        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         if (isset($data_sort)) {
             list($data_name, $data_sort, $data_value) = $xoopsDB->fetchRow($result);
 
@@ -351,7 +353,7 @@ class TadDataCenter
         $sql = "select * from `{$this->TadDataCenterTblName}`
                 where `mid`= '{$this->mid}' and `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' and `data_name`='dcq' {$and_sort} order by data_sort";
 
-        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         if ($sort) {
             $all = $xoopsDB->fetchArray($result);
 
@@ -376,7 +378,7 @@ class TadDataCenter
         $sql = "delete from `{$this->TadDataCenterTblName}`
             where `mid`= '{$this->mid}' and `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' {$and_name} {$and_sort}";
         // die("$sql ,$file, $line");
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 
     public function mk_form_group($left_width, $right_width, $label, $form, $input_group = false, $help = '', $require = '')
@@ -551,7 +553,7 @@ class TadDataCenter
             $sql = "insert into `{$this->TadDataCenterTblName}`
                     (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`, `col_id`, `update_time`)
                     values('{$this->mid}' , '{$this->col_name}' , '{$this->col_sn}' , 'dcq' , '{$json_val}' , '{$sort}' , '{$col_id}' , now())";
-            $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             if ($dcq['col_id'] != $dcq['old_col_id']) {
                 $this->update_col_id($dcq['old_col_id'], $dcq['col_id']);
             }
@@ -564,7 +566,7 @@ class TadDataCenter
         global $xoopsDB;
         $sql = "update `{$this->TadDataCenterTblName}` set `data_name`='{$this->col_name}_{$this->col_sn}_dcq_{$new_col_id}' where `data_name`='{$this->col_name}_{$this->col_sn}_dcq_{$old_col_id}'";
         // die($sql);
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 
     //取得自訂表單題目設定
@@ -791,7 +793,7 @@ class TadDataCenter
             foreach ($data_name as $name) {
                 $sql = "select col_sn, data_sort ,data_value from `{$this->TadDataCenterTblName}`
                     where `mid`= '{$this->mid}' and `data_name`='{$name}' $and_col_name $and_col_sn order by col_sn";
-                $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+                $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
                 while (list($col_sn, $data_sort, $data_value) = $xoopsDB->fetchRow($result)) {
                     $values[$col_sn][$name][$data_sort] = $data_value;
@@ -800,7 +802,7 @@ class TadDataCenter
         } else {
             $sql = "select col_sn, data_sort ,data_value from `{$this->TadDataCenterTblName}`
             where `mid`= '{$this->mid}' and `data_name`='{$data_name}' $and_col_name $and_col_sn order by col_sn";
-            $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+            $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
             while (list($col_sn, $data_sort, $data_value) = $xoopsDB->fetchRow($result)) {
                 $values[$col_sn][$data_name][$data_sort] = $data_value;

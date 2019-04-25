@@ -1,5 +1,5 @@
 <?php
-include_once 'tadtools_header.php';
+// include_once 'tadtools_header.php';
 
 class spruto_player
 {

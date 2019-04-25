@@ -1,5 +1,8 @@
 <?php
-include_once 'tadtools_header.php';
+
+use XoopsModules\Tadtools\Utility;
+
+// include_once 'tadtools_header.php';
 
 class elrte
 {
@@ -53,7 +56,7 @@ class elrte
         $content = str_replace('[', '&#91;', $content);
         $LANGCODE = str_replace('-', '_', _LANGCODE);
 
-        $jquery = get_jquery(true);
+        $jquery = Utility::get_jquery(true);
 
         if ($xoTheme) {
             $xoTheme->addStylesheet('modules/tadtools/css/normalize.css');

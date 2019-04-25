@@ -1,6 +1,9 @@
 <?php
-include_once 'tadtools_header.php';
-include_once 'jquery.php';
+
+use XoopsModules\Tadtools\Utility;
+
+// include_once 'tadtools_header.php';
+// include_once 'jquery.php';
 
 class treetable
 {
@@ -37,7 +40,7 @@ class treetable
     {
         global $xoTheme;
 
-        $jquery = ($this->show_jquery) ? get_jquery(true) : '';
+        $jquery = ($this->show_jquery) ? Utility::get_jquery(true) : '';
 
         $expanded = ($this->expanded) ? ",initialState: 'expanded'" : '';
 
