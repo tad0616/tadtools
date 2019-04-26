@@ -1,6 +1,7 @@
 <?php
 
 use XoopsModules\Tadtools\Utility;
+
 /*
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/colorbox.php")){
 redirect_header("index.php",3, _MA_NEED_TADTOOLS);
@@ -50,9 +51,9 @@ class colorbox
             }
         } else {
             $colorbox = "
-              <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='" . TADTOOLS_URL . "/colorbox/colorbox.css' />
+              <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='" . XOOPS_URL . "/modules/tadtools/colorbox/colorbox.css' />
               {$jquery}
-              <script type='text/javascript' src='" . TADTOOLS_URL . "/colorbox/jquery.colorbox.js'></script>
+              <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/colorbox/jquery.colorbox.js'></script>
               ";
 
             if ($ready_config) {

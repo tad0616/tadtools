@@ -45,7 +45,7 @@ class stickytableheaders
             $main = "
       {$jquery}
 
-      <script src='" . TADTOOLS_URL . "/stickytableheaders/jquery.stickytableheaders.js'></script>
+      <script src='" . XOOPS_URL . "/modules/tadtools/stickytableheaders/jquery.stickytableheaders.js'></script>
       <script type='text/javascript'>
         $(document).ready(function(){
           $('{$name}').stickyTableHeaders($showFixedOffset);

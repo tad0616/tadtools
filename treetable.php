@@ -131,10 +131,10 @@ class treetable
         } else {
             $main = "
             $jquery
-            <link href='" . TADTOOLS_URL . "/treeTable/stylesheets/jquery.treetable.css' rel='stylesheet'  />
-            <link href='" . TADTOOLS_URL . "/treeTable/stylesheets/jquery.treetable.theme.default.css' rel='stylesheet' />
+            <link href='" . XOOPS_URL . "/modules/tadtools/treeTable/stylesheets/jquery.treetable.css' rel='stylesheet'  />
+            <link href='" . XOOPS_URL . "/modules/tadtools/treeTable/stylesheets/jquery.treetable.theme.default.css' rel='stylesheet' />
 
-            <script type='text/javascript' src='" . TADTOOLS_URL . "/treeTable/javascripts/src/jquery.treetable.js'></script>
+            <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/treeTable/javascripts/src/jquery.treetable.js'></script>
             <script type='text/javascript'>
             $(document).ready(function()  {
                 $('{$this->tbl_id}').treetable({ expandable: true $expanded });

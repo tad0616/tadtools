@@ -68,13 +68,13 @@ class ztree
                 $xoTheme->addScript('modules/tadtools/ztree/js/jquery.ztree.exedit-3.5.js');
             }
         } else {
-            $drag_js_file = ($this->save_drag_file or $this->save_sort_file) ? "<script type='text/javascript' src='" . TADTOOLS_URL . "/ztree/js/jquery.ztree.exedit-3.5.js'></script>" : '';
+            $drag_js_file = ($this->save_drag_file or $this->save_sort_file) ? "<script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/ztree/js/jquery.ztree.exedit-3.5.js'></script>" : '';
 
             $ztree = "
             {$jquery}
-            <link rel='StyleSheet' href='" . TADTOOLS_URL . "/ztree/css/zTreeStyle/zTreeStyle.css' type='text/css' />
-            <script type='text/javascript' src='" . TADTOOLS_URL . "/ztree/js/jquery.ztree.core-3.5.js'></script>
-            <script type='text/javascript' src='" . TADTOOLS_URL . "/ztree/js/jquery.ztree.excheck-3.5.js'></script>
+            <link rel='StyleSheet' href='" . XOOPS_URL . "/modules/tadtools/ztree/css/zTreeStyle/zTreeStyle.css' type='text/css' />
+            <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/ztree/js/jquery.ztree.core-3.5.js'></script>
+            <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/ztree/js/jquery.ztree.excheck-3.5.js'></script>
             $drag_js_file
             ";
         }

@@ -53,7 +53,7 @@ class slider
             $content = xoops_substr(strip_tags($item_content['content']), 0, $utf8_word_num);
 
             $pi = ($i % 2) ? '1' : '2';
-            $image = empty($item_content['image']) ? TADTOOLS_URL . "/ResponsiveSlides/images/demo{$pi}.jpg" : $item_content['image'];
+            $image = empty($item_content['image']) ? XOOPS_URL . "/modules/tadtools/ResponsiveSlides/images/demo{$pi}.jpg" : $item_content['image'];
 
             $content_div = $content ? "<div style='font-size:1em;'>{$content}</div>" : '';
             $caption = ($content or $title) ? "
@@ -118,10 +118,10 @@ class slider
 
         // } else {
         $main = "
-            <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/ResponsiveSlides/reset.css' />
-            <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/ResponsiveSlides/responsiveslides.css' />
+            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/ResponsiveSlides/reset.css' />
+            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/ResponsiveSlides/responsiveslides.css' />
             $jquery
-            <script language='javascript' type='text/javascript' src='" . TADTOOLS_URL . "/ResponsiveSlides/responsiveslides.js'></script>
+            <script language='javascript' type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/ResponsiveSlides/responsiveslides.js'></script>
 
             <script type='text/javascript'>
                 $(document).ready( function(){

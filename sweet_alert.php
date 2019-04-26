@@ -45,8 +45,8 @@ class sweet_alert
         } else {
             $main = "
             {$jquery}
-            <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/sweet-alert/sweet-alert.css' />
-            <script type='text/javascript' src='" . TADTOOLS_URL . "/sweet-alert/sweet-alert.js'></script>
+            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/sweet-alert/sweet-alert.css' />
+            <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/sweet-alert/sweet-alert.js'></script>
             <script type='text/javascript'>
               function {$func_name}($var){
                 swal({

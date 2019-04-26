@@ -88,8 +88,8 @@ class CKEditor
                 $xoTheme->addScript('modules/tadtools/ckeditor/adapters/jquery.js');
             } else {
                 $editor = "
-                <script type='text/javascript' src='" . TADTOOLS_URL . "/ckeditor/ckeditor.js'></script>
-                <script type='text/javascript' src='" . TADTOOLS_URL . "/ckeditor/adapters/jquery.js'></script>";
+                <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/ckeditor/ckeditor.js'></script>
+                <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/ckeditor/adapters/jquery.js'></script>";
             }
 
             $other_css = '';
@@ -118,15 +118,15 @@ class CKEditor
                 height : '{$this->Height}' ,
                 language : '" . _LANGCODE . "' ,
                 toolbar : '{$this->ToolbarSet}' ,
-                contentsCss : ['" . TADTOOLS_URL . "/bootstrap3/css/bootstrap.css','" . TADTOOLS_URL . "/css/font-awesome/css/font-awesome.css'{$other_css}],
+                contentsCss : ['" . XOOPS_URL . "/modules/tadtools/bootstrap3/css/bootstrap.css','" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css'{$other_css}],
                 extraPlugins: 'syntaxhighlight,oembed,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak,fontawesome{$extra_uploadcare}',
                 {$uploadcare_setup}
-                filebrowserBrowseUrl : '" . TADTOOLS_URL . '/elFinder/elfinder.php?type=file&mod_dir=' . $this->xoopsDirName . "',
-                filebrowserImageBrowseUrl : '" . TADTOOLS_URL . '/elFinder/elfinder.php?type=image&mod_dir=' . $this->xoopsDirName . "',
-                filebrowserFlashBrowseUrl : '" . TADTOOLS_URL . '/elFinder/elfinder.php?type=flash&mod_dir=' . $this->xoopsDirName . "',
-                filebrowserUploadUrl : '" . TADTOOLS_URL . '/upload.php?type=file&mod_dir=' . $this->xoopsDirName . "',
-                filebrowserImageUploadUrl : '" . TADTOOLS_URL . '/upload.php?type=image&mod_dir=' . $this->xoopsDirName . "',
-                filebrowserFlashUploadUrl : '" . TADTOOLS_URL . '/upload.php?type=flash&mod_dir=' . $this->xoopsDirName . "',
+                filebrowserBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=file&mod_dir=' . $this->xoopsDirName . "',
+                filebrowserImageBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=image&mod_dir=' . $this->xoopsDirName . "',
+                filebrowserFlashBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=flash&mod_dir=' . $this->xoopsDirName . "',
+                filebrowserUploadUrl : '" . XOOPS_URL . '/modules/tadtools/upload.php?type=file&mod_dir=' . $this->xoopsDirName . "',
+                filebrowserImageUploadUrl : '" . XOOPS_URL . '/modules/tadtools/upload.php?type=image&mod_dir=' . $this->xoopsDirName . "',
+                filebrowserFlashUploadUrl : '" . XOOPS_URL . '/modules/tadtools/upload.php?type=flash&mod_dir=' . $this->xoopsDirName . "',
                 qtRows: 10, // Count of rows
                 qtColumns: 10, // Count of columns
                 qtBorder: '1', // Border of inserted table

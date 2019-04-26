@@ -43,10 +43,10 @@ class fullcalendar
         } else {
             $fullcalendar = "
             $jquery
-            <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/fullcalendar/fullcalendar.css'>
-            <script src='" . TADTOOLS_URL . "/fullcalendar/lib/moment.min.js' type='text/javascript'></script>
-            <script src='" . TADTOOLS_URL . "/fullcalendar/fullcalendar.js' type='text/javascript'></script>
-            <script src='" . TADTOOLS_URL . "/fullcalendar/locale-all.js' type='text/javascript'></script>";
+            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/fullcalendar/fullcalendar.css'>
+            <script src='" . XOOPS_URL . "/modules/tadtools/fullcalendar/lib/moment.min.js' type='text/javascript'></script>
+            <script src='" . XOOPS_URL . "/modules/tadtools/fullcalendar/fullcalendar.js' type='text/javascript'></script>
+            <script src='" . XOOPS_URL . "/modules/tadtools/fullcalendar/locale-all.js' type='text/javascript'></script>";
         }
 
         $js_parameter = '';

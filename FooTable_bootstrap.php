@@ -34,9 +34,9 @@ class FooTable
             ");
         } else {
             $FooTable = "
-            <link href='" . TADTOOLS_URL . "/footable-bootstrap/css/footable.bootstrap.min.css' rel='stylesheet' type='text/css' >
+            <link href='" . XOOPS_URL . "/modules/tadtools/footable-bootstrap/css/footable.bootstrap.min.css' rel='stylesheet' type='text/css' >
             $jquery
-            <script src='" . TADTOOLS_URL . "/footable-bootstrap/js/footable.min.js' type='text/javascript'></script>
+            <script src='" . XOOPS_URL . "/modules/tadtools/footable-bootstrap/js/footable.min.js' type='text/javascript'></script>
             <script type='text/javascript'>
               $(function() {
                 $('{$this->selector}').footable();

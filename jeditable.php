@@ -92,7 +92,7 @@ class jeditable
         } else {
             $main = "
             $jquery
-            <script src='" . TADTOOLS_URL . "/jeditable/jquery.jeditable.mini.js' type='text/javascript' language='JavaScript'></script>
+            <script src='" . XOOPS_URL . "/modules/tadtools/jeditable/jquery.jeditable.mini.js' type='text/javascript' language='JavaScript'></script>
             <script type='text/javascript'>
              $(document).ready(function()
              {

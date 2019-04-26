@@ -52,8 +52,8 @@ class print_preview
 
             $print_preview = "
             {$jquery}
-            <link rel='stylesheet' href='" . TADTOOLS_URL . "/jquery-print-preview/css/print-preview.css' type='text/css' media='screen'>
-            <script type='text/javascript' src='" . TADTOOLS_URL . "/jquery-print-preview/jquery.print-preview.js'></script>
+            <link rel='stylesheet' href='" . XOOPS_URL . "/modules/tadtools/jquery-print-preview/css/print-preview.css' type='text/css' media='screen'>
+            <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/jquery-print-preview/jquery.print-preview.js'></script>
             <script>
               \$('{$this->name}').printPreview();
             </script>

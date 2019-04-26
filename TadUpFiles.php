@@ -425,9 +425,9 @@ class TadUpFiles
                     $fext = pathinfo($file_name, PATHINFO_EXTENSION);
                     // die(TADTOOLS_PATH . "/images/mimetype/{$fext}.png");
                     if (file_exists(TADTOOLS_PATH . "/images/mimetype/{$fext}.png")) {
-                        $thumb_pic = TADTOOLS_URL . "/images/mimetype/{$fext}.png";
+                        $thumb_pic = XOOPS_URL . "/modules/tadtools/images/mimetype/{$fext}.png";
                     } else {
-                        $thumb_pic = TADTOOLS_URL . '/multiple-file-upload/downloads.png';
+                        $thumb_pic = XOOPS_URL . '/modules/tadtools/multiple-file-upload/downloads.png';
                     }
                     $thumb_tool = "
                     <div class='row'>
@@ -465,7 +465,7 @@ class TadUpFiles
                         </tr>
                     </table>";
 
-                    $thumb_style = "<a name='{$files_sn}' id='thumb{$files_sn}' href='{$this->TadUpFilesImgUrl}/{$file_name}' style='display: block; width: 120px; height: 80px; overflow: hidden; background-color: {$this->thumb_bg_color}; background-image: url({$thumb_pic}),url(" . TADTOOLS_URL . "/images/transparent.png); background-position: center center; background-repeat: no-repeat; background-size: contain; border: 1px solid gray; margin: 0px auto;' title='{$description}' class='fancybox_demo' rel='demo'></a>";
+                    $thumb_style = "<a name='{$files_sn}' id='thumb{$files_sn}' href='{$this->TadUpFilesImgUrl}/{$file_name}' style='display: block; width: 120px; height: 80px; overflow: hidden; background-color: {$this->thumb_bg_color}; background-image: url({$thumb_pic}),url(" . XOOPS_URL . "/modules/tadtools/images/transparent.png); background-position: center center; background-repeat: no-repeat; background-size: contain; border: 1px solid gray; margin: 0px auto;' title='{$description}' class='fancybox_demo' rel='demo'></a>";
 
                     $thumb_style2 = "<a class='thumbnail' style='display:inline-block; width:{$this->thumb_width};height:{$this->thumb_height};overflow:hidden;background-color:{$this->thumb_bg_color};background-image:url({$thumb_pic});background-position:{$this->thumb_position};background-repeat:{$this->thumb_repeat};background-size:{$this->thumb_size}; margin-bottom: 4px;' title='{$description}'></a>";
                 }
@@ -1403,7 +1403,7 @@ class TadUpFiles
                 }
 
                 $tmp_dir = XOOPS_ROOT_PATH . "/uploads/{$this->prefix}/tmp/{$files_sn}";
-                $this->delete_directory($tmp_dir);
+                Utility::delete_directory($tmp_dir);
             }
         }
 
@@ -1741,7 +1741,7 @@ class TadUpFiles
                         $all_files .= "<li>{$file_info['link']}</li>";
                     } else {
                         if (mb_strpos($file_info['tag'], '360') !== false) {
-                            $linkto = TADTOOLS_URL . "/360.php?photo={$file_info['path']}";
+                            $linkto = XOOPS_URL . "/modules/tadtools/360.php?photo={$file_info['path']}";
                             $all_files .= "<li><a href='{$linkto}' class='fancybox_{$this->col_name}' data-fancybox-type='iframe'>{$file_info['original_filename']}</a></li>";
                         } else {
                             $all_files .= "<li>{$file_info['url']}</li>";
@@ -1756,28 +1756,28 @@ class TadUpFiles
                     $description = empty($file_info['description']) ? $file_info['original_filename'] : $file_info['description'];
                     if ($file_info['kind'] === 'file') {
                         $fext = pathinfo($file_info['path'], PATHINFO_EXTENSION);
-                        $thumb_pic = TADTOOLS_URL . "/images/mimetype/{$fext}.png";
+                        $thumb_pic = XOOPS_URL . "/modules/tadtools/images/mimetype/{$fext}.png";
                         //$fext=strtolower(substr($file_info['path'], -3));
                         if ($fext === 'mp4' or $fext === 'flv' or $fext === '3gp' or $fext === 'mp3') {
-                            // $thumb_pic = TADTOOLS_URL . "/images/video.png";
+                            // $thumb_pic = XOOPS_URL . "/modules/tadtools/images/video.png";
                             if ($this->showFancyBox) {
                                 $fancyboxset = "fancybox_{$this->col_name}";
                                 $rel = "data-fancybox-type='iframe'";
                             } else {
                                 $fancyboxset = $rel = '';
                             }
-                            $linkto = TADTOOLS_URL . "/video.php?file_name={$file_info['original_file_path']}";
+                            $linkto = XOOPS_URL . "/modules/tadtools/video.php?file_name={$file_info['original_file_path']}";
                         } elseif ($fext === 'jpg' or $fext === 'gif' or $fext === 'png' or $fext === 'jpeg') {
                             if (mb_strpos($file_info['tag'], '360') !== false) {
                                 $fancyboxset = "fancybox_{$this->col_name}";
                                 $rel = "data-fancybox-type='iframe'";
-                                $linkto = TADTOOLS_URL . "/360.php?photo={$file_info['path']}";
+                                $linkto = XOOPS_URL . "/modules/tadtools/360.php?photo={$file_info['path']}";
                             } else {
                                 $fancyboxset = "fancybox_{$this->col_name}";
                                 $rel = "rel='f{$this->col_name}'";
                             }
                         } else {
-                            // $thumb_pic   = TADTOOLS_URL . "/multiple-file-upload/downloads.png";
+                            // $thumb_pic   = XOOPS_URL . "/modules/tadtools/multiple-file-upload/downloads.png";
                             $fancyboxset = $rel = '';
                         }
                         $thumb_css = 'background-color: tranparent;';
@@ -1787,7 +1787,7 @@ class TadUpFiles
                             if (mb_strpos($file_info['tag'], '360') !== false) {
                                 $fancyboxset = "fancybox_{$this->col_name}";
                                 $rel = "data-fancybox-type='iframe'";
-                                $linkto = TADTOOLS_URL . "/360.php?photo={$file_info['path']}";
+                                $linkto = XOOPS_URL . "/modules/tadtools/360.php?photo={$file_info['path']}";
                             } else {
                                 $fancyboxset = "fancybox_{$this->col_name}";
                                 $rel = "rel='f{$this->col_name}'";
@@ -2001,31 +2001,6 @@ class TadUpFiles
         $bytes = (int) round($bytes, 2);
 
         return $bytes;
-    }
-
-    protected function delete_directory($dirname)
-    {
-        if (is_dir($dirname)) {
-            $dir_handle = opendir($dirname);
-        }
-
-        if (!$dir_handle) {
-            return false;
-        }
-
-        while ($file = readdir($dir_handle)) {
-            if ($file !== '.' && $file !== '..') {
-                if (!is_dir($dirname . '/' . $file)) {
-                    unlink($dirname . '/' . $file);
-                } else {
-                    delete_directory($dirname . '/' . $file);
-                }
-            }
-        }
-        closedir($dir_handle);
-        rmdir($dirname);
-
-        return true;
     }
 
     protected function ext2mime($ext)

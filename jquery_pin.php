@@ -49,7 +49,7 @@ class jquery_pin
         } else {
             $main = "
       {$jquery}
-      <script type='text/javascript' src='" . TADTOOLS_URL . "/jquery.pin/jquery.pin.js}>'></script>
+      <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/jquery.pin/jquery.pin.js}>'></script>
       <script type='text/javascript'>
         $(document).ready(function(){
           $('{$name}').pin({

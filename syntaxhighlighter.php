@@ -21,7 +21,7 @@ class syntaxhighlighter
         if ($xoTheme) {
             $dir = !empty($TadToolsModuleConfig['syntaxhighlighter_version']) ? 'modules/tadtools/' . $TadToolsModuleConfig['syntaxhighlighter_version'] : 'modules/tadtools/syntaxhighlighter';
 
-            $dir2 = !empty($TadToolsModuleConfig['syntaxhighlighter_version']) ? TADTOOLS_URL . '/' . $TadToolsModuleConfig['syntaxhighlighter_version'] : TADTOOLS_URL . '/syntaxhighlighter';
+            $dir2 = !empty($TadToolsModuleConfig['syntaxhighlighter_version']) ? XOOPS_URL . '/modules/tadtools/' . $TadToolsModuleConfig['syntaxhighlighter_version'] : XOOPS_URL . '/modules/tadtools/syntaxhighlighter';
 
             $xoTheme->addStylesheet("$dir/styles/shCore.css");
             $xoTheme->addStylesheet("$dir/styles/{$syntaxhighlighter_themes}.css");
@@ -107,10 +107,10 @@ class syntaxhighlighter
                 ");
             }
 
-            $xoTheme->addStylesheet(TADTOOLS_URL . '/prism/prism.css');
-            $xoTheme->addScript(TADTOOLS_URL . '/prism/prism.js');
+            $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/prism/prism.css');
+            $xoTheme->addScript(XOOPS_URL . '/modules/tadtools/prism/prism.js');
         } else {
-            $dir = !empty($TadToolsModuleConfig['syntaxhighlighter_version']) ? TADTOOLS_URL . '/' . $TadToolsModuleConfig['syntaxhighlighter_version'] : TADTOOLS_URL . '/syntaxhighlighter';
+            $dir = !empty($TadToolsModuleConfig['syntaxhighlighter_version']) ? XOOPS_URL . '/modules/tadtools/' . $TadToolsModuleConfig['syntaxhighlighter_version'] : XOOPS_URL . '/modules/tadtools/syntaxhighlighter';
 
             $syntaxhighlighter = "
               <link type='text/css' rel='stylesheet' href='{$dir}/styles/shCore.css'/>

@@ -51,8 +51,8 @@ class dtree
             $xoTheme->addScript('modules/tadtools/dtree/dtree.js');
         } else {
             $dtree = "
-              <link rel='StyleSheet' href='" . TADTOOLS_URL . "/dtree/dtree.css' type='text/css' />
-              <script type='text/javascript' src='" . TADTOOLS_URL . "/dtree/dtree.js'></script>";
+              <link rel='StyleSheet' href='" . XOOPS_URL . "/modules/tadtools/dtree/dtree.css' type='text/css' />
+              <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/dtree/dtree.js'></script>";
         }
 
         if (empty($this->home)) {
@@ -78,7 +78,7 @@ class dtree
 
         <div id='tree_{$this->name}'></div>
         <script type='text/javascript' defer='defer'>
-          {$this->name} = new dTree('{$this->name}', '" . TADTOOLS_URL . "/dtree');
+          {$this->name} = new dTree('{$this->name}', '" . XOOPS_URL . "/modules/tadtools/dtree');
           {$this->name}.config.useCookies=true;
           {$this->name}.config.useLines=$useLines;
 

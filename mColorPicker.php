@@ -38,16 +38,16 @@ class mColorPicker
 
             $xoTheme->addScript('', null, "
                 \$('{$this->name}').mColorPicker({
-                imageFolder: '" . TADTOOLS_URL . "/mColorPicker/images/'
+                imageFolder: '" . XOOPS_URL . "/modules/tadtools/mColorPicker/images/'
                 });
             ");
         } else {
             $mColorPicker = "
             {$jquery}
-            <script type='text/javascript' src='" . TADTOOLS_URL . "/mColorPicker/javascripts/mColorPicker.js'></script>
+            <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/mColorPicker/javascripts/mColorPicker.js'></script>
             <script>
                 \$('{$this->name}').mColorPicker({
-                imageFolder: '" . TADTOOLS_URL . "/mColorPicker/images/'
+                imageFolder: '" . XOOPS_URL . "/modules/tadtools/mColorPicker/images/'
                 });
             </script>
             ";

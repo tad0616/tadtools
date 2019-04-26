@@ -43,11 +43,11 @@ class formValidator
             ");
         } else {
             $main = "
-            <link rel='stylesheet' href='" . TADTOOLS_URL . "/formValidator/css/validationEngine.jquery.css' type='text/css' media='screen' charset='utf-8' />
+            <link rel='stylesheet' href='" . XOOPS_URL . "/modules/tadtools/formValidator/css/validationEngine.jquery.css' type='text/css' media='screen' charset='utf-8' />
 
             $jquery
-            <script src='" . TADTOOLS_URL . "/formValidator/js/languages/jquery.validationEngine-{$LANGCODE}.js' type='text/javascript'></script>
-            <script src='" . TADTOOLS_URL . "/formValidator/js/jquery.validationEngine.js' type='text/javascript'></script>
+            <script src='" . XOOPS_URL . "/modules/tadtools/formValidator/js/languages/jquery.validationEngine-{$LANGCODE}.js' type='text/javascript'></script>
+            <script src='" . XOOPS_URL . "/modules/tadtools/formValidator/js/jquery.validationEngine.js' type='text/javascript'></script>
             <script type='text/javascript'>
             $().ready(function() {
               $('{$this->id}').validationEngine({

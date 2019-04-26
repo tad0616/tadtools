@@ -49,7 +49,7 @@ class smoothslides
         foreach ($this->item as $sn => $item_content) {
             $title = xoops_substr(strip_tags($item_content['title']), 0, 180);
             $pi = ($i % 2) ? '1' : '2';
-            $image = empty($item_content['image']) ? TADTOOLS_URL . "/ResponsiveSlides/images/demo{$pi}.jpg" : $item_content['image'];
+            $image = empty($item_content['image']) ? XOOPS_URL . "/modules/tadtools/ResponsiveSlides/images/demo{$pi}.jpg" : $item_content['image'];
 
             $alt = empty($title) ? 'slider image' : $title;
             $all .= "<img src='$image' alt='{$alt}' title='{$alt}'>
@@ -59,11 +59,11 @@ class smoothslides
         }
 
         $main = "
-        <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/smoothslides/css/smoothslides.theme.css' />
+        <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/smoothslides/css/smoothslides.theme.css' />
         <div class='smoothslides' id='myslideshow1'>
             $all
         </div>
-        <script type='text/javascript' src='" . TADTOOLS_URL . "/smoothslides/js/smoothslides-2.2.1.min.js'></script>
+        <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/smoothslides/js/smoothslides-2.2.1.min.js'></script>
         <script type='text/javascript'>
           $(window).load( function() {
             $('#myslideshow1').smoothSlides({

@@ -52,7 +52,7 @@ class tinymap
         } else {
             $main = "
             $jquery
-            <script type='text/javascript' src='" . TADTOOLS_URL . "/tinymap/jquery.tinyMap.js'></script>";
+            <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/tinymap/jquery.tinyMap.js'></script>";
         }
 
         $option_arr = '';

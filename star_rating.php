@@ -118,7 +118,7 @@ class rating
             number: 5,
             half  : true,
             space : false,
-            path  : '" . TADTOOLS_URL . "/jquery.raty/img'
+            path  : '" . XOOPS_URL . "/modules/tadtools/jquery.raty/img'
         });
         $msg_js
         ";
@@ -182,7 +182,7 @@ class rating
         } else {
             $main = "
             $jquery
-            <script src='" . TADTOOLS_URL . "/jquery.raty/js/jquery.raty.js' type='text/javascript'></script>
+            <script src='" . XOOPS_URL . "/modules/tadtools/jquery.raty/js/jquery.raty.js' type='text/javascript'></script>
 
             <script type='text/javascript'>
               $(document).ready(function()  {
