@@ -1,8 +1,6 @@
 <?php
 
-use XoopsModules\Tadtools\SweetAlert;
-
-class sweet_alert extends SweetAlert
+class sweet_alert extends \XoopsModules\Tadtools\SweetAlert
 {
 }
 /*
