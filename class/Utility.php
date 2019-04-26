@@ -198,6 +198,7 @@ class Utility
     public static function web_error($sql, $file = '', $line = '')
     {
         global $xoopsDB, $xoopsModule, $xoopsUser;
+        xoops_loadLanguage('main', 'tadtools');
         $isAdmin = ($xoopsUser and $xoopsModule) ? $xoopsUser->isAdmin($xoopsModule->mid()) : false;
 
         $in_admin = (false !== mb_strpos($_SERVER['PHP_SELF'], '/admin/')) ? true : false;
@@ -210,7 +211,7 @@ class Utility
         $show_position = ($file) ? "<br>{$file}:{$line}" : '';
         $main .= "<div class='alert alert-danger'>" . $xoopsDB->error() . $show_position . "</div><div class='text-center'><a href='javascript:history.go(-1);' class='btn btn-primary'>" . _TAD_BACK_PAGE . '</a></div>';
 
-        die(html5($main));
+        die(self::html5($main));
     }
 
     //載入 bootstrap，目前僅後台用得到
@@ -435,7 +436,7 @@ class Utility
     //產生QR Code
     public static function mk_qrcode($url)
     {
-        $imgurl = mk_qrcode_name($url);
+        $imgurl = self::mk_qrcode_name($url);
         self::mk_dir(XOOPS_ROOT_PATH . '/uploads/qrcode');
         if (!file_exists(XOOPS_ROOT_PATH . "/uploads/qrcode/{$imgurl}.gif")) {
             include_once 'qrcode/qrcode.php';
@@ -728,6 +729,7 @@ class Utility
     {
         global $xoopsUser, $xoopsModule;
 
+        xoops_loadLanguage('main', 'tadtools');
         if ($xoopsModule) {
             $module_id = $xoopsModule->mid();
             $mod_name = $xoopsModule->name();
