@@ -1,4 +1,5 @@
 <?php
+use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
 
@@ -641,9 +642,8 @@ class TadDataCenter
             }
 
             if ($use_form) {
-                include_once XOOPS_ROOT_PATH . '/modules/tadtools/formValidator.php';
-                $formValidator = new formValidator('#myForm', false);
-                $formValidator_code = $formValidator->render('topLeft');
+                $FormValidator = new FormValidator('#myForm', false);
+                $FormValidator->render('topLeft');
                 $form .= '<form action="' . $action . '" id="myForm" method="post" class="form-horizontal"  enctype="multipart/form-data">';
             }
             $form .= $form_col;
