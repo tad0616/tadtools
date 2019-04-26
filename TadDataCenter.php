@@ -1,4 +1,5 @@
 <?php
+use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
 
 /*
@@ -472,9 +473,8 @@ class TadDataCenter
         $main .= '<div class="text-center" style="margin:10px auto;"><button type="submit" class="btn btn-primary">儲存</button></div>';
         $main .= '</form>';
 
-        include_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
-        $sweet_alert = new sweet_alert();
-        $sweet_alert_code = $sweet_alert->render('del_dcq_col', XOOPS_URL . "/modules/tadtools/TadDataCenter.php?dcq_op=del_dcq_col&col_name={$this->col_name}&col_sn={$this->col_sn}&dirname={$this->module_dirname}&col_id=", 'col_id');
+        $SweetAlert = new SweetAlert();
+        $SweetAlert->render('del_dcq_col', XOOPS_URL . "/modules/tadtools/TadDataCenter.php?dcq_op=del_dcq_col&col_name={$this->col_name}&col_sn={$this->col_sn}&dirname={$this->module_dirname}&col_id=", 'col_id');
 
         return $main;
     }
@@ -757,9 +757,8 @@ class TadDataCenter
 
         if ($del_col_name) {
             $data_name = implode('|', $data_name_arr);
-            include_once XOOPS_ROOT_PATH . '/modules/tadtools/sweet_alert.php';
-            $sweet_alert = new sweet_alert();
-            $sweet_alert_code = $sweet_alert->render('del_dcq_ans', XOOPS_URL . "/modules/tadtools/TadDataCenter.php?dcq_op=del_dcq_ans&data_name={$data_name}&dirname={$this->module_dirname}&col_name={$del_col_name}&col_sn=", 'col_ans_sn');
+            $SweetAlert = new SweetAlert();
+            $SweetAlert->render('del_dcq_ans', XOOPS_URL . "/modules/tadtools/TadDataCenter.php?dcq_op=del_dcq_ans&data_name={$data_name}&dirname={$this->module_dirname}&col_name={$del_col_name}&col_sn=", 'col_ans_sn');
         }
 
         return $main;
