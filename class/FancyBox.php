@@ -1,6 +1,8 @@
 <?php
 use XoopsModules\Tadtools\Utility;
 
+namespace XoopsModules\Tadtools;
+
 class FancyBox
 {
     public $name;

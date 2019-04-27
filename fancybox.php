@@ -1,5 +1,5 @@
 <?php
-class fancybox extends \XoopsModules\Tadtools\FancyBox
+class fancybox2 extends \XoopsModules\Tadtools\FancyBox
 {
 }
 

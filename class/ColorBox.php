@@ -2,6 +2,8 @@
 
 use XoopsModules\Tadtools\Utility;
 
+namespace XoopsModules\Tadtools;
+
 class ColorBox
 {
     public $name;
