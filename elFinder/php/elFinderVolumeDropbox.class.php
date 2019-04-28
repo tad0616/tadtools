@@ -90,7 +90,7 @@ class elFinderVolumeDropbox extends elFinderVolumeDriver
 
         if (!$this->dropbox_phpFound) {
             // check with pear
-            if (include_once 'Dropbox/autoload.php') {
+            if (require_once __DIR__ . '/Dropbox/autoload.php') {
                 $this->dropbox_phpFound = in_array('Dropbox_autoload', spl_autoload_functions(), true);
             }
         }
@@ -153,7 +153,7 @@ class elFinderVolumeDropbox extends elFinderVolumeDriver
                 } else {
                     if (!class_exists('HTTP_OAuth_Consumer')) {
                         // We're going to try to load in manually
-                        include 'HTTP/OAuth/Consumer.php';
+                        require __DIR__ . '/HTTP/OAuth/Consumer.php';
                     }
                     if (class_exists('HTTP_OAuth_Consumer', false)) {
                         $this->oauth = new Dropbox_OAuth_PEAR($options['consumerKey'], $options['consumerSecret']);
@@ -307,7 +307,7 @@ class elFinderVolumeDropbox extends elFinderVolumeDriver
                 } else {
                     if (!class_exists('HTTP_OAuth_Consumer')) {
                         // We're going to try to load in manually
-                        include 'HTTP/OAuth/Consumer.php';
+                        require __DIR__ . '/HTTP/OAuth/Consumer.php';
                     }
                     if (class_exists('HTTP_OAuth_Consumer', false)) {
                         $this->oauth = new Dropbox_OAuth_PEAR($this->options['consumerKey'], $this->options['consumerSecret']);
@@ -833,7 +833,7 @@ class elFinderVolumeDropbox extends elFinderVolumeDriver
 
         $tmbSize = $this->tmbSize;
 
-        if (false == ($s = getimagesize($tmb))) {
+        if (false === ($s = getimagesize($tmb))) {
             return false;
         }
 
@@ -847,7 +847,7 @@ class elFinderVolumeDropbox extends elFinderVolumeDriver
                     $result = $this->imgResize($tmb, $tmbSize, $tmbSize, true, false, 'png');
                 }
 
-                if (false != ($s = getimagesize($tmb))) {
+                if (false !== ($s = getimagesize($tmb))) {
                     $x = $s[0] > $tmbSize ? (int)(($s[0] - $tmbSize) / 2) : 0;
                     $y = $s[1] > $tmbSize ? (int)(($s[1] - $tmbSize) / 2) : 0;
                     $result = $this->imgCrop($tmb, $tmbSize, $tmbSize, $x, $y, 'png');
@@ -905,7 +905,7 @@ class elFinderVolumeDropbox extends elFinderVolumeDriver
      **/
     public function getContentUrl($hash, $options = [])
     {
-        if (false == ($file = $this->file($hash)) || !$file['url'] || 1 == $file['url']) {
+        if (false === ($file = $this->file($hash)) || !$file['url'] || 1 == $file['url']) {
             $path = $this->decode($hash);
             $cache = $this->getDBdat($path);
             $url = '';
@@ -962,7 +962,7 @@ class elFinderVolumeDropbox extends elFinderVolumeDriver
             curl_setopt($c, CURLOPT_URL, $url);
             $res = curl_exec($c);
         } else {
-            require_once 'HTTP/Request2.php';
+            require_once __DIR__ . '/HTTP/Request2.php';
 
             try {
                 $request2 = new HTTP_Request2();

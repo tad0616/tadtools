@@ -1,5 +1,5 @@
 <?php
-include_once 'admin_common.php';
+require_once __DIR__ . '/admin_common.php';
 
 define('_MA_TT_SAVE', '儲存設定');
 define('_MA_TT_EMPTY_CONFIG', '尚未設定');

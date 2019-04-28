@@ -4,19 +4,19 @@ use XoopsModules\Tadtools\Utility;
 
 /*
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/mColorPicker.php")){
-redirect_header("index.php",3, _MA_NEED_TADTOOLS);
+redirect_header("index.php",3, _TAD_NEED_TADTOOLS);
 }
-include_once XOOPS_ROOT_PATH."/modules/tadtools/mColorPicker.php";
+require_once XOOPS_ROOT_PATH."/modules/tadtools/mColorPicker.php";
 $mColorPicker=new mColorPicker('.color');
 $mColorPicker_code=$mColorPicker->render();
 $xoopsTpl->assign('mColorPicker_code',$mColorPicker_code);
 
 //data-hex='true' 一定要有
-<input type='text' name='color' class='color' value='{$act['color']}' data-text='hidden' data-hex='true' style='height:20px;width:20px;' />
+<input type='text' name='color' class='color' value='{$act['color']}' data-text='hidden' data-hex='true' style='height:20px;width:20px;'>
 
  */
-// include_once 'tadtools_header.php';
-// include_once 'jquery.php';
+// require_once __DIR__ . '/tadtools_header.php';
+// require_once __DIR__ . '/jquery.php';
 
 class mColorPicker
 {

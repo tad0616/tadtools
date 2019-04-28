@@ -13,7 +13,7 @@ function get_theme_slide_items()
 
     if ($result) {
         $i = 0;
-        while ($data = $xoopsDB->fetchArray($result)) {
+        while (false !== ($data = $xoopsDB->fetchArray($result))) {
             foreach ($data as $k => $v) {
                 $$k = $v;
             }

@@ -1,9 +1,9 @@
 <?php
 
+namespace XoopsModules\Tadtools;
+
 use XoopsModules\Tadtools\FancyBox;
 use XoopsModules\Tadtools\Utility;
-
-namespace XoopsModules\Tadtools;
 
 
 // declare (strict_types = 1);

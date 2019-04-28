@@ -1,7 +1,7 @@
 <?php
 use XoopsModules\Tadtools\Utility;
 $xoopsOption['template_main'] = 'tadtools_adm_index.tpl'; //設定樣板檔（必）
-include_once 'header.php'; //引入預設檔頭（必）
+require_once __DIR__ . '/header.php'; //引入預設檔頭（必）
 
 /*-----------function區--------------*/
 function tadtools_setup()
@@ -33,7 +33,7 @@ function tadtools_setup()
 
         if (file_exists(XOOPS_ROOT_PATH . "/themes/{$theme}/config.php")) {
             $theme_kind = '';
-            include_once XOOPS_ROOT_PATH . "/themes/{$theme}/config.php";
+            require_once XOOPS_ROOT_PATH . "/themes/{$theme}/config.php";
             if (!empty($theme_kind)) {
                 if (empty($tt_theme_kind_arr[$theme]) or 0 == $theme_change) {
                     $sql = 'replace into `' . $xoopsDB->prefix('tadtools_setup') . "` (`tt_theme` , `tt_use_bootstrap`,`tt_bootstrap_color` , `tt_theme_kind`) values('{$theme}', '0', '{$theme_color}', '{$theme_kind}')";
@@ -105,7 +105,7 @@ function mk_bootstrap_menu_options($theme_kind = '', $mode = 'light')
 
     $dir = XOOPS_ROOT_PATH . "/modules/tadtools/{$theme_kind}/themes/{$mode}/";
     $theme_array[$theme_kind]['kind'] = $theme_kind;
-    $theme_array[$theme_kind]['theme_path'] = (string) ($theme_kind);
+    $theme_array[$theme_kind]['theme_path'] = (string)($theme_kind);
     $theme_array[$theme_kind]['theme'] = $theme_kind;
     $theme_array[$theme_kind]['color'] = _TT_COLOR_DEFAULT;
     if (is_dir($dir)) {
@@ -169,7 +169,7 @@ function save()
     }
 }
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 
 switch ($op) {
@@ -184,4 +184,4 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-include_once 'footer.php';
+require_once __DIR__ . '/footer.php';

@@ -1,7 +1,7 @@
 <?php
 
 class colorbox extends \XoopsModules\Tadtools\ColorBox
-{
+    {
 }
 
 /*

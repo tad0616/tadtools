@@ -4,14 +4,14 @@ use XoopsModules\Tadtools\Utility;
 
 /*
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/jquery.print-preview.php")){
-redirect_header("index.php",3, _MA_NEED_TADTOOLS);
+redirect_header("index.php",3, _TAD_NEED_TADTOOLS);
 }
-include_once XOOPS_ROOT_PATH."/modules/tadtools/jquery.print-preview.php";
+require_once XOOPS_ROOT_PATH."/modules/tadtools/jquery.print-preview.php";
 $print_preview=new print_preview('a.print-preview');
 $print_preview_code=$print_preview->render();
 //$xoopsTpl->assign('print_preview_code',$print_preview_code);
 //布景樣板要有<{$module_css}>
-$xoopsTpl->assign("module_css", '<link rel="stylesheet" href="' . XOOPS_URL . '/modules/tad_web/plugins/news/print.css" type="text/css" media="print" />');
+$xoopsTpl->assign("module_css", '<link rel="stylesheet" href="' . XOOPS_URL . '/modules/tad_web/plugins/news/print.css" type="text/css" media="print">');
 
 //print.css 內容
 //@import url('http://class.tn.edu.tw/modules/tadtools/bootstrap3/css/bootstrap.css');
@@ -19,8 +19,8 @@ $xoopsTpl->assign("module_css", '<link rel="stylesheet" href="' . XOOPS_URL . '/
 //  display: none;
 //}
  */
-// include_once 'tadtools_header.php';
-// include_once 'jquery.php';
+// require_once 'tadtools_header.php';
+// require_once 'jquery.php';
 
 class print_preview
 {

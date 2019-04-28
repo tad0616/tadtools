@@ -107,7 +107,7 @@ class elFinderVolumeMySQL extends elFinderVolumeDriver
         $this->db->set_charset('utf8');
 
         if ($res = $this->db->query('SHOW TABLES')) {
-            while ($row = $res->fetch_array()) {
+            while (false !== ($row = $res->fetch_array())) {
                 if ($row[0] == $this->options['files_table']) {
                     $this->tbf = $this->options['files_table'];
                     break;
@@ -239,7 +239,7 @@ class elFinderVolumeMySQL extends elFinderVolumeDriver
 
         $res = $this->query($sql);
         if ($res) {
-            while ($row = $res->fetch_assoc()) {
+            while (false !== ($row = $res->fetch_assoc())) {
                 $id = $row['id'];
                 if ($row['parent_id']) {
                     $row['phash'] = $this->encode($row['parent_id']);
@@ -330,7 +330,7 @@ class elFinderVolumeMySQL extends elFinderVolumeDriver
                 $sql = sprintf($sql, $this->tbf);
                 if ($res = $this->query($sql)) {
                     $_dir = [];
-                    while ($dat = $res->fetch_assoc()) {
+                    while (false !== ($dat = $res->fetch_assoc())) {
                         $inpath[] = $dat['id'];
                     }
                     $dirs = array_merge($dirs, $inpath);
@@ -364,7 +364,7 @@ class elFinderVolumeMySQL extends elFinderVolumeDriver
         $sql = sprintf($sql, $this->tbf, $whr);
 
         if (($res = $this->query($sql))) {
-            while ($row = $res->fetch_assoc()) {
+            while (false !== ($row = $res->fetch_assoc())) {
                 if ($timeout && $timeout < time()) {
                     $this->setError(elFinder::ERROR_SEARCH_TIMEOUT, $this->path($this->encode($path)));
                     break;
@@ -490,7 +490,7 @@ class elFinderVolumeMySQL extends elFinderVolumeDriver
      **/
     protected function _path($path)
     {
-        if (false == ($file = $this->stat($path))) {
+        if (false === ($file = $this->stat($path))) {
             return '';
         }
 
@@ -803,7 +803,7 @@ class elFinderVolumeMySQL extends elFinderVolumeDriver
         $size = $stat['size'];
 
         if (($tmpfile = tempnam($this->tmpPath, $this->id))) {
-            if (false == ($trgfp = fopen($tmpfile, 'wb'))) {
+            if (false === ($trgfp = fopen($tmpfile, 'wb'))) {
                 unlink($tmpfile);
             } else {
                 while (!feof($fp)) {

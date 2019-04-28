@@ -2,7 +2,7 @@
 
 use XoopsModules\Tadtools\Utility;
 
-// include_once 'tadtools_header.php';
+// require_once __DIR__ . '/tadtools_header.php';
 
 class FooTable
 {
@@ -18,7 +18,7 @@ class FooTable
     public function render($need_jquery = true)
     {
         global $xoTheme;
-        include_once 'jquery.php';
+        require_once __DIR__ . '/jquery.php';
 
         $jquery = $need_jquery ? Utility::get_jquery() : '';
         if ($xoTheme) {
@@ -51,7 +51,7 @@ class FooTable
 
 /*
 if(file_exists(XOOPS_ROOT_PATH."/modules/tadtools/FooTable_bootstrap.php")){
-include_once XOOPS_ROOT_PATH."/modules/tadtools/FooTable_bootstrap.php";
+require_once XOOPS_ROOT_PATH."/modules/tadtools/FooTable_bootstrap.php";
 
 $FooTable = new FooTable();
 $FooTableJS=$FooTable->render();
@@ -63,5 +63,5 @@ table 需加上 class='footable' 以及 <thead></thead>
 要加入擴展符號的格子在  th 加上  data-class='expand'
 要藏起來的格子在  th 加上  data-hide='phone,tablet' 或 data-hide='phone'
 加入排序 th 加上 data-sort-initial="true" （忽略排序  data-sort-ignore="true"） 資料類型  data-type="numeric"
-資料過濾 search:<input id="filter" type="text" />
+資料過濾 search:<input id="filter" type="text">
 <table data-filter="#filter" class="footable">

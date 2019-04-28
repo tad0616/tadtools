@@ -30,7 +30,7 @@ if (!defined('PHPEXCEL_ROOT')) {
     /**
      * @ignore
      */
-    define('PHPEXCEL_ROOT', dirname(__FILE__) . '/../../');
+    define('PHPEXCEL_ROOT', __DIR__ . '/../../');
     require(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
 }
 
@@ -532,7 +532,7 @@ class PHPExcel_Calculation_DateTime
                 $yearFound = true;
             }
         }
-        if ((1 == count($t1)) && (false != mb_strpos($t, ':'))) {
+        if ((1 == count($t1)) && (false !== mb_strpos($t, ':'))) {
             //	We've been fed a time value without any date
             return 0.0;
         } elseif (2 == count($t1)) {

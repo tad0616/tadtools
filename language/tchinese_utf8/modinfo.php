@@ -1,6 +1,6 @@
 <?php
 
-include_once 'modinfo_common.php';
+require_once __DIR__ . '/modinfo_common.php';
 
 define('_MI_TADTOOLS_ADMENU1', '初始設定');
 define('_MI_TADTOOLS_ADMENU1_DESC', '佈景是否引入bootstrap的設定');

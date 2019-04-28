@@ -11,23 +11,23 @@ $this->assign('left_count', $left_count);
 $this->assign('right_count', $right_count);
 
 /**** 取得 Tad Themes 偏好設定****/
-$modhandler  = xoops_gethandler('module');
-$TadThemesModule = $modhandler->getByDirname("tad_themes");
+$moduleHandler  = xoops_getHandler('module');
+$TadThemesModule = $moduleHandler->getByDirname("tad_themes");
 $mid         = ($TadThemesModule) ? $TadThemesModule->getVar('mid') : 0;
 $this->assign('mid', $mid);
 $use_default_config = false;
 
 /**** 取得 Tad Login 偏好設定****/
-$TadLoginModule = $modhandler->getByDirname("tad_login");
+$TadLoginModule = $moduleHandler->getByDirname("tad_login");
 $TadLoginmid         = ($TadLoginModule) ? $TadLoginModule->getVar('mid') : 0;
 
 if (empty($TadLoginmid)) {
-    $TadLoginModule = $modhandler->getByDirname("tn_login");
+    $TadLoginModule = $moduleHandler->getByDirname("tn_login");
     $TadLoginmid         = ($TadLoginModule) ? $TadLoginModule->getVar('mid') : 0;
 }
 
-$config_handler = xoops_gethandler('config');
-$TadLoginConfig = $config_handler->getConfigsByCat(0, $TadLoginmid);
+$configHandler = xoops_getHandler('config');
+$TadLoginConfig = $configHandler->getConfigsByCat(0, $TadLoginmid);
 if (empty($TadLoginConfig['openid_login'])) {
     $TadLoginConfig['openid_login'] = '0';
 }
@@ -40,17 +40,17 @@ $this->assign('openid_login', $TadLoginConfig['openid_login']);
 $this->assign('openid_logo', $TadLoginConfig['openid_logo']);
 
 /**** 取得 Tad Tools 偏好設定****/
-$TadtoolsModule = $modhandler->getByDirname("tadtools");
+$TadtoolsModule = $moduleHandler->getByDirname("tadtools");
 $Tadtoolsmid    = ($TadtoolsModule) ? $TadtoolsModule->getVar('mid') : 0;
 
-$tadToolsConfig = $config_handler->getConfigsByCat(0, $Tadtoolsmid);
+$tadToolsConfig = $configHandler->getConfigsByCat(0, $Tadtoolsmid);
 $this->assign('use_pin', $tadToolsConfig['use_pin']);
 
 /****檔案預設值****/
 
 $theme_name = $xoopsConfig['theme_set'];
-include_once XOOPS_ROOT_PATH . "/themes/{$theme_name}/config.php";
-include_once XOOPS_ROOT_PATH . "/modules/tadtools/language/{$xoopsConfig['language']}/main.php";
+require_once XOOPS_ROOT_PATH . "/themes/{$theme_name}/config.php";
+require_once XOOPS_ROOT_PATH . "/modules/tadtools/language/{$xoopsConfig['language']}/main.php";
 
 foreach ($config_enable as $k => $v) {
     $$k = $v['default'];
@@ -86,7 +86,7 @@ foreach ($default as $k => $v) {
 
 if ($mid) {
 
-    $TadThemesModuleConfig = $config_handler->getConfigsByCat(0, $mid);
+    $xoopsModuleConfig = $configHandler->getConfigsByCat(0, $mid);
 
     $this->assign('auto_mainmenu', $TadThemesModuleConfig['auto_mainmenu']);
     $this->assign('show_sitename', $TadThemesModuleConfig['show_sitename']);
@@ -104,7 +104,7 @@ if ($mid) {
                 $this->assign($k, $v);
             }
         } elseif (file_exists(XOOPS_ROOT_PATH . "/modules/tad_themes/auto_import_theme.php")) {
-            include_once XOOPS_ROOT_PATH . "/modules/tad_themes/auto_import_theme.php";
+            require_once XOOPS_ROOT_PATH . "/modules/tad_themes/auto_import_theme.php";
             auto_import_theme();
             $sql    = "select * from " . $xoopsDB->prefix("tad_themes") . " where `theme_name`='{$xoopsConfig['theme_set']}'";
             $result = $xoopsDB->queryF($sql);
@@ -386,7 +386,7 @@ if ($mid) {
     $sql    = "select * from " . $xoopsDB->prefix("tad_themes_blocks") . " where `theme_id`='{$theme_id}'";
     $result = $xoopsDB->query($sql);
     //`theme_id`, `block_position`, `block_config`, `bt_text`, `bt_text_padding`, `bt_text_size`, `bt_bg_color`, `bt_bg_img`, `bt_bg_repeat`, `bt_radius`
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         $block_position      = $all['block_position'];
         $db[$block_position] = $all;
     }
@@ -422,7 +422,7 @@ $theme_name = $xoopsConfig['theme_set'];
 $config2_files=array('config2_base','config2_bg','config2_slide','config2_logo','config2_block','config2_nav','config2');
 foreach($config2_files as $config2_file){
     if (file_exists(XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php")) {
-        include_once XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php";
+        require_once XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php";
         if ($mid) {
             $sql    = "select `name`, `type`, `value` from " . $xoopsDB->prefix("tad_themes_config2") . " where `theme_id`='{$theme_id}'";
             $result = $xoopsDB->query($sql);
@@ -444,7 +444,7 @@ foreach($config2_files as $config2_file){
 }
 
 /****佈景 TadDataCenter 設定****/
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter('tad_themes');
 $TadDataCenter->set_col('theme_id',$theme_id);
 $data=$TadDataCenter->getData();

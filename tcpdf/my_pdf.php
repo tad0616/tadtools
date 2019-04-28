@@ -1,5 +1,5 @@
 <?php
-require 'tcpdf.php';
+require __DIR__ . '/tcpdf.php';
 
 class my_pdf extends TCPDF
 {

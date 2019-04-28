@@ -4,9 +4,9 @@ use XoopsModules\Tadtools\Utility;
 
 /*
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/easy_responsive_tabs.php")){
-redirect_header("index.php",3, _MA_NEED_TADTOOLS);
+redirect_header("index.php",3, _TAD_NEED_TADTOOLS);
 }
-include_once XOOPS_ROOT_PATH."/modules/tadtools/easy_responsive_tabs.php";
+require_once XOOPS_ROOT_PATH."/modules/tadtools/easy_responsive_tabs.php";
 $responsive_tabs = new easy_responsive_tabs('#demoTab', $type = 'default, vertical, accordion', $activetab_bg = '#B5AC5F', $inactive_bg = '#E0D78C', $active_border_color = '#9C905C', $active_content_border_color = '#9C905C');
 $responsive_tabs->rander();
 
@@ -25,8 +25,8 @@ $responsive_tabs->rander();
 </div>
 
  */
-// include_once 'tadtools_header.php';
-// include_once 'jquery.php';
+// require_once __DIR__ . '/tadtools_header.php';
+// require_once __DIR__ . '/jquery.php';
 
 class easy_responsive_tabs
 {
@@ -80,7 +80,7 @@ class easy_responsive_tabs
             $responsive_tabs = "
                 {$jquery}
                 <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js'></script>
-                <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='" . XOOPS_URL . "/modules/tadtools/Easy-Responsive-Tabs/css/easy-responsive-tabs.css' />
+                <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='" . XOOPS_URL . "/modules/tadtools/Easy-Responsive-Tabs/css/easy-responsive-tabs.css' >
                 ";
 
             $responsive_tabs .= "

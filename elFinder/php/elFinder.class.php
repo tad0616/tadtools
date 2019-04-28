@@ -391,7 +391,7 @@ class elFinder
         }
 
         if (!interface_exists('elFinderSessionInterface')) {
-            include_once dirname(__FILE__) . '/elFinderSessionInterface.php';
+            require_once __DIR__ . '/elFinderSessionInterface.php';
         }
 
         // session handler
@@ -406,7 +406,7 @@ class elFinder
                 ],
             ];
             if (!class_exists('elFinderSession')) {
-                include_once dirname(__FILE__) . '/elFinderSession.php';
+                require_once __DIR__ . '/elFinderSession.php';
             }
             $this->session = new elFinderSession($sessionOpts);
         }
@@ -924,7 +924,7 @@ class elFinder
      **/
     public function realpath($hash)
     {
-        if (false == ($volume = $this->volume($hash))) {
+        if (false === ($volume = $this->volume($hash))) {
             return false;
         }
 
@@ -1014,9 +1014,9 @@ class elFinder
             $class = 'elFinderPlugin' . $name;
             // to try auto load
             if (!class_exists($class)) {
-                $p_file = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . $name . DIRECTORY_SEPARATOR . 'plugin.php';
+                $p_file = __DIR__ . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . $name . DIRECTORY_SEPARATOR . 'plugin.php';
                 if (is_file($p_file)) {
-                    include_once $p_file;
+                    require_once $p_file;
                 }
             }
             if (class_exists($class, false)) {
@@ -1272,7 +1272,7 @@ class elFinder
         $target = $args['target'];
         $intersect = isset($args['intersect']) ? $args['intersect'] : [];
 
-        if (false == ($volume = $this->volume($target))
+        if (false === ($volume = $this->volume($target))
         || false === ($list = $volume->ls($target, $intersect))) {
             return ['error' => $this->error(self::ERROR_OPEN, '#' . $target)];
         }
@@ -1292,8 +1292,8 @@ class elFinder
     {
         $target = $args['target'];
 
-        if (false == ($volume = $this->volume($target))
-        || false == ($tree = $volume->tree($target))) {
+        if (false === ($volume = $this->volume($target))
+        || false === ($tree = $volume->tree($target))) {
             return ['error' => $this->error(self::ERROR_OPEN, '#' . $target)];
         }
 
@@ -1312,8 +1312,8 @@ class elFinder
     {
         $target = $args['target'];
 
-        if (false == ($volume = $this->volume($target))
-        || false == ($tree = $volume->parents($target))) {
+        if (false === ($volume = $this->volume($target))
+        || false === ($tree = $volume->parents($target))) {
             return ['error' => $this->error(self::ERROR_OPEN, '#' . $target)];
         }
 
@@ -1336,8 +1336,8 @@ class elFinder
         foreach ($targets as $target) {
             self::extendTimeLimit();
 
-            if (false != ($volume = $this->volume($target))
-            && (false != ($tmb = $volume->tmb($target)))) {
+            if (false !== ($volume = $this->volume($target))
+            && (false !== ($tmb = $volume->tmb($target)))) {
                 $result['images'][$target] = $tmb;
             }
         }
@@ -1391,7 +1391,7 @@ class elFinder
             return ['error' => $error];
         }
         // 2nd: Return array contains opened file pointer, root itself and required headers
-        if (4 !== count($targets) || false == ($volume = $this->volume($targets[0]))) {
+        if (4 !== count($targets) || false === ($volume = $this->volume($targets[0]))) {
             return ['error' => 'File not found', 'header' => $h404, 'raw' => true];
         }
         $file = $targets[1];
@@ -1450,11 +1450,11 @@ class elFinder
         $h403 = 'HTTP/1.x 403 Access Denied';
         $h404 = 'HTTP/1.x 404 Not Found';
 
-        if (false == ($volume = $this->volume($target))) {
+        if (false === ($volume = $this->volume($target))) {
             return ['error' => 'File not found', 'header' => $h404, 'raw' => true];
         }
 
-        if (false == ($file = $volume->file($target))) {
+        if (false === ($file = $volume->file($target))) {
             return ['error' => 'File not found', 'header' => $h404, 'raw' => true];
         }
 
@@ -1462,7 +1462,7 @@ class elFinder
             return ['error' => 'Access denied', 'header' => $h403, 'raw' => true];
         }
 
-        if (false == ($fp = $volume->open($target))) {
+        if (false === ($fp = $volume->open($target))) {
             return ['error' => 'File not found', 'header' => $h404, 'raw' => true];
         }
 
@@ -1534,8 +1534,8 @@ class elFinder
         $size = 0;
 
         foreach ($args['targets'] as $target) {
-            if (false == ($volume = $this->volume($target))
-            || false == ($file = $volume->file($target))
+            if (false === ($volume = $this->volume($target))
+            || false === ($file = $volume->file($target))
             || !$file['read']) {
                 return ['error' => $this->error(self::ERROR_OPEN, '#' . $target)];
             }
@@ -1563,7 +1563,7 @@ class elFinder
             return ['error' => $this->error(self::ERROR_INV_PARAMS, 'mkdir')];
         }
 
-        if (false == ($volume = $this->volume($target))) {
+        if (false === ($volume = $this->volume($target))) {
             return ['error' => $this->error(self::ERROR_MKDIR, $name, self::ERROR_TRGDIR_NOT_FOUND, '#' . $target)];
         }
         if ($dirs) {
@@ -1587,7 +1587,7 @@ class elFinder
                 : ['added' => $res['stats'], 'hashes' => $res['hashes']];
         }
 
-        return false == ($dir = $volume->mkdir($target, $name))
+        return false === ($dir = $volume->mkdir($target, $name))
                 ? ['error' => $this->error(self::ERROR_MKDIR, $name, $volume->error())]
                 : ['added' => [$dir]];
     }
@@ -1605,11 +1605,11 @@ class elFinder
         $target = $args['target'];
         $name = $args['name'];
 
-        if (false == ($volume = $this->volume($target))) {
+        if (false === ($volume = $this->volume($target))) {
             return ['error' => $this->error(self::ERROR_MKFILE, $name, self::ERROR_TRGDIR_NOT_FOUND, '#' . $target)];
         }
 
-        return false == ($file = $volume->mkfile($target, $args['name']))
+        return false === ($file = $volume->mkfile($target, $args['name']))
             ? ['error' => $this->error(self::ERROR_MKFILE, $name, $volume->error())]
             : ['added' => [$file]];
     }
@@ -1626,8 +1626,8 @@ class elFinder
         $target = $args['target'];
         $name = $args['name'];
 
-        if (false == ($volume = $this->volume($target))
-        || false == ($rm = $volume->file($target))) {
+        if (false === ($volume = $this->volume($target))
+        || false === ($rm = $volume->file($target))) {
             return ['error' => $this->error(self::ERROR_RENAME, '#' . $target, self::ERROR_FILE_NOT_FOUND)];
         }
         $rm['realpath'] = $volume->realpath($target);
@@ -1636,7 +1636,7 @@ class elFinder
             return ['error' => $this->error(self::ERROR_LOCKED, $rm['name'])];
         }
 
-        return false == ($file = $volume->rename($target, $name))
+        return false === ($file = $volume->rename($target, $name))
             ? ['error' => $this->error(self::ERROR_RENAME, $rm['name'], $volume->error())]
             : ['added' => [$file], 'removed' => [$rm]];
     }
@@ -1659,13 +1659,13 @@ class elFinder
         foreach ($targets as $target) {
             self::extendTimeLimit();
 
-            if (false == ($volume = $this->volume($target))
-            || false == ($src = $volume->file($target))) {
+            if (false === ($volume = $this->volume($target))
+            || false === ($src = $volume->file($target))) {
                 $result['warning'] = $this->error(self::ERROR_COPY, '#' . $target, self::ERROR_FILE_NOT_FOUND);
                 break;
             }
 
-            if (false == ($file = $volume->duplicate($target, $suffix))) {
+            if (false === ($file = $volume->duplicate($target, $suffix))) {
                 $result['warning'] = $this->error($volume->error());
                 break;
             }
@@ -1692,7 +1692,7 @@ class elFinder
         foreach ($targets as $target) {
             self::extendTimeLimit();
 
-            if (false == ($volume = $this->volume($target))) {
+            if (false === ($volume = $this->volume($target))) {
                 $result['warning'] = $this->error(self::ERROR_RM, '#' . $target, self::ERROR_FILE_NOT_FOUND);
                 break;
             }
@@ -2078,7 +2078,7 @@ class elFinder
 
         $result = [];
 
-        if (false == ($volume = $this->volume($targets[0]))) {
+        if (false === ($volume = $this->volume($targets[0]))) {
             $result['error'] = $this->error(self::ERROR_CONF_NO_VOL);
 
             return $result;
@@ -2482,7 +2482,7 @@ class elFinder
                 touch($tmpname, $mtime);
             }
 
-            if (false == ($fp = fopen($tmpname, 'rb'))) {
+            if (false === ($fp = fopen($tmpname, 'rb'))) {
                 $result['warning'] = $this->error(self::ERROR_UPLOAD_FILE, $name, self::ERROR_UPLOAD_TRANSFER);
                 $this->uploadDebug = 'Upload error: unable open tmp file';
                 if (!is_uploaded_file($tmpname)) {
@@ -2579,7 +2579,7 @@ class elFinder
         $error = $cut ? self::ERROR_MOVE : self::ERROR_COPY;
         $result = ['changed' => [], 'added' => [], 'removed' => []];
 
-        if (false == ($dstVolume = $this->volume($dst))) {
+        if (false === ($dstVolume = $this->volume($dst))) {
             return ['error' => $this->error($error, '#' . $targets[0], self::ERROR_TRGDIR_NOT_FOUND, '#' . $dst)];
         }
 
@@ -2600,7 +2600,7 @@ class elFinder
         foreach ($targets as $target) {
             self::extendTimeLimit();
 
-            if (false == ($srcVolume = $this->volume($target))) {
+            if (false === ($srcVolume = $this->volume($target))) {
                 $result['warning'] = $this->error($error, '#' . $target, self::ERROR_FILE_NOT_FOUND);
                 break;
             }
@@ -2629,7 +2629,7 @@ class elFinder
                 break;
             }
 
-            if (false == ($file = $dstVolume->paste($srcVolume, $target, $dst, $cut, $hashes))) {
+            if (false === ($file = $dstVolume->paste($srcVolume, $target, $dst, $cut, $hashes))) {
                 $result['warning'] = $this->error($dstVolume->error());
                 break;
             }
@@ -2662,7 +2662,7 @@ class elFinder
         $volume = $this->volume($target);
         $enc = false;
 
-        if (!$volume || false == ($file = $volume->file($target))) {
+        if (!$volume || false === ($file = $volume->file($target))) {
             return ['error' => $this->error(self::ERROR_OPEN, '#' . $target, self::ERROR_FILE_NOT_FOUND)];
         }
 
@@ -2766,8 +2766,8 @@ class elFinder
     {
         $target = $args['target'];
 
-        if (false == ($volume = $this->volume($target))
-        || false == ($file = $volume->file($target))) {
+        if (false === ($volume = $this->volume($target))
+        || false === ($file = $volume->file($target))) {
             return ['error' => $this->error(self::ERROR_SAVE, '#' . $target, self::ERROR_FILE_NOT_FOUND)];
         }
 
@@ -2782,7 +2782,7 @@ class elFinder
                 $args['content'] = $content;
             }
         }
-        if (false == ($file = $volume->putContents($target, $args['content']))) {
+        if (false === ($file = $volume->putContents($target, $args['content']))) {
             return ['error' => $this->error(self::ERROR_SAVE, $volume->path($target), $volume->error())];
         }
 
@@ -2804,8 +2804,8 @@ class elFinder
         $error = [self::ERROR_EXTRACT, '#' . $target];
         $makedir = isset($args['makedir']) ? (bool)$args['makedir'] : null;
 
-        if (false == ($volume = $this->volume($target))
-        || false == ($file = $volume->file($target))) {
+        if (false === ($volume = $this->volume($target))
+        || false === ($file = $volume->file($target))) {
             return ['error' => $this->error(self::ERROR_EXTRACT, '#' . $target, self::ERROR_FILE_NOT_FOUND)];
         }
 
@@ -2828,7 +2828,7 @@ class elFinder
         $targets = isset($args['targets']) && is_array($args['targets']) ? $args['targets'] : [];
         $name = isset($args['name']) ? $args['name'] : '';
 
-        if (false == ($volume = $this->volume($targets[0]))) {
+        if (false === ($volume = $this->volume($targets[0]))) {
             return $this->error(self::ERROR_ARCHIVE, self::ERROR_TRGDIR_NOT_FOUND);
         }
 
@@ -2906,7 +2906,7 @@ class elFinder
                     do {
                         self::extendTimeLimit(30 + $sleep);
                         $volume->clearstatcache();
-                        if (false != ($info = $volume->file($hash))) {
+                        if (false !== ($info = $volume->file($hash))) {
                             if ($info['ts'] != $compare) {
                                 $compare = $info['ts'];
                                 break;
@@ -2923,8 +2923,8 @@ class elFinder
             }
         } else {
             foreach ($args['targets'] as $hash) {
-                if (false != ($volume = $this->volume($hash))
-                && false != ($info = $volume->file($hash))) {
+                if (false !== ($volume = $this->volume($hash))
+                && false !== ($info = $volume->file($hash))) {
                     $info['path'] = $volume->path($hash);
                     $files[] = $info;
                 }
@@ -2950,7 +2950,7 @@ class elFinder
     {
         $target = $args['target'];
 
-        if (false != ($volume = $this->volume($target))) {
+        if (false !== ($volume = $this->volume($target))) {
             $dim = $volume->dimensions($target);
 
             return $dim ? ['dim' => $dim] : [];
@@ -2980,8 +2980,8 @@ class elFinder
         $degree = (int)$args['degree'];
         $quality = (int)$args['quality'];
 
-        if (false == ($volume = $this->volume($target))
-        || false == ($file = $volume->file($target))) {
+        if (false === ($volume = $this->volume($target))
+        || false === ($file = $volume->file($target))) {
             return ['error' => $this->error(self::ERROR_RESIZE, '#' . $target, self::ERROR_FILE_NOT_FOUND)];
         }
 
@@ -3005,7 +3005,7 @@ class elFinder
     {
         $target = $args['target'];
         $options = isset($args['options']) ? $args['options'] : [];
-        if (false != ($volume = $this->volume($target))) {
+        if (false !== ($volume = $this->volume($target))) {
             if (!$volume->commandDisabled('url')) {
                 $url = $volume->getContentUrl($target, $options);
 
@@ -3109,7 +3109,7 @@ class elFinder
         static $base = null;
 
         if (null === $base) {
-            $base = dirname(__FILE__) . DIRECTORY_SEPARATOR;
+            $base = __DIR__ . DIRECTORY_SEPARATOR;
         }
 
         if (!(error_reporting() & $errno)) {

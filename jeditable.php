@@ -1,6 +1,6 @@
 <?php
 class jeditable extends \XoopsModules\Tadtools\Jeditable
-{
+    {
 }
 
 /*

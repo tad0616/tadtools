@@ -30,7 +30,7 @@ if (!defined('PHPEXCEL_ROOT')) {
     /**
      * @ignore
      */
-    define('PHPEXCEL_ROOT', dirname(__FILE__) . '/../../');
+    define('PHPEXCEL_ROOT', __DIR__ . '/../../');
     require(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
 }
 
@@ -346,7 +346,7 @@ class PHPExcel_Reader_OOCalc extends PHPExcel_Reader_Abstract implements PHPExce
         $namespacesMeta = $xml->getNamespaces(true);
         //		echo '<pre>';
         //		print_r($namespacesMeta);
-        //		echo '</pre><hr />';
+        //		echo '</pre><hr>';
 
         $docProps = $objPHPExcel->getProperties();
         $officeProperty = $xml->children($namespacesMeta['office']);
@@ -431,7 +431,7 @@ class PHPExcel_Reader_OOCalc extends PHPExcel_Reader_Abstract implements PHPExce
         $namespacesContent = $xml->getNamespaces(true);
         //		echo '<pre>';
         //		print_r($namespacesContent);
-        //		echo '</pre><hr />';
+        //		echo '</pre><hr>';
 
         $workbook = $xml->children($namespacesContent['office']);
         foreach ($workbook->body->spreadsheet as $workbookData) {
@@ -440,10 +440,10 @@ class PHPExcel_Reader_OOCalc extends PHPExcel_Reader_Abstract implements PHPExce
             foreach ($workbookData->table as $worksheetDataSet) {
                 $worksheetData = $worksheetDataSet->children($namespacesContent['table']);
                 //				print_r($worksheetData);
-                //				echo '<br />';
+                //				echo '<br>';
                 $worksheetDataAttributes = $worksheetDataSet->attributes($namespacesContent['table']);
                 //				print_r($worksheetDataAttributes);
-                //				echo '<br />';
+                //				echo '<br>';
                 if ((isset($this->_loadSheetsOnly)) && (isset($worksheetDataAttributes['name'])) &&
                     (!in_array($worksheetDataAttributes['name'], $this->_loadSheetsOnly, true))) {
                     continue;
@@ -463,7 +463,7 @@ class PHPExcel_Reader_OOCalc extends PHPExcel_Reader_Abstract implements PHPExce
 
                 $rowID = 1;
                 foreach ($worksheetData as $key => $rowData) {
-                    //					echo '<b>'.$key.'</b><br />';
+                    //					echo '<b>'.$key.'</b><br>';
                     switch ($key) {
                         case 'table-header-rows':
                             foreach ($rowData as $key => $cellData) {
@@ -483,7 +483,7 @@ class PHPExcel_Reader_OOCalc extends PHPExcel_Reader_Abstract implements PHPExce
                                     }
                                 }
 
-                                //								echo '<b>'.$columnID.$rowID.'</b><br />';
+                                //								echo '<b>'.$columnID.$rowID.'</b><br>';
                                 $cellDataText = (isset($namespacesContent['text'])) ?
                                     $cellData->children($namespacesContent['text']) :
                                     '';
@@ -493,11 +493,11 @@ class PHPExcel_Reader_OOCalc extends PHPExcel_Reader_Abstract implements PHPExce
 
                                 //								echo 'Office Attributes: ';
                                 //								print_r($cellDataOfficeAttributes);
-                                //								echo '<br />Table Attributes: ';
+                                //								echo '<br>Table Attributes: ';
                                 //								print_r($cellDataTableAttributes);
-                                //								echo '<br />Cell Data Text';
+                                //								echo '<br>Cell Data Text';
                                 //								print_r($cellDataText);
-                                //								echo '<br />';
+                                //								echo '<br>';
 //
                                 $type = $formatting = $hyperlink = null;
                                 $hasCalculatedValue = false;
@@ -508,7 +508,7 @@ class PHPExcel_Reader_OOCalc extends PHPExcel_Reader_Abstract implements PHPExce
                                 }
 
                                 if (isset($cellDataOffice->annotation)) {
-                                    //									echo 'Cell has comment<br />';
+                                    //									echo 'Cell has comment<br>';
                                     $annotationText = $cellDataOffice->annotation->children($namespacesContent['text']);
                                     $textArray = [];
                                     foreach ($annotationText as $t) {
@@ -521,7 +521,7 @@ class PHPExcel_Reader_OOCalc extends PHPExcel_Reader_Abstract implements PHPExce
                                         }
                                     }
                                     $text = implode("\n", $textArray);
-                                    //									echo $text,'<br />';
+                                    //									echo $text,'<br>';
                                     $objPHPExcel->getActiveSheet()->getComment($columnID . $rowID)
 //																	->setAuthor( $author )
                                                                     ->setText($this->_parseRichText($text));
@@ -548,7 +548,7 @@ class PHPExcel_Reader_OOCalc extends PHPExcel_Reader_Abstract implements PHPExce
                                     }
                                     $allCellDataText = implode("\n", $dataArray);
 
-                                    //									echo 'Value Type is '.$cellDataOfficeAttributes['value-type'].'<br />';
+                                    //									echo 'Value Type is '.$cellDataOfficeAttributes['value-type'].'<br>';
                                     switch ($cellDataOfficeAttributes['value-type']) {
                                         case 'string':
                                                 $type = PHPExcel_Cell_DataType::TYPE_STRING;
@@ -608,9 +608,9 @@ class PHPExcel_Reader_OOCalc extends PHPExcel_Reader_Abstract implements PHPExce
                                                 $formatting = PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME4;
                                                 break;
                                     }
-                                    //									echo 'Data value is '.$dataValue.'<br />';
+                                    //									echo 'Data value is '.$dataValue.'<br>';
 //									if ($hyperlink !== NULL) {
-//										echo 'Hyperlink is '.$hyperlink.'<br />';
+//										echo 'Hyperlink is '.$hyperlink.'<br>';
 //									}
                                 } else {
                                     $type = PHPExcel_Cell_DataType::TYPE_NULL;
@@ -651,7 +651,7 @@ class PHPExcel_Reader_OOCalc extends PHPExcel_Reader_Abstract implements PHPExce
                                                 $rID = $rowID + $rowAdjust;
                                                 $objPHPExcel->getActiveSheet()->getCell($columnID . $rID)->setValueExplicit((($hasCalculatedValue) ? $cellDataFormula : $dataValue), $type);
                                                 if ($hasCalculatedValue) {
-                                                    //													echo 'Forumla result is '.$dataValue.'<br />';
+                                                    //													echo 'Forumla result is '.$dataValue.'<br>';
                                                     $objPHPExcel->getActiveSheet()->getCell($columnID . $rID)->setCalculatedValue($dataValue);
                                                 }
                                                 if (null !== $formatting) {

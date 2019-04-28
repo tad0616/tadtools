@@ -4,17 +4,17 @@ use XoopsModules\Tadtools\Utility;
 /*
 用來將任何元素，釘在畫面頂端
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/stickytableheaders.php")){
-redirect_header("index.php",3, _MA_NEED_TADTOOLS);
+redirect_header("index.php",3, _TAD_NEED_TADTOOLS);
 }
-include_once XOOPS_ROOT_PATH."/modules/tadtools/stickytableheaders.php";
+require_once XOOPS_ROOT_PATH."/modules/tadtools/stickytableheaders.php";
 $stickytableheaders=new stickytableheaders();
 $stickytableheaders_code=$stickytableheaders->render('#my_table');
 $xoopsTpl->assign('stickytableheaders_code',$stickytableheaders_code);
 表格需有 <thead>及<tbody>
 
  */
-// include_once 'tadtools_header.php';
-// include_once 'jquery.php';
+// require_once __DIR__ . '/tadtools_header.php';
+// require_once __DIR__ . '/jquery.php';
 
 class stickytableheaders
 {

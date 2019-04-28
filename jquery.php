@@ -1,6 +1,6 @@
 <?php
 use XoopsModules\Tadtools\Utility;
-// include_once 'tadtools_header.php';
+// require_once __DIR__ . '/tadtools_header.php';
 
 //取得jquery路徑，$mode="return"
 //$theme=ui-lightness , base

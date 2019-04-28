@@ -648,7 +648,7 @@ class PHPExcel_Style_NumberFormat extends PHPExcel_Style_Supervisor implements P
                 }
 
                 if (preg_match('/#?.*\?\/\?/', $format, $m)) {
-                    //echo 'Format mask is fractional '.$format.' <br />';
+                    //echo 'Format mask is fractional '.$format.' <br>';
                     if ($value != (int)$value) {
                         self::_formatAsFraction($value, $format);
                     }

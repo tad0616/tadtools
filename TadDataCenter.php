@@ -7,19 +7,19 @@ class TadDataCenter extends \XoopsModules\Tadtools\TadDataCenter
 /*
 
 //單一表單
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
 $form=$TadDataCenter->getForm($mode, $form_tag, $name, $type, $value, $options, $attr, $sort);
 
 //批次表單
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
 $TadDataCenter->assignBatchForm($form_tag, $data_arr = array(), $type = '')
 
 //儲存資料：
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
 $TadDataCenter->saveData();
@@ -27,7 +27,7 @@ $TadDataCenter->saveData();
 $TadDataCenter->saveCustomData($data_arr = array());
 
 //取得資料陣列：
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
 $data=$TadDataCenter->getData($name,$sort=0);
@@ -35,7 +35,7 @@ $xoopsTpl->assign('TDC', $data);
 <{$TDC.data_name.0}>
 
 //刪除資料：
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
 $TadDataCenter->delData($name,$sort);
@@ -43,45 +43,45 @@ $TadDataCenter->delData($name,$sort);
 //-------------------------------------------------------------------------
 
 //後台自訂問卷界面
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
 $xoopsTpl->assign('CustomSetupForm', $TadDataCenter->getCustomSetupForm($action));
 <{$CustomSetupForm}>
 
 //顯示問卷
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
 $xoopsTpl->assign('CustomForm', $TadDataCenter->getCustomForm($use_form = true, $use_submit = false, $action = '', $lw = 3, $rw = 9));
 <{$CustomForm}>
 
 //後台自訂問卷設定儲存
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
 $TadDataCenter->saveCustomSetupForm();
 
 //前台自訂問卷答案儲存
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
 $TadDataCenter->saveData();
 
 //自訂表單填答列表（表格）
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
 $getCustomAns=$TadDataCenter->getCustomAns();
 
 //自訂表單題目
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
 $CustomSetup      = $TadDataCenter->getCustomSetup();
 
 //自訂表單填答陣列
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
 $getCustomAnsArr=$TadDataCenter->getCustomAnsArr();

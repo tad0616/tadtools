@@ -2,7 +2,7 @@
 
 use XoopsModules\Tadtools\Utility;
 
-// include_once 'tadtools_header.php';
+// require_once __DIR__ . '/tadtools_header.php';
 
 class elrte
 {

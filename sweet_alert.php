@@ -1,7 +1,7 @@
 <?php
 
 class sweet_alert extends \XoopsModules\Tadtools\SweetAlert
-{
+    {
 }
 /*
 

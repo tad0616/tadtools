@@ -1,9 +1,10 @@
 <?php
+
+namespace XoopsModules\Tadtools;
+
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
-
-namespace XoopsModules\Tadtools;
 
 /*
 

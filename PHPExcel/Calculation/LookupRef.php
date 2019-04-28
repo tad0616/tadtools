@@ -30,7 +30,7 @@ if (!defined('PHPEXCEL_ROOT')) {
     /**
      * @ignore
      */
-    define('PHPEXCEL_ROOT', dirname(__FILE__) . '/../../');
+    define('PHPEXCEL_ROOT', __DIR__ . '/../../');
     require(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
 }
 
@@ -409,7 +409,7 @@ class PHPExcel_Calculation_LookupRef
         $columns = PHPExcel_Calculation_Functions::flattenSingleValue($columns);
         $height = PHPExcel_Calculation_Functions::flattenSingleValue($height);
         $width = PHPExcel_Calculation_Functions::flattenSingleValue($width);
-        if (null == $cellAddress) {
+        if (null === $cellAddress) {
             return 0;
         }
 
@@ -590,7 +590,7 @@ class PHPExcel_Calculation_LookupRef
         // **
         // loop on the cells
         //		var_dump($lookup_array);
-        //		echo '<br />';
+        //		echo '<br>';
         foreach ($lookup_array as $i => $lookupArrayValue) {
             if ((0 == $match_type) && ($lookupArrayValue == $lookup_value)) {
                 //	exact match
@@ -598,12 +598,12 @@ class PHPExcel_Calculation_LookupRef
             } elseif ((-1 == $match_type) && ($lookupArrayValue <= $lookup_value)) {
                 //				echo '$i = '.$i.' => ';
                 //				var_dump($lookupArrayValue);
-                //				echo '<br />';
+                //				echo '<br>';
                 //				echo 'Keyset = ';
                 //				var_dump($keySet);
-                //				echo '<br />';
+                //				echo '<br>';
                 $i = array_search($i, $keySet, true);
-                //				echo '$i='.$i.'<br />';
+                //				echo '$i='.$i.'<br>';
                 // if match_type is -1 <=> find the smallest value that is greater than or equal to lookup_value
                 if ($i < 1) {
                     // 1st cell was allready smaller than the lookup_value
@@ -614,12 +614,12 @@ class PHPExcel_Calculation_LookupRef
             } elseif ((1 == $match_type) && ($lookupArrayValue >= $lookup_value)) {
                 //				echo '$i = '.$i.' => ';
                 //				var_dump($lookupArrayValue);
-                //				echo '<br />';
+                //				echo '<br>';
                 //				echo 'Keyset = ';
                 //				var_dump($keySet);
-                //				echo '<br />';
+                //				echo '<br>';
                 $i = array_search($i, $keySet, true);
-                //				echo '$i='.$i.'<br />';
+                //				echo '$i='.$i.'<br>';
                 // if match_type is 1 <=> find the largest value that is less than or equal to lookup_value
                 if ($i < 1) {
                     // 1st cell was allready bigger than the lookup_value

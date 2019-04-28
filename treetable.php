@@ -2,8 +2,8 @@
 
 use XoopsModules\Tadtools\Utility;
 
-// include_once 'tadtools_header.php';
-// include_once 'jquery.php';
+// require_once __DIR__ . '/tadtools_header.php';
+// require_once __DIR__ . '/jquery.php';
 
 class treetable
 {
@@ -131,8 +131,8 @@ class treetable
         } else {
             $main = "
             $jquery
-            <link href='" . XOOPS_URL . "/modules/tadtools/treeTable/stylesheets/jquery.treetable.css' rel='stylesheet'  />
-            <link href='" . XOOPS_URL . "/modules/tadtools/treeTable/stylesheets/jquery.treetable.theme.default.css' rel='stylesheet' />
+            <link href='" . XOOPS_URL . "/modules/tadtools/treeTable/stylesheets/jquery.treetable.css' rel='stylesheet'  >
+            <link href='" . XOOPS_URL . "/modules/tadtools/treeTable/stylesheets/jquery.treetable.theme.default.css' rel='stylesheet' >
 
             <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/treeTable/javascripts/src/jquery.treetable.js'></script>
             <script type='text/javascript'>

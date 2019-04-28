@@ -1,8 +1,8 @@
 <?php
 if (!defined('XOOPS_ROOT_PATH')) {
-    include_once '../../mainfile.php';
+    require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 } else {
-    include_once XOOPS_ROOT_PATH . '/mainfile.php';
+    require_once XOOPS_ROOT_PATH . '/mainfile.php';
 }
 
 if (!defined('TADTOOLS_PATH')) {
@@ -14,4 +14,4 @@ if (!defined('TADTOOLS_URL')) {
 }
 
 global $xoopsConfig;
-include_once TADTOOLS_PATH . "/language/{$xoopsConfig['language']}/main.php";
+require_once TADTOOLS_PATH . "/language/{$xoopsConfig['language']}/main.php";

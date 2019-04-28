@@ -66,18 +66,18 @@
         global $xoopsConfig,$xoopsTpl,$oidc_array,$oidc_array2,$all_oidc,$all_oidc2;
 
 
-        $modhandler = xoops_gethandler('module');
-        $config_handler =xoops_gethandler('config');
+        $moduleHandler = xoops_getHandler('module');
+        $configHandler =xoops_gethandler('config');
 
-        $TadLoginXoopsModule = $modhandler->getByDirname("tad_login");
+        $TadLoginXoopsModule = $moduleHandler->getByDirname("tad_login");
 
         if($TadLoginXoopsModule){
-            include_once XOOPS_ROOT_PATH."/modules/tad_login/function.php";
-            include_once XOOPS_ROOT_PATH."/modules/tad_login/oidc.php";
-            include_once XOOPS_ROOT_PATH."/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
+            require_once XOOPS_ROOT_PATH."/modules/tad_login/function.php";
+            require_once XOOPS_ROOT_PATH."/modules/tad_login/oidc.php";
+            require_once XOOPS_ROOT_PATH."/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
 
-            $config_handler =xoops_gethandler('config');
-            $modConfig= &$config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
+            $configHandler =xoops_gethandler('config');
+            $modConfig= &$configHandler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
 
             if (in_array('facebook', $modConfig['auth_method'])) {
                 $tad_login['facebook'] = facebook_login('return');
@@ -113,7 +113,7 @@
                     $tlogin[$i]['text']=sprintf(_TAD_LOGIN_BY, constant('_'.strtoupper($all_oidc[$method]['tail']))._TADLOGIN_OIDC);
 
                 }elseif(in_array($method, $oidc_array2)){
-                    $tlogin[$i]['img']=XOOPS_URL."/modules/tad_login/images/{$method}.png";
+                $tlogin[$i]['img']=XOOPS_URL."/modules/tad_login/images/{$method}.png";
                     $tlogin[$i]['text']=sprintf(_TAD_LOGIN_BY, constant('_'.strtoupper($all_oidc2[$method]['tail']))._TADLOGIN_LDAP);
 
                 }else{

@@ -1,5 +1,5 @@
 <?php
-require_once 'Properties.php';
+require_once __DIR__ . '/Properties.php';
 /**
  * Created by PhpStorm.
  * User: Wiktor Trzonkowski

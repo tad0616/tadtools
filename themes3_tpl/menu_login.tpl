@@ -13,7 +13,7 @@
                 <{$smarty.const.TF_USER_S_ID}>
               </label>
               <div class="col-sm-8">
-                <input type="text" name="uname"  id="uname" placeholder="<{$smarty.const.TF_USER_ID}>"  class="form-control" />
+                <input type="text" name="uname"  id="uname" placeholder="<{$smarty.const.TF_USER_ID}>"  class="form-control">
               </div>
             </div>
 
@@ -22,7 +22,7 @@
                 <{$smarty.const.TF_USER_S_PASS}>
               </label>
               <div class="col-sm-8">
-              <input type="password" name="pass" id="pass" placeholder="<{$smarty.const.TF_USER_PASS}>" class="form-control" />
+              <input type="password" name="pass" id="pass" placeholder="<{$smarty.const.TF_USER_PASS}>" class="form-control">
               </div>
             </div>
 
@@ -30,10 +30,10 @@
               <label class="col-sm-4 control-label">
               </label>
               <div class="col-sm-8">
-                <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>" />
-                <input type="hidden" name="rememberme" value="On" />
-                <input type="hidden" name="op" value="login" />
-                <input type="hidden" name="xoops_login" value="1"/>
+                <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>">
+                <input type="hidden" name="rememberme" value="On">
+                <input type="hidden" name="op" value="login">
+                <input type="hidden" name="xoops_login" value="1">
                 <button type="submit" class="btn btn-primary btn-block"><{$smarty.const.TF_USER_ENTER}></button>
               </div>
             </div>
@@ -62,52 +62,52 @@
     <{/if}>
 
     <{if $openid_login=="1" or $openid_login=="2"}>
-        <{php}>
+      <{php}>
 
         global $xoopsConfig,$xoopsTpl,$oidc_array,$oidc_array2,$all_oidc,$all_oidc2;
 
 
-        $modhandler = xoops_gethandler('module');
-        $config_handler =xoops_gethandler('config');
+      $moduleHandler = xoops_getHandler('module');
+      $configHandler =xoops_gethandler('config');
 
-        $TadLoginXoopsModule = $modhandler->getByDirname("tad_login");
+      $TadLoginXoopsModule = $moduleHandler->getByDirname("tad_login");
 
-        if($TadLoginXoopsModule){
-            include_once XOOPS_ROOT_PATH."/modules/tad_login/function.php";
-            include_once XOOPS_ROOT_PATH."/modules/tad_login/oidc.php";
-            include_once XOOPS_ROOT_PATH."/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
+      if($TadLoginXoopsModule){
+        require_once XOOPS_ROOT_PATH."/modules/tad_login/function.php";
+        require_once XOOPS_ROOT_PATH."/modules/tad_login/oidc.php";
+        require_once XOOPS_ROOT_PATH."/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
 
-            $config_handler =xoops_gethandler('config');
-            $modConfig= &$config_handler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
+        $configHandler =xoops_gethandler('config');
+        $modConfig= &$configHandler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
 
-            if (in_array('facebook', $modConfig['auth_method'])) {
-                $tad_login['facebook'] = facebook_login('return');
-            } else {
-                $tad_login['facebook'] = '';
-            }
+        if (in_array('facebook', $modConfig['auth_method'])) {
+            $tad_login['facebook'] = facebook_login('return');
+        } else {
+            $tad_login['facebook'] = '';
+        }
 
-            if (in_array('google', $modConfig['auth_method'])) {
-                $tad_login['google'] = google_login('return');
-            } else {
-                $tad_login['google'] = '';
-            }
+        if (in_array('google', $modConfig['auth_method'])) {
+            $tad_login['google'] = google_login('return');
+        } else {
+            $tad_login['google'] = '';
+        }
 
-            $auth_method=$modConfig['auth_method'];
-            $i=0;
+        $auth_method=$modConfig['auth_method'];
+        $i=0;
 
-            foreach($auth_method as $method){
-                $method_const="_".strtoupper($method);
+        foreach($auth_method as $method){
+          $method_const="_".strtoupper($method);
 
-                if($method=="facebook"){
-                    $tlogin[$i]['link']=$tad_login['facebook'];
+          if($method=="facebook"){
+            $tlogin[$i]['link']=$tad_login['facebook'];
                     $tlogin[$i]['text']=sprintf(_TAD_LOGIN_BY,constant($method_const));
-                }elseif($method=="google"){
-                    $tlogin[$i]['link']=$tad_login['google'];
+          }elseif($method=="google"){
+            $tlogin[$i]['link']=$tad_login['google'];
                     $tlogin[$i]['text']=sprintf(_TAD_LOGIN_BY,constant($method_const));
-                }else{
-                    $tlogin[$i]['link']=XOOPS_URL."/modules/tad_login/index.php?login&op={$method}";
+          }else{
+            $tlogin[$i]['link']=XOOPS_URL."/modules/tad_login/index.php?login&op={$method}";
                     $tlogin[$i]['text']=sprintf(_TAD_LOGIN_BY,constant($method_const));
-                }
+          }
 
                 if(in_array($method, $oidc_array)){
                     $tlogin[$i]['img']=XOOPS_URL."/modules/tad_login/images/oidc/{$all_oidc[$method]['tail']}.png";
@@ -118,15 +118,15 @@
                     $tlogin[$i]['text']=sprintf(_TAD_LOGIN_BY, constant('_'.strtoupper($all_oidc2[$method]['tail']))._TADLOGIN_LDAP);
 
                 }else{
-                    $tlogin[$i]['img']=XOOPS_URL."/modules/tad_login/images/{$method}.png";
+          $tlogin[$i]['img']=XOOPS_URL."/modules/tad_login/images/{$method}.png";
                     $tlogin[$i]['text']=sprintf(_TAD_LOGIN_BY,constant($method_const).' OpenID ');
                 }
 
-                $i++;
-            }
-            $xoopsTpl->assign('tlogin',$tlogin);
+          $i++;
         }
-        <{/php}>
+        $xoopsTpl->assign('tlogin',$tlogin);
+      }
+      <{/php}>
 
 
       <{assign var="i" value=0}>

@@ -16,19 +16,19 @@
  * @author       Tad
  * @version      $Id $
  **/
-include '../../../include/cp_header.php';
+include dirname(__DIR__) . '/preloads/autoloader.php';
 
-defined('FRAMEWORKS_ART_FUNCTIONS_INI') || include_once XOOPS_ROOT_PATH . '/Frameworks/art/functions.ini.php';
-include_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname') . '/class/admin.php';
+require  dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
 
-load_functions('admin');
+//defined('FRAMEWORKS_ART_FUNCTIONS_INI') || require_once XOOPS_ROOT_PATH . '/Frameworks/art/functions.ini.php';
+// require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname') . '/class/admin.php';
 
-if (!@include_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname') . '/language/' . $xoopsConfig['language'] . '/main.php') {
-    include_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname') . '/language/english/main.php';
-}
+// load_functions('admin');
+
+xoops_loadLanguage('main', $xoopsModule->getVar('dirname'));
 if (!isset($xoopsTpl) || !is_object($xoopsTpl)) {
-    include_once XOOPS_ROOT_PATH . '/class/template.php';
-    $xoopsTpl = new XoopsTpl();
+    require_once XOOPS_ROOT_PATH . '/class/template.php';
+    $xoopsTpl = new \XoopsTpl();
 }
 
 xoops_cp_header();

@@ -1037,7 +1037,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
      */
     public function getHighestColumn($row = null)
     {
-        if (null == $row) {
+        if (null === $row) {
             return $this->_cachedHighestColumn;
         }
 
@@ -1065,7 +1065,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
      */
     public function getHighestRow($column = null)
     {
-        if (null == $column) {
+        if (null === $column) {
             return $this->_cachedHighestRow;
         }
 

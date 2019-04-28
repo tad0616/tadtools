@@ -71,7 +71,7 @@ class PHPExcel_HashTable
     public function addFromSource($pSource = null)
     {
         // Check if an array was passed
-        if (null == $pSource) {
+        if (null === $pSource) {
             return;
         } elseif (!is_array($pSource)) {
             throw new PHPExcel_Exception('Invalid array parameter passed.');

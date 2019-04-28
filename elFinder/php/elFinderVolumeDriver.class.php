@@ -736,7 +736,7 @@ abstract class elFinderVolumeDriver
         }
         // set resouce path
         if (!is_dir($this->options['resourcePath'])) {
-            $this->options['resourcePath'] = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'resources';
+            $this->options['resourcePath'] = __DIR__ . DIRECTORY_SEPARATOR . 'resources';
         }
 
         // set image manipulation library
@@ -1148,10 +1148,10 @@ abstract class elFinderVolumeDriver
                 $file = $this->options['mimefile'];
             } elseif (elFinder::$defaultMimefile && file_exists(elFinder::$defaultMimefile)) {
                 $file = elFinder::$defaultMimefile;
-            } elseif (file_exists(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'mime.types')) {
-                $file = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'mime.types';
-            } elseif (file_exists(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'mime.types')) {
-                $file = dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'mime.types';
+            } elseif (file_exists(__DIR__ . DIRECTORY_SEPARATOR . 'mime.types')) {
+                $file = __DIR__ . DIRECTORY_SEPARATOR . 'mime.types';
+            } elseif (file_exists(dirname(__DIR__) . DIRECTORY_SEPARATOR . 'mime.types')) {
+                $file = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'mime.types';
             }
 
             if ($file && file_exists($file)) {
@@ -1718,7 +1718,7 @@ abstract class elFinderVolumeDriver
      */
     public function dir($hash, $resolveLink = false)
     {
-        if (false == ($dir = $this->file($hash))) {
+        if (false === ($dir = $this->file($hash))) {
             return $this->setError(elFinder::ERROR_DIR_NOT_FOUND);
         }
 
@@ -1740,7 +1740,7 @@ abstract class elFinderVolumeDriver
      **/
     public function scandir($hash)
     {
-        if (false == ($dir = $this->dir($hash))) {
+        if (false === ($dir = $this->dir($hash))) {
             return false;
         }
 
@@ -1759,7 +1759,7 @@ abstract class elFinderVolumeDriver
      */
     public function ls($hash, $intersect = null)
     {
-        if (false == ($dir = $this->dir($hash)) || !$dir['read']) {
+        if (false === ($dir = $this->dir($hash)) || !$dir['read']) {
             return false;
         }
 
@@ -1793,7 +1793,7 @@ abstract class elFinderVolumeDriver
     {
         $path = $hash ? $this->decode($hash) : $this->root;
 
-        if (false == ($dir = $this->stat($path)) || 'directory' != $dir['mime']) {
+        if (false === ($dir = $this->stat($path)) || 'directory' != $dir['mime']) {
             return false;
         }
 
@@ -1813,7 +1813,7 @@ abstract class elFinderVolumeDriver
      **/
     public function parents($hash, $lineal = false)
     {
-        if (false == ($current = $this->dir($hash))) {
+        if (false === ($current = $this->dir($hash))) {
             return false;
         }
 
@@ -1893,7 +1893,7 @@ abstract class elFinderVolumeDriver
      **/
     public function open($hash)
     {
-        if (false == ($file = $this->file($hash))
+        if (false === ($file = $this->file($hash))
         || 'directory' == $file['mime']) {
             return false;
         }
@@ -1931,7 +1931,7 @@ abstract class elFinderVolumeDriver
             return $this->setError(elFinder::ERROR_INVALID_NAME);
         }
 
-        if (false == ($dir = $this->dir($dsthash))) {
+        if (false === ($dir = $this->dir($dsthash))) {
             return $this->setError(elFinder::ERROR_TRGDIR_NOT_FOUND, '#' . $dsthash);
         }
 
@@ -1980,7 +1980,7 @@ abstract class elFinderVolumeDriver
             return $this->setError(elFinder::ERROR_UPLOAD_FILE_MIME, $name);
         }
 
-        if (false == ($dir = $this->dir($dst))) {
+        if (false === ($dir = $this->dir($dst))) {
             return $this->setError(elFinder::ERROR_TRGDIR_NOT_FOUND, '#' . $dst);
         }
 
@@ -2072,7 +2072,7 @@ abstract class elFinderVolumeDriver
             return $this->setError(elFinder::ERROR_COPY, '#' . $hash, elFinder::ERROR_PERM_DENIED);
         }
 
-        if (false == ($file = $this->file($hash))) {
+        if (false === ($file = $this->file($hash))) {
             return $this->setError(elFinder::ERROR_COPY, elFinder::ERROR_FILE_NOT_FOUND);
         }
 
@@ -2084,7 +2084,7 @@ abstract class elFinderVolumeDriver
             return $this->setError(elFinder::ERROR_PERM_DENIED);
         }
 
-        return false == ($path = $this->copy($path, $dir, $name))
+        return false === ($path = $this->copy($path, $dir, $name))
             ? false
             : $this->stat($path);
     }
@@ -2108,7 +2108,7 @@ abstract class elFinderVolumeDriver
             return $this->setError(elFinder::ERROR_PERM_DENIED);
         }
 
-        if (false == ($dir = $this->dir($dst))) {
+        if (false === ($dir = $this->dir($dst))) {
             return $this->setError(elFinder::ERROR_TRGDIR_NOT_FOUND, '#' . $dst);
         }
 
@@ -2178,7 +2178,7 @@ abstract class elFinderVolumeDriver
             $stat['height'] = $s[1];
         }
         // $this->clearcache();
-        if (false == ($path = $this->saveCE($fp, $dstpath, $name, $stat))) {
+        if (false === ($path = $this->saveCE($fp, $dstpath, $name, $stat))) {
             return false;
         }
 
@@ -2211,14 +2211,14 @@ abstract class elFinderVolumeDriver
             return $this->setError($err, '#' . $src, elFinder::ERROR_PERM_DENIED);
         }
 
-        if (false == ($file = $volume->file($src, $rmSrc))) {
+        if (false === ($file = $volume->file($src, $rmSrc))) {
             return $this->setError($err, '#' . $src, elFinder::ERROR_FILE_NOT_FOUND);
         }
 
         $name = $file['name'];
         $errpath = $volume->path($file['hash']);
 
-        if (false == ($dir = $this->dir($dst))) {
+        if (false === ($dir = $this->dir($dst))) {
             return $this->setError($err, $errpath, elFinder::ERROR_TRGDIR_NOT_FOUND, '#' . $dst);
         }
 
@@ -2308,7 +2308,7 @@ abstract class elFinderVolumeDriver
                 return $this->setError(elFinder::ERROR_COPY, $errpath, elFinder::ERROR_PERM_DENIED);
             }
 
-            if (false == ($path = $this->copyFrom($volume, $src, $destination, $name))) {
+            if (false === ($path = $this->copyFrom($volume, $src, $destination, $name))) {
                 return false;
             }
 
@@ -2487,7 +2487,7 @@ abstract class elFinderVolumeDriver
             return $this->setError(elFinder::ERROR_PERM_DENIED);
         }
 
-        if (false == ($file = $this->file($hash))) {
+        if (false === ($file = $this->file($hash))) {
             return $this->setError(elFinder::ERROR_FILE_NOT_FOUND);
         }
 
@@ -2552,7 +2552,7 @@ abstract class elFinderVolumeDriver
         $files = [];
 
         foreach ($hashes as $hash) {
-            if (false == ($file = $this->file($hash))) {
+            if (false === ($file = $this->file($hash))) {
                 return $this->setError(elFinder::ERROR_FILE_NOT_FOUND, '#' + $hash);
             }
             if (!$file['read']) {
@@ -2606,7 +2606,7 @@ abstract class elFinderVolumeDriver
             return $this->setError(elFinder::ERROR_PERM_DENIED);
         }
 
-        if (false == ($file = $this->file($hash))) {
+        if (false === ($file = $this->file($hash))) {
             return $this->setError(elFinder::ERROR_FILE_NOT_FOUND);
         }
 
@@ -2771,7 +2771,7 @@ abstract class elFinderVolumeDriver
      **/
     public function dimensions($hash)
     {
-        if (false == ($file = $this->file($hash))) {
+        if (false === ($file = $this->file($hash))) {
             return false;
         }
 
@@ -2789,7 +2789,7 @@ abstract class elFinderVolumeDriver
      */
     public function getContentUrl($hash, $options = [])
     {
-        if (false == ($file = $this->file($hash)) || (isset($file['url']) && 1 == $file['url'])) {
+        if (false === ($file = $this->file($hash)) || (isset($file['url']) && 1 == $file['url'])) {
             return false;
         }
         if (empty($file['url'])) {
@@ -3407,7 +3407,7 @@ abstract class elFinderVolumeDriver
     /*********************** util mainly for inheritance class *********************/
 
     /**
-     * Get temporary filename. Tempfile will be removed when after script execution finishes or exit() is called.
+     * Get temporary filename. Tempfile will be removed when after script execution finishes || die() is called.
      * When needing the unique file to a path, give $path to parameter.
      *
      * @param  string       $path for get unique file to a path
@@ -3540,7 +3540,7 @@ abstract class elFinderVolumeDriver
         $res = true;
         $files = [];
         foreach ($hashes as $hash) {
-            if (false == ($file = $this->file($hash))) {
+            if (false === ($file = $this->file($hash))) {
                 continue;
             }
             if (!$file['read']) {
@@ -4047,7 +4047,7 @@ abstract class elFinderVolumeDriver
             self::$mimetypesLoaded = true;
             $file = elFinder::$defaultMimefile;
             if ('' === $file || !is_readable($file)) {
-                $file = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'mime.types';
+                $file = __DIR__ . DIRECTORY_SEPARATOR . 'mime.types';
             }
             if (is_readable($file)) {
                 $mimecf = file($file);
@@ -4163,7 +4163,7 @@ abstract class elFinderVolumeDriver
     protected function childsByAttr($path, $attr, $val)
     {
         foreach ($this->scandirCE($path) as $p) {
-            if (false != ($_p = $this->closestByAttr($p, $attr, $val))) {
+            if (false !== ($_p = $this->closestByAttr($p, $attr, $val))) {
                 return $_p;
             }
         }
@@ -4445,7 +4445,7 @@ abstract class elFinderVolumeDriver
     {
         elFinder::extendTimeLimit();
 
-        if (false == ($source = $volume->file($src))) {
+        if (false === ($source = $volume->file($src))) {
             return $this->setError(elFinder::ERROR_COPY, '#' . $src, $volume->error());
         }
 
@@ -4487,8 +4487,8 @@ abstract class elFinderVolumeDriver
                 $source['height'] = $s[1];
             }
 
-            if (false == ($fp = $volume->open($src))
-            || false == ($path = $this->saveCE($fp, $destination, $name, $source))) {
+            if (false === ($fp = $volume->open($src))
+            || false === ($path = $this->saveCE($fp, $destination, $name, $source))) {
                 $fp && $volume->close($fp, $src);
 
                 return $this->setError(elFinder::ERROR_COPY, $errpath);
@@ -4680,11 +4680,11 @@ abstract class elFinderVolumeDriver
         }
 
         // copy image into tmbPath so some drivers does not store files on local fs
-        if (false == ($src = $this->fopenCE($path, 'rb'))) {
+        if (false === ($src = $this->fopenCE($path, 'rb'))) {
             return false;
         }
 
-        if (false == ($trg = fopen($tmb, 'wb'))) {
+        if (false === ($trg = fopen($tmb, 'wb'))) {
             $this->fcloseCE($src, $path);
 
             return false;
@@ -4757,7 +4757,7 @@ abstract class elFinderVolumeDriver
                     $result = $this->imgResize($tmb, $tmbSize, $tmbSize, true, false, 'png');
                 }
 
-                if ($result && false != ($s = getimagesize($tmb))) {
+                if ($result && false !== ($s = getimagesize($tmb))) {
                     $x = $s[0] > $tmbSize ? (int)(($s[0] - $tmbSize) / 2) : 0;
                     $y = $s[1] > $tmbSize ? (int)(($s[1] - $tmbSize) / 2) : 0;
                     $result = $this->imgCrop($result, $tmbSize, $tmbSize, $x, $y, 'png');
@@ -4803,7 +4803,7 @@ abstract class elFinderVolumeDriver
      **/
     protected function imgResize($path, $width, $height, $keepProportions = false, $resizeByBiggerSide = true, $destformat = null, $jpgQuality = null, $options = [])
     {
-        if (false == ($s = getimagesize($path))) {
+        if (false === ($s = getimagesize($path))) {
             return false;
         }
 
@@ -4817,7 +4817,7 @@ abstract class elFinderVolumeDriver
         list($size_w, $size_h) = [$width, $height];
 
         if (empty($options['unenlarge']) || $orig_w > $size_w || $orig_h > $size_h) {
-            if (true == $keepProportions) {
+            if (true === $keepProportions) {
                 /* Resizing by biggest side */
                 if ($resizeByBiggerSide) {
                     if ($orig_w > $orig_h) {
@@ -4913,7 +4913,7 @@ abstract class elFinderVolumeDriver
             case 'gd':
                 $img = $this->gdImageCreate($path, $s['mime']);
 
-                if ($img && false != ($tmp = imagecreatetruecolor($size_w, $size_h))) {
+                if ($img && false !== ($tmp = imagecreatetruecolor($size_w, $size_h))) {
                     $bgNum = false;
                     if (IMAGETYPE_GIF === $s[2] && (!$destformat || 'gif' === $destformat)) {
                         $bgIdx = imagecolortransparent($img);
@@ -4961,7 +4961,7 @@ abstract class elFinderVolumeDriver
      **/
     protected function imgCrop($path, $width, $height, $x, $y, $destformat = null, $jpgQuality = null)
     {
-        if (false == ($s = getimagesize($path))) {
+        if (false === ($s = getimagesize($path))) {
             return false;
         }
 
@@ -5019,7 +5019,7 @@ abstract class elFinderVolumeDriver
             case 'gd':
                 $img = $this->gdImageCreate($path, $s['mime']);
 
-                if ($img && false != ($tmp = imagecreatetruecolor($width, $height))) {
+                if ($img && false !== ($tmp = imagecreatetruecolor($width, $height))) {
                     $bgNum = false;
                     if (IMAGETYPE_GIF === $s[2] && (!$destformat || 'gif' === $destformat)) {
                         $bgIdx = imagecolortransparent($img);
@@ -5076,7 +5076,7 @@ abstract class elFinderVolumeDriver
      */
     protected function imgSquareFit($path, $width, $height, $align = 'center', $valign = 'middle', $bgcolor = '#0000ff', $destformat = null, $jpgQuality = null)
     {
-        if (false == ($s = getimagesize($path))) {
+        if (false === ($s = getimagesize($path))) {
             return false;
         }
 
@@ -5153,7 +5153,7 @@ abstract class elFinderVolumeDriver
             case 'gd':
                 $img = $this->gdImageCreate($path, $s['mime']);
 
-                if ($img && false != ($tmp = imagecreatetruecolor($width, $height))) {
+                if ($img && false !== ($tmp = imagecreatetruecolor($width, $height))) {
                     $this->gdImageBackground($tmp, $bgcolor);
                     if ('transparent' === $bgcolor && ('png' === $destformat || IMAGETYPE_PNG === $s[2])) {
                         $bgNum = imagecolorallocatealpha($tmp, 255, 255, 255, 127);
@@ -5191,7 +5191,7 @@ abstract class elFinderVolumeDriver
      **/
     protected function imgRotate($path, $degree, $bgcolor = '#ffffff', $destformat = null, $jpgQuality = null)
     {
-        if (false == ($s = getimagesize($path)) || 0 === $degree % 360) {
+        if (false === ($s = getimagesize($path)) || 0 === $degree % 360) {
             return false;
         }
 
@@ -5425,7 +5425,7 @@ abstract class elFinderVolumeDriver
             return imagecreatefromgif($path);
             case 'image/x-ms-bmp':
             if (!function_exists('imagecreatefrombmp')) {
-                include_once dirname(__FILE__) . '/libs/GdBmp.php';
+                require_once __DIR__ . '/libs/GdBmp.php';
             }
 
             return imagecreatefrombmp($path);

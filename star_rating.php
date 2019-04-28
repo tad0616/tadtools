@@ -2,8 +2,8 @@
 
 use XoopsModules\Tadtools\Utility;
 
-// include_once 'tadtools_header.php';
-// include_once 'jquery.php';
+// require_once __DIR__ . '/tadtools_header.php';
+// require_once __DIR__ . '/jquery.php';
 
 /*
 建立
@@ -18,14 +18,14 @@ PRIMARY KEY (`col_name`,`col_sn`,`uid`)
 )
 
 //票選
-include_once XOOPS_ROOT_PATH."/modules/tadtools/star_rating.php";
+require_once XOOPS_ROOT_PATH."/modules/tadtools/star_rating.php";
 $rating=new rating("tad_player","10",'','simple');
 $rating->add_rating("psn",$get_psn);
 $all['star_rating']=$rating->render();
 $all['star_rating'].="<div id='rating_psn_{$get_psn}'></div>";
 
 //顯示
-include_once XOOPS_ROOT_PATH."/modules/tadtools/star_rating.php";
+require_once XOOPS_ROOT_PATH."/modules/tadtools/star_rating.php";
 $rating=new rating("tad_player","10",'show','simple');
 while(){
 $rating->add_rating("psn",$psn);

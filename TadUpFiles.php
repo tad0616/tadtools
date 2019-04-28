@@ -4,6 +4,8 @@ class TadUpFiles extends \XoopsModules\Tadtools\TadUpFiles
 }
 
 // declare (strict_types = 1);
+
+use XoopsModules\Tadtools\Utility;
 /*
 $TadUpFiles->set_var("permission", true); //要使用權限控管時才需要
 
@@ -13,42 +15,42 @@ $TadUpFiles->set_var("permission", true); //要使用權限控管時才需要
 $TadUpFiles->upload_file($upname,$width,$thumb_width,$files_sn,$desc,$safe_name=false,$hash=false,$return_col,$allow);
 
 //上傳表單（enctype='multipart/form-data'）
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
 $TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="/file",$image="/image",$thumbs="/image/.thumbs");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn); //若 $show_list_del_file ==true 時一定要有
 $upform=$TadUpFiles->upform($show_edit,$upname,$maxlength,$show_list_del_file,$only_type,$thumb);
 
 //儲存：
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
 $TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="/file",$image="/image",$thumbs="/image/.thumbs");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn,$sort);
 $TadUpFiles->upload_file($upname,$width,$thumb_width,$files_sn,$desc,$safe_name=false,$hash=false);
 
 //儲存單一檔案：
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
 $TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="/file",$image="/image",$thumbs="/image/.thumbs");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn,$sort);
 $TadUpFiles->upload_one_file($_FILES['upfile']['name'],$_FILES['upfile']['tmp_name'],$_FILES['upfile']['type'],$_FILES['upfile']['size'],$width,$thumb_width,$files_sn,$desc,$safe_name=false,$hash=false);
 
 //複製匯入單一檔案：
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
 $TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="/file",$image="/image",$thumbs="/image/.thumbs");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn,$sort);
 $TadUpFiles->import_one_file($from="",$new_filename="",$main_width="1280",$thumb_width="120",$files_sn="" ,$desc="" ,$safe_name=false ,$hash=false);
 
 //顯示可刪除列表
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
 $TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="/file",$image="/image",$thumbs="/image/.thumbs");
 $TadUpFiles->set_col($col_name,$col_sn,$sort);
 $TadUpFiles->set_thumb($thumb_width="120px",$thumb_height="70px",$thumb_bg_color="#000");
 $list_del_file=$TadUpFiles->list_del_file($show_edit=false,$mode);
 
 //顯示：
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
 $TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="/file",$image="/image",$thumbs="/image/.thumbs");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn,$sort);
@@ -64,14 +66,14 @@ exit;
 break;
 
 //刪除：
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
 $TadUpFiles=new TadUpFiles("模組名稱");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 //$TadUpFiles->set_col($col_name,$col_sn,$sort); //若要整個刪除
 $TadUpFiles->del_files($files_sn);
 
 //單一檔案圖檔真實路徑：
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
 $TadUpFiles=new TadUpFiles("模組名稱");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn,$sort);
@@ -81,21 +83,21 @@ $TadUpFiles->get_pic_file($showkind[,$kind='url',$files_sn]); //thumb 小圖, im
 $TadUpFiles->rename_file($files_sn,$new_name);
 
 檔案數量：
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
 $TadUpFiles=new TadUpFiles("模組名稱");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn);
 $TadUpFiles->get_file_amount();
 
 //取得檔案資訊
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
 $TadUpFiles=new TadUpFiles("模組名稱");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn,$sort);
 $TadUpFiles->get_file($files_sn="",$limit=NULL,$path,$hash);
 
 //取得檔案資訊 for smarty
-include_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
+require_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;
 $TadUpFiles=new TadUpFiles("模組名稱");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn,$sort);

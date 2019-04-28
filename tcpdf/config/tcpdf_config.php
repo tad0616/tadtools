@@ -23,7 +23,7 @@
 // See the GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with TCPDF.  If not, see <http://www.gnu.org/licenses/>.
+// along with TCPDF.  If not, see <http://www.gnu.org/licenses>.
 //
 // See LICENSE.TXT file for more information.
 //============================================================+

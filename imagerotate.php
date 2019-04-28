@@ -1,7 +1,7 @@
 <?php
-// include_once 'tadtools_header.php';
+// require_once __DIR__ . '/tadtools_header.php';
 
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $subdir = system_CleanVars($_REQUEST, 'subdir', '', 'string');
 $image_dir = system_CleanVars($_REQUEST, 'image_dir', '', 'string');

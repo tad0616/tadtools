@@ -90,8 +90,8 @@ class PHPExcel_NamedRange
         $this->_worksheet = $pWorksheet;
         $this->_range = $pRange;
         $this->_localOnly = $pLocalOnly;
-        $this->_scope = (true == $pLocalOnly) ?
-                                ((null == $pScope) ? $pWorksheet : $pScope) : null;
+        $this->_scope = (true === $pLocalOnly) ?
+                                ((null === $pScope) ? $pWorksheet : $pScope) : null;
     }
 
     /**
@@ -226,7 +226,7 @@ class PHPExcel_NamedRange
     public function setScope(PHPExcel_Worksheet $value = null)
     {
         $this->_scope = $value;
-        $this->_localOnly = (null == $value) ? false : true;
+        $this->_localOnly = (null === $value) ? false : true;
 
         return $this;
     }

@@ -3,10 +3,10 @@
 error_reporting(0); // Set E_ALL for debuging
 
 // load composer autoload before load elFinder autoload If you need composer
-//require './vendor/autoload.php';
+//require __DIR__ . '/vendor/autoload.php';
 
 // elFinder autoload
-require './autoload.php';
+require __DIR__ . '/autoload.php';
 // ===============================================
 
 // Enable FTP connector netmount
@@ -29,7 +29,7 @@ elFinder::$netDrivers['ftp'] = 'FTP';
 // // On composer
 // elFinder::$netDrivers['dropbox'] = 'Dropbox';
 // // OR on pear
-// include_once dirname(__FILE__).DIRECTORY_SEPARATOR.'elFinderVolumeDropbox.class.php';
+// require_once __DIR__.DIRECTORY_SEPARATOR.'elFinderVolumeDropbox.class.php';
 
 // // Dropbox driver need next two settings. You can get at https://www.dropbox.com/developers
 // define('ELFINDER_DROPBOX_CONSUMERKEY',    '');
@@ -92,18 +92,18 @@ elFinder::$netDrivers['ftp'] = 'FTP';
  **/
 function access($attr, $path, $data, $volume)
 {
-    return 0 === mb_strpos(basename($path), '.') // if file/folder begins with '.' (dot)
+    return 0 === mb_strpos(basename($path), '.')// if file/folder begins with '.' (dot)
      ? !('read' == $attr || 'write' == $attr) // set read+write to false, other (locked+hidden) set to true
      : null; // else elFinder decide it itself
 }
 
-include_once '../../../../mainfile.php';
+require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
 $mdir = $_SESSION['xoops_mod_name'];
 if (!$xoopsModuleConfig) {
-    $modhandler = xoops_gethandler('module');
-    $TadToolsModule = $modhandler->getByDirname('tadtools');
-    $config_handler = xoops_gethandler('config');
-    $xoopsModuleConfig = $config_handler->getConfigsByCat(0, $TadToolsModule->getVar('mid'));
+    $moduleHandler = xoops_getHandler('module');
+    $TadToolsModule = $moduleHandler->getByDirname('tadtools');
+    $configHandler = xoops_getHandler('config');
+    $xoopsModuleConfig = $configHandler->getConfigsByCat(0, $TadToolsModule->getVar('mid'));
 }
 
 $image_max_width = $xoopsModuleConfig['image_max_width'] ? (int) $xoopsModuleConfig['image_max_width'] : 640;

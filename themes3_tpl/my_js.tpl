@@ -10,7 +10,7 @@
 
     <{php}>
       if(file_exists(XOOPS_ROOT_PATH."/modules/tadtools/mobile_device_detect.php")){
-        include_once XOOPS_ROOT_PATH."/modules/tadtools/mobile_device_detect.php";
+        require_once XOOPS_ROOT_PATH."/modules/tadtools/mobile_device_detect.php";
         $device=mobile_device_detect(true,false,true,true,true,true,true);
         echo "var mobile_device='{$device[0]}';";
       }else{

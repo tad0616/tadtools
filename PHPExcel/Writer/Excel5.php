@@ -704,7 +704,7 @@ class PHPExcel_Writer_Excel5 extends PHPExcel_Writer_Abstract implements PHPExce
 
                 $dataSection_Content_Offset += 4 + 4;
             } elseif (0x0B == $dataProp['type']['data']) { // Boolean
-                if (false == $dataProp['data']['data']) {
+                if (false === $dataProp['data']['data']) {
                     $dataSection_Content .= pack('V', 0x0000);
                 } else {
                     $dataSection_Content .= pack('V', 0x0001);

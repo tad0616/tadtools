@@ -30,7 +30,7 @@ if (!defined('PHPEXCEL_ROOT')) {
     /**
      * @ignore
      */
-    define('PHPEXCEL_ROOT', dirname(__FILE__) . '/../../');
+    define('PHPEXCEL_ROOT', __DIR__ . '/../../');
     require(PHPEXCEL_ROOT . 'PHPExcel/Autoloader.php');
 }
 
@@ -109,7 +109,7 @@ class PHPExcel_Calculation_TextData
             return ($stringValue) ? PHPExcel_Calculation::getTRUE() : PHPExcel_Calculation::getFALSE();
         }
 
-        if (null == self::$_invalidChars) {
+        if (null === self::$_invalidChars) {
             self::$_invalidChars = range(chr(0), chr(31));
         }
 

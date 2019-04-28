@@ -2,9 +2,9 @@
 
 use XoopsModules\Tadtools\Utility;
 
-// include_once 'tadtools_header.php';
-// include_once 'tad_function.php';
-// include_once 'jquery.php';
+// require_once __DIR__ . '/tadtools_header.php';
+// require_once __DIR__ . '/tad_function.php';
+// require_once __DIR__ . '/jquery.php';
 
 class slider
 {
@@ -77,7 +77,7 @@ class slider
                 height='{$item_content['height']}'>
                 <param name='scale' value='default'>
                 <param name='movie'
-                value='$image' width='100%' height='{$item_content['height']}' scale='default' />
+                value='$image' width='100%' height='{$item_content['height']}' scale='default'>
                 </object>
                 $caption
                 </li>
@@ -118,8 +118,8 @@ class slider
 
         // } else {
         $main = "
-            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/ResponsiveSlides/reset.css' />
-            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/ResponsiveSlides/responsiveslides.css' />
+            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/ResponsiveSlides/reset.css' >
+            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/ResponsiveSlides/responsiveslides.css' >
             $jquery
             <script language='javascript' type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/ResponsiveSlides/responsiveslides.js'></script>
 
@@ -155,7 +155,7 @@ class slider
 if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/ResponsiveSlides.php")) {
 redirect_header("index.php", 3, _MB_NEED_TADTOOLS);
 }
-include_once XOOPS_ROOT_PATH . "/modules/tadtools/ResponsiveSlides.php";
+require_once XOOPS_ROOT_PATH . "/modules/tadtools/ResponsiveSlides.php";
 
 $slider = new slider($字數);
 $slider->add_content($編號, $標題, $內容, $圖片, $日期, $連結);

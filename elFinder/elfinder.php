@@ -1,11 +1,11 @@
 <?php
-include_once '../../../mainfile.php';
+require_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
 if (!$xoopsUser) {
     exit;
 }
 
 $LANGCODE = str_replace('-', '_', _LANGCODE);
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $type = system_CleanVars($_REQUEST, 'type', '', 'string');
 $mod_dir = system_CleanVars($_REQUEST, 'mod_dir', '', 'string');
 
@@ -15,7 +15,7 @@ $mod_dir = system_CleanVars($_REQUEST, 'mod_dir', '', 'string');
 	<head>
 		<meta charset="utf-8">
 		<title>elFinder 2.1.x source version with PHP connector</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 
 		<!-- Require JS (REQUIRED) -->
 		<!-- Rename "main.default.js" to "main.js" and edit it if you need configure elFInder options or any things -->

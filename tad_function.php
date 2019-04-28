@@ -1,9 +1,9 @@
 <?php
 use XoopsModules\Tadtools\Utility;
 
-include_once 'tadtools_header.php';
-include_once 'jquery.php';
-include_once 'include/beforeheader.php';
+require_once __DIR__ . '/tadtools_header.php';
+require_once __DIR__ . '/jquery.php';
+require_once __DIR__ . '/include/beforeheader.php';
 Utility::get_bootstrap();
 
 //路徑導覽，需搭配 get_模組_cate_path($分類編號);

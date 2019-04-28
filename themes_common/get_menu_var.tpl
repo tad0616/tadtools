@@ -47,7 +47,7 @@ function get_theme_menu_items($id = "", $other_menu = true)
         $sql    = "select `menuid`, `itemname`, `itemurl`, `target`, `icon`, `link_cate_name`, `link_cate_sn`, `read_group` from " . $xoopsDB->prefix("tad_themes_menu") . " where of_level='{$id}' and status='1' order by position";
         $result = $xoopsDB->query($sql);
 
-        $modhandler = xoops_gethandler('module');
+        $moduleHandler = xoops_getHandler('module');
         if ($result) {
             $i = 0;
             while (list($menuid, $itemname, $itemurl, $target, $icon, $link_cate_name, $link_cate_sn, $read_group) = $xoopsDB->fetchRow($result)) {
@@ -61,9 +61,9 @@ function get_theme_menu_items($id = "", $other_menu = true)
                         switch ($link_cate_name) {
 
                             case "tadnews_page_cate":
-                                $TadNewsModule = $modhandler->getByDirname("tadnews");
+                                $TadNewsModule = $moduleHandler->getByDirname("tadnews");
                                 if (!$TadNewsModule) {
-                                    continue;
+                                    continue 2;
                                 }
                                 break;
                         }
@@ -148,7 +148,7 @@ function get_module_menu_item($i)
     }
 
     if (file_exists(XOOPS_ROOT_PATH . "/modules/{$dir}/interface_menu.php")) {
-        include_once XOOPS_ROOT_PATH . "/modules/{$dir}/interface_menu.php";
+        require_once XOOPS_ROOT_PATH . "/modules/{$dir}/interface_menu.php";
         global $interface_menu, $interface_menu_img, $isAdmin, $module_id, $interface_icon;
 
         foreach ($interface_menu as $title => $url) {

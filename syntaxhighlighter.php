@@ -1,7 +1,7 @@
 <?php
 use XoopsModules\Tadtools\Utility;
 
-// include_once 'tadtools_header.php';
+// require_once __DIR__ . '/tadtools_header.php';
 
 class syntaxhighlighter
 {
@@ -113,8 +113,8 @@ class syntaxhighlighter
             $dir = !empty($TadToolsModuleConfig['syntaxhighlighter_version']) ? XOOPS_URL . '/modules/tadtools/' . $TadToolsModuleConfig['syntaxhighlighter_version'] : XOOPS_URL . '/modules/tadtools/syntaxhighlighter';
 
             $syntaxhighlighter = "
-              <link type='text/css' rel='stylesheet' href='{$dir}/styles/shCore.css'/>
-              <link type='text/css' rel='stylesheet' href='{$dir}/styles/{$syntaxhighlighter_themes}.css'/>
+              <link type='text/css' rel='stylesheet' href='{$dir}/styles/shCore.css'>
+              <link type='text/css' rel='stylesheet' href='{$dir}/styles/{$syntaxhighlighter_themes}.css'>
               ";
 
             if ('syntaxhighlighter_2' === $TadToolsModuleConfig['syntaxhighlighter_version']) {
@@ -211,7 +211,7 @@ class syntaxhighlighter
 /*
 $syntaxhighlighter_code="";
 if(file_exists(XOOPS_ROOT_PATH."/modules/tadtools/syntaxhighlighter.php")){
-include_once XOOPS_ROOT_PATH."/modules/tadtools/syntaxhighlighter.php";
+require_once XOOPS_ROOT_PATH."/modules/tadtools/syntaxhighlighter.php";
 $syntaxhighlighter = new syntaxhighlighter();
 $syntaxhighlighter_code=$syntaxhighlighter->render();
 $xoopsTpl->assign('syntaxhighlighter_code',$syntaxhighlighter_code);

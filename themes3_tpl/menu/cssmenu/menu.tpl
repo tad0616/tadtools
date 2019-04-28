@@ -41,7 +41,7 @@
         </a>
         <{if $menu.submenu}>
           <{if $menu.submenu=='1'}>
-            <{includeq file="$xoops_rootpath/modules/tadtools/themes_tpl/menu/cssmenu/login3.tpl"}>
+            <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/menu/cssmenu/login3.tpl"}>
           <{else}>
             <ul>
               <{foreach from=$menu.submenu item=menu2}>

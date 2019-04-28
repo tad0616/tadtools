@@ -271,8 +271,8 @@ class Utility
             $main .= "<link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css'>";
 
             return $main;
+            }
         }
-    }
 
     //自動取得網址
     public static function get_xoops_url()
@@ -295,7 +295,7 @@ class Utility
                 $XMUrl[0] = $u['path'];
             } else {
                 $XMUrl[0] = '';
-            }
+    }
 
             $my_url = str_replace('\\', '/', $XMUrl['0']);
             if ('/' === mb_substr($my_url, -1)) {
@@ -377,7 +377,7 @@ class Utility
         global $xoopsConfig;
         if (!$enable) {
             return;
-        }
+    }
         $jquery   = self::get_jquery();
         $protocol = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
 
@@ -444,8 +444,8 @@ class Utility
             $a   = new QR("{$_SERVER['HTTP_HOST']}{$url}");
             //die(XOOPS_ROOT_PATH."/uploads/qrcode/{$imgurl}.gif");
             file_put_contents(XOOPS_ROOT_PATH . "/uploads/qrcode/{$imgurl}.gif", $a->image(2));
+            }
         }
-    }
 
     //產生QR Code檔案的名稱
     public static function mk_qrcode_name($url = '')
@@ -474,10 +474,10 @@ class Utility
             list($key, $val) = explode('=', $v);
             if ('loadtime' === $key) {
                 continue;
-            }
+        }
 
             $all[$key] = $val;
-        }
+    }
 
         $var2 = '?';
         foreach ($all as $key => $val) {
@@ -544,8 +544,8 @@ class Utility
         //依據該群組是否對該權限項目有使用權之判斷 ，做不同之處理
         if ($gperm_handler->checkRight($perm_name, $perm_itemid, $groups, $module_id)) {
             // die('true');
-            return true;
-        }
+        return true;
+    }
         // die('false');
         return false;
     }
@@ -682,7 +682,7 @@ class Utility
 
         if (empty($page_list)) {
             $page_list = 10;
-        }
+    }
 
         if (empty($bootstrap)) {
             $bootstrap = $_SESSION['bootstrap'];
@@ -736,7 +736,7 @@ class Utility
             $moduleName = $xoopsModule->dirname();
         } else {
             $mod_name = $moduleName = '';
-        }
+    }
         if ($xoopsUser) {
             $isAdmin = $xoopsUser->isAdmin($module_id);
         } else {

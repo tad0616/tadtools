@@ -1,9 +1,9 @@
 <?php
 use XoopsModules\Tadtools\Utility;
 
-// include_once 'tadtools_header.php';
-// include_once 'tad_function.php';
-// include_once 'jquery.php';
+// require_once __DIR__ . '/tadtools_header.php';
+// require_once __DIR__ . '/tad_function.php';
+// require_once __DIR__ . '/jquery.php';
 
 class smoothslides
 {
@@ -59,7 +59,7 @@ class smoothslides
         }
 
         $main = "
-        <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/smoothslides/css/smoothslides.theme.css' />
+        <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/smoothslides/css/smoothslides.theme.css' >
         <div class='smoothslides' id='myslideshow1'>
             $all
         </div>

@@ -1,5 +1,5 @@
 <?php
-include '../../../../mainfile.php';
+require dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
 
 $array = [];
 switch ($_GET['_name']) {
@@ -17,7 +17,7 @@ function get_menu2($val = '')
     global $xoopsDB;
     $sql = 'SELECT `sn`,`title` FROM ' . $xoopsDB->prefix('資料表') . " where xxx='$val' order by xxx";
     $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error());
-    while (list($sn, $title) = $xoopsDB->fetchRow($result)) {
+    while (false !== (list($sn, $title) = $xoopsDB->fetchRow($result))) {
         $all[$sn] = $title;
     }
 
@@ -29,7 +29,7 @@ function get_menu3($val = '')
     global $xoopsDB;
     $sql = 'SELECT `sn`,`title` FROM ' . $xoopsDB->prefix('資料表') . " where xxx='$val' order by xxx";
     $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error());
-    while (list($sn, $title) = $xoopsDB->fetchRow($result)) {
+    while (false !== (list($sn, $title) = $xoopsDB->fetchRow($result))) {
         $all[$sn] = $title;
     }
 
