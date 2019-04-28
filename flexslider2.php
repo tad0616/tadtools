@@ -1,14 +1,6 @@
 <?php
-<<<<<<< HEAD
-require_once __DIR__ . '/tadtools_header.php';
-require_once __DIR__ . '/jquery.php';
-=======
 
 use XoopsModules\Tadtools\Utility;
-
-// include_once 'tadtools_header.php';
-// include_once 'jquery.php';
->>>>>>> 4ddaa3b251df83da3ffbccbcc6ff13804520661b
 
 class flexslider
 {
@@ -82,13 +74,8 @@ class flexslider
             $main = '';
         } else {
             $main = "
-<<<<<<< HEAD
-      <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/flexslider2/reset.css'>
-      <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/flexslider2/flexslider.css'>
-=======
       <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/flexslider2/reset.css' />
       <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/flexslider2/flexslider.css' />
->>>>>>> 4ddaa3b251df83da3ffbccbcc6ff13804520661b
       $jquery
       <script language='javascript' type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/flexslider2/jquery.flexslider.js'></script>
 

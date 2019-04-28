@@ -135,8 +135,8 @@ class TadDataCenter
     {
         global $xoopsDB, $xoopsModule;
         if ('' != $this->module_dirname) {
-            $sql             = 'select mid from ' . $xoopsDB->prefix('modules') . " where dirname='{$this->module_dirname}'";
-            $result          = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+            $sql = 'select mid from ' . $xoopsDB->prefix('modules') . " where dirname='{$this->module_dirname}'";
+            $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             list($this->mid) = $xoopsDB->fetchRow($result);
         } elseif ($xoopsModule) {
             $this->mid = $xoopsModule->mid();
@@ -148,13 +148,13 @@ class TadDataCenter
     public function set_col($col_name = '', $col_sn = '')
     {
         $this->col_name = $col_name;
-        $this->col_sn   = $col_sn;
+        $this->col_sn = $col_sn;
     }
 
     public function set_ans_col($ans_col_name = '', $ans_col_sn = '')
     {
         $this->ans_col_name = $ans_col_name;
-        $this->ans_col_sn   = $ans_col_sn;
+        $this->ans_col_sn = $ans_col_sn;
     }
 
     //取得表單
@@ -163,13 +163,13 @@ class TadDataCenter
         global $xoopsTpl;
 
         if ('checkbox' === $type) {
-            $dbv   = $this->getData($name, null, $ans_col_name, $ans_col_sn);
+            $dbv = $this->getData($name, null, $ans_col_name, $ans_col_sn);
             $value = isset($dbv[$name]) ? $dbv[$name] : $def_value;
         } elseif ($sort > 0) {
-            $dbv   = $this->getData($name, $sort, $ans_col_name, $ans_col_sn);
+            $dbv = $this->getData($name, $sort, $ans_col_name, $ans_col_sn);
             $value = isset($dbv[$name]) ? $dbv[$name] : $def_value;
         } else {
-            $dbv   = $this->getData($name, null, $ans_col_name, $ans_col_sn);
+            $dbv = $this->getData($name, null, $ans_col_name, $ans_col_sn);
             $value = isset($dbv[$name]) ? $dbv[$name][0] : $def_value;
         }
 
@@ -242,7 +242,7 @@ class TadDataCenter
                 break;
             case 'note':
                 $options_str = implode('', $options);
-                $form        = "<div class='form-control-static'><b>{$options_str}</b></div>";
+                $form = "<div class='form-control-static'><b>{$options_str}</b></div>";
                 break;
         }
 
@@ -265,11 +265,11 @@ class TadDataCenter
     public function saveData()
     {
         global $xoopsDB;
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         // die(var_export($_REQUEST['TDC']));
         // die('$this->col_sn=' . $this->col_sn);
         foreach ($_REQUEST['TDC'] as $name => $value) {
-            $name   = $myts->addSlashes($name);
+            $name = $myts->addSlashes($name);
             $values = [];
             if (!is_array($value)) {
                 $values[0] = $value;
@@ -296,10 +296,10 @@ class TadDataCenter
     public function saveCustomData($data_arr = [])
     {
         global $xoopsDB;
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         // die(var_dump($data_arr));
         foreach ($data_arr as $name => $value) {
-            $name   = $myts->addSlashes($name);
+            $name = $myts->addSlashes($name);
             $values = [];
             if (!is_array($value)) {
                 $values[0] = $value;
@@ -308,7 +308,7 @@ class TadDataCenter
             }
 
             foreach ($values as $sort => $val) {
-                $v   = json_decode($val, true);
+                $v = json_decode($val, true);
                 $val = $myts->addSlashes($val);
                 $this->delData($name, $sort, __FILE__, __LINE__);
 
@@ -324,12 +324,12 @@ class TadDataCenter
     public function getData($name = '', $data_sort = null, $ans_col_name = '', $ans_col_sn = '')
     {
         global $xoopsDB;
-        $myts     = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         $and_name = ('' != $name) ? "and `data_name`='{$name}'" : '';
         $and_sort = ('' != $data_sort) ? "and `data_sort`='{$data_sort}'" : '';
 
         $col_name = !empty($ans_col_name) ? $ans_col_name : $this->col_name;
-        $col_sn   = !empty($ans_col_name) ? $ans_col_sn : $this->col_sn;
+        $col_sn = !empty($ans_col_name) ? $ans_col_sn : $this->col_sn;
 
         $sql = "select `data_name`,`data_sort`, `data_value` from `{$this->TadDataCenterTblName}`
             where `mid`= '{$this->mid}' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}' {$and_name} {$and_sort} order by data_sort";
@@ -352,7 +352,7 @@ class TadDataCenter
     public function getDcqData($sort = '')
     {
         global $xoopsDB;
-        $myts     = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         $and_sort = ('' != $sort) ? "and `data_sort`='{$sort}'" : '';
 
         $sql = "select * from `{$this->TadDataCenterTblName}`
@@ -366,7 +366,7 @@ class TadDataCenter
         }
         $values = [];
         while ($all = $xoopsDB->fetchArray($result)) {
-            $data_sort          = $all['data_sort'];
+            $data_sort = $all['data_sort'];
             $values[$data_sort] = $all;
         }
 
@@ -377,10 +377,10 @@ class TadDataCenter
     public function delData($name = '', $data_sort = '', $file = '', $line = '')
     {
         global $xoopsDB;
-        $myts     = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         $and_name = ('' != $name) ? "and `data_name`='{$name}'" : '';
         $and_sort = ('' != $data_sort) ? "and `data_sort`='{$data_sort}'" : '';
-        $sql      = "delete from `{$this->TadDataCenterTblName}`
+        $sql = "delete from `{$this->TadDataCenterTblName}`
             where `mid`= '{$this->mid}' and `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' {$and_name} {$and_sort}";
         // die("$sql ,$file, $line");
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -388,12 +388,12 @@ class TadDataCenter
 
     public function mk_form_group($left_width, $right_width, $label, $form, $input_group = false, $help = '', $require = '')
     {
-        $help_text    = $help ? '<div><small class="text-muted">' . $help . '</small></div>' : '';
+        $help_text = $help ? '<div><small class="text-muted">' . $help . '</small></div>' : '';
         $ig_tag_start = $input_group ? '<div class="input-group">' : '';
-        $ig_tag_body  = $input_group ? '<span class="input-group-btn">' . $input_group . '</span>' : '';
-        $ig_tag_end   = $input_group ? '</div>' : '';
+        $ig_tag_body = $input_group ? '<span class="input-group-btn">' . $input_group . '</span>' : '';
+        $ig_tag_end = $input_group ? '</div>' : '';
         $require_mark = 1 == $require ? ' <span style="color:red;">*</span>' : '';
-        $main         = '
+        $main = '
         <div class="form-group">
             <label class="col-sm-' . $left_width . ' control-label">' . $label . $require_mark . '</label>
             <div class="col-sm-' . $right_width . '">
@@ -428,9 +428,9 @@ class TadDataCenter
     public function getCustomSetupForm($action)
     {
         global $xoTheme;
-        $action  = empty($action) ? $_SERVER['PHP_SELF'] : $action;
+        $action = empty($action) ? $_SERVER['PHP_SELF'] : $action;
         $DcqData = $this->getDcqData();
-        $sort    = 0;
+        $sort = 0;
 
         if ($xoTheme) {
             $main = '';
@@ -488,14 +488,14 @@ class TadDataCenter
     {
         $val = json_decode($json, true);
 
-        $col_type_arr['input=text']     = _TDC_INPUT;
-        $col_type_arr['input=radio']    = _TDC_RADIO;
+        $col_type_arr['input=text'] = _TDC_INPUT;
+        $col_type_arr['input=radio'] = _TDC_RADIO;
         $col_type_arr['input=checkbox'] = _TDC_CHECKBOX;
-        $col_type_arr['input=date']     = _TDC_DATE;
-        $col_type_arr['select']         = _TDC_SELECT;
-        $col_type_arr['textarea']       = _TDC_TEXTAREA;
-        $col_type_arr['note']           = _TDC_NOTE;
-        $option                         = '';
+        $col_type_arr['input=date'] = _TDC_DATE;
+        $col_type_arr['select'] = _TDC_SELECT;
+        $col_type_arr['textarea'] = _TDC_TEXTAREA;
+        $col_type_arr['note'] = _TDC_NOTE;
+        $option = '';
         foreach ($col_type_arr as $type => $text) {
             $selected = $val['type'] == $type ? 'selected' : '';
             $option .= '<option value="' . $type . '" ' . $selected . '>' . $text . '</option>';
@@ -514,7 +514,7 @@ class TadDataCenter
         $form_arr[] = [1, _TDC_TYPE, '<select name="dcq[' . $sort . '][type]" class="my-input my-100">' . $option . '</select>'];
         $form_arr[] = [2, _TDC_OPTIONS, '<input type="text" name="dcq[' . $sort . '][opt]" class="my-input my-100" placeholder="' . _TDC_OPTIONS_NOTE . '" value="' . $val['opt'] . '">'];
 
-        $checked    = 1 == $val['require'] ? 'checked' : '';
+        $checked = 1 == $val['require'] ? 'checked' : '';
         $form_arr[] = [1, _TDC_REQUIRE . $i, '<label class="checkbox-inline"><input type="checkbox" name="dcq[' . $sort . '][require]" value="1" ' . $checked . '>' . _TDC_REQUIRE . '</label>'];
 
         if ('new' === $col_id) {
@@ -541,7 +541,7 @@ class TadDataCenter
     private function saveDcqData()
     {
         global $xoopsDB;
-        $myts = MyTextSanitizer::getInstance();
+        $myts = \MyTextSanitizer::getInstance();
         // die(var_export($_REQUEST['dcq']));
         // die('$this->col_sn=' . $this->col_sn);
         foreach ($_REQUEST['dcq'] as $sort => $dcq) {
@@ -554,7 +554,7 @@ class TadDataCenter
 
             $this->delData('dcq', $sort, __FILE__, __LINE__);
             $col_id = (empty($dcq['col_id']) or 'new' === $dcq['col_id']) ? $this->rand_str() : $dcq['col_id'];
-            $sql    = "insert into `{$this->TadDataCenterTblName}`
+            $sql = "insert into `{$this->TadDataCenterTblName}`
                     (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`, `col_id`, `update_time`)
                     values('{$this->mid}' , '{$this->col_name}' , '{$this->col_sn}' , 'dcq' , '{$json_val}' , '{$sort}' , '{$col_id}' , now())";
             $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -585,7 +585,7 @@ class TadDataCenter
 
             $dcq['name'] = "{$this->col_name}_{$this->col_sn}_dcq_{$data['col_id']}";
 
-            $options    = explode(';', $dcq['opt']);
+            $options = explode(';', $dcq['opt']);
             $option_arr = [];
             foreach ($options as $opt) {
                 if (false !== mb_strpos($opt, '=')) {
@@ -596,7 +596,7 @@ class TadDataCenter
                 $option_arr[$key] = $val;
             }
             $dcq['option_arr'] = $option_arr;
-            $dcq_arr[$sort]    = $dcq;
+            $dcq_arr[$sort] = $dcq;
         }
 
         return $dcq_arr;
@@ -606,16 +606,16 @@ class TadDataCenter
     public function getCustomForm($use_form = true, $use_submit = false, $action = '', $lw = 3, $rw = 9)
     {
         global $xoTheme;
-        $action   = empty($action) ? $_SERVER['PHP_SELF'] : $action;
-        $DcqData  = $this->getDcqData();
-        $sort     = 0;
+        $action = empty($action) ? $_SERVER['PHP_SELF'] : $action;
+        $DcqData = $this->getDcqData();
+        $sort = 0;
         $form_col = '';
         foreach ($DcqData as $sort => $data) {
-            $dcq                   = json_decode($data['data_value'], true);
+            $dcq = json_decode($data['data_value'], true);
             list($form_tag, $type) = explode('=', $dcq['type']);
 
-            $name       = "{$this->col_name}_{$this->col_sn}_dcq_{$data['col_id']}";
-            $options    = explode(';', $dcq['opt']);
+            $name = "{$this->col_name}_{$this->col_sn}_dcq_{$data['col_id']}";
+            $options = explode(';', $dcq['opt']);
             $option_arr = [];
             foreach ($options as $opt) {
                 if (false !== mb_strpos($opt, '=')) {
@@ -679,7 +679,7 @@ class TadDataCenter
             $main .= "<div class='vtable'>";
 
             foreach ($DcqData as $sort => $data) {
-                $dcq                   = json_decode($data['data_value'], true);
+                $dcq = json_decode($data['data_value'], true);
                 list($form_tag, $type) = explode('=', $dcq['type']);
                 if ('note' === $form_tag) {
                     continue;
@@ -687,7 +687,7 @@ class TadDataCenter
 
                 $dcq_title = $dcq['title'];
                 $data_name = "{$this->col_name}_{$this->col_sn}_dcq_{$data['col_id']}";
-                $ans       = $this->getDcqDataArr($data_name);
+                $ans = $this->getDcqDataArr($data_name);
                 // if($_GET['debug']==1){
                 //     die(var_export($this->ans_col_sn));
                 // }
@@ -717,12 +717,12 @@ class TadDataCenter
             ';
 
             foreach ($DcqData as $sort => $data) {
-                $dcq                   = json_decode($data['data_value'], true);
+                $dcq = json_decode($data['data_value'], true);
                 list($form_tag, $type) = explode('=', $dcq['type']);
                 if ('note' === $form_tag) {
                     continue;
                 }
-                $dcq_title        = $dcq['title'];
+                $dcq_title = $dcq['title'];
                 $name[$dcq_title] = "{$this->col_name}_{$this->col_sn}_dcq_{$data['col_id']}";
                 $main .= "<li style='text-align: center;'>{$dcq_title}</li>";
             }
@@ -733,7 +733,7 @@ class TadDataCenter
             $main .= '</ul>';
 
             $data_name_arr = [];
-            $ans           = $this->getDcqDataArr($name);
+            $ans = $this->getDcqDataArr($name);
             foreach ($ans as $col_sn => $ans_arr) {
                 $title = ($call_back_func) ? call_user_func($call_back_func, $col_sn, $this->col_name, $this->col_sn) : $col_sn;
                 $main .= "<ul>
@@ -759,7 +759,7 @@ class TadDataCenter
         }
 
         if ($del_col_name) {
-            $data_name  = implode('|', $data_name_arr);
+            $data_name = implode('|', $data_name_arr);
             $SweetAlert = new SweetAlert();
             $SweetAlert->render('del_dcq_ans', XOOPS_URL . "/modules/tadtools/TadDataCenter.php?dcq_op=del_dcq_ans&data_name={$data_name}&dirname={$this->module_dirname}&col_name={$del_col_name}&col_sn=", 'col_ans_sn');
         }
@@ -772,7 +772,7 @@ class TadDataCenter
     {
         $DcqData = $this->getDcqData();
         foreach ($DcqData as $sort => $data) {
-            $dcq                   = json_decode($data['data_value'], true);
+            $dcq = json_decode($data['data_value'], true);
             list($form_tag, $type) = explode('=', $dcq['type']);
             if ('note' === $form_tag) {
                 continue;
@@ -789,8 +789,8 @@ class TadDataCenter
     {
         global $xoopsDB;
         $and_col_name = $this->ans_col_name ? "and `col_name`='{$this->ans_col_name}'" : '';
-        $and_col_sn   = $this->ans_col_sn ? "and `col_sn`='{$this->ans_col_sn}'" : '';
-        $values       = [];
+        $and_col_sn = $this->ans_col_sn ? "and `col_sn`='{$this->ans_col_sn}'" : '';
+        $values = [];
         if (is_array($data_name)) {
             foreach ($data_name as $name) {
                 $sql = "select col_sn, data_sort ,data_value from `{$this->TadDataCenterTblName}`
@@ -831,7 +831,7 @@ class TadDataCenter
                 break;
         }
         list($usec, $sec) = explode(' ', microtime());
-        $seed             = (float) $sec + ((float) $usec * 100000);
+        $seed = (float) $sec + ((float) $usec * 100000);
         // die('seed=' . $seed);
         mt_srand($seed);
         $password = '';
@@ -846,12 +846,12 @@ class TadDataCenter
 if (isset($_REQUEST['dcq_op'])) {
     include_once '../../mainfile.php';
     include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-    $dcq_op    = system_CleanVars($_REQUEST, 'dcq_op', '', 'string');
-    $dirname   = system_CleanVars($_REQUEST, 'dirname', '', 'string');
-    $col_name  = system_CleanVars($_REQUEST, 'col_name', '', 'string');
-    $col_sn    = system_CleanVars($_REQUEST, 'col_sn', 0, 'int');
+    $dcq_op = system_CleanVars($_REQUEST, 'dcq_op', '', 'string');
+    $dirname = system_CleanVars($_REQUEST, 'dirname', '', 'string');
+    $col_name = system_CleanVars($_REQUEST, 'col_name', '', 'string');
+    $col_sn = system_CleanVars($_REQUEST, 'col_sn', 0, 'int');
     $data_name = system_CleanVars($_REQUEST, 'data_name', '', 'string');
-    $col_id    = system_CleanVars($_REQUEST, 'col_id', '', 'string');
+    $col_id = system_CleanVars($_REQUEST, 'col_id', '', 'string');
 
     if ('save_dcq_sort' === $dcq_op) {
         $sql = 'update ' . $xoopsDB->prefix("{$dirname}_data_center") . " set `data_sort`=`data_sort`+1000 where  `col_name`='{$col_name}' and `col_sn`='{$col_sn}'";
