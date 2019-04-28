@@ -745,7 +745,7 @@ class TadUpFiles
             }
 
             //取得檔案
-            $file_handle = new upload($file, 'zh_TW');
+            $file_handle = new \upload($file, 'zh_TW');
 
             if ($file_handle->uploaded) {
                 //取得副檔名
@@ -1203,7 +1203,7 @@ class TadUpFiles
         $file['size'] = $size;
 
         //取得檔案
-        $file_handle = new upload($file, 'zh_TW');
+        $file_handle = new \upload($file, 'zh_TW');
 
         if ($file_handle->uploaded) {
             //取得副檔名
