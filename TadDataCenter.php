@@ -334,7 +334,7 @@ class TadDataCenter
             return $data_value;
         }
         $values = [];
-        while (false !== (list($data_name, $data_sort, $data_value) = $xoopsDB->fetchRow($result))) {
+        while (list($data_name, $data_sort, $data_value) = $xoopsDB->fetchRow($result)) {
             $values[$data_name][$data_sort] = $data_value;
         }
 
@@ -793,7 +793,7 @@ class TadDataCenter
                     where `mid`= '{$this->mid}' and `data_name`='{$name}' $and_col_name $and_col_sn order by col_sn";
                 $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
-                while (false !== (list($col_sn, $data_sort, $data_value) = $xoopsDB->fetchRow($result))) {
+                while (list($col_sn, $data_sort, $data_value) = $xoopsDB->fetchRow($result)) {
                     $values[$col_sn][$name][$data_sort] = $data_value;
                 }
             }
@@ -802,7 +802,7 @@ class TadDataCenter
             where `mid`= '{$this->mid}' and `data_name`='{$data_name}' $and_col_name $and_col_sn order by col_sn";
             $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
-            while (false !== (list($col_sn, $data_sort, $data_value) = $xoopsDB->fetchRow($result))) {
+            while (list($col_sn, $data_sort, $data_value) = $xoopsDB->fetchRow($result)) {
                 $values[$col_sn][$data_name][$data_sort] = $data_value;
             }
         }
@@ -851,12 +851,12 @@ if (isset($_REQUEST['dcq_op'])) {
 
     if ('save_dcq_sort' === $dcq_op) {
         $sql = 'update ' . $xoopsDB->prefix("{$dirname}_data_center") . " set `data_sort`=`data_sort`+1000 where  `col_name`='{$col_name}' and `col_sn`='{$col_sn}'";
-        $xoopsDB->queryF($sql) || die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
+        $xoopsDB->queryF($sql) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
 
         $sort = 0;
         foreach ($_POST['col_id'] as $col_id) {
             $sql = 'update ' . $xoopsDB->prefix("{$dirname}_data_center") . " set `data_sort`='{$sort}' where col_id='{$col_id}' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}'";
-            $xoopsDB->queryF($sql) || die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
+            $xoopsDB->queryF($sql) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
             $sort++;
         }
         echo _TAD_SORTED . '(' . date('Y-m-d H:i:s') . ')';
@@ -864,15 +864,15 @@ if (isset($_REQUEST['dcq_op'])) {
         $data_name_arr = explode('|', $data_name);
         foreach ($data_name_arr as $data_name) {
             $sql = 'delete from ' . $xoopsDB->prefix("{$dirname}_data_center") . " where `data_name`='{$data_name}' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}'";
-            $xoopsDB->queryF($sql) || die(' (' . date('Y-m-d H:i:s') . ')' . $sql);
+            $xoopsDB->queryF($sql) or die(' (' . date('Y-m-d H:i:s') . ')' . $sql);
         }
         header("location:{\Xmf\Request::getString('HTTP_REFERER', '', 'SERVER')}");
         exit;
     } elseif ('del_dcq_col' === $dcq_op and $_SESSION['isAdmin']) {
         $sql = 'delete from ' . $xoopsDB->prefix("{$dirname}_data_center") . " where `col_id`='{$col_id}'";
-        $xoopsDB->queryF($sql) || die(' (' . date('Y-m-d H:i:s') . ')' . $sql);
+        $xoopsDB->queryF($sql) or die(' (' . date('Y-m-d H:i:s') . ')' . $sql);
         $sql = 'delete from ' . $xoopsDB->prefix("{$dirname}_data_center") . " where `data_name`='{$col_name}_{$col_sn}_dcq_{$col_id}'";
-        $xoopsDB->queryF($sql) || die(' (' . date('Y-m-d H:i:s') . ')' . $sql);
+        $xoopsDB->queryF($sql) or die(' (' . date('Y-m-d H:i:s') . ')' . $sql);
         header("location:{\Xmf\Request::getString('HTTP_REFERER', '', 'SERVER')}");
         exit;
     } elseif ('saveCustomSetupFormVal' === $dcq_op) {

@@ -945,7 +945,7 @@ class PHPExcel
      */
     public function cellXfExists($pCellStyle = null)
     {
-        return in_array($pCellStyle, $this->_cellXfCollection, true);
+        return in_array($pCellStyle, $this->_cellXfCollection);
     }
 
     /**

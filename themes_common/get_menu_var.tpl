@@ -49,7 +49,7 @@ function get_theme_menu_items($id = "", $other_menu = true)
         $moduleHandler = xoops_getHandler('module');
         if ($result) {
             $i = 0;
-            while (false !== (list($menuid, $itemname, $itemurl, $target, $icon, $link_cate_name, $link_cate_sn, $read_group) = $xoopsDB->fetchRow($result))) {
+            while (list($menuid, $itemname, $itemurl, $target, $icon, $link_cate_name, $link_cate_sn, $read_group) = $xoopsDB->fetchRow($result)) {
                 if(empty($read_group)){
                     $read_group='1,2,3';
                 }
@@ -117,7 +117,7 @@ function get_custom_menu_items($link_cate_name, $link_cate_sn)
             $sql      = "select nsn, news_title from " . $xoopsDB->prefix("tad_news") . " where ncsn='{$link_cate_sn}' order by `page_sort`";
             $result   = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
             $ncsn_arr = "";
-            while (false !== (list($nsn, $news_title) = $xoopsDB->fetchRow($result))) {
+            while (list($nsn, $news_title) = $xoopsDB->fetchRow($result)) {
                 $sub_menu[$link_cate_name . $i]['id']      = $i;
                 $sub_menu[$link_cate_name . $i]['title']   = $news_title;
                 $sub_menu[$link_cate_name . $i]['url']     = XOOPS_URL . "/modules/tadnews/page.php?ncsn={$link_cate_sn}&nsn={$nsn}";

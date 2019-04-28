@@ -12,7 +12,7 @@ function tadtools_setup()
     $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tadtools_setup') . '`';
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     //$tt_theme,$tt_use_bootstrap,$tt_bootstrap_color
-    while (false !== (list($tt_theme, $tt_use_bootstrap, $tt_bootstrap_color, $tt_theme_kind) = $xoopsDB->fetchRow($result))) {
+    while (list($tt_theme, $tt_use_bootstrap, $tt_bootstrap_color, $tt_theme_kind) = $xoopsDB->fetchRow($result)) {
         // $setup[$tt_theme]=array();
         $use_bootstrap[$tt_theme] = $tt_use_bootstrap;
         $bootstrap_color[$tt_theme] = $tt_bootstrap_color;

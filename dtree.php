@@ -12,7 +12,7 @@ $cate_arr[$csn]=$of_csn;
 $url_arr[$csn]="cate.php?csn={$csn}";
 }
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/dtree.php")){
-redirect_header("index.php",3, _MA_NEED_TADTOOLS);
+redirect_header("index.php",3, _TAD_NEED_TADTOOLS);
 }
 require_once XOOPS_ROOT_PATH."/modules/tadtools/dtree.php";
 $dtree=new dtree("album_tree","",$title_arr,$cate_arr,$url_arr);

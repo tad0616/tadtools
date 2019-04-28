@@ -8,7 +8,7 @@ $result   = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $x
 
 $count  = tad_link_cate_count();
 $data[] = "{ id:0, pId:0, name:'All', url:'index.php', target:'_self', open:true}";
-while (false !== (list($cate_sn, $of_cate_sn, $cate_title) = $xoopsDB->fetchRow($result))) {
+while (list($cate_sn, $of_cate_sn, $cate_title) = $xoopsDB->fetchRow($result)) {
 $font_style      = $show_cate_sn == $cate_sn ? ", font:{'background-color':'yellow', 'color':'black'}" : '';
 $open            = in_array($cate_sn, $path_arr) ? 'true' : 'false';
 $display_counter = empty($count[$cate_sn]) ? "" : " ({$count[$cate_sn]})";
@@ -17,7 +17,7 @@ $data[]          = "{ id:{$cate_sn}, pId:{$of_cate_sn}, name:'{$cate_title}{$dis
 $json = implode(',', $data);
 
 if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/ztree.php")) {
-redirect_header("index.php", 3, _MA_NEED_TADTOOLS);
+redirect_header("index.php", 3, _TAD_NEED_TADTOOLS);
 }
 require_once XOOPS_ROOT_PATH . "/modules/tadtools/ztree.php";
 $ztree      = new ztree("link_tree", $json, "save_drag.php", "save_sort.php", "of_cate_sn", "cate_sn");

@@ -506,7 +506,7 @@ if (!function_exists('get_all_groups')) {
         global $xoopsDB;
         $sql = 'select groupid,name from ' . $xoopsDB->prefix('groups') . '';
         $result = $xoopsDB->query($sql);
-        while (false !== (list($groupid, $name) = $xoopsDB->fetchRow($result))) {
+        while (list($groupid, $name) = $xoopsDB->fetchRow($result)) {
             $data[$groupid] = $name;
         }
 
@@ -928,7 +928,7 @@ if (!class_exists('PageBar')) {
         // 製作 bar
         public function makeBootStrap3Bar($url_page = 'none', $bootstrap = 3)
         {
-            if ('none' !== $url_page and '' != $url_page) {
+            if ('none' !== $url_page && '' !== $url_page) {
                 $this->url_page = $url_page;
             }
             $this->init();

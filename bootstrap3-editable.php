@@ -1,7 +1,7 @@
 <?php
 /*
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/bootstrap3-editable.php")){
-redirect_header("index.php",3, _MA_NEED_TADTOOLS);
+redirect_header("index.php",3, _TAD_NEED_TADTOOLS);
 }
 require_once XOOPS_ROOT_PATH."/modules/tadtools/bootstrap3-editable.php";
 $bootstrap3_editable=new bootstrap3_editable();
