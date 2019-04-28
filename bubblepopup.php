@@ -2,8 +2,8 @@
 
 use XoopsModules\Tadtools\Utility;
 
-require_once __DIR__ . '/tadtools_header.php';
-require_once __DIR__ . '/jquery.php';
+// require_once __DIR__ . '/tadtools_header.php';
+// require_once __DIR__ . '/jquery.php';
 
 class bubblepopup
 {
