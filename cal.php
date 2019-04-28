@@ -16,7 +16,7 @@ class My97DatePicker
         if ($xoTheme) {
             $xoTheme->addScript('modules/tadtools/My97DatePicker/WdatePicker.js');
         } else {
-            $cal = "<script type='text/javascript' src='" . TADTOOLS_URL . "/My97DatePicker/WdatePicker.js'></script>";
+            $cal = "<script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/My97DatePicker/WdatePicker.js'></script>";
 
             return $cal;
         }

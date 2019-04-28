@@ -140,7 +140,7 @@ class JwPlayer
         if ($xoTheme) {
             $xoTheme->addScript('modules/tadtools/jwplayer/jwplayer.js');
         } else {
-            $player = "<script type='text/javascript' src='" . TADTOOLS_URL . "/jwplayer/jwplayer.js'></script>
+            $player = "<script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/jwplayer/jwplayer.js'></script>
             ";
         }
         $player .= "<script>jwplayer.key='oLChm0Lmsd2wPANnbFZEpiNs0zOdS8qmJNlfyA==';</script>";

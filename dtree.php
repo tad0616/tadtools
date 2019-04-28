@@ -5,7 +5,7 @@ $home['title']=$home_title;
 $home['url']=$home_url;
 
 $sql = "select csn,of_csn,title from ".$xoopsDB->prefix("tad_gallery_cate")." order by sort";
-$result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+$result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 while(list($csn,$of_csn,$title)=$xoopsDB->fetchRow($result)){
 $title_arr[$csn]=$title;
 $cate_arr[$csn]=$of_csn;
@@ -20,7 +20,7 @@ $dtree_code=$dtree->render("11pt",true);
 $xoopsTpl->assign('dtree_code',$dtree_code);
 
  */
-require_once __DIR__ . '/tadtools_header.php';
+// require_once __DIR__ . '/tadtools_header.php';
 
 class dtree
 {
@@ -51,8 +51,8 @@ class dtree
             $xoTheme->addScript('modules/tadtools/dtree/dtree.js');
         } else {
             $dtree = "
-              <link rel='StyleSheet' href='" . TADTOOLS_URL . "/dtree/dtree.css' type='text/css'>
-              <script type='text/javascript' src='" . TADTOOLS_URL . "/dtree/dtree.js'></script>";
+              <link rel='StyleSheet' href='" . XOOPS_URL . "/modules/tadtools/dtree/dtree.css' type='text/css' >
+              <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/dtree/dtree.js'></script>";
         }
 
         if (empty($this->home)) {
@@ -78,7 +78,7 @@ class dtree
 
         <div id='tree_{$this->name}'></div>
         <script type='text/javascript' defer='defer'>
-          {$this->name} = new dTree('{$this->name}', '" . TADTOOLS_URL . "/dtree');
+          {$this->name} = new dTree('{$this->name}', '" . XOOPS_URL . "/modules/tadtools/dtree');
           {$this->name}.config.useCookies=true;
           {$this->name}.config.useLines=$useLines;
 

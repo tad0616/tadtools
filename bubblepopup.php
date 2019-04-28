@@ -1,4 +1,7 @@
 <?php
+
+use XoopsModules\Tadtools\Utility;
+
 require_once __DIR__ . '/tadtools_header.php';
 require_once __DIR__ . '/jquery.php';
 
@@ -31,7 +34,7 @@ class bubblepopup
     public function render()
     {
         global $xoTheme;
-        get_jquery(true);
+        Utility::get_jquery(true);
 
         $all_code = implode("\n", $this->code);
 
@@ -55,9 +58,9 @@ class bubblepopup
             // die('bbbbb');
             $main = "
             $jquery
-            <link href='" . TADTOOLS_URL . "/jquery.qtip_2/jquery.qtip.min.css' rel='stylesheet' type='text/css'>
-            <script src='" . TADTOOLS_URL . "/jquery.qtip_2/jquery.qtip.min.js' type='text/javascript'></script>
-            <script src='" . TADTOOLS_URL . "/jquery.qtip_2/imagesloaded.pkg.min.js' type='text/javascript'></script>
+            <link href='" . XOOPS_URL . "/modules/tadtools/jquery.qtip_2/jquery.qtip.min.css' rel='stylesheet' type='text/css' >
+            <script src='" . XOOPS_URL . "/modules/tadtools/jquery.qtip_2/jquery.qtip.min.js' type='text/javascript'></script>
+            <script src='" . XOOPS_URL . "/modules/tadtools/jquery.qtip_2/imagesloaded.pkg.min.js' type='text/javascript'></script>
 
             <script type='text/javascript'>
              $all_code

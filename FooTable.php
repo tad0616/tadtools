@@ -1,5 +1,8 @@
 <?php
-require_once __DIR__ . '/tadtools_header.php';
+
+use XoopsModules\Tadtools\Utility;
+
+// require_once __DIR__ . '/tadtools_header.php';
 
 class FooTable
 {
@@ -17,7 +20,7 @@ class FooTable
         global $xoTheme;
         require_once __DIR__ . '/jquery.php';
 
-        $jquery = $need_jquery ? get_jquery() : '';
+        $jquery = $need_jquery ? Utility::get_jquery() : '';
         if ($xoTheme) {
             $xoTheme->addStylesheet('modules/tadtools/FooTable/css/footable-0.1.css');
             $xoTheme->addScript('modules/tadtools/FooTable/js/footable-0.1.js');
@@ -31,9 +34,9 @@ class FooTable
             ");
         } else {
             $FooTable = "
-            <link href='" . TADTOOLS_URL . "/FooTable/css/footable-0.1.css' rel='stylesheet' type='text/css'>
+            <link href='" . XOOPS_URL . "/modules/tadtools/FooTable/css/footable-0.1.css' rel='stylesheet' type='text/css' >
             $jquery
-            <script src='" . TADTOOLS_URL . "/FooTable/js/footable-0.1.js' type='text/javascript'></script>
+            <script src='" . XOOPS_URL . "/modules/tadtools/FooTable/js/footable-0.1.js' type='text/javascript'></script>
             <script type='text/javascript'>
               $(function() {
                 $('{$this->selector}').footable();

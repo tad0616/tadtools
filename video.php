@@ -1,10 +1,10 @@
 <?php
+use XoopsModules\Tadtools\Utility;
 //給 TadUpFiles.php 用的，讓它可以直接播放影片
-require_once __DIR__ . '/tadtools_header.php';
+require_once 'tadtools_header.php';
 if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/jwplayer_new.php')) {
     redirect_header('index.php', 3, _MD_NEED_TADTOOLS);
 }
-require_once XOOPS_ROOT_PATH . '/modules/tadtools/tad_function.php';
 require_once XOOPS_ROOT_PATH . '/modules/tadtools/jwplayer_new.php';
 
 require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
@@ -23,7 +23,7 @@ $jw = new JwPlayer('video', $media, $image, '100%', null, null, null, null, true
   </head>
   <body>
 <?php
-echo get_jquery();
+echo Utility::get_jquery();
 echo $jw->render();
 ?>
   </body>

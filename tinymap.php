@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/tadtools_header.php';
-require_once __DIR__ . '/jquery.php';
+// require_once __DIR__ . '/tadtools_header.php';
+// require_once __DIR__ . '/jquery.php';
 
 class tinymap
 {
@@ -52,7 +52,7 @@ class tinymap
         } else {
             $main = "
             $jquery
-            <script type='text/javascript' src='" . TADTOOLS_URL . "/tinymap/jquery.tinyMap.js'></script>";
+            <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/tinymap/jquery.tinyMap.js'></script>";
         }
 
         $option_arr = '';

@@ -1,13 +1,12 @@
 <?php
+use XoopsModules\Tadtools\Utility;
 //區塊主函式 (tadtools_qrcode)
 function tadtools_qrcode($options)
 {
     global $xoopsDB;
 
-    require_once XOOPS_ROOT_PATH . '/modules/tadtools/tad_function.php';
-
     $protocol = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
-    get_jquery();
+    Utility::get_jquery();
     $block['url'] = urlencode($protocol . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
     $block['width'] = $options[0] < 50 ? 120 : (int) $options[0];
 

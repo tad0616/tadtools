@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/tadtools_header.php';
+// require_once __DIR__ . '/tadtools_header.php';
 
 class summernote
 {
@@ -41,9 +41,9 @@ class summernote
       ");
         } else {
             $editor = "
-      <link href='" . TADTOOLS_URL . "/summernote/summernote.css' rel='stylesheet'>
-      <script src='" . TADTOOLS_URL . "/summernote/summernote.min.js'></script>
-      <script src='" . TADTOOLS_URL . '/summernote/summernote-' . _LANGCODE . ".js'></script>
+      <link href='" . XOOPS_URL . "/modules/tadtools/summernote/summernote.css' rel='stylesheet'>
+      <script src='" . XOOPS_URL . "/modules/tadtools/summernote/summernote.min.js'></script>
+      <script src='" . XOOPS_URL . '/modules/tadtools/summernote/summernote-' . _LANGCODE . ".js'></script>
       <script>
       $(document).ready(function() {
         $('#editor_{$this->ColName}').summernote({

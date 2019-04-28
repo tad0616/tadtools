@@ -1,4 +1,7 @@
 <?php
+
+use XoopsModules\Tadtools\Utility;
+
 /*
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/bootstrap3-editable.php")){
 redirect_header("index.php",3, _TAD_NEED_TADTOOLS);
@@ -34,7 +37,7 @@ class bootstrap3_editable
     {
         global $xoTheme;
 
-        $jquery = $this->show_jquery ? get_jquery() : '';
+        $jquery = $this->show_jquery ? Utility::get_jquery() : '';
 
         if ($xoTheme) {
             $xoTheme->addStylesheet('modules/tadtools/bootstrap3-editable/css/bootstrap-editable.css');
@@ -45,8 +48,8 @@ class bootstrap3_editable
         } else {
             $main = "
             {$jquery}
-            <link href='" . TADTOOLS_URL . "/bootstrap-editable/css/bootstrap-editable.css' rel='stylesheet'>
-            <script src='" . TADTOOLS_URL . "/bootstrap-editable/js/bootstrap-editable.js'></script>
+            <link href='" . XOOPS_URL . "/modules/tadtools/bootstrap-editable/css/bootstrap-editable.css' rel='stylesheet'>
+            <script src='" . XOOPS_URL . "/modules/tadtools/bootstrap-editable/js/bootstrap-editable.js'></script>
             <script type='text/javascript'>
                 $(document).ready(function(){
                     $('{$name}').editable({url: '$url',});

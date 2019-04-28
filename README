@@ -5,6 +5,7 @@ TadTools 3.2.6 (尚未釋出)
 3.升級 class.upload.php 為 0.35-dev
 4.加上可以關閉檔案上傳時 mime type 檢查的偏好設定
 5.修正 Easy-Responsive-Tabs 頁籤無法套用顏色問題
+6.新增 phpseclib 套件
 
 
 TadTools 3.2.5 (2019-03-24 釋出)
@@ -852,7 +853,7 @@ TadTools 1.2 (2010-11-04 釋出)
 2. 加入水平路徑工具 jBreadCrumb
 3. 加入影片播放套件 jw player 5.3
 4. 修正引入mainfile.php 路徑
-5. 加入取得 jquery 函數 get_jquery()
+5. 加入取得 jquery 函數  Utility::get_jquery()
 6. 加入jeditable，點擊編輯功能
 
 

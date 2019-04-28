@@ -1,6 +1,9 @@
 <?php
-require_once __DIR__ . '/tadtools_header.php';
-require_once __DIR__ . '/jquery.php';
+
+use XoopsModules\Tadtools\Utility;
+
+// require_once __DIR__ . '/tadtools_header.php';
+// require_once __DIR__ . '/jquery.php';
 
 class lofslidernews
 {
@@ -33,13 +36,13 @@ class lofslidernews
     {
         global $xoTheme;
 
-        $randStr = randStr($len = 6);
+        $randStr = Utility::randStr();
         $utf8_word_num = $this->word_num * 3;
         if (empty($utf8_word_num)) {
             $utf8_word_num = 90;
         }
 
-        $jquery = ($this->show_jquery) ? get_jquery() : '';
+        $jquery = ($this->show_jquery) ? Utility::get_jquery() : '';
 
         $all = $nav = '';
         $i = 1;
@@ -73,11 +76,11 @@ class lofslidernews
             $main = '';
         } else {
             $main = "
-      <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/lofslidernews/css/reset.css'>
-      <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/lofslidernews/css/style.css'>
+      <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/lofslidernews/css/reset.css' >
+      <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/lofslidernews/css/style.css' >
       $jquery
-      <script language='javascript' type='text/javascript' src='" . TADTOOLS_URL . "/lofslidernews/js/jquery.easing.js'></script>
-      <script language='javascript' type='text/javascript' src='" . TADTOOLS_URL . "/lofslidernews/js/script.js'></script>
+      <script language='javascript' type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/lofslidernews/js/jquery.easing.js'></script>
+      <script language='javascript' type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/lofslidernews/js/script.js'></script>
 
 
       <script type='text/javascript'>
@@ -107,12 +110,12 @@ class lofslidernews
             $content = xoops_substr(strip_tags($item_content['content']), 0, $utf8_word_num);
 
             $pi = ($i % 2) ? '1' : '2';
-            $image = empty($item_content['image']) ? TADTOOLS_URL . "/lofslidernews/images/demo{$pi}.jpg" : $item_content['image'];
+            $image = empty($item_content['image']) ? XOOPS_URL . "/modules/tadtools/lofslidernews/images/demo{$pi}.jpg" : $item_content['image'];
 
             $all .= "
         <li>
             <div style='background:#000000 url($image) no-repeat scroll center top; width:{$this->width}px; height:{$this->height}px;'>
-              <a href='{$item_content['url']}'><img src='" . TADTOOLS_URL . "/lofslidernews/images/blank.gif' title='{$item_content['title']}' alt='{$item_content['title']}' style='width:{$this->width}px; height:{$this->height}px;'></a>
+              <a href='{$item_content['url']}'><img src='" . XOOPS_URL . "/modules/tadtools/lofslidernews/images/blank.gif' title='{$item_content['title']}' alt='{$item_content['title']}' style='width:{$this->width}px; height:{$this->height}px;'></a>
             </div>
             <div class='slider-description'>
               <div class='slider-meta'><a target='_parent' title='{$item_content['title']}' href='{$item_content['url']}'>{$title}</a></div>

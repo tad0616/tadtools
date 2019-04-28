@@ -1,6 +1,9 @@
 <?php
-require_once __DIR__ . '/tadtools_header.php';
-require_once __DIR__ . '/jquery.php';
+
+use XoopsModules\Tadtools\Utility;
+
+// require_once __DIR__ . '/tadtools_header.php';
+// require_once __DIR__ . '/jquery.php';
 
 /*
 建立
@@ -115,7 +118,7 @@ class rating
             number: 5,
             half  : true,
             space : false,
-            path  : '" . TADTOOLS_URL . "/jquery.raty/img'
+            path  : '" . XOOPS_URL . "/modules/tadtools/jquery.raty/img'
         });
         $msg_js
         ";
@@ -158,7 +161,7 @@ class rating
     public function render($show_all = true)
     {
         global $xoTheme;
-        $jquery = get_jquery();
+        $jquery = Utility::get_jquery();
 
         $all_code = implode("\n", $this->code);
 
@@ -179,7 +182,7 @@ class rating
         } else {
             $main = "
             $jquery
-            <script src='" . TADTOOLS_URL . "/jquery.raty/js/jquery.raty.js' type='text/javascript'></script>
+            <script src='" . XOOPS_URL . "/modules/tadtools/jquery.raty/js/jquery.raty.js' type='text/javascript'></script>
 
             <script type='text/javascript'>
               $(document).ready(function()  {

@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/tadtools_header.php';
+use XoopsModules\Tadtools\Utility;
 
 class qrcode
 {
@@ -11,9 +11,9 @@ class qrcode
     //產生語法
     public function render($url, $size = 120)
     {
-        mk_qrcode($url);
-        $imgurl = mk_qrcode_name($url);
-        $url = chk_qrcode_url($url);
+        Utility::mk_qrcode($url);
+        $imgurl = Utility::mk_qrcode_name($url);
+        $url = Utility::chk_qrcode_url($url);
 
         $protocol = ($_SERVER['HTTPS']) ? 'https://' : 'http://';
         $qrcode = "

@@ -1,5 +1,8 @@
 <?php
-require_once __DIR__ . '/tadtools_header.php';
+
+use XoopsModules\Tadtools\Utility;
+
+// require_once __DIR__ . '/tadtools_header.php';
 
 class elrte
 {
@@ -53,7 +56,7 @@ class elrte
         $content = str_replace('[', '&#91;', $content);
         $LANGCODE = str_replace('-', '_', _LANGCODE);
 
-        $jquery = get_jquery(true);
+        $jquery = Utility::get_jquery(true);
 
         if ($xoTheme) {
             $xoTheme->addStylesheet('modules/tadtools/css/normalize.css');
@@ -79,7 +82,7 @@ class elrte
               height       : '{$this->Height}',
               toolbar      : 'web2pyToolbar',
               fmOpen : function(callback) {
-                \$('<div>').dialogelfinder({
+                \$('<div/>').dialogelfinder({
                   url : '" . XOOPS_URL . "/modules/tadtools/elFinder/php/connector.php', // connector URL (REQUIRED)
                   lang: '" . $LANGCODE . "', // elFinder language (OPTIONAL)
                   commandsOptions: {
@@ -125,7 +128,7 @@ class elrte
               height       : '{$this->Height}',
               toolbar      : 'web2pyToolbar',
               fmOpen : function(callback) {
-                $('<div>').dialogelfinder({
+                $('<div/>').dialogelfinder({
                   url : '" . XOOPS_URL . "/modules/tadtools/elFinder/php/connector.php', // connector URL (REQUIRED)
                   lang: '" . $LANGCODE . "', // elFinder language (OPTIONAL)
                   commandsOptions: {

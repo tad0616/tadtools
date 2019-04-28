@@ -1,4 +1,7 @@
 <?php
+
+use XoopsModules\Tadtools\Utility;
+
 /*
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/jquery_pin.php")){
 redirect_header("index.php",3, _TAD_NEED_TADTOOLS);
@@ -8,8 +11,8 @@ $jquery_pin=new jquery_pin();
 $jquery_pin_code=$jquery_pin->render('.edit_dropdown');
 $xoopsTpl->assign('jquery_pin_code',$jquery_pin_code);
  */
-require_once __DIR__ . '/tadtools_header.php';
-require_once __DIR__ . '/jquery.php';
+// require_once __DIR__ . '/tadtools_header.php';
+// require_once __DIR__ . '/jquery.php';
 
 class jquery_pin
 {
@@ -29,7 +32,7 @@ class jquery_pin
             $minWidth = 940;
         }
 
-        $jquery = $this->show_jquery ? get_jquery() : '';
+        $jquery = $this->show_jquery ? Utility::get_jquery() : '';
 
         if ($xoTheme) {
             $xoTheme->addScript('modules/tadtools/jquery.pin/jquery.pin.js');
@@ -46,7 +49,7 @@ class jquery_pin
         } else {
             $main = "
       {$jquery}
-      <script type='text/javascript' src='" . TADTOOLS_URL . "/jquery.pin/jquery.pin.js}>'></script>
+      <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/jquery.pin/jquery.pin.js}>'></script>
       <script type='text/javascript'>
         $(document).ready(function(){
           $('{$name}').pin({

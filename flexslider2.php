@@ -1,6 +1,14 @@
 <?php
+<<<<<<< HEAD
 require_once __DIR__ . '/tadtools_header.php';
 require_once __DIR__ . '/jquery.php';
+=======
+
+use XoopsModules\Tadtools\Utility;
+
+// include_once 'tadtools_header.php';
+// include_once 'jquery.php';
+>>>>>>> 4ddaa3b251df83da3ffbccbcc6ff13804520661b
 
 class flexslider
 {
@@ -34,7 +42,7 @@ class flexslider
             $utf8_word_num = 90;
         }
 
-        $jquery = ($this->show_jquery) ? get_jquery() : '';
+        $jquery = ($this->show_jquery) ? Utility::get_jquery() : '';
 
         $all = $nav = '';
         $i = 1;
@@ -44,7 +52,7 @@ class flexslider
             $content = xoops_substr(strip_tags($item_content['content']), 0, $utf8_word_num);
 
             $pi = ($i % 2) ? '1' : '2';
-            $image = empty($item_content['image']) ? TADTOOLS_URL . "/flexslider2/images/demo{$pi}.jpg" : $item_content['image'];
+            $image = empty($item_content['image']) ? XOOPS_URL . "/modules/tadtools/flexslider2/images/demo{$pi}.jpg" : $item_content['image'];
 
             $all .= "
         <li>
@@ -74,10 +82,15 @@ class flexslider
             $main = '';
         } else {
             $main = "
+<<<<<<< HEAD
       <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/flexslider2/reset.css'>
       <link rel='stylesheet' type='text/css' href='" . TADTOOLS_URL . "/flexslider2/flexslider.css'>
+=======
+      <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/flexslider2/reset.css' />
+      <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/flexslider2/flexslider.css' />
+>>>>>>> 4ddaa3b251df83da3ffbccbcc6ff13804520661b
       $jquery
-      <script language='javascript' type='text/javascript' src='" . TADTOOLS_URL . "/flexslider2/jquery.flexslider.js'></script>
+      <script language='javascript' type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/flexslider2/jquery.flexslider.js'></script>
 
 
       <script type='text/javascript'>

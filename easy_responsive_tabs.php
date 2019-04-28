@@ -1,4 +1,7 @@
 <?php
+
+use XoopsModules\Tadtools\Utility;
+
 /*
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/easy_responsive_tabs.php")){
 redirect_header("index.php",3, _TAD_NEED_TADTOOLS);
@@ -22,8 +25,8 @@ $responsive_tabs->rander();
 </div>
 
  */
-require_once __DIR__ . '/tadtools_header.php';
-require_once __DIR__ . '/jquery.php';
+// require_once __DIR__ . '/tadtools_header.php';
+// require_once __DIR__ . '/jquery.php';
 
 class easy_responsive_tabs
 {
@@ -47,7 +50,7 @@ class easy_responsive_tabs
     public function rander($tabidentify = 'vert', $function = '')
     {
         global $xoTheme;
-        $jquery = get_jquery();
+        $jquery = Utility::get_jquery();
         $responsive_tabs = '';
         if ($xoTheme) {
             $xoTheme->addScript('modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js');
@@ -76,8 +79,8 @@ class easy_responsive_tabs
         } else {
             $responsive_tabs = "
                 {$jquery}
-                <script type='text/javascript' src='" . TADTOOLS_URL . "/Easy-Responsive-Tabs/js/easyResponsiveTabs.js'></script>
-                <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='" . TADTOOLS_URL . "/Easy-Responsive-Tabs/css/easy-responsive-tabs.css'>
+                <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js'></script>
+                <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='" . XOOPS_URL . "/modules/tadtools/Easy-Responsive-Tabs/css/easy-responsive-tabs.css' >
                 ";
 
             $responsive_tabs .= "

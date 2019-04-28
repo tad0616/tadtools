@@ -63,7 +63,7 @@
     <{if $openid_login=="1" or $openid_login=="2"}>
         <{php}>
 
-        global $xoopsConfig,$xoopsTpl;
+        global $xoopsConfig,$xoopsTpl,$oidc_array,$oidc_array2,$all_oidc,$all_oidc2;
 
 
         $moduleHandler = xoops_getHandler('module');
@@ -73,6 +73,7 @@
 
         if($TadLoginXoopsModule){
             require_once XOOPS_ROOT_PATH."/modules/tad_login/function.php";
+            require_once XOOPS_ROOT_PATH."/modules/tad_login/oidc.php";
             require_once XOOPS_ROOT_PATH."/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
 
             $configHandler =xoops_gethandler('config');
@@ -90,32 +91,35 @@
                 $tad_login['google'] = '';
             }
 
-
-            if (in_array('edu', $modConfig['auth_method'])) {
-                $tad_login['edu'] = edu_login('return');
-            } else {
-                $tad_login['edu'] = '';
-            }
-
-
             $auth_method=$modConfig['auth_method'];
             $i=0;
 
             foreach($auth_method as $method){
                 $method_const="_".strtoupper($method);
-                $loginTitle=sprintf(_TAD_LOGIN_BY,constant($method_const));
 
                 if($method=="facebook"){
                     $tlogin[$i]['link']=$tad_login['facebook'];
+                    $tlogin[$i]['text']=sprintf(_TAD_LOGIN_BY,constant($method_const));
                 }elseif($method=="google"){
                     $tlogin[$i]['link']=$tad_login['google'];
-                }elseif($method=="edu"){
-                    $tlogin[$i]['link']=$tad_login['edu'];
+                    $tlogin[$i]['text']=sprintf(_TAD_LOGIN_BY,constant($method_const));
                 }else{
                     $tlogin[$i]['link']=XOOPS_URL."/modules/tad_login/index.php?login&op={$method}";
+                    $tlogin[$i]['text']=sprintf(_TAD_LOGIN_BY,constant($method_const));
                 }
+
+                if(in_array($method, $oidc_array)){
+                    $tlogin[$i]['img']=XOOPS_URL."/modules/tad_login/images/oidc/{$all_oidc[$method]['tail']}.png";
+                    $tlogin[$i]['text']=sprintf(_TAD_LOGIN_BY, constant('_'.strtoupper($all_oidc[$method]['tail']))._TADLOGIN_OIDC);
+
+                }elseif(in_array($method, $oidc_array2)){
                 $tlogin[$i]['img']=XOOPS_URL."/modules/tad_login/images/{$method}.png";
-                $tlogin[$i]['text']=$loginTitle;
+                    $tlogin[$i]['text']=sprintf(_TAD_LOGIN_BY, constant('_'.strtoupper($all_oidc2[$method]['tail']))._TADLOGIN_LDAP);
+
+                }else{
+                    $tlogin[$i]['img']=XOOPS_URL."/modules/tad_login/images/{$method}.png";
+                    $tlogin[$i]['text']=sprintf(_TAD_LOGIN_BY,constant($method_const).' OpenID ');
+                }
 
                 $i++;
             }

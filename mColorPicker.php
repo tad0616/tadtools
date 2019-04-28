@@ -1,4 +1,7 @@
 <?php
+
+use XoopsModules\Tadtools\Utility;
+
 /*
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/mColorPicker.php")){
 redirect_header("index.php",3, _TAD_NEED_TADTOOLS);
@@ -12,8 +15,8 @@ $xoopsTpl->assign('mColorPicker_code',$mColorPicker_code);
 <input type='text' name='color' class='color' value='{$act['color']}' data-text='hidden' data-hex='true' style='height:20px;width:20px;'>
 
  */
-require_once __DIR__ . '/tadtools_header.php';
-require_once __DIR__ . '/jquery.php';
+// require_once __DIR__ . '/tadtools_header.php';
+// require_once __DIR__ . '/jquery.php';
 
 class mColorPicker
 {
@@ -28,23 +31,23 @@ class mColorPicker
     public function render()
     {
         global $xoTheme;
-        $jquery = $this->show_jquery ? get_jquery() : '';
+        $jquery = $this->show_jquery ? Utility::get_jquery() : '';
 
         if ($xoTheme) {
             $xoTheme->addScript('modules/tadtools/mColorPicker/javascripts/mColorPicker.js');
 
             $xoTheme->addScript('', null, "
                 \$('{$this->name}').mColorPicker({
-                imageFolder: '" . TADTOOLS_URL . "/mColorPicker/images/'
+                imageFolder: '" . XOOPS_URL . "/modules/tadtools/mColorPicker/images/'
                 });
             ");
         } else {
             $mColorPicker = "
             {$jquery}
-            <script type='text/javascript' src='" . TADTOOLS_URL . "/mColorPicker/javascripts/mColorPicker.js'></script>
+            <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/mColorPicker/javascripts/mColorPicker.js'></script>
             <script>
                 \$('{$this->name}').mColorPicker({
-                imageFolder: '" . TADTOOLS_URL . "/mColorPicker/images/'
+                imageFolder: '" . XOOPS_URL . "/modules/tadtools/mColorPicker/images/'
                 });
             </script>
             ";

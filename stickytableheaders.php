@@ -1,4 +1,6 @@
 <?php
+use XoopsModules\Tadtools\Utility;
+
 /*
 用來將任何元素，釘在畫面頂端
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/stickytableheaders.php")){
@@ -11,8 +13,8 @@ $xoopsTpl->assign('stickytableheaders_code',$stickytableheaders_code);
 表格需有 <thead>及<tbody>
 
  */
-require_once __DIR__ . '/tadtools_header.php';
-require_once __DIR__ . '/jquery.php';
+// require_once __DIR__ . '/tadtools_header.php';
+// require_once __DIR__ . '/jquery.php';
 
 class stickytableheaders
 {
@@ -29,7 +31,7 @@ class stickytableheaders
     {
         global $xoTheme;
         $showFixedOffset = empty($fixedOffset) ? '' : "{fixedOffset:$fixedOffset}";
-        $jquery = $this->show_jquery ? get_jquery() : '';
+        $jquery = $this->show_jquery ? Utility::get_jquery() : '';
 
         if ($xoTheme) {
             $xoTheme->addScript('modules/tadtools/stickytableheaders/jquery.stickytableheaders.js');
@@ -43,7 +45,7 @@ class stickytableheaders
             $main = "
       {$jquery}
 
-      <script src='" . TADTOOLS_URL . "/stickytableheaders/jquery.stickytableheaders.js'></script>
+      <script src='" . XOOPS_URL . "/modules/tadtools/stickytableheaders/jquery.stickytableheaders.js'></script>
       <script type='text/javascript'>
         $(document).ready(function(){
           $('{$name}').stickyTableHeaders($showFixedOffset);

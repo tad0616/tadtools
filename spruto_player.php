@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/tadtools_header.php';
+// require_once __DIR__ . '/tadtools_header.php';
 
 class spruto_player
 {
@@ -125,7 +125,7 @@ class spruto_player
             $xoTheme->addScript('modules/tadtools/spruto_player/player.js');
             $player = '';
         } else {
-            $player = "<script type='text/javascript' src='" . TADTOOLS_URL . "/spruto_player/player.js'></script>
+            $player = "<script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/spruto_player/player.js'></script>
             ";
         }
 
