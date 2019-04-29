@@ -1,10 +1,15 @@
 <?php
 use XoopsModules\Tadtools\Utility;
 
-// require_once __DIR__ . '/tadtools_header.php';
-// require_once __DIR__ . '/jquery.php';
 require_once __DIR__ . '/include/beforeheader.php';
 Utility::get_bootstrap();
+
+if (!function_exists('get_jquery')) {
+    function get_jquery($ui = false, $mode = '', $theme = 'base')
+    {
+        return Utility::get_jquery($ui, $mode, $theme);
+    }
+}
 
 //路徑導覽，需搭配 get_模組_cate_path($分類編號);
 if (!function_exists('tad_breadcrumb')) {
