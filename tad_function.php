@@ -2,6 +2,9 @@
 use XoopsModules\Tadtools\Utility;
 
 require_once __DIR__ . '/include/beforeheader.php';
+// 相容舊檔，還是需要
+require_once __DIR__ . '/tadtools_header.php';
+
 Utility::get_bootstrap();
 
 if (!function_exists('get_jquery')) {

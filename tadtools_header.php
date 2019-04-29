@@ -13,5 +13,4 @@ if (!defined('TADTOOLS_URL')) {
     define('TADTOOLS_URL', XOOPS_URL . '/modules/tadtools');
 }
 
-global $xoopsConfig;
-require_once TADTOOLS_PATH . "/language/{$xoopsConfig['language']}/main.php";
+xoops_loadLanguage('main', 'tadtools');

@@ -86,7 +86,7 @@ foreach ($default as $k => $v) {
 
 if ($mid) {
 
-    $xoopsModuleConfig = $configHandler->getConfigsByCat(0, $mid);
+    $TadThemesModuleConfig = $configHandler->getConfigsByCat(0, $mid);
 
     $this->assign('auto_mainmenu', $TadThemesModuleConfig['auto_mainmenu']);
     $this->assign('show_sitename', $TadThemesModuleConfig['show_sitename']);
