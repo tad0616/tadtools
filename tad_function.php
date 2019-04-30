@@ -14,6 +14,37 @@ if (!function_exists('get_jquery')) {
     }
 }
 
+//建立目錄
+if (!function_exists('mk_dir')) {
+    function mk_dir($dir = '')
+    {
+        return Utility::delete_directory($dir);
+    }
+}
+
+//刪除目錄
+if (!function_exists('delete_directory')) {
+    function delete_directory($dirname)
+    {
+        return Utility::delete_directory($dirname);
+    }
+}
+
+//拷貝目錄
+if (!function_exists('full_copy')) {
+    function full_copy($source = '', $target = '')
+    {
+        return Utility::full_copy($source, $target);
+    }
+}
+
+if (!function_exists('rename_win')) {
+    function rename_win($oldfile, $newfile)
+    {
+        return Utility::rename_win($oldfile, $newfile);
+    }
+}
+
 //路徑導覽，需搭配 get_模組_cate_path($分類編號);
 if (!function_exists('tad_breadcrumb')) {
     function tad_breadcrumb($cate_sn = '0', $cate_path_array = [], $url_page = 'index.php', $page_cate_name = 'csn', $cate_title_name = 'title', $last = '')
