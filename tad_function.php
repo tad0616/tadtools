@@ -1,10 +1,14 @@
 <?php
 use XoopsModules\Tadtools\Utility;
 
+// print_r(get_declared_classes());
 require_once __DIR__ . '/include/beforeheader.php';
 // 相容舊檔，還是需要
 require_once __DIR__ . '/tadtools_header.php';
 
+if (!class_exists('XoopsModules\Tadtools\Utility')) {
+    require XOOPS_ROOT_PATH . '/modules/tadtools/preloads/autoloader.php';
+}
 Utility::get_bootstrap();
 
 if (!function_exists('get_jquery')) {
