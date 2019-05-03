@@ -9,6 +9,7 @@ require_once __DIR__ . '/tadtools_header.php';
 if (!class_exists('XoopsModules\Tadtools\Utility')) {
     require XOOPS_ROOT_PATH . '/modules/tadtools/preloads/autoloader.php';
 }
+
 Utility::get_bootstrap();
 
 if (!function_exists('get_jquery')) {
