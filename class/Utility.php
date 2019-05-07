@@ -864,7 +864,7 @@ class Utility
                 <script src='" . XOOPS_URL . "/modules/tadtools/jquery/ui/jquery-ui.js'></script>";
             }
 
-            $ver = (int) str_replace('.', '', mb_substr(XOOPS_VERSION, 6, 5));
+            $ver = (int) str_replace('.', '', str_replace('XOOPS ', '', XOOPS_VERSION));
             if ($ver >= 259) {
                 $jquery_path = "
                 <script type='text/javascript'>
@@ -892,7 +892,7 @@ class Utility
             return $jquery_path;
         } else {
             $xoTheme->addScript('browse.php?Frameworks/jquery/jquery.js');
-            $ver = (int) str_replace('.', '', mb_substr(XOOPS_VERSION, 6, 5));
+            $ver = (int) str_replace('.', '', str_replace('XOOPS ', '', XOOPS_VERSION));
 
             if ($ui) {
                 $xoTheme->addStylesheet("modules/tadtools/jquery/themes/{$theme}/jquery.ui.all.css");
