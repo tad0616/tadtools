@@ -1,3 +1,14 @@
+TadTools 3.2.6 (released from 2019-05-09)
+=============================================
+1. Upgrade tcpdf to version 6.2.26
+2. Remove the jBreadCrumb kit
+3. Upgrade class.upload.php to 0.35-dev
+4. Plus the preference for mime type check when the file upload can be closed.
+5. Fix the Easy-Responsive-Tabs tab cannot apply color issues
+6. Add phpseclib package
+7. Add namespace and objectize common functions
+8. Support XOOPS 2.5.10
+
 TadTools 3.2.5 (released from 2019-03-24)
 =============================================
 1. Adjust the coding judgment to avoid transcoding failure
