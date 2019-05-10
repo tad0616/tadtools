@@ -79,7 +79,7 @@ class Update
     public static function go_update1()
     {
         global $xoopsDB;
-        $sql = "CREATE TABLE `' . $xoopsDB->prefix('tadtools_setup') . '` (
+        $sql = "CREATE TABLE `" . $xoopsDB->prefix('tadtools_setup') . "` (
             `tt_sn` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT ,
             `tt_theme`  varchar(255) NOT NULL default '',
             `tt_use_bootstrap`  varchar(255) NOT NULL default '',
