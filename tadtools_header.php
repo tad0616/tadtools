@@ -13,5 +13,7 @@ if (!defined('TADTOOLS_URL')) {
     define('TADTOOLS_URL', XOOPS_URL . '/modules/tadtools');
 }
 
+include __DIR__ . '/preloads/autoloader.php';
+
 global $xoopsConfig;
 require_once TADTOOLS_PATH . "/language/{$xoopsConfig['language']}/main.php";
