@@ -105,7 +105,7 @@ function mk_bootstrap_menu_options($theme_kind = '', $mode = 'light')
 
     $dir = XOOPS_ROOT_PATH . "/modules/tadtools/{$theme_kind}/themes/{$mode}/";
     $theme_array[$theme_kind]['kind'] = $theme_kind;
-    $theme_array[$theme_kind]['theme_path'] = (string)($theme_kind);
+    $theme_array[$theme_kind]['theme_path'] = (string) ($theme_kind);
     $theme_array[$theme_kind]['theme'] = $theme_kind;
     $theme_array[$theme_kind]['color'] = _TT_COLOR_DEFAULT;
     if (is_dir($dir)) {
@@ -130,7 +130,7 @@ function mk_bootstrap_menu_options($theme_kind = '', $mode = 'light')
 //列出目錄檔案
 function directory_list($directory_base_path = '')
 {
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
 
     $directory_base_path = $myts->addSlashes($directory_base_path);
 

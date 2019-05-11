@@ -24,10 +24,12 @@ li {
     line-height: 1em;
 }
 
-a.btn {
+a.btn , button.btn {
     font-weight: normal;
     background-color: none;
-    color: white;
+    color: white !important;
+    font-size: 11pt;
+	padding: 0.375rem 0.75rem;
 }
 
 input[type="submit"]:hover,

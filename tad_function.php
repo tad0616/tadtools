@@ -1,10 +1,54 @@
 <?php
 use XoopsModules\Tadtools\Utility;
 
-require_once __DIR__ . '/tadtools_header.php';
-require_once __DIR__ . '/jquery.php';
+// print_r(get_declared_classes());
 require_once __DIR__ . '/include/beforeheader.php';
+// 相容舊檔，還是需要
+require_once __DIR__ . '/tadtools_header.php';
+
+if (!class_exists('XoopsModules\Tadtools\Utility')) {
+    require XOOPS_ROOT_PATH . '/modules/tadtools/preloads/autoloader.php';
+}
+
 Utility::get_bootstrap();
+
+if (!function_exists('get_jquery')) {
+    function get_jquery($ui = false, $mode = '', $theme = 'base')
+    {
+        return Utility::get_jquery($ui, $mode, $theme);
+    }
+}
+
+//建立目錄
+if (!function_exists('mk_dir')) {
+    function mk_dir($dir = '')
+    {
+        return Utility::delete_directory($dir);
+    }
+}
+
+//刪除目錄
+if (!function_exists('delete_directory')) {
+    function delete_directory($dirname)
+    {
+        return Utility::delete_directory($dirname);
+    }
+}
+
+//拷貝目錄
+if (!function_exists('full_copy')) {
+    function full_copy($source = '', $target = '')
+    {
+        return Utility::full_copy($source, $target);
+    }
+}
+
+if (!function_exists('rename_win')) {
+    function rename_win($oldfile, $newfile)
+    {
+        return Utility::rename_win($oldfile, $newfile);
+    }
+}
 
 //路徑導覽，需搭配 get_模組_cate_path($分類編號);
 if (!function_exists('tad_breadcrumb')) {

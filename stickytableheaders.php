@@ -1,59 +1,12 @@
 <?php
-use XoopsModules\Tadtools\Utility;
+
+class stickytableheaders extends \XoopsModules\Tadtools\StickyTableHeaders
+{
+}
 
 /*
-用來將任何元素，釘在畫面頂端
-if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/stickytableheaders.php")){
-redirect_header("index.php",3, _TAD_NEED_TADTOOLS);
-}
-require_once XOOPS_ROOT_PATH."/modules/tadtools/stickytableheaders.php";
-$stickytableheaders=new stickytableheaders();
-$stickytableheaders_code=$stickytableheaders->render('#my_table');
-$xoopsTpl->assign('stickytableheaders_code',$stickytableheaders_code);
+use XoopsModules\Tadtools\StickyTableHeaders;
+$StickyTableHeaders=new StickyTableHeaders();
+$StickyTableHeaders->render('#my_table');
 表格需有 <thead>及<tbody>
-
  */
-// require_once __DIR__ . '/tadtools_header.php';
-// require_once __DIR__ . '/jquery.php';
-
-class stickytableheaders
-{
-    public $show_jquery;
-
-    //建構函數
-    public function __construct($show_jquery = true)
-    {
-        $this->show_jquery = $show_jquery;
-    }
-
-    //產生語法
-    public function render($name = '', $fixedOffset = '')
-    {
-        global $xoTheme;
-        $showFixedOffset = empty($fixedOffset) ? '' : "{fixedOffset:$fixedOffset}";
-        $jquery = $this->show_jquery ? Utility::get_jquery() : '';
-
-        if ($xoTheme) {
-            $xoTheme->addScript('modules/tadtools/stickytableheaders/jquery.stickytableheaders.js');
-
-            $xoTheme->addScript('', null, "
-        \$(document).ready(function(){
-          \$('{$name}').stickyTableHeaders($showFixedOffset);
-        });
-      ");
-        } else {
-            $main = "
-      {$jquery}
-
-      <script src='" . XOOPS_URL . "/modules/tadtools/stickytableheaders/jquery.stickytableheaders.js'></script>
-      <script type='text/javascript'>
-        $(document).ready(function(){
-          $('{$name}').stickyTableHeaders($showFixedOffset);
-        });
-      </script>
-      ";
-
-            return $main;
-        }
-    }
-}

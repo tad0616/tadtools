@@ -19,8 +19,8 @@ id or name ：主索引的名稱
 value ：預設值，如果是空白，就是以原本內容為主
 
  */
-require_once __DIR__ . '/tadtools_header.php';
-require_once __DIR__ . '/jquery.php';
+// require_once __DIR__ . '/tadtools_header.php';
+// require_once __DIR__ . '/jquery.php';
 
 class bootstrap3_editable
 {

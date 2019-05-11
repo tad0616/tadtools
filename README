@@ -1,4 +1,4 @@
-TadTools 3.2.6 (尚未釋出)
+TadTools 3.2.6 (2019-05-09 釋出)
 ====================================
 1.升級 tcpdf 為 6.2.26 版
 2.移除 jBreadCrumb 套件
@@ -6,6 +6,8 @@ TadTools 3.2.6 (尚未釋出)
 4.加上可以關閉檔案上傳時 mime type 檢查的偏好設定
 5.修正 Easy-Responsive-Tabs 頁籤無法套用顏色問題
 6.新增 phpseclib 套件
+7.加入 namespace，並將常用函數物件化
+8.支援 XOOPS 2.5.10
 
 
 TadTools 3.2.5 (2019-03-24 釋出)

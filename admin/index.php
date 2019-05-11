@@ -1,6 +1,5 @@
 <?php
 /**
- * TadTools module
  *
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -9,11 +8,11 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * @copyright    The XOOPS Project http://sourceforge.net/projects/xoops/
+ * @copyright    XOOPS Project (https://xoops.org)
  * @license      http://www.fsf.org/copyleft/gpl.html GNU public license
- * @package      TadTools
- * @since        2.5.7
- * @author       Tad
+ * @package
+ * @since        2.5.0
+ * @author
  * @version      $Id $
  **/
 
