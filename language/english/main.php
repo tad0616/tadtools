@@ -55,6 +55,7 @@ define('_TAD_ADMIN', '"%s" Admin');
 define('_TAD_CONFIG', '"%s" Preferences');
 define('_TAD_UPDATE', 'update "%s"');
 define('_TAD_BLOCKS', '"%s" Blocks');
+
 define('_TAD_TF_BLOCK_CONFIG', 'Block config');
 define('_TAD_TF_SYSTEM_CONFIG', 'System config');
 define('_TAD_TF_SYSTEM_MODADM', 'Online install/update');
@@ -87,8 +88,8 @@ define('TADTOOLS_CALENDAR_NEXT_MONTH', 'Next Month');
 define('TADTOOLS_ROTATE_LEFT', 'rotate 90 degrees left');
 define('TADTOOLS_ROTATE_RIGHT', 'rotate 90 degrees right');
 define('TADTOOLS_CHECKBOX_TO_DEL', 'To delete a file, please click on the check box.');
-
 define('_TAD_MENU_CONFIG', 'Dorpdown Setup');
+define('_TAD_OOPS_SOMETHING_WRONG', 'Ooops! Sorry, but something went wrong!');
 
 define('_TAD_EMPTY', 'No information available');
 
