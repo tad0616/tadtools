@@ -1,8 +1,9 @@
 <?php
 
+namespace XoopsModules\Tadtools;
+
 use XoopsModules\Tadtools\Utility;
 
-namespace XoopsModules\Tadtools;
 
 class BubblePopup
 {
@@ -54,8 +55,7 @@ class BubblePopup
           ");
         } else {
             // die('bbbbb');
-            $main = "
-            $jquery
+            $main = "$jquery
             <link href='" . XOOPS_URL . "/modules/tadtools/jquery.qtip_2/jquery.qtip.min.css' rel='stylesheet' type='text/css' >
             <script src='" . XOOPS_URL . "/modules/tadtools/jquery.qtip_2/jquery.qtip.min.js' type='text/javascript'></script>
             <script src='" . XOOPS_URL . "/modules/tadtools/jquery.qtip_2/imagesloaded.pkg.min.js' type='text/javascript'></script>

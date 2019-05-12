@@ -1,5 +1,7 @@
 <?php
 
+global $xoopsConfig;
+
 $modversion = [];
 $modversion['name'] = _MI_TADTOOLS_NAME;
 $modversion['version'] = 3.26;
