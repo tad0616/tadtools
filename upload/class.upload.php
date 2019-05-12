@@ -2574,7 +2574,7 @@ class upload
             }
 
             if (!$this->file_src_mime || !is_string($this->file_src_mime) || empty($this->file_src_mime) || false === mb_strpos($this->file_src_mime, '/')) {
-                $this->log .= '- MIME type couldn\'t be detected! (' . (string) $this->file_src_mime . ')<br>';
+                $this->log .= '- MIME type couldn\'t be detected! (' . $this->file_src_mime . ')<br>';
             }
 
             // determine whether the file is an image
@@ -3895,7 +3895,7 @@ class upload
                             $this->image_ratio_crop = mb_strtolower($this->image_ratio_crop);
                             if (($this->image_src_x / $this->image_x) > ($this->image_src_y / $this->image_y)) {
                                 $this->image_dst_y = $this->image_y;
-                                $this->image_dst_x = intval($this->image_src_x * ($this->image_y / $this->image_src_y));
+                                $this->image_dst_x = (int)($this->image_src_x * ($this->image_y / $this->image_src_y));
                                 $ratio_crop = [];
                                 $ratio_crop['x'] = $this->image_dst_x - $this->image_x;
                                 if (false !== mb_strpos($this->image_ratio_crop, 'l')) {
@@ -3914,7 +3914,7 @@ class upload
                                 }
                             } else {
                                 $this->image_dst_x = $this->image_x;
-                                $this->image_dst_y = intval($this->image_src_y * ($this->image_x / $this->image_src_x));
+                                $this->image_dst_y = (int)($this->image_src_y * ($this->image_x / $this->image_src_x));
                                 $ratio_crop = [];
                                 $ratio_crop['y'] = $this->image_dst_y - $this->image_y;
                                 if (false !== mb_strpos($this->image_ratio_crop, 't')) {
@@ -3942,7 +3942,7 @@ class upload
                             $this->image_ratio_fill = mb_strtolower($this->image_ratio_fill);
                             if (($this->image_src_x / $this->image_x) < ($this->image_src_y / $this->image_y)) {
                                 $this->image_dst_y = $this->image_y;
-                                $this->image_dst_x = intval($this->image_src_x * ($this->image_y / $this->image_src_y));
+                                $this->image_dst_x = (int)($this->image_src_x * ($this->image_y / $this->image_src_y));
                                 $ratio_crop = [];
                                 $ratio_crop['x'] = $this->image_dst_x - $this->image_x;
                                 if (false !== mb_strpos($this->image_ratio_fill, 'l')) {
@@ -3961,7 +3961,7 @@ class upload
                                 }
                             } else {
                                 $this->image_dst_x = $this->image_x;
-                                $this->image_dst_y = intval($this->image_src_y * ($this->image_x / $this->image_src_x));
+                                $this->image_dst_y = (int)($this->image_src_y * ($this->image_x / $this->image_src_x));
                                 $ratio_crop = [];
                                 $ratio_crop['y'] = $this->image_dst_y - $this->image_y;
                                 if (false !== mb_strpos($this->image_ratio_fill, 't')) {
@@ -3984,10 +3984,10 @@ class upload
                         } elseif ($this->image_ratio) {
                             if (($this->image_src_x / $this->image_x) > ($this->image_src_y / $this->image_y)) {
                                 $this->image_dst_x = $this->image_x;
-                                $this->image_dst_y = intval($this->image_src_y * ($this->image_x / $this->image_src_x));
+                                $this->image_dst_y = (int)($this->image_src_y * ($this->image_x / $this->image_src_x));
                             } else {
                                 $this->image_dst_y = $this->image_y;
-                                $this->image_dst_x = intval($this->image_src_x * ($this->image_y / $this->image_src_y));
+                                $this->image_dst_x = (int)($this->image_src_x * ($this->image_y / $this->image_src_y));
                             }
 
                             // resize to provided exact dimensions
@@ -4600,10 +4600,10 @@ class upload
                                 $canvas_height = $this->image_dst_y - abs($this->image_watermark_y);
                                 if (($watermark_src_width / $canvas_width) > ($watermark_src_height / $canvas_height)) {
                                     $watermark_dst_width = $canvas_width;
-                                    $watermark_dst_height = intval($watermark_src_height * ($canvas_width / $watermark_src_width));
+                                    $watermark_dst_height = (int)($watermark_src_height * ($canvas_width / $watermark_src_width));
                                 } else {
                                     $watermark_dst_height = $canvas_height;
-                                    $watermark_dst_width = intval($watermark_src_width * ($canvas_height / $watermark_src_height));
+                                    $watermark_dst_width = (int)($watermark_src_width * ($canvas_height / $watermark_src_height));
                                 }
                                 $this->log .= '&nbsp;&nbsp;&nbsp;&nbsp;watermark resized from ' . $watermark_src_width . 'x' . $watermark_src_height . ' to ' . $watermark_dst_width . 'x' . $watermark_dst_height . '<br>';
                             }
