@@ -210,7 +210,7 @@ class TadDataCenter
                 } elseif ('date' === $type) {
                     include_once XOOPS_ROOT_PATH . '/modules/tadtools/cal.php';
                     $cal = new My97DatePicker();
-                    $cal->render();
+                    $cal::render();
                     $form = "<input type=\"text\" name=\"TDC[{$name}]{$arr}\" value=\"{$value}\" {$attr_str} onClick=\"WdatePicker({dateFmt:'yyyy-MM-dd', startDate:'%y-%M-%d'})\">";
                 } elseif ('' == $type) {
                     $form = "<input type=\"text\" name=\"TDC[{$name}]{$arr}\" value=\"{$value}\" {$attr_str}>";
