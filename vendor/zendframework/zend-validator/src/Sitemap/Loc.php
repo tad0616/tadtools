@@ -9,7 +9,7 @@
 
 namespace Zend\Validator\Sitemap;
 
-use Zend\Uri;
+use Zend\Validator\Uri;
 use Zend\Validator\AbstractValidator;
 
 /**

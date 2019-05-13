@@ -1,7 +1,7 @@
 <?php
-use XoopsModules\Tadtools\Utility;
-
 namespace XoopsModules\Tadtools;
+
+use XoopsModules\Tadtools\Utility;
 
 class StickyTableHeaders
 {

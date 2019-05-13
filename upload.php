@@ -38,7 +38,7 @@ if ($foo->uploaded) {
     $foo->image_y = $image_max_height;
 
     // save uploaded image with no changes
-    $foo->Process($path);
+    $foo->process($path);
     if ($foo->processed) {
         // die($foo->file_dst_name);
         chmod($path . $_FILES['upload']['name'], 0777);
