@@ -415,11 +415,14 @@ class TadUpFiles
         // die($sql);
         $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $i = 0;
+
         while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $files_sn, $col_name, $col_sn, $sort, $kind, $file_name, $file_type, $file_size, $description
             foreach ($all as $k => $v) {
                 $$k = $v;
             }
+
+            // echo "{$file_name}<br>";
 
             // $fileidname = str_replace('.', '', $file_name);
             $file_name = $this->hash ? $hash_filename : $file_name;
@@ -486,14 +489,16 @@ class TadUpFiles
                 $w = '';
                 $w2 = 'list-style-position: outside;';
             }
+
             $filename_label = '';
+
             if ($show_edit === true or $show_edit === 'full') {
                 // 權限設定
                 if ($this->permission) {
                     $sql = 'select gperm_groupid from `' . $xoopsDB->prefix('group_permission') . "` where gperm_name='dl_group' and gperm_itemid='{$files_sn}' order by gperm_groupid";
-                    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                    $result2 = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
                     $gperm_groupid_arr = [];
-                    while (list($gperm_groupid) = $xoopsDB->fetchRow($result)) {
+                    while (list($gperm_groupid) = $xoopsDB->fetchRow($result2)) {
                         $gperm_groupid_arr[] = $gperm_groupid;
                     }
                     $permission = _TUF_PERMISSION_NOTE;
@@ -510,11 +515,12 @@ class TadUpFiles
                     </label>
                    ";
                 }
+
                 $all_file .= "
                 <tr id='fdtr_{$files_sn}'>
                     <td style='{$w}'>
-                            {$thumb_style}
-                            {$thumb_tool}
+                        {$thumb_style}
+                        {$thumb_tool}
                     </td>
                     <td>
                     {$filename_label}
@@ -555,15 +561,15 @@ class TadUpFiles
             $i++;
         }
 
+        // die($all_file);
         if (empty($all_file)) {
             return;
         }
 
         $fancybox = new FancyBox('.fancybox_demo', 640, 480);
-        $fancybox_code = $fancybox->render(false, null, false);
+        $fancybox->render(false, null, false);
 
         $files = "
-        $fancybox_code
         <link href=\"" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css\" rel=\"stylesheet\">
         <script type='text/javascript'>
             $(document).ready(function(){
@@ -1853,7 +1859,7 @@ class TadUpFiles
                 } else {
                     $groups = XOOPS_GROUP_ANONYMOUS;
                 }
-
+                // die(var_dump($gperm_groupid_arr));
                 if (!array_intersect($groups, $gperm_groupid_arr)) {
                     redirect_header($_SERVER['HTTP_REFERER'], 3, _TAD_PERMISSION_DENIED);
                 }
