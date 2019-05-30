@@ -1859,13 +1859,15 @@ class TadUpFiles
                 } else {
                     $groups = XOOPS_GROUP_ANONYMOUS;
                 }
+                // var_dump($groups);
+                // var_dump($gperm_groupid_arr);
+                // exit;
                 // die(var_dump($gperm_groupid_arr));
                 if (!array_intersect($groups, $gperm_groupid_arr)) {
                     redirect_header($_SERVER['HTTP_REFERER'], 3, _TAD_PERMISSION_DENIED);
                 }
             }
         }
-
         $file = $this->get_one_file($files_sn);
         $this->set_dir('subdir', $file['sub_dir']);
         if ($hash) {

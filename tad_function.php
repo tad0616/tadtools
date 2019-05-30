@@ -23,7 +23,7 @@ if (!function_exists('get_jquery')) {
 if (!function_exists('mk_dir')) {
     function mk_dir($dir = '')
     {
-        return Utility::delete_directory($dir);
+        return Utility::mk_dir($dir);
     }
 }
 
