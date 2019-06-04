@@ -35,6 +35,17 @@ class Utility
         self::get_jquery();
     }
 
+    public static function add_migrate()
+    {
+        global $xoTheme;
+        $ver = self::get_version('xoops');
+        if ($ver >= 20509) {
+            $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
+        } else {
+            $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-1.4.1.min.js');
+        }
+    }
+
     //版本判斷
     public static function get_version($type = 'xoops', $version = '')
     {
@@ -54,8 +65,8 @@ class Utility
                     $version[] = substr($v[1], $i, 1);
                 }
                 break;
-                return $version[0] * 10000 + $version[1] * 100 + $version[2];
         }
+        return $version[0] * 10000 + $version[1] * 100 + $version[2];
     }
 
     //建立目錄
