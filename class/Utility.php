@@ -35,6 +35,29 @@ class Utility
         self::get_jquery();
     }
 
+    //版本判斷
+    public static function get_version($type = 'xoops', $version = '')
+    {
+        switch ($type) {
+            case 'xoops':
+                $version = explode('.', str_replace('XOOPS ', '', XOOPS_VERSION));
+                break;
+
+            case 'php':
+                $version = explode('.', PHP_VERSION);
+                break;
+
+            default:
+                $v = explode('.', $version);
+                $version[] = $v[0];
+                for ($i = 0; $i < strlen($v[1]); $i++) {
+                    $version[] = substr($v[1], $i, 1);
+                }
+                break;
+                return $version[0] * 10000 + $version[1] * 100 + $version[2];
+        }
+    }
+
     //建立目錄
     public static function mk_dir($dir = '')
     {
@@ -863,9 +886,8 @@ class Utility
                 <link href='" . XOOPS_URL . "/modules/tadtools/jquery/themes/{$theme}/jquery.ui.all.css' rel='stylesheet' type='text/css'>
                 <script src='" . XOOPS_URL . "/modules/tadtools/jquery/ui/jquery-ui.js'></script>";
             }
-
-            $ver = (int) str_pad(str_replace('.', '', str_replace('XOOPS ', '', XOOPS_VERSION)), 4, 0);
-            if ($ver >= 2590) {
+            $ver = self::get_version('xoops');
+            if ($ver >= 20509) {
                 $jquery_path = "
                 <script type='text/javascript'>
                 if(typeof jQuery == 'undefined') {
