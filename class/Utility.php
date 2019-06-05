@@ -35,14 +35,22 @@ class Utility
         self::get_jquery();
     }
 
-    public static function add_migrate()
+    public static function add_migrate($mode="")
     {
         global $xoTheme;
         $ver = self::get_version('xoops');
-        if ($ver >= 20509) {
-            $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
-        } else {
-            $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-1.4.1.min.js');
+        if($mode=="return"){
+            if ($ver >= 20509) {
+                return "<script src='" . XOOPS_URL . "/modules/tadtools/jquery/jquery-migrate-3.0.0.min.js'></script>";
+            } else {
+                return "<script src='" . XOOPS_URL . "/modules/tadtools/jquery/jquery-migrate-1.4.1.min.js'></script>";
+            }
+        }else{
+            if ($ver >= 20509) {
+                $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
+            } else {
+                $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-1.4.1.min.js');
+            }
         }
     }
 

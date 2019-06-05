@@ -7,7 +7,7 @@ if (!$xoopsUser) {
 require_once __DIR__ . '/upload/class.upload.php';
 
 require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$type = system_CleanVars($_REQUEST, 'type', '', 'string');
+$type = strip_tags(system_CleanVars($_REQUEST, 'type', '', 'string'));
 $CKEditorFuncNum = system_CleanVars($_REQUEST, 'CKEditorFuncNum', 0, 'int');
 
 $mdir = $_SESSION['xoops_mod_name'];
@@ -19,6 +19,10 @@ $image_max_height = $xoopsModuleConfig['image_max_height'] ? (int) $xoopsModuleC
 
 //判斷是否是非法調用
 if (empty($CKEditorFuncNum)) {
+    mkhtml(1, '', "{$type} -{$CKEditorFuncNum} error");
+}
+
+if (strpos($_SERVER['HTTP_REFERER'], XOOPS_URL) !== 0) {
     mkhtml(1, '', "{$type} -{$CKEditorFuncNum} error");
 }
 

@@ -22,9 +22,9 @@ class JwPlayer
         $this->width = (empty($width)) ? '' : $width;
         $this->play_list_height = ('playlist' === $mode and 'bottom' === $display) ? $height : 0;
         $this->height = ('%' === mb_substr($height, -1)) ? $height : 0.6;
-        $this->file = $file;
+        $this->file = strip_tags($file);
         $this->youtube_id = $this->getYTid($file);
-        $this->image = empty($image) ? "https://i3.ytimg.com/vi/{$this->youtube_id}/0.jpg" : $image;
+        $this->image = empty($image) ? "https://i3.ytimg.com/vi/{$this->youtube_id}/0.jpg" : strip_tags($image);
         $this->skin = (empty($skin)) ? '' : $skin;
         //$this->skin=(empty($skin))?TADTOOLS_URL."/jwplayer/skin/beelden.zip":$skin;
         $this->mode = $mode;
