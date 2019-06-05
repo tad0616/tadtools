@@ -55,24 +55,44 @@ class Utility
     }
 
     //版本判斷
-    public static function get_version($type = 'xoops', $version = '')
+    public static function get_version($type = 'xoops', $ver = '')
     {
+        global $xoopsDB;
+        if (empty($ver) and empty($type)) {
+            return;
+        }
         switch ($type) {
             case 'xoops':
-                $version = explode('.', str_replace('XOOPS ', '', XOOPS_VERSION));
+                if (empty($ver)) {
+                    $ver = XOOPS_VERSION;
+                }
+                $version = explode('.', str_replace('XOOPS ', '', $ver));
                 break;
 
             case 'php':
-                $version = explode('.', PHP_VERSION);
+                if (empty($ver)) {
+                    $ver = PHP_VERSION;
+                }
+
+                $version = explode('.', $ver);
                 break;
 
             default:
-                $v = explode('.', $version);
+            if (empty($ver)) {
+                $sql = "select version `" . $xoopsDB->prefix("modules") . "` where dirname='{$type}'";
+                $result=$xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+                list($ver)=$xoopsDB->fetchRow   ($result);
+                for ($i = 0; $i < strlen($ver); $i++) {
+                    $version[] = substr($ver, $i, 1);
+                }
+            }else{
+                $v = explode('.', $ver);
                 $version[] = $v[0];
                 for ($i = 0; $i < strlen($v[1]); $i++) {
                     $version[] = substr($v[1], $i, 1);
                 }
-                break;
+            }
+            break;
         }
         return $version[0] * 10000 + $version[1] * 100 + $version[2];
     }
