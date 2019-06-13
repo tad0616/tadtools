@@ -29,7 +29,11 @@ a.btn , button.btn {
     background-color: none;
     color: white !important;
     font-size: 11pt;
-	padding: 0.375rem 0.75rem;
+	/* padding: 0.375rem 0.75rem; */
+}
+
+a.btn-sm , button.btn-sm {
+    font-size: 12px;
 }
 
 input[type="submit"]:hover,
