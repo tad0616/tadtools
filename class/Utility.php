@@ -31,21 +31,22 @@ class Utility
 
     //建構函數
     public function __construct()
-    { //建構函數
+    {
+        //建構函數
         self::get_jquery();
     }
 
-    public static function add_migrate($mode="")
+    public static function add_migrate($mode = "")
     {
         global $xoTheme;
         $ver = self::get_version('xoops');
-        if($mode=="return"){
+        if ($mode == "return") {
             if ($ver >= 20509) {
                 return "<script src='" . XOOPS_URL . "/modules/tadtools/jquery/jquery-migrate-3.0.0.min.js'></script>";
             } else {
                 return "<script src='" . XOOPS_URL . "/modules/tadtools/jquery/jquery-migrate-1.4.1.min.js'></script>";
             }
-        }else{
+        } else {
             if ($ver >= 20509) {
                 $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
             } else {
@@ -78,23 +79,32 @@ class Utility
                 break;
 
             default:
-            if (empty($ver)) {
-                $sql = "select version `" . $xoopsDB->prefix("modules") . "` where dirname='{$type}'";
-                $result=$xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-                list($ver)=$xoopsDB->fetchRow   ($result);
-                for ($i = 0; $i < strlen($ver); $i++) {
-                    $version[] = substr($ver, $i, 1);
+                if (empty($ver)) {
+                    $sql = "select version from `" . $xoopsDB->prefix("modules") . "` where dirname='{$type}'";
+                    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+                    list($ver) = $xoopsDB->fetchRow($result);
+                    for ($i = 0; $i < strlen($ver); $i++) {
+                        $version[] = substr($ver, $i, 1);
+                    }
+                } else {
+                    if ($_GET['debug'] == 1) {
+                        echo "$ver<br>";
+                    }
+
+                    $v = explode('.', $ver);
+                    $version[] = $v[0];
+                    for ($i = 0; $i < strlen($v[1]); $i++) {
+                        $version[] = substr($v[1], $i, 1);
+                    }
+
+                    // die(var_dump($version));
                 }
-            }else{
-                $v = explode('.', $ver);
-                $version[] = $v[0];
-                for ($i = 0; $i < strlen($v[1]); $i++) {
-                    $version[] = substr($v[1], $i, 1);
-                }
-            }
-            break;
+                break;
         }
-        return $version[0] * 10000 + $version[1] * 100 + $version[2];
+
+        $Version = intval($version[0] * 10000 + $version[1] * 100 + $version[2]);
+        return $Version;
+
     }
 
     //建立目錄

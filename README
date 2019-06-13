@@ -1,9 +1,10 @@
-TadTools 3.2.7 (尚未釋出)
+TadTools 3.2.7 (2019-06-13 釋出)
 ====================================
 1.修正 mk_dir() 函數錯誤
 2.新增 Utility::get_version() 版本檢查工具
 3.新增 Utility::add_migrate() 加入 jquery migrate 工具
 4.加強 video.php、upload.php的安全性
+5.修正 TCPDF 套件問題
 
 
 TadTools 3.2.6 (2019-05-09 釋出)

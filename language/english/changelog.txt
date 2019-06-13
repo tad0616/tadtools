@@ -1,3 +1,12 @@
+TadTools 3.2.7 (released from 2019-06-13)
+=============================================
+1. Fix mk_dir() function error
+2. Added Utility::get_version() version checking tool
+3. Add Utility::add_migrate() to the jquery migrate tool
+4. Strengthen the security of video.php, upload.php
+5. Fix TCPDF Suite issues
+
+
 TadTools 3.2.6 (released from 2019-05-09)
 =============================================
 1. Upgrade tcpdf to version 6.2.26
