@@ -55,12 +55,12 @@ class TreeTable
                     $(this).sortable('refresh');
                     var sorted = $(this).sortable('serialize','id');
                     $.ajax({
-                    type:   'POST',
-                    url:    href,
-                    data:   sorted,
-                    success: function(msg) {
-                        $('{$this->sort_msg}').html(msg);
-                    }
+                        type:   'POST',
+                        url:    href,
+                        data:   sorted,
+                        success: function(msg) {
+                            $('{$this->sort_msg}').html(msg);
+                        }
                     });
                 }
             });";

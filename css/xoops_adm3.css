@@ -23,10 +23,15 @@ li {
     line-height: 1em;
 }
 
-a.btn {
+a.btn , button.btn {
     font-weight: normal;
     background-color: none;
-    color: white;
+    color: white !important;
+    font-size: 11pt;
+}
+
+a.btn-xs , button.btn-xs {
+    font-size: 12px;
 }
 
 input[type="submit"]:hover,
