@@ -1,3 +1,10 @@
+TadTools 3.2.8 (released from 2019-06-17)
+=============================================
+1. Fixed CKEdtor unable to break into multimedia problems
+2. Fine-tuning the background style
+3. Modify the TreeTable style
+
+
 TadTools 3.2.7 (released from 2019-06-13)
 =============================================
 1. Fix mk_dir() function error
