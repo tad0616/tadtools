@@ -22,8 +22,10 @@ define('_MI_TADTOOLS_DESC7', 'SyntaxHighlighter2.x or SyntaxHighlighter3.x');
 define('_MI_TADTOOLS_TITLE8', 'uploadcare public key');
 define('_MI_TADTOOLS_DESC8', 'Please login <a href="https://uploadcare.com/" target="_blank">https://uploadcare.com/</a> and create a project to get public key.');
 
-define('_MI_TADTOOLS_QRCODE_BLOCK_NAME', 'QR Code');
-define('_MI_TADTOOLS_QRCODE_BLOCK_DESC', 'QR Code');
+define('_MI_TADTOOLS_QRCODE_BLOCK_NAME', 'This page QR Code');
+define('_MI_TADTOOLS_QRCODE_BLOCK_DESC', 'This page QR Code block (tadtools_qrcode)');
+define('_MI_TADTOOLS_APP_BLOCK_NAME', 'This site App download settings');
+define('_MI_TADTOOLS_APP_BLOCK_DESC', 'This site App download settings block (tadtools_app)');
 
 define('_MI_TADTOOLS_DIRNAME', basename(dirname(dirname(__DIR__))));
 define('_MI_TADTOOLS_HELP_HEADER', __DIR__ . '/help/helpheader.tpl');

@@ -22,8 +22,10 @@ define('_MI_TADTOOLS_DESC7', 'SyntaxHighlighter2 適用程式碼常會換行的�
 define('_MI_TADTOOLS_TITLE8', 'uploadcare 的 public key');
 define('_MI_TADTOOLS_DESC8', '請至 <a href="https://uploadcare.com/" target="_blank">https://uploadcare.com/</a> 註冊，並建立任一個專案，取得其 public key 後填入此處，CK編輯器便能使用外部儲存空間功能。');
 
-define('_MI_TADTOOLS_QRCODE_BLOCK_NAME', 'QR Code 區塊');
-define('_MI_TADTOOLS_QRCODE_BLOCK_DESC', 'QR Code 區塊區塊 (tadtools_qrcode)');
+define('_MI_TADTOOLS_QRCODE_BLOCK_NAME', '本頁面行動條碼');
+define('_MI_TADTOOLS_QRCODE_BLOCK_DESC', '本頁面行動條碼區塊 (tadtools_qrcode)');
+define('_MI_TADTOOLS_APP_BLOCK_NAME', '本站App下載設定');
+define('_MI_TADTOOLS_APP_BLOCK_DESC', '本站App下載設定區塊 (tadtools_app)');
 
 define('_MI_TADTOOLS_DIRNAME', basename(dirname(dirname(__DIR__))));
 define('_MI_TADTOOLS_HELP_HEADER', __DIR__ . '/help/helpheader.tpl');
