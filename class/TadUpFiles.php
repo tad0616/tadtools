@@ -1510,7 +1510,7 @@ class TadUpFiles
             if (!empty($_SERVER['HTTPS'])) {
                 $http = ($_SERVER['HTTPS'] === 'on') ? 'https://' : 'http://';
             }
-            $full_dl_url = empty($this->download_url) ? "{$http}{$_SERVER['HTTP_HOST']}{$link_path}?op=tufdl&files_sn=$files_sn" : $this->download_url . "&files_sn=$files_sn";
+            $full_dl_url = empty($this->download_url) ? "{$link_path}?op=tufdl&files_sn=$files_sn" : $this->download_url . "&files_sn=$files_sn";
 
             if ($kind === 'img') {
                 $fancyboxset = "fancybox_{$this->col_name}";
@@ -1726,11 +1726,17 @@ class TadUpFiles
             return;
         }
 
+        // if ($show_mode === 'app') {
+        //     return $file_arr;
+        // }
+
         if ($file_arr) {
             $i = 1;
 
             if ($show_mode === 'file_url') {
                 $all_files .= '<ul>';
+            } elseif ($show_mode === 'app') {
+                $all_files = array();
             } elseif ($show_mode === 'file_text_url' or $show_mode === 'small') {
                 $all_files .= '';
             } elseif ($show_mode === 'filename') {
@@ -1751,6 +1757,8 @@ class TadUpFiles
                             $all_files .= "<li>{$file_info['url']}</li>";
                         }
                     }
+                } elseif ($show_mode === 'app') {               
+                    $all_files[]=array('url'=>$file_info['original_file_path'], 'file_name'=>$file_info['show_file_name'], 'dl_url'=>$file_info['full_dl_url']);
                 } elseif ($show_mode === 'file_url') {
                     $all_files .= "<li>{$file_info['html_link']}</li>";
                 } elseif ($show_mode === 'file_text_url') {
@@ -1823,7 +1831,8 @@ class TadUpFiles
             }
 
             if ($show_mode === 'file_url') {
-                $all_files .= '</ul>';
+                $all_files .= '</ul>';                
+            } elseif ($show_mode === 'app') {
             } elseif ($show_mode === 'file_text_url' or $show_mode === 'small') {
                 $all_files .= '';
             } elseif ($show_mode === 'filename') {
