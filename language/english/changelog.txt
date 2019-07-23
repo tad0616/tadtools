@@ -1,3 +1,8 @@
+TadTools 3.2.9 (released from 2019-07-23)
+=============================================
+1. Fix BootStrap4 Close the website template
+2. Add App Download Settings Block
+
 TadTools 3.2.8 (released from 2019-06-17)
 =============================================
 1. Fixed CKEdtor unable to break into multimedia problems

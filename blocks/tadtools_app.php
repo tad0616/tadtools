@@ -11,7 +11,7 @@ function tadtools_app($options)
 
     $protocol = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
     Utility::get_jquery();
-    $block['url1'] = "";
+    $block['url1'] = "https://wst24365888.github.io/xoops-app/";
     $block['url2'] = XOOPS_URL;
     $block['width'] = $options[0] < 50 ? 120 : (int) $options[0];
     $block['title'] = $xoopsConfig['sitename'];
