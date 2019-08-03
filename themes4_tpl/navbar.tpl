@@ -8,7 +8,7 @@
             "._TAD_DEL_INSTALL_CHK."
             </div>
             ";
-            unurl(XOOPS_VAR_PATH."/data/install_chk.php");
+            unlink(XOOPS_VAR_PATH."/data/install_chk.php");
         }
     <{/php}>
 <{/if}>

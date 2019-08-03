@@ -33,7 +33,8 @@ class Utility
     public function __construct()
     {
         //建構函數
-        self::get_jquery();
+        self::get_jquery();        
+        self::get_bootstrap();
     }
 
     public static function add_migrate($mode = "")

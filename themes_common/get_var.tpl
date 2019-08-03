@@ -13,36 +13,14 @@ $this->assign('right_count', $right_count);
 /**** 取得 Tad Themes 偏好設定****/
 $moduleHandler  = xoops_getHandler('module');
 $TadThemesModule = $moduleHandler->getByDirname("tad_themes");
-$mid         = ($TadThemesModule) ? $TadThemesModule->getVar('mid') : 0;
-$this->assign('mid', $mid);
+$TadThemesMid         = ($TadThemesModule) ? $TadThemesModule->getVar('mid') : 0;
+$this->assign('mid', $TadThemesMid);
 $use_default_config = false;
-
-/**** 取得 Tad Login 偏好設定****/
-$TadLoginModule = $moduleHandler->getByDirname("tad_login");
-$TadLoginmid         = ($TadLoginModule) ? $TadLoginModule->getVar('mid') : 0;
-
-if (empty($TadLoginmid)) {
-    $TadLoginModule = $moduleHandler->getByDirname("tn_login");
-    $TadLoginmid         = ($TadLoginModule) ? $TadLoginModule->getVar('mid') : 0;
-}
-
-$configHandler = xoops_getHandler('config');
-$TadLoginConfig = $configHandler->getConfigsByCat(0, $TadLoginmid);
-if (empty($TadLoginConfig['openid_login'])) {
-    $TadLoginConfig['openid_login'] = '0';
-}
-
-if (empty($TadLoginConfig['openid_logo'])) {
-    $TadLoginConfig['openid_logo'] = '1';
-}
-
-$this->assign('openid_login', $TadLoginConfig['openid_login']);
-$this->assign('openid_logo', $TadLoginConfig['openid_logo']);
 
 /**** 取得 Tad Tools 偏好設定****/
 $TadtoolsModule = $moduleHandler->getByDirname("tadtools");
 $Tadtoolsmid    = ($TadtoolsModule) ? $TadtoolsModule->getVar('mid') : 0;
-
+$configHandler = xoops_getHandler('config');
 $tadToolsConfig = $configHandler->getConfigsByCat(0, $Tadtoolsmid);
 $this->assign('use_pin', $tadToolsConfig['use_pin']);
 
@@ -59,6 +37,8 @@ foreach ($config_enable as $k => $v) {
 //模擬偏好設定預設值
 $default['auto_mainmenu'] = '1';
 $default['show_sitename'] = '1';
+$default['openid_login'] = '0';
+$default['openid_logo'] = '1';
 
 $sql               = "select `tt_bootstrap_color` from " . $xoopsDB->prefix("tadtools_setup") . " where `tt_theme`='{$xoopsConfig['theme_set']}'";
 $result            = $xoopsDB->query($sql);
@@ -84,12 +64,14 @@ foreach ($default as $k => $v) {
     $this->assign($k, $$k);
 }
 
-if ($mid) {
+if ($TadThemesMid) {
 
-    $TadThemesModuleConfig = $configHandler->getConfigsByCat(0, $mid);
+    $TadThemesModuleConfig = $configHandler->getConfigsByCat(0, $TadThemesMid);
 
     $this->assign('auto_mainmenu', $TadThemesModuleConfig['auto_mainmenu']);
     $this->assign('show_sitename', $TadThemesModuleConfig['show_sitename']);
+    $this->assign('openid_login', $TadThemesModuleConfig['openid_login']);
+    $this->assign('openid_logo', $TadThemesModuleConfig['openid_logo']);
 
     /****Tad Themes的設定值****/
     if (file_exists(XOOPS_ROOT_PATH . "/modules/tad_themes/xoops_version.php")) {
@@ -382,7 +364,7 @@ if ($navlogo_img) {
 }
 
 /****區塊標題設定****/
-if ($mid) {
+if ($TadThemesMid) {
     $sql    = "select * from " . $xoopsDB->prefix("tad_themes_blocks") . " where `theme_id`='{$theme_id}'";
     $result = $xoopsDB->query($sql);
     //`theme_id`, `block_position`, `block_config`, `bt_text`, `bt_text_padding`, `bt_text_size`, `bt_bg_color`, `bt_bg_img`, `bt_bg_repeat`, `bt_radius`
@@ -423,7 +405,7 @@ $config2_files=array('config2_base','config2_bg','config2_slide','config2_logo',
 foreach($config2_files as $config2_file){
     if (file_exists(XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php")) {
         require_once XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php";
-        if ($mid) {
+        if ($TadThemesMid) {
             $sql    = "select `name`, `type`, `value` from " . $xoopsDB->prefix("tad_themes_config2") . " where `theme_id`='{$theme_id}'";
             $result = $xoopsDB->query($sql);
             while (list($name, $type, $value) = $xoopsDB->fetchRow($result)) {

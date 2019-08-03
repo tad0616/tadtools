@@ -25,7 +25,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
 
         $_SESSION['old_theme_set'] = $theme_set;
 
-        $sql = 'select `tt_theme`,`tt_use_bootstrap`,`tt_bootstrap_color`,`tt_theme_kind` from `' . $xoopsDB->prefix('tadtools_setup') . "`  where `tt_theme`='{$theme_set}'";
+        $sql    = 'select `tt_theme`,`tt_use_bootstrap`,`tt_bootstrap_color`,`tt_theme_kind` from `' . $xoopsDB->prefix('tadtools_setup') . "`  where `tt_theme`='{$theme_set}'";
         $result = $xoopsDB->query($sql);
 
         list($tt_theme, $tt_use_bootstrap, $tt_bootstrap_color, $tt_theme_kind) = $xoopsDB->fetchRow($result);
@@ -34,8 +34,8 @@ class TadtoolsCorePreload extends XoopsPreloadItem
             if (file_exists(XOOPS_ROOT_PATH . "/themes/{$theme_set}/config.php")) {
                 require_once XOOPS_ROOT_PATH . "/themes/{$theme_set}/config.php";
                 if (isset($theme_kind)) {
-                    $tt_theme_kind = $theme_kind;
-                    $tt_use_bootstrap = 'html' === $theme_kind ? 1 : 0;
+                    $tt_theme_kind      = $theme_kind;
+                    $tt_use_bootstrap   = 'html' === $theme_kind ? 1 : 0;
                     $tt_bootstrap_color = 'bootstrap3';
                     if (empty($tt_theme)) {
                         $sql = 'insert into `' . $xoopsDB->prefix('tadtools_setup') . "`  (`tt_theme`,`tt_use_bootstrap`,`tt_bootstrap_color`,`tt_theme_kind`) values('{$theme_set}','{$tt_use_bootstrap}','{$tt_bootstrap_color}','{$tt_theme_kind}')";
@@ -47,15 +47,15 @@ class TadtoolsCorePreload extends XoopsPreloadItem
                     $xoopsDB->queryF($sql);
                 }
             } else {
-                $tt_theme_kind = 'html';
-                $tt_use_bootstrap = 1;
+                $tt_theme_kind      = 'html';
+                $tt_use_bootstrap   = 1;
                 $tt_bootstrap_color = 'bootstrap3';
             }
         }
 
-        $_SESSION['theme_kind'] = $tt_theme_kind;
+        $_SESSION['theme_kind']                    = $tt_theme_kind;
         $_SESSION[$theme_set]['bootstrap_version'] = $tt_theme_kind;
-        $_SESSION['bootstrap'] = 'bootstrap4' === $tt_theme_kind ? '4' : '3';
+        $_SESSION['bootstrap']                     = 'bootstrap4' === $tt_theme_kind ? '4' : '3';
         if ($xoopsTpl) {
             $xoopsTpl->assign('bootstrap_version', $_SESSION['bootstrap']);
         }
