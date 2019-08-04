@@ -1,3 +1,9 @@
+TadTools 3.3 (released from 2019-08-05)
+=============================================
+1. Change the login settings of the navigation bar from tad_themes
+2. Fix the problem that the logo will be blocked by the menu.
+3. Beautify the App installation block
+
 TadTools 3.2.9 (released from 2019-07-23)
 =============================================
 1. Fix BootStrap4 Close the website template
