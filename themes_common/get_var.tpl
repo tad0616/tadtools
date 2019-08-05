@@ -68,6 +68,14 @@ if ($TadThemesMid) {
 
     $TadThemesModuleConfig = $configHandler->getConfigsByCat(0, $TadThemesMid);
 
+    if(!isset($TadThemesModuleConfig['openid_login'])){
+        $TadThemesModuleConfig['openid_login']=$default['openid_login'];
+    }
+    if(!isset($TadThemesModuleConfig['openid_logo'])){
+        $TadThemesModuleConfig['openid_logo']=$default['openid_logo'];
+    }
+
+
     $this->assign('auto_mainmenu', $TadThemesModuleConfig['auto_mainmenu']);
     $this->assign('show_sitename', $TadThemesModuleConfig['show_sitename']);
     $this->assign('openid_login', $TadThemesModuleConfig['openid_login']);
