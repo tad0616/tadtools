@@ -123,6 +123,7 @@ class Utility
             if (!mkdir($dir, 0777) && !is_dir($dir)) {
                 throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));
             }
+            return $dir;
         }
     }
 

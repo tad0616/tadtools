@@ -32,7 +32,7 @@
 <{$tad_themes_popup_code}>
 <{if $navbar_pos!="not-use"}>
 
-  <nav class="navbar navbar-default <{$navbar_pos}>" role="navigation" style="background-color:<{$navbar_bg_top}>;<{if $navbar_img}>background-image: url(<{$navbar_img}>);<{/if}>">
+  <nav class="navbar navbar-default <{if $navbar_pos=="fixed-top"}>navbar-fixed-top<{elseif $navbar_pos=="fixed-bottom"}>navbar-fixed-bottom<{else}>sticky-top<{/if}>" role="navigation" style="background-color:<{$navbar_bg_top}>;<{if $navbar_img}>background-image: url(<{$navbar_img}>);<{/if}>">
     <div class="container-fluid">
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
