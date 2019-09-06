@@ -76,14 +76,14 @@
 
                 <{if $xoops_isuser}>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" title="<{$smarty.const.TF_USER_WELCOME}>" href="index.php">
+                        <a class="nav-link dropdown-toggle" title="<{$smarty.const.TF_USER_WELCOME}>">
                             <{$smarty.const.TF_USER_WELCOME}><{$xoops_name}>
                         </a>
                         <{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/menu_user.tpl"}>
                     </li>
                 <{elseif $openid_login!="3"}>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="index.php">
+                        <a class="nav-link dropdown-toggle">
                             <{$smarty.const.TF_USER_ENTER}>
                         </a>
                         <{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/menu_login.tpl"}>
