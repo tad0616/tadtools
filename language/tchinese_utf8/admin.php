@@ -12,3 +12,4 @@ define('_TT_COLOR_DARK', '深色');
 define('_TT_COLOR_DEFAULT', '預設');
 define('_MA_TT_THEMES_KIND', '佈景種類');
 define('_MA_TT_TAD_THEMES', '支援 tad themes，已內建 BootStrap');
+define('_MA_TT_THEMES_NOTE', '若發現有重複佈景，請至<a href="' . XOOPS_URL . '/modules/system/admin.php?fct=preferences&op=show&confcat_id=1">系統偏好設定</a>，重新按一下儲存即可');

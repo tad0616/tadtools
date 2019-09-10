@@ -1,4 +1,5 @@
 <h2><{$version}></h2>
+<div class="alert alert-warning"><{$smarty.const._MA_TT_THEMES_NOTE}></div>
 <form action="main.php" method="post">
   <table class="table">
     <tr>

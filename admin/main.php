@@ -19,13 +19,14 @@ function tadtools_setup()
         $bootstrap_color[$tt_theme] = $tt_bootstrap_color;
         $tt_theme_kind_arr[$tt_theme] = $tt_theme_kind;
     }
-    //die(var_export($tt_theme_kind_arr));
+    // die(var_export($xoopsConfig['theme_set_allowed']));
 
     $version = _MA_TT_VERSION . $xoopsModule->getVar('version');
 
     $i = 0;
     $themes = [];
     foreach ($xoopsConfig['theme_set_allowed'] as $theme) {
+
         $color = $xoopsConfig['theme_set'] == $theme ? "style='background-color:#E2EDAD'" : '';
 
         $themes[$i]['color'] = $color;
@@ -64,12 +65,13 @@ function tadtools_setup()
             $themes[$i]['bootstrap_theme'] = mk_bootstrap_menu($theme_kind);
         }
         $themes[$i]['bootstrap_color'] = basename($bootstrap_color[$theme]);
-
+        // var_export($themes[$i]);
         $i++;
     }
 
     $xoopsTpl->assign('themes', $themes);
     $xoopsTpl->assign('version', $version);
+
 }
 
 function search_bootstrap($path = '')
