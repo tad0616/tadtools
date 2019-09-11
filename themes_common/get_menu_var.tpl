@@ -154,11 +154,28 @@ function get_module_menu_item($i)
         foreach ($interface_menu as $title => $url) {
             $my_menu[$i]['id']      = $i;
             $my_menu[$i]['title']   = $title;
-            $my_menu[$i]['url']     = XOOPS_URL . "/modules/{$dir}/{$url}";
             $my_menu[$i]['target']  = "_self";
             $my_menu[$i]['icon']    = $interface_icon[$title];
             $my_menu[$i]['img']     = ($interface_menu_img[$title]) ? XOOPS_URL . "/modules/{$dir}/images/{$interface_menu_img[$title]}" : '';
-            $my_menu[$i]['submenu'] = "";
+
+            if(is_array($url)){
+                $my_menu[$i]['url']     = '';
+                $sub_menu=[];
+                $j=0;
+                foreach ($url as $title2 => $url2) {
+                    $sub_menu[$j]['id']      = $j;
+                    $sub_menu[$j]['title']   = $title2;
+                    $sub_menu[$j]['url']     = strpos($url2,'http')===false?XOOPS_URL . "/modules/{$dir}/{$url2}":$url2;
+                    $sub_menu[$j]['target']  = "_self";
+                    $sub_menu[$j]['icon']    = '';
+                    $sub_menu[$j]['submenu'] = '';
+                    $j++;
+                }
+                $my_menu[$i]['submenu'] = $sub_menu;
+            }else{
+                $my_menu[$i]['url']     = strpos($url,'http')===false?XOOPS_URL . "/modules/{$dir}/{$url}":$url;
+                $my_menu[$i]['submenu'] = "";
+            }
             $i++;
         }
     } else {
