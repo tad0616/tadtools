@@ -33,12 +33,14 @@
 
     <!-- Navbar -->
     <nav id="main-nav" class="navbar navbar-expand-lg navbar-custom <{$navbar_pos}>">
-        <{if $navbar_logo_img}>
-            <a class="navbar-brand" href="<{$xoops_url}>/index.php"><img src="<{$navbar_logo_img}>" alt="<{$xoops_sitename}>"></a>
-        <{elseif $show_sitename==0}>
-            <a class="navbar-brand" href="<{$xoops_url}>/index.php"><i class="fa fa-home" aria-hidden="true"></i> <{$smarty.const._TAD_HOME}></a>
-        <{else}>
-            <a class="navbar-brand" href="<{$xoops_url}>/index.php" style="color:<{$navbar_color}>"><{$xoops_sitename}></a>
+        <{if $show_sitename !='' }>
+            <{if $navbar_logo_img}>
+                <a class="navbar-brand" href="<{$xoops_url}>/index.php"><img src="<{$navbar_logo_img}>" alt="<{$xoops_sitename}>"></a>
+            <{elseif $show_sitename=='0'}>
+                <a class="navbar-brand" href="<{$xoops_url}>/index.php"><i class="fa fa-home" aria-hidden="true"></i> <{$smarty.const._TAD_HOME}></a>
+            <{else}>
+                <a class="navbar-brand" href="<{$xoops_url}>/index.php" style="color:<{$navbar_color}>"><{$xoops_sitename}></a>
+            <{/if}>
         <{/if}>
 
         <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
