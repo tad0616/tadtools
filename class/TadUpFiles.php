@@ -179,6 +179,7 @@ class TadUpFiles
 
     public $auto_charset;
     public $other_css;
+    public $thumb_css;
 
     public function __construct($prefix = '', $subdir = '', $file = '/file', $image = '/image', $thumbs = '/image/.thumbs')
     {
@@ -1804,7 +1805,7 @@ class TadUpFiles
                             // $thumb_pic   = XOOPS_URL . "/modules/tadtools/multiple-file-upload/downloads.png";
                             $fancyboxset = $rel = '';
                         }
-                        $thumb_css = 'background-color: tranparent;';
+                        $thumb_css = $this->thumb_css==''?'background-color: tranparent;':$this->thumb_css;
                     } else {
                         $thumb_pic = ($thumb) ? $file_info['tb_path'] : $file_info['path'];
                         if ($this->showFancyBox) {
@@ -1824,7 +1825,7 @@ class TadUpFiles
                         $thumb_pic = mb_substr($thumb_pic, 0, -3) . $thumb_pic_ext;
                         $linkto_ext = mb_strtolower(mb_substr($linkto, -3));
                         $linkto = mb_substr($linkto, 0, -3) . $linkto_ext;
-                        $thumb_css = 'background-color: #cfcfcf; background-size: contain;border-radius: 5px;';
+                        $thumb_css = $this->thumb_css==''?'background-color: #cfcfcf; background-size: contain;border-radius: 5px;':$this->thumb_css;
                     }
 
                     //下載次數顯示
@@ -1835,7 +1836,7 @@ class TadUpFiles
 
                     $all_files .= ($show_mode === 'small') ? "<a href='{$linkto}' data-toggle='tooltip' data-placement='top' title='{$description}' class='iconize {$fancyboxset}' {$rel}>&nbsp;</a> " : "
                     <li style='width:120px;height:180px;float:left;list-style:none;{$this->other_css}'>
-                    <a href='{$linkto}' class='thumbnail {$fancyboxset}' {$rel} style=\"display:inline-block; width: 120px; height: 120px; overflow: hidden; {$thumb_css} background-image: url('{$thumb_pic}');background-repeat: no-repeat;background-position: center center; margin-bottom: 4px;\">&nbsp;</a>{$show_description_txt}
+                    <a href='{$linkto}' class='thumbnail {$fancyboxset}' {$rel} style=\"display:inline-block; width: 120px; height: 120px; overflow: hidden; {$thumb_css} background-image: url('{$thumb_pic}');background-size:contain; background-repeat: no-repeat;background-position: center center; margin-bottom: 4px;\">&nbsp;</a>{$show_description_txt}
                     </li>";
                 }
 
