@@ -36,9 +36,7 @@
         <{if $show_sitename !='2' }>
             <{if $navbar_logo_img}>
                 <a class="navbar-brand" href="<{$xoops_url}>/index.php"><img src="<{$navbar_logo_img}>" alt="<{$xoops_sitename}>"></a>
-            <{elseif $show_sitename=='0'}>
-                <a class="navbar-brand" href="<{$xoops_url}>/index.php"><i class="fa fa-home" aria-hidden="true"></i> <{$smarty.const._TAD_HOME}></a>
-            <{else}>
+            <{elseif $show_sitename=='1'}>
                 <a class="navbar-brand" href="<{$xoops_url}>/index.php" style="color:<{$navbar_color}>"><{$xoops_sitename}></a>
             <{/if}>
         <{/if}>
@@ -52,6 +50,10 @@
 
             <!-- Left nav -->
             <ul id="main-menu" class="nav navbar-nav mr-auto">
+
+                <{if $show_sitename==0}>
+                    <li><a class="nav-link" href="<{$xoops_url}>/index.php"><i class="fa fa-home" aria-hidden="true"></i> <{$smarty.const._TAD_HOME}></a></li>
+                <{/if}>
                 <{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/menu_main.tpl"}>
                 <{if "$xoops_rootpath/uploads/docs_top_menu_b4.tpl"|file_exists}>
                     <{includeq file="$xoops_rootpath/uploads/docs_top_menu_b4.tpl"}>
