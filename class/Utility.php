@@ -33,8 +33,14 @@ class Utility
     public function __construct()
     {
         //建構函數
-        self::get_jquery();        
+        self::get_jquery();
         self::get_bootstrap();
+    }
+
+    //除錯工具
+    public static function dd($array=[]){
+        header("Content-Type: application/json; charset=utf-8");
+        die(json_encode($array,256));
     }
 
     public static function add_migrate($mode = "")

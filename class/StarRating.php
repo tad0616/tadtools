@@ -85,8 +85,8 @@ class StarRating
             $uid = $xoopsUser->uid();
         }
 
-        $sql = 'select rank,rank_date from ' . $xoopsDB->prefix("{$this->mod_name}_rank") . " where `col_name`='$col_name' and `col_sn`='$col_sn' and `uid`='$uid'";
-        $result = $xoopsDB->queryF($sql) or die($xoopsDB->error());
+        $sql = 'select `rank`, `rank_date` from `' . $xoopsDB->prefix("{$this->mod_name}_rank") . "` where `col_name`='$col_name' and `col_sn`='$col_sn' and `uid`='$uid'";
+        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql);
         $main = $xoopsDB->fetchArray($result);
 
         return $main;
@@ -98,7 +98,7 @@ class StarRating
         global $xoopsDB;
 
         $sql = 'select AVG(`rank`) from ' . $xoopsDB->prefix("{$this->mod_name}_rank") . " where `col_name`='$col_name' and `col_sn`='$col_sn'";
-        $result = $xoopsDB->queryF($sql) or die($xoopsDB->error());
+        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql);
         list($main) = $xoopsDB->fetchRow($result);
         $main = round($main, 0);
 
@@ -117,7 +117,7 @@ class StarRating
 
         $uid = $xoopsUser->uid();
         $sql = 'replace into ' . $xoopsDB->prefix("{$mod_name}_rank") . " (`col_name`, `col_sn`, `rank`, `uid`, `rank_date`) values('{$col_name}' , '{$col_sn}' , '{$rank}', '{$uid}' , '{$now}')";
-        $xoopsDB->queryF($sql) or die($xoopsDB->error());
+        $xoopsDB->queryF($sql) or Utility::web_error($sql);
 
         die(sprintf(_TAD_STAR_RATING_SAVE, $rank));
     }

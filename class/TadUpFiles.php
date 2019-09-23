@@ -1665,7 +1665,7 @@ class TadUpFiles
         $sql = "select * from `{$this->TadUpFilesTblName}` $where";
         // die($sql);
         $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-        $files = [];
+        $files = '';
         while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $files_sn, $col_name, $col_sn, $sort, $kind, $file_name, $file_type, $file_size, $description
             foreach ($all as $k => $v) {

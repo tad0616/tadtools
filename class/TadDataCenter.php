@@ -5,7 +5,7 @@ namespace XoopsModules\Tadtools;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
-
+use XoopsModules\Tadtools\TadUpFiles;
 /*
 
 //單一表單
@@ -112,6 +112,7 @@ class TadDataCenter
     public $module_dirname;
     public $mid;
     public $TadDataCenterTblName;
+    public $auto_col_id;
 
     public function __construct($module_dirname = '')
     {
@@ -150,6 +151,12 @@ class TadDataCenter
         $this->col_name = $col_name;
         $this->col_sn = $col_sn;
     }
+
+    public function set_var($name = '', $val = '')
+    {
+        $this->$name = $val;
+    }
+
 
     public function set_ans_col($ans_col_name = '', $ans_col_sn = '')
     {
@@ -266,6 +273,7 @@ class TadDataCenter
     {
         global $xoopsDB;
         $myts = \MyTextSanitizer::getInstance();
+        // var_export($_FILES['TDC']);
         // die(var_export($_REQUEST['TDC']));
         // die('$this->col_sn=' . $this->col_sn);
         foreach ($_REQUEST['TDC'] as $name => $value) {
@@ -277,22 +285,24 @@ class TadDataCenter
                 $values = $value;
             }
 
+            $this->delData($name, '', __FILE__, __LINE__);
             foreach ($values as $sort => $val) {
                 if ('saveCustomSetupForm' === $_REQUEST['dc_op'] and empty($val)) {
                     continue;
                 }
                 $val = $myts->addSlashes($val);
-                $this->delData($name, $sort, __FILE__, __LINE__);
+
+                $col_id=$this->auto_col_id?"{$this->mid}-{$this->col_name}-{$this->col_sn}-{$name}-{$sort}":'';
 
                 $sql = "insert into `{$this->TadDataCenterTblName}`
                 (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`, `col_id`, `update_time`)
-                values('{$this->mid}' , '{$this->col_name}' , '{$this->col_sn}' , '{$name}' , '{$val}' , '{$sort}', '', now())";
+                values('{$this->mid}' , '{$this->col_name}' , '{$this->col_sn}' , '{$name}' , '{$val}' , '{$sort}', '{$col_id}', now())";
                 $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             }
         }
     }
 
-    //儲存資料 $data_arr=array($name=>array($sort=>$value)]
+    //儲存資料 $data_arr=[$name=>array($sort=>$value)]
     public function saveCustomData($data_arr = [])
     {
         global $xoopsDB;

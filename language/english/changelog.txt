@@ -1,3 +1,18 @@
+TadTools 3.3.1 (released from 2019-09-23)
+=============================================
+1. Modify TadUpFiles.php to automatically determine if you need to check the file format and cancel the MIME-Type preferences.
+2. Fix the problem that the navigation column position is incorrect.
+3. If the navigation bar option does not set the URL, the link will be cancelled to avoid accidental pressing.
+4. Modify the tcpdf output file name is not correct
+5. Fixed an issue where the initial settings of the background sometimes incorrectly set.
+6. Extended custom interface_menu support to two layers
+7. Support automatic application of logo function
+8. The navigation bar supports the function of "Do not display back to the home page"
+9. Fixed the problem that the single-column left area template is incorrect.
+10. Added dd() debug tool
+11. Solve the problem of StarRating and MySQL
+12. Add CodeMirror
+
 TadTools 3.3 (released from 2019-08-05)
 =============================================
 1. Change the login settings of the navigation bar from tad_themes
