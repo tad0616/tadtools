@@ -64,7 +64,7 @@ class ColorBox
 /*
 use XoopsModules\Tadtools\ColorBox;
 $ColorBox=new ColorBox('.iframe');
-$colorbox->render();
+$ColorBox->render();
 
 $(".iframe").colorbox({iframe:true, width:"80%", height:"80%"});
 $('a.gallery').colorbox({rel:'gal'});

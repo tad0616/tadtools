@@ -35,6 +35,7 @@ class CodeMirror
             $xoTheme->addScript(XOOPS_URL . '/modules/tadtools/CodeMirror/mode/xml/xml.js');
             $xoTheme->addScript(XOOPS_URL . '/modules/tadtools/CodeMirror/mode/css/css.js');
             $xoTheme->addScript(XOOPS_URL . '/modules/tadtools/CodeMirror/mode/htmlmixed/htmlmixed.js');
+            $xoTheme->addScript(XOOPS_URL . '/modules/tadtools/CodeMirror/mode/php/php.js');
             $xoTheme->addScript(XOOPS_URL . '/modules/tadtools/CodeMirror/addon/selection/active-line.js');
             $xoTheme->addScript(XOOPS_URL . '/modules/tadtools/CodeMirror/addon/edit/matchbrackets.js');
             $xoTheme->addScript(XOOPS_URL . '/modules/tadtools/CodeMirror/addon/display/fullscreen.js');
