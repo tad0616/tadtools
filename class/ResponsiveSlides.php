@@ -56,12 +56,12 @@ class ResponsiveSlides
             $content_div = $content ? "<div style='font-size:1em;'>{$content}</div>" : '';
             $caption = ($content or $title) ? "
             <div class='caption'>
-              <div style='font-size:1.2em;color:yellow;font-weight:bold;'>{$title}</div>
-              {$content_div}
+                <div style='font-size:1.2em;color:yellow;font-weight:bold;'>{$title}</div>
+                {$content_div}
             </div>
             <div class='caption_txt'>
-              <div style='font-size:1.2em;color:yellow;font-weight:bold;'>{$title}</div>
-              {$content_div}
+                <div style='font-size:1.2em;color:yellow;font-weight:bold;'>{$title}</div>
+                {$content_div}
             </div>" : '';
 
             if ('swf' === mb_strtolower(mb_substr($image, -3))) {

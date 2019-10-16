@@ -7,8 +7,10 @@
         <link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{xoAppUrl xoops.css}>">
         <!-- XOOPS theme Sheet Css -->
         <link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{xoImgUrl css/xoops.css}>">
-        <!-- Bootstrap3 -->
+        <!-- 33-1 <{$theme_color}> -->
 <{if $theme_color and $theme_color!="bootstrap3"}>
+        <link href="<{xoAppUrl modules/tadtools/bootstrap3/css/bootstrap.css}>" rel="stylesheet" media="all">
+        <!-- 33-2 <{$theme_color}> -->
         <link href="<{$xoops_url}>/modules/tadtools/<{$theme_color}>/bootstrap.min.css" rel="stylesheet" media="all">
 <{else}>
         <link href="<{xoAppUrl modules/tadtools/bootstrap3/css/bootstrap.css}>" rel="stylesheet" media="all">

@@ -8,7 +8,7 @@ function tadtools_setup()
 {
     global $xoopsModule, $xoopsConfig, $xoopsTpl, $xoopsDB;
 
-    $use_bootstrap = $bootstrap_color = '';
+    $use_bootstrap = $bootstrap_color = $tt_theme_kind_arr = [];
 
     $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tadtools_setup') . '`';
     $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -19,7 +19,7 @@ function tadtools_setup()
         $bootstrap_color[$tt_theme] = $tt_bootstrap_color;
         $tt_theme_kind_arr[$tt_theme] = $tt_theme_kind;
     }
-    // die(var_export($xoopsConfig['theme_set_allowed']));
+    // die(var_export($tt_theme_kind_arr));
 
     $version = _MA_TT_VERSION . $xoopsModule->getVar('version');
 
@@ -36,8 +36,8 @@ function tadtools_setup()
             $theme_kind = '';
             require_once XOOPS_ROOT_PATH . "/themes/{$theme}/config.php";
             if (!empty($theme_kind)) {
-                if (empty($tt_theme_kind_arr[$theme]) or 0 == $theme_change) {
-                    $sql = 'replace into `' . $xoopsDB->prefix('tadtools_setup') . "` (`tt_theme` , `tt_use_bootstrap`,`tt_bootstrap_color` , `tt_theme_kind`) values('{$theme}', '0', '{$theme_color}', '{$theme_kind}')";
+                if (empty($tt_theme_kind_arr[$theme]) or 0 === $theme_change) {
+                    $sql = 'update `' . $xoopsDB->prefix('tadtools_setup') . "` set `tt_theme_kind`='{$theme_kind}' where `tt_theme`='{$theme}'";
                     //die($sql);
                     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
@@ -165,8 +165,13 @@ function directory_list($directory_base_path = '')
 function save()
 {
     global $xoopsDB;
+
+    $myts = \MyTextSanitizer::getInstance();
     foreach ($_POST['tt_use_bootstrap'] as $tt_theme => $tt_use_bootstrap) {
-        $sql = 'replace into `' . $xoopsDB->prefix('tadtools_setup') . "` (`tt_theme` , `tt_use_bootstrap`,`tt_bootstrap_color` , `tt_theme_kind`) values('{$tt_theme}', '{$tt_use_bootstrap}', '{$_POST['tt_bootstrap_color'][$tt_theme]}', '{$_POST['tt_theme_kind'][$tt_theme]}')";
+        $tt_bootstrap_color = $myts->addSlashes($_POST['tt_bootstrap_color'][$tt_theme]);
+        $tt_theme_kind = $myts->addSlashes($_POST['tt_theme_kind'][$tt_theme]);
+
+        $sql = 'replace into `' . $xoopsDB->prefix('tadtools_setup') . "` (`tt_theme` , `tt_use_bootstrap`,`tt_bootstrap_color` , `tt_theme_kind`) values('{$tt_theme}', '{$tt_use_bootstrap}', '{$tt_bootstrap_color}', '{$tt_theme_kind}')";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 }

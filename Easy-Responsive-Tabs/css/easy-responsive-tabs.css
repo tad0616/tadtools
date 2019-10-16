@@ -8,10 +8,9 @@ ul.resp-tabs-list, p {
     font-size: 13px;
     display: inline-block;
     padding: 13px 15px;
-    margin: 0 4px 0 0;
+    margin: 0px;
     list-style: none;
     cursor: pointer;
-    float: left;
 }
 
 .resp-tabs-container {
