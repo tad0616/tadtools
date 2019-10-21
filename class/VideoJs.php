@@ -7,23 +7,22 @@ class VideoJs
     public $image;
     public $file;
     public $mode;
-    public $display;
     public $id;
-    public $autostart;
-    public $repeat;
+    public $autoplay;
+    public $loop;
+    public $position;
 
     //建構函數
-    public function __construct($id = '', $file = '', $image = '', $mode = '', $display = '', $autostart = false, $repeat = false, $other_code = '')
+    public function __construct($id = '', $file = '', $image = '', $mode = '', $autoplay = 'false', $loop = 'false', $position = 'bottom')
     {
         $this->file = ('playlist' === $mode) ? $file : strip_tags($file);
         $this->youtube_id = $this->getYTid($file);
         $this->image = empty($image) ? "https://i3.ytimg.com/vi/{$this->youtube_id}/0.jpg" : strip_tags($image);
         $this->mode = $mode;
-        $this->display = $display;
         $this->id = $id;
-        $this->autostart = $autostart;
-        $this->repeat = $repeat;
-        $this->other_code = $other_code;
+        $this->autoplay = $autoplay !== 'true' ? 'false' : 'true';
+        $this->loop = $loop !== 'true' ? 'false' : 'true';
+        $this->position = $position !== 'right' ? 'bottom' : 'right';
     }
 
     //設定自定義影片檔
@@ -50,7 +49,20 @@ class VideoJs
         ';
 
         if ('playlist' === $this->mode) {
-            $player .= '<div class="vjs-playlist"></div>';
+            if ($this->position == 'right') {
+                $player = '
+                <div class="row">
+                    <div class="col-sm-8">
+                        ' . $player . '
+                    </div>
+                    <div class="col-sm-4 ' . $this->id . '">
+                        <div class="vjs-playlist"></div>
+                    </div>
+                </div>
+                ';
+            } else {
+                $player .= '<div class="vjs-playlist"></div>';
+            }
         }
 
         $playlist = $source = '';
@@ -62,6 +74,16 @@ class VideoJs
             player.playlist.autoadvance(0);
             player.playlistUi();
             ";
+
+            if ($this->position == 'right') {
+                $playlist .= "
+                $(document).ready(function(){
+                    var h=$('#" . $this->id . ">.vjs-poster').height();
+                    console.log('h:'+h);
+                    $('." . $this->id . ">.vjs-playlist').css('max-height', h).css('overflow', 'auto');
+                });
+                ";
+            }
         } elseif ($this->youtube_id) {
             $source = "
             techOrder: ['youtube'],
@@ -128,8 +150,10 @@ class VideoJs
             var options = {
                 $source
                 responsive: true,
-                controls:true,
-                fill:true,
+                controls: true,
+                fill: true,
+                loop: {$this->loop},
+                autoplay: {$this->autoplay},
                 liveui: true
             };
             var player = videojs('#{$this->id}', options);
@@ -148,13 +172,14 @@ class VideoJs
             return mb_substr($ytURL, 16);
         }
         parse_str(parse_url($ytURL, PHP_URL_QUERY), $params);
-
-        return $params['v'];
+        if (isset($params['v'])) {
+            return $params['v'];
+        }
     }
 }
 
 /*
-use XoopsModules\Tadtools\JwPlayer;
-$jw = new JwPlayer($id = "", $file = "", $image = "", $width = "", $height = "", $skin = "", $mode = "", $display = "", $autostart = false, $repeat = false, $other_code = "");
-$player = $jw->render();
+use XoopsModules\Tadtools\VideoJs;
+$VideoJs = new VideoJs($id_name, $media, $image, $mode, $autoplay, $loop, $other_code);
+$player = $VideoJs->render();
  */

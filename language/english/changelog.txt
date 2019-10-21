@@ -1,3 +1,11 @@
+TadTools 3.3.2 (released from 2019-10-16)
+=============================================
+1. Fixed the problem that the background initialization setting part of the scene could not "apply BootStrap color"
+2. Streamline the template and fill in the missing template for themes4_tpl
+3. Fixes Easy-Responsive-Tabs tabs sometimes show confusing issues under chrome
+4. Join Video-JS to replace JWPlayer
+
+
 TadTools 3.3.1 (released from 2019-09-23)
 =============================================
 1. Modify TadUpFiles.php to automatically determine if you need to check the file format and cancel the MIME-Type preferences.
