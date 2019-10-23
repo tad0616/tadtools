@@ -37,10 +37,20 @@ class Utility
         self::get_bootstrap();
     }
 
+    // XOOPS表單安全檢查
+    public static function xoops_security_check()
+    {
+        if (!$GLOBALS['xoopsSecurity']->check()) {
+            $error = implode("<br>", $GLOBALS['xoopsSecurity']->getErrors());
+            redirect_header($_SERVER['PHP_SELF'], 3, $error);
+        }
+    }
+
     //除錯工具
-    public static function dd($array=[]){
+    public static function dd($array = [])
+    {
         header("Content-Type: application/json; charset=utf-8");
-        die(json_encode($array,256));
+        die(json_encode($array, 256));
     }
 
     public static function add_migrate($mode = "")

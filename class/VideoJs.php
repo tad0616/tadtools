@@ -154,6 +154,7 @@ class VideoJs
                 fill: true,
                 loop: {$this->loop},
                 autoplay: {$this->autoplay},
+                language: 'zh-TW',
                 liveui: true
             };
             var player = videojs('#{$this->id}', options);

@@ -170,7 +170,8 @@ THE SOFTWARE. */
         playerVars.hl = this.options_.hl;
       } else if (typeof this.options_.language !== 'undefined') {
         // Set the YouTube player on the same language than video.js
-        playerVars.hl = this.options_.language.substr(0, 2);
+        // playerVars.hl = this.options_.language.substr(0, 2);
+        playerVars.hl = 'zho';
       }
 
       if (typeof this.options_['iv_load_policy'] !== 'undefined') {
