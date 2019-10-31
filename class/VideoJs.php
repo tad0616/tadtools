@@ -104,7 +104,7 @@ class VideoJs
             } elseif ('ogg' === $ext) {
                 $type = 'video/ogg';
             } elseif ('flv' === $ext) {
-                $type = 'video/flv';
+                $type = 'video/x-flv';
             }
 
             $source = "
@@ -121,6 +121,7 @@ class VideoJs
             $xoTheme->addScript('modules/tadtools/video-js/video.js');
             $xoTheme->addScript('modules/tadtools/video-js/lang/zh-TW.js');
             $xoTheme->addScript('modules/tadtools/video-js/Youtube.js');
+            $xoTheme->addScript('modules/tadtools/video-js/videojs-flash.min.js');
             $xoTheme->addStylesheet('modules/tadtools/video-js/video-js.css');
             $xoTheme->addStylesheet('modules/tadtools/video-js/themes/fantasy/index.css');
             if ('playlist' === $this->mode) {
@@ -139,6 +140,7 @@ class VideoJs
             <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/video-js/video.js'></script>
             <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/video-js/lang/zh-TW.js'></script>
             <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/video-js/Youtube.js'></script>
+            <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/video-js/videojs-flash.min.js'></script>
             <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/video-js/video-js.css'>
             <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/video-js/themes/fantasy/index.css'>
             $playlist_js

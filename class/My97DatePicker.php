@@ -28,5 +28,7 @@ use XoopsModules\Tadtools\My97DatePicker;
 $My97DatePicker=new My97DatePicker();
 $My97DatePicker->render();
 or
-$My97DatePicker::render();
+My97DatePicker::render();
+
+onClick="WdatePicker({dateFmt:'yyyy-MM-dd', startDate:'%y-%M-%d'})"
  */
