@@ -3446,7 +3446,7 @@ class upload
                         if (!$this->rmkdir($this->file_dst_path, $this->dir_chmod)) {
                             $this->log .= ' failed<br>';
                             $this->processed = false;
-                            $this->error = $this->translate('destination_dir');
+                            $this->error = $this->translate('destination_dir'.$this->file_dst_path);
                         } else {
                             $this->log .= ' success<br>';
                         }

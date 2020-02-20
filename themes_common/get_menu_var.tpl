@@ -136,7 +136,7 @@ function get_custom_menu_items($link_cate_name, $link_cate_sn)
 //取得模組選單
 function get_module_menu_item($i)
 {
-    global $xoopsDB, $xoopsTpl, $xoopsUser;
+    global $xoopsDB, $xoopsTpl, $xoopsUser, $xoopsModuleConfig, $isAdmin, $module_id;
     $dir = '';
     $u   = parse_url($_SERVER['REQUEST_URI']);
     if (!empty($u['path']) and strpos($u['path'], '/modules/') !== false) {
@@ -147,10 +147,10 @@ function get_module_menu_item($i)
         return;
     }
 
-    if (file_exists(XOOPS_ROOT_PATH . "/modules/{$dir}/interface_menu.php")) {
+    if (file_exists(XOOPS_ROOT_PATH . "/modules/{$dir}/interface_menu.php") and (!isset($xoopsModuleConfig['tootbar_in_navbar']) or (isset($xoopsModuleConfig['tootbar_in_navbar']) and $xoopsModuleConfig['tootbar_in_navbar']==1))) {
         require_once XOOPS_ROOT_PATH . "/modules/{$dir}/interface_menu.php";
-        global $interface_menu, $interface_menu_img, $isAdmin, $module_id, $interface_icon;
-
+        //var_dump($interface_menu);
+        //global $interface_menu, $interface_menu_img, $interface_icon;
         foreach ($interface_menu as $title => $url) {
             $my_menu[$i]['id']      = $i;
             $my_menu[$i]['title']   = $title;

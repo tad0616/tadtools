@@ -18,7 +18,7 @@ $form=$TadDataCenter->getForm($mode, $form_tag, $name, $type, $value, $options, 
 use XoopsModules\Tadtools\TadDataCenter;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
-$TadDataCenter->assignBatchForm($form_tag, $data_arr = array(), $type = '')
+$TadDataCenter->assignBatchForm($form_tag, $data_arr = array(), $type = '', $attr=[])
 
 //儲存資料：
 use XoopsModules\Tadtools\TadDataCenter;
@@ -26,6 +26,7 @@ $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
 $TadDataCenter->saveData();
 或
+$data_arr=[$name=>array($sort=>$value)]
 $TadDataCenter->saveCustomData($data_arr = array());
 
 //取得資料陣列：
@@ -303,13 +304,20 @@ class TadDataCenter
     }
 
     //儲存資料 $data_arr=[$name=>array($sort=>$value)]
-    public function saveCustomData($data_arr = [])
+    public function saveCustomData($data_arr = [], $mode='')
     {
         global $xoopsDB;
         $myts = \MyTextSanitizer::getInstance();
-        // die(var_dump($data_arr));
         foreach ($data_arr as $name => $value) {
             $name = $myts->addSlashes($name);
+
+            // 若為接續模式，取出目前最大 data_sort
+            if($mode=='append'){
+                $sql = "select max(data_sort) from `{$this->TadDataCenterTblName}` where `mid`='{$this->mid}' and `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' and `data_name`='{$name}'";
+                $result=$xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                list($data_sort)=$xoopsDB->fetchRow($result);
+                $data_sort++;
+            }
             $values = [];
             if (!is_array($value)) {
                 $values[0] = $value;
@@ -318,8 +326,12 @@ class TadDataCenter
             }
 
             foreach ($values as $sort => $val) {
+                if($mode=='append'){
+                    $sort+=$data_sort;
+                }
                 $v = json_decode($val, true);
                 $val = $myts->addSlashes($val);
+
                 $this->delData($name, $sort, __FILE__, __LINE__);
 
                 $sql = "insert into `{$this->TadDataCenterTblName}`

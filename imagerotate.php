@@ -1,5 +1,8 @@
 <?php
-// require_once __DIR__ . '/tadtools_header.php';
+require_once __DIR__ . '/tadtools_header.php';
+if (!function_exists('imagecreatetruecolor')) {
+    die('imagecreatetruecolor functions are not available.');
+}
 
 require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');

@@ -3,7 +3,7 @@
   body{
     color:<{$font_color}>;
     background-color: <{$bg_color}>;
-    background-image: url('<{$bg_img}>');
+    <{if $bg_img}>background-image: url('<{$bg_img}>');<{/if}>
     background-position:  <{$bg_position}>;
     background-repeat:  <{$bg_repeat}>;
     background-attachment:<{$bg_attachment}>;

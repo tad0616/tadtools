@@ -56,6 +56,7 @@ class Utility
     public static function add_migrate($mode = "")
     {
         global $xoTheme;
+        self::get_jquery();
         $ver = self::get_version('xoops');
         if ($mode == "return") {
             if ($ver >= 20509) {
@@ -421,6 +422,15 @@ class Utility
         return $root_path;
     }
 
+
+    public static function auto_link($text) {
+        $pattern = '/(((http[s]?:\/\/(.+(:.+)?@)?)|(www\.))[a-z0-9](([-a-z0-9]+\.)*\.[a-z]{2,})?\/?[a-z0-9.,_\/~#&=:;%+!?-]+)/is';
+        $text = preg_replace($pattern, ' <a href="$1" target="_blank">$1</a>', $text);
+        // fix URLs without protocols
+        $text = preg_replace('/href="www/', 'href="http://www', $text);
+        return $text;
+    }
+
     //自動轉連結
     public static function autolink(&$text, $target = '_blank', $nofollow = true)
     {
@@ -431,7 +441,7 @@ class Utility
             array_walk($urls, '_autolink_create_html_tags', ['target' => $target, 'nofollow' => $nofollow]);
             $text = strtr($text, $urls);
         }
-
+        // self::dd($text);
         return $text;
     }
 
@@ -457,12 +467,11 @@ class Utility
         return ([]);
     }
 
-    public static function _autolink_create_html_tags(&$value, $key, $other = null)
+    public static function _autolink_create_html_tags($value, $key, $other = null)
     {
         $target = $nofollow = null;
         if (is_array($other)) {
             $target = ($other['target'] ? " target=\"$other[target]\"" : null);
-            // see: http://www.google.com/googleblog/2005/01/preventing-comment-spam.html
             $nofollow = ($other['nofollow'] ? ' rel="nofollow"' : null);
         }
         $value = "<a href=\"$key\"$target$nofollow>$key</a>";
@@ -612,7 +621,7 @@ class Utility
     }
 
     //細部權限判斷
-    public static function power_chk($perm_name = '', $sn = '')
+    public static function power_chk($perm_name = '', $perm_itemid = '', $module_id = '')
     {
         global $xoopsUser, $xoopsModule;
         if (!$xoopsModule) {
@@ -620,30 +629,27 @@ class Utility
         }
 
         //取得目前使用者的群組編號
-        if ($xoopsUser) {
-            $groups = $xoopsUser->getGroups();
-        } else {
-            $groups = XOOPS_GROUP_ANONYMOUS;
+        if (!isset($_SESSION['groups']) or $_SESSION['groups'] === '') {
+            $_SESSION['groups'] = ($xoopsUser)?$xoopsUser->getGroups():XOOPS_GROUP_ANONYMOUS;
         }
-        // echo var_export($groups);
+
         //取得模組編號
-        $module_id = $xoopsModule->mid();
+        if (empty($module_id)) {
+            $module_id = $xoopsModule->mid();
+        }
         if (empty($perm_name)) {
             $perm_name = $xoopsModule->dirname();
-        }
-        // echo var_export($module_id);
+        };
         //取得群組權限功能
         $gperm_handler = xoops_getHandler('groupperm');
 
         //權限項目編號
-        $perm_itemid = (int) $sn;
-        // echo var_export($perm_itemid);
+        $perm_itemid = (int) $perm_itemid;
         //依據該群組是否對該權限項目有使用權之判斷 ，做不同之處理
-        if ($gperm_handler->checkRight($perm_name, $perm_itemid, $groups, $module_id)) {
-            // die('true');
+        if ($gperm_handler->checkRight($perm_name, $perm_itemid, $_SESSION['groups'], $module_id)) {
             return true;
         }
-        // die('false');
+
         return false;
     }
 
@@ -824,7 +830,7 @@ class Utility
 
     public static function toolbar_bootstrap($interface_menu = [])
     {
-        global $xoopsUser, $xoopsModule;
+        global $xoopsUser, $xoopsModule, $xoopsModuleConfig;
 
         xoops_loadLanguage('main', 'tadtools');
         if ($xoopsModule) {
@@ -861,10 +867,10 @@ class Utility
                 }
 
                 $urlPath = (empty($moduleName) or 'http://' === mb_substr($url, 0, 7)) ? $url : XOOPS_URL . "/modules/{$moduleName}/{$url}";
-                if (false !== mb_strpos($_SERVER['REQUEST_URI'], $url)) {
-                    $active = "class='current'";
-                } elseif (false !== mb_strpos($_SERVER['SCRIPT_NAME'], $url)) {
-                    $active = "class='current'";
+                if (isset($_GET['op']) and false !== strpos($url,"?op=") and  false !== strpos($url,"{$basename}?op={$_GET['op']}")) {
+                    $active = "class='current' title='{$_SERVER['SCRIPT_NAME']}?op={$_GET['op']}=={$url}'";
+                } elseif (!isset($_GET['op']) and false !== strpos($_SERVER['SCRIPT_NAME'], $url)) {
+                    $active = "class='current' title='hi'";
                 } else {
                     $active = '';
                 }
