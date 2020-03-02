@@ -366,6 +366,11 @@ $this->assign('navbar_bg_top', $navbar_bg_top);
 $this->assign('navbar_bg_bottom', $navbar_bg_bottom);
 $this->assign('navbar_hover', $navbar_hover);
 
+list($navbar_bg_top_rgb['r'], $navbar_bg_top_rgb['g'], $navbar_bg_top_rgb['b']) = sscanf($navbar_bg_top, "#%02x%02x%02x");
+$this->assign('navbar_bg_top_rgb', $navbar_bg_top_rgb);
+list($navbar_bg_bottom_rgb['r'], $navbar_bg_bottom_rgb['g'], $navbar_bg_bottom_rgb['b']) = sscanf($navbar_bg_bottom, "#%02x%02x%02x");
+$this->assign('navbar_bg_bottom_rgb', $navbar_bg_bottom_rgb);
+
 /****若有logo.png或logo.gif時導覽工具列以圖替代網站標題文字****/
 if ($navlogo_img) {
     $this->assign('navbar_logo_img', $navlogo_img);
@@ -441,7 +446,6 @@ $data=$TadDataCenter->getData();
 foreach($data as $var_name=>$var_val){
     $this->assign($var_name, $var_val[0]);
 }
-
 
 /****檢查是否開放註冊****/
 $sql         = "select conf_value from " . $xoopsDB->prefix("config") . " where conf_name ='allow_register'";

@@ -30,7 +30,7 @@ class ResponsiveSlides
     }
 
     //產生語法
-    public function render($id = '', $margin_top = 0)
+    public function render($id = '', $margin_top = 0, $timeout = 5000, $show_nav = 'true')
     {
         global $xoTheme;
 
@@ -115,6 +115,13 @@ class ResponsiveSlides
         //     ");
 
         // } else {
+        if (empty($timeout)) {
+            $timeout = 5000;
+        }
+        if (empty($show_nav)) {
+            $show_nav = 'true';
+        }
+
         $main = "
             <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/ResponsiveSlides/reset.css' >
             <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/ResponsiveSlides/responsiveslides.css' >
@@ -126,8 +133,8 @@ class ResponsiveSlides
                     jQuery('#{$id}').responsiveSlides({
                         auto: true,
                         pager: false,
-                        nav: true,
-                        speed: 800,
+                        nav: $show_nav,
+                        timeout: $timeout,
                         pause: true,
                         pauseControls: true,
                         namespace: 'callbacks'

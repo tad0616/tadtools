@@ -6,7 +6,7 @@
       <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/logo.tpl"}>
     <{/if}>
 
-    <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/menu/responsive_slide.tpl"}>
+    <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/slider/responsive_slide.tpl"}>
     </div>
   </div>
 <{/if}>

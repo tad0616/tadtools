@@ -1,3 +1,15 @@
+TadTools 3.3.3 (2020-03-02 釋出)
+====================================
+1.精簡 Video-JS，並加入自動播放、重複播放、清單位置...等設定
+2.新增 xoops_security_check() 表單安全性檢查工具
+3.修改 Bootstrap3Editable
+4.修正附檔圖片無法旋轉問題
+5.修正註冊驗證會失敗的問題
+6.修正BootStrap4部分樣板路徑不正確問題
+7.移除舊版 PHPExcel及PHPWord
+8.將 themes3_tpl、themes4_tpl 中的menu及slide資料夾移至themes_common
+
+
 TadTools 3.3.2 (2019-10-16 釋出)
 ====================================
 1.修正後台初始化設定部份佈景無法「套用BootStrap顏色」的問題

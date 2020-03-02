@@ -5,7 +5,7 @@ namespace XoopsModules\Tadtools;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
-use XoopsModules\Tadtools\TadUpFiles;
+
 /*
 
 //單一表單
@@ -158,7 +158,6 @@ class TadDataCenter
         $this->$name = $val;
     }
 
-
     public function set_ans_col($ans_col_name = '', $ans_col_sn = '')
     {
         $this->ans_col_name = $ans_col_name;
@@ -293,7 +292,7 @@ class TadDataCenter
                 }
                 $val = $myts->addSlashes($val);
 
-                $col_id=$this->auto_col_id?"{$this->mid}-{$this->col_name}-{$this->col_sn}-{$name}-{$sort}":'';
+                $col_id = $this->auto_col_id ? "{$this->mid}-{$this->col_name}-{$this->col_sn}-{$name}-{$sort}" : '';
 
                 $sql = "insert into `{$this->TadDataCenterTblName}`
                 (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`, `col_id`, `update_time`)
@@ -304,7 +303,7 @@ class TadDataCenter
     }
 
     //儲存資料 $data_arr=[$name=>array($sort=>$value)]
-    public function saveCustomData($data_arr = [], $mode='')
+    public function saveCustomData($data_arr = [], $mode = '')
     {
         global $xoopsDB;
         $myts = \MyTextSanitizer::getInstance();
@@ -312,10 +311,10 @@ class TadDataCenter
             $name = $myts->addSlashes($name);
 
             // 若為接續模式，取出目前最大 data_sort
-            if($mode=='append'){
+            if ($mode == 'append') {
                 $sql = "select max(data_sort) from `{$this->TadDataCenterTblName}` where `mid`='{$this->mid}' and `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' and `data_name`='{$name}'";
-                $result=$xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-                list($data_sort)=$xoopsDB->fetchRow($result);
+                $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                list($data_sort) = $xoopsDB->fetchRow($result);
                 $data_sort++;
             }
             $values = [];
@@ -326,8 +325,8 @@ class TadDataCenter
             }
 
             foreach ($values as $sort => $val) {
-                if($mode=='append'){
-                    $sort+=$data_sort;
+                if ($mode == 'append') {
+                    $sort += $data_sort;
                 }
                 $v = json_decode($val, true);
                 $val = $myts->addSlashes($val);

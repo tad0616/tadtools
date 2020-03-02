@@ -1,3 +1,15 @@
+TadTools 3.3.3 (released 2020-03-02)
+======================================
+1. Streamline Video-JS and add settings such as auto play, repeat play, list position ...
+2. Added xoops_security_check () form security check tool
+3. Modify Bootstrap3Editable
+4.Fix the problem that the attached picture cannot be rotated
+5.Fix the problem that registration verification will fail
+6.Fixed the problem that some of the sample paths of BootStrap4 are incorrect
+7. Remove old versions of PHPExcel and PHPWord
+8. Move the menu and slide folders in themes3_tpl, themes4_tpl to themes_common
+
+
 TadTools 3.3.2 (released from 2019-10-16)
 =============================================
 1. Fixed the problem that the background initialization setting part of the scene could not "apply BootStrap color"
