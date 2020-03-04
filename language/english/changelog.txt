@@ -1,4 +1,4 @@
-TadTools 3.3.3 (released 2020-03-02)
+TadTools 3.3.3 (released 2020-03-03)
 ======================================
 1. Streamline Video-JS and add settings such as auto play, repeat play, list position ...
 2. Added xoops_security_check () form security check tool
@@ -8,6 +8,7 @@ TadTools 3.3.3 (released 2020-03-02)
 6.Fixed the problem that some of the sample paths of BootStrap4 are incorrect
 7. Remove old versions of PHPExcel and PHPWord
 8. Move the menu and slide folders in themes3_tpl, themes4_tpl to themes_common
+9. Add DataList Class
 
 
 TadTools 3.3.2 (released from 2019-10-16)

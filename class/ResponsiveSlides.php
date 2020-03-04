@@ -30,7 +30,7 @@ class ResponsiveSlides
     }
 
     //產生語法
-    public function render($id = '', $margin_top = 0, $timeout = 5000, $show_nav = 'true')
+    public function render($id = '', $margin_top = 0, $timeout = 5000, $show_nav = 1)
     {
         global $xoTheme;
 
@@ -117,9 +117,6 @@ class ResponsiveSlides
         // } else {
         if (empty($timeout)) {
             $timeout = 5000;
-        }
-        if (empty($show_nav)) {
-            $show_nav = 'true';
         }
 
         $main = "
