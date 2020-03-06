@@ -992,7 +992,11 @@ class TadUpFiles
                 $copy_or_link = copy($from, $path . '/' . $hash_filename);
             }
             if ($copy_or_link) {
-                $description = (empty($files_sn) and empty($desc)) ? $filename : $desc;
+                if ($desc === false) {
+                    $description = '';
+                } else {
+                    $description = (empty($files_sn) and empty($desc)) ? $filename : $desc;
+                }
                 $this->col_sn = (int) $this->col_sn;
                 if (empty($files_sn)) {
                     $sql = "replace into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$new_filename}','{$type}','{$size}','{$description}','{$filename}','{$this->subdir}','{$hash_name}.{$ext}','{$upload_date}','{$uid}','{$tag}')";

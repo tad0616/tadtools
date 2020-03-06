@@ -103,7 +103,7 @@
                                 <tr><th>導覽列背景圖</th><th>$navbar_img</th><td><{$navbar_img}></td></tr>
 
                                 <tr><th colspan=3><h2>導覽列 logo 圖設定</h2></th></tr>
-                                <tr><th>導覽列圖示(舊)</th><th>$navbar_logo_img</th><td><{$navbar_logo_img}></td></tr>
+                                <tr><th>導覽列圖示(舊)</th><th>$navlogo_img</th><td><{$navlogo_img}></td></tr>
                                 <tr><th>導覽列 logo 圖</th><th>$logo_img</th><td><{$logo_img}></td></tr>
 
                                 <tr><th colspan=3><h2>自訂選單 $menu_var</h2></th></tr>

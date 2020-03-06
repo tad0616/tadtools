@@ -31,12 +31,40 @@ class FlexSlider
     {
         global $xoTheme;
 
+        $jquery = $this->show_jquery ? Utility::get_jquery() : '';
+        $js = '';
+        // if ($xoTheme) {
+        //     $xoTheme->addStylesheet('modules/tadtools/flexslider2/reset.css');
+        //     $xoTheme->addStylesheet('modules/tadtools/flexslider2/flexslider.css');
+        //     $xoTheme->addScript('modules/tadtools/flexslider2/jquery.flexslider.js');
+        //     $xoTheme->addScript('', null, "
+        //         \$(document).ready(function(){
+        //             \$('.flexslider').flexslider({
+        //                 animation: 'slide'
+        //             });
+        //         });
+        //     ");
+        // } else {
+        $js = "
+            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/flexslider2/reset.css' />
+            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/flexslider2/flexslider.css' />
+            $jquery
+            <script language='javascript' type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/flexslider2/jquery.flexslider.js'></script>
+
+
+            <script type='text/javascript'>
+                $(document).ready( function(){
+                    $('.flexslider').flexslider({
+                        animation: 'slide'
+                    });
+                });
+            </script>";
+        // }
+
         $utf8_word_num = $this->word_num * 3;
         if (empty($utf8_word_num)) {
             $utf8_word_num = 90;
         }
-
-        $jquery = ($this->show_jquery) ? Utility::get_jquery() : '';
 
         $all = $nav = '';
         $i = 1;
@@ -48,10 +76,14 @@ class FlexSlider
             $pi = ($i % 2) ? '1' : '2';
             $image = empty($item_content['image']) ? XOOPS_URL . "/modules/tadtools/flexslider2/images/demo{$pi}.jpg" : $item_content['image'];
 
+            $title_caption = !empty($title) ? "<span style='font-size:11pt;background-color:#404040;color:#33CCFF;font-weight:bold;'>$title</span>" : '';
+            $content_caption = !empty($content) ? "<span style='font-size:11px;'>$content</span>" : '';
+            $caption = (empty($title_caption) and empty($content_caption)) ? '' : "<p class='flex-caption'>{$title_caption}.{$content_caption}</p>";
+
             $all .= "
                 <li>
-                <a href='{$item_content['url']}'><img src='$image' alt='{$title}' title='{$title}'></a>
-                <div class='flex-caption'><div style='font-size:11pt;background-color:#404040;color:#33CCFF;font-weight:bold;'>$title</div><div style='font-size:11px;'>$content</div></div>
+                    <a href='{$item_content['url']}'><img src='$image' alt='{$title}' title='{$title}'></a>
+                    $caption
                 </li>
             ";
 
@@ -59,47 +91,15 @@ class FlexSlider
             $i++;
         }
 
-        if ($xoTheme) {
-            $xoTheme->addStylesheet('modules/tadtools/flexslider2/reset.css');
-            $xoTheme->addStylesheet('modules/tadtools/flexslider2/flexslider.css');
-            $xoTheme->addScript('modules/tadtools/flexslider2/jquery.flexslider.js');
-
-            $xoTheme->addScript('', null, "
-                (function(\$){
-                \$(document).ready(function(){
-                    \$('.flexslider').flexslider({
-                    animation: 'slide'
-                    });
-                });
-                })(jQuery);
-            ");
-            $main = '';
-        } else {
-            $main = "
-            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/flexslider2/reset.css' />
-            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/flexslider2/flexslider.css' />
-            $jquery
-            <script language='javascript' type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/flexslider2/jquery.flexslider.js'></script>
-
-
-            <script type='text/javascript'>
-            $(document).ready( function(){
-                $('.flexslider').flexslider({
-                    animation: 'slide'
-                });
-                });
-            </script>";
-        }
-
-        $main .= "
+        $main = "
+        $js
         <!-- Place somewhere in the <body> of your page -->
         <div class='flexslider'>
-        <ul class='slides'>
-            $all
-        </ul>
+            <ul class='slides'>
+                $all
+            </ul>
         </div>
         ";
-
         return $main;
     }
 }

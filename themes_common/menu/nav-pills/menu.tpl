@@ -60,8 +60,8 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav nav-pills">
         <{if $show_sitename !='2' }>
-          <{if $navbar_logo_img}>
-            <<li role="presentation"><a href="<{$xoops_url}>/index.php" style="color:<{$navbar_color}>"><img src="<{$navbar_logo_img}>" alt="<{$xoops_sitename}>"></<li></li>
+          <{if $navlogo_img}>
+            <<li role="presentation"><a href="<{$xoops_url}>/index.php" style="color:<{$navbar_color}>"><img src="<{$navlogo_img}>" alt="<{$xoops_sitename}>"></<li></li>
           <{elseif $show_sitename=='0'}>
             <li role="presentation"><a href="<{$xoops_url}>/index.php" style="color:<{$navbar_color}>"><{$smarty.const._TAD_HOME}></a></li>
           <{else}>

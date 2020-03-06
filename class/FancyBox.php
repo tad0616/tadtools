@@ -14,19 +14,19 @@ class FancyBox
     //建構函數
     public function __construct($name = '', $width = '90%', $height = null, $show_jquery = true, $show_js = true)
     {
-        $this->name  = $name;
+        $this->name = $name;
         $this->width = $width;
 
         if (null === $height) {
             $this->autoSize = 'true';
-            $this->height   = '90%';
+            $this->height = '90%';
         } else {
             $this->autoSize = 'false';
-            $this->height   = $height;
+            $this->height = $height;
         }
 
         $this->show_jquery = $show_jquery;
-        $this->show_js     = $show_js;
+        $this->show_js = $show_js;
     }
 
     //產生語法
@@ -44,7 +44,7 @@ class FancyBox
          overlay : {closeClick: false}
         }' : '';
 
-        $autoPlay  = $auto_play ? 'autoPlay: true,' : '';
+        $autoPlay = $auto_play ? 'autoPlay: true,' : '';
         $playSpeed = $playSpeed ? "playSpeed: {$playSpeed}," : '';
 
         $jquery = $this->show_jquery ? Utility::get_jquery() : '';
@@ -118,7 +118,7 @@ class FancyBox
          overlay : {closeClick: false}
         }' : '';
 
-        $autoPlay  = $autoPlay ? 'autoPlay: true,' : '';
+        $autoPlay = $autoPlay ? 'autoPlay: true,' : '';
         $playSpeed = $playSpeed ? "playSpeed: {$playSpeed}," : '';
 
         if ($xoTheme) {

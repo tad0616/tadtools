@@ -40,7 +40,7 @@ $default['show_sitename'] = '1';
 $default['openid_login'] = '0';
 $default['openid_logo'] = '1';
 
-$sql = "select `tt_bootstrap_color` from " . $xoopsDB->prefix("tadtools_setup") . " where `tt_theme`='{$xoopsConfig['theme_set']}'";
+$sql = "select `tt_bootstrap_color` from " . $xoopsDB->prefix("tadtools_setup") . " where `tt_theme`='{$theme_name}'";
 $result = $xoopsDB->query($sql);
 list($theme_color) = $xoopsDB->fetchRow($result);
 
@@ -55,7 +55,7 @@ $_SESSION['menu_var_kind'] = $default['menu_var_kind'];
 
 $default['bg_img'] = !empty($bg_img) ? XOOPS_URL . "/themes/{$theme_name}/images/bg/{$bg_img}" : "";
 $default['logo_img'] = !empty($logo_img) ? XOOPS_URL . "/themes/{$theme_name}/images/logo/{$logo_img}" : "";
-$default['navlogo_img'] = !empty($navlogo_img) ? XOOPS_URL . "/themes/tad_themes/images/navlogo/{$navlogo_img}" : "";
+$default['navlogo_img'] = !empty($navlogo_img) ? XOOPS_URL . "/themes/{$theme_name}/images/navlogo/{$navlogo_img}" : "";
 $default['navbar_img'] = !empty($navbar_img) ? XOOPS_URL . "/themes/{$theme_name}/images/nav_bg/{$navbar_img}" : "";
 $default['bt_bg_img'] = !empty($bt_bg_img) ? XOOPS_URL . "/themes/{$theme_name}/images/bt_bg/{$bt_bg_img}" : "";
 
@@ -84,7 +84,7 @@ if ($TadThemesMid) {
     if (file_exists(XOOPS_ROOT_PATH . "/modules/tad_themes/xoops_version.php")) {
         $file_col = ['bg_img' => 'bg', 'logo_img' => 'logo', 'navlogo_img' => 'navlogo', 'navbar_img' => 'nav_bg'];
         $file_cols = array_keys($file_col);
-        $sql = "select * from " . $xoopsDB->prefix("tad_themes") . " where `theme_name`='{$xoopsConfig['theme_set']}'";
+        $sql = "select * from " . $xoopsDB->prefix("tad_themes") . " where `theme_name`='{$theme_name}'";
         $result = $xoopsDB->query($sql);
         //$theme_exist=$xoopsDB->getRowsNum($result);
         $data = $xoopsDB->fetchArray($result);
@@ -92,20 +92,19 @@ if ($TadThemesMid) {
         if (!empty($data) and !empty($data['theme_width'])) {
             foreach ($data as $k => $v) {
                 $$k = $v;
-                if (in_array($k, $file_cols)) {
-                    $v = XOOPS_URL . "/uploads/tad_themes/{$xoopsConfig['theme_set']}/{$file_col[$k]}/{$v}";
+                if (in_array($k, $file_cols) and $v!='') {
+                    $v = XOOPS_URL . "/uploads/tad_themes/{$theme_name}/{$file_col[$k]}/{$v}";
                 }
                 $this->assign($k, $v);
             }
         } elseif (file_exists(XOOPS_ROOT_PATH . "/modules/tad_themes/auto_import_theme.php")) {
             require_once XOOPS_ROOT_PATH . "/modules/tad_themes/auto_import_theme.php";
             auto_import_theme();
-            $sql = "select * from " . $xoopsDB->prefix("tad_themes") . " where `theme_name`='{$xoopsConfig['theme_set']}'";
+            $sql = "select * from " . $xoopsDB->prefix("tad_themes") . " where `theme_name`='{$theme_name}'";
             $result = $xoopsDB->queryF($sql);
             $data = $xoopsDB->fetchArray($result);
         }
 
-        //以下會產生這些變數： $theme_id , $theme_name , $theme_type , $lb_width , $rb_width , $clb_width , $crb_width , $base_color ,$lb_color , $cb_color , $rb_color , $margin_top , $margin_bottom , $bg_img , $logo_img ,$logo_position, $navlogo_img , $bg_attachment , $bg_color , $bg_position , $bg_repeat , $logo_top , $logo_right , $logo_bottom , $logo_left, $logo_center , $theme_enable , $slide_width , $slide_height , $font_size , $font_color , $link_color , $hover_color , $theme_kind , $navbar_pos , $navbar_bg_top , $navbar_bg_bottom , $navbar_hover, $navbar_color ,  $navbar_color_hover , $navbar_icon, $navbar_img
         if (empty($data['theme_id'])) {
             $use_default_config = true;
         }
@@ -376,9 +375,9 @@ list($navbar_bg_bottom_rgb['r'], $navbar_bg_bottom_rgb['g'], $navbar_bg_bottom_r
 $this->assign('navbar_bg_bottom_rgb', $navbar_bg_bottom_rgb);
 
 /****若有logo.png或logo.gif時導覽工具列以圖替代網站標題文字****/
-if ($navlogo_img) {
-    $this->assign('navbar_logo_img', $navlogo_img);
-}
+//if ($navlogo_img) {
+//    $this->assign('navbar_logo_img', $navlogo_img);
+//}
 
 /****區塊標題設定****/
 if ($TadThemesMid) {
@@ -387,13 +386,13 @@ if ($TadThemesMid) {
     //`theme_id`, `block_position`, `block_config`, `bt_text`, `bt_text_padding`, `bt_text_size`, `bt_bg_color`, `bt_bg_img`, `bt_bg_repeat`, `bt_radius`
     while (false !== ($all = $xoopsDB->fetchArray($result))) {
         $block_position = $all['block_position'];
-        $all['bt_bg_img'] = basename($all['bt_bg_img']);
+        $all['bt_bg_img'] = $all['bt_bg_img']? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/bt_bg/{$all['bt_bg_img']}":'';
         $db[$block_position] = $all;
     }
 
 }
 
-$block_position = array("leftBlock", "rightBlock", "centerBlock", "centerLeftBlock", "centerRightBlock", "centerBottomBlock", "centerBottomLeftBlock", "centerBottomRightBlock");
+$block_position = array("leftBlock", "rightBlock", "centerBlock", "centerLeftBlock", "centerRightBlock", "centerBottomBlock", "centerBottomLeftBlock", "centerBottomRightBlock", "footerCenterBlock" ,"footerLeftBlock", "footerRightBlock");
 $this->assign('block_position', $block_position);
 $i = 0;
 $positions = array();
@@ -417,7 +416,6 @@ foreach ($block_position as $position) {
 $this->assign('positions', $positions);
 
 /****佈景額外設定****/
-$theme_name = $xoopsConfig['theme_set'];
 //額外佈景設定
 $config2_files = array('config2_base', 'config2_bg', 'config2_slide', 'config2_logo', 'config2_block', 'config2_nav', 'config2');
 foreach ($config2_files as $config2_file) {
