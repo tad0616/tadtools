@@ -73,7 +73,11 @@
         <{if $show_sitename==0}>
           <li role="presentation"><a href="<{$xoops_url}>/index.php" style="color:<{$navbar_color}>"><{$smarty.const._TAD_HOME}></a></li>
         <{/if}>
-        <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/menu_my.tpl"}>
+        <{if $bootstrap==4}>
+          <{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/menu_my.tpl"}>
+        <{else}>
+          <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_my.tpl"}>
+        <{/if}>
         <{if !$xoops_isuser}>
           <li>
             <a class="dropdown-toggle" data-toggle="dropdown">
