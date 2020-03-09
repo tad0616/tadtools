@@ -51,7 +51,7 @@
             <!-- Left nav -->
             <ul id="main-menu" class="nav navbar-nav mr-auto">
 
-                <{if $show_sitename==0}>
+                <{if $show_sitename==0 or $show_sitename==''}>
                     <li><a class="nav-link" href="<{$xoops_url}>/index.php"><i class="fa fa-home" aria-hidden="true"></i> <{$smarty.const._TAD_HOME}></a></li>
                 <{/if}>
                 <{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/menu_main.tpl"}>

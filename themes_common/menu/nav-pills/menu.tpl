@@ -62,7 +62,7 @@
         <{if $show_sitename !='2' }>
           <{if $navlogo_img}>
             <<li role="presentation"><a href="<{$xoops_url}>/index.php" style="color:<{$navbar_color}>"><img src="<{$navlogo_img}>" alt="<{$xoops_sitename}>"></<li></li>
-          <{elseif $show_sitename=='0'}>
+          <{elseif $show_sitename=='0' or $show_sitename==''}>
             <li role="presentation"><a href="<{$xoops_url}>/index.php" style="color:<{$navbar_color}>"><{$smarty.const._TAD_HOME}></a></li>
           <{else}>
             <li role="presentation"><a href="<{$xoops_url}>/index.php" style="color:<{$navbar_color}>"><{$xoops_sitename}></a></li>
@@ -70,7 +70,7 @@
         <{/if}>
 
 
-        <{if $show_sitename==0}>
+        <{if $show_sitename==0 or $show_sitename==''}>
           <li role="presentation"><a href="<{$xoops_url}>/index.php" style="color:<{$navbar_color}>"><{$smarty.const._TAD_HOME}></a></li>
         <{/if}>
         <{if $bootstrap==4}>
