@@ -118,6 +118,9 @@ class ResponsiveSlides
         if (empty($timeout)) {
             $timeout = 5000;
         }
+        if ($show_nav == '' or is_null($show_nav)) {
+            $show_nav = 1;
+        }
 
         $main = "
             <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/ResponsiveSlides/reset.css' >

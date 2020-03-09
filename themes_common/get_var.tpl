@@ -417,6 +417,7 @@ $this->assign('positions', $positions);
 
 /****佈景額外設定****/
 //額外佈景設定
+$config2=[];
 $config2_files = array('config2_base', 'config2_bg', 'config2_slide', 'config2_logo', 'config2_block', 'config2_nav', 'config2');
 foreach ($config2_files as $config2_file) {
     if (file_exists(XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php")) {

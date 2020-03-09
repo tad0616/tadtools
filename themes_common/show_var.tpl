@@ -193,11 +193,11 @@
         $result=$xoopsDB->query($sql) or wbe_error($sql);
         list($theme_id)=$xoopsDB->fetchRow($result);
 
-        $sql="select `name`, `type`, `value` from ".$xoopsDB->prefix("tad_themes_config2")." where `theme_id`='{$theme_id}'";
-        $config2="";
-        $result=$xoopsDB->query($sql) or wbe_error($sql);
-        while(list($name,$type,$value)=$xoopsDB->fetchRow($result)){
-            $config2[$name]=$value;
+        $config2=[];
+        $sql = "select `name`, `type`, `value` from " . $xoopsDB->prefix("tad_themes_config2") . " where `theme_id`='{$theme_id}'";
+        $result = $xoopsDB->query($sql);
+        while (list($name, $type, $value) = $xoopsDB->fetchRow($result)) {
+            $config2[$name] = $value;
         }
 
 
@@ -210,22 +210,26 @@
                 echo "                <tr><th colspan=3><h2>佈景額外{$config2_file}設定</h2></th></tr>\n";
                 require XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php";
                 foreach($theme_config as $k=>$config){
-                    $name=$config['name'];
+                    $name = $config['name'];
+
                     $value=is_null($config2[$name])?$config['default']:$config2[$name];
+
                     if($config['type']=="array"){
-                    $value_arr=json_decode($value,true);
-                    $value="";
-                    foreach($value_arr as $i=>$items){
-                        if(is_array($items)){
-                        foreach($items as $key=>$val){
-                            $val=str_replace("{XOOPS_URL}",XOOPS_URL,$val);
-                            $value.="<div>\${$name}[$i]['$key'] = \"{$val}\";</div>";
+                        $value_arr=json_decode($value,true);
+                        $value="";
+                        foreach($value_arr as $i=>$items){
+                            if(is_array($items)){
+                            foreach($items as $key=>$val){
+                                $val=str_replace("{XOOPS_URL}",XOOPS_URL,$val);
+                                $value.="<div>\${$name}[$i]['$key'] = \"{$val}\";</div>";
+                            }
+                            }else{
+                                $items=str_replace("{XOOPS_URL}",XOOPS_URL,$items);
+                                $value.="<div>\${$name}[$i] = \"{$items}\";</div>";
+                            }
                         }
-                        }else{
-                            $items=str_replace("{XOOPS_URL}",XOOPS_URL,$items);
-                            $value.="<div>\${$name}[$i] = \"{$items}\";</div>";
-                        }
-                    }
+                    }elseif ($config['type'] == "file") {
+                        $value = XOOPS_URL . "/uploads/tad_themes/{$theme_name}/config2/{$value}";
                     }
 
                     echo "                        <tr><th>{$config['text']}</th><th>\${$name}</th><td>{$value}</td></tr>\n";
