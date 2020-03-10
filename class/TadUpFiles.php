@@ -1550,6 +1550,7 @@ class TadUpFiles
             } else {
                 $fext = strtolower(pathinfo($original_filename, PATHINFO_EXTENSION));
                 $files[$files_sn]['thumb_pic'] = XOOPS_URL . "/modules/tadtools/images/mimetype/{$fext}.png";
+                $file_name = $this->hash ? $hash_filename : $file_name;
 
                 $files[$files_sn]['link'] = "<a href='{$dl_url}#{$original_filename}' target='{$target}'>{$show_file_name}</a>";
                 $files[$files_sn]['path'] = "{$dl_url}#{$original_filename}";
