@@ -76,8 +76,8 @@ class FlexSlider
             $pi = ($i % 2) ? '1' : '2';
             $image = empty($item_content['image']) ? XOOPS_URL . "/modules/tadtools/flexslider2/images/demo{$pi}.jpg" : $item_content['image'];
 
-            $title_caption = !empty($title) ? "<span style='font-size:11pt;background-color:#404040;color:#33CCFF;font-weight:bold;'>$title</span>" : '';
-            $content_caption = !empty($content) ? "<span style='font-size:11px;'>$content</span>" : '';
+            $title_caption = !empty($title) ? "<span style='font-size: 0.92em;background-color:#404040;color:#33CCFF;font-weight:bold;'>$title</span>" : '';
+            $content_caption = !empty($content) ? "<span style='font-size: 0.6875em;'>$content</span>" : '';
             $caption = (empty($title_caption) and empty($content_caption)) ? '' : "<p class='flex-caption'>{$title_caption}.{$content_caption}</p>";
 
             $all .= "

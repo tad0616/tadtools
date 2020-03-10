@@ -92,7 +92,7 @@ class JwPlayer
             for (var index=0;index<playlist.length;index++){
                 var playindex = index +1;
 
-                html += \"<li id='play-items-\"+index+\"' class='list-group-item' style='min-height: 70px; font-size: 11px; overflow: hidden;'><a href='javascript:playThis(\"+index+\")'><div style='width:80px;height:50px;margin-right:3px;float:left;background:url(\"+playlist[index] . image+\") center center no-repeat;background-size:cover;'></div>\"+playlist[index].title+\"</a></li>\"
+                html += \"<li id='play-items-\"+index+\"' class='list-group-item' style='min-height: 70px; font-size: 0.6875em; overflow: hidden;'><a href='javascript:playThis(\"+index+\")'><div style='width:80px;height:50px;margin-right:3px;float:left;background:url(\"+playlist[index] . image+\") center center no-repeat;background-size:cover;'></div>\"+playlist[index].title+\"</a></li>\"
                 list.innerHTML = html;
             }
 

@@ -447,7 +447,7 @@ class TadUpFiles
                         <div class='col-sm-3 text-left'>
                         </div>
                         <div class='col-sm-6 text-center'>
-                            <a href=\"javascript:remove_file('{$files_sn}');\" style='font-size: 12px;' class='text-danger'>
+                            <a href=\"javascript:remove_file('{$files_sn}');\" style='font-size: 0.75em;' class='text-danger'>
                                 <i class=\"fa fa-trash\"></i> " . _TAD_DEL . "
                             </a></div>
                         <div class='col-sm-3 text-right'>
@@ -468,7 +468,7 @@ class TadUpFiles
                             <a href=\"javascript:rotate_img('left','{$files_sn}','{$this->prefix}{$this->subdir}','{$this->image_dir}','{$this->thumbs_dir}','{$file_name}','{$file_type}')\" id='left90'><i class=\"fa fa-undo text-success\" title='" . TADTOOLS_ROTATE_LEFT . "'></i></a>
                         </td>
                         <td class='text-center'>
-                            <a href=\"javascript:remove_file('{$files_sn}');\" style='font-size: 12px;' class='text-danger'>
+                            <a href=\"javascript:remove_file('{$files_sn}');\" style='font-size: 0.75em;' class='text-danger'>
                                 <i class=\"fa fa-times text-danger\" title=\"" . _TAD_DEL . "\"></i>
                             </a>
                         </td>
@@ -488,7 +488,7 @@ class TadUpFiles
                 $w = 'width:130px; word-break: break-word;';
                 $w2 = "width:{$this->thumb_width}; float:left; margin-right:10px;";
             } else {
-                $thumb_tool = "<a href=\"javascript:remove_file('{$files_sn}');\" style='font-size: 12px;' class='text-danger'>
+                $thumb_tool = "<a href=\"javascript:remove_file('{$files_sn}');\" style='font-size: 0.75em;' class='text-danger'>
                                 <i class=\"fa fa-trash\"></i> " . _TAD_DEL . '</a></div>';
                 $thumb_style = '';
                 $thumb_style2 = '';
@@ -551,7 +551,7 @@ class TadUpFiles
 
                 if ($show_filename) {
                     $filename_label = "
-                    <label class='checkbox-inline' style='width:{$this->thumb_width}; height: 100px;font-size: 12px;word-wrap: break-word;'>
+                    <label class='checkbox-inline' style='width:{$this->thumb_width}; height: 100px;font-size: 0.75em;word-wrap: break-word;'>
                     <!--input type='checkbox' name='del_file[]' value='{$files_sn}'-->
                     {$original_filename}
                     </label>
@@ -1834,7 +1834,7 @@ class TadUpFiles
                     $show_dl_txt = ($show_dl) ? "<span class='label label-info'>{$file_info['counter']}</span>" : '';
 
                     //描述顯示
-                    $show_description_txt = ($show_description) ? "<div style='font-weight: normal; font-size: 11px; word-break: break-all; line-height: 1.2; margin: 4px auto 4px 0px; text-align: left;'>{$i}) {$description} {$show_dl_txt}</div>" : (string) ($show_dl_txt);
+                    $show_description_txt = ($show_description) ? "<div style='font-weight: normal; font-size: 0.6875em; word-break: break-all; line-height: 1.2; margin: 4px auto 4px 0px; text-align: left;'>{$i}) {$description} {$show_dl_txt}</div>" : (string) ($show_dl_txt);
 
                     $w = $this->show_width;
                     $h = $this->show_height;

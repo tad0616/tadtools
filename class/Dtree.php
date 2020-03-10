@@ -19,7 +19,7 @@ class Dtree
         $this->home = $home;
     }
 
-    public function render($fontsize = '12px', $open = false, $useLines = true)
+    public function render($fontsize = '0.75em', $open = false, $useLines = true)
     {
         global $xoTheme;
 
@@ -64,7 +64,7 @@ class Dtree
             document.getElementById('tree_{$this->name}').innerHTML={$this->name};
         </script>
 
-        <a href='javascript: {$this->name}.openAll();' style='font-size:11px;'>" . _TAD_EXPAND_ALL . "</a> | <a href='javascript: {$this->name}.closeAll();' style='font-size:11px;'>" . _TAD_CONTACT_ALL . '</a>
+        <a href='javascript: {$this->name}.openAll();' style='font-size: 0.6875em;'>" . _TAD_EXPAND_ALL . "</a> | <a href='javascript: {$this->name}.closeAll();' style='font-size: 0.6875em;'>" . _TAD_CONTACT_ALL . '</a>
         ';
 
         return $dtree;

@@ -7,7 +7,7 @@
     </div>
 
     <div id="xoops_theme_right_zone" class="<{if $theme_kind!="html"}>col-sm-<{/if}><{$rb_width}>" style="background-color: <{$rb_color}>; <{if $theme_kind=="html"}>float:right;<{/if}>">
-      <a accesskey="R" href="#xoops_theme_right_zone_key" title="<{$smarty.const._TAD_RIGHT_ZONE}>" id="xoops_theme_right_zone_key" style="color: transparent; font-size: 10px;">:::</a>
+      <a accesskey="R" href="#xoops_theme_right_zone_key" title="<{$smarty.const._TAD_RIGHT_ZONE}>" id="xoops_theme_right_zone_key" style="color: transparent; font-size: 0.625em;">:::</a>
       <div id="xoops_theme_right"  style="<{$rightBlocks}>">
         <{if $xoBlocks.canvas_left}>
           <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/leftBlock.tpl"}>
