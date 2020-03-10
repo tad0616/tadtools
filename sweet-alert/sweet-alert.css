@@ -33,7 +33,7 @@
       right: 15px; } }
   .sweet-alert h2 {
     color: #575757;
-    font-size: 30px;
+    font-size: 1.875em;
     text-align: center;
     font-weight: 600;
     text-transform: none;
@@ -44,7 +44,7 @@
     display: block; }
   .sweet-alert p {
     color: #797979;
-    font-size: 16px;
+    font-size: 1em;
     text-align: center;
     font-weight: 300;
     position: relative;
@@ -58,7 +58,7 @@
     color: white;
     border: none;
     box-shadow: none;
-    font-size: 17px;
+    font-size: 1.06em;
     font-weight: 500;
     border-radius: 5px;
     padding: 10px 32px;

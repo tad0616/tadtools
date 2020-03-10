@@ -4,7 +4,6 @@
  * (c) 2017 Adam Shaw
  */
 
-
 .fc {
 	direction: ltr;
 	text-align: left;
@@ -18,10 +17,8 @@ body .fc { /* extra precedence to overcome jqui */
 	font-size: 1em;
 }
 
-
 /* Colors
 --------------------------------------------------------------------------------------------------*/
-
 
 .fc-highlight { /* when user is selecting cells */
 	background: #bce8f1;
@@ -37,7 +34,6 @@ body .fc { /* extra precedence to overcome jqui */
 	/* will inherit .fc-bgevent's styles */
 	background: #d7d7d7;
 }
-
 
 /* Buttons (styled <button> tags, normalized to work cross-browser)
 --------------------------------------------------------------------------------------------------*/
@@ -61,7 +57,7 @@ body .fc { /* extra precedence to overcome jqui */
 
 /* Firefox has an annoying inner border */
 .fc button::-moz-focus-inner { margin: 0; padding: 0; }
-	
+
 .fc-state-default { /* non-theme */
 	border: 1px solid;
 }
@@ -84,7 +80,7 @@ body .fc { /* extra precedence to overcome jqui */
 	margin: 0 .2em;
 	vertical-align: middle;
 }
-	
+
 /*
   button states
   borrowed from twitter bootstrap (http://twitter.github.com/bootstrap/)
@@ -137,7 +133,6 @@ body .fc { /* extra precedence to overcome jqui */
 	box-shadow: none;
 }
 
-
 /* Buttons Groups
 --------------------------------------------------------------------------------------------------*/
 
@@ -158,7 +153,6 @@ previous button's border...
 .fc .fc-button-group > :first-child { /* same */
 	margin-left: 0;
 }
-
 
 /* Popover
 --------------------------------------------------------------------------------------------------*/
@@ -189,7 +183,6 @@ previous button's border...
 .fc-ltr .fc-popover .fc-header .fc-close {
 	float: right;
 }
-
 
 /* Misc Reusable Components
 --------------------------------------------------------------------------------------------------*/
@@ -229,7 +222,6 @@ hr.fc-divider {
 	height: 100%; /* strech bg to bottom edge */
 }
 
-
 /* Tables
 --------------------------------------------------------------------------------------------------*/
 
@@ -258,7 +250,6 @@ hr.fc-divider {
 	border-style: double; /* overcome neighboring borders */
 }
 
-
 /* Internal Nav Links
 --------------------------------------------------------------------------------------------------*/
 
@@ -269,7 +260,6 @@ a[data-goto] {
 a[data-goto]:hover {
 	text-decoration: underline;
 }
-
 
 /* Fake Table Rows
 --------------------------------------------------------------------------------------------------*/
@@ -287,13 +277,12 @@ a[data-goto]:hover {
 	border-right: 0 hidden transparent;
 
 	/* no bottom borders on rows */
-	border-bottom: 0 hidden transparent; 
+	border-bottom: 0 hidden transparent;
 }
 
 .fc-row:first-child table {
 	border-top: 0 hidden transparent; /* no top border on first row */
 }
-
 
 /* Day Row (used within the header and the DayGrid)
 --------------------------------------------------------------------------------------------------*/
@@ -368,7 +357,6 @@ temporary rendered events).
 	border-top: 0;
 }
 
-
 /* Scrolling Container
 --------------------------------------------------------------------------------------------------*/
 
@@ -382,7 +370,6 @@ temporary rendered events).
 	position: relative; /* re-scope all positions */
 	width: 100%; /* hack to force re-sizing this inner element when scrollbars appear/disappear */
 }
-
 
 /* Global Event Styles
 --------------------------------------------------------------------------------------------------*/
@@ -462,7 +449,6 @@ temporary rendered events).
 	margin-top: -20px;
 }
 
-
 /* Event Selection (only for touch devices)
 --------------------------------------------------------------------------------------------------*/
 
@@ -474,7 +460,6 @@ temporary rendered events).
 .fc-event.fc-selected.fc-dragging {
 	box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
 }
-
 
 /* Horizontal Events
 --------------------------------------------------------------------------------------------------*/
@@ -562,7 +547,6 @@ temporary rendered events).
 	margin-right: -4px; /* centers the 8x8 dot on the right edge */
 }
 
-
 /* DayGrid events
 ----------------------------------------------------------------------------------------------------
 We use the full "fc-day-grid-event" class instead of using descendants because the event won't
@@ -615,7 +599,6 @@ tr:first-child > td > .fc-day-grid-event {
 	margin-right: -2px; /* to the day cell's edge */
 }
 
-
 /* Event Limiting
 --------------------------------------------------------------------------------------------------*/
 
@@ -651,7 +634,6 @@ a.fc-more:hover {
 	padding: 10px;
 }
 
-
 /* Now Indicator
 --------------------------------------------------------------------------------------------------*/
 
@@ -659,7 +641,6 @@ a.fc-more:hover {
 	position: absolute;
 	border: 0 solid red;
 }
-
 
 /* Utilities
 --------------------------------------------------------------------------------------------------*/
@@ -673,8 +654,6 @@ a.fc-more:hover {
 	-webkit-touch-callout: none;
 	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
-
-
 
 /*
 TODO: more distinction between this file and common.css
@@ -718,7 +697,6 @@ TODO: more distinction between this file and common.css
 	background: #d7d7d7;
 	opacity: .3;
 }
-
 
 /* Icons (inline elements with styled text that mock arrow icons)
 --------------------------------------------------------------------------------------------------*/
@@ -803,7 +781,6 @@ NOTE: use percentage font sizes or else old IE chokes
 	top: 6%;
 }
 
-
 /* Popover
 --------------------------------------------------------------------------------------------------*/
 
@@ -817,15 +794,12 @@ NOTE: use percentage font sizes or else old IE chokes
 	margin-top: 2px;
 }
 
-
 /* List View
 --------------------------------------------------------------------------------------------------*/
 
 .fc-unthemed .fc-list-item:hover td {
 	background-color: #f5f5f5;
 }
-
-
 
 /* Colors
 --------------------------------------------------------------------------------------------------*/
@@ -834,14 +808,12 @@ NOTE: use percentage font sizes or else old IE chokes
 	background-image: none;
 }
 
-
 /* Popover
 --------------------------------------------------------------------------------------------------*/
 
 .fc-popover > .ui-widget-header + .ui-widget-content {
 	border-top: 0; /* where they meet, let the header have the border */
 }
-
 
 /* Global Event Styles
 --------------------------------------------------------------------------------------------------*/
@@ -855,7 +827,6 @@ NOTE: use percentage font sizes or else old IE chokes
 	font-weight: normal;
 }
 
-
 /* TimeGrid axis running down the side (for both the all-day area and the slot area)
 --------------------------------------------------------------------------------------------------*/
 
@@ -863,15 +834,12 @@ NOTE: use percentage font sizes or else old IE chokes
 	font-weight: normal; /* overcome bold */
 }
 
-
 /* TimeGrid Slats (lines that run horizontally)
 --------------------------------------------------------------------------------------------------*/
 
-.fc-time-grid .fc-slats .ui-widget-content { 
+.fc-time-grid .fc-slats .ui-widget-content {
 	background: none; /* see through to fc-bg */
 }
-
-
 
 .fc.fc-bootstrap3 a {
 	text-decoration: none;
@@ -889,14 +857,12 @@ NOTE: use percentage font sizes or else old IE chokes
 	border-radius: 0;
 }
 
-
 /* Popover
 --------------------------------------------------------------------------------------------------*/
 
 .fc-bootstrap3 .fc-popover .panel-body {
 	padding: 0; /* undo built-in padding */
 }
-
 
 /* TimeGrid Slats (lines that run horizontally)
 --------------------------------------------------------------------------------------------------*/
@@ -905,8 +871,6 @@ NOTE: use percentage font sizes or else old IE chokes
 	/* some themes have background color. see through to slats */
 	background: none;
 }
-
-
 
 /* Toolbar
 --------------------------------------------------------------------------------------------------*/
@@ -945,7 +909,7 @@ NOTE: use percentage font sizes or else old IE chokes
 .fc .fc-toolbar > * > :first-child { /* extra precedence to override button border margins */
 	margin-left: 0;
 }
-	
+
 /* title text */
 
 .fc-toolbar h2 {
@@ -962,7 +926,7 @@ NOTE: use percentage font sizes or else old IE chokes
 .fc-toolbar .ui-state-hover {
 	z-index: 2;
 }
-	
+
 .fc-toolbar .fc-state-down {
 	z-index: 3;
 }
@@ -975,7 +939,6 @@ NOTE: use percentage font sizes or else old IE chokes
 .fc-toolbar button:focus {
 	z-index: 5;
 }
-
 
 /* View Structure
 --------------------------------------------------------------------------------------------------*/
@@ -995,8 +958,6 @@ NOTE: use percentage font sizes or else old IE chokes
 	position: relative;
 	z-index: 1;
 }
-
-
 
 /* BasicView
 --------------------------------------------------------------------------------------------------*/
@@ -1067,7 +1028,6 @@ NOTE: use percentage font sizes or else old IE chokes
 	min-width: 1.25em;
 }
 
-
 /* AgendaView all-day area
 --------------------------------------------------------------------------------------------------*/
 
@@ -1083,7 +1043,6 @@ NOTE: use percentage font sizes or else old IE chokes
 .fc-agenda-view .fc-day-grid .fc-row .fc-content-skeleton {
 	padding-bottom: 1em; /* give space underneath events for clicking/selecting days */
 }
-
 
 /* TimeGrid axis running down the side (for both the all-day area and the slot area)
 --------------------------------------------------------------------------------------------------*/
@@ -1101,7 +1060,6 @@ NOTE: use percentage font sizes or else old IE chokes
 .fc-rtl .fc-axis {
 	text-align: left;
 }
-
 
 /* TimeGrid Structure
 --------------------------------------------------------------------------------------------------*/
@@ -1173,7 +1131,6 @@ NOTE: use percentage font sizes or else old IE chokes
 	z-index: 6;
 }
 
-
 /* TimeGrid Slats (lines that run horizontally)
 --------------------------------------------------------------------------------------------------*/
 
@@ -1185,7 +1142,6 @@ NOTE: use percentage font sizes or else old IE chokes
 .fc-time-grid .fc-slats .fc-minor td {
 	border-top-style: dotted;
 }
-
 
 /* TimeGrid Highlighting Slots
 --------------------------------------------------------------------------------------------------*/
@@ -1200,7 +1156,6 @@ NOTE: use percentage font sizes or else old IE chokes
 	right: 0;
 	/* top and bottom will be in by JS */
 }
-
 
 /* TimeGrid Event Containment
 --------------------------------------------------------------------------------------------------*/
@@ -1225,7 +1180,6 @@ NOTE: use percentage font sizes or else old IE chokes
 	right: 0;
 }
 
-
 /* Generic Vertical Event
 --------------------------------------------------------------------------------------------------*/
 
@@ -1248,7 +1202,6 @@ NOTE: use percentage font sizes or else old IE chokes
 	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;
 }
-
 
 /* TimeGrid Event Styling
 ----------------------------------------------------------------------------------------------------
@@ -1324,7 +1277,7 @@ be a descendant of the grid when it is being dragged.
 	height: 8px;
 	overflow: hidden;
 	line-height: 8px;
-	font-size: 11px;
+	font-size: 0.6875em;
 	font-family: monospace;
 	text-align: center;
 	cursor: s-resize;
@@ -1351,7 +1304,6 @@ be a descendant of the grid when it is being dragged.
 	/* center on the bottom edge */
 	bottom: -5px;
 }
-
 
 /* Now Indicator
 --------------------------------------------------------------------------------------------------*/
@@ -1383,8 +1335,6 @@ be a descendant of the grid when it is being dragged.
 	border-top-color: transparent;
 	border-bottom-color: transparent;
 }
-
-
 
 /* List View
 --------------------------------------------------------------------------------------------------*/

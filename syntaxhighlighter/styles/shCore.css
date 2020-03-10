@@ -64,7 +64,6 @@
   word-break:break-all;
 }
 
-
 .syntaxhighlighter.source {
   overflow: hidden !important;
 }
@@ -143,7 +142,7 @@
   top: 1px !important;
   width: 11px !important;
   height: 11px !important;
-  font-size: 10px !important;
+  font-size: 0.625em !important;
   z-index: 10 !important;
 }
 .syntaxhighlighter .toolbar span.title {
@@ -230,5 +229,3 @@
 .syntaxhighlighter.printing .break, .syntaxhighlighter.printing .break a {
   color: black !important;
 }
-
-
