@@ -83,7 +83,11 @@
             <a class="dropdown-toggle" data-toggle="dropdown">
               <{$smarty.const._TAD_TF_USER_LOGIN}> <span class="caret"></span>
             </a>
-            <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/menu_login.tpl"}>
+            <{if $bootstrap==4}>
+              <{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/menu_login.tpl"}>
+            <{else}>
+              <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_login.tpl"}>
+            <{/if}>
           </li>
         <{/if}>
       </ul>

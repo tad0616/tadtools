@@ -33,53 +33,58 @@
   }
 </style>
 <div id="cssmenu">
-  <ul>
-    <{foreach from=$menu_var item=menu}>
-      <li <{if $menu.submenu}>class='has-sub'<{/if}>>
-        <a href='<{$menu.url}>' target="<{$menu.target}>">
-          <span><span class="fa <{$menu.icon}>" <{$navbar_icon}>></span> <{$menu.title}></span>
-        </a>
-        <{if $menu.submenu}>
-          <{if $menu.submenu=='1'}>
-            <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/menu/cssmenu/login3.tpl"}>
-          <{else}>
-            <ul>
-              <{foreach from=$menu.submenu item=menu2}>
-                <{if $menu2.title == 'separator'}>
-                  <li role="separator" class="divider"></li>
-                <{else}>
-                  <li <{if $menu2.submenu}>class='has-sub'<{/if}>>
-                    <a href='<{$menu2.url}>' target="<{$menu2.target}>">
-                      <span><span class="fa <{$menu2.icon}>"></span> <{$menu2.title}></span>
-                    </a>
-                    <{if $menu2.submenu}>
-                      <ul>
-                        <{foreach from=$menu2.submenu item=menu3}>
-                          <li>
-                            <a href='<{$menu3.url}>' target="<{$menu3.target}>">
-                              <span><span class="fa <{$menu3.icon}>"></span> <{$menu3.title}></span>
-                            </a>
-                          </li>
-                         <{/foreach}>
-                      </ul>
+    <ul>
+        <{foreach from=$menu_var item=menu}>
+        <li <{if $menu.submenu}>class='has-sub'<{/if}>>
+            <a href='<{$menu.url}>' target="<{$menu.target}>">
+            <span><span class="fa <{$menu.icon}>" <{$navbar_icon}>></span> <{$menu.title}></span>
+            </a>
+            <{if $menu.submenu}>
+            <{if $menu.submenu=='1'}>
+                <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/menu/cssmenu/login3.tpl"}>
+            <{else}>
+                <ul>
+                <{foreach from=$menu.submenu item=menu2}>
+                    <{if $menu2.title == 'separator'}>
+                    <li role="separator" class="divider"></li>
+                    <{else}>
+                    <li <{if $menu2.submenu}>class='has-sub'<{/if}>>
+                        <a href='<{$menu2.url}>' target="<{$menu2.target}>">
+                        <span><span class="fa <{$menu2.icon}>"></span> <{$menu2.title}></span>
+                        </a>
+                        <{if $menu2.submenu}>
+                        <ul>
+                            <{foreach from=$menu2.submenu item=menu3}>
+                            <li>
+                                <a href='<{$menu3.url}>' target="<{$menu3.target}>">
+                                <span><span class="fa <{$menu3.icon}>"></span> <{$menu3.title}></span>
+                                </a>
+                            </li>
+                            <{/foreach}>
+                        </ul>
+                        <{/if}>
+                    </li>
                     <{/if}>
-                  </li>
-                <{/if}>
-               <{/foreach}>
-            </ul>
-          <{/if}>
-        <{/if}>
-      </li>
-    <{/foreach}>
+                <{/foreach}>
+                </ul>
+            <{/if}>
+            <{/if}>
+        </li>
+        <{/foreach}>
 
-    <{if !$xoops_isuser}>
-      <li>
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-          <{$smarty.const._TAD_TF_USER_LOGIN}> <span class="caret"></span>
-        </a>
-        <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/menu_login.tpl"}>
-      </li>
-    <{/if}>
-  </ul>
+        <{if !$xoops_isuser}>
+        <li>
+            <!-- 登入 -->
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <{$smarty.const._TAD_TF_USER_LOGIN}> <span class="caret"></span>
+            </a>
+            <{if $bootstrap==4}>
+                <{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/menu_login.tpl"}>
+            <{else}>
+                <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_login.tpl"}>
+            <{/if}>
+        </li>
+        <{/if}>
+    </ul>
 </div>
 <div style="clear:both;"></div>
