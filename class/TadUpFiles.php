@@ -1887,10 +1887,7 @@ class TadUpFiles
                 } else {
                     $groups = XOOPS_GROUP_ANONYMOUS;
                 }
-                // var_dump($groups);
-                // var_dump($gperm_groupid_arr);
-                // exit;
-                // die(var_dump($gperm_groupid_arr));
+
                 if (!array_intersect($groups, $gperm_groupid_arr)) {
                     redirect_header($_SERVER['HTTP_REFERER'], 3, _TAD_PERMISSION_DENIED);
                 }
@@ -1937,7 +1934,7 @@ class TadUpFiles
             header('Expires: 0');
             header('Content-Type: ' . $mimetype);
             //header('Content-Type: application/octet-stream');
-            if (preg_match("/MSIE ([0-9]\.[0-9]{1,2})/", $HTTP_USER_AGENT)) {
+            if (preg_match("/MSIE ([0-9]\.[0-9]{1,2})/", $_SERVER['HTTP_USER_AGENT'])) {
                 header('Content-Disposition: inline; filename="' . $file_display . '"');
                 header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
                 header('Pragma: public');

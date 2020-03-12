@@ -1,3 +1,4 @@
+<h2 style="display:none;">Login</h2>
 <fieldset class="pad10">
     <legend class="bold"><{$lang_login}></legend>
     <form action="user.php" method="post">
