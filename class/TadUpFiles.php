@@ -1958,6 +1958,7 @@ class TadUpFiles
 
             die;
         }
+
         if ($os_charset != _CHARSET) {
             //若網站和主機編碼不同，則將 $file_display (真實檔名) 轉為主機編碼，以便等一下建立檔案
             $file_display = iconv(_CHARSET, $os_charset, $real_filename);
@@ -1992,7 +1993,9 @@ class TadUpFiles
             }
             rename($tmp_file, $path . '/' . $file_display);
         } else {
+            header('Content-Type: application/octet-stream');
             header("location:{$tmp_file_url}");
+            exit;
         }
         exit;
     }

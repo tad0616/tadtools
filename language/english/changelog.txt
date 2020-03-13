@@ -1,3 +1,7 @@
+TadTools 3.3.4 (released on 2020-03-14)
+======================================
+1. Correction for accessibility 2.0 AA standard
+
 TadTools 3.3.3 (released 2020-03-05)
 ======================================
 1. Streamline Video-JS and add settings such as auto play, repeat play, list position ...
