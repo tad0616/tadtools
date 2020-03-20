@@ -901,9 +901,36 @@ class TadUpFiles
     }
 
     //複製、匯入單一檔案，$this->col_name=對應欄位名稱,$col_sn=對應欄位編號,$種類：img,file,$sort=圖片排序,$files_sn="更新編號"
-    public function import_one_file($from = '', $new_filename = '', $main_width = '1920', $thumb_width = '240', $files_sn = '', $desc = '', $safe_name = false, $hash = false, $link = false)
+    public function import_one_file($from = '', $filename_new = '', $main_width = '1920', $thumb_width = '240', $files_sn = '', $desc = '', $safe_name = false, $hash = false, $link = false, $only_import2db = false)
     {
         global $xoopsDB, $xoopsUser;
+
+        //取消上傳時間限制
+        set_time_limit(0);
+        //設置上傳大小
+        ini_set('memory_limit', '1024M');
+
+        //自動排序
+        if (empty($this->sort)) {
+            $this->sort = $this->auto_sort();
+        }
+
+        $filename = empty($filename_new) ? Utility::get_basename($from) : $filename_new;
+        $type = $this->mime_content_type($filename);
+        $size = filesize($from);
+
+        //取得副檔名
+        $extarr = explode('.', $filename);
+        foreach ($extarr as $val) {
+            $ext = mb_strtolower($val);
+        }
+
+        //判斷檔案種類
+        if ($ext === 'jpg' or $ext === 'jpeg' or $ext === 'png' or $ext === 'gif') {
+            $kind = 'img';
+        } else {
+            $kind = 'file';
+        }
 
         if (empty($main_width)) {
             $main_width = '1920';
@@ -917,37 +944,11 @@ class TadUpFiles
             $this->set_hash($hash);
         }
 
-        // die($from);
-        $filename = Utility::get_basename($from);
-        $type = $this->mime_content_type($filename);
-        $size = filesize($from);
-        // die($filename);
-        //取消上傳時間限制
-        set_time_limit(0);
-        //設置上傳大小
-        ini_set('memory_limit', '1024M');
-
-        //先刪除舊檔
-        if (!empty($files_sn)) {
-            $this->del_files($files_sn);
-        }
-
-        //自動排序
-        if (empty($this->sort)) {
-            $this->sort = $this->auto_sort();
-        }
-
-        //取得副檔名
-        $extarr = explode('.', $filename);
-        foreach ($extarr as $val) {
-            $ext = mb_strtolower($val);
-        }
-
-        //判斷檔案種類
-        if ($ext === 'jpg' or $ext === 'jpeg' or $ext === 'png' or $ext === 'gif') {
-            $kind = 'img';
-        } else {
-            $kind = 'file';
+        if (!$only_import2db) {
+            //先刪除舊檔
+            if (!empty($files_sn)) {
+                $this->del_files($files_sn);
+            }
         }
 
         $path = ($kind === 'img') ? $this->TadUpFilesImgDir : $this->TadUpFilesDir;
@@ -973,8 +974,11 @@ class TadUpFiles
         if ($kind === 'img' and !empty($main_width)) {
             $filename = Utility::auto_charset($filename);
             $new_thumb = $this->TadUpFilesThumbDir . '/' . $hash_filename;
-            if (file_exists($path . '/' . $hash_filename)) {
-                unlink($path . '/' . $hash_filename);
+
+            if (!$only_import2db) {
+                if (file_exists($path . '/' . $hash_filename)) {
+                    unlink($path . '/' . $hash_filename);
+                }
             }
 
             if (function_exists('exif_read_data')) {
@@ -986,12 +990,19 @@ class TadUpFiles
                 }
             }
 
-            if ($link) {
-                $copy_or_link = symlink($from, $path . '/' . $hash_filename);
-            } else {
-                $copy_or_link = copy($from, $path . '/' . $hash_filename);
+            //複製檔案
+            $this->thumbnail($from, $new_thumb, $type, $thumb_width);
+
+            $copy_or_link = true;
+            if (!$only_import2db) {
+                if ($link) {
+                    $copy_or_link = symlink($from, $path . '/' . $hash_filename);
+                } else {
+                    $copy_or_link = copy($from, $path . '/' . $hash_filename);
+                }
             }
-            if ($copy_or_link) {
+
+            if ($copy_or_link or $only_import2db) {
                 if ($desc === false) {
                     $description = '';
                 } else {
@@ -1000,7 +1011,6 @@ class TadUpFiles
                 $this->col_sn = (int) $this->col_sn;
                 if (empty($files_sn)) {
                     $sql = "replace into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$new_filename}','{$type}','{$size}','{$description}','{$filename}','{$this->subdir}','{$hash_name}.{$ext}','{$upload_date}','{$uid}','{$tag}')";
-                    // die("1-{$sql}");
                     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
                     //取得最後新增資料的流水編號
                     $files_sn = $xoopsDB->getInsertId();
@@ -1010,19 +1020,18 @@ class TadUpFiles
                     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
                 }
                 $this->sort = '';
-                //echo "copy \"$from\" to  \"$path/$hash_filename\" OK!<br>";
             }
-            //die("copy \"$from\" to  \"$path/$hash_filename\" fail!");
 
-            //複製檔案
-            $this->thumbnail($from, $new_thumb, $type, $thumb_width);
         } else {
-            if ($link) {
-                $copy_or_link = symlink($from, $path . '/' . $hash_filename);
-            } else {
-                $copy_or_link = copy($from, $path . '/' . $hash_filename);
+            $copy_or_link = true;
+            if (!$only_import2db) {
+                if ($link) {
+                    $copy_or_link = symlink($from, $path . '/' . $hash_filename);
+                } else {
+                    $copy_or_link = copy($from, $path . '/' . $hash_filename);
+                }
             }
-            if ($copy_or_link) {
+            if ($copy_or_link or $only_import2db) {
                 $filename = Utility::auto_charset($filename);
                 // die($filename);
                 $description = (empty($files_sn) or empty($desc)) ? $filename : $desc;
@@ -1122,9 +1131,14 @@ class TadUpFiles
     }
 
     //做縮圖
-    protected function thumbnail($filename = '', $thumb_name = '', $type = 'image/jpeg', $width = '120')
+    public function thumbnail($filename = '', $thumb_name = '', $type = 'image/jpeg', $width = '120')
     {
-        ini_set('memory_limit', '50M');
+        // die("{$filename}, {$thumb_name}, {$filename}, {$filename}, ");
+
+        if (empty($type)) {
+            $type = $this->mime_content_type($filename);
+        }
+
         // Get new sizes
         list($old_width, $old_height) = getimagesize($filename);
         if ($old_width > $width) {
@@ -1168,8 +1182,6 @@ class TadUpFiles
         return;
         exit;
 
-        return;
-        exit;
     }
 
     //上傳單一檔案，$this->col_name=對應欄位名稱,$col_sn=對應欄位編號,$種類：img,file,$sort=圖片排序,$files_sn="更新編號"

@@ -1,3 +1,11 @@
+TadTools 3.3.5 (released on 2020-03-21)
+======================================
+1.Adjust the template for the theme
+2.Add the missing bootstrap-table.php
+3.Modify TadUpFiles.php cannot import thumbnail when importing files
+
+
+
 TadTools 3.3.4 (released on 2020-03-14)
 ======================================
 1. Correction for accessibility 2.0 AA standard
