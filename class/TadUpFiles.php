@@ -1154,9 +1154,15 @@ class TadUpFiles
                 $type = 'image/jpeg';
             } elseif ($type === 'image/png') {
                 $source = imagecreatefrompng($filename);
+                imagecolortransparent($thumb, imagecolorallocatealpha($thumb, 0, 0, 0, 127));
+                imagealphablending($thumb, false);
+                imagesavealpha($thumb, true);
                 $type = 'image/png';
             } elseif ($type === 'image/gif') {
                 $source = imagecreatefromgif($filename);
+                imagecolortransparent($thumb, imagecolorallocatealpha($thumb, 0, 0, 0, 127));
+                imagealphablending($thumb, false);
+                imagesavealpha($thumb, true);
                 $type = 'image/gif';
             }
 
@@ -1176,9 +1182,9 @@ class TadUpFiles
             //ob_end_clean();
             return;
             exit;
+        } else {
+            copy($filename, $thumb_name);
         }
-        copy($filename, $thumb_name);
-
         return;
         exit;
 

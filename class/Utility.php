@@ -99,7 +99,7 @@ class Utility
             default:
                 if (empty($ver)) {
                     $sql = "select version from `" . $xoopsDB->prefix("modules") . "` where dirname='{$type}'";
-                    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+                    $result = $xoopsDB->query($sql) or self::web_error($sql, __FILE__, __LINE__);
                     list($ver) = $xoopsDB->fetchRow($result);
                     for ($i = 0; $i < strlen($ver); $i++) {
                         $version[] = substr($ver, $i, 1);
@@ -302,9 +302,9 @@ class Utility
         $in_admin = (false !== mb_strpos($_SERVER['PHP_SELF'], '/admin/')) ? true : false;
         $main = '<h1>' . _TAD_OOPS_SOMETHING_WRONG . '</h1>';
 
-        if ($isAdmin or $in_admin) {
-            $main .= "<div class='well'>{$sql}</div>";
-        }
+        // if ($isAdmin or $in_admin) {
+        $main .= "<div class='well'>{$sql}</div>";
+        // }
 
         $show_position = ($file) ? "<br>{$file}:{$line}" : '';
         $main .= "<div class='alert alert-danger'>" . $xoopsDB->error() . $show_position . "</div><div class='text-center'><a href='javascript:history.go(-1);' class='btn btn-primary'>" . _TAD_BACK_PAGE . '</a></div>';
@@ -422,8 +422,8 @@ class Utility
         return $root_path;
     }
 
-
-    public static function auto_link($text) {
+    public static function auto_link($text)
+    {
         $pattern = '/(((http[s]?:\/\/(.+(:.+)?@)?)|(www\.))[a-z0-9](([-a-z0-9]+\.)*\.[a-z]{2,})?\/?[a-z0-9.,_\/~#&=:;%+!?-]+)/is';
         $text = preg_replace($pattern, ' <a href="$1" target="_blank">$1</a>', $text);
         // fix URLs without protocols
@@ -630,7 +630,7 @@ class Utility
 
         //取得目前使用者的群組編號
         if (!isset($_SESSION['groups']) or $_SESSION['groups'] === '') {
-            $_SESSION['groups'] = ($xoopsUser)?$xoopsUser->getGroups():XOOPS_GROUP_ANONYMOUS;
+            $_SESSION['groups'] = ($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
         }
 
         //取得模組編號
@@ -867,7 +867,7 @@ class Utility
                 }
 
                 $urlPath = (empty($moduleName) or 'http://' === mb_substr($url, 0, 7)) ? $url : XOOPS_URL . "/modules/{$moduleName}/{$url}";
-                if (isset($_GET['op']) and false !== strpos($url,"?op=") and  false !== strpos($url,"{$basename}?op={$_GET['op']}")) {
+                if (isset($_GET['op']) and false !== strpos($url, "?op=") and false !== strpos($url, "{$basename}?op={$_GET['op']}")) {
                     $active = "class='current' title='{$_SERVER['SCRIPT_NAME']}?op={$_GET['op']}=={$url}'";
                 } elseif (!isset($_GET['op']) and false !== strpos($_SERVER['SCRIPT_NAME'], $url)) {
                     $active = "class='current' title='hi'";

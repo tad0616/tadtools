@@ -32,10 +32,6 @@ a.btn , button.btn {
 	/* padding: 0.375rem 0.75rem; */
 }
 
-a.btn-sm , button.btn-sm {
-    font-size: 0.8em;
-}
-
 input[type="submit"]:hover,
 input[type="reset"]:hover,
 input[type="button"]:hover,
