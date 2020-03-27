@@ -433,13 +433,23 @@ foreach ($config2_files as $config2_file) {
         foreach ($theme_config as $k => $config) {
             $name = $config['name'];
             $value = is_null($config2[$name]) ? $config['default'] : $config2[$name];
+            
             if ($config['type'] == "array") {
                 $value = str_replace("{XOOPS_URL}", XOOPS_URL, $value);
                 $value = json_decode($value, true);
-            } elseif ($config['type'] == "file") {
-                $value = XOOPS_URL . "/uploads/tad_themes/{$theme_name}/config2/{$value}";
+            } elseif ($config['type'] == "file" or $config['type'] == "bg_file") {
+                $value = !empty($value) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/config2/{$value}":'';
             }
             $this->assign($name, $value);
+
+            if($config['type'] == "bg_file") {
+                $value_repeat =is_null($config2[$name.'_repeat']) ? $config['sub_default']['repeat'] : $config2[$name.'_repeat'];
+                $this->assign($name.'_repeat', $value_repeat);
+                $value_position =is_null($config2[$name.'_position']) ? $config['sub_default']['position'] : $config2[$name.'_position'];
+                $this->assign($name.'_position', $value_position);
+                $value_size =is_null($config2[$name.'_size']) ? $config['sub_default']['size'] : $config2[$name.'_size'];
+                $this->assign($name.'_size', $value_size);
+            }
         }
     }
 }

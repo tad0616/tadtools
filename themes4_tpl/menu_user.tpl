@@ -54,6 +54,13 @@
                 <{$smarty.const.TF_USER_BLOCK}>
             </a>
         </li>
+
+        <li>
+            <a class="dropdown-item" href="<{$xoops_url}>/modules/tad_blocks/blocks.php">
+                <span class="fa fa-cubes"></span>
+                <{$smarty.const.TF_USER_TAD_BLOCK}>
+            </a>
+        </li>
         <li class="divider"></li>
     <{/if}>
 

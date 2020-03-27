@@ -12,6 +12,7 @@ define('TF_USER_ENTER', 'Login');
 define('TF_USER_EXIT', 'Logout');
 define('TF_USER_ADMIN', 'Administration');
 define('TF_USER_BLOCK', 'Blocks setup');
+define('TF_USER_TAD_BLOCK', 'Block Advanced');
 define('TF_THEME_ADMIN', 'Theme setup');
 define('TF_THEME_DEBUG', 'Enable debug');
 define('TF_THEME_UNDEBUG', 'Unable debug');

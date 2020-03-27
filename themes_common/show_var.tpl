@@ -228,11 +228,20 @@
                                 $value.="<div>\${$name}[$i] = \"{$items}\";</div>";
                             }
                         }
-                    }elseif ($config['type'] == "file") {
-                        $value = XOOPS_URL . "/uploads/tad_themes/{$theme_name}/config2/{$value}";
+                    }elseif ($config['type'] == "file" or $config['type'] == "bg_file") {
+                        $value = !empty($value) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/config2/{$value}":'';
                     }
 
                     echo "                        <tr><th>{$config['text']}</th><th>\${$name}</th><td>{$value}</td></tr>\n";
+
+                    if($config['type'] == "bg_file") {
+                        $value_repeat =is_null($config2[$name.'_repeat']) ? $config['sub_default']['repeat'] : $config2[$name.'_repeat'];
+                        echo "                        <tr><th>{$config['text']} repeat</th><th>\${$name}_repeat</th><td>{$value_repeat}</td></tr>\n";
+                        $value_position =is_null($config2[$name.'_position']) ? $config['sub_default']['position'] : $config2[$name.'_position'];
+                        echo "                        <tr><th>{$config['text']} position</th><th>\${$name}_position</th><td>{$value_position}</td></tr>\n";
+                        $value_size =is_null($config2[$name.'_size']) ? $config['sub_default']['size'] : $config2[$name.'_size'];
+                        echo "                        <tr><th>{$config['text']} size</th><th>\${$name}_size</th><td>{$value_size}</td></tr>\n";
+                    }
                 }
             }
         }

@@ -63,6 +63,7 @@ define('_TAD_TF_SYSTEM_DBADM', 'Adminer');
 define('_TAD_TF_MODULE_CONFIG', 'Module config');
 define('_TAD_TF_USER_ADMIN', 'Admin');
 define('_TAD_TF_USER_BLOCK', 'Blocks');
+define('_TAD_TF_USER_TAD_BLOCK', 'Block Advanced');
 define('_TAD_TF_THEME_ADMIN', 'Theme');
 define('_TAD_TF_THEME_DEBUG', 'PHP debug');
 define('_TAD_TF_THEME_UNDEBUG', 'Disable PHP debug');
