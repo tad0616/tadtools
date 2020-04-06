@@ -32,7 +32,7 @@ if (!in_array($type, $type_arr)) {
     mkhtml(1, '', "{$type} -{$CKEditorFuncNum} error");
 }
 
-$foo = new Upload($_FILES['upload']);
+$foo = new \Verot\Upload\Upload($_FILES['upload'], 'zh_TW');
 if ($foo->uploaded) {
     $path_parts = pathinfo($_FILES['upload']['name']);
     $foo->file_new_name_body = $path_parts['filename'];
@@ -54,7 +54,7 @@ if ($foo->uploaded) {
     }
 }
 
-function mkhtml($fn, $fileurl, $message)
+function mkhtml($fn, $fileurl = '', $message = '')
 {
     $str = '<script type="text/javascript">window.parent.CKEDITOR.tools.callFunction(' . $fn . ', \'' . $fileurl . '\', \'' . $message . '\');</script>';
     exit($str);
