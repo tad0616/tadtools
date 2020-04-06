@@ -1,4 +1,4 @@
-<!--導覽工具列、區塊標題CSS設定開始 by hc-->
+<!--導覽工具列、區塊標題CSS設定開始-->
 <style type="text/css">
     body {
         color: <{$font_color}>;
@@ -7,6 +7,7 @@
         background-position: <{$bg_position}>;
         background-repeat: <{$bg_repeat}>;
         background-attachment: <{$bg_attachment}>;
+        background-size: <{$bg_size}>;
         font-size: <{$font_size}>;
         font-family: <{$font_family}>;
     }

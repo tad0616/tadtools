@@ -7,7 +7,9 @@
     background-position:  <{$bg_position}>;
     background-repeat:  <{$bg_repeat}>;
     background-attachment:<{$bg_attachment}>;
+    background-size: <{$bg_size}>;
     font-size:<{$font_size}>;
+    font-family: <{$font_family}>;
   }
 
   a{

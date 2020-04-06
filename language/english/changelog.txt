@@ -1,10 +1,16 @@
+TadTools 3.3.6 (released 2020-03-28)
+=============================================================================
+1. Fix the CSS error in BootStrap3
+2.Modify TadUpFiles.php thumbnail transparent background issue
+3. Add the Advanced block option to the Welcome menu
+4. Support new bg_file type for additional set of themes
+
+
 TadTools 3.3.5 (released on 2020-03-21)
 ======================================
 1.Adjust the template for the theme
 2.Add the missing bootstrap-table.php
 3.Modify TadUpFiles.php cannot import thumbnail when importing files
-
-
 
 TadTools 3.3.4 (released on 2020-03-14)
 ======================================
