@@ -10,19 +10,19 @@ class CkEditor
     public $ColName;
     public $CustomConfigurationsPath;
     public $ToolbarSet = 'my';
-    public $Width      = '100%';
-    public $Height     = 300;
+    public $Width = '100%';
+    public $Height = 300;
     public $Value;
-    public $ContentsCss   = [];
+    public $ContentsCss = [];
     public $demopublickey = '';
 
     //建構函數
     public function __construct($xoopsDirName = '', $ColName = '', $Value = '')
     {
         $TadToolsModuleConfig = Utility::TadToolsXoopsModuleConfig();
-        $this->xoopsDirName   = $xoopsDirName;
-        $this->ColName        = $ColName;
-        $this->Value          = $Value;
+        $this->xoopsDirName = $xoopsDirName;
+        $this->ColName = $ColName;
+        $this->Value = $Value;
         if (!empty($TadToolsModuleConfig['uploadcare_publickey'])) {
             $this->set_demopublickey($TadToolsModuleConfig['uploadcare_publickey']);
         }
@@ -99,7 +99,7 @@ class CkEditor
         }
 
         $TadToolsModuleConfig = Utility::TadToolsXoopsModuleConfig();
-        $codemirror           = $TadToolsModuleConfig['use_codemirror'] ? ',codemirror' : '';
+        $codemirror = $TadToolsModuleConfig['use_codemirror'] ? ',codemirror' : '';
 
         $editor .= "
         <textarea name='{$this->ColName}' id='editor_{$this->ColName}' class='ckeditor_css'>{$content}</textarea>
@@ -118,9 +118,9 @@ class CkEditor
             filebrowserBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=file&mod_dir=' . $this->xoopsDirName . "',
             filebrowserImageBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=image&mod_dir=' . $this->xoopsDirName . "',
             filebrowserFlashBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=flash&mod_dir=' . $this->xoopsDirName . "',
-            filebrowserUploadUrl : '" . XOOPS_URL . '/modules/tadtools/upload.php?type=file&mod_dir=' . $this->xoopsDirName . "',
-            filebrowserImageUploadUrl : '" . XOOPS_URL . '/modules/tadtools/upload.php?type=image&mod_dir=' . $this->xoopsDirName . "',
-            filebrowserFlashUploadUrl : '" . XOOPS_URL . '/modules/tadtools/upload.php?type=flash&mod_dir=' . $this->xoopsDirName . "',
+            // filebrowserUploadUrl : '" . XOOPS_URL . '/modules/tadtools/upload.php?type=file&mod_dir=' . $this->xoopsDirName . "',
+            // filebrowserImageUploadUrl : '" . XOOPS_URL . '/modules/tadtools/upload.php?type=image&mod_dir=' . $this->xoopsDirName . "',
+            // filebrowserFlashUploadUrl : '" . XOOPS_URL . '/modules/tadtools/upload.php?type=flash&mod_dir=' . $this->xoopsDirName . "',
             qtRows: 10, // Count of rows
             qtColumns: 10, // Count of columns
             qtBorder: '1', // Border of inserted table
