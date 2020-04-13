@@ -12,7 +12,7 @@ $TadUpFiles->set_var("permission", true); //要使用權限控管時才需要
 //加入上傳檔案MIME types篩選
 //新增ext2mime函數，可將副檔名轉換為MIME types，提供給$file_handle->allowed使用
 //$allow = "doc;docx;pdf"，利用分號;區分允許上傳的檔案類型
-$TadUpFiles->upload_file($upname,$width,$thumb_width,$files_sn,$desc,$safe_name=false,$hash=false,$return_col,$allow);
+$TadUpFiles->upload_file($upname,$width,$thumb_width,$files_sn,$desc,$safe_name=false,$hash=false,$return_col,$allow,$deny);
 
 //上傳表單（enctype='multipart/form-data'）
 require_once XOOPS_ROOT_PATH."/modules/tadtools/TadUpFiles.php" ;

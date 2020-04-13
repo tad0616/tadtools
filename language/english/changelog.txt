@@ -1,3 +1,10 @@
+TadTools 3.3.7 (released 2020-04-13)
+=============================================================================
+1.Remove CKEditor's upload tab and use "Browse and Upload" instead (thanks to geek01)
+2. Fix the problem that the background full setting is invalid.
+3. Fix the problem of no title in html5()
+4. Add the ability to configure sub-files to disable uploads.
+
 TadTools 3.3.6 (released 2020-03-28)
 =============================================================================
 1. Fix the CSS error in BootStrap3

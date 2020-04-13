@@ -12,7 +12,7 @@ $TadUpFiles->set_var("permission", true); //要使用權限控管時才需要
 //加入上傳檔案MIME types篩選
 //新增ext2mime函數，可將副檔名轉換為MIME types，提供給$file_handle->allowed使用
 //$allow = "doc;docx;pdf"，利用分號;區分允許上傳的檔案類型
-$TadUpFiles->upload_file($upname,$width,$thumb_width,$files_sn,$desc,$safe_name=false,$hash=false,$return_col,$allow);
+$TadUpFiles->upload_file($upname,$width,$thumb_width,$files_sn,$desc,$safe_name=false,$hash=false,$return_col,$allow,$deny);
 
 //上傳表單（enctype='multipart/form-data'）
 use XoopsModules\Tadtools\TadUpFiles;
@@ -650,7 +650,7 @@ class TadUpFiles
     }
 
     //上傳圖檔，$this->col_name=對應欄位名稱,$col_sn=對應欄位編號,$種類：img,file,$sort=圖片排序,$files_sn="更新編號"
-    public function upload_file($upname = 'upfile', $main_width = '1920', $thumb_width = '240', $files_sn = '', $desc = null, $safe_name = false, $hash = false, $return_col = 'file_name', $allow = '')
+    public function upload_file($upname = 'upfile', $main_width = '1920', $thumb_width = '240', $files_sn = '', $desc = null, $safe_name = false, $hash = false, $return_col = 'file_name', $allow = '', $deny = '')
     {
         global $xoopsDB, $xoopsUser;
         if ($hash) {
@@ -664,7 +664,7 @@ class TadUpFiles
         if (empty($thumb_width)) {
             $thumb_width = '240';
         }
-        //新增限制檔案類型
+        //新增限制允許檔案類型
         if (!empty($allow)) {
             $allow = explode(';', $allow);
             $allow_arr = [];
@@ -675,7 +675,20 @@ class TadUpFiles
                 }
             }
         }
-        //die(var_dump($_FILES[$upname]));
+
+        //新增限制不允許檔案類型
+        if (!empty($deny)) {
+            $deny = explode(';', $deny);
+            $deny_arr = [];
+            foreach ($deny as $key => $value) {
+                $mime_arr = $this->ext2mime($value);
+                foreach ($mime_arr as $k => $v) {
+                    $deny_arr[] = $v;
+                }
+            }
+        }
+        // die(var_dump($deny_arr));
+
         //引入上傳物件
         include_once XOOPS_ROOT_PATH . '/modules/tadtools/upload/class.upload.php';
 
@@ -768,7 +781,7 @@ class TadUpFiles
                 }
 
                 $file_handle->file_safe_name = false;
-                $file_handle->mime_check = $allow == '' ? false : true;
+                $file_handle->mime_check = ($allow == '' and $deny == '') ? false : true;
                 $file_handle->file_overwrite = true;
                 $file_handle->no_script = false;
                 $file_handle->file_new_name_ext = $ext;
@@ -807,6 +820,9 @@ class TadUpFiles
                 if (!empty($allow)) {
                     $file_handle->allowed = $allow_arr;
                 }
+                if (!empty($deny)) {
+                    $file_handle->forbidden = $deny_arr;
+                }
                 $file_handle->process($path);
                 $file_handle->auto_create_dir = true;
 
@@ -816,7 +832,7 @@ class TadUpFiles
                 //若是圖片才製作小縮圖
                 if ($kind === 'img') {
                     $file_handle->file_safe_name = false;
-                    $file_handle->mime_check = $allow == '' ? false : true;
+                    $file_handle->mime_check = ($allow == '' and $deny == '') ? false : true;
                     $file_handle->file_overwrite = true;
                     $file_handle->file_new_name_ext = $ext;
                     $file_handle->file_new_name_body = $new_filename;
@@ -829,6 +845,9 @@ class TadUpFiles
                     //新增限制檔案類型
                     if (!empty($allow)) {
                         $file_handle->allowed = $allow_arr;
+                    }
+                    if (!empty($deny)) {
+                        $file_handle->forbidden = $deny_arr;
                     }
                     $file_handle->process($this->TadUpFilesThumbDir);
                     $file_handle->auto_create_dir = true;
@@ -1191,7 +1210,7 @@ class TadUpFiles
     }
 
     //上傳單一檔案，$this->col_name=對應欄位名稱,$col_sn=對應欄位編號,$種類：img,file,$sort=圖片排序,$files_sn="更新編號"
-    public function upload_one_file($name = '', $tmp_name = '', $type = '', $size = '', $main_width = '1280', $thumb_width = '120', $files_sn = '', $desc = '', $safe_name = false, $hash = false, $allow = '')
+    public function upload_one_file($name = '', $tmp_name = '', $type = '', $size = '', $main_width = '1280', $thumb_width = '120', $files_sn = '', $desc = '', $safe_name = false, $hash = false, $allow = '', $deny = '')
     {
         global $xoopsDB, $xoopsUser;
 
@@ -1247,7 +1266,7 @@ class TadUpFiles
             $hash_name = md5(mt_rand(0, 1000) . $name);
 
             $file_handle->file_safe_name = false;
-            $file_handle->mime_check = $allow == '' ? false : true;
+            $file_handle->mime_check = ($allow == '' and $deny == '') ? false : true;
             $file_handle->file_overwrite = true;
             $file_handle->file_new_name_ext = $ext;
             if ($this->hash) {
@@ -1279,7 +1298,7 @@ class TadUpFiles
             //若是圖片才製作小縮圖
             if ($kind === 'img') {
                 $file_handle->file_safe_name = false;
-                $file_handle->mime_check = $allow == '' ? false : true;
+                $file_handle->mime_check = ($allow == '' and $deny == '') ? false : true;
                 $file_handle->file_overwrite = true;
                 $file_handle->file_new_name_ext = $ext;
                 if ($this->hash) {
