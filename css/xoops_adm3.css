@@ -5,6 +5,7 @@
 /* body ,div , a , li ,td ,th{
 } */
 @import url('my-input.css');
+
 .tooltip {
     opacity: 100;
     position: relative;
@@ -19,10 +20,11 @@ th {
 }
 
 li {
-    line-height: 1em;
+    line-height: 1.5em;
 }
 
-a.btn , button.btn {
+a.btn,
+button.btn {
     font-weight: normal;
     background-color: none;
     color: white !important;
@@ -36,4 +38,14 @@ input[type="button"]:hover,
 .formButton:hover,
 button:hover {
     padding: 6px 12px;
+}
+
+ol {
+    list-style-type: decimal;
+    list-style-position: inside;
+}
+
+ul {
+    list-style-type: disc;
+    list-style-position: inside;
 }

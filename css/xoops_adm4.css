@@ -21,7 +21,7 @@ th {
 }
 
 li {
-    line-height: 1em;
+    line-height: 1.5em;
 }
 
 a.btn , button.btn {
@@ -47,4 +47,13 @@ button:hover {
     padding-bottom: 9px;
     margin: 40px 0 20px;
     border-bottom: 1px solid #eee;
+}
+ol {
+    list-style-type: decimal;
+    list-style-position: inside;
+}
+
+ul {
+    list-style-type: disc;
+    list-style-position: inside;
 }
