@@ -174,7 +174,7 @@ class Utility
     public static function full_copy($source = '', $target = '')
     {
         if (is_dir($source)) {
-            if (!mkdir($target) && !is_dir($target)) {
+            if (!self::mk_dir($target) && !is_dir($target)) {
                 throw new \RuntimeException(sprintf('Directory "%s" was not created', $target));
             }
             $d = dir($source);
@@ -192,7 +192,9 @@ class Utility
             }
             $d->close();
         } else {
-            copy($source, $target);
+            if (\file_exists($source)) {
+                copy($source, $target);
+            }
         }
     }
 
@@ -290,7 +292,7 @@ class Utility
     }
 
     //自訂錯誤訊息
-    public static function web_error($sql, $file = '', $line = '')
+    public static function web_error($sql, $file = '', $line = '', $force = false)
     {
         global $xoopsDB, $xoopsModule, $xoopsUser;
         xoops_loadLanguage('main', 'tadtools');
@@ -299,9 +301,9 @@ class Utility
         $in_admin = (false !== mb_strpos($_SERVER['PHP_SELF'], '/admin/')) ? true : false;
         $main = '<h1>' . _TAD_OOPS_SOMETHING_WRONG . '</h1>';
 
-        // if ($isAdmin or $in_admin) {
-        $main .= "<div class='well'>{$sql}</div>";
-        // }
+        if ($isAdmin or $in_admin or $force) {
+            $main .= "<div class='well'>{$sql}</div>";
+        }
 
         $show_position = ($file) ? "<br>{$file}:{$line}" : '';
         $main .= "<div class='alert alert-danger'>" . $xoopsDB->error() . $show_position . "</div><div class='text-center'><a href='javascript:history.go(-1);' class='btn btn-primary'>" . _TAD_BACK_PAGE . '</a></div>';

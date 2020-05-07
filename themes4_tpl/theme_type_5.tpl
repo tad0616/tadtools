@@ -21,7 +21,17 @@
         </div>
     <{elseif $xoBlocks.canvas_left and !$xoBlocks.canvas_right}>
         <!-- 若是只有左區塊 -->
-        <div id="xoops_theme_center_zone" class="col-lg-<{$cb_width}> order-lg-2" style="<{$centerBlocks}>">
+        <{if $rb_width=="auto" and $lb_width=="auto"}>
+            <{assign var=center_width value=9}>
+        <{elseif $rb_width!="auto" and $cb_width!="auto"}>
+            <{assign var=center_width value=$cb_width+$rb_width}>
+        <{elseif $lb_width!="auto"}>
+            <{assign var=center_width value=12-$lb_width}>
+        <{else}>
+            <{assign var=center_width value=$cb_width}>
+        <{/if}>
+
+        <div id="xoops_theme_center_zone" class="col-lg-<{$center_width}> order-lg-2" style="<{$centerBlocks}>">
             <{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/centerZone.tpl"}>
         </div>
 
@@ -33,8 +43,16 @@
         </div>
     <{elseif !$xoBlocks.canvas_left and $xoBlocks.canvas_right}>
         <!-- 若是只有右區塊 -->
-
-        <div id="xoops_theme_center_zone" class="col-lg-<{$cb_width}> order-lg-1" style="<{$centerBlocks}>">
+        <{if $rb_width=="auto" and $lb_width=="auto"}>
+            <{assign var=center_width value=9}>
+        <{elseif $lb_width!="auto" and $cb_width!="auto"}>
+            <{assign var=center_width value=$cb_width+$lb_width}>
+        <{elseif $rb_width!="auto"}>
+            <{assign var=center_width value=12-$rb_width}>
+        <{else}>
+            <{assign var=center_width value=$cb_width}>
+        <{/if}>
+        <div id="xoops_theme_center_zone" class="col-lg-<{$center_width}> order-lg-1" style="<{$centerBlocks}>">
             <{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/centerZone.tpl"}>
         </div>
 

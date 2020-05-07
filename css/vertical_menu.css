@@ -13,7 +13,7 @@ ol.vertical_menu {
 ul.border,
 ol.border {
     background: #fff;
-    border: 1px solid rgb(210, 213, 214) ;
+    border: 1px solid rgb(210, 213, 214);
     border-radius: 5px;
 }
 
@@ -82,6 +82,18 @@ ol.num>li a:first-child:before {
 .vertical_menu li.selected a {
     background: #efefef;
 }
+
 .vertical_menu li:last-child {
     border-bottom: none;
-  }
+}
+
+.vertical_menu li.sm{
+    font-size: 0.8em;
+}
+.vertical_menu li.title.sm{
+    font-size: 0.95em;
+}
+.vertical_menu li.title{
+    background: #4b8573;
+    color:white;
+}

@@ -30,7 +30,7 @@
 
 .my-input {
     padding: 2px 4px;
-    font-size: 14px;
+    font-size: 0.9em;
     color: #555;
     background-color: #fff;
     background-image: none;
@@ -42,7 +42,6 @@
     -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
-
 
 .my-100 {
     width: 100%;
