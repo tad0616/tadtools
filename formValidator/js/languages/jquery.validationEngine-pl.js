@@ -26,7 +26,7 @@
                     "alertText": "* Maksymalna liczba znaków to ",
                     "alertText2": ""
                 },
-	     "groupRequired": {
+	            "groupRequired": {
                     "regex": "none",
                    "alertText": "* Proszę wypełnić wymienione opcje"
                 },
@@ -65,7 +65,7 @@
                 },
                 "phone": {
                     // credit: jquery.h5validate.js / orefalo
-                    "regex": /^([\+][0-9]{1,3}[ \.\-])?([\(]{1}[0-9]{2,6}[\)])?([0-9 \.\-\/]{3,20})((x|ext|extension)[ ]?[0-9]{1,4})?$/,
+                    "regex": /^([\+][0-9]{1,3}([ \.\-])?)?([\(][0-9]{1,6}[\)])?([0-9 \.\-]{1,32})(([A-Za-z \:]{1,11})?[0-9]{1,4}?)$/,
                     "alertText": "* Nieprawidłowy numer telefonu"
                 },
                 "email": {
@@ -91,8 +91,46 @@
                     "regex": /^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/,
                     "alertText": "* Data musi być w postaci RRRR-MM-DD"
                 },
+                "nip":{
+                    "func": function(field, rules, i, options){
+                        var nipNumber = field.val().replace(/[\s-]/gi, '');
+                        var verificator_nip = new Array(6,5,7,2,3,4,5,6,7);
+                        if (nipNumber.length == 10) {
+                            var n=0;
+                            for (var i=0; i<9; i++) 
+                            {
+                                n += nipNumber[i] * verificator_nip[i]; 
+                            }
+                            n %= 11;
+                            if (n == nipNumber[9]) {return true;} 
+                        }
+                        return false;
+                    },
+                    "alertText": "* Nieprawidłowy numer NIP"
+                },
+                "pesel":{
+                    "func": function(field, rules, i, options){
+                        var pesel = field.val().replace(/[\s-]/gi, '');
+                        var peselArr = new Array(1,3,7,9,1,3,7,9,1,3);
+                        if(pesel.length == 11){
+                            var peselCRC=0;
+                            for (var i=0; i<10;i++){
+                                peselCRC += peselArr[i]*pesel[i];
+                            }
+                            peselCRC%=10;
+                            if(peselCRC == 0) peselCRC=10;
+                                peselCRC = 10 - peselCRC;
+                            if(pesel[10]==peselCRC) return true; else return false;                            
+                        }
+                    },
+                    "alertText": "* Nieprawidłowy numer PESEL"
+                },
                 "ipv4": {
                     "regex": /^((([01]?[0-9]{1,2})|(2[0-4][0-9])|(25[0-5]))[.]){3}(([0-1]?[0-9]{1,2})|(2[0-4][0-9])|(25[0-5]))$/,
+                    "alertText": "* Nieprawidłowy adres IP"
+                },
+                "ip": {
+                    "regex": /((^\s*((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))\s*$)|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$))/,
                     "alertText": "* Nieprawidłowy adres IP"
                 },
                 "url": {
@@ -105,6 +143,10 @@
                 },
                 "onlyLetterSp": {
                     "regex": /^[a-zA-Z\ \']+$/,
+                    "alertText": "* Tylko litery"
+                },
+				"onlyLetterAccentSp":{
+                    "regex": /^[a-z\u00C0-\u017F\ ]+$/i,
                     "alertText": "* Tylko litery"
                 },
                 "onlyLetterNumber": {
@@ -133,7 +175,6 @@
                     "alertText": "* Proszę wpisać HELLO"
                 }
             };
-            
         }
     };
     $.validationEngineLanguage.newLang();

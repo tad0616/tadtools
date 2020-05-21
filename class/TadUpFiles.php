@@ -177,13 +177,15 @@ class TadUpFiles
     public $showFancyBox = true;
     public $download_url = '';
     public $files_sn;
-    public $filename_size = '15px';
+    public $filename_size = '1em';
 
     public $show_tip = true;
 
     public $auto_charset;
     public $other_css;
     public $thumb_css;
+
+    public $tag = '';
 
     public function __construct($prefix = '', $subdir = '', $file = '/file', $image = '/image', $thumbs = '/image/.thumbs')
     {
@@ -401,10 +403,18 @@ class TadUpFiles
     //列出可刪除檔案，$show_edit=true(full),false(thumb),'list','none'
     public function list_del_file($show_edit = false, $thumb = true, $files_sn_arr = [], $show_filename = true, $show_tip = null)
     {
-        global $xoopsDB, $xoopsUser;
+        global $xoopsDB, $xoopsUser, $xoTheme;
 
         if ($show_tip !== null) {
             $this->show_tip = $show_tip;
+        }
+
+        if ($show_edit == 'list') {
+            if ($xoTheme) {
+                $xoTheme->addStylesheet('modules/tadtools/css/rounded-list.css');
+            } else {
+                $files = '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/modules/tadtools/css/rounded-list.css">';
+            }
         }
 
         // 權限設定
@@ -413,13 +423,14 @@ class TadUpFiles
         }
 
         $all_file = '';
+        $and_tag = $this->tag ? "and `tag`='{$this->tag}'" : '';
         if (!empty($files_sn_arr)) {
             $all_files_sn = implode("','", $files_sn_arr);
             $sql = "select * from `{$this->TadUpFilesTblName}`  where `files_sn` in('$all_files_sn') order by sort";
         } else {
-            $sql = "select * from `{$this->TadUpFilesTblName}`  where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' order by sort";
+            $sql = "select * from `{$this->TadUpFilesTblName}`  where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' $and_tag order by sort";
         }
-        // die($sql);
+
         $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $i = 0;
 
@@ -436,8 +447,7 @@ class TadUpFiles
             if ($thumb) {
                 if ($kind === 'file') {
                     $fext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-                    // die(TADTOOLS_PATH . "/images/mimetype/{$fext}.png");
-                    if (file_exists(TADTOOLS_PATH . "/images/mimetype/{$fext}.png")) {
+                    if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/images/mimetype/{$fext}.png")) {
                         $thumb_pic = XOOPS_URL . "/modules/tadtools/images/mimetype/{$fext}.png";
                     } else {
                         $thumb_pic = XOOPS_URL . '/modules/tadtools/multiple-file-upload/downloads.png';
@@ -537,13 +547,13 @@ class TadUpFiles
                 </tr>";
             } elseif ($show_edit === 'list') {
                 //無編輯框，無圖示
-                $file_url = ($kind === 'file') ? "{$this->TadUpFilesUrl}/{$file_name}" : "{$this->TadUpFilesImgUrl}/{$file_name}";
+                $file_href = ($kind === 'file') ? "href='{$this->TadUpFilesUrl}/{$file_name}'" : "href='{$this->TadUpFilesImgUrl}/{$file_name}' class='fancybox_demo' rel='demo'";
                 $all_file .= "
                 <li id='fdtr_{$files_sn}'>
-                    <a name='{$files_sn}' target='_blank'>
-                        <input type='checkbox' name='del_file[]' value='{$files_sn}' onClick=\"remove_file('{$files_sn}');\">
-                        {$original_filename}
-                    </a>
+                    <span name='{$files_sn}'>
+                        <i class='fa fa-times-circle' aria-hidden='true' onClick=\"remove_file('{$files_sn}');\" style='color: red;'></i>
+                        <a $file_href>{$original_filename}</a>
+                    </span>
                 </li>
                 ";
             } else {
@@ -625,10 +635,9 @@ class TadUpFiles
                         $all_file
                     </tbody>
                 </table>
-              ";
+            ";
         } elseif ($show_edit === 'list') {
             $files .= "
-            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/css/rounded-list.css' />
             <div style='margin-top:10px;'>
                 <ol class='rectangle-list' style=\"counter-reset: li; list-style: none; *list-style: decimal; font: " . $this->filename_size . " 'trebuchet MS', 'lucida sans'; padding: 0; text-shadow: 0 1px 0 rgba(255,255,255,.5);\" id='list_del_file_sort_{$this->col_name}'>
                     {$all_file}
@@ -743,13 +752,12 @@ class TadUpFiles
         // die(var_dump($files));
         $all_files_sn = [];
         foreach ($files as $file) {
-            $tag = '';
             if (function_exists('exif_read_data')) {
                 $exif = exif_read_data($file['tmp_name'], null, true);
                 $creat_date = $exif['IFD0']['DateTime'];
                 $Model360 = ['LG-R105', 'RICOH THETA S'];
                 if (in_array($exif['IFD0']['Model'], $Model360)) {
-                    $tag = '360';
+                    $this->tag = '360';
                     $thumb_width = $thumb_width * 2;
                     $main_width = 0;
                 }
@@ -879,7 +887,7 @@ class TadUpFiles
                     $hash_name = ($this->hash) ? "{$hash_name}.{$ext}" : '';
 
                     if (empty($files_sn)) {
-                        $sql = "replace into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`counter`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}',0,'{$file['name']}','{$this->subdir}','{$hash_name}','{$upload_date}','{$uid}','{$tag}')";
+                        $sql = "replace into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`counter`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}',0,'{$file['name']}','{$this->subdir}','{$hash_name}','{$upload_date}','{$uid}','{$this->tag}')";
 
                         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
                         //取得最後新增資料的流水編號
@@ -894,7 +902,7 @@ class TadUpFiles
                             }
                         }
                     } else {
-                        $sql = "replace into `{$this->TadUpFilesTblName}` (`files_sn`,`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$files_sn}','{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}','{$file['name']}','{$this->subdir}','{$hash_name}','{$upload_date}','{$uid}','{$tag}')";
+                        $sql = "replace into `{$this->TadUpFilesTblName}` (`files_sn`,`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$files_sn}','{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}','{$file['name']}','{$this->subdir}','{$hash_name}','{$upload_date}','{$uid}','{$this->tag}')";
 
                         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
                     }
@@ -985,7 +993,6 @@ class TadUpFiles
             $hash_filename = $new_filename;
         }
 
-        $tag = '';
         $upload_date = date('Y-m-d H:i:s');
         $uid = is_object($xoopsUser) ? $xoopsUser->uid() : 0;
 
@@ -1005,7 +1012,7 @@ class TadUpFiles
                 $creat_date = $exif['IFD0']['DateTime'];
                 $Model360 = ['LG-R105', 'RICOH THETA S'];
                 if (in_array($exif['IFD0']['Model'], $Model360)) {
-                    $tag = '360';
+                    $this->tag = '360';
                 }
             }
 
@@ -1029,12 +1036,12 @@ class TadUpFiles
                 }
                 $this->col_sn = (int) $this->col_sn;
                 if (empty($files_sn)) {
-                    $sql = "replace into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`counter`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$new_filename}','{$type}','{$size}','{$description}',0 ,'{$filename}','{$this->subdir}','{$hash_name}.{$ext}','{$upload_date}','{$uid}','{$tag}')";
+                    $sql = "replace into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`counter`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$new_filename}','{$type}','{$size}','{$description}',0 ,'{$filename}','{$this->subdir}','{$hash_name}.{$ext}','{$upload_date}','{$uid}','{$this->tag}')";
                     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
                     //取得最後新增資料的流水編號
                     $files_sn = $xoopsDB->getInsertId();
                 } else {
-                    $sql = "replace into `{$this->TadUpFilesTblName}` (`files_sn`,`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`counter`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$files_sn}','{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$new_filename}','{$type}','{$size}','{$description}',0,'{$filename}','{$this->subdir}','{$hash_name}.{$ext}','{$upload_date}','{$uid}','{$tag}')";
+                    $sql = "replace into `{$this->TadUpFilesTblName}` (`files_sn`,`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`counter`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$files_sn}','{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$new_filename}','{$type}','{$size}','{$description}',0,'{$filename}','{$this->subdir}','{$hash_name}.{$ext}','{$upload_date}','{$uid}','{$this->tag}')";
                     // die("2-{$sql}");
                     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
                 }
@@ -1056,13 +1063,13 @@ class TadUpFiles
                 $description = (empty($files_sn) or empty($desc)) ? $filename : $desc;
 
                 if (empty($files_sn)) {
-                    $sql = "insert into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$new_filename}','{$type}','{$size}','{$description}','{$filename}','{$this->subdir}','{$hash_name}.{$ext}','{$upload_date}','{$uid}','{$tag}')";
+                    $sql = "insert into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$new_filename}','{$type}','{$size}','{$description}','{$filename}','{$this->subdir}','{$hash_name}.{$ext}','{$upload_date}','{$uid}','{$this->tag}')";
                     // die("3-{$sql}");
                     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
                     //取得最後新增資料的流水編號
                     $files_sn = $xoopsDB->getInsertId();
                 } else {
-                    $sql = "replace into `{$this->TadUpFilesTblName}` (`files_sn`,`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$files_sn}','{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$$new_filename}','{$type}','{$size}','{$description}','{$filename}','{$this->subdir}','{$hash_name}.{$ext}','{$upload_date}','{$uid}','{$tag}')";
+                    $sql = "replace into `{$this->TadUpFilesTblName}` (`files_sn`,`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$files_sn}','{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$$new_filename}','{$type}','{$size}','{$description}','{$filename}','{$this->subdir}','{$hash_name}.{$ext}','{$upload_date}','{$uid}','{$this->tag}')";
                     // die("4-{$sql}");
                     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
                 }
@@ -1291,7 +1298,6 @@ class TadUpFiles
             $file_handle->process($path);
             $file_handle->auto_create_dir = true;
 
-            $tag = '';
             $upload_date = date('Y-m-d H:i:s');
             $uid = is_object($xoopsUser) ? $xoopsUser->uid() : 0;
 
@@ -1319,7 +1325,7 @@ class TadUpFiles
                     $creat_date = $exif['IFD0']['DateTime'];
                     $Model360 = ['LG-R105', 'RICOH THETA S'];
                     if (in_array($exif['IFD0']['Model'], $Model360)) {
-                        $tag = '360';
+                        $this->tag = '360';
                     }
                 }
             }
@@ -1348,12 +1354,12 @@ class TadUpFiles
                     $db_hash_name = '';
                 }
                 if (empty($files_sn)) {
-                    $sql = "insert into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}','{$file['name']}','{$this->subdir}','{$db_hash_name}','{$upload_date}','{$uid}','{$tag}')";
+                    $sql = "insert into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}','{$file['name']}','{$this->subdir}','{$db_hash_name}','{$upload_date}','{$uid}','{$this->tag}')";
                     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
                     //取得最後新增資料的流水編號
                     $files_sn = $xoopsDB->getInsertId();
                 } else {
-                    $sql = "replace into `{$this->TadUpFilesTblName}` (`files_sn`,`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$files_sn}','{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}','{$file['name']}','{$this->subdir}','{$db_hash_name}','{$upload_date}','{$uid}','{$tag}')";
+                    $sql = "replace into `{$this->TadUpFilesTblName}` (`files_sn`,`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$files_sn}','{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}','{$file['name']}','{$this->subdir}','{$db_hash_name}','{$upload_date}','{$uid}','{$this->tag}')";
                     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
                 }
                 //die($sql);
@@ -1506,11 +1512,12 @@ class TadUpFiles
         } elseif (is_array($files_sn)) {
             $where = "where `files_sn` in('" . implode("','", $files_sn) . "')";
         } else {
-            $where = ($files_sn) ? "where `files_sn`='{$files_sn}'" : "where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' $and_sort order by sort $andLimit";
+            $and_tag = $this->tag ? "and `tag`='{$this->tag}'" : '';
+            $where = ($files_sn) ? "where `files_sn`='{$files_sn}'" : "where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' $and_sort $and_tag order by sort $andLimit";
         }
 
         $sql = "select * from `{$this->TadUpFilesTblName}` $where";
-
+        // die($sql);
         $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $files_sn, $col_name, $col_sn, $sort, $kind, $file_name, $file_type, $file_size, $description
@@ -1800,13 +1807,13 @@ class TadUpFiles
             foreach ($file_arr as $files_sn => $file_info) {
                 if ($show_mode === 'filename') {
                     if ($file_info['kind'] === 'file') {
-                        $all_files .= "<li>{$file_info['link']}</li>";
+                        $all_files .= "<li><span>{$file_info['link']}</span></li>";
                     } else {
                         if (mb_strpos($file_info['tag'], '360') !== false) {
                             $linkto = XOOPS_URL . "/modules/tadtools/360.php?photo={$file_info['path']}";
-                            $all_files .= "<li><a href='{$linkto}' class='fancybox_{$this->col_name}' data-fancybox-type='iframe'>{$file_info['original_filename']}</a></li>";
+                            $all_files .= "<li><span><a href='{$linkto}' class='fancybox_{$this->col_name}' data-fancybox-type='iframe'>{$file_info['original_filename']}</a></span></li>";
                         } else {
-                            $all_files .= "<li>{$file_info['url']}</li>";
+                            $all_files .= "<li><span>{$file_info['url']}</span></li>";
                         }
                     }
                 } elseif ($show_mode === 'app') {
@@ -1951,7 +1958,7 @@ class TadUpFiles
             $file_saved = "{$this->TadUpFilesUrl}/{$dl_name}";
             $file_hd_saved = "{$this->TadUpFilesDir}/{$dl_name}";
         }
-        //die($file_hd_saved);
+        // die($file_hd_saved);
 
         $os_charset = (PATH_SEPARATOR === ':') ? 'UTF-8' : 'Big5';
 

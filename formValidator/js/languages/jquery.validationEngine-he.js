@@ -6,93 +6,93 @@
             $.validationEngineLanguage.allRules = {
                 "required": { // Add your regex rules here, you can take telephone as an example
                     "regex": "none",
-                    "alertText": "* Dette feltet er påkrevd",
-                    "alertTextCheckboxMultiple": "* Velg et alternativ",
-                    "alertTextCheckboxe": "* Denne boksen er påkrevd",
-                    "alertTextDateRange": "* Begge datofelt må fylles ut"
+                    "alertText": "* שדה זה הוא חובה",
+                    "alertTextCheckboxMultiple": "* אנא בחר אפשרות",
+                    "alertTextCheckboxe": "* תיבת הבחירה היא חובה",
+                    "alertTextDateRange": "* שני תאריכי הטווח הם חובה"
                 },
                 "requiredInFunction": { 
                     "func": function(field, rules, i, options){
                         return (field.val() == "test") ? true : false;
                     },
-                    "alertText": "* Feltet må være lik test"
+                    "alertText": "* שדה חייב להיות שווה לבדיקה"
                 },
                 "dateRange": {
                     "regex": "none",
-                    "alertText": "* Ugyldig ",
-                    "alertText2": "Datointervall"
+                    "alertText": "* טווח תאריכים ",
+                    "alertText2": "לא תקין"
                 },
                 "dateTimeRange": {
                     "regex": "none",
-                    "alertText": "* Ugyldig ",
-                    "alertText2": "Tidsintervall"
+                    "alertText": "* טווח תאריך-זמן ",
+                    "alertText2": "לא תקין"
                 },
                 "minSize": {
                     "regex": "none",
-                    "alertText": "* Minimum ",
-                    "alertText2": " bokstaver tillatt"
+                    "alertText": "* דרושים לפחות ",
+                    "alertText2": " תוים"
                 },
                 "maxSize": {
                     "regex": "none",
-                    "alertText": "* Maksimalt ",
-                    "alertText2": " bokstaver tillatt"
+                    "alertText": "* מותרים לכל היותר ",
+                    "alertText2": " תוים"
                 },
 				"groupRequired": {
                     "regex": "none",
-                    "alertText": "* Du må fylle ett av de følgende feltene"
+                    "alertText": "* חובה למלא אחד מהשדות"
                 },
                 "min": {
                     "regex": "none",
-                    "alertText": "* Minimumsverdi er "
+                    "alertText": "* הערך המינימלי הוא "
                 },
                 "max": {
                     "regex": "none",
-                    "alertText": "* Maksimumsverdi er "
+                    "alertText": "* הערך המקסימלי הוא "
                 },
                 "past": {
                     "regex": "none",
-                    "alertText": "* Dato før "
+                    "alertText": "* תאריך קודם ל "
                 },
                 "future": {
                     "regex": "none",
-                    "alertText": "* Dato etter "
+                    "alertText": "* תאריך מאוחר מ "
                 },	
                 "maxCheckbox": {
                     "regex": "none",
-                    "alertText": "* Maksimalt ",
-                    "alertText2": " alternativer tillatt"
+                    "alertText": "* מותרות לכל היותר ",
+                    "alertText2": " אופציות"
                 },
                 "minCheckbox": {
                     "regex": "none",
-                    "alertText": "* Vennligst velg ",
-                    "alertText2": " alternativer"
+                    "alertText": "* אנא בחר ",
+                    "alertText2": " אופציות"
                 },
                 "equals": {
                     "regex": "none",
-                    "alertText": "* Feltene samsvarer ikke"
+                    "alertText": "* השדות לא תואמים"
                 },
                 "creditCard": {
                     "regex": "none",
-                    "alertText": "* Ugyldig kredittkortnummer"
+                    "alertText": "* מספר כרטיס אשראי לא תקין"
                 },
                 "phone": {
                     // credit: jquery.h5validate.js / orefalo
-                    "regex": /^([\+][0-9]{1,3}([ \.\-])?)?([\(][0-9]{1,6}[\)])?([0-9 \.\-]{1,32})(([A-Za-z \:]{1,11})?[0-9]{1,4}?)$/,
-                    "alertText": "* Ugyldig telefonnummer"
+                    "regex": /^([\+][0-9]{1,3}[\ \.\-])?([\(]{1}[0-9]{2,6}[\)])?([0-9\ \.\-\/]{3,20})((x|ext|extension)[\ ]?[0-9]{1,4})?$/,
+                    "alertText": "* מספר טלפון לא תקין"
                 },
                 "email": {
                     // HTML5 compatible email regex ( http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#    e-mail-state-%28type=email%29 )
-                    "regex": /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
-                    "alertText": "* Ugyldig e-postadresse"
+                    "regex": /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                    "alertText": "* תיבת דואר אלקטרוני לא תקינה"
                 },
                 "integer": {
                     "regex": /^[\-\+]?\d+$/,
-                    "alertText": "* Ikke et gyldig heltall"
+                    "alertText": "* מספר שלם לא תקין"
                 },
                 "number": {
                     // Number, including positive, negative, and floating decimal. credit: orefalo
                     "regex": /^[\-\+]?((([0-9]{1,3})([,][0-9]{3})*)|([0-9]+))?([\.]([0-9]+))?$/,
-                    "alertText": "* Ugyldig desimaltall"
+                    "alertText": "* מספר בעל נקודה עשרונית לא תקין"
                 },
                 "date": {                    
                     //	Check if date is valid by leap year
@@ -109,87 +109,36 @@
 	
 					return (date.getFullYear() == year && date.getMonth() == (month - 1) && date.getDate() == day);
 				},                		
-			 "alertText": "* Ugyldig dato, må være i formatet ÅÅÅÅ-MM-DD"
+			 "alertText": "* תאריך לא תקין, חייב ליות בתבנית YYYY-MM-DD"
                 },
                 "ipv4": {
                     "regex": /^((([01]?[0-9]{1,2})|(2[0-4][0-9])|(25[0-5]))[.]){3}(([0-1]?[0-9]{1,2})|(2[0-4][0-9])|(25[0-5]))$/,
-                    "alertText": "* Ugyldig IP-adresse"
+                    "alertText": "* כתובת IP לא תקינה"
                 },
                 "ip": {
                     "regex": /((^\s*((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))\s*$)|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$))/,
-                    "alertText": "* Ugyldig IP-adresse"
+                    "alertText": "* כתובת IP לא תקינה"
                 },
                 "url": {
                     "regex": /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i,
-                    "alertText": "* Ugyldig nettadresse"
+                    "alertText": "* קישור לא תקין"
                 },
                 "onlyNumberSp": {
                     "regex": /^[0-9\ ]+$/,
-                    "alertText": "* Kun tall"
+                    "alertText": "* מספרים בלבד"
                 },
                 "onlyLetterSp": {
                     "regex": /^[a-zA-Z\ \']+$/,
-                    "alertText": "* Kun bokstaver"
+                    "alertText": "* אותיות באנגלית בלבד"
                 },
 				"onlyLetterAccentSp":{
                     "regex": /^[a-z\u00C0-\u017F\ ]+$/i,
-                    "alertText": "* Kun bokstaver"
+                    "alertText": "* אותיות באנגלית בלבד"
                 },
                 "onlyLetterNumber": {
                     "regex": /^[0-9a-zA-Z]+$/,
-                    "alertText": "* Ingen spesielle tegn er tillatt"
-                },
-                // --- CUSTOM RULES -- Those are specific to the demos, they can be removed or changed to your likings
-                "ajaxUserCall": {
-                    "url": "ajaxValidateFieldUser",
-                    // you may want to pass extra data on the ajax call
-                    "extraData": "name=eric",
-                    "alertText": "* Denne brukeren er allerede tatt",
-                    "alertTextLoad": "* Validerer, vennligst vent"
-                },
-				"ajaxUserCallPhp": {
-                    "url": "phpajax/ajaxValidateFieldUser.php",
-                    // you may want to pass extra data on the ajax call
-                    "extraData": "name=eric",
-                    // if you provide an "alertTextOk", it will show as a green prompt when the field validates
-                    "alertTextOk": "* Denne brukeren er tilgjengelig",
-                    "alertText": "* Denne brukeren er allerede tatt",
-                    "alertTextLoad": "* Validerer, vennligst vent"
-                },
-                "ajaxNameCall": {
-                    // remote json service location
-                    "url": "ajaxValidateFieldName",
-                    // error
-                    "alertText": "* Dette navnet er allerede tatt",
-                    // if you provide an "alertTextOk", it will show as a green prompt when the field validates
-                    "alertTextOk": "* Dette navnet er tilgjengelig",
-                    // speaks by itself
-                    "alertTextLoad": "* Validerer, vennligst vent"
-                },
-				 "ajaxNameCallPhp": {
-	                    // remote json service location
-	                    "url": "phpajax/ajaxValidateFieldName.php",
-	                    // error
-	                    "alertText": "* Dette navnet er allerede tatt",
-	                    // speaks by itself
-	                    "alertTextLoad": "* Validerer, vennligst vent"
-	                },
-                "validate2fields": {
-                    "alertText": "* Vennligst skriv HELLO"
-                },
-	            //tls warning:homegrown not fielded 
-                "dateFormat":{
-                    "regex": /^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$|^(?:(?:(?:0?[13578]|1[02])(\/|-)31)|(?:(?:0?[1,3-9]|1[0-2])(\/|-)(?:29|30)))(\/|-)(?:[1-9]\d\d\d|\d[1-9]\d\d|\d\d[1-9]\d|\d\d\d[1-9])$|^(?:(?:0?[1-9]|1[0-2])(\/|-)(?:0?[1-9]|1\d|2[0-8]))(\/|-)(?:[1-9]\d\d\d|\d[1-9]\d\d|\d\d[1-9]\d|\d\d\d[1-9])$|^(0?2(\/|-)29)(\/|-)(?:(?:0[48]00|[13579][26]00|[2468][048]00)|(?:\d\d)?(?:0[48]|[2468][048]|[13579][26]))$/,
-                    "alertText": "* Ugyldig dato"
-                },
-                //tls warning:homegrown not fielded 
-				"dateTimeFormat": {
-	                "regex": /^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])\s+(1[012]|0?[1-9]){1}:(0?[1-5]|[0-6][0-9]){1}:(0?[0-6]|[0-6][0-9]){1}\s+(am|pm|AM|PM){1}$|^(?:(?:(?:0?[13578]|1[02])(\/|-)31)|(?:(?:0?[1,3-9]|1[0-2])(\/|-)(?:29|30)))(\/|-)(?:[1-9]\d\d\d|\d[1-9]\d\d|\d\d[1-9]\d|\d\d\d[1-9])$|^((1[012]|0?[1-9]){1}\/(0?[1-9]|[12][0-9]|3[01]){1}\/\d{2,4}\s+(1[012]|0?[1-9]){1}:(0?[1-5]|[0-6][0-9]){1}:(0?[0-6]|[0-6][0-9]){1}\s+(am|pm|AM|PM){1})$/,
-                    "alertText": "* Ugyldig dato eller datoformat",
-                    "alertText2": "Forventet format: ",
-                    "alertText3": "mm/dd/åååå tt:mm:ss AM|PM or ", 
-                    "alertText4": "åååå-mm-dd tt:mm:ss AM|PM"
-	            }
+                    "alertText": "* אסורים תוים מיוחדים"
+                }
             };
             
         }

@@ -115,7 +115,6 @@ class Utility
                         $version[] = substr($v[1], $i, 1);
                     }
 
-                    // die(var_dump($version));
                 }
                 break;
         }

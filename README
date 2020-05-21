@@ -4,6 +4,8 @@ TadTools 3.3.8 (尚未釋出)
 2.新增 jQuery UI Touch Punch
 3.修正在嚴格模式下 TadUpFiles.php 匯入檔案會出錯的問題
 4.修正BootStrap4三欄式佈景在左邊區塊或右邊區塊全無時，會留下空白的問題
+5.修改 TadUpFiles.php，增加條列式檔案的使用彈性
+6.
 
 
 TadTools 3.3.7 (2020-04-13 釋出)

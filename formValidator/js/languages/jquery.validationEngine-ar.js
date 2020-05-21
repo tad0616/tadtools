@@ -1,3 +1,10 @@
+/*****************************************************************
+ * Arabic language file for jquery.validationEngine.js (ver3.0.x)
+ *
+ * Transrator: @yasser_lotfy ( Yasser Lotfy )
+ * http://be.net/YasserLotfy
+ * Licenced under the MIT Licence
+ *******************************************************************/
 (function($){
     $.fn.validationEngineLanguage = function(){
     };
@@ -6,180 +13,205 @@
             $.validationEngineLanguage.allRules = {
                 "required": { // Add your regex rules here, you can take telephone as an example
                     "regex": "none",
-                    "alertText": "* Camp obligatoriu",
-                    "alertTextCheckboxMultiple": "* Selecteaza o optiune",
-                    "alertTextCheckboxe": "* Optiune obligatorie",
-                    "alertTextDateRange": "* Campurile data cu ajutorul carora se stabileste perioada sunt obligatorii"
+                    "alertText": "* هذا الحقل مطلوب",
+                    "alertTextCheckboxMultiple": "* برجاء إختيار إحدى الخيارات",
+                    "alertTextCheckboxe": "* هذا المربع الإختياري مطلوب",
+                    "alertTextDateRange": "* كلا حقلين نطاق التاريخ مطلوبة"
                 },
                 "requiredInFunction": { 
                     "func": function(field, rules, i, options){
                         return (field.val() == "test") ? true : false;
                     },
-                    "alertText": "* Field must equal test"
+                    "alertText": "* الحقل يجب أن يساوى test"
                 },
                 "dateRange": {
                     "regex": "none",
-                    "alertText": "* Perioada ",
-                    "alertText2": "este invalida"
+                    "alertText": "* غير صالح ",
+                    "alertText2": "نطاق التاريخ"
                 },
                 "dateTimeRange": {
                     "regex": "none",
-                    "alertText": "* Intervalul de timp ",
-                    "alertText2": "este invalid"
+                    "alertText": "* غير صالح ",
+                    "alertText2": "نطاق التاريخ والوقت"
                 },
                 "minSize": {
                     "regex": "none",
-                    "alertText": "* Sunt permise cel putin ",
-                    "alertText2": " caractere"
+                    "alertText": "* على الأقل ",
+                    "alertText2": " حروف مطلوبة"
                 },
                 "maxSize": {
                     "regex": "none",
-                    "alertText": "* Sunt permise maxim ",
-                    "alertText2": " caractere"
+                    "alertText": "* على الأكثر ",
+                    "alertText2": " حروف مسموحة"
                 },
-                "groupRequired": {
+				"groupRequired": {
                     "regex": "none",
-                    "alertText": "* Trebuie sa completezi unul dintre urmatoarele campuri"
+                    "alertText": "* يجب عليك ملئ إحدى الحقول التالية",
+                    "alertTextCheckboxMultiple": "* برجاء إختيار إحدى الخيارات",
+                    "alertTextCheckboxe": "* هذا المربع الإختياري مطلوب"
                 },
                 "min": {
                     "regex": "none",
-                    "alertText": "* Valoarea minim admisa este "
+                    "alertText": "* الحد الأدنى للقيمة هو "
                 },
                 "max": {
                     "regex": "none",
-                    "alertText": "* Valoarea maxim admisa este "
+                    "alertText": "* الحد الأقصى للقيمة هو "
                 },
                 "past": {
                     "regex": "none",
-                    "alertText": "* Data trebuie sa fie una anterioara fata de "
+                    "alertText": "* التاريخ قبل "
                 },
                 "future": {
                     "regex": "none",
-                    "alertText": "* Data este una din trecut fata de "
-                },
+                    "alertText": "* التاريخ بعد "
+                },	
                 "maxCheckbox": {
                     "regex": "none",
-                    "alertText": "* Maximul de optiuni permise este ",
-                    "alertText2": ""
+                    "alertText": "* على الأكثر ",
+                    "alertText2": " خيارات مسموحة"
                 },
                 "minCheckbox": {
                     "regex": "none",
-                    "alertText": "* Selecteaza minim ",
-                    "alertText2": " optiuni"
+                    "alertText": "* برجاء إختيار ",
+                    "alertText2": " خيارات"
                 },
                 "equals": {
                     "regex": "none",
-                    "alertText": "* Campurile nu au fost completate identic"
+                    "alertText": "* الحقول غير متساوية"
                 },
                 "creditCard": {
                     "regex": "none",
-                    "alertText": "* Nevalid num?rul de card de credit"
+                    "alertText": "* رقم بطاقة الإتمان غير صالح"
                 },
                 "phone": {
                     // credit: jquery.h5validate.js / orefalo
                     "regex": /^([\+][0-9]{1,3}([ \.\-])?)?([\(][0-9]{1,6}[\)])?([0-9 \.\-]{1,32})(([A-Za-z \:]{1,11})?[0-9]{1,4}?)$/,
-                    "alertText": "* Numarul de telefon este scris eronat"
+                    "alertText": "* رقم الهاتف غير صالح"
                 },
                 "email": {
-                    // Shamelessly lifted from Scott Gonzalez via the Bassistance Validation plugin http://projects.scottsplayground.com/email_address_validation/
-                    "regex": /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i,
-                    "alertText": "* Adresa e-mail este scrisa gresit"
+                    // HTML5 compatible email regex ( http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#    e-mail-state-%28type=email%29 )
+                    "regex": /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                    "alertText": "* عنوان بريد إلكتروني غير صالح"
+                },
+                "fullname": {
+                    "regex":/^([a-zA-Z]+[\'\,\.\-]?[a-zA-Z ]*)+[ ]([a-zA-Z]+[\'\,\.\-]?[a-zA-Z ]+)+$/,
+                    "alertText":"* يجب أن يكون الإسم الأول والأخير"
+                },
+                "zip": {
+                    "regex":/^\d{5}$|^\d{5}-\d{4}$/,
+                    "alertText":"* صيغة الرمز البريدي غير صالحة"
                 },
                 "integer": {
                     "regex": /^[\-\+]?\d+$/,
-                    "alertText": "* Nu este un numar intreg"
+                    "alertText": "* هذا ليس عدد صحيح صالح"
                 },
                 "number": {
                     // Number, including positive, negative, and floating decimal. credit: orefalo
                     "regex": /^[\-\+]?((([0-9]{1,3})([,][0-9]{3})*)|([0-9]+))?([\.]([0-9]+))?$/,
-                    "alertText": "* Trebuie sa fie un numar"
+                    "alertText": "* عدد عشري غير صالح"
                 },
-                "date": {
-                    "regex": /^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/,
-                    "alertText": "* Data nu este corecta. Aceasta trebuie sa fie scrisa sub forma YYYY-MM-DD"
+                "date": {                    
+                    //	Check if date is valid by leap year
+			"func": function (field) {
+					var pattern = new RegExp(/^(\d{4})[\/\-\.](0?[1-9]|1[012])[\/\-\.](0?[1-9]|[12][0-9]|3[01])$/);
+					var match = pattern.exec(field.val());
+					if (match == null)
+					   return false;
+	
+					var year = match[1];
+					var month = match[2]*1;
+					var day = match[3]*1;					
+					var date = new Date(year, month - 1, day); // because months starts from 0.
+	
+					return (date.getFullYear() == year && date.getMonth() == (month - 1) && date.getDate() == day);
+				},                		
+			 "alertText": "* تاريخ غير صالح، يجب أن يكون في هيئة YYYY-MM-DD"
                 },
                 "ipv4": {
                     "regex": /^((([01]?[0-9]{1,2})|(2[0-4][0-9])|(25[0-5]))[.]){3}(([0-1]?[0-9]{1,2})|(2[0-4][0-9])|(25[0-5]))$/,
-                    "alertText": "* Adresa IP nu este corecta"
+                    "alertText": "* عنوان IP غير صالح"
                 },
                 "ip": {
                     "regex": /((^\s*((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))\s*$)|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$))/,
-                    "alertText": "* Adresa IP nu este corecta"
+                    "alertText": "* عنوان IP غير صالح"
                 },
                 "url": {
                     "regex": /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i,
-                    "alertText": "* URL gresit"
+                    "alertText": "* عنوان إلكتروني غير صالح"
                 },
                 "onlyNumberSp": {
                     "regex": /^[0-9\ ]+$/,
-                    "alertText": "* Sunt permise doar numerele"
+                    "alertText": "* أرقام فقط"
                 },
                 "onlyLetterSp": {
                     "regex": /^[a-zA-Z\ \']+$/,
-                    "alertText": "* Sunt admise doar literele"
+                    "alertText": "* حروف فقط"
                 },
-				"onlyLetterAccentSp":{
+                "onlyLetterAccentSp": {
                     "regex": /^[a-z\u00C0-\u017F\ ]+$/i,
-                    "alertText": "* Sunt admise doar literele"
+                    "alertText": "* حروف فقط (مسموح بالنبرات)"
                 },
                 "onlyLetterNumber": {
                     "regex": /^[0-9a-zA-Z]+$/,
-                    "alertText": "* Trebuie sa folosesti doar litere si numere intregi"
+                    "alertText": "* غير مسموح بحروف خاصة"
                 },
                 // --- CUSTOM RULES -- Those are specific to the demos, they can be removed or changed to your likings
                 "ajaxUserCall": {
                     "url": "ajaxValidateFieldUser",
                     // you may want to pass extra data on the ajax call
                     "extraData": "name=eric",
-                    "alertText": "* Numele utilizator nu este disponibil",
-                    "alertTextLoad": "* Se efectueaza validarea. Asteapta..."
+                    "alertText": "* هذا المستخدم بالفعل موجود",
+                    "alertTextLoad": "* جاري التحقق، برجاء الإنتظار"
                 },
-                "ajaxUserCallPhp": {
+				"ajaxUserCallPhp": {
                     "url": "phpajax/ajaxValidateFieldUser.php",
                     // you may want to pass extra data on the ajax call
                     "extraData": "name=eric",
                     // if you provide an "alertTextOk", it will show as a green prompt when the field validates
-                    "alertTextOk": "* Numele utilizator este disponibil",
-                    "alertText": "* Numele utilizator nu este disponibil",
-                    "alertTextLoad": "* Se efectueaza validarea. Asteapta..."
+                    "alertTextOk": "* إسم المستخدم هذا متاح",
+                    "alertText": "* هذا المستخدم بالفعل موجود",
+                    "alertTextLoad": "* جاري التحقق، برجاء الإنتظار"
                 },
                 "ajaxNameCall": {
                     // remote json service location
                     "url": "ajaxValidateFieldName",
                     // error
-                    "alertText": "* Numele nu este disponibil",
+                    "alertText": "* هذا الإسم موجود بالفعل",
                     // if you provide an "alertTextOk", it will show as a green prompt when the field validates
-                    "alertTextOk": "* Numele este disponibil",
+                    "alertTextOk": "* هذا الإسم متاح",
                     // speaks by itself
-                    "alertTextLoad": "* Se efectueaza validarea. Asteapta..."
+                    "alertTextLoad": "* جاري التحقق، برجاء الإنتظار"
                 },
-                "ajaxNameCallPhp": {
-                        // remote json service location
-                        "url": "phpajax/ajaxValidateFieldName.php",
-                        // error
-                        "alertText": "* Numele nu este disponibil",
-                        // speaks by itself
-                        "alertTextLoad": "* Se efectueaza validarea. Asteapta..."
-                    },
+				 "ajaxNameCallPhp": {
+	                    // remote json service location
+	                    "url": "phpajax/ajaxValidateFieldName.php",
+	                    // error
+	                    "alertText": "* هذا الإسم موجود بالفعل",
+	                    // speaks by itself
+	                    "alertTextLoad": "* جاري التحقق، برجاء الإنتظار"
+	                },
                 "validate2fields": {
-                    "alertText": "* Scrie: HELLO"
+                    "alertText": "* برجاء إدخال HELLO"
                 },
-                //tls warning:homegrown not fielded
+	            //tls warning:homegrown not fielded 
                 "dateFormat":{
                     "regex": /^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$|^(?:(?:(?:0?[13578]|1[02])(\/|-)31)|(?:(?:0?[1,3-9]|1[0-2])(\/|-)(?:29|30)))(\/|-)(?:[1-9]\d\d\d|\d[1-9]\d\d|\d\d[1-9]\d|\d\d\d[1-9])$|^(?:(?:0?[1-9]|1[0-2])(\/|-)(?:0?[1-9]|1\d|2[0-8]))(\/|-)(?:[1-9]\d\d\d|\d[1-9]\d\d|\d\d[1-9]\d|\d\d\d[1-9])$|^(0?2(\/|-)29)(\/|-)(?:(?:0[48]00|[13579][26]00|[2468][048]00)|(?:\d\d)?(?:0[48]|[2468][048]|[13579][26]))$/,
-                    "alertText": "* Data nu este corecta"
+                    "alertText": "* تاريخ غير صالح"
                 },
-                //tls warning:homegrown not fielded
-                "dateTimeFormat": {
-                    "regex": /^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])\s+(1[012]|0?[1-9]){1}:(0?[1-5]|[0-6][0-9]){1}:(0?[0-6]|[0-6][0-9]){1}\s+(am|pm|AM|PM){1}$|^(?:(?:(?:0?[13578]|1[02])(\/|-)31)|(?:(?:0?[1,3-9]|1[0-2])(\/|-)(?:29|30)))(\/|-)(?:[1-9]\d\d\d|\d[1-9]\d\d|\d\d[1-9]\d|\d\d\d[1-9])$|^((1[012]|0?[1-9]){1}\/(0?[1-9]|[12][0-9]|3[01]){1}\/\d{2,4}\s+(1[012]|0?[1-9]){1}:(0?[1-5]|[0-6][0-9]){1}:(0?[0-6]|[0-6][0-9]){1}\s+(am|pm|AM|PM){1})$/,
-                    "alertText": "* Data nu este corecta sau formatul acesteia este unul gresit",
-                    "alertText2": "Formatele recunoscute sunt: ",
-                    "alertText3": "mm/dd/yyyy hh:mm:ss AM|PM sau ",
+                //tls warning:homegrown not fielded 
+				"dateTimeFormat": {
+	                "regex": /^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])\s+(1[012]|0?[1-9]){1}:(0?[1-5]|[0-6][0-9]){1}:(0?[0-6]|[0-6][0-9]){1}\s+(am|pm|AM|PM){1}$|^(?:(?:(?:0?[13578]|1[02])(\/|-)31)|(?:(?:0?[1,3-9]|1[0-2])(\/|-)(?:29|30)))(\/|-)(?:[1-9]\d\d\d|\d[1-9]\d\d|\d\d[1-9]\d|\d\d\d[1-9])$|^((1[012]|0?[1-9]){1}\/(0?[1-9]|[12][0-9]|3[01]){1}\/\d{2,4}\s+(1[012]|0?[1-9]){1}:(0?[1-5]|[0-6][0-9]){1}:(0?[0-6]|[0-6][0-9]){1}\s+(am|pm|AM|PM){1})$/,
+                    "alertText": "* التاريخ أو هيئة التاريخ غير صالحة",
+                    "alertText2": "الهيئة المتوقعة: ",
+                    "alertText3": "mm/dd/yyyy hh:mm:ss AM|PM أو ", 
                     "alertText4": "yyyy-mm-dd hh:mm:ss AM|PM"
-                }
+	            }
             };
-
+            
         }
     };
+
     $.validationEngineLanguage.newLang();
+    
 })(jQuery);
