@@ -1433,7 +1433,7 @@ class TadUpFiles
             foreach ($all as $k => $v) {
                 $$k = $v;
             }
-            if ($isAdmin or $uid == $my_uid) {
+            if ($isAdmin or $uid == $my_uid or empty($uid)) {
                 $this->set_col($col_name, $col_sn, $sort);
                 $del_sql = "delete  from `{$this->TadUpFilesTblName}`  where files_sn='{$files_sn}'";
                 $xoopsDB->queryF($del_sql) or Utility::web_error($del_sql, __FILE__, __LINE__);

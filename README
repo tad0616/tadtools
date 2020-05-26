@@ -5,7 +5,9 @@ TadTools 3.3.8 (尚未釋出)
 3.修正在嚴格模式下 TadUpFiles.php 匯入檔案會出錯的問題
 4.修正BootStrap4三欄式佈景在左邊區塊或右邊區塊全無時，會留下空白的問題
 5.修改 TadUpFiles.php，增加條列式檔案的使用彈性
-6.
+6.修改樣板若在下方時，區塊排列會不正常情形
+7.新增簡易開發框架 $TadMod 及 $TadModData
+8.修改 TadUpFiles.php 的刪除問題
 
 
 TadTools 3.3.7 (2020-04-13 釋出)

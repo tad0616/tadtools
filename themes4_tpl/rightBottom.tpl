@@ -18,7 +18,7 @@
             <{/if}>
 
             <{assign var="i" value=$i+1}>
-            <{if $i == 5 || $total==$right_count}>
+            <{if $i == 4 || $total==$right_count}>
                 </div>
                 <{assign var="i" value=0}>
             <{/if}>

@@ -1,0 +1,237 @@
+<?php
+
+namespace XoopsModules\Tadtools;
+
+class TadMod
+{
+    public $dirname;
+    public $name;
+    public $version;
+    public $release_date;
+    public $email;
+    public $author;
+    public $hasMain;
+    public $hasAdmin;
+    public $min_php;
+    public $min_xoops;
+    public $description;
+    public $credits;
+    public $website_ur;
+    public $website_name;
+    public $config_arr = [];
+    public $block_arr = [];
+    public $lang = [];
+    public $interface_menu = [];
+
+    public function __construct($dirname)
+    {
+        $this->dirname = $dirname;
+    }
+
+    public function setup($name, $version, $release_date, $email = '', $author = '', $hasMain = true, $hasAdmin = true, $min_php = '5.5', $min_xoops = '2.5', $description = '', $credits = '', $website_ur = '', $website_name = '')
+    {
+        $this->name = $name;
+        $this->version = $version;
+        $this->release_date = $release_date;
+        $this->email = $email;
+        $this->author = $author;
+        $this->hasMain = $hasMain;
+        $this->hasAdmin = $hasAdmin;
+        $this->name = $name;
+        $this->min_php = $min_php;
+        $this->min_xoops = $min_xoops;
+        $this->description = $description;
+        $this->credits = $credits;
+        $this->website_ur = $website_ur;
+        $this->website_name = $website_name;
+    }
+
+    public function add_config($name, $title = '', $desc = '', $formtype = 'textbox', $valuetype = 'text', $default = '')
+    {
+        $config['name'] = $name;
+        $config['formtype'] = $formtype;
+        $config['valuetype'] = $valuetype;
+        $config['default'] = $default;
+
+        $const['title'] = '_MI_' . \strtoupper($this->dirname) . '_C_' . \strtoupper($name);
+        $const['desc'] = '_MI_' . \strtoupper($this->dirname) . '_C_' . \strtoupper($name) . '_DESC';
+        $config['lang'] = $const;
+
+        if (empty($desc)) {
+            $desc = $title;
+        }
+        $this->lang['mi'][] = [$const['title'] => $title, $const['desc'] => $desc];
+        $this->config_arr[] = $config;
+    }
+
+    public function add_blocks($name, $title = '', $desc = '', $options_arr = [])
+    {
+
+        $block['name'] = $name;
+        $options = [];
+        foreach ($options_arr as $opt_title => $opt_val) {
+            $options[] = $opt_val;
+        }
+        $block['options'] = implode('|', $options);
+        $const['title'] = '_MI_' . \strtoupper($this->dirname) . '_B_' . \strtoupper($name);
+        $const['desc'] = '_MI_' . \strtoupper($this->dirname) . '_B_' . \strtoupper($name) . '_DESC';
+        $block['lang'] = $const;
+
+        if (empty($desc)) {
+            $desc = $title;
+        }
+        $this->lang['mi'][] = [$const['title'] => $title, $const['desc'] => $desc];
+        $this->block_arr[] = $block;
+    }
+
+    public function add_menu($title, $value, $only_adm = false)
+    {
+        if ($only_adm) {
+            if ($this->is_admin()) {
+                $this->interface_menu[$title] = $value;
+            }
+        } else {
+            $this->interface_menu[$title] = $value;
+        }
+    }
+
+    public function get_menu($tag = 'toolbar')
+    {
+        global $xoopsTpl;
+        $interface_menu[_TAD_TO_MOD] = "index.php";
+        $interface_menu = $this->interface_menu;
+        if ($this->is_admin()) {
+            $interface_menu[_TAD_TO_ADMIN] = "admin/main.php";
+        }
+        $menu = Utility::toolbar_bootstrap($interface_menu);
+        $xoopsTpl->assign($tag, $menu);
+        return $menu;
+    }
+
+    public function xoops_version()
+    {
+        global $xoTheme;
+        $modversion['name'] = $this->name;
+        $modversion['version'] = $this->version;
+        $modversion['description'] = $this->description;
+        $modversion['author'] = $this->author;
+        $modversion['credits'] = $this->credits;
+        $modversion['help'] = 'page=help';
+        $modversion['license'] = 'GNU GPL 2.0';
+        $modversion['license_url'] = 'www.gnu.org/licenses/gpl-2.0.html/';
+        $modversion['image'] = 'images/logo.png';
+        $modversion['dirname'] = $this->dirname;
+        $modversion['release_date'] = $this->release_date;
+        if ($this->website_url) {
+            $modversion['module_website_url'] = $this->website_url;
+            $modversion['module_website_name'] = $this->website_name;
+            $modversion['author_website_url'] = $this->website_url;
+            $modversion['author_website_name'] = $this->website_name;
+        }
+        $modversion['module_status'] = 'release';
+        $modversion['min_php'] = $this->min_php;
+        $modversion['min_xoops'] = $this->min_xoops;
+        $modversion['system_menu'] = 1;
+
+        if ($this->email) {
+            $paypal['business'] = $this->email;
+            $paypal['item_name'] = 'Donation : ' . $this->email;
+            $paypal['amount'] = 0;
+            $paypal['currency_code'] = 'USD';
+            $modversion['paypal'] = $paypal;
+        }
+
+        if (\file_exists(XOOPS_ROOT_PATH . "/modules/{$this->dirname}/sql/mysql.sql")) {
+            $modversion['sqlfile']['mysql'] = 'sql/mysql.sql';
+            $sql = \file_get_contents(XOOPS_ROOT_PATH . "/modules/{$this->dirname}/sql/mysql.sql");
+            preg_match_all('/CREATE TABLE `([a-z_]*)`/i', $sql, $tables);
+            $modversion['tables'] = $tables[1];
+        }
+
+        if ($this->hasMain) {
+            $modversion['hasMain'] = 1;
+            if (\is_array($this->hasMain)) {
+                foreach ($this->hasMain as $i => $sub) {
+                    $modversion['sub'][$i]['name'] = $sub['name'];
+                    $modversion['sub'][$i]['url'] = $sub['name'];
+                }
+            }
+        }
+
+        if ($this->hasAdmin) {
+            $modversion['hasAdmin'] = 1;
+            $modversion['adminindex'] = 'admin/index.php';
+            $modversion['adminmenu'] = 'admin/menu.php';
+        }
+
+        if (\file_exists(XOOPS_ROOT_PATH . "/modules/{$this->dirname}/include/onInstall.php")) {
+            $modversion['onInstall'] = "include/onInstall.php";
+        }
+        if (\file_exists(XOOPS_ROOT_PATH . "/modules/{$this->dirname}/include/onUpdate.php")) {
+            $modversion['onUpdate'] = "include/onUpdate.php";
+        }
+        if (\file_exists(XOOPS_ROOT_PATH . "/modules/{$this->dirname}/include/onUninstall.php")) {
+            $modversion['onUninstall'] = "include/onUninstall.php";
+        }
+        if (\file_exists(XOOPS_ROOT_PATH . "/modules/{$this->dirname}/include/search.php")) {
+            $modversion['hasSearch'] = 1;
+            $modversion['search']['file'] = "include/search.php";
+            $modversion['search']['func'] = "{$this->dirname}_search";
+        }
+
+        $modversion['templates'][0]['file'] = "{$this->dirname}_admin.tpl";
+        $modversion['templates'][0]['description'] = 'Admin Template';
+        $modversion['templates'][1]['file'] = "{$this->dirname}_index.tpl";
+        $modversion['templates'][1]['description'] = 'Index Template';
+
+        foreach ($this->config_arr as $i => $config) {
+            $modversion['config'][$i]['name'] = $config['name'];
+            $modversion['config'][$i]['title'] = $config['lang']['title'];
+            $modversion['config'][$i]['description'] = $config['lang']['desc'];
+            $modversion['config'][$i]['formtype'] = $config['formtype'];
+            $modversion['config'][$i]['valuetype'] = $config['valuetype'];
+            $modversion['config'][$i]['default'] = $config['default'];
+        }
+
+        foreach ($this->block_arr as $i => $block) {
+            $modversion['blocks'][$i]['file'] = "{$block['name']}.php";
+            $modversion['blocks'][$i]['name'] = constant($block['lang']['title']);
+            $modversion['blocks'][$i]['description'] = constant($block['lang']['desc']);
+            $modversion['blocks'][$i]['show_func'] = $block['name'];
+            $modversion['blocks'][$i]['template'] = "{$block['name']}.tpl";
+            if ($block['options']) {
+                $modversion['blocks'][$i]['edit_func'] = "{$block['name']}_edit";
+                $modversion['blocks'][$i]['options'] = $block['options'];
+            }
+        }
+
+        //---評論---//
+        //$modversion['hasComments'] = 1;
+        //$modversion['comments']['pageName'] = '單一頁面.php';
+        //$modversion['comments']['itemName'] = '主編號';
+
+        //---通知---//
+        //$modversion['hasNotification'] = 1;
+
+        return $modversion;
+    }
+
+    public function get_lang($type)
+    {
+        return $this->lang[$type];
+    }
+
+    public function is_admin()
+    {
+        global $xoopsUser;
+        $session_name = "{$this->dirname}_adm";
+        if (!isset($_SESSION[$session_name])) {
+            $modhandler = xoops_gethandler('module');
+            $xoopsModule = $modhandler->getByDirname($this->dirname);
+            $module_id = $xoopsModule->mid();
+            $_SESSION[$session_name] = ($xoopsUser) ? $xoopsUser->isAdmin($module_id) : false;
+        }
+        return $_SESSION[$session_name];
+    }
+
+}
