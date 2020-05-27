@@ -27,6 +27,7 @@ class TadModData
     private $file_show_mode;
     private $file_maxlength;
     private $file_only_type;
+    private $replace_col = [];
 
     public function __construct($dirname, $table)
     {
@@ -249,10 +250,10 @@ class TadModData
         $myts = \MyTextSanitizer::getInstance();
 
         $session_name = "{$this->dirname}_adm";
-        if ($_SESSION[$session_name]) {
+        if ($_SESSION[$session_name] or strpos($_SERVER['PHP_SELF'], '/admin/') !== false) {
             $SweetAlert = new SweetAlert();
             $SweetAlert->render("del_{$xoopsDB->prefix($this->table)}", "{$_SERVER['PHP_SELF']}?op=destroy&{$this->primary}=", $this->primary);
-            $add_button = '<a href="' . $_SERVER['PHP_SELF'] . '?op=create" class="btn btn-primary">';
+            $add_button = '<a href="' . $_SERVER['PHP_SELF'] . '?op=create" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> ' . _TAD_ADD . '</a>';
         }
 
         $sql = "select * from `" . $xoopsDB->prefix($this->table) . "` {$this->where} {$this->order}";
@@ -268,8 +269,9 @@ class TadModData
 
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $all_data = [];
+        $td = '';
         while ($all = $xoopsDB->fetchArray($result)) {
-            if ($_SESSION[$session_name]) {
+            if ($_SESSION[$session_name] or strpos($_SERVER['PHP_SELF'], '/admin/') !== false) {
                 $all['del'] = "javascript:del_{$xoopsDB->prefix($this->table)}('{$all[$this->primary]}')";
             }
 
@@ -287,9 +289,50 @@ class TadModData
             }
 
             $all_data[] = $all;
+            $td .= '<tr>';
+            $need_replace = array_keys($this->replace_col);
+
+            foreach ($this->schema as $i => $schema) {
+                $col_name = $schema['Field'];
+                $td_val = in_array($col_name, $need_replace) ? $this->replace_col[$col_name][$all[$col_name]] : $all[$col_name];
+                $td .= '
+                <td>' . $td_val . '</td>';
+            }
+
+            if ($_SESSION[$session_name] or strpos($_SERVER['PHP_SELF'], '/admin/') !== false) {
+                $td .= '
+                <td class="c n">
+                    <a href="' . $_SERVER['PHP_SELF'] . '?op=edit&' . $this->primary . '=' . $all[$this->primary] . '" class="btn btn-warning btn-sm">' . _TAD_EDIT . '</a>
+                    <a href="' . $all['del'] . '" class="btn btn-danger btn-sm">' . _TAD_DEL . '</a>
+                </td>';
+            }
+
+            $td .= '
+            </tr>';
+
         }
+
+        $th = '';
+        foreach ($this->schema as $i => $schema) {
+            $th .= '<th class="c n">' . $schema['Comment'] . '</th>';
+        }
+        if ($_SESSION[$session_name] or strpos($_SERVER['PHP_SELF'], '/admin/') !== false) {
+            $th .= '<th class="c n">' . _TAD_FUNCTION . '</th>';
+        }
+
+        $index_table = '
+        <table class="table table-bordered" style="width:auto; background:white;">
+        <tr class="bg-info white">
+            ' . $th . '
+        </tr>
+        ' . $td . '
+        </table>
+        <div class="bar">
+        ' . $add_button . '
+        </div>
+        ';
         $xoopsTpl->assign($this->table, $all_data);
-        // $xoopsTpl->assign("{$this->table}_index", $all_data);
+        $xoopsTpl->assign("{$this->table}_index", $index_table);
 
         return $all_data;
     }
@@ -376,5 +419,10 @@ class TadModData
         $this->file_show_mode = $show_mode;
         $this->file_maxlength = $maxlength;
         $this->file_only_type = $only_type;
+    }
+
+    public function replace($col_name, $arr = [])
+    {
+        $this->replace_col[$col_name] = $arr;
     }
 }

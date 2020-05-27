@@ -48,12 +48,15 @@ class TadMod
         $this->website_name = $website_name;
     }
 
-    public function add_config($name, $title = '', $desc = '', $formtype = 'textbox', $valuetype = 'text', $default = '')
+    public function add_config($name, $title = '', $desc = '', $formtype = 'textbox', $valuetype = 'text', $default = '', $options = [])
     {
         $config['name'] = $name;
         $config['formtype'] = $formtype;
         $config['valuetype'] = $valuetype;
         $config['default'] = $default;
+        if ($options) {
+            $config['options'] = $options;
+        }
 
         $const['title'] = '_MI_' . \strtoupper($this->dirname) . '_C_' . \strtoupper($name);
         $const['desc'] = '_MI_' . \strtoupper($this->dirname) . '_C_' . \strtoupper($name) . '_DESC';
