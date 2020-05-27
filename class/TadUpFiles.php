@@ -55,7 +55,7 @@ $TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="/file",$image="/image",
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_col($col_name,$col_sn,$sort);
 $show_files=$TadUpFiles->show_files($upname,true,NULL,false,false,NULL,NULL,false);
-//上傳表單name, 是否縮圖, 顯示模式 (filename、small), 顯示描述, 顯示下載次數, 數量限制, 自訂路徑, 加密, 自動播放時間(0 or 3000)
+//上傳表單name, 是否縮圖, 顯示模式 (small,filename,file_text_url,file_url,app), 顯示描述, 顯示下載次數, 數量限制, 自訂路徑, 加密, 自動播放時間(0 or 3000)
 //show_files($upname="",$thumb=true,$show_mode="",$show_description=false,$show_dl=false,$limit=NULL,$path=NULL,$hash=false,$playSpeed=5000)
 
 //下載檔案
@@ -1769,7 +1769,6 @@ class TadUpFiles
         if ($hash) {
             $this->set_hash($hash);
         }
-
         $playSpeed = empty($playSpeed) ? 0 : $playSpeed;
         $autoPlay = empty($playSpeed) ? false : true;
 

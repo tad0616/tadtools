@@ -5,6 +5,7 @@ use Xmf\Request;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\My97DatePicker;
 use XoopsModules\Tadtools\SweetAlert;
+use XoopsModules\Tadtools\TadUpFiles;
 use XoopsModules\Tadtools\Utility;
 
 class TadModData
@@ -14,11 +15,18 @@ class TadModData
     private $schema = [];
     private $var_type = [];
     private $pagebar;
+    private $where;
     private $order;
     private $primary;
     private $my_elements = [];
     private $left = 3;
     private $right = 9;
+    private $use_file;
+    private $TadUpFiles;
+    private $file_index_mode;
+    private $file_show_mode;
+    private $file_maxlength;
+    private $file_only_type;
 
     public function __construct($dirname, $table)
     {
@@ -102,7 +110,16 @@ class TadModData
                 $elements[$i]['form'] = '<input type="text" name="' . $schema['Field'] . '" class="form-control" value="' . $def_val[$col_name] . '">';
             }
         }
-        $form = '<form action="' . $action . '" method="post" id="' . $id_name . '">';
+
+        if ($this->use_file) {
+            $i++;
+            $elements[$i]['show'] = true;
+            $elements[$i]['label'] = '附檔上傳';
+            $this->TadUpFiles->set_col($this->use_file, $def_val[$this->use_file]);
+            $elements[$i]['form'] = $this->TadUpFiles->upform(true, $this->table . '_file', $this->file_maxlength, true, $this->file_only_type);
+        }
+
+        $form = '<form action="' . $action . '" method="post" id="' . $id_name . '" enctype="multipart/form-data">';
         foreach ($elements as $key => $ele) {
             if ($ele['show']) {
                 $form .= '
@@ -142,6 +159,7 @@ class TadModData
         $sql = "select * from `" . $xoopsDB->prefix($this->table) . "` where `{$this->primary}`='$id'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $all = $xoopsDB->fetchArray($result);
+
         if ($clean) {
             foreach ($all as $k => $v) {
                 if (strpos($this->var_type[$k], "text") !== false) {
@@ -150,6 +168,11 @@ class TadModData
                     $all[$k] = $myts->htmlSpecialChars($v);
                 }
             }
+        }
+
+        if (!empty($this->use_file)) {
+            $this->TadUpFiles->set_col($this->use_file, $id);
+            $all['files'] = $this->TadUpFiles->show_files("{$this->table}_file", true, $this->file_show_mode, false, false, null, null, false);
         }
         $xoopsTpl->assign($this->table, $all);
         return $all;
@@ -175,6 +198,11 @@ class TadModData
 
         $sql = "update `" . $xoopsDB->prefix($this->table) . "` set " . implode(', ', $update_arr) . " where `{$this->primary}`='{$id}'";
         $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
+        if ($this->use_file) {
+            $this->TadUpFiles->set_col($this->use_file, $id);
+            $this->TadUpFiles->upload_file($this->table . '_file');
+        }
     }
 
     public function store()
@@ -197,6 +225,10 @@ class TadModData
         $sql = "insert into `" . $xoopsDB->prefix($this->table) . "` (`" . implode('`, `', $col_name_arr) . "`) values('" . implode("', '", $col_val_arr) . "')";
         $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $InsertId = $xoopsDB->getInsertId();
+        if ($this->use_file) {
+            $this->TadUpFiles->set_col($this->use_file, $InsertId);
+            $this->TadUpFiles->upload_file($this->table . '_file');
+        }
         return $InsertId;
     }
 
@@ -205,6 +237,10 @@ class TadModData
         global $xoopsDB;
         $sql = "delete from `" . $xoopsDB->prefix($this->table) . "` where `{$this->primary}`='$id'";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        if ($this->use_file) {
+            $this->TadUpFiles->set_col($this->use_file, $id);
+            $this->TadUpFiles->del_files();
+        }
     }
 
     public function index()
@@ -216,9 +252,10 @@ class TadModData
         if ($_SESSION[$session_name]) {
             $SweetAlert = new SweetAlert();
             $SweetAlert->render("del_{$xoopsDB->prefix($this->table)}", "{$_SERVER['PHP_SELF']}?op=destroy&{$this->primary}=", $this->primary);
+            $add_button = '<a href="' . $_SERVER['PHP_SELF'] . '?op=create" class="btn btn-primary">';
         }
 
-        $sql = "select * from `" . $xoopsDB->prefix($this->table) . "` {$this->order}";
+        $sql = "select * from `" . $xoopsDB->prefix($this->table) . "` {$this->where} {$this->order}";
 
         if ($this->pagebar) {
             $PageBar = Utility::getPageBar($sql, $this->pagebar, 10);
@@ -235,6 +272,7 @@ class TadModData
             if ($_SESSION[$session_name]) {
                 $all['del'] = "javascript:del_{$xoopsDB->prefix($this->table)}('{$all[$this->primary]}')";
             }
+
             foreach ($all as $k => $v) {
                 if (strpos($this->var_type[$k], "text") !== false) {
                     $all[$k] = $myts->displayTarea($v, 1, 0, 0, 0, 0);
@@ -242,9 +280,16 @@ class TadModData
                     $all[$k] = $myts->htmlSpecialChars($v);
                 }
             }
+
+            if (!empty($this->use_file)) {
+                $this->TadUpFiles->set_col($this->use_file, $all[$this->use_file]);
+                $all['files'] = $this->TadUpFiles->show_files("{$this->table}_file", true, $this->file_index_mode, false, false, null, null, false);
+            }
+
             $all_data[] = $all;
         }
         $xoopsTpl->assign($this->table, $all_data);
+        // $xoopsTpl->assign("{$this->table}_index", $all_data);
 
         return $all_data;
     }
@@ -252,6 +297,14 @@ class TadModData
     public function pagebar($num = 20)
     {
         $this->pagebar = $num;
+    }
+
+    public function where($where_item = [])
+    {
+        foreach ($where_item as $col => $val) {
+            $where_sql[] = "`$col` = '{$val}'";
+        }
+        $this->where = "where " . implode(' and ', $where_sql);
     }
 
     public function order($order_item = [])
@@ -313,5 +366,15 @@ class TadModData
     {
         $this->left = $left;
         $this->right = $right;
+    }
+
+    public function use_file($col_name = '', $index_mode = 'small', $show_mode = '', $subdir = '', $maxlength = '', $only_type = '')
+    {
+        $this->TadUpFiles = new TadUpFiles($this->dirname, $subdir);
+        $this->use_file = $col_name;
+        $this->file_index_mode = $index_mode;
+        $this->file_show_mode = $show_mode;
+        $this->file_maxlength = $maxlength;
+        $this->file_only_type = $only_type;
     }
 }

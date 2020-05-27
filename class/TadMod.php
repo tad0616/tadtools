@@ -4,28 +4,30 @@ namespace XoopsModules\Tadtools;
 
 class TadMod
 {
-    public $dirname;
-    public $name;
-    public $version;
-    public $release_date;
-    public $email;
-    public $author;
-    public $hasMain;
-    public $hasAdmin;
-    public $min_php;
-    public $min_xoops;
-    public $description;
-    public $credits;
-    public $website_ur;
-    public $website_name;
-    public $config_arr = [];
-    public $block_arr = [];
-    public $lang = [];
-    public $interface_menu = [];
+    private $dirname;
+    private $name;
+    private $version;
+    private $release_date;
+    private $email;
+    private $author;
+    private $hasMain;
+    private $hasAdmin;
+    private $min_php;
+    private $min_xoops;
+    private $description;
+    private $credits;
+    private $website_ur;
+    private $website_name;
+    private $config_arr = [];
+    private $block_arr = [];
+    private $lang = [];
+    private $interface_menu = [];
+    private $adm_menu = [];
 
     public function __construct($dirname)
     {
         $this->dirname = $dirname;
+        $this->add_adm_menu(_MI_TAD_ADMIN_HOME, 'admin/index.php', 'images/admin/home.png');
     }
 
     public function setup($name, $version, $release_date, $email = '', $author = '', $hasMain = true, $hasAdmin = true, $min_php = '5.5', $min_xoops = '2.5', $description = '', $credits = '', $website_ur = '', $website_name = '')
@@ -106,6 +108,29 @@ class TadMod
         $menu = Utility::toolbar_bootstrap($interface_menu);
         $xoopsTpl->assign($tag, $menu);
         return $menu;
+    }
+
+    public function add_adm_menu($title, $value, $icon = 'images/admin/button.png')
+    {
+        $this->adm_menu[$title]['url'] = $value;
+        $this->adm_menu[$title]['icon'] = $icon;
+    }
+
+    public function get_adm_menu()
+    {
+        global $xoopsTpl;
+
+        $this->add_adm_menu(_MI_TAD_ADMIN_ABOUT, 'admin/about.php', 'images/admin/about.png');
+
+        $i = 0;
+        foreach ($this->adm_menu as $title => $adm_menu) {
+            $adminmenu[$i]['title'] = $title;
+            $adminmenu[$i]['link'] = $adm_menu['url'];
+            $adminmenu[$i]['icon'] = $adm_menu['icon'];
+            $i++;
+        }
+
+        return $adminmenu;
     }
 
     public function xoops_version()
