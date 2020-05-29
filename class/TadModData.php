@@ -2,6 +2,7 @@
 namespace XoopsModules\Tadtools;
 
 use Xmf\Request;
+use XoopsModules\Tadtools\CkEditor;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\My97DatePicker;
 use XoopsModules\Tadtools\SweetAlert;
@@ -19,8 +20,9 @@ class TadModData
     private $order;
     private $primary;
     private $my_elements = [];
-    private $left = 3;
-    private $right = 9;
+    private $my_elements_options = [];
+    private $left = 2;
+    private $right = 10;
     private $use_file;
     private $TadUpFiles;
     private $file_index_mode;
@@ -28,11 +30,22 @@ class TadModData
     private $file_maxlength;
     private $file_only_type;
     private $replace_col = [];
+    private $uid_col = [];
+    private $hide_index_col = [];
+    private $hide_show_col = [];
+    private $hide_create_col = [];
+    private $sort_col;
 
-    public function __construct($dirname, $table)
+    // 建構函數
+    public function __construct($table)
     {
-        global $xoopsDB;
-        $this->dirname = $dirname;
+        global $xoopsDB, $xoopsModule;
+        if (!$xoopsModule) {
+            preg_match('/\/modules\/(\w*)\//', $_SERVER['HTTP_REFERER'], $matches);
+            $this->dirname = $matches[1];
+        } else {
+            $this->dirname = $xoopsModule->dirname();
+        }
         $this->table = $table;
 
         $sql = "show full columns from `" . $xoopsDB->prefix($table) . "`";
@@ -43,7 +56,7 @@ class TadModData
                 $$k = $v;
             }
             $this->var_type[$Field] = $Type;
-            $this->schema[] = $all;
+            $this->schema[$Field] = $all;
             if ($Key == "PRI") {
                 $this->primary = $Field;
             }
@@ -51,12 +64,17 @@ class TadModData
         // Utility::dd($this->schema);
     }
 
+    // 過濾接收的變數
     public function clean()
     {
         $clean = [];
         foreach ($_REQUEST as $var => $val) {
             if (strpos($this->var_type[$var], 'int') !== false) {
                 $clean[$var] = Request::getInt($var);
+            } elseif (is_numeric($val)) {
+                $clean[$var] = Request::getInt($var);
+            } elseif (is_array($val)) {
+                $clean[$var] = Request::getArray($var);
             } else {
                 $clean[$var] = Request::getString($var);
             }
@@ -64,6 +82,24 @@ class TadModData
         return $clean;
     }
 
+    // 取得指定之資料陣列
+    public function get_arr($table, $key, $value)
+    {
+        global $xoopsDB, $xoopsTpl;
+        $sql = "select `$key`,`$value` from `" . $xoopsDB->prefix($table) . "` {$this->order}" . " order by $key";
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $arr = [];
+        while (list($k, $v) = $xoopsDB->fetchRow($result)) {
+            $arr[$k] = $v;
+        }
+
+        $xoopsTpl->assign($key . "_arr", $arr);
+        return $arr;
+    }
+
+    /*********** 基本功能 ************/
+
+    // 新增表單
     public function create($def_val = [], $action = '', $id_name = 'myForm')
     {
         global $xoopsDB, $xoopsTpl, $xoopsUser;
@@ -75,13 +111,13 @@ class TadModData
         $FormValidator->render('topLeft');
 
         $elements = [];
-        foreach ($this->schema as $i => $schema) {
+        $i = 0;
+        foreach ($this->schema as $col_name => $schema) {
             $elements[$i]['label'] = $schema['Comment'];
             $elements[$i]['show'] = true;
-            $col_name = $schema['Field'];
 
             if (!empty($this->my_elements[$col_name])) {
-                $elements[$i]['form'] = $this->my_elements[$col_name]['form'];
+                $elements[$i]['form'] = $this->mk_elements($col_name, $def_val[$col_name]);
             } elseif ($schema['Field'] == 'uid') {
                 $elements[$i]['show'] = false;
                 $uid = $xoopsUser->uid();
@@ -95,21 +131,25 @@ class TadModData
             } elseif ($schema['Type'] == 'datetime') {
                 My97DatePicker::render();
                 $elements[$i]['form'] = '<input type="text" name="' . $schema['Field'] . '" class="form-control time" onClick="WdatePicker({dateFmt:\'yyyy-MM-dd HH:mm:ss\', startDate:\'%y-%M-%d %H:%m:%s\'})" value="' . $def_val[$col_name] . '">';
+            } elseif (strpos($schema['Type'], 'text') !== false) {
+                $elements[$i]['form'] = '<textarea name="' . $schema['Field'] . '" class="form-control">' . $def_val[$col_name] . '</textarea>';
             } elseif (strpos($schema['Type'], 'enum') !== false) {
                 \preg_match_all("/'(\W|\d)'/", $schema['Type'], $opt);
                 foreach ($opt[1] as $v) {
                     $checked = (isset($def_val[$col_name]) and $def_val[$col_name] == $v) ? 'checked' : '';
                     $elements[$i]['form'] .= '
-                    <div class="form-check-inline">
+                    <div class="form-check form-check-inline radio-inline">
                         <label class="form-check-label">
-                        <input type="radio" name="' . $schema['Field'] . '"  value="' . $v . '" ' . $checked . ' class="form-check-input">' . $v . '
+                            <input type="radio" name="' . $schema['Field'] . '"  value="' . $v . '" ' . $checked . ' class="form-check-input"> ' . $v . '
                         </label>
                     </div>
                     ';
                 }
             } else {
-                $elements[$i]['form'] = '<input type="text" name="' . $schema['Field'] . '" class="form-control" value="' . $def_val[$col_name] . '">';
+                $value = ($col_name == $this->sort_col and !isset($def_val[$col_name])) ? $this->get_max_sort() : $def_val[$col_name];
+                $elements[$i]['form'] = '<input type="text" name="' . $schema['Field'] . '" class="form-control" value="' . $value . '">';
             }
+            $i++;
         }
 
         if ($this->use_file) {
@@ -117,15 +157,16 @@ class TadModData
             $elements[$i]['show'] = true;
             $elements[$i]['label'] = '附檔上傳';
             $this->TadUpFiles->set_col($this->use_file, $def_val[$this->use_file]);
+            $this->TadUpFiles->set_var('show_tip', false);
             $elements[$i]['form'] = $this->TadUpFiles->upform(true, $this->table . '_file', $this->file_maxlength, true, $this->file_only_type);
         }
 
-        $form = '<form action="' . $action . '" method="post" id="' . $id_name . '" enctype="multipart/form-data">';
+        $form = '<form action="' . $action . '" method="post" id="' . $id_name . '" class="form-horizontal" enctype="multipart/form-data">';
         foreach ($elements as $key => $ele) {
             if ($ele['show']) {
                 $form .= '
                 <div class="form-group row">
-                    <label class="col-sm-' . $this->left . ' col-form-label text-right">' . $ele['label'] . '</label>
+                    <label class="col-sm-' . $this->left . ' control-label col-form-label text-md-right">' . $ele['label'] . '</label>
                     <div class="col-sm-' . $this->right . '">
                         ' . $ele['form'] . '
                     </div>
@@ -146,6 +187,7 @@ class TadModData
         return $form;
     }
 
+    // 編輯表單
     public function edit($id, $action = '', $id_name = 'myForm')
     {
         global $xoopsDB;
@@ -153,6 +195,7 @@ class TadModData
         $this->create($values);
     }
 
+    // 單一顯示
     public function show($id, $clean = true)
     {
         global $xoopsDB, $xoopsTpl;
@@ -162,8 +205,13 @@ class TadModData
         $all = $xoopsDB->fetchArray($result);
 
         if ($clean) {
+            $uid_cols = array_keys($this->uid_col);
             foreach ($all as $k => $v) {
-                if (strpos($this->var_type[$k], "text") !== false) {
+                if (!empty($uid_cols) and in_array($k, $uid_cols)) {
+                    $all[$k] = (int) $v;
+                    $all[$k . '_name'] = $uid_name = \XoopsUser::getUnameFromId($v, $this->uid_col[$k]);
+                    $this->replace_col[$k][$v] = $uid_name;
+                } elseif (strpos($this->var_type[$k], "text") !== false) {
                     $all[$k] = $myts->displayTarea($v, 1, 0, 0, 0, 0);
                 } else {
                     $all[$k] = $myts->htmlSpecialChars($v);
@@ -171,15 +219,31 @@ class TadModData
             }
         }
 
-        if (!empty($this->use_file)) {
+        if ($this->use_file) {
             $this->TadUpFiles->set_col($this->use_file, $id);
             $all['files'] = $this->TadUpFiles->show_files("{$this->table}_file", true, $this->file_show_mode, false, false, null, null, false);
         }
+
+        // 顯示替換
+        $need_replace = array_keys($this->replace_col);
+
+        $show_content = '';
+        foreach ($all as $col_name => $value) {
+            $value = in_array($col_name, $need_replace) ? $this->replace_col[$col_name][$value] : $value;
+            $show_content .= '
+            <div class="row my-3">
+                <div class="col-sm-2 text-right">' . $this->schema[$col_name]['Comment'] . '</div>
+                <div class="col-sm-10">' . $value . '</div>
+            </div>';
+        }
+
         $xoopsTpl->assign($this->table, $all);
+        $xoopsTpl->assign("{$this->table}_show", $show_content);
         return $all;
 
     }
 
+    // 更新資料
     public function update($id)
     {
         global $xoopsDB;
@@ -206,6 +270,7 @@ class TadModData
         }
     }
 
+    // 儲存資料
     public function store()
     {
         global $xoopsDB;
@@ -233,6 +298,7 @@ class TadModData
         return $InsertId;
     }
 
+    // 刪除資料
     public function destroy($id)
     {
         global $xoopsDB;
@@ -244,9 +310,10 @@ class TadModData
         }
     }
 
+    // 資料列表
     public function index()
     {
-        global $xoopsDB, $xoopsTpl;
+        global $xoopsDB, $xoopsTpl, $xoTheme;
         $myts = \MyTextSanitizer::getInstance();
 
         $session_name = "{$this->dirname}_adm";
@@ -270,33 +337,45 @@ class TadModData
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $all_data = [];
         $td = '';
+
+        $uid_cols = array_keys($this->uid_col);
+
         while ($all = $xoopsDB->fetchArray($result)) {
             if ($_SESSION[$session_name] or strpos($_SERVER['PHP_SELF'], '/admin/') !== false) {
                 $all['del'] = "javascript:del_{$xoopsDB->prefix($this->table)}('{$all[$this->primary]}')";
             }
 
             foreach ($all as $k => $v) {
-                if (strpos($this->var_type[$k], "text") !== false) {
+                if (!empty($uid_cols) and in_array($k, $uid_cols)) {
+                    $all[$k] = (int) $v;
+                    $all[$k . '_name'] = $uid_name = \XoopsUser::getUnameFromId($v, $this->uid_col[$k]);
+                    $this->replace_col[$k][$v] = $uid_name;
+                } elseif (strpos($this->var_type[$k], "text") !== false) {
                     $all[$k] = $myts->displayTarea($v, 1, 0, 0, 0, 0);
                 } else {
                     $all[$k] = $myts->htmlSpecialChars($v);
                 }
             }
 
-            if (!empty($this->use_file)) {
+            if ($this->use_file) {
                 $this->TadUpFiles->set_col($this->use_file, $all[$this->use_file]);
                 $all['files'] = $this->TadUpFiles->show_files("{$this->table}_file", true, $this->file_index_mode, false, false, null, null, false);
             }
 
             $all_data[] = $all;
-            $td .= '<tr>';
-            $need_replace = array_keys($this->replace_col);
+            $td .= '<tr id="sort_arr_' . $all[$this->primary] . '">';
 
-            foreach ($this->schema as $i => $schema) {
-                $col_name = $schema['Field'];
+            $need_replace = array_keys($this->replace_col);
+            foreach ($this->schema as $col_name => $schema) {
                 $td_val = in_array($col_name, $need_replace) ? $this->replace_col[$col_name][$all[$col_name]] : $all[$col_name];
+                $td_class = $col_name == $this->sort_col ? 'class="show_sort"' : '';
                 $td .= '
-                <td>' . $td_val . '</td>';
+                <td ' . $td_class . '>' . $td_val . '</td>';
+            }
+
+            if ($this->use_file) {
+                $td .= '
+                <td ' . $td_class . '>' . $all['files'] . '</td>';
             }
 
             if ($_SESSION[$session_name] or strpos($_SERVER['PHP_SELF'], '/admin/') !== false) {
@@ -313,19 +392,50 @@ class TadModData
         }
 
         $th = '';
-        foreach ($this->schema as $i => $schema) {
+        foreach ($this->schema as $col_name => $schema) {
             $th .= '<th class="c n">' . $schema['Comment'] . '</th>';
         }
+
+        if ($this->use_file) {
+            $th .= '<th class="c n">相關附檔</th>';
+        }
+
         if ($_SESSION[$session_name] or strpos($_SERVER['PHP_SELF'], '/admin/') !== false) {
             $th .= '<th class="c n">' . _TAD_FUNCTION . '</th>';
         }
 
+        $save_msg == '';
+        if (!empty($this->sort_col)) {
+            Utility::get_jquery(true);
+            $xoTheme->addScript('', null, "
+                \$(document).ready(function(){
+                    \$('#sort').sortable({ opacity: 0.6, cursor: 'move', update: function() {
+                        var order = $(this).sortable('serialize');
+                        \$.post('" . XOOPS_URL . "/modules/tadtools/ajax_file.php?op=save_sort&table={$this->table}&sort_col={$this->sort_col}&primary_key={$this->primary}', order, function(theResponse){
+                            $('#save_msg').html(theResponse);
+                            $('.show_sort').each(function( index ) {
+                                var sort = index+1;
+                                $(this).html(sort);
+                            });
+                        });
+                    }
+                    });
+                });
+            ");
+            $save_msg = '<div id="save_msg">' . _TAD_SORTABLE . '</div>';
+        }
+
         $index_table = '
-        <table class="table table-bordered" style="width:auto; background:white;">
-        <tr class="bg-info white">
-            ' . $th . '
-        </tr>
-        ' . $td . '
+        ' . $save_msg . '
+        <table class="table table-hover table-responsive table-striped">
+            <thead>
+                <tr class="bg-info white">
+                    ' . $th . '
+                </tr>
+            </thead>
+            <tbody id="sort">
+                ' . $td . '
+            </tbody>
         </table>
         <div class="bar">
         ' . $add_button . '
@@ -337,11 +447,8 @@ class TadModData
         return $all_data;
     }
 
-    public function pagebar($num = 20)
-    {
-        $this->pagebar = $num;
-    }
-
+    /*********** 資料操控 ************/
+    // 篩選
     public function where($where_item = [])
     {
         foreach ($where_item as $col => $val) {
@@ -350,6 +457,7 @@ class TadModData
         $this->where = "where " . implode(' and ', $where_sql);
     }
 
+    // 排序
     public function order($order_item = [])
     {
         foreach ($order_item as $col => $sort) {
@@ -358,60 +466,80 @@ class TadModData
         $this->order = "order by " . implode(',', $order_sql);
     }
 
-    public function get_arr($table, $key, $value)
+    /*********** 表單元件 ************/
+
+    // 製作套用的表單元件
+    public function mk_elements($col_name, $def_val = '')
     {
-        global $xoopsDB, $xoopsTpl;
-        $sql = "select `$key`,`$value` from `" . $xoopsDB->prefix($table) . "` {$this->order}" . " order by $key";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-        $arr = [];
-        while (list($k, $v) = $xoopsDB->fetchRow($result)) {
-            $arr[$k] = $v;
+        $type = $this->my_elements[$col_name];
+        $options = $this->my_elements_options[$col_name];
+        $fnname = "use_{$type}";
+        $element = $this->{$fnname}($col_name, $options, $def_val);
+        return $element;
+    }
+
+    // 加入欲套用的元件
+    public function my_elements($col_name, $type, $options = [])
+    {
+        $this->my_elements[$col_name] = $type;
+        $this->my_elements_options[$col_name] = $options;
+    }
+
+    // 套用下拉選單
+    public function use_select($col_name, $options = [], $def_val = null)
+    {
+        if (is_null($def_val)) {
+            $this->my_elements($col_name, 'select', $options);
+        } else {
+            $select = '<select name="' . $col_name . '" class="form-control">';
+            foreach ($options as $val => $label) {
+                $selected = ($def_val == $val) ? 'selected' : '';
+                $select .= '<option value="' . $val . '" ' . $selected . '>' . $label . '</option>';
+            }
+            $select .= "</select>";
+            return $select;
         }
-
-        $xoopsTpl->assign($key . "_arr", $arr);
-        return $arr;
     }
 
-    public function use_select($col_name, $options = [], $id = '')
+    // 套用單選
+    public function use_radio($col_name, $options = [], $def_val = null)
     {
-        global $xoopsDB, $xoopsTpl;
-        $def_val = $id ? $this->show($id, false) : [];
-        $select = '<select name="' . $col_name . '" class="form-control">';
-        foreach ($options as $val => $label) {
-            $selected = (isset($def_val[$col_name]) and $def_val[$col_name] == $val) ? 'selected' : '';
-            $select .= '<option value="' . $val . '" ' . $selected . '>' . $label . '</option>';
+        if (is_null($def_val)) {
+            $this->my_elements($col_name, 'radio', $options);
+        } else {
+
+            $radio = '';
+            foreach ($options as $val => $label) {
+                $checked = ($def_val == $val) ? 'checked' : '';
+                $radio .= '
+                <div class="form-check-inline">
+                    <label class="form-check-label">
+                    <input type="radio" name="' . $col_name . '"  value="' . $val . '" ' . $checked . ' class="form-check-input">' . $label . '
+                    </label>
+                </div>
+                ';
+            }
+            return $radio;
         }
-        $select .= "</select>";
-        $this->my_elements[$col_name]['form'] = $select;
-        return $select;
     }
 
-    public function use_radio($col_name, $options = [], $id = '')
+    // 套用單選
+    public function use_ckeditor($col_name, $options = [], $def_val = null)
     {
-        global $xoopsDB, $xoopsTpl;
-        $def_val = $id ? $this->show($id, false) : [];
-        $radio = '';
-        foreach ($options as $val => $label) {
-            $checked = (isset($def_val[$col_name]) and $def_val[$col_name] == $val) ? 'checked' : '';
-            $radio .= '
-            <div class="form-check-inline">
-                <label class="form-check-label">
-                <input type="radio" name="' . $col_name . '"  value="' . $val . '" ' . $checked . ' class="form-check-input">' . $label . '
-                </label>
-            </div>
-            ';
+        if (is_null($def_val)) {
+            $this->my_elements($col_name, 'ckeditor', $options);
+        } else {
+            $CkEditor = new CkEditor($this->dirname, $col_name, $def_val);
+            foreach ($options as $key => $value) {
+                $CkEditor->$key($value);
+            }
+            $ckeditor = $CkEditor->render();
+            return $ckeditor;
         }
-        $this->my_elements[$col_name]['form'] = $radio;
-        return $radio;
     }
 
-    public function width($left = 3, $right = 9)
-    {
-        $this->left = $left;
-        $this->right = $right;
-    }
-
-    public function use_file($col_name = '', $index_mode = 'small', $show_mode = '', $subdir = '', $maxlength = '', $only_type = '')
+    // 加入上傳工具
+    public function set_file($col_name = '', $index_mode = 'small', $show_mode = '', $subdir = '', $maxlength = '', $only_type = '')
     {
         $this->TadUpFiles = new TadUpFiles($this->dirname, $subdir);
         $this->use_file = $col_name;
@@ -421,8 +549,64 @@ class TadModData
         $this->file_only_type = $only_type;
     }
 
+    // 加入排序
+    public function set_sort($col_name)
+    {
+        $this->sort_col = $col_name;
+        $this->order([$col_name => '']);
+    }
+
+    //自動取得新排序
+    private function get_max_sort()
+    {
+        global $xoopsDB;
+        $sql = "select max(`{$this->sort_col}`) from " . $xoopsDB->prefix($this->table) . "";
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        list($sort) = $xoopsDB->fetchRow($result);
+
+        return ++$sort;
+    }
+
+    /*********** 調整顯示 ************/
+
+    // 替換顯示
     public function replace($col_name, $arr = [])
     {
         $this->replace_col[$col_name] = $arr;
+    }
+
+    // 將uid使用者編號改用姓名呈現
+    public function uid_name($col_name = 'uid', $type = 1)
+    {
+        $this->uid_col[$col_name] = $type;
+    }
+
+    // 隱藏欄位
+    public function hide($col_name = 'uid', $where = ['index'])
+    {
+        if (in_array('index', $where)) {
+            $this->hide_index_col[] = $col_name;
+        }
+
+        if (in_array('show', $where)) {
+            $this->hide_show_col[] = $col_name;
+        }
+
+        if (in_array('create', $where)) {
+            $this->hide_create_col[] = $col_name;
+        }
+    }
+
+    // 分頁
+    public function pagebar($num = 20)
+    {
+        $this->pagebar = $num;
+    }
+
+    // 設定bootstrap欄位寬度
+    public function width($left = 2, $right = 10)
+    {
+        $this->left = $left;
+        $this->right = $right;
     }
 }

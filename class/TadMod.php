@@ -2,6 +2,8 @@
 
 namespace XoopsModules\Tadtools;
 
+use XoopsModules\Tadtools\Utility;
+
 class TadMod
 {
     private $dirname;
@@ -24,9 +26,16 @@ class TadMod
     private $interface_menu = [];
     private $adm_menu = [];
 
-    public function __construct($dirname)
+    public function __construct($dirname = '')
     {
-        $this->dirname = $dirname;
+        global $xoopsModule;
+        if ($dirname) {
+            $this->dirname = $dirname;
+        } elseif ($xoopsModule) {
+            $this->dirname = $xoopsModule->dirname();
+        } else {
+            die('無法取得目錄');
+        }
         $this->add_adm_menu(_MI_TAD_ADMIN_HOME, 'admin/index.php', 'images/admin/home.png');
     }
 
