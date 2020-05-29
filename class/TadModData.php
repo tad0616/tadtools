@@ -113,6 +113,9 @@ class TadModData
         $elements = [];
         $i = 0;
         foreach ($this->schema as $col_name => $schema) {
+            if (!empty($this->hide_create_col) and in_array($col_name, $this->hide_create_col)) {
+                continue;
+            }
             $elements[$i]['label'] = $schema['Comment'];
             $elements[$i]['show'] = true;
 
@@ -229,6 +232,10 @@ class TadModData
 
         $show_content = '';
         foreach ($all as $col_name => $value) {
+
+            if (!empty($this->hide_show_col) and in_array($col_name, $this->hide_show_col)) {
+                continue;
+            }
             $value = in_array($col_name, $need_replace) ? $this->replace_col[$col_name][$value] : $value;
             $show_content .= '
             <div class="row my-3">
@@ -362,22 +369,26 @@ class TadModData
                 $all['files'] = $this->TadUpFiles->show_files("{$this->table}_file", true, $this->file_index_mode, false, false, null, null, false);
             }
 
+            // 開始製作顯示內容
             $all_data[] = $all;
             $td .= '<tr id="sort_arr_' . $all[$this->primary] . '">';
 
             $need_replace = array_keys($this->replace_col);
             foreach ($this->schema as $col_name => $schema) {
+                if (!empty($this->hide_index_col) and in_array($col_name, $this->hide_index_col)) {
+                    continue;
+                }
                 $td_val = in_array($col_name, $need_replace) ? $this->replace_col[$col_name][$all[$col_name]] : $all[$col_name];
                 $td_class = $col_name == $this->sort_col ? 'class="show_sort"' : '';
                 $td .= '
                 <td ' . $td_class . '>' . $td_val . '</td>';
             }
-
+            // 附檔
             if ($this->use_file) {
                 $td .= '
                 <td ' . $td_class . '>' . $all['files'] . '</td>';
             }
-
+            // 管理功能
             if ($_SESSION[$session_name] or strpos($_SERVER['PHP_SELF'], '/admin/') !== false) {
                 $td .= '
                 <td class="c n">
@@ -391,8 +402,12 @@ class TadModData
 
         }
 
+        // 表格標題
         $th = '';
         foreach ($this->schema as $col_name => $schema) {
+            if (!empty($this->hide_index_col) and in_array($col_name, $this->hide_index_col)) {
+                continue;
+            }
             $th .= '<th class="c n">' . $schema['Comment'] . '</th>';
         }
 
