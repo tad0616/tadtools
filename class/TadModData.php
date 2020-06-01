@@ -21,6 +21,7 @@ class TadModData
     private $primary;
     private $my_elements = [];
     private $my_elements_options = [];
+    private $change_elements = [];
     private $left = 2;
     private $right = 10;
     private $use_file;
@@ -31,10 +32,17 @@ class TadModData
     private $file_only_type;
     private $replace_col = [];
     private $uid_col = [];
-    private $hide_index_col = [];
-    private $hide_show_col = [];
+    private $disable_index_col = [];
+    private $disable_show_col = [];
+    private $disable_create_col = [];
     private $hide_create_col = [];
+    private $set_link_col = [];
+    private $add_index_btn = [];
+    private $add_show_btn = [];
+    private $add_create_btn = [];
+    private $func = [];
     private $sort_col;
+    private $subimt = [];
 
     // 建構函數
     public function __construct($table)
@@ -113,14 +121,16 @@ class TadModData
         $elements = [];
         $i = 0;
         foreach ($this->schema as $col_name => $schema) {
-            if (!empty($this->hide_create_col) and in_array($col_name, $this->hide_create_col)) {
+            if (!empty($this->disable_create_col) and in_array($col_name, $this->disable_create_col)) {
                 continue;
             }
             $elements[$i]['label'] = $schema['Comment'];
-            $elements[$i]['show'] = true;
+            $elements[$i]['show'] = in_array($col_name, $this->hide_create_col) ? false : true;
 
             if (!empty($this->my_elements[$col_name])) {
                 $elements[$i]['form'] = $this->mk_elements($col_name, $def_val[$col_name]);
+            } elseif (!empty($this->change_elements[$col_name])) {
+                $elements[$i]['form'] = $this->change_elements[$col_name];
             } elseif ($schema['Field'] == 'uid') {
                 $elements[$i]['show'] = false;
                 $uid = $xoopsUser->uid();
@@ -207,12 +217,14 @@ class TadModData
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $all = $xoopsDB->fetchArray($result);
 
+        $my_label = [];
         if ($clean) {
             $uid_cols = array_keys($this->uid_col);
             foreach ($all as $k => $v) {
                 if (!empty($uid_cols) and in_array($k, $uid_cols)) {
                     $all[$k] = (int) $v;
                     $all[$k . '_name'] = $uid_name = \XoopsUser::getUnameFromId($v, $this->uid_col[$k]);
+                    $my_label[$k . '_name'] = '發布者';
                     $this->replace_col[$k][$v] = $uid_name;
                 } elseif (strpos($this->var_type[$k], "text") !== false) {
                     $all[$k] = $myts->displayTarea($v, 1, 0, 0, 0, 0);
@@ -225,21 +237,49 @@ class TadModData
         if ($this->use_file) {
             $this->TadUpFiles->set_col($this->use_file, $id);
             $all['files'] = $this->TadUpFiles->show_files("{$this->table}_file", true, $this->file_show_mode, false, false, null, null, false);
+            $my_label['files'] = '相關附檔';
         }
 
-        // 顯示替換
+        // 需替換欄位陣列
         $need_replace = array_keys($this->replace_col);
+        // 需加連結欄位陣列
+        $need_link = array_keys($this->set_link_col);
 
         $show_content = '';
         foreach ($all as $col_name => $value) {
 
-            if (!empty($this->hide_show_col) and in_array($col_name, $this->hide_show_col)) {
+            // 隱藏資料
+            if (!empty($this->disable_show_col) and in_array($col_name, $this->disable_show_col)) {
                 continue;
             }
+            // 被替換的使用者編號也不用顯示
+            if (!empty($uid_cols) and in_array($col_name, $uid_cols)) {
+                continue;
+            }
+
+            // 替換資料
             $value = in_array($col_name, $need_replace) ? $this->replace_col[$col_name][$value] : $value;
+
+            // 加連結
+            if (in_array($col_name, $need_link)) {
+                if ($this->set_link_col[$col_name]['parameter']) {
+                    $para = [];
+                    foreach ($this->set_link_col[$col_name]['parameter'] as $pk => $pv) {
+                        if (\is_int($pk)) {
+                            $para[] = "{$pv}={$all[$pv]}";
+                        } else {
+                            $para[] = "{$pk}={$pv}";
+                        }
+                    }
+                }
+                $parameter = ($para) ? '?' . implode('&', $para) : '';
+                $value = '<a href="' . $this->set_link_col[$col_name]['to'] . $parameter . '" target="' . $this->set_link_col[$col_name]['target'] . '">' . $value . '</a>';
+            }
+
+            $label = empty($this->schema[$col_name]['Comment']) ? $my_label[$col_name] : $this->schema[$col_name]['Comment'];
             $show_content .= '
             <div class="row my-3">
-                <div class="col-sm-2 text-right">' . $this->schema[$col_name]['Comment'] . '</div>
+                <div class="col-sm-2 text-right">' . $label . '</div>
                 <div class="col-sm-10">' . $value . '</div>
             </div>';
         }
@@ -325,9 +365,19 @@ class TadModData
 
         $session_name = "{$this->dirname}_adm";
         if ($_SESSION[$session_name] or strpos($_SERVER['PHP_SELF'], '/admin/') !== false) {
-            $SweetAlert = new SweetAlert();
-            $SweetAlert->render("del_{$xoopsDB->prefix($this->table)}", "{$_SERVER['PHP_SELF']}?op=destroy&{$this->primary}=", $this->primary);
-            $add_button = '<a href="' . $_SERVER['PHP_SELF'] . '?op=create" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> ' . _TAD_ADD . '</a>';
+
+            if (!isset($this->func['destroy']) or $this->func['destroy'] !== false) {
+                $to = $this->func['destroy'] == '' ? $_SERVER['PHP_SELF'] : $this->func['destroy'];
+                $SweetAlert = new SweetAlert();
+                $SweetAlert->render("del_{$xoopsDB->prefix($this->table)}", "{$to}?op=destroy&{$this->primary}=", $this->primary);
+            }
+
+            $create_button = '';
+            if (!isset($this->func['create']) or $this->func['create'] !== false) {
+                $to = $this->func['create'] == '' ? $_SERVER['PHP_SELF'] : $this->func['create'];
+                $create_button = '<a href="' . $to . '?op=create" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> ' . _TAD_ADD . '</a>';
+            }
+
         }
 
         $sql = "select * from `" . $xoopsDB->prefix($this->table) . "` {$this->where} {$this->order}";
@@ -373,29 +423,95 @@ class TadModData
             $all_data[] = $all;
             $td .= '<tr id="sort_arr_' . $all[$this->primary] . '">';
 
+            // 需替換欄位陣列
             $need_replace = array_keys($this->replace_col);
+            // 需加連結欄位陣列
+            $need_link = array_keys($this->set_link_col);
+
             foreach ($this->schema as $col_name => $schema) {
-                if (!empty($this->hide_index_col) and in_array($col_name, $this->hide_index_col)) {
+                if (!empty($this->disable_index_col) and in_array($col_name, $this->disable_index_col)) {
                     continue;
                 }
+
+                // 替換內容
                 $td_val = in_array($col_name, $need_replace) ? $this->replace_col[$col_name][$all[$col_name]] : $all[$col_name];
+
+                // 加連結
+                if (in_array($col_name, $need_link)) {
+                    if ($this->set_link_col[$col_name]['parameter']) {
+                        $para = [];
+                        foreach ($this->set_link_col[$col_name]['parameter'] as $pk => $pv) {
+                            if (\is_int($pk)) {
+                                $para[] = "{$pv}={$all[$pv]}";
+                            } else {
+                                $para[] = "{$pk}={$pv}";
+                            }
+                        }
+                    }
+                    $parameter = ($para) ? '?' . implode('&', $para) : '';
+                    $td_val = '<a href="' . $this->set_link_col[$col_name]['to'] . $parameter . '" target="' . $this->set_link_col[$col_name]['target'] . '">' . $td_val . '</a>';
+                }
+
                 $td_class = $col_name == $this->sort_col ? 'class="show_sort"' : '';
                 $td .= '
                 <td ' . $td_class . '>' . $td_val . '</td>';
             }
+
             // 附檔
             if ($this->use_file) {
                 $td .= '
                 <td ' . $td_class . '>' . $all['files'] . '</td>';
             }
+
+            $my_btn = '';
+            if (!empty($this->add_index_btn)) {
+                foreach ($this->add_index_btn as $btn) {
+
+                    if ($btn['parameter']) {
+                        $para = [];
+                        foreach ($btn['parameter'] as $pk => $pv) {
+                            if (\is_int($pk)) {
+                                $para[] = "{$pv}={$all[$pv]}";
+                            } else {
+                                $para[] = "{$pk}={$pv}";
+                            }
+                        }
+                    }
+                    $parameter = ($para) ? '?' . implode('&', $para) : '';
+
+                    if ($btn['attr']) {
+                        $attr_arr = [];
+                        foreach ($btn['attr'] as $ak => $av) {
+                            $attr_arr[] = $ak . ' = "' . $av . '"';
+                        }
+                    }
+                    $attr = implode(' ', $attr_arr);
+
+                    $my_btn .= '<a href="' . $btn['to'] . $parameter . '" ' . $attr . '>' . $btn['title'] . '</a>';
+                }
+            }
+
             // 管理功能
             if ($_SESSION[$session_name] or strpos($_SERVER['PHP_SELF'], '/admin/') !== false) {
-                $td .= '
-                <td class="c n">
-                    <a href="' . $_SERVER['PHP_SELF'] . '?op=edit&' . $this->primary . '=' . $all[$this->primary] . '" class="btn btn-warning btn-sm">' . _TAD_EDIT . '</a>
-                    <a href="' . $all['del'] . '" class="btn btn-danger btn-sm">' . _TAD_DEL . '</a>
-                </td>';
+
+                $edit_button = '';
+                if (!isset($this->func['edit']) or $this->func['edit'] !== false) {
+                    $to = $this->func['edit'] == '' ? $_SERVER['PHP_SELF'] : $this->func['edit'];
+                    $edit_button = '<a href="' . $to . '?op=edit&' . $this->primary . '=' . $all[$this->primary] . '" class="btn btn-warning btn-sm">' . _TAD_EDIT . '</a>';
+                }
+
+                $destroy_button = '';
+                if (!isset($this->func['destroy']) or $this->func['destroy'] !== false) {
+                    $destroy_button = '<a href="' . $all['del'] . '" class="btn btn-danger btn-sm">' . _TAD_DEL . '</a>';
+                }
             }
+
+            $td .= '
+            <td class="c n">
+                ' . $edit_button . '
+                ' . $destroy_button . '
+                ' . $my_btn . '
+            </td>';
 
             $td .= '
             </tr>';
@@ -405,7 +521,7 @@ class TadModData
         // 表格標題
         $th = '';
         foreach ($this->schema as $col_name => $schema) {
-            if (!empty($this->hide_index_col) and in_array($col_name, $this->hide_index_col)) {
+            if (!empty($this->disable_index_col) and in_array($col_name, $this->disable_index_col)) {
                 continue;
             }
             $th .= '<th class="c n">' . $schema['Comment'] . '</th>';
@@ -415,7 +531,7 @@ class TadModData
             $th .= '<th class="c n">相關附檔</th>';
         }
 
-        if ($_SESSION[$session_name] or strpos($_SERVER['PHP_SELF'], '/admin/') !== false) {
+        if ($_SESSION[$session_name] or strpos($_SERVER['PHP_SELF'], '/admin/') !== false or !empty($this->add_index_btn)) {
             $th .= '<th class="c n">' . _TAD_FUNCTION . '</th>';
         }
 
@@ -452,8 +568,9 @@ class TadModData
                 ' . $td . '
             </tbody>
         </table>
+        ' . $bar . '
         <div class="bar">
-        ' . $add_button . '
+        ' . $create_button . '
         </div>
         ';
         $xoopsTpl->assign($this->table, $all_data);
@@ -489,6 +606,10 @@ class TadModData
         $type = $this->my_elements[$col_name];
         $options = $this->my_elements_options[$col_name];
         $fnname = "use_{$type}";
+        if (\is_null($def_val)) {
+            $def_val = '';
+        }
+        // Utility::dd($def_val);
         $element = $this->{$fnname}($col_name, $options, $def_val);
         return $element;
     }
@@ -538,7 +659,7 @@ class TadModData
         }
     }
 
-    // 套用單選
+    // 套用編輯器
     public function use_ckeditor($col_name, $options = [], $def_val = null)
     {
         if (is_null($def_val)) {
@@ -551,6 +672,24 @@ class TadModData
             $ckeditor = $CkEditor->render();
             return $ckeditor;
         }
+    }
+
+    // 套用隱藏欄位
+    public function use_hidden($col_name, $def_val = null)
+    {
+
+        $this->hide_create_col[] = $col_name;
+        $this->change_elements[$col_name] = '<input type="hidden" name="' . $col_name . '" value="' . $def_val . '">';
+    }
+
+    // 設定submit按鈕
+    public function set_button($type = 'submit', $name = 'op', $value = '', $label = '', $attr_arr = [])
+    {
+        foreach ($attr_arr as $attr => $attr_value) {
+            $attrs[] = $attr . ' = "' . $attr_value . '"';
+        }
+        $attr = implode(' ', $attrs);
+        $this->subimt[$type][] = '<button type="' . $type . '" name="' . $name . '" value="' . $value . '" ' . $attr . '>' . $label . '</button>';
     }
 
     // 加入上傳工具
@@ -582,6 +721,12 @@ class TadModData
         return ++$sort;
     }
 
+    // 設定功能
+    public function set_func($func_name, $to = false)
+    {
+        $this->func[$func_name] = $to;
+    }
+
     /*********** 調整顯示 ************/
 
     // 替換顯示
@@ -596,19 +741,64 @@ class TadModData
         $this->uid_col[$col_name] = $type;
     }
 
-    // 隱藏欄位
-    public function hide($col_name = 'uid', $where = ['index'])
+    // 取消欄位
+    public function disable($col_name = 'uid', $where = ['index'])
     {
         if (in_array('index', $where)) {
-            $this->hide_index_col[] = $col_name;
+            $this->disable_index_col[] = $col_name;
         }
 
         if (in_array('show', $where)) {
-            $this->hide_show_col[] = $col_name;
+            $this->disable_show_col[] = $col_name;
         }
 
         if (in_array('create', $where)) {
+            $this->disable_create_col[] = $col_name;
+        }
+    }
+
+    // 隱藏欄位
+    public function hide($col_name = 'uid', $where = ['index'])
+    {
+        if (in_array('create', $where)) {
             $this->hide_create_col[] = $col_name;
+        }
+    }
+
+    // 設置連結
+    public function set_link($col_name, $to = '', $parameter = [], $target = '_self')
+    {
+        if (empty($to)) {
+            $to = $_SERVER['PHP_SELF'];
+        }
+
+        $this->set_link_col[$col_name]['to'] = $to;
+        $this->set_link_col[$col_name]['target'] = $target;
+        $this->set_link_col[$col_name]['parameter'] = $parameter;
+    }
+
+    // 加入自訂按鈕
+    public function add_button($title, $to = '', $parameter = [], $attr = [], $where = [])
+    {
+        if (empty($to)) {
+            $to = $_SERVER['PHP_SELF'];
+        }
+
+        $btn['title'] = $title;
+        $btn['to'] = $to;
+        $btn['parameter'] = $parameter;
+        $btn['attr'] = $attr;
+
+        if (in_array('index', $where)) {
+            $this->add_index_btn[] = $btn;
+        }
+
+        if (in_array('show', $where)) {
+            $this->add_show_btn[] = $btn;
+        }
+
+        if (in_array('create', $where)) {
+            $this->add_create_btn[] = $btn;
         }
     }
 
