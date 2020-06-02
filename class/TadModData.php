@@ -75,10 +75,10 @@ class TadModData
             }
         }
 
-        $this->set_attr('table', ['class' => 'table table-hover table-responsive table-striped']);
-        $this->set_attr('tr1', ['class' => 'bg-info white']);
-        $this->set_attr('th', ['class' => 'text-center']);
-        $this->set_attr('td', ['class' => 'text-center']);
+        $this->set_attr('table', ['class' => 'table table-hover table-responsive table-striped'], 'default');
+        $this->set_attr('tr1', ['class' => 'bg-info white'], 'default');
+        $this->set_attr('th', ['class' => 'text-center'], 'default');
+        $this->set_attr('td', ['class' => 'text-center'], 'default');
 
     }
 
@@ -146,17 +146,21 @@ class TadModData
         return $allow;
     }
 
+    // 設定屬性
     public function set_attr($kind, $attrs = [], $mode = '')
     {
         foreach ($attrs as $attr_name => $attr_value) {
-            if ($mode == "append") {
+            if ($mode == "default" and !isset($this->attr[$kind][$attr_name]) and empty($this->attr[$kind][$attr_name])) {
+                $this->attr[$kind][$attr_name] = $attr_value;
+            } elseif ($mode == "append" and isset($this->attr[$kind][$attr_name])) {
                 $this->attr[$kind][$attr_name] .= ' ' . $attr_value;
-            } else {
+            } elseif ($mode == "") {
                 $this->attr[$kind][$attr_name] = $attr_value;
             }
         }
     }
 
+    // 取得屬性
     public function get_attr($kind)
     {
         $attr = '';
@@ -187,7 +191,7 @@ class TadModData
             $action = $_SERVER['PHP_SELF'];
         }
 
-        $FormValidator = new FormValidator("#myForm", false);
+        $FormValidator = new FormValidator("#{$id_name}", false);
         $FormValidator->render('topLeft');
 
         $elements = [];
@@ -242,6 +246,8 @@ class TadModData
 
         if ($this->use_file) {
             $i++;
+
+            $elements[$i]['col_name'] = $this->table . '_file';
             $elements[$i]['show'] = true;
             $elements[$i]['label'] = '附檔上傳';
             $this->TadUpFiles->set_col($this->use_file, $def_val[$this->use_file]);
@@ -249,14 +255,27 @@ class TadModData
             $elements[$i]['form'] = $this->TadUpFiles->upform(true, $this->table . '_file', $this->file_maxlength, true, $this->file_only_type);
         }
 
-        $form = '<form action="' . $action . '" method="post" id="' . $id_name . '" class="form-horizontal" enctype="multipart/form-data">';
+        $this->set_attr('form', ['method' => 'post', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data'], 'default');
+        $form_attr = $this->get_attr('form');
+
+        $form = '<form action="' . $action . '" id="' . $id_name . '" ' . $form_attr . '>';
         foreach ($elements as $key => $ele) {
             if ($ele['show']) {
                 $requir_star = $this->get_validate($ele['col_name'], 'star');
+
+                $this->set_attr($ele['col_name'] . '_form_label', ['class' => 'col-sm-' . $this->left . ' control-label col-form-label text-md-right'], 'default');
+                $form_label_attr = $this->get_attr($ele['col_name'] . '_form_label');
+
+                $this->set_attr($ele['col_name'] . '_form_content', ['class' => 'col-sm-' . $this->right], 'default');
+                $form_content_attr = $this->get_attr($ele['col_name'] . '_form_content');
+
+                $this->set_attr($ele['col_name'] . '_form_group', ['class' => 'form-group row'], 'default');
+                $form_group_attr = $this->get_attr($ele['col_name'] . '_form_group');
+
                 $form .= '
-                <div class="form-group row">
-                    <label class="col-sm-' . $this->left . ' control-label col-form-label text-md-right">' . $requir_star . $ele['label'] . '</label>
-                    <div class="col-sm-' . $this->right . '">
+                <div ' . $form_group_attr . '>
+                    <label ' . $form_label_attr . '>' . $requir_star . $ele['label'] . '</label>
+                    <div ' . $form_content_attr . '>
                         ' . $ele['form'] . '
                     </div>
                 </div>
@@ -269,9 +288,13 @@ class TadModData
         if (!empty($this->submit)) {
             $submit = implode("\n", $this->submit);
         } else {
+
             $op = !empty($def_val) ? 'update' : 'store';
+            $this->set_attr('submit', ['name' => 'op', 'value' => $op, 'class' => 'btn btn-primary'], 'default');
+            $submit_attr = $this->get_attr('submit');
+
             $label = !empty($def_val) ? '儲存更新' : '送出新增';
-            $submit = '<button type="submit" name="op" value="' . $op . '" class="btn btn-primary">' . $label . '</button>';
+            $submit = '<button type="submit" ' . $submit_attr . '>' . $label . '</button>';
         }
 
         $form .= '
@@ -384,11 +407,18 @@ class TadModData
                 $value = '<a href="' . $this->set_link_col[$col_name]['to'] . $parameter . '" target="' . $this->set_link_col[$col_name]['target'] . '">' . $value . '</a>';
             }
 
+            $this->set_attr($col_name . '_row', ['class' => 'row my-3'], 'default');
+            $row = $this->get_attr($col_name . '_row');
+            $this->set_attr($col_name . '_row_label', ['class' => 'col-sm-' . $this->left . ' text-right'], 'default');
+            $row_label = $this->get_attr($col_name . '_row_label');
+            $this->set_attr($col_name . '_row_content', ['class' => 'col-sm-' . $this->right], 'default');
+            $row_content = $this->get_attr($col_name . '_row_content');
+
             $label = empty($this->schema[$col_name]['Comment']) ? $my_label[$col_name] : $this->schema[$col_name]['Comment'];
             $show_content .= '
-            <div class="row my-3">
-                <div class="col-sm-2 text-right">' . $label . '</div>
-                <div class="col-sm-10">' . $value . '</div>
+            <div ' . $row . '>
+                <div ' . $row_label . '>' . $label . '</div>
+                <div ' . $row_content . '>' . $value . '</div>
             </div>';
         }
 
@@ -556,7 +586,7 @@ class TadModData
             // 開始製作顯示內容
             $all_data[] = $all;
 
-            $this->set_attr('tr', ['id' => "sort_arr_{$all[$this->primary]}"]);
+            $this->set_attr('tr', ['id' => "sort_arr_{$all[$this->primary]}"], 'default');
             $tr_attr = $this->get_attr('tr');
 
             $td .= '<tr ' . $tr_attr . '>';
