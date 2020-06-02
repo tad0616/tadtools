@@ -46,6 +46,7 @@ class TadModData
     private $submit = [];
     private $require_col = [];
     private $require_arr = [];
+    private $allow_groups = [];
 
     // 建構函數
     public function __construct($table)
@@ -114,6 +115,13 @@ class TadModData
     public function create($def_val = [], $action = '', $id_name = 'myForm')
     {
         global $xoopsDB, $xoopsTpl, $xoopsUser, $xoTheme;
+
+        $this->chk_allow(__FUNCTION__);
+
+        require_once XOOPS_ROOT_PATH . "/class/xoopsformloader.php";
+        $XoopsFormHiddenToken = new \XoopsFormHiddenToken();
+        $token = $XoopsFormHiddenToken->render();
+
         if (empty($action)) {
             $action = $_SERVER['PHP_SELF'];
         }
@@ -139,7 +147,7 @@ class TadModData
                 $elements[$i]['form'] = $this->change_elements[$col_name];
             } elseif ($schema['Field'] == 'uid') {
                 $elements[$i]['show'] = false;
-                $uid = $xoopsUser->uid();
+                $uid = ($xoopsUser) ? $xoopsUser->uid() : 0;
                 $elements[$i]['form'] = '<input type="hidden" name="' . $schema['Field'] . '" value="' . $uid . '">';
             } elseif ($schema['Key'] == 'PRI') {
                 $elements[$i]['show'] = false;
@@ -207,6 +215,7 @@ class TadModData
 
         $form .= '
             <div class="bar">
+                ' . $token . '
                 ' . $submit . '
             </div>
         </form>';
@@ -224,6 +233,9 @@ class TadModData
     public function edit($id, $action = '', $id_name = 'myForm')
     {
         global $xoopsDB;
+
+        $this->chk_allow(__FUNCTION__);
+
         $values = $this->show($id, false);
         $this->create($values);
     }
@@ -231,6 +243,9 @@ class TadModData
     // 單一顯示
     public function show($id, $clean = true)
     {
+
+        $this->chk_allow(__FUNCTION__);
+
         global $xoopsDB, $xoopsTpl, $xoTheme;
         $myts = \MyTextSanitizer::getInstance();
         $sql = "select * from `" . $xoopsDB->prefix($this->table) . "` where `{$this->primary}`='$id'";
@@ -331,6 +346,13 @@ class TadModData
     public function update($id)
     {
         global $xoopsDB;
+        $this->chk_allow(__FUNCTION__);
+
+        //安全判斷
+        if (!$GLOBALS['xoopsSecurity']->check()) {
+            $error = implode("<br>", $GLOBALS['xoopsSecurity']->getErrors());
+            redirect_header('index.php', 3, $_SERVER['HTTP_REFERER']);
+        }
 
         $myts = \MyTextSanitizer::getInstance();
         $update_arr = [];
@@ -359,6 +381,14 @@ class TadModData
     {
         global $xoopsDB;
 
+        $this->chk_allow(__FUNCTION__);
+
+        //安全判斷
+        if (!$GLOBALS['xoopsSecurity']->check()) {
+            $error = implode("<br>", $GLOBALS['xoopsSecurity']->getErrors());
+            redirect_header('index.php', 3, $_SERVER['HTTP_REFERER']);
+        }
+
         $myts = \MyTextSanitizer::getInstance();
         $col_name_arr = $col_val_arr = [];
         foreach ($_POST as $col_name => $value) {
@@ -386,6 +416,9 @@ class TadModData
     public function destroy($id)
     {
         global $xoopsDB;
+
+        $this->chk_allow(__FUNCTION__);
+
         $sql = "delete from `" . $xoopsDB->prefix($this->table) . "` where `{$this->primary}`='$id'";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         if ($this->use_file) {
@@ -398,6 +431,9 @@ class TadModData
     public function index()
     {
         global $xoopsDB, $xoopsTpl, $xoTheme;
+
+        $this->chk_allow(__FUNCTION__, XOOPS_URL);
+
         $myts = \MyTextSanitizer::getInstance();
 
         $session_name = "{$this->dirname}_adm";
@@ -436,7 +472,7 @@ class TadModData
 
         while ($all = $xoopsDB->fetchArray($result)) {
             if ($_SESSION[$session_name] or strpos($_SERVER['PHP_SELF'], '/admin/') !== false) {
-                $all['del'] = "javascript:del_{$xoopsDB->prefix($this->table)}('{$all[$this->primary]}')";
+                $all['del'] = "javascript:del_{$xoopsDB->prefix($this->table)}({$all[$this->primary]})";
             }
 
             foreach ($all as $k => $v) {
@@ -920,4 +956,30 @@ class TadModData
         $this->left = $left;
         $this->right = $right;
     }
+
+    //允許群組
+    public function allow($func_arr = [], $groups = [])
+    {
+        foreach ($func_arr as $func) {
+            $this->allow_groups[$func] = $groups;
+        }
+    }
+
+    // 檢查權限
+    public function chk_allow($func, $redirect = '')
+    {
+        global $xoopsUser;
+        $allow = true;
+        if (isset($this->allow_groups[$func]) and !empty($this->allow_groups[$func])) {
+            $user_groups = ($xoopsUser) ? $xoopsUser->groups() : [3];
+            $in_allow_group = array_intersect($this->allow_groups[$func], $user_groups);
+            $allow = sizeof($in_allow_group) ? true : false;
+            if (!$allow) {
+                $redirect = empty($redirect) ? $_SERVER['HTTP_REFERER'] : $redirect;
+                redirect_header($redirect, 3, '沒有可以操作此動作的權限');
+            }
+        }
+        return $allow;
+    }
+
 }
