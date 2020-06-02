@@ -826,7 +826,7 @@ class Utility
         return $main;
     }
 
-    public static function toolbar_bootstrap($interface_menu = [])
+    public static function toolbar_bootstrap($interface_menu = [], $force = false)
     {
         global $xoopsUser, $xoopsModule, $xoopsModuleConfig;
 
@@ -838,13 +838,14 @@ class Utility
         } else {
             $mod_name = $moduleName = '';
         }
+
         if ($xoopsUser) {
             $isAdmin = $xoopsUser->isAdmin($module_id);
         } else {
             $isAdmin = false;
         }
 
-        if (empty($interface_menu)) {
+        if (empty($interface_menu) and !$force) {
             return;
         }
 

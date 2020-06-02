@@ -117,7 +117,7 @@ class TadMod
         if ($this->is_admin()) {
             $interface_menu[_TAD_TO_ADMIN] = "admin/main.php";
         }
-        $menu = Utility::toolbar_bootstrap($interface_menu);
+        $menu = Utility::toolbar_bootstrap($interface_menu, true);
         $xoopsTpl->assign($tag, $menu);
         return $menu;
     }

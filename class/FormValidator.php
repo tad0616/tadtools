@@ -32,13 +32,13 @@ class FormValidator
             $xoTheme->addScript('modules/tadtools/formValidator/js/jquery.validationEngine.js');
 
             $xoTheme->addScript('', null, "
-              (function(\$){
-                \$(document).ready(function(){
-                  \$('{$this->id}').validationEngine({
-                    promptPosition: '$Position', //選項有：topLeft, topRight, bottomLeft,  centerRight, bottomRight
-                  });
-                });
-              })(jQuery);
+                (function(\$){
+                    \$(document).ready(function(){
+                        \$('{$this->id}').validationEngine({
+                            promptPosition: '$Position', //選項有：topLeft, topRight, bottomLeft,  centerRight, bottomRight
+                        });
+                    });
+                })(jQuery);
             ");
         } else {
             $main = "
@@ -49,9 +49,9 @@ class FormValidator
             <script src='" . XOOPS_URL . "/modules/tadtools/formValidator/js/jquery.validationEngine.js' type='text/javascript'></script>
             <script type='text/javascript'>
             $().ready(function() {
-              $('{$this->id}').validationEngine({
-                promptPosition: '$Position', //選項有：topLeft, topRight, bottomLeft,  centerRight, bottomRight
-              });
+                $('{$this->id}').validationEngine({
+                    promptPosition: '$Position', //選項有：topLeft, topRight, bottomLeft,  centerRight, bottomRight
+                });
             });
             </script>";
 

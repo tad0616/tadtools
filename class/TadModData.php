@@ -31,6 +31,7 @@ class TadModData
     private $file_maxlength;
     private $file_only_type;
     private $replace_col = [];
+    private $replace_col_callback = [];
     private $uid_col = [];
     private $disable_index_col = [];
     private $disable_show_col = [];
@@ -42,7 +43,9 @@ class TadModData
     private $add_create_btn = [];
     private $func = [];
     private $sort_col;
-    private $subimt = [];
+    private $submit = [];
+    private $require_col = [];
+    private $require_arr = [];
 
     // 建構函數
     public function __construct($table)
@@ -69,7 +72,7 @@ class TadModData
                 $this->primary = $Field;
             }
         }
-        // Utility::dd($this->schema);
+
     }
 
     // 過濾接收的變數
@@ -110,7 +113,7 @@ class TadModData
     // 新增表單
     public function create($def_val = [], $action = '', $id_name = 'myForm')
     {
-        global $xoopsDB, $xoopsTpl, $xoopsUser;
+        global $xoopsDB, $xoopsTpl, $xoopsUser, $xoTheme;
         if (empty($action)) {
             $action = $_SERVER['PHP_SELF'];
         }
@@ -124,11 +127,14 @@ class TadModData
             if (!empty($this->disable_create_col) and in_array($col_name, $this->disable_create_col)) {
                 continue;
             }
+            $elements[$i]['col_name'] = $col_name;
             $elements[$i]['label'] = $schema['Comment'];
             $elements[$i]['show'] = in_array($col_name, $this->hide_create_col) ? false : true;
 
+            $validate = $this->get_validate($col_name);
+
             if (!empty($this->my_elements[$col_name])) {
-                $elements[$i]['form'] = $this->mk_elements($col_name, $def_val[$col_name]);
+                $elements[$i]['form'] = $this->mk_elements($col_name, $def_val[$col_name], $validate);
             } elseif (!empty($this->change_elements[$col_name])) {
                 $elements[$i]['form'] = $this->change_elements[$col_name];
             } elseif ($schema['Field'] == 'uid') {
@@ -140,12 +146,12 @@ class TadModData
                 $elements[$i]['form'] = '<input type="hidden" name="' . $schema['Field'] . '" value="' . $def_val[$col_name] . '">';
             } elseif ($schema['Type'] == 'date') {
                 My97DatePicker::render();
-                $elements[$i]['form'] = '<input type="text" name="' . $schema['Field'] . '" class="form-control cal" onClick="WdatePicker({dateFmt:\'yyyy-MM-dd\', startDate:\'%y-%M-%d\'})" value="' . $def_val[$col_name] . '">';
+                $elements[$i]['form'] = '<input type="text" name="' . $schema['Field'] . '" class="form-control cal ' . $validate . '" onClick="WdatePicker({dateFmt:\'yyyy-MM-dd\', startDate:\'%y-%M-%d\'})" value="' . $def_val[$col_name] . '">';
             } elseif ($schema['Type'] == 'datetime') {
                 My97DatePicker::render();
-                $elements[$i]['form'] = '<input type="text" name="' . $schema['Field'] . '" class="form-control time" onClick="WdatePicker({dateFmt:\'yyyy-MM-dd HH:mm:ss\', startDate:\'%y-%M-%d %H:%m:%s\'})" value="' . $def_val[$col_name] . '">';
+                $elements[$i]['form'] = '<input type="text" name="' . $schema['Field'] . '" class="form-control time ' . $validate . '" onClick="WdatePicker({dateFmt:\'yyyy-MM-dd HH:mm:ss\', startDate:\'%y-%M-%d %H:%m:%s\'})" value="' . $def_val[$col_name] . '">';
             } elseif (strpos($schema['Type'], 'text') !== false) {
-                $elements[$i]['form'] = '<textarea name="' . $schema['Field'] . '" class="form-control">' . $def_val[$col_name] . '</textarea>';
+                $elements[$i]['form'] = '<textarea name="' . $schema['Field'] . '" class="form-control ' . $validate . '">' . $def_val[$col_name] . '</textarea>';
             } elseif (strpos($schema['Type'], 'enum') !== false) {
                 \preg_match_all("/'(\W|\d)'/", $schema['Type'], $opt);
                 foreach ($opt[1] as $v) {
@@ -153,14 +159,14 @@ class TadModData
                     $elements[$i]['form'] .= '
                     <div class="form-check form-check-inline radio-inline">
                         <label class="form-check-label">
-                            <input type="radio" name="' . $schema['Field'] . '"  value="' . $v . '" ' . $checked . ' class="form-check-input"> ' . $v . '
+                            <input type="radio" name="' . $schema['Field'] . '"  value="' . $v . '" ' . $checked . ' class="form-check-input ' . $validate . '"> ' . $v . '
                         </label>
                     </div>
                     ';
                 }
             } else {
                 $value = ($col_name == $this->sort_col and !isset($def_val[$col_name])) ? $this->get_max_sort() : $def_val[$col_name];
-                $elements[$i]['form'] = '<input type="text" name="' . $schema['Field'] . '" class="form-control" value="' . $value . '">';
+                $elements[$i]['form'] = '<input type="text" name="' . $schema['Field'] . '" class="form-control ' . $validate . '" value="' . $value . '">';
             }
             $i++;
         }
@@ -177,9 +183,10 @@ class TadModData
         $form = '<form action="' . $action . '" method="post" id="' . $id_name . '" class="form-horizontal" enctype="multipart/form-data">';
         foreach ($elements as $key => $ele) {
             if ($ele['show']) {
+                $requir_star = $this->get_validate($ele['col_name'], 'star');
                 $form .= '
                 <div class="form-group row">
-                    <label class="col-sm-' . $this->left . ' control-label col-form-label text-md-right">' . $ele['label'] . '</label>
+                    <label class="col-sm-' . $this->left . ' control-label col-form-label text-md-right">' . $requir_star . $ele['label'] . '</label>
                     <div class="col-sm-' . $this->right . '">
                         ' . $ele['form'] . '
                     </div>
@@ -189,13 +196,26 @@ class TadModData
                 $form .= $ele['form'];
             }
         }
-        $op = !empty($def_val) ? 'update' : 'store';
-        $submit = !empty($def_val) ? '儲存更新' : '送出新增';
+
+        if (!empty($this->submit)) {
+            $submit = implode("\n", $this->submit);
+        } else {
+            $op = !empty($def_val) ? 'update' : 'store';
+            $label = !empty($def_val) ? '儲存更新' : '送出新增';
+            $submit = '<button type="submit" name="op" value="' . $op . '" class="btn btn-primary">' . $label . '</button>';
+        }
+
         $form .= '
             <div class="bar">
-                <button type="submit" name="op" value="' . $op . '" class="btn btn-primary">' . $submit . '</button>
+                ' . $submit . '
             </div>
         </form>';
+
+        $xoTheme->addScript('', null, "
+            \$(document).ready(function(){
+                \$('[data-toggle=\"tooltip\"]').tooltip();
+            });
+        ");
         $xoopsTpl->assign($this->table . '_form', $form);
         return $form;
     }
@@ -211,7 +231,7 @@ class TadModData
     // 單一顯示
     public function show($id, $clean = true)
     {
-        global $xoopsDB, $xoopsTpl;
+        global $xoopsDB, $xoopsTpl, $xoTheme;
         $myts = \MyTextSanitizer::getInstance();
         $sql = "select * from `" . $xoopsDB->prefix($this->table) . "` where `{$this->primary}`='$id'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -224,7 +244,7 @@ class TadModData
                 if (!empty($uid_cols) and in_array($k, $uid_cols)) {
                     $all[$k] = (int) $v;
                     $all[$k . '_name'] = $uid_name = \XoopsUser::getUnameFromId($v, $this->uid_col[$k]);
-                    $my_label[$k . '_name'] = '發布者';
+                    $my_label[$k . '_name'] = $this->schema[$k]['Comment'];
                     $this->replace_col[$k][$v] = $uid_name;
                 } elseif (strpos($this->var_type[$k], "text") !== false) {
                     $all[$k] = $myts->displayTarea($v, 1, 0, 0, 0, 0);
@@ -260,6 +280,18 @@ class TadModData
             // 替換資料
             $value = in_array($col_name, $need_replace) ? $this->replace_col[$col_name][$value] : $value;
 
+            if ($this->replace_col_callback[$col_name]) {
+                foreach ($this->replace_col_callback[$col_name] as $func_name => $func_parameter_arr) {
+                    foreach ($func_parameter_arr as $parameter_key => $parameter_value) {
+                        if ($parameter_value == 'this') {
+                            $parameter_value = $value;
+                        }
+                        $parameter_arr[$parameter_key] = $parameter_value;
+                    }
+                    $value = call_user_func_array($func_name, $parameter_arr);
+                }
+            }
+
             // 加連結
             if (in_array($col_name, $need_link)) {
                 if ($this->set_link_col[$col_name]['parameter']) {
@@ -284,6 +316,11 @@ class TadModData
             </div>';
         }
 
+        $xoTheme->addScript('', null, "
+            \$(document).ready(function(){
+                \$('[data-toggle=\"tooltip\"]').tooltip();
+            });
+        ");
         $xoopsTpl->assign($this->table, $all);
         $xoopsTpl->assign("{$this->table}_show", $show_content);
         return $all;
@@ -436,6 +473,18 @@ class TadModData
                 // 替換內容
                 $td_val = in_array($col_name, $need_replace) ? $this->replace_col[$col_name][$all[$col_name]] : $all[$col_name];
 
+                if ($this->replace_col_callback[$col_name]) {
+                    foreach ($this->replace_col_callback[$col_name] as $func_name => $func_parameter_arr) {
+                        foreach ($func_parameter_arr as $parameter_key => $parameter_value) {
+                            if ($parameter_value == 'this') {
+                                $parameter_value = $td_val;
+                            }
+                            $parameter_arr[$parameter_key] = $parameter_value;
+                        }
+                        $td_val = call_user_func_array($func_name, $parameter_arr);
+                    }
+                }
+
                 // 加連結
                 if (in_array($col_name, $need_link)) {
                     if ($this->set_link_col[$col_name]['parameter']) {
@@ -506,12 +555,16 @@ class TadModData
                 }
             }
 
-            $td .= '
-            <td class="c n">
-                ' . $edit_button . '
-                ' . $destroy_button . '
-                ' . $my_btn . '
-            </td>';
+            $display_function_th = false;
+            if ($edit_button or $destroy_button or $my_btn) {
+                $td .= '
+                <td class="c n">
+                    ' . $edit_button . '
+                    ' . $destroy_button . '
+                    ' . $my_btn . '
+                </td>';
+                $display_function_th = true;
+            }
 
             $td .= '
             </tr>';
@@ -531,7 +584,7 @@ class TadModData
             $th .= '<th class="c n">相關附檔</th>';
         }
 
-        if ($_SESSION[$session_name] or strpos($_SERVER['PHP_SELF'], '/admin/') !== false or !empty($this->add_index_btn)) {
+        if ($_SESSION[$session_name] or strpos($_SERVER['PHP_SELF'], '/admin/') !== false or !empty($this->add_index_btn) or $display_function_th) {
             $th .= '<th class="c n">' . _TAD_FUNCTION . '</th>';
         }
 
@@ -573,6 +626,11 @@ class TadModData
         ' . $create_button . '
         </div>
         ';
+        $xoTheme->addScript('', null, "
+            \$(document).ready(function(){
+                \$('[data-toggle=\"tooltip\"]').tooltip();
+            });
+        ");
         $xoopsTpl->assign($this->table, $all_data);
         $xoopsTpl->assign("{$this->table}_index", $index_table);
 
@@ -601,7 +659,7 @@ class TadModData
     /*********** 表單元件 ************/
 
     // 製作套用的表單元件
-    public function mk_elements($col_name, $def_val = '')
+    public function mk_elements($col_name, $def_val = '', $validate = '')
     {
         $type = $this->my_elements[$col_name];
         $options = $this->my_elements_options[$col_name];
@@ -610,7 +668,7 @@ class TadModData
             $def_val = '';
         }
         // Utility::dd($def_val);
-        $element = $this->{$fnname}($col_name, $options, $def_val);
+        $element = $this->{$fnname}($col_name, $options, $def_val, $validate);
         return $element;
     }
 
@@ -621,13 +679,26 @@ class TadModData
         $this->my_elements_options[$col_name] = $options;
     }
 
+    // 取得驗證規則
+    private function get_validate($col_name, $type = '')
+    {
+        if ($type == 'star') {
+            $return = '<span class="text-danger" data-toggle="tooltip" title="此欄位必填">*</span> ';
+        } else {
+            $opt = $this->require_col[$col_name];
+            $return = ($opt) ? 'validate[required, ' . $opt . ']' : 'validate[required]';
+        }
+
+        return in_array($col_name, $this->require_arr) ? $return : '';
+    }
+
     // 套用下拉選單
-    public function use_select($col_name, $options = [], $def_val = null)
+    public function use_select($col_name, $options = [], $def_val = null, $validate = '')
     {
         if (is_null($def_val)) {
             $this->my_elements($col_name, 'select', $options);
         } else {
-            $select = '<select name="' . $col_name . '" class="form-control">';
+            $select = '<select name="' . $col_name . '" class="form-control ' . $validate . '">';
             foreach ($options as $val => $label) {
                 $selected = ($def_val == $val) ? 'selected' : '';
                 $select .= '<option value="' . $val . '" ' . $selected . '>' . $label . '</option>';
@@ -638,19 +709,18 @@ class TadModData
     }
 
     // 套用單選
-    public function use_radio($col_name, $options = [], $def_val = null)
+    public function use_radio($col_name, $options = [], $def_val = null, $validate = '')
     {
         if (is_null($def_val)) {
             $this->my_elements($col_name, 'radio', $options);
         } else {
-
             $radio = '';
             foreach ($options as $val => $label) {
                 $checked = ($def_val == $val) ? 'checked' : '';
                 $radio .= '
                 <div class="form-check-inline">
                     <label class="form-check-label">
-                    <input type="radio" name="' . $col_name . '"  value="' . $val . '" ' . $checked . ' class="form-check-input">' . $label . '
+                        <input type="radio" name="' . $col_name . '"  value="' . $val . '" ' . $checked . ' class="form-check-input ' . $validate . '">' . $label . '
                     </label>
                 </div>
                 ';
@@ -660,7 +730,7 @@ class TadModData
     }
 
     // 套用編輯器
-    public function use_ckeditor($col_name, $options = [], $def_val = null)
+    public function use_ckeditor($col_name, $options = [], $def_val = null, $validate = '')
     {
         if (is_null($def_val)) {
             $this->my_elements($col_name, 'ckeditor', $options);
@@ -675,7 +745,7 @@ class TadModData
     }
 
     // 套用隱藏欄位
-    public function use_hidden($col_name, $def_val = null)
+    public function set_hidden($col_name, $def_val = null)
     {
 
         $this->hide_create_col[] = $col_name;
@@ -683,13 +753,14 @@ class TadModData
     }
 
     // 設定submit按鈕
-    public function set_button($type = 'submit', $name = 'op', $value = '', $label = '', $attr_arr = [])
+    public function set_submit($name = 'op', $value = '', $label = '', $icon = '', $attr_arr = ['class' => 'btn btn-primary'])
     {
         foreach ($attr_arr as $attr => $attr_value) {
             $attrs[] = $attr . ' = "' . $attr_value . '"';
         }
         $attr = implode(' ', $attrs);
-        $this->subimt[$type][] = '<button type="' . $type . '" name="' . $name . '" value="' . $value . '" ' . $attr . '>' . $label . '</button>';
+        $show_icon = $icon ? '<i class="fa ' . $icon . '" aria-hidden="true"></i> ' : '';
+        $this->submit[] = '<button type="submit" name="' . $name . '" value="' . $value . '" ' . $attr . '>' . $show_icon . $label . '</button>';
     }
 
     // 加入上傳工具
@@ -708,6 +779,19 @@ class TadModData
     {
         $this->sort_col = $col_name;
         $this->order([$col_name => '']);
+    }
+
+    // 加入必填
+    public function set_require($col_name, $options = [])
+    {
+        $opt = [];
+        foreach ($options as $key => $value) {
+            $opt[] = "{$key}[{$value}]";
+        }
+        $option = implode(',', $opt);
+        $this->require_col[$col_name] = $option;
+
+        $this->require_arr = array_keys($this->require_col);
     }
 
     //自動取得新排序
@@ -730,9 +814,23 @@ class TadModData
     /*********** 調整顯示 ************/
 
     // 替換顯示
-    public function replace($col_name, $arr = [])
+    public function replace($col_name, $arr = [], $callback = [], $exception_group = [])
     {
-        $this->replace_col[$col_name] = $arr;
+        global $xoopsUser;
+
+        $user_groups = ($xoopsUser) ? $xoopsUser->groups() : [3];
+        $work = true;
+        if ($exception_group) {
+            $exception = array_intersect($exception_group, $user_groups);
+            $work = sizeof($exception) ? false : true;
+        }
+
+        if ($work) {
+            $this->replace_col[$col_name] = $arr;
+            if ($callback) {
+                $this->replace_col_callback[$col_name] = $callback;
+            }
+        }
     }
 
     // 將uid使用者編號改用姓名呈現
@@ -742,17 +840,25 @@ class TadModData
     }
 
     // 取消欄位
-    public function disable($col_name = 'uid', $where = ['index'])
+    public function disable($col_name = 'uid', $where = ['index'], $exception_group = [])
     {
-        if (in_array('index', $where)) {
+        global $xoopsUser;
+
+        $user_groups = ($xoopsUser) ? $xoopsUser->groups() : [3];
+        $disable = true;
+        if ($exception_group) {
+            $exception = array_intersect($exception_group, $user_groups);
+            $disable = sizeof($exception) ? false : true;
+        }
+
+        if (in_array('index', $where) and $disable) {
             $this->disable_index_col[] = $col_name;
         }
 
-        if (in_array('show', $where)) {
-            $this->disable_show_col[] = $col_name;
-        }
+        if (in_array('show', $where) and $disable) {
+            $this->disable_show_col[] = $col_name;}
 
-        if (in_array('create', $where)) {
+        if (in_array('create', $where) and $disable) {
             $this->disable_create_col[] = $col_name;
         }
     }
