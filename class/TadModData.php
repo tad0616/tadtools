@@ -47,6 +47,7 @@ class TadModData
     private $require_col = [];
     private $require_arr = [];
     private $allow_groups = [];
+    private $attr = [];
 
     // 建構函數
     public function __construct($table)
@@ -74,6 +75,17 @@ class TadModData
             }
         }
 
+        $this->set_attr('table', ['class' => 'table table-hover table-responsive table-striped']);
+        $this->set_attr('tr1', ['class' => 'bg-info white']);
+        $this->set_attr('th', ['class' => 'text-center']);
+        $this->set_attr('td', ['class' => 'text-center']);
+
+    }
+
+    // 設定變數
+    public function set_var($name, $value)
+    {
+        $this->$name = $value;
     }
 
     // 過濾接收的變數
@@ -107,6 +119,55 @@ class TadModData
 
         $xoopsTpl->assign($key . "_arr", $arr);
         return $arr;
+    }
+
+    //允許群組
+    public function allow($func_arr = [], $groups = [])
+    {
+        foreach ($func_arr as $func) {
+            $this->allow_groups[$func] = $groups;
+        }
+    }
+
+    // 檢查權限
+    public function chk_allow($func, $redirect = '')
+    {
+        global $xoopsUser;
+        $allow = true;
+        if (isset($this->allow_groups[$func]) and !empty($this->allow_groups[$func])) {
+            $user_groups = ($xoopsUser) ? $xoopsUser->groups() : [3];
+            $in_allow_group = array_intersect($this->allow_groups[$func], $user_groups);
+            $allow = sizeof($in_allow_group) ? true : false;
+            if (!$allow) {
+                $redirect = empty($redirect) ? $_SERVER['HTTP_REFERER'] : $redirect;
+                redirect_header($redirect, 3, '沒有可以操作此動作的權限');
+            }
+        }
+        return $allow;
+    }
+
+    public function set_attr($kind, $attrs = [], $mode = '')
+    {
+        foreach ($attrs as $attr_name => $attr_value) {
+            if ($mode == "append") {
+                $this->attr[$kind][$attr_name] .= ' ' . $attr_value;
+            } else {
+                $this->attr[$kind][$attr_name] = $attr_value;
+            }
+        }
+    }
+
+    public function get_attr($kind)
+    {
+        $attr = '';
+        $attr_arr = [];
+        if (isset($this->attr[$kind])) {
+            foreach ($this->attr[$kind] as $attr_name => $attr_value) {
+                $attr_arr[] = $attr_name . ' = "' . $attr_value . '"';
+            }
+            $attr = implode(' ', $attr_arr);
+        }
+        return $attr;
     }
 
     /*********** 基本功能 ************/
@@ -494,7 +555,11 @@ class TadModData
 
             // 開始製作顯示內容
             $all_data[] = $all;
-            $td .= '<tr id="sort_arr_' . $all[$this->primary] . '">';
+
+            $this->set_attr('tr', ['id' => "sort_arr_{$all[$this->primary]}"]);
+            $tr_attr = $this->get_attr('tr');
+
+            $td .= '<tr ' . $tr_attr . '>';
 
             // 需替換欄位陣列
             $need_replace = array_keys($this->replace_col);
@@ -537,15 +602,19 @@ class TadModData
                     $td_val = '<a href="' . $this->set_link_col[$col_name]['to'] . $parameter . '" target="' . $this->set_link_col[$col_name]['target'] . '">' . $td_val . '</a>';
                 }
 
-                $td_class = $col_name == $this->sort_col ? 'class="show_sort"' : '';
+                if ($col_name == $this->sort_col) {
+                    $this->set_attr(['class' => "show_sort"], 'append');
+                }
+
+                $td_attr = $this->get_attr('td');
                 $td .= '
-                <td ' . $td_class . '>' . $td_val . '</td>';
+                <td ' . $td_attr . '>' . $td_val . '</td>';
             }
 
             // 附檔
             if ($this->use_file) {
                 $td .= '
-                <td ' . $td_class . '>' . $all['files'] . '</td>';
+                <td ' . $td_attr . '>' . $all['files'] . '</td>';
             }
 
             $my_btn = '';
@@ -594,7 +663,7 @@ class TadModData
             $display_function_th = false;
             if ($edit_button or $destroy_button or $my_btn) {
                 $td .= '
-                <td class="c n">
+                <td ' . $td_attr . '>
                     ' . $edit_button . '
                     ' . $destroy_button . '
                     ' . $my_btn . '
@@ -609,19 +678,21 @@ class TadModData
 
         // 表格標題
         $th = '';
+        $th_attr = $this->get_attr('th');
         foreach ($this->schema as $col_name => $schema) {
             if (!empty($this->disable_index_col) and in_array($col_name, $this->disable_index_col)) {
                 continue;
             }
-            $th .= '<th class="c n">' . $schema['Comment'] . '</th>';
+
+            $th .= '<th ' . $th_attr . '>' . $schema['Comment'] . '</th>';
         }
 
         if ($this->use_file) {
-            $th .= '<th class="c n">相關附檔</th>';
+            $th .= '<th ' . $th_attr . '>相關附檔</th>';
         }
 
         if ($_SESSION[$session_name] or strpos($_SERVER['PHP_SELF'], '/admin/') !== false or !empty($this->add_index_btn) or $display_function_th) {
-            $th .= '<th class="c n">' . _TAD_FUNCTION . '</th>';
+            $th .= '<th ' . $th_attr . '>' . _TAD_FUNCTION . '</th>';
         }
 
         $save_msg == '';
@@ -645,11 +716,14 @@ class TadModData
             $save_msg = '<div id="save_msg">' . _TAD_SORTABLE . '</div>';
         }
 
+        $table_attr = $this->get_attr('table');
+        $tr1_attr = $this->get_attr('tr1');
+
         $index_table = '
         ' . $save_msg . '
-        <table class="table table-hover table-responsive table-striped">
+        <table ' . $table_attr . '>
             <thead>
-                <tr class="bg-info white">
+                <tr ' . $tr1_attr . '>
                     ' . $th . '
                 </tr>
             </thead>
@@ -955,31 +1029,6 @@ class TadModData
     {
         $this->left = $left;
         $this->right = $right;
-    }
-
-    //允許群組
-    public function allow($func_arr = [], $groups = [])
-    {
-        foreach ($func_arr as $func) {
-            $this->allow_groups[$func] = $groups;
-        }
-    }
-
-    // 檢查權限
-    public function chk_allow($func, $redirect = '')
-    {
-        global $xoopsUser;
-        $allow = true;
-        if (isset($this->allow_groups[$func]) and !empty($this->allow_groups[$func])) {
-            $user_groups = ($xoopsUser) ? $xoopsUser->groups() : [3];
-            $in_allow_group = array_intersect($this->allow_groups[$func], $user_groups);
-            $allow = sizeof($in_allow_group) ? true : false;
-            if (!$allow) {
-                $redirect = empty($redirect) ? $_SERVER['HTTP_REFERER'] : $redirect;
-                redirect_header($redirect, 3, '沒有可以操作此動作的權限');
-            }
-        }
-        return $allow;
     }
 
 }
