@@ -22,8 +22,10 @@ class TadModData
     private $my_elements = [];
     private $my_elements_options = [];
     private $change_elements = [];
-    private $left = 2;
-    private $right = 10;
+    private $show_left = 2;
+    private $show_right = 10;
+    private $form_left = 2;
+    private $form_right = 10;
     private $use_file;
     private $TadUpFiles;
     private $file_index_mode;
@@ -31,13 +33,16 @@ class TadModData
     private $file_maxlength;
     private $file_only_type;
     private $replace_col = [];
+    private $need_replace = [];
     private $replace_col_callback = [];
     private $uid_col = [];
+    private $uid_col_arr = [];
     private $disable_index_col = [];
     private $disable_show_col = [];
     private $disable_create_col = [];
     private $hide_create_col = [];
     private $set_link_col = [];
+    private $need_link = [];
     private $add_index_btn = [];
     private $add_show_btn = [];
     private $add_create_btn = [];
@@ -48,6 +53,8 @@ class TadModData
     private $require_arr = [];
     private $allow_groups = [];
     private $attr = [];
+    private $my_show_col = [];
+    private $my_show_col_arr = [];
 
     // 建構函數
     public function __construct($table)
@@ -127,6 +134,7 @@ class TadModData
         foreach ($func_arr as $func) {
             $this->allow_groups[$func] = $groups;
         }
+        return $this;
     }
 
     // 檢查權限
@@ -140,7 +148,7 @@ class TadModData
             $allow = sizeof($in_allow_group) ? true : false;
             if (!$allow) {
                 $redirect = empty($redirect) ? $_SERVER['HTTP_REFERER'] : $redirect;
-                redirect_header($redirect, 3, '沒有可以操作此動作的權限');
+                redirect_header($redirect, 3, _TAD_PERMISSION_DENIED);
             }
         }
         return $allow;
@@ -158,6 +166,7 @@ class TadModData
                 $this->attr[$kind][$attr_name] = $attr_value;
             }
         }
+        return $this;
     }
 
     // 取得屬性
@@ -249,7 +258,7 @@ class TadModData
 
             $elements[$i]['col_name'] = $this->table . '_file';
             $elements[$i]['show'] = true;
-            $elements[$i]['label'] = '附檔上傳';
+            $elements[$i]['label'] = _TM_FILE_UPLOAD;
             $this->TadUpFiles->set_col($this->use_file, $def_val[$this->use_file]);
             $this->TadUpFiles->set_var('show_tip', false);
             $elements[$i]['form'] = $this->TadUpFiles->upform(true, $this->table . '_file', $this->file_maxlength, true, $this->file_only_type);
@@ -263,10 +272,10 @@ class TadModData
             if ($ele['show']) {
                 $requir_star = $this->get_validate($ele['col_name'], 'star');
 
-                $this->set_attr($ele['col_name'] . '_form_label', ['class' => 'col-sm-' . $this->left . ' control-label col-form-label text-md-right'], 'default');
+                $this->set_attr($ele['col_name'] . '_form_label', ['class' => 'col-sm-' . $this->form_left . ' control-label col-form-label text-md-right'], 'default');
                 $form_label_attr = $this->get_attr($ele['col_name'] . '_form_label');
 
-                $this->set_attr($ele['col_name'] . '_form_content', ['class' => 'col-sm-' . $this->right], 'default');
+                $this->set_attr($ele['col_name'] . '_form_content', ['class' => 'col-sm-' . $this->form_right], 'default');
                 $form_content_attr = $this->get_attr($ele['col_name'] . '_form_content');
 
                 $this->set_attr($ele['col_name'] . '_form_group', ['class' => 'form-group row'], 'default');
@@ -293,7 +302,7 @@ class TadModData
             $this->set_attr('submit', ['name' => 'op', 'value' => $op, 'class' => 'btn btn-primary'], 'default');
             $submit_attr = $this->get_attr('submit');
 
-            $label = !empty($def_val) ? '儲存更新' : '送出新增';
+            $label = !empty($def_val) ? _TM_SAVE : _TM_ADD;
             $submit = '<button type="submit" ' . $submit_attr . '>' . $label . '</button>';
         }
 
@@ -320,49 +329,40 @@ class TadModData
 
         $this->chk_allow(__FUNCTION__);
 
-        $values = $this->show($id, false);
+        $values = $this->find([$this->primary => $id]);
         $this->create($values);
     }
 
     // 單一顯示
-    public function show($id, $clean = true)
+    public function show($id, $where = [])
     {
 
         $this->chk_allow(__FUNCTION__);
 
         global $xoopsDB, $xoopsTpl, $xoTheme;
         $myts = \MyTextSanitizer::getInstance();
-        $sql = "select * from `" . $xoopsDB->prefix($this->table) . "` where `{$this->primary}`='$id'";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-        $all = $xoopsDB->fetchArray($result);
+        $where[$this->primary] = $id;
+        $all = $this->find($where);
 
         $my_label = [];
-        if ($clean) {
-            $uid_cols = array_keys($this->uid_col);
-            foreach ($all as $k => $v) {
-                if (!empty($uid_cols) and in_array($k, $uid_cols)) {
-                    $all[$k] = (int) $v;
-                    $all[$k . '_name'] = $uid_name = \XoopsUser::getUnameFromId($v, $this->uid_col[$k]);
-                    $my_label[$k . '_name'] = $this->schema[$k]['Comment'];
-                    $this->replace_col[$k][$v] = $uid_name;
-                } elseif (strpos($this->var_type[$k], "text") !== false) {
-                    $all[$k] = $myts->displayTarea($v, 1, 0, 0, 0, 0);
-                } else {
-                    $all[$k] = $myts->htmlSpecialChars($v);
-                }
+        foreach ($all as $k => $v) {
+            if (!empty($this->uid_col_arr) and in_array($k, $this->uid_col_arr)) {
+                $all[$k] = (int) $v;
+                $all[$k . '_name'] = $uid_name = \XoopsUser::getUnameFromId($v, $this->uid_col[$k]);
+                $my_label[$k . '_name'] = $this->schema[$k]['Comment'];
+                $this->replace($k, [$v => $uid_name]);
+            } elseif (strpos($this->var_type[$k], "text") !== false) {
+                $all[$k] = $myts->displayTarea($v, 1, 0, 0, 0, 0);
+            } else {
+                $all[$k] = $myts->htmlSpecialChars($v);
             }
         }
 
         if ($this->use_file) {
             $this->TadUpFiles->set_col($this->use_file, $id);
-            $all['files'] = $this->TadUpFiles->show_files("{$this->table}_file", true, $this->file_show_mode, false, false, null, null, false);
-            $my_label['files'] = '相關附檔';
+            $all["{$this->table}_file"] = $this->TadUpFiles->show_files("{$this->table}_file", true, $this->file_show_mode, false, false, null, null, false);
+            $my_label["{$this->table}_file"] = _TM_FILES;
         }
-
-        // 需替換欄位陣列
-        $need_replace = array_keys($this->replace_col);
-        // 需加連結欄位陣列
-        $need_link = array_keys($this->set_link_col);
 
         $show_content = '';
         foreach ($all as $col_name => $value) {
@@ -372,54 +372,53 @@ class TadModData
                 continue;
             }
             // 被替換的使用者編號也不用顯示
-            if (!empty($uid_cols) and in_array($col_name, $uid_cols)) {
+            if (!empty($this->uid_col_arr) and in_array($col_name, $this->uid_col_arr)) {
                 continue;
             }
 
-            // 替換資料
-            $value = in_array($col_name, $need_replace) ? $this->replace_col[$col_name][$value] : $value;
+            if (in_array($col_name, $this->my_show_col_arr)) {
+                // Utility::dd($this->my_show_col[$col_name]);
+                $show_col = '';
+                foreach ($this->my_show_col[$col_name] as $col_name => $width) {
+                    // Utility::dd($col_name);
+                    list($left_w, $right_w) = $width;
+                    $value = $this->render_show_val($col_name, $value);
+                    $label = empty($this->schema[$col_name]['Comment']) ? $my_label[$col_name] : $this->schema[$col_name]['Comment'];
 
-            if ($this->replace_col_callback[$col_name]) {
-                foreach ($this->replace_col_callback[$col_name] as $func_name => $func_parameter_arr) {
-                    foreach ($func_parameter_arr as $parameter_key => $parameter_value) {
-                        if ($parameter_value == 'this') {
-                            $parameter_value = $value;
-                        }
-                        $parameter_arr[$parameter_key] = $parameter_value;
+                    $this->set_attr($col_name . '_row', ['class' => 'row my-3'], 'default');
+                    $row = $this->get_attr($col_name . '_row');
+                    $this->set_attr($col_name . '_row_label', ['class' => 'col-sm-' . $left_w . ' text-right'], 'default');
+                    $row_label = $this->get_attr($col_name . '_row_label');
+                    $this->set_attr($col_name . '_row_content', ['class' => 'col-sm-' . $right_w], 'default');
+                    $row_content = $this->get_attr($col_name . '_row_content');
+
+                    if ($left_w > 0) {
+                        $show_col .= '<div ' . $row_label . '>' . $label . '</div>';
                     }
-                    $value = call_user_func_array($func_name, $parameter_arr);
+                    $show_col .= '<div ' . $row_content . '>' . $value . '</div>';
                 }
+                $show_content .= '
+                <div ' . $row . '>
+                    ' . $show_col . '
+                </div>';
+            } else {
+                $value = $this->render_show_val($col_name, $value);
+                $label = empty($this->schema[$col_name]['Comment']) ? $my_label[$col_name] : $this->schema[$col_name]['Comment'];
+
+                $this->set_attr($col_name . '_row', ['class' => 'row my-3'], 'default');
+                $row = $this->get_attr($col_name . '_row');
+                $this->set_attr($col_name . '_row_label', ['class' => 'col-sm-' . $this->show_left . ' text-right'], 'default');
+                $row_label = $this->get_attr($col_name . '_row_label');
+                $this->set_attr($col_name . '_row_content', ['class' => 'col-sm-' . $this->show_right], 'default');
+                $row_content = $this->get_attr($col_name . '_row_content');
+
+                $show_content .= '
+                <div ' . $row . '>
+                    <div ' . $row_label . '>' . $label . '</div>
+                    <div ' . $row_content . '>' . $value . '</div>
+                </div>';
             }
 
-            // 加連結
-            if (in_array($col_name, $need_link)) {
-                if ($this->set_link_col[$col_name]['parameter']) {
-                    $para = [];
-                    foreach ($this->set_link_col[$col_name]['parameter'] as $pk => $pv) {
-                        if (\is_int($pk)) {
-                            $para[] = "{$pv}={$all[$pv]}";
-                        } else {
-                            $para[] = "{$pk}={$pv}";
-                        }
-                    }
-                }
-                $parameter = ($para) ? '?' . implode('&', $para) : '';
-                $value = '<a href="' . $this->set_link_col[$col_name]['to'] . $parameter . '" target="' . $this->set_link_col[$col_name]['target'] . '">' . $value . '</a>';
-            }
-
-            $this->set_attr($col_name . '_row', ['class' => 'row my-3'], 'default');
-            $row = $this->get_attr($col_name . '_row');
-            $this->set_attr($col_name . '_row_label', ['class' => 'col-sm-' . $this->left . ' text-right'], 'default');
-            $row_label = $this->get_attr($col_name . '_row_label');
-            $this->set_attr($col_name . '_row_content', ['class' => 'col-sm-' . $this->right], 'default');
-            $row_content = $this->get_attr($col_name . '_row_content');
-
-            $label = empty($this->schema[$col_name]['Comment']) ? $my_label[$col_name] : $this->schema[$col_name]['Comment'];
-            $show_content .= '
-            <div ' . $row . '>
-                <div ' . $row_label . '>' . $label . '</div>
-                <div ' . $row_content . '>' . $value . '</div>
-            </div>';
         }
 
         $xoTheme->addScript('', null, "
@@ -431,6 +430,42 @@ class TadModData
         $xoopsTpl->assign("{$this->table}_show", $show_content);
         return $all;
 
+    }
+
+    public function render_show_val($col_name, $value)
+    {
+
+        // 替換資料
+        $value = in_array($col_name, $this->need_replace) ? $this->replace_col[$col_name][$value] : $value;
+
+        if ($this->replace_col_callback[$col_name]) {
+            foreach ($this->replace_col_callback[$col_name] as $func_name => $func_parameter_arr) {
+                foreach ($func_parameter_arr as $parameter_key => $parameter_value) {
+                    if ($parameter_value == 'this') {
+                        $parameter_value = $value;
+                    }
+                    $parameter_arr[$parameter_key] = $parameter_value;
+                }
+                $value = call_user_func_array($func_name, $parameter_arr);
+            }
+        }
+
+        // 加連結
+        if (in_array($col_name, $this->need_link)) {
+            if ($this->set_link_col[$col_name]['parameter']) {
+                $para = [];
+                foreach ($this->set_link_col[$col_name]['parameter'] as $pk => $pv) {
+                    if (\is_int($pk)) {
+                        $para[] = "{$pv}={$all[$pv]}";
+                    } else {
+                        $para[] = "{$pk}={$pv}";
+                    }
+                }
+            }
+            $parameter = ($para) ? '?' . implode('&', $para) : '';
+            $value = '<a href="' . $this->set_link_col[$col_name]['to'] . $parameter . '" target="' . $this->set_link_col[$col_name]['target'] . '">' . $value . '</a>';
+        }
+        return $value;
     }
 
     // 更新資料
@@ -559,18 +594,16 @@ class TadModData
         $all_data = [];
         $td = '';
 
-        $uid_cols = array_keys($this->uid_col);
-
         while ($all = $xoopsDB->fetchArray($result)) {
             if ($_SESSION[$session_name] or strpos($_SERVER['PHP_SELF'], '/admin/') !== false) {
                 $all['del'] = "javascript:del_{$xoopsDB->prefix($this->table)}({$all[$this->primary]})";
             }
 
             foreach ($all as $k => $v) {
-                if (!empty($uid_cols) and in_array($k, $uid_cols)) {
+                if (!empty($this->uid_col_arr) and in_array($k, $this->uid_col_arr)) {
                     $all[$k] = (int) $v;
                     $all[$k . '_name'] = $uid_name = \XoopsUser::getUnameFromId($v, $this->uid_col[$k]);
-                    $this->replace_col[$k][$v] = $uid_name;
+                    $this->replace($k, [$v => $uid_name]);
                 } elseif (strpos($this->var_type[$k], "text") !== false) {
                     $all[$k] = $myts->displayTarea($v, 1, 0, 0, 0, 0);
                 } else {
@@ -580,8 +613,10 @@ class TadModData
 
             if ($this->use_file) {
                 $this->TadUpFiles->set_col($this->use_file, $all[$this->use_file]);
-                $all['files'] = $this->TadUpFiles->show_files("{$this->table}_file", true, $this->file_index_mode, false, false, null, null, false);
+                $all["{$this->table}_file"] = $this->TadUpFiles->show_files("{$this->table}_file", true, $this->file_index_mode, false, false, null, null, false);
             }
+
+            // Utility::dd($this->need_replace);
 
             // 開始製作顯示內容
             $all_data[] = $all;
@@ -591,18 +626,13 @@ class TadModData
 
             $td .= '<tr ' . $tr_attr . '>';
 
-            // 需替換欄位陣列
-            $need_replace = array_keys($this->replace_col);
-            // 需加連結欄位陣列
-            $need_link = array_keys($this->set_link_col);
-
             foreach ($this->schema as $col_name => $schema) {
                 if (!empty($this->disable_index_col) and in_array($col_name, $this->disable_index_col)) {
                     continue;
                 }
 
                 // 替換內容
-                $td_val = in_array($col_name, $need_replace) ? $this->replace_col[$col_name][$all[$col_name]] : $all[$col_name];
+                $td_val = in_array($col_name, $this->need_replace) ? $this->replace_col[$col_name][$all[$col_name]] : $all[$col_name];
 
                 if ($this->replace_col_callback[$col_name]) {
                     foreach ($this->replace_col_callback[$col_name] as $func_name => $func_parameter_arr) {
@@ -617,7 +647,7 @@ class TadModData
                 }
 
                 // 加連結
-                if (in_array($col_name, $need_link)) {
+                if (in_array($col_name, $this->need_link)) {
                     if ($this->set_link_col[$col_name]['parameter']) {
                         $para = [];
                         foreach ($this->set_link_col[$col_name]['parameter'] as $pk => $pv) {
@@ -644,7 +674,7 @@ class TadModData
             // 附檔
             if ($this->use_file) {
                 $td .= '
-                <td ' . $td_attr . '>' . $all['files'] . '</td>';
+                <td ' . $td_attr . '>' . $all["{$this->table}_file"] . '</td>';
             }
 
             $my_btn = '';
@@ -718,7 +748,7 @@ class TadModData
         }
 
         if ($this->use_file) {
-            $th .= '<th ' . $th_attr . '>相關附檔</th>';
+            $th .= '<th ' . $th_attr . '>' . _TM_FILES . '</th>';
         }
 
         if ($_SESSION[$session_name] or strpos($_SERVER['PHP_SELF'], '/admin/') !== false or !empty($this->add_index_btn) or $display_function_th) {
@@ -778,6 +808,27 @@ class TadModData
     }
 
     /*********** 資料操控 ************/
+    // 找出一個
+    public function find($where_item = [])
+    {
+        global $xoopsDB, $xoopsUser;
+
+        foreach ($where_item as $col => $val) {
+            if ($val == 'uid' and is_int($col)) {
+                $col = 'uid';
+                $val = $xoopsUser->uid();
+            }
+            $where_sql[] = "`$col` = '{$val}'";
+        }
+        $where = "where " . implode(' and ', $where_sql);
+
+        $myts = \MyTextSanitizer::getInstance();
+        $sql = "select * from `" . $xoopsDB->prefix($this->table) . "` $where";
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $all = $xoopsDB->fetchArray($result);
+        return $all;
+    }
+
     // 篩選
     public function where($where_item = [])
     {
@@ -785,6 +836,7 @@ class TadModData
             $where_sql[] = "`$col` = '{$val}'";
         }
         $this->where = "where " . implode(' and ', $where_sql);
+        return $this;
     }
 
     // 排序
@@ -794,6 +846,7 @@ class TadModData
             $order_sql[] = "`$col` {$sort}";
         }
         $this->order = "order by " . implode(',', $order_sql);
+        return $this;
     }
 
     /*********** 表單元件 ************/
@@ -817,6 +870,7 @@ class TadModData
     {
         $this->my_elements[$col_name] = $type;
         $this->my_elements_options[$col_name] = $options;
+        return $this;
     }
 
     // 取得驗證規則
@@ -890,6 +944,7 @@ class TadModData
 
         $this->hide_create_col[] = $col_name;
         $this->change_elements[$col_name] = '<input type="hidden" name="' . $col_name . '" value="' . $def_val . '">';
+        return $this;
     }
 
     // 設定submit按鈕
@@ -901,6 +956,7 @@ class TadModData
         $attr = implode(' ', $attrs);
         $show_icon = $icon ? '<i class="fa ' . $icon . '" aria-hidden="true"></i> ' : '';
         $this->submit[] = '<button type="submit" name="' . $name . '" value="' . $value . '" ' . $attr . '>' . $show_icon . $label . '</button>';
+        return $this;
     }
 
     // 加入上傳工具
@@ -912,6 +968,7 @@ class TadModData
         $this->file_show_mode = $show_mode;
         $this->file_maxlength = $maxlength;
         $this->file_only_type = $only_type;
+        return $this;
     }
 
     // 加入排序
@@ -919,6 +976,7 @@ class TadModData
     {
         $this->sort_col = $col_name;
         $this->order([$col_name => '']);
+        return $this;
     }
 
     // 加入必填
@@ -932,6 +990,7 @@ class TadModData
         $this->require_col[$col_name] = $option;
 
         $this->require_arr = array_keys($this->require_col);
+        return $this;
     }
 
     //自動取得新排序
@@ -949,6 +1008,7 @@ class TadModData
     public function set_func($func_name, $to = false)
     {
         $this->func[$func_name] = $to;
+        return $this;
     }
 
     /*********** 調整顯示 ************/
@@ -971,12 +1031,17 @@ class TadModData
                 $this->replace_col_callback[$col_name] = $callback;
             }
         }
+        // 需替換欄位陣列
+        $this->need_replace = array_keys($this->replace_col);
+        return $this;
     }
 
     // 將uid使用者編號改用姓名呈現
     public function uid_name($col_name = 'uid', $type = 1)
     {
         $this->uid_col[$col_name] = $type;
+        $this->uid_col_arr = array_keys($this->uid_col);
+        return $this;
     }
 
     // 取消欄位
@@ -1001,6 +1066,7 @@ class TadModData
         if (in_array('create', $where) and $disable) {
             $this->disable_create_col[] = $col_name;
         }
+        return $this;
     }
 
     // 隱藏欄位
@@ -1009,6 +1075,7 @@ class TadModData
         if (in_array('create', $where)) {
             $this->hide_create_col[] = $col_name;
         }
+        return $this;
     }
 
     // 設置連結
@@ -1021,6 +1088,9 @@ class TadModData
         $this->set_link_col[$col_name]['to'] = $to;
         $this->set_link_col[$col_name]['target'] = $target;
         $this->set_link_col[$col_name]['parameter'] = $parameter;
+
+        $this->need_link = array_keys($this->set_link_col);
+        return $this;
     }
 
     // 加入自訂按鈕
@@ -1046,19 +1116,38 @@ class TadModData
         if (in_array('create', $where)) {
             $this->add_create_btn[] = $btn;
         }
+        return $this;
     }
 
     // 分頁
     public function pagebar($num = 20)
     {
         $this->pagebar = $num;
+        return $this;
     }
 
     // 設定bootstrap欄位寬度
-    public function width($left = 2, $right = 10)
+    public function show_width($left = 2, $right = 10)
     {
-        $this->left = $left;
-        $this->right = $right;
+        $this->show_left = $left;
+        $this->show_right = $right;
+        return $this;
+    }
+    public function form_width($left = 2, $right = 10)
+    {
+        $this->form_left = $left;
+        $this->form_right = $right;
+        return $this;
     }
 
+    // 設定bootstrap的row內容
+    public function row($cols = [])
+    {
+        $key = count($cols) ? array_keys($cols)[0] : null;
+        foreach ($cols as $col_name => $width_arr) {
+            $this->my_show_col_arr[] = $col_name;
+        }
+        $this->my_show_col[$key] = $cols;
+        return $this;
+    }
 }

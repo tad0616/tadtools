@@ -1,3 +1,15 @@
+TadTools 3.3.8 (released 2020-06-02)
+=============================================================================
+1. Optimize backend list style
+2. Add jQuery UI Touch Punch
+3.Fix the problem that TadUpFiles.php will import files in strict mode.
+4. Fix the problem that BootStrap4 three-column layout will leave a blank when the left block or right block is missing.
+5. Modify TadUpFiles.php to increase the flexibility of using striped files.
+6. Modify the pattern if the template is underneath, the block arrangement will be abnormal.
+7. Add $TadMod and $TadModData to the Lazy People Development Framework
+8.Modify the deletion issue of TadUpFiles.php
+
+
 TadTools 3.3.7 (released 2020-04-13)
 =============================================================================
 1.Remove CKEditor's upload tab and use "Browse and Upload" instead (thanks to geek01)

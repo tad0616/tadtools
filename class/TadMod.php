@@ -34,7 +34,7 @@ class TadMod
         } elseif ($xoopsModule) {
             $this->dirname = $xoopsModule->dirname();
         } else {
-            die('無法取得目錄');
+            die(_TM_FILE_NOT_DIR);
         }
         $this->add_adm_menu(_MI_TAD_ADMIN_HOME, 'admin/index.php', 'images/admin/home.png');
     }
@@ -55,6 +55,7 @@ class TadMod
         $this->credits = $credits;
         $this->website_ur = $website_ur;
         $this->website_name = $website_name;
+        return $this;
     }
 
     public function add_config($name, $title = '', $desc = '', $formtype = 'textbox', $valuetype = 'text', $default = '', $options = [])
@@ -76,6 +77,7 @@ class TadMod
         }
         $this->lang['mi'][] = [$const['title'] => $title, $const['desc'] => $desc];
         $this->config_arr[] = $config;
+        return $this;
     }
 
     public function add_blocks($name, $title = '', $desc = '', $options_arr = [])
@@ -96,6 +98,7 @@ class TadMod
         }
         $this->lang['mi'][] = [$const['title'] => $title, $const['desc'] => $desc];
         $this->block_arr[] = $block;
+        return $this;
     }
 
     public function add_menu($title, $value, $only_adm = false)
@@ -107,6 +110,7 @@ class TadMod
         } else {
             $this->interface_menu[$title] = $value;
         }
+        return $this;
     }
 
     public function get_menu($tag = 'toolbar')
@@ -126,6 +130,7 @@ class TadMod
     {
         $this->adm_menu[$title]['url'] = $value;
         $this->adm_menu[$title]['icon'] = $icon;
+        return $this;
     }
 
     public function get_adm_menu()

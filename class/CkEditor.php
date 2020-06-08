@@ -101,6 +101,7 @@ class CkEditor
         $TadToolsModuleConfig = Utility::TadToolsXoopsModuleConfig();
         $codemirror = $TadToolsModuleConfig['use_codemirror'] ? ',codemirror' : '';
 
+        $bs = $_SESSION['bootstrap'] ? $_SESSION['bootstrap'] : 3;
         $editor .= "
         <textarea name='{$this->ColName}' id='editor_{$this->ColName}' class='ckeditor_css'>{$content}</textarea>
 
@@ -112,7 +113,7 @@ class CkEditor
             height : '{$this->Height}' ,
             language : '" . _LANGCODE . "' ,
             toolbar : '{$this->ToolbarSet}' ,
-            contentsCss : ['" . XOOPS_URL . "/modules/tadtools/bootstrap3/css/bootstrap.css','" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css'{$other_css}],
+            contentsCss : ['" . XOOPS_URL . "/modules/tadtools/bootstrap{$bs}/css/bootstrap.css','" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css'{$other_css}],
             extraPlugins: 'syntaxhighlight,dialog,oembed,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak,fontawesome,prism,codesnippet{$codemirror}{$extra_uploadcare}',
             {$uploadcare_setup}
             filebrowserBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=file&mod_dir=' . $this->xoopsDirName . "',

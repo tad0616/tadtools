@@ -116,3 +116,12 @@ define('_TDC_INPUT_COL_ID', 'Do not move, for program');
 define('_TDC_COL_ID', 'Identifier');
 //TadUpFiles.php
 define('_TUF_PERMISSION_NOTE', 'If not checked, all open downloads');
+
+//TadModData.php
+define('_TM_FILE_UPLOAD', 'File Upload');
+define('_TM_SAVE', 'Save updates');
+define('_TM_ADD', 'Send new');
+define('_TM_FILES', 'Related Files');
+
+//TadMod.php
+define('_TM_FILE_NOT_DIR', 'Catalog not available');

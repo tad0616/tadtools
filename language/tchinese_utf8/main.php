@@ -117,3 +117,12 @@ define('_TDC_COL_ID', '程式辨識碼');
 
 //TadUpFiles.php
 define('_TUF_PERMISSION_NOTE', '不選即全部開放下載：');
+
+//TadModData.php
+define('_TM_FILE_UPLOAD', '檔案上傳');
+define('_TM_SAVE', '儲存更新');
+define('_TM_ADD', '送出新增');
+define('_TM_FILES', '相關檔案');
+
+//TadMod.php
+define('_TM_FILE_NOT_DIR', '無法取得目錄');
