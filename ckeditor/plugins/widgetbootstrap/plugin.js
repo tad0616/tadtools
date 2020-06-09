@@ -4,7 +4,7 @@ CKEDITOR.config.widgetbootstrapAlert_alertTypes = {
     'alert-danger': 'Danger',
     'alert-info': 'Info',
     'alert-warning': 'Warning',
-    'alert-success': 'Success',
+    'alert-success': 'Success'
 };
 
 
