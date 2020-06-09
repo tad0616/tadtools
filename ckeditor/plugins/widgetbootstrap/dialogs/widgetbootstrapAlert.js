@@ -1,6 +1,6 @@
-CKEDITOR.dialog.add( 'widgetfoundationAlert', function( editor ) {
+CKEDITOR.dialog.add( 'widgetbootstrapAlert', function( editor ) {
     var clientHeight = document.documentElement.clientHeight,
-        alertTypes = CKEDITOR.config.widgetfoundationAlert_alertTypes,
+        alertTypes = CKEDITOR.config.widgetbootstrapAlert_alertTypes,
         alertTypesSelect = [],
         alertName;
 
