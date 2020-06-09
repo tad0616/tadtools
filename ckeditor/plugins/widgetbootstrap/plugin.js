@@ -1,10 +1,10 @@
 // Init default alert classes
 
 CKEDITOR.config.widgetbootstrapAlert_alertTypes = {
-    'alert': 'Alert',
-    'info': 'Info',
-    'warning': 'Warning',
-    'success': 'Success'
+    'alert-danger': 'Danger',
+    'alert-info': 'Info',
+    'alert-warning': 'Warning',
+    'alert-success': 'Success',
 };
 
 
@@ -43,7 +43,7 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
 
             template:
                 '<div class="row two-col-left">' +
-                    '<div class="col-sm-4 col-sm-4 span4 col-sidebar"><p><img src="http://placehold.it/300x250&text=Image" /></p></div>' +
+                    '<div class="col-sm-4 col-sm-4 span4 col-sidebar"><p><img src="http://placehold.it/300x250&text=Image" class="img-responsive img-fluid" /></p></div>' +
                     '<div class="col-sm-8 col-sm-8 span8 col-main"><p>Content</p></div>' +
                 '</div>',
 
@@ -61,7 +61,7 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
             allowedContent: allowedFull,
 
             upcast: function( element ) {
-                return element.name == 'div' && element.hasClass( 'two-col-right-left' );
+                return element.name == 'div' && element.hasClass( 'two-col-left' );
             }
 
         } );
@@ -73,7 +73,7 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
             template:
                 '<div class="row two-col-right">' +
                     '<div class="col-sm-8 col-sm-8 span8 col-main"><p>Content</p></div>' +
-                    '<div class="col-sm-4 col-sm-4 span4 col-sidebar"><p><img src="http://placehold.it/300x250&text=Image" /></p></div>' +
+                    '<div class="col-sm-4 col-sm-4 span4 col-sidebar"><p><img src="http://placehold.it/300x250&text=Image" class="img-responsive img-fluid" /></p></div>' +
                 '</div>',
 
             editables: {
@@ -101,17 +101,17 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
 
             template:
                 '<div class="row two-col">' +
-                    '<div class="col-sm-6 col-sm-6 span6 col-1"><p><img src="http://placehold.it/500x280&text=Image" /></p><p>Content</p></div>' +
-                    '<div class="col-sm-6 col-sm-6 span6 col-2"><p><img src="http://placehold.it/500x280&text=Image" /></p><p>Content</p></div>' +
+                    '<div class="col-sm-6 col-sm-6 span6 coln-1"><p><img src="http://placehold.it/500x280&text=Image" class="img-responsive img-fluid" /></p><p>Content</p></div>' +
+                    '<div class="col-sm-6 col-sm-6 span6 coln-2"><p><img src="http://placehold.it/500x280&text=Image" class="img-responsive img-fluid" /></p><p>Content</p></div>' +
                 '</div>',
 
             editables: {
                 col1: {
-                    selector: '.col-1',
+                    selector: '.coln-1',
                     allowedContent: allowedWidget
                 },
                 col2: {
-                    selector: '.col-2',
+                    selector: '.coln-2',
                     allowedContent: allowedWidget
                 }
             },
@@ -130,22 +130,22 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
 
             template:
                 '<div class="row three-col">' +
-                    '<div class="col-sm-4 col-sm-4 span4 col-1"><p><img src="http://placehold.it/400x225&text=Image" /></p><p>Text below</p></div>' +
-                    '<div class="col-sm-4 col-sm-4 span4 col-2"><p><img src="http://placehold.it/400x225&text=Image" /></p><p>Text below</p></div>' +
-                    '<div class="col-sm-4 col-sm-4 span4 col-3"><p><img src="http://placehold.it/400x225&text=Image" /></p><p>Text below</p></div>' +
+                    '<div class="col-sm-4 col-sm-4 span4 coln-1"><p><img src="http://placehold.it/400x225&text=Image" class="img-responsive img-fluid" /></p><p>Text below</p></div>' +
+                    '<div class="col-sm-4 col-sm-4 span4 coln-2"><p><img src="http://placehold.it/400x225&text=Image" class="img-responsive img-fluid" /></p><p>Text below</p></div>' +
+                    '<div class="col-sm-4 col-sm-4 span4 coln-3"><p><img src="http://placehold.it/400x225&text=Image" class="img-responsive img-fluid" /></p><p>Text below</p></div>' +
                 '</div>',
 
             editables: {
                 col1: {
-                    selector: '.col-1',
+                    selector: '.coln-1',
                     allowedContent: allowedWidget
                 },
                 col2: {
-                    selector: '.col-2',
+                    selector: '.coln-2',
                     allowedContent: allowedWidget
                 },
                 col3: {
-                    selector: '.col-3',
+                    selector: '.coln-3',
                     allowedContent: allowedWidget
                 }
             },
@@ -169,7 +169,7 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
             button: showButtons ? 'Add alert box' : undefined,
             dialog: 'widgetbootstrapAlert',
 
-            template: '<div class="alert-box"><div class="alert-text">Some Text</span></div>',
+            template: '<div class="alert alert-box"><div class="alert-text">Some Text</span></div>',
 
             editables: {
                 alertBox: {
@@ -211,10 +211,10 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
                 // Acceptable alert types
                 var alertTypes = CKEDITOR.config.widgetbootstrapAlert_alertTypes;
                 // Check alert types
-                for(var i = 0; i < el.classes.length; i++) {
-                    if(el.classes[i] != 'alert-box') {
+                for(var i = 0; i < el.attributes.length; i++) {
+                    if(el.attributes[i] != 'alert-box') {
                         for ( alertName in alertTypes ) {
-                            if(el.classes[i] == alertName) {
+                            if(el.attributes[i] == alertName) {
                                 data.type = alertName;
                             }
                         }
