@@ -4,7 +4,7 @@ namespace XoopsModules\Tadtools;
 
 use XoopsModules\Tadtools\Utility;
 
-class Bootstrap3Editable
+class Bootstrap4Editable
 {
     public $show_jquery;
 
@@ -22,16 +22,16 @@ class Bootstrap3Editable
         $jquery = $this->show_jquery ? Utility::get_jquery() : '';
 
         if ($xoTheme) {
-            $xoTheme->addStylesheet("modules/tadtools/bootstrap{$_SESSION['bootstrap']}-editable/css/bootstrap-editable.css");
-            $xoTheme->addScript("modules/tadtools/bootstrap{$_SESSION['bootstrap']}-editable/js/bootstrap-editable.min.js");
+            $xoTheme->addStylesheet('modules/tadtools/bootstrap4-editable/css/bootstrap-editable.css');
+            $xoTheme->addScript('modules/tadtools/bootstrap4-editable/js/bootstrap-editable.min.js');
             $xoTheme->addScript('', null, "\$(document).ready(function(){
                     \$('{$name}').editable({url: '$url'});
                 });");
         } else {
             $main = "
             {$jquery}
-            <link href='" . XOOPS_URL . "/modules/tadtools/bootstrap{$_SESSION['bootstrap']}-editable/css/bootstrap-editable.css' rel='stylesheet'>
-            <script src='" . XOOPS_URL . "/modules/tadtools/bootstrap{$_SESSION['bootstrap']}-editable/js/bootstrap-editable.js'></script>
+            <link href='" . XOOPS_URL . "/modules/tadtools/bootstrap4-editable/css/bootstrap-editable.css' rel='stylesheet'>
+            <script src='" . XOOPS_URL . "/modules/tadtools/bootstrap4-editable/js/bootstrap-editable.js'></script>
             <script type='text/javascript'>
                 $(document).ready(function(){
                     $('{$name}').editable({url: '$url'});
@@ -47,9 +47,9 @@ class Bootstrap3Editable
 /*
 這要放在網頁最後面才有效
 
-use XoopsModules\Tadtools\Bootstrap3Editable;
-$Bootstrap3Editable=new Bootstrap3Editable();
-$Bootstrap3Editable->render('.editable','ajax.php');
+use XoopsModules\Tadtools\Bootstrap4Editable;
+$Bootstrap4Editable=new Bootstrap4Editable();
+$Bootstrap4Editable->render('.editable','ajax.php');
 
 http://vitalets.github.io/x-editable/docs.html
 <a href="#" class="editable" data-name="username" data-type="text" data-pk="1" data-title="Enter username" data-params="{op: 'en'}">superuser</a>
