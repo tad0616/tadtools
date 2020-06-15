@@ -1,13 +1,15 @@
-TadTools 3.3.8 (released 2020-06-02)
-=============================================================================
+TadTools 3.3.8 (Released on 2020-06-16)
+=============================================================
 1. Optimize backend list style
-2. Add jQuery UI Touch Punch
-3.Fix the problem that TadUpFiles.php will import files in strict mode.
-4. Fix the problem that BootStrap4 three-column layout will leave a blank when the left block or right block is missing.
-5. Modify TadUpFiles.php to increase the flexibility of using striped files.
-6. Modify the pattern if the template is underneath, the block arrangement will be abnormal.
-7. Add $TadMod and $TadModData to the Lazy People Development Framework
-8.Modify the deletion issue of TadUpFiles.php
+2.New jQuery UI Touch Punch
+3. Fix the error when importing files into TadUpFiles.php in strict mode.
+4. Fix the problem that BootStrap4 three-column layout will leave blank when the left block or right block is completely empty.
+5. Modify TadUpFiles.php to increase the flexibility of using barcode files.
+6. If the modified template is below, the block arrangement will not be normal.
+7. Added lazy person development framework $TadMod and $TadModData.
+8.Modify the deletion problem of TadUpFiles.php.
+9. Added Bootstrap4Editable, and Bootstrap3Editable is now auto-compatible with Bootstrap3 and Bootstrap4
+10.Adjust logo display method
 
 
 TadTools 3.3.7 (released 2020-04-13)

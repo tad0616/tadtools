@@ -4,14 +4,14 @@ global $xoopsConfig;
 
 $modversion = [];
 $modversion['name'] = _MI_TADTOOLS_NAME;
-$modversion['version'] = 3.37;
+$modversion['version'] = 3.38;
 $modversion['description'] = _MI_TADTOOLS_DESC;
 $modversion['author'] = 'Tad (tad0616@gmail.com)';
 $modversion['credits'] = '';
 $modversion['help'] = 'page=help';
 $modversion['license'] = 'GNU GPL 2.0 or later';
 $modversion['license_url'] = 'www.gnu.org/licenses/gpl-2.0.html/';
-$modversion['image'] = "images/logo_{$xoopsConfig['language']}.png";
+$modversion['image'] = $xoopsConfig['language'] == 'tchinese_utf8' ? 'images/logo_tw.png' : 'images/logo.png';
 $modversion['dirname'] = basename(__DIR__);
 $modversion['dirmoduleadmin'] = '/Frameworks/moduleclasses/moduleadmin';
 $modversion['icons16'] = '../../Frameworks/moduleclasses/icons/16';
@@ -19,7 +19,7 @@ $modversion['icons32'] = '../../Frameworks/moduleclasses/icons/32';
 
 //about
 $modversion['module_status'] = 'Final';
-$modversion['release_date'] = '2020/04/13';
+$modversion['release_date'] = '2020/06/16';
 $modversion['module_website_url'] = 'https://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=1';
 $modversion['module_website_name'] = 'XOOPS EZGO';
 $modversion['author_website_url'] = 'https://www.tad0616.net';

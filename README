@@ -1,4 +1,4 @@
-TadTools 3.3.8 (尚未釋出)
+TadTools 3.3.8 (2020-06-16 釋出)
 ====================================
 1.優化後台清單樣式
 2.新增 jQuery UI Touch Punch
@@ -9,6 +9,7 @@ TadTools 3.3.8 (尚未釋出)
 7.新增懶人開發框架 $TadMod 及 $TadModData
 8.修改 TadUpFiles.php 的刪除問題
 9.新增 Bootstrap4Editable，並將 Bootstrap3Editable 改為自動相容Bootstrap3及Bootstrap4
+10.調整logo顯示方式
 
 
 TadTools 3.3.7 (2020-04-13 釋出)
