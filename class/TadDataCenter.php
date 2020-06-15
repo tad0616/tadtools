@@ -2,6 +2,7 @@
 
 namespace XoopsModules\Tadtools;
 
+use Xmf\Request;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
@@ -273,10 +274,11 @@ class TadDataCenter
     {
         global $xoopsDB;
         $myts = \MyTextSanitizer::getInstance();
-        // var_export($_FILES['TDC']);
-        // die(var_export($_REQUEST['TDC']));
-        // die('$this->col_sn=' . $this->col_sn);
-        foreach ($_REQUEST['TDC'] as $name => $value) {
+
+        $TDC = Request::getArray('TDC');
+        $dc_op = Request::getString('dc_op');
+
+        foreach ($TDC as $name => $value) {
             $name = $myts->addSlashes($name);
             $values = [];
             if (!is_array($value)) {
@@ -287,7 +289,7 @@ class TadDataCenter
 
             $this->delData($name, '', __FILE__, __LINE__);
             foreach ($values as $sort => $val) {
-                if ('saveCustomSetupForm' === $_REQUEST['dc_op'] and empty($val)) {
+                if ('saveCustomSetupForm' === $dc_op and empty($val)) {
                     continue;
                 }
                 $val = $myts->addSlashes($val);
@@ -551,7 +553,8 @@ class TadDataCenter
     //儲存自訂表單設定
     public function saveCustomSetupForm()
     {
-        if ('saveCustomSetupForm' === $_REQUEST['dc_op']) {
+        $dc_op = Request::getString('dc_op');
+        if ('saveCustomSetupForm' === $dc_op) {
             $this->saveDcqData();
             header("location: {$_SERVER['HTTP_REFERER']}");
             exit;
@@ -563,10 +566,12 @@ class TadDataCenter
     {
         global $xoopsDB;
         $myts = \MyTextSanitizer::getInstance();
-        // die(var_export($_REQUEST['dcq']));
-        // die('$this->col_sn=' . $this->col_sn);
-        foreach ($_REQUEST['dcq'] as $sort => $dcq) {
-            if ('saveCustomSetupForm' === $_REQUEST['dc_op'] and empty($dcq['title'])) {
+
+        $dcq = Request::getArray('dcq');
+        $dc_op = Request::getString('dc_op');
+
+        foreach ($dcq as $sort => $dcq) {
+            if ('saveCustomSetupForm' === $dc_op and empty($dcq['title'])) {
                 continue;
             }
 
@@ -866,20 +871,20 @@ class TadDataCenter
 
 if (isset($_REQUEST['dcq_op'])) {
     include_once '../../mainfile.php';
-    include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-    $dcq_op = system_CleanVars($_REQUEST, 'dcq_op', '', 'string');
-    $dirname = system_CleanVars($_REQUEST, 'dirname', '', 'string');
-    $col_name = system_CleanVars($_REQUEST, 'col_name', '', 'string');
-    $col_sn = system_CleanVars($_REQUEST, 'col_sn', 0, 'int');
-    $data_name = system_CleanVars($_REQUEST, 'data_name', '', 'string');
-    $col_id = system_CleanVars($_REQUEST, 'col_id', '', 'string');
+
+    $dcq_op = Request::getString('dcq_op');
+    $dirname = Request::getString('dirname');
+    $col_name = Request::getString('col_name');
+    $col_sn = Request::getInt('col_sn');
+    $data_name = Request::getString('data_name');
 
     if ('save_dcq_sort' === $dcq_op) {
+        $col_ids = Request::getArray('col_id');
         $sql = 'update ' . $xoopsDB->prefix("{$dirname}_data_center") . " set `data_sort`=`data_sort`+1000 where  `col_name`='{$col_name}' and `col_sn`='{$col_sn}'";
         $xoopsDB->queryF($sql) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
 
         $sort = 0;
-        foreach ($_POST['col_id'] as $col_id) {
+        foreach ($col_ids as $col_id) {
             $sql = 'update ' . $xoopsDB->prefix("{$dirname}_data_center") . " set `data_sort`='{$sort}' where col_id='{$col_id}' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}'";
             $xoopsDB->queryF($sql) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
             $sort++;
@@ -894,6 +899,8 @@ if (isset($_REQUEST['dcq_op'])) {
         header("location:{$_SERVER['HTTP_REFERER']}");
         exit;
     } elseif ('del_dcq_col' === $dcq_op and $_SESSION['isAdmin']) {
+        $col_id = Request::getString('col_id');
+
         $sql = 'delete from ' . $xoopsDB->prefix("{$dirname}_data_center") . " where `col_id`='{$col_id}'";
         $xoopsDB->queryF($sql) or die(' (' . date('Y-m-d H:i:s') . ')' . $sql);
         $sql = 'delete from ' . $xoopsDB->prefix("{$dirname}_data_center") . " where `data_name`='{$col_name}_{$col_sn}_dcq_{$col_id}'";

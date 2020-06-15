@@ -1,10 +1,11 @@
 <?php
+use Xmf\Request;
 use XoopsModules\Tadtools\Utility;
+
 require_once __DIR__ . '/tadtools_header.php';
 
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
+$op = Request::getString('op');
 
 header("Content-Type: application/json; charset=utf-8");
 switch ($op) {

@@ -1,13 +1,18 @@
 <?php
+use Xmf\Request;
+
 require dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
 
+$_name = Request::getString('_name');
+$_value = Request::getString('_value');
+
 $array = [];
-switch ($_GET['_name']) {
+switch ($_name) {
     case 'menu1':
-        $array[] = get_menu2($_GET['_value']);
+        $array[] = get_menu2($_value);
         break;
     case 'menu2':
-        $array[] = get_menu3($_GET['_value']);
+        $array[] = get_menu3($_value);
         break;
 }
 echo jsonencode($array);

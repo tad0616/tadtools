@@ -2,6 +2,7 @@
 
 namespace XoopsModules\Tadtools;
 
+use Xmf\Request;
 use XoopsModules\Tadtools\FancyBox;
 use XoopsModules\Tadtools\Utility;
 
@@ -714,15 +715,18 @@ class TadUpFiles
         }
 
         //儲存檔案描述
-        if (!empty($_POST['save_description'])) {
-            foreach ($_POST['save_description'] as $save_files_sn => $files_desc) {
+        $save_description = Request::getArray('save_description');
+        $dl_group = Request::getArray('dl_group');
+
+        if (!empty($save_description)) {
+            foreach ($save_description as $save_files_sn => $files_desc) {
                 $this->update_col_val($save_files_sn, 'description', $files_desc);
                 // 順便更新權限
                 if ($this->permission) {
                     $sql = 'delete from `' . $xoopsDB->prefix('group_permission') . "` where `gperm_itemid`='{$save_files_sn}' and `gperm_name`='dl_group'";
                     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
-                    foreach ($_POST['dl_group'][$save_files_sn] as $groupid) {
+                    foreach ($dl_group[$save_files_sn] as $groupid) {
                         $gperm_groupid = (int) $groupid;
                         $sql = 'insert into `' . $xoopsDB->prefix('group_permission') . "`  (`gperm_groupid`,`gperm_itemid`,`gperm_modid`,`gperm_name`) values('{$gperm_groupid}', '{$save_files_sn}', '{$mod_id}', 'dl_group')";
                         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -731,10 +735,11 @@ class TadUpFiles
             }
         }
 
-        //die(var_export($_POST['del_file']));
         //刪除勾選檔案
-        if (!empty($_POST['del_file'])) {
-            foreach ($_POST['del_file'] as $del_files_sn) {
+        $del_file = Request::getArray('del_file');
+
+        if (!empty($del_file)) {
+            foreach ($del_file as $del_files_sn) {
                 $this->del_files($del_files_sn);
             }
         }
@@ -895,7 +900,8 @@ class TadUpFiles
 
                         // 加入權限
                         if ($this->permission) {
-                            foreach ($_POST['dl_group']['new'] as $groupid) {
+                            $dl_group = Request::getArray('dl_group');
+                            foreach ($dl_group['new'] as $groupid) {
                                 $gperm_groupid = (int) $groupid;
                                 $sql = 'insert into `' . $xoopsDB->prefix('group_permission') . "`  (`gperm_groupid`,`gperm_itemid`,`gperm_modid`,`gperm_name`) values('{$gperm_groupid}', '{$insert_files_sn}', '{$mod_id}', 'dl_group')";
                                 $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);

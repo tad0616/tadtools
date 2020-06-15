@@ -1,4 +1,6 @@
 <?php
+use Xmf\Request;
+
 //此檔案是給 ck.php 用的，勿刪
 require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 if (!$xoopsUser) {
@@ -6,9 +8,8 @@ if (!$xoopsUser) {
 }
 require_once __DIR__ . '/upload/class.upload.php';
 
-require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$type = strip_tags(system_CleanVars($_REQUEST, 'type', '', 'string'));
-$CKEditorFuncNum = system_CleanVars($_REQUEST, 'CKEditorFuncNum', 0, 'int');
+$type = Request::getString('type');
+$CKEditorFuncNum = Request::getInt('CKEditorFuncNum');
 
 $mdir = $_SESSION['xoops_mod_name'];
 $path = XOOPS_ROOT_PATH . "/uploads/{$mdir}/{$type}/";

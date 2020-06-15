@@ -10,7 +10,7 @@ TadTools 3.3.8 (2020-06-16 釋出)
 8.修改 TadUpFiles.php 的刪除問題
 9.新增 Bootstrap4Editable，並將 Bootstrap3Editable 改為自動相容Bootstrap3及Bootstrap4
 10.調整logo顯示方式
-
+11.改用 Xmf\Request 過濾變數
 
 TadTools 3.3.7 (2020-04-13 釋出)
 ====================================

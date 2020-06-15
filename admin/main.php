@@ -1,4 +1,5 @@
 <?php
+use Xmf\Request;
 use XoopsModules\Tadtools\Utility;
 $xoopsOption['template_main'] = 'tadtools_adm_index.tpl'; //設定樣板檔（必）
 require_once __DIR__ . '/header.php'; //引入預設檔頭（必）
@@ -167,17 +168,20 @@ function save()
     global $xoopsDB;
 
     $myts = \MyTextSanitizer::getInstance();
-    foreach ($_POST['tt_use_bootstrap'] as $tt_theme => $tt_use_bootstrap) {
-        $tt_bootstrap_color = $myts->addSlashes($_POST['tt_bootstrap_color'][$tt_theme]);
-        $tt_theme_kind = $myts->addSlashes($_POST['tt_theme_kind'][$tt_theme]);
+    $tt_use_bootstrap = Request::getArray('tt_use_bootstrap');
+    $tt_bootstrap_color = Request::getArray('tt_bootstrap_color');
+    $tt_theme_kind = Request::getArray('tt_theme_kind');
+
+    foreach ($tt_use_bootstrap as $tt_theme => $tt_use_bootstrap) {
+        $tt_bootstrap_color = $myts->addSlashes($tt_bootstrap_color[$tt_theme]);
+        $tt_theme_kind = $myts->addSlashes($tt_theme_kind[$tt_theme]);
 
         $sql = 'replace into `' . $xoopsDB->prefix('tadtools_setup') . "` (`tt_theme` , `tt_use_bootstrap`,`tt_bootstrap_color` , `tt_theme_kind`) values('{$tt_theme}', '{$tt_use_bootstrap}', '{$tt_bootstrap_color}', '{$tt_theme_kind}')";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 }
 /*-----------執行動作判斷區----------*/
-require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
+$op = Request::getString('op');
 
 switch ($op) {
     case 'save':

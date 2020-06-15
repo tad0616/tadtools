@@ -1,13 +1,14 @@
 <?php
+use Xmf\Request;
+
 require_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
 if (!$xoopsUser) {
     exit;
 }
 
 $LANGCODE = str_replace('-', '_', _LANGCODE);
-require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$type = system_CleanVars($_REQUEST, 'type', '', 'string');
-$mod_dir = system_CleanVars($_REQUEST, 'mod_dir', '', 'string');
+$type = Request::getString('type');
+$mod_dir = Request::getString('mod_dir');
 
 ?>
 <!DOCTYPE html>

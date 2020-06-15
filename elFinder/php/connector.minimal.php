@@ -1,4 +1,5 @@
 <?php
+use Xmf\Request;
 
 error_reporting(0); // Set E_ALL for debuging
 
@@ -92,7 +93,7 @@ elFinder::$netDrivers['ftp'] = 'FTP';
  **/
 function access($attr, $path, $data, $volume)
 {
-    return 0 === mb_strpos(basename($path), '.')// if file/folder begins with '.' (dot)
+    return 0 === mb_strpos(basename($path), '.') // if file/folder begins with '.' (dot)
      ? !('read' == $attr || 'write' == $attr) // set read+write to false, other (locked+hidden) set to true
      : null; // else elFinder decide it itself
 }
@@ -110,6 +111,9 @@ $image_max_width = $xoopsModuleConfig['image_max_width'] ? (int) $xoopsModuleCon
 $image_max_height = $xoopsModuleConfig['image_max_height'] ? (int) $xoopsModuleConfig['image_max_height'] : 640;
 // Documentation for connector options:
 // https://github.com/Studio-42/elFinder/wiki/Connector-configuration-options
+
+$type = Request::getString('type');
+
 $opts = [
     'bind' => [
         'upload.presave' => [
@@ -129,8 +133,8 @@ $opts = [
     'roots' => [
         [
             'driver' => 'LocalFileSystem', // driver for accessing file system (REQUIRED)
-            'path' => XOOPS_ROOT_PATH . "/uploads/{$mdir}/{$_GET['type']}/", // path to files (REQUIRED)
-            'URL' => XOOPS_URL . "/uploads/{$mdir}/{$_GET['type']}/", // URL to files (REQUIRED),
+            'path' => XOOPS_ROOT_PATH . "/uploads/{$mdir}/{$type}/", // path to files (REQUIRED)
+            'URL' => XOOPS_URL . "/uploads/{$mdir}/{$type}/", // URL to files (REQUIRED),
             'plugin' => [
                 'AutoResize' => [
                     'enable' => true, // For control by volume driver

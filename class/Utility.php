@@ -2,6 +2,8 @@
 
 namespace XoopsModules\Tadtools;
 
+use Xmf\Request;
+
 // use XoopsModules\Tadtools\PageBar;
 
 /*
@@ -105,10 +107,6 @@ class Utility
                         $version[] = substr($ver, $i, 1);
                     }
                 } else {
-                    if ($_GET['debug'] == 1) {
-                        echo "$ver<br>";
-                    }
-
                     $v = explode('.', $ver);
                     $version[] = $v[0];
                     for ($i = 0; $i < strlen($v[1]); $i++) {
@@ -831,6 +829,8 @@ class Utility
         global $xoopsUser, $xoopsModule, $xoopsModuleConfig;
 
         xoops_loadLanguage('main', 'tadtools');
+        $op = Request::getString('op');
+
         if ($xoopsModule) {
             $module_id = $xoopsModule->mid();
             $mod_name = $xoopsModule->name();
@@ -866,9 +866,9 @@ class Utility
                 }
 
                 $urlPath = (empty($moduleName) or 'http://' === mb_substr($url, 0, 7)) ? $url : XOOPS_URL . "/modules/{$moduleName}/{$url}";
-                if (isset($_GET['op']) and false !== strpos($url, "?op=") and false !== strpos($url, "{$basename}?op={$_GET['op']}")) {
-                    $active = "class='current' title='{$_SERVER['SCRIPT_NAME']}?op={$_GET['op']}=={$url}'";
-                } elseif (!isset($_GET['op']) and false !== strpos($_SERVER['SCRIPT_NAME'], $url)) {
+                if (!empty($op) and false !== strpos($url, "?op=") and false !== strpos($url, "{$basename}?op={$op}")) {
+                    $active = "class='current' title='{$_SERVER['SCRIPT_NAME']}?op={$op}=={$url}'";
+                } elseif (!isset($op) and false !== strpos($_SERVER['SCRIPT_NAME'], $url)) {
                     $active = "class='current' title='hi'";
                 } else {
                     $active = '';

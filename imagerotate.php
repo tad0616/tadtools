@@ -1,16 +1,17 @@
 <?php
+use Xmf\Request;
+
 require_once __DIR__ . '/tadtools_header.php';
 if (!function_exists('imagecreatetruecolor')) {
     die('imagecreatetruecolor functions are not available.');
 }
 
-require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$subdir = system_CleanVars($_REQUEST, 'subdir', '', 'string');
-$image_dir = system_CleanVars($_REQUEST, 'image_dir', '', 'string');
-$thumbs_dir = system_CleanVars($_REQUEST, 'thumbs_dir', '', 'string');
-$filename = system_CleanVars($_REQUEST, 'filename', '', 'string');
-$type = system_CleanVars($_REQUEST, 'type', '', 'string');
+$op = Request::getString('op');
+$subdir = Request::getString('subdir');
+$image_dir = Request::getString('image_dir');
+$thumbs_dir = Request::getString('thumbs_dir');
+$filename = Request::getString('filename');
+$type = Request::getString('type');
 
 $pic = XOOPS_ROOT_PATH . "/uploads/{$subdir}{$image_dir}/{$filename}";
 $thumb = XOOPS_ROOT_PATH . "/uploads/{$subdir}{$thumbs_dir}/{$filename}";
