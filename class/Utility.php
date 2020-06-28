@@ -801,7 +801,7 @@ class Utility
         }
 
         if ('3' == $bootstrap or '4' == $bootstrap) {
-            $mybar = $navbar->makeBootStrap3Bar('', $bootstrap);
+            $mybar = $navbar->makeBootStrapBar('', $bootstrap);
             $main['bar'] = "
                 <div class='text-center'>
                     <nav>

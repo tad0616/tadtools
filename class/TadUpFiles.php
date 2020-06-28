@@ -1493,7 +1493,7 @@ class TadUpFiles
     }
 
     //取得檔案
-    public function get_file($files_sn = '', $limit = null, $path = null, $hash = false, $desc_as_name = false, $keyword = '', $only_keyword = false, $target = '_self', $my_where = '')
+    public function get_file($files_sn = '', $limit = null, $path = null, $hash = false, $desc_as_name = false, $keyword = '', $only_keyword = false, $target = '_self', $my_where = '', $file_sn_key = true)
     {
         global $xoopsDB, $xoopsUser;
         $files = [];
@@ -1523,8 +1523,8 @@ class TadUpFiles
         }
 
         $sql = "select * from `{$this->TadUpFilesTblName}` $where";
-        // die($sql);
         $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $i = 0;
         while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $files_sn, $col_name, $col_sn, $sort, $kind, $file_name, $file_type, $file_size, $description
             foreach ($all as $k => $v) {
@@ -1544,20 +1544,22 @@ class TadUpFiles
                     continue;
                 }
             }
-            $files[$files_sn]['show_file_name'] = $show_file_name;
 
-            $files[$files_sn]['kind'] = $kind;
-            $files[$files_sn]['sort'] = $sort;
-            $files[$files_sn]['file_name'] = $file_name;
-            $files[$files_sn]['file_type'] = $file_type;
-            $files[$files_sn]['file_size'] = $file_size;
-            $files[$files_sn]['counter'] = $counter;
-            $files[$files_sn]['description'] = $description;
-            $files[$files_sn]['original_filename'] = $original_filename;
-            $files[$files_sn]['hash_filename'] = $hash_filename;
-            $files[$files_sn]['upload_date'] = $upload_date;
-            $files[$files_sn]['uid'] = $uid;
-            $files[$files_sn]['tag'] = $tag;
+            $key = $file_sn_key ? $files_sn : $i;
+            $files[$key]['show_file_name'] = $show_file_name;
+
+            $files[$key]['kind'] = $kind;
+            $files[$key]['sort'] = $sort;
+            $files[$key]['file_name'] = $file_name;
+            $files[$key]['file_type'] = $file_type;
+            $files[$key]['file_size'] = $file_size;
+            $files[$key]['counter'] = $counter;
+            $files[$key]['description'] = $description;
+            $files[$key]['original_filename'] = $original_filename;
+            $files[$key]['hash_filename'] = $hash_filename;
+            $files[$key]['upload_date'] = $upload_date;
+            $files[$key]['uid'] = $uid;
+            $files[$key]['tag'] = $tag;
 
             $mark = strpos($link_path, '?') !== false ? '&' : '?';
 
@@ -1584,35 +1586,35 @@ class TadUpFiles
                     $rel = "rel='f{$this->col_name}'";
                 }
 
-                $files[$files_sn]['link'] = "<a href='{$dl_url}' title='{$description}' {$rel} class='{$fancyboxset}'><img src='{$pic_name}' alt='{$description}' title='{$description}'></a>";
-                $files[$files_sn]['path'] = $pic_name;
-                $files[$files_sn]['url'] = "<a href='{$pic_name}' title='{$description}' {$rel} class='{$fancyboxset}'>{$show_file_name}</a>";
+                $files[$key]['link'] = "<a href='{$dl_url}' title='{$description}' {$rel} class='{$fancyboxset}'><img src='{$pic_name}' alt='{$description}' title='{$description}'></a>";
+                $files[$key]['path'] = $pic_name;
+                $files[$key]['url'] = "<a href='{$pic_name}' title='{$description}' {$rel} class='{$fancyboxset}'>{$show_file_name}</a>";
 
-                $files[$files_sn]['tb_link'] = "<a href='{$dl_url}' title='{$description}' {$rel} class='{$fancyboxset}'><img src='$thumb_pic' alt='{$description}' title='{$description}'></a>";
-                $files[$files_sn]['tb_path'] = $thumb_pic;
-                $files[$files_sn]['tb_url'] = "<a href='{$dl_url}' title='{$description}' {$rel} class='{$fancyboxset}'>{$description}</a>";
-                $files[$files_sn]['original_file_path'] = $this->TadUpFilesImgUrl . "/{$file_name}";
-                $files[$files_sn]['physical_file_path'] = $this->TadUpFilesImgDir . "/{$file_name}";
+                $files[$key]['tb_link'] = "<a href='{$dl_url}' title='{$description}' {$rel} class='{$fancyboxset}'><img src='$thumb_pic' alt='{$description}' title='{$description}'></a>";
+                $files[$key]['tb_path'] = $thumb_pic;
+                $files[$key]['tb_url'] = "<a href='{$dl_url}' title='{$description}' {$rel} class='{$fancyboxset}'>{$description}</a>";
+                $files[$key]['original_file_path'] = $this->TadUpFilesImgUrl . "/{$file_name}";
+                $files[$key]['physical_file_path'] = $this->TadUpFilesImgDir . "/{$file_name}";
 
                 //將附檔強制轉小寫
                 $thumb_pic_ext = mb_strtolower(mb_substr($thumb_pic, -3));
-                $files[$files_sn]['thumb_pic'] = mb_substr($thumb_pic, 0, -3) . $thumb_pic_ext;
+                $files[$key]['thumb_pic'] = mb_substr($thumb_pic, 0, -3) . $thumb_pic_ext;
             } else {
                 $fext = strtolower(pathinfo($original_filename, PATHINFO_EXTENSION));
-                $files[$files_sn]['thumb_pic'] = XOOPS_URL . "/modules/tadtools/images/mimetype/{$fext}.png";
+                $files[$key]['thumb_pic'] = XOOPS_URL . "/modules/tadtools/images/mimetype/{$fext}.png";
                 $file_name = $this->hash ? $hash_filename : $file_name;
 
-                $files[$files_sn]['link'] = "<a href='{$dl_url}#{$original_filename}' target='{$target}'>{$show_file_name}</a>";
-                $files[$files_sn]['path'] = "{$dl_url}#{$original_filename}";
-                $files[$files_sn]['original_file_path'] = $this->TadUpFilesUrl . "/{$file_name}";
-                $files[$files_sn]['physical_file_path'] = $this->TadUpFilesDir . "/{$file_name}";
+                $files[$key]['link'] = "<a href='{$dl_url}#{$original_filename}' target='{$target}'>{$show_file_name}</a>";
+                $files[$key]['path'] = "{$dl_url}#{$original_filename}";
+                $files[$key]['original_file_path'] = $this->TadUpFilesUrl . "/{$file_name}";
+                $files[$key]['physical_file_path'] = $this->TadUpFilesDir . "/{$file_name}";
             }
-            $files[$files_sn]['original_filename'] = $original_filename;
-            $files[$files_sn]['full_dl_url'] = $full_dl_url;
-            $files[$files_sn]['show_file_name'] = $show_file_name;
-            $files[$files_sn]['text_link'] = "{$show_file_name} : {$full_dl_url}";
-            $files[$files_sn]['html_link'] = "{$show_file_name} : <a href='{$full_dl_url}'>{$full_dl_url}</a>";
-
+            $files[$key]['original_filename'] = $original_filename;
+            $files[$key]['full_dl_url'] = $full_dl_url;
+            $files[$key]['show_file_name'] = $show_file_name;
+            $files[$key]['text_link'] = "{$show_file_name} : {$full_dl_url}";
+            $files[$key]['html_link'] = "{$show_file_name} : <a href='{$full_dl_url}'>{$full_dl_url}</a>";
+            $i++;
         }
 
         return $files;

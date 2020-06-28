@@ -21,6 +21,7 @@ class TadModData
     private $primary;
     private $my_elements = [];
     private $my_elements_options = [];
+    private $my_elements_default = [];
     private $change_elements = [];
     private $show_left = 2;
     private $show_right = 10;
@@ -34,7 +35,6 @@ class TadModData
     private $file_only_type;
     private $replace_col = [];
     private $need_replace = [];
-    private $replace_col_callback = [];
     private $uid_col = [];
     private $uid_col_arr = [];
     private $disable_index_col = [];
@@ -55,8 +55,12 @@ class TadModData
     private $attr = [];
     private $my_show_col = [];
     private $my_show_col_arr = [];
+    private $index_callback = [];
+    private $show_callback = [];
+    private $replace_callback = [];
 
     // 建構函數
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1595
     public function __construct($table)
     {
         global $xoopsDB, $xoopsModule;
@@ -82,20 +86,22 @@ class TadModData
             }
         }
 
-        $this->set_attr('table', ['class' => 'table table-hover table-responsive table-striped'], 'default');
+        $this->set_attr('table', ['class' => 'table table-hover table-striped'], 'default');
         $this->set_attr('tr1', ['class' => 'bg-info white'], 'default');
         $this->set_attr('th', ['class' => 'text-center'], 'default');
         $this->set_attr('td', ['class' => 'text-center'], 'default');
 
     }
 
-    // 設定變數
+    // 設定成員變數值
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1596
     public function set_var($name, $value)
     {
         $this->$name = $value;
     }
 
     // 過濾接收的變數
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1597
     public function clean()
     {
         $clean = [];
@@ -113,7 +119,8 @@ class TadModData
         return $clean;
     }
 
-    // 取得指定之資料陣列
+    // 取得指定資料之陣列
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1598
     public function get_arr($table, $key, $value)
     {
         global $xoopsDB, $xoopsTpl;
@@ -128,7 +135,8 @@ class TadModData
         return $arr;
     }
 
-    //允許群組
+    //指定哪些方法允許哪些群組操作
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1599
     public function allow($func_arr = [], $groups = [])
     {
         foreach ($func_arr as $func) {
@@ -138,6 +146,7 @@ class TadModData
     }
 
     // 檢查權限
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1600
     public function chk_allow($func, $redirect = '')
     {
         global $xoopsUser;
@@ -155,6 +164,7 @@ class TadModData
     }
 
     // 設定屬性
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1601
     public function set_attr($kind, $attrs = [], $mode = '')
     {
         foreach ($attrs as $attr_name => $attr_value) {
@@ -169,23 +179,42 @@ class TadModData
         return $this;
     }
 
-    // 取得屬性
-    public function get_attr($kind)
+    // 取得屬性字串
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1602
+    private function get_attr($kind, $def_kind = '')
     {
         $attr = '';
         $attr_arr = [];
-        if (isset($this->attr[$kind])) {
-            foreach ($this->attr[$kind] as $attr_name => $attr_value) {
-                $attr_arr[] = $attr_name . ' = "' . $attr_value . '"';
+        if (is_array($kind)) {
+            foreach ($kind as $k) {
+                $k = isset($this->attr[$k]) ? $k : $def_kind;
+                if (isset($this->attr[$k])) {
+                    foreach ($this->attr[$k] as $attr_name => $attr_value) {
+                        $attr_name_arr[$attr_name][] = $attr_value;
+                    }
+                }
             }
-            $attr = implode(' ', $attr_arr);
+
+            foreach ($attr_name_arr as $attr_name => $attr_value_arr) {
+                $attr_arr[] = $attr_name . ' = "' . implode(' ', $attr_value_arr) . '"';
+            }
+        } else {
+            $k = isset($this->attr[$kind]) ? $kind : $def_kind;
+            if (isset($this->attr[$k])) {
+                foreach ($this->attr[$k] as $attr_name => $attr_value) {
+                    $attr_arr[] = $attr_name . ' = "' . $attr_value . '"';
+                }
+            }
         }
+
+        $attr = implode(' ', $attr_arr);
         return $attr;
     }
 
     /*********** 基本功能 ************/
 
     // 新增表單
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1603
     public function create($def_val = [], $action = '', $id_name = 'myForm')
     {
         global $xoopsDB, $xoopsTpl, $xoopsUser, $xoTheme;
@@ -256,12 +285,12 @@ class TadModData
         if ($this->use_file) {
             $i++;
 
-            $elements[$i]['col_name'] = $this->table . '_file';
+            $elements[$i]['col_name'] = $col_name . '_file';
             $elements[$i]['show'] = true;
             $elements[$i]['label'] = _TM_FILE_UPLOAD;
             $this->TadUpFiles->set_col($this->use_file, $def_val[$this->use_file]);
             $this->TadUpFiles->set_var('show_tip', false);
-            $elements[$i]['form'] = $this->TadUpFiles->upform(true, $this->table . '_file', $this->file_maxlength, true, $this->file_only_type);
+            $elements[$i]['form'] = $this->TadUpFiles->upform(true, $col_name . '_file', $this->file_maxlength, true, $this->file_only_type);
         }
 
         $this->set_attr('form', ['method' => 'post', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data'], 'default');
@@ -318,11 +347,13 @@ class TadModData
                 \$('[data-toggle=\"tooltip\"]').tooltip();
             });
         ");
+
         $xoopsTpl->assign($this->table . '_form', $form);
         return $form;
     }
 
     // 編輯表單
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1605
     public function edit($id, $action = '', $id_name = 'myForm')
     {
         global $xoopsDB;
@@ -334,12 +365,13 @@ class TadModData
     }
 
     // 單一顯示
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1606
     public function show($id, $where = [])
     {
+        global $xoopsDB, $xoopsTpl, $xoTheme;
 
         $this->chk_allow(__FUNCTION__);
 
-        global $xoopsDB, $xoopsTpl, $xoTheme;
         $myts = \MyTextSanitizer::getInstance();
         $where[$this->primary] = $id;
         $all = $this->find($where);
@@ -360,8 +392,37 @@ class TadModData
 
         if ($this->use_file) {
             $this->TadUpFiles->set_col($this->use_file, $id);
-            $all["{$this->table}_file"] = $this->TadUpFiles->show_files("{$this->table}_file", true, $this->file_show_mode, false, false, null, null, false);
-            $my_label["{$this->table}_file"] = _TM_FILES;
+            $all["{$this->use_file}_file"] = $this->TadUpFiles->show_files("{$this->use_file}_file", true, $this->file_show_mode, false, false, null, null, false);
+            $all["{$this->use_file}_var"] = $this->TadUpFiles->get_file(null, null, null, false, false, '', false, '_self', '', false);
+            $my_label["{$this->use_file}_file"] = _TM_FILES;
+        }
+
+        $my_btn = '';
+        if (!empty($this->add_show_btn)) {
+            foreach ($this->add_show_btn as $btn) {
+
+                if ($btn['parameter']) {
+                    $para = [];
+                    foreach ($btn['parameter'] as $pk => $pv) {
+                        if (\is_int($pk)) {
+                            $para[] = "{$pv}={$all[$pv]}";
+                        } else {
+                            $para[] = "{$pk}={$pv}";
+                        }
+                    }
+                }
+                $parameter = ($para) ? '?' . implode('&', $para) : '';
+
+                if ($btn['attr']) {
+                    $attr_arr = [];
+                    foreach ($btn['attr'] as $ak => $av) {
+                        $attr_arr[] = $ak . ' = "' . $av . '"';
+                    }
+                }
+                $attr = implode(' ', $attr_arr);
+
+                $my_btn .= '<a href="' . $btn['to'] . $parameter . '" ' . $attr . '>' . $btn['title'] . '</a>';
+            }
         }
 
         $show_content = '';
@@ -382,7 +443,7 @@ class TadModData
                 foreach ($this->my_show_col[$col_name] as $col_name => $width) {
                     // Utility::dd($col_name);
                     list($left_w, $right_w) = $width;
-                    $value = $this->render_show_val($col_name, $value);
+                    $value = $this->render_show_val($col_name, $value, $all);
                     $label = empty($this->schema[$col_name]['Comment']) ? $my_label[$col_name] : $this->schema[$col_name]['Comment'];
 
                     $this->set_attr($col_name . '_row', ['class' => 'row my-3'], 'default');
@@ -402,7 +463,7 @@ class TadModData
                     ' . $show_col . '
                 </div>';
             } else {
-                $value = $this->render_show_val($col_name, $value);
+                $value = $this->render_show_val($col_name, $value, $all);
                 $label = empty($this->schema[$col_name]['Comment']) ? $my_label[$col_name] : $this->schema[$col_name]['Comment'];
 
                 $this->set_attr($col_name . '_row', ['class' => 'row my-3'], 'default');
@@ -420,26 +481,31 @@ class TadModData
             }
 
         }
+        if ($my_btn) {
+            $show_content .= "<div class='bar'>$my_btn</div>";
+        }
 
         $xoTheme->addScript('', null, "
             \$(document).ready(function(){
                 \$('[data-toggle=\"tooltip\"]').tooltip();
             });
         ");
+
         $xoopsTpl->assign($this->table, $all);
         $xoopsTpl->assign("{$this->table}_show", $show_content);
         return $all;
 
     }
 
-    public function render_show_val($col_name, $value)
+    // 產生欲顯示的資料
+    private function render_show_val($col_name, $value, $all)
     {
 
         // 替換資料
         $value = in_array($col_name, $this->need_replace) ? $this->replace_col[$col_name][$value] : $value;
 
-        if ($this->replace_col_callback[$col_name]) {
-            foreach ($this->replace_col_callback[$col_name] as $func_name => $func_parameter_arr) {
+        if ($this->replace_callback[$col_name]) {
+            foreach ($this->replace_callback[$col_name] as $func_name => $func_parameter_arr) {
                 foreach ($func_parameter_arr as $parameter_key => $parameter_value) {
                     if ($parameter_value == 'this') {
                         $parameter_value = $value;
@@ -469,6 +535,7 @@ class TadModData
     }
 
     // 更新資料
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1607
     public function update($id)
     {
         global $xoopsDB;
@@ -498,11 +565,13 @@ class TadModData
 
         if ($this->use_file) {
             $this->TadUpFiles->set_col($this->use_file, $id);
-            $this->TadUpFiles->upload_file($this->table . '_file');
+            $this->TadUpFiles->upload_file($col_name . '_file');
         }
+        return true;
     }
 
     // 儲存資料
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1608
     public function store()
     {
         global $xoopsDB;
@@ -533,12 +602,13 @@ class TadModData
         $InsertId = $xoopsDB->getInsertId();
         if ($this->use_file) {
             $this->TadUpFiles->set_col($this->use_file, $InsertId);
-            $this->TadUpFiles->upload_file($this->table . '_file');
+            $this->TadUpFiles->upload_file($col_name . '_file');
         }
         return $InsertId;
     }
 
     // 刪除資料
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1609
     public function destroy($id)
     {
         global $xoopsDB;
@@ -551,14 +621,18 @@ class TadModData
             $this->TadUpFiles->set_col($this->use_file, $id);
             $this->TadUpFiles->del_files();
         }
+        return true;
     }
 
     // 資料列表
-    public function index()
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1610
+    public function index($arr = [])
     {
-        global $xoopsDB, $xoopsTpl, $xoTheme;
+        global $xoopsDB, $xoopsTpl, $xoTheme, $xoopsUser;
 
         $this->chk_allow(__FUNCTION__, XOOPS_URL);
+
+        $my_uid = $xoopsUser ? $xoopsUser->uid() : 0;
 
         $myts = \MyTextSanitizer::getInstance();
 
@@ -576,7 +650,6 @@ class TadModData
                 $to = $this->func['create'] == '' ? $_SERVER['PHP_SELF'] : $this->func['create'];
                 $create_button = '<a href="' . $to . '?op=create" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> ' . _TAD_ADD . '</a>';
             }
-
         }
 
         $sql = "select * from `" . $xoopsDB->prefix($this->table) . "` {$this->where} {$this->order}";
@@ -595,15 +668,18 @@ class TadModData
         $td = '';
 
         while ($all = $xoopsDB->fetchArray($result)) {
-            if ($_SESSION[$session_name] or strpos($_SERVER['PHP_SELF'], '/admin/') !== false) {
-                $all['del'] = "javascript:del_{$xoopsDB->prefix($this->table)}({$all[$this->primary]})";
+            $primary = $all[$this->primary];
+            if (isset($arr[$primary])) {
+                $all = array_merge($all, $arr[$primary]);
             }
 
+            $is_my = false;
             foreach ($all as $k => $v) {
                 if (!empty($this->uid_col_arr) and in_array($k, $this->uid_col_arr)) {
                     $all[$k] = (int) $v;
                     $all[$k . '_name'] = $uid_name = \XoopsUser::getUnameFromId($v, $this->uid_col[$k]);
                     $this->replace($k, [$v => $uid_name]);
+                    $is_my = $my_uid == $v ? true : false;
                 } elseif (strpos($this->var_type[$k], "text") !== false) {
                     $all[$k] = $myts->displayTarea($v, 1, 0, 0, 0, 0);
                 } else {
@@ -611,21 +687,25 @@ class TadModData
                 }
             }
 
-            if ($this->use_file) {
-                $this->TadUpFiles->set_col($this->use_file, $all[$this->use_file]);
-                $all["{$this->table}_file"] = $this->TadUpFiles->show_files("{$this->table}_file", true, $this->file_index_mode, false, false, null, null, false);
+            if ($_SESSION[$session_name] or strpos($_SERVER['PHP_SELF'], '/admin/') !== false or $is_my) {
+                $all['del'] = "javascript:del_{$xoopsDB->prefix($this->table)}({$primary})";
             }
 
-            // Utility::dd($this->need_replace);
+            if ($this->use_file) {
+                $this->TadUpFiles->set_col($this->use_file, $all[$this->use_file]);
+                $all["{$this->use_file}_file"] = $this->TadUpFiles->show_files("{$this->use_file}_file", true, $this->file_index_mode, false, false, null, null, false);
+                $all["{$this->use_file}_var"] = $this->TadUpFiles->get_file(null, null, null, false, false, '', false, '_self', '', false);
+            }
 
             // 開始製作顯示內容
             $all_data[] = $all;
 
-            $this->set_attr('tr', ['id' => "sort_arr_{$all[$this->primary]}"], 'default');
+            $this->set_attr('tr', ['id' => "sort_arr_{$primary}"], 'default');
             $tr_attr = $this->get_attr('tr');
 
             $td .= '<tr ' . $tr_attr . '>';
 
+            // 整理儲存格內容
             foreach ($this->schema as $col_name => $schema) {
                 if (!empty($this->disable_index_col) and in_array($col_name, $this->disable_index_col)) {
                     continue;
@@ -634,8 +714,8 @@ class TadModData
                 // 替換內容
                 $td_val = in_array($col_name, $this->need_replace) ? $this->replace_col[$col_name][$all[$col_name]] : $all[$col_name];
 
-                if ($this->replace_col_callback[$col_name]) {
-                    foreach ($this->replace_col_callback[$col_name] as $func_name => $func_parameter_arr) {
+                if ($this->replace_callback[$col_name]) {
+                    foreach ($this->replace_callback[$col_name] as $func_name => $func_parameter_arr) {
                         foreach ($func_parameter_arr as $parameter_key => $parameter_value) {
                             if ($parameter_value == 'this') {
                                 $parameter_value = $td_val;
@@ -666,18 +746,20 @@ class TadModData
                     $this->set_attr(['class' => "show_sort"], 'append');
                 }
 
-                $td_attr = $this->get_attr('td');
+                $attr = $this->get_attr($col_name . '_td', 'td');
                 $td .= '
-                <td ' . $td_attr . '>' . $td_val . '</td>';
+                <td ' . $attr . '>' . $td_val . '</td>';
             }
 
             // 附檔
+            $td_attr = $this->get_attr('td');
             if ($this->use_file) {
                 $td .= '
-                <td ' . $td_attr . '>' . $all["{$this->table}_file"] . '</td>';
+                <td ' . $td_attr . '>' . $all["{$this->use_file}_file"] . '</td>';
             }
 
             $my_btn = '';
+
             if (!empty($this->add_index_btn)) {
                 foreach ($this->add_index_btn as $btn) {
 
@@ -706,12 +788,12 @@ class TadModData
             }
 
             // 管理功能
-            if ($_SESSION[$session_name] or strpos($_SERVER['PHP_SELF'], '/admin/') !== false) {
+            if ($_SESSION[$session_name] or strpos($_SERVER['PHP_SELF'], '/admin/') !== false or $is_my) {
 
                 $edit_button = '';
                 if (!isset($this->func['edit']) or $this->func['edit'] !== false) {
                     $to = $this->func['edit'] == '' ? $_SERVER['PHP_SELF'] : $this->func['edit'];
-                    $edit_button = '<a href="' . $to . '?op=edit&' . $this->primary . '=' . $all[$this->primary] . '" class="btn btn-warning btn-sm">' . _TAD_EDIT . '</a>';
+                    $edit_button = '<a href="' . $to . '?op=edit&' . $this->primary . '=' . $primary . '" class="btn btn-warning btn-sm">' . _TAD_EDIT . '</a>';
                 }
 
                 $destroy_button = '';
@@ -738,15 +820,16 @@ class TadModData
 
         // 表格標題
         $th = '';
-        $th_attr = $this->get_attr('th');
         foreach ($this->schema as $col_name => $schema) {
             if (!empty($this->disable_index_col) and in_array($col_name, $this->disable_index_col)) {
                 continue;
             }
+            $attr = $this->get_attr($col_name . 'th', 'th');
 
-            $th .= '<th ' . $th_attr . '>' . $schema['Comment'] . '</th>';
+            $th .= '<th ' . $attr . '>' . $schema['Comment'] . '</th>';
         }
 
+        $th_attr = $this->get_attr('th');
         if ($this->use_file) {
             $th .= '<th ' . $th_attr . '>' . _TM_FILES . '</th>';
         }
@@ -781,16 +864,18 @@ class TadModData
 
         $index_table = '
         ' . $save_msg . '
-        <table ' . $table_attr . '>
-            <thead>
-                <tr ' . $tr1_attr . '>
-                    ' . $th . '
-                </tr>
-            </thead>
-            <tbody id="sort">
-                ' . $td . '
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table ' . $table_attr . '>
+                <thead>
+                    <tr ' . $tr1_attr . '>
+                        ' . $th . '
+                    </tr>
+                </thead>
+                <tbody id="sort">
+                    ' . $td . '
+                </tbody>
+            </table>
+        </div>
         ' . $bar . '
         <div class="bar">
         ' . $create_button . '
@@ -808,10 +893,15 @@ class TadModData
     }
 
     /*********** 資料操控 ************/
-    // 找出一個
+    // 取得資料
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1612
     public function find($where_item = [])
     {
         global $xoopsDB, $xoopsUser;
+
+        if (empty($where_item)) {
+            return;
+        }
 
         foreach ($where_item as $col => $val) {
             if ($val == 'uid' and is_int($col)) {
@@ -829,17 +919,88 @@ class TadModData
         return $all;
     }
 
+    // 執行自訂查詢語法
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1659
+    public function select($select_col = '*', $where_item = [], $single = false, $key = '', $tpl_tag = '')
+    {
+        global $xoopsDB, $xoopsUser, $xoopsTpl;
+        if (is_array($select_col)) {
+            $cols = [];
+            foreach ($select_col as $func => $col) {
+                if (is_int($func)) {
+                    $cols[] = $col == '*' ? $col : "`{$col}`";
+                } else {
+                    $cols[] = "{$func}({$col})";
+                }
+            }
+            $col_sql = implode(", ", $cols);
+        } else {
+            $col_sql = $select_col;
+        }
+
+        if (!is_array($where_item)) {
+            $where = "$where_item";
+        } else {
+            $where_sql = [];
+            foreach ($where_item as $col => $val) {
+                if ($val == 'uid' and is_int($col)) {
+                    $col = 'uid';
+                    $val = $xoopsUser->uid();
+                }
+                $where_sql[] = "`$col` = '{$val}'";
+            }
+            $where = "where " . implode(' and ', $where_sql);
+        }
+        $myts = \MyTextSanitizer::getInstance();
+        $sql = "select $col_sql from `" . $xoopsDB->prefix($this->table) . "` $where";
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        if ($single) {
+            $data = $xoopsDB->fetchArray($result);
+        } else {
+            $data = [];
+            $k = 0;
+            while ($all = $xoopsDB->fetchArray($result)) {
+                $k = $key ? $all[$key] : $k++;
+                $data[$k] = $all;
+            }
+        }
+        if (!empty($tpl_tag)) {
+            $xoopsTpl->assign($tpl_tag, $data);
+        }
+        return $data;
+    }
+
+    // 回呼
+    // public function callback($col_name, $callback = [], $where = [])
+    // {
+
+    //     if (in_array('index', $where)) {
+    //         $this->index_callback[$col_name] = $callback;
+    //     }
+
+    //     if (in_array('show', $where)) {
+    //         $this->show_callback[$col_name] = $callback;}
+
+    // }
+
     // 篩選
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1613
     public function where($where_item = [])
     {
+        if (empty($where_item)) {
+            return;
+        }
+
         foreach ($where_item as $col => $val) {
             $where_sql[] = "`$col` = '{$val}'";
         }
+
         $this->where = "where " . implode(' and ', $where_sql);
         return $this;
     }
 
     // 排序
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1614
     public function order($order_item = [])
     {
         foreach ($order_item as $col => $sort) {
@@ -852,24 +1013,27 @@ class TadModData
     /*********** 表單元件 ************/
 
     // 製作套用的表單元件
-    public function mk_elements($col_name, $def_val = '', $validate = '')
+    private function mk_elements($col_name, $db_val = '', $validate = '')
     {
         $type = $this->my_elements[$col_name];
         $options = $this->my_elements_options[$col_name];
         $fnname = "use_{$type}";
-        if (\is_null($def_val)) {
-            $def_val = '';
+        if (!is_null($db_val)) {
+            $def_val = $db_val;
+        } else {
+            $def_val = $this->my_elements_default[$col_name];
         }
-        // Utility::dd($def_val);
-        $element = $this->{$fnname}($col_name, $options, $def_val, $validate);
+
+        $element = $this->{$fnname}($col_name, $options, $def_val, $validate, true);
         return $element;
     }
 
     // 加入欲套用的元件
-    public function my_elements($col_name, $type, $options = [])
+    private function my_elements($col_name, $type, $options = [], $def_val = null)
     {
         $this->my_elements[$col_name] = $type;
         $this->my_elements_options[$col_name] = $options;
+        $this->my_elements_default[$col_name] = $def_val;
         return $this;
     }
 
@@ -887,11 +1051,15 @@ class TadModData
     }
 
     // 套用下拉選單
-    public function use_select($col_name, $options = [], $def_val = null, $validate = '')
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1617
+    public function use_select($col_name, $options = [], $def_val = null, $validate = '', $from_lazy = false)
     {
-        if (is_null($def_val)) {
-            $this->my_elements($col_name, 'select', $options);
+        if (!$from_lazy) {
+            $this->my_elements($col_name, 'select', $options, $def_val);
         } else {
+            if ($validate === true) {
+                $validate = "validate[required]";
+            }
             $select = '<select name="' . $col_name . '" class="form-control ' . $validate . '">';
             foreach ($options as $val => $label) {
                 $selected = ($def_val == $val) ? 'selected' : '';
@@ -903,16 +1071,20 @@ class TadModData
     }
 
     // 套用單選
-    public function use_radio($col_name, $options = [], $def_val = null, $validate = '')
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1618
+    public function use_radio($col_name, $options = [], $def_val = null, $validate = '', $from_lazy = false)
     {
-        if (is_null($def_val)) {
-            $this->my_elements($col_name, 'radio', $options);
+        if (!$from_lazy) {
+            $this->my_elements($col_name, 'radio', $options, $def_val);
         } else {
+            if ($validate === true) {
+                $validate = "validate[required]";
+            }
             $radio = '';
             foreach ($options as $val => $label) {
                 $checked = ($def_val == $val) ? 'checked' : '';
                 $radio .= '
-                <div class="form-check-inline">
+                <div class="form-check form-check-inline radio-inline">
                     <label class="form-check-label">
                         <input type="radio" name="' . $col_name . '"  value="' . $val . '" ' . $checked . ' class="form-check-input ' . $validate . '">' . $label . '
                     </label>
@@ -924,10 +1096,11 @@ class TadModData
     }
 
     // 套用編輯器
-    public function use_ckeditor($col_name, $options = [], $def_val = null, $validate = '')
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1619
+    public function use_ckeditor($col_name, $options = [], $def_val = null, $validate = '', $from_lazy = false)
     {
-        if (is_null($def_val)) {
-            $this->my_elements($col_name, 'ckeditor', $options);
+        if (!$from_lazy) {
+            $this->my_elements($col_name, 'ckeditor', $options, $def_val);
         } else {
             $CkEditor = new CkEditor($this->dirname, $col_name, $def_val);
             foreach ($options as $key => $value) {
@@ -939,7 +1112,8 @@ class TadModData
     }
 
     // 套用隱藏欄位
-    public function set_hidden($col_name, $def_val = null)
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1620
+    public function set_hidden($col_name, $def_val)
     {
 
         $this->hide_create_col[] = $col_name;
@@ -948,6 +1122,7 @@ class TadModData
     }
 
     // 設定submit按鈕
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1621
     public function set_submit($name = 'op', $value = '', $label = '', $icon = '', $attr_arr = ['class' => 'btn btn-primary'])
     {
         foreach ($attr_arr as $attr => $attr_value) {
@@ -960,7 +1135,8 @@ class TadModData
     }
 
     // 加入上傳工具
-    public function set_file($col_name = '', $index_mode = 'small', $show_mode = '', $subdir = '', $maxlength = '', $only_type = '')
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbdsn=1622
+    public function set_file($col_name, $index_mode = 'small', $show_mode = '', $subdir = '', $maxlength = '', $only_type = '')
     {
         $this->TadUpFiles = new TadUpFiles($this->dirname, $subdir);
         $this->use_file = $col_name;
@@ -972,6 +1148,7 @@ class TadModData
     }
 
     // 加入排序
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1623
     public function set_sort($col_name)
     {
         $this->sort_col = $col_name;
@@ -980,6 +1157,7 @@ class TadModData
     }
 
     // 加入必填
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1624
     public function set_require($col_name, $options = [])
     {
         $opt = [];
@@ -987,9 +1165,32 @@ class TadModData
             $opt[] = "{$key}[{$value}]";
         }
         $option = implode(',', $opt);
-        $this->require_col[$col_name] = $option;
+        if (is_array($col_name)) {
+            foreach ($col_name as $col) {
+                $this->require_col[$col] = $option;
+            }
+        } else {
+            $this->require_col[$col_name] = $option;
+        }
 
         $this->require_arr = array_keys($this->require_col);
+        return $this;
+    }
+
+    // 設定功能
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1625
+    public function set_func($func_name, $to = false)
+    {
+        $this->func[$func_name] = $to;
+        return $this;
+    }
+
+    // 設定表單欄位寬度
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1635
+    public function form_width($left = 2, $right = 10)
+    {
+        $this->form_left = $left;
+        $this->form_right = $right;
         return $this;
     }
 
@@ -1004,16 +1205,48 @@ class TadModData
         return ++$sort;
     }
 
-    // 設定功能
-    public function set_func($func_name, $to = false)
+    /*********** 調整顯示 ************/
+
+    // 分頁
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1633
+    public function pagebar($num = 20)
     {
-        $this->func[$func_name] = $to;
+        $this->pagebar = $num;
         return $this;
     }
 
-    /*********** 調整顯示 ************/
+    // 設定bootstrap的row內容
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1634
+    public function row($cols = [])
+    {
+        $key = count($cols) ? array_keys($cols)[0] : null;
+        foreach ($cols as $col_name => $width_arr) {
+            $this->my_show_col_arr[] = $col_name;
+        }
+        $this->my_show_col[$key] = $cols;
+        return $this;
+    }
+
+    // 設定col欄位寬度
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1636
+    public function show_width($left = 2, $right = 10)
+    {
+        $this->show_left = $left;
+        $this->show_right = $right;
+        return $this;
+    }
+
+    // 將uid使用者編號改用姓名呈現
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1628
+    public function uid_name($col_name = 'uid', $type = 1)
+    {
+        $this->uid_col[$col_name] = $type;
+        $this->uid_col_arr = array_keys($this->uid_col);
+        return $this;
+    }
 
     // 替換顯示
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1627
     public function replace($col_name, $arr = [], $callback = [], $exception_group = [])
     {
         global $xoopsUser;
@@ -1028,7 +1261,7 @@ class TadModData
         if ($work) {
             $this->replace_col[$col_name] = $arr;
             if ($callback) {
-                $this->replace_col_callback[$col_name] = $callback;
+                $this->replace_callback[$col_name] = $callback;
             }
         }
         // 需替換欄位陣列
@@ -1036,16 +1269,9 @@ class TadModData
         return $this;
     }
 
-    // 將uid使用者編號改用姓名呈現
-    public function uid_name($col_name = 'uid', $type = 1)
-    {
-        $this->uid_col[$col_name] = $type;
-        $this->uid_col_arr = array_keys($this->uid_col);
-        return $this;
-    }
-
-    // 取消欄位
-    public function disable($col_name = 'uid', $where = ['index'], $exception_group = [])
+    // 不顯示的欄位
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1629
+    public function disable($col_name, $where = ['index'], $exception_group = [])
     {
         global $xoopsUser;
 
@@ -1056,24 +1282,30 @@ class TadModData
             $disable = sizeof($exception) ? false : true;
         }
 
-        if (in_array('index', $where) and $disable) {
-            $this->disable_index_col[] = $col_name;
-        }
+        if (is_array($col_name)) {
+            foreach ($col_name as $col) {
+                if (in_array('index', $where) and $disable) {
+                    $this->disable_index_col[] = $col;
+                }
 
-        if (in_array('show', $where) and $disable) {
-            $this->disable_show_col[] = $col_name;}
+                if (in_array('show', $where) and $disable) {
+                    $this->disable_show_col[] = $col;}
 
-        if (in_array('create', $where) and $disable) {
-            $this->disable_create_col[] = $col_name;
-        }
-        return $this;
-    }
+                if (in_array('create', $where) and $disable) {
+                    $this->disable_create_col[] = $col;
+                }
+            }
+        } else {
+            if (in_array('index', $where) and $disable) {
+                $this->disable_index_col[] = $col_name;
+            }
 
-    // 隱藏欄位
-    public function hide($col_name = 'uid', $where = ['index'])
-    {
-        if (in_array('create', $where)) {
-            $this->hide_create_col[] = $col_name;
+            if (in_array('show', $where) and $disable) {
+                $this->disable_show_col[] = $col_name;}
+
+            if (in_array('create', $where) and $disable) {
+                $this->disable_create_col[] = $col_name;
+            }
         }
         return $this;
     }
@@ -1094,8 +1326,10 @@ class TadModData
     }
 
     // 加入自訂按鈕
-    public function add_button($title, $to = '', $parameter = [], $attr = [], $where = [])
+    public function add_button($title, $to = '', $parameter = [], $attr = [], $where = [], $allow = [], $deny = [])
     {
+        global $xoopsUser;
+
         if (empty($to)) {
             $to = $_SERVER['PHP_SELF'];
         }
@@ -1105,49 +1339,33 @@ class TadModData
         $btn['parameter'] = $parameter;
         $btn['attr'] = $attr;
 
-        if (in_array('index', $where)) {
-            $this->add_index_btn[] = $btn;
+        $is_allow = true;
+        if (!empty($allow)) {
+            $user_groups = ($xoopsUser) ? $xoopsUser->groups() : [3];
+            $in_allow_group = array_intersect($allow, $user_groups);
+            $is_allow = sizeof($in_allow_group) ? true : false;
         }
 
-        if (in_array('show', $where)) {
-            $this->add_show_btn[] = $btn;
+        if (!empty($deny)) {
+            $user_groups = ($xoopsUser) ? $xoopsUser->groups() : [3];
+            $in_deny_group = array_intersect($deny, $user_groups);
+            $is_allow = sizeof($in_deny_group) ? false : true;
         }
 
-        if (in_array('create', $where)) {
-            $this->add_create_btn[] = $btn;
+        if ($is_allow) {
+            if (in_array('index', $where)) {
+                $this->add_index_btn[] = $btn;
+            }
+
+            if (in_array('show', $where)) {
+                $this->add_show_btn[] = $btn;
+            }
+
+            if (in_array('create', $where)) {
+                $this->add_create_btn[] = $btn;
+            }
         }
         return $this;
     }
 
-    // 分頁
-    public function pagebar($num = 20)
-    {
-        $this->pagebar = $num;
-        return $this;
-    }
-
-    // 設定bootstrap欄位寬度
-    public function show_width($left = 2, $right = 10)
-    {
-        $this->show_left = $left;
-        $this->show_right = $right;
-        return $this;
-    }
-    public function form_width($left = 2, $right = 10)
-    {
-        $this->form_left = $left;
-        $this->form_right = $right;
-        return $this;
-    }
-
-    // 設定bootstrap的row內容
-    public function row($cols = [])
-    {
-        $key = count($cols) ? array_keys($cols)[0] : null;
-        foreach ($cols as $col_name => $width_arr) {
-            $this->my_show_col_arr[] = $col_name;
-        }
-        $this->my_show_col[$key] = $cols;
-        return $this;
-    }
 }

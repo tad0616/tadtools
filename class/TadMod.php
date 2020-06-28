@@ -26,6 +26,8 @@ class TadMod
     private $interface_menu = [];
     private $adm_menu = [];
 
+    // TadMod 類
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1637
     public function __construct($dirname = '')
     {
         global $xoopsModule;
@@ -37,8 +39,11 @@ class TadMod
             die(_TM_FILE_NOT_DIR);
         }
         $this->add_adm_menu(_MI_TAD_ADMIN_HOME, 'admin/index.php', 'images/admin/home.png');
+        $this->interface_menu[_TAD_TO_MOD] = "index.php";
     }
 
+    //  模組基本設定
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1638
     public function setup($name, $version, $release_date, $email = '', $author = '', $hasMain = true, $hasAdmin = true, $min_php = '5.5', $min_xoops = '2.5', $description = '', $credits = '', $website_ur = '', $website_name = '')
     {
         $this->name = $name;
@@ -58,6 +63,8 @@ class TadMod
         return $this;
     }
 
+    //  新增偏好設定
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1639
     public function add_config($name, $title = '', $desc = '', $formtype = 'textbox', $valuetype = 'text', $default = '', $options = [])
     {
         $config['name'] = $name;
@@ -80,6 +87,8 @@ class TadMod
         return $this;
     }
 
+    //  新增區塊設定
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1640
     public function add_blocks($name, $title = '', $desc = '', $options_arr = [])
     {
 
@@ -101,6 +110,8 @@ class TadMod
         return $this;
     }
 
+    //  新增前台選單
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1641
     public function add_menu($title, $value, $only_adm = false)
     {
         if ($only_adm) {
@@ -113,10 +124,11 @@ class TadMod
         return $this;
     }
 
+    //  取得前台選單
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1642
     public function get_menu($tag = 'toolbar')
     {
         global $xoopsTpl;
-        $interface_menu[_TAD_TO_MOD] = "index.php";
         $interface_menu = $this->interface_menu;
         if ($this->is_admin()) {
             $interface_menu[_TAD_TO_ADMIN] = "admin/main.php";
@@ -126,6 +138,8 @@ class TadMod
         return $menu;
     }
 
+    //  新增後台選單
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1643
     public function add_adm_menu($title, $value, $icon = 'images/admin/button.png')
     {
         $this->adm_menu[$title]['url'] = $value;
@@ -133,6 +147,8 @@ class TadMod
         return $this;
     }
 
+    //  取得後台選單
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1644
     public function get_adm_menu()
     {
         global $xoopsTpl;
@@ -150,6 +166,8 @@ class TadMod
         return $adminmenu;
     }
 
+    // 取得xoops_version設定陣列
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/post.php?op=tad_book3_docs_form&tbsn=48&tbdsn=1645
     public function xoops_version()
     {
         global $xoTheme;
@@ -258,11 +276,15 @@ class TadMod
         return $modversion;
     }
 
+    //  取得語系
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1646
     public function get_lang($type)
     {
         return $this->lang[$type];
     }
 
+    //  判斷是否有管理權限
+    // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1647
     public function is_admin()
     {
         global $xoopsUser;

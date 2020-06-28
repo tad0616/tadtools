@@ -2,8 +2,6 @@
 
 namespace XoopsModules\Tadtools;
 
-use Xmf\Request;
-
 xoops_loadLanguage('main', 'tadtools');
 
 /*
@@ -90,8 +88,7 @@ class PageBar
         $this->query_str = $this->processQuery($this->used_query);
         $this->glue = ('' == $this->query_str) ? '?' : '&';
 
-        $url_page = Request::getInt('url_page');
-        $this->current = !empty($url_page) ? (int) $url_page : 1;
+        $this->current = (isset($_GET[$this->url_page])) ? (int) $_GET[$this->url_page] : 1;
         if ($this->current < 1) {
             $this->current = 1;
         }
@@ -259,7 +256,7 @@ class PageBar
     }
 
     // 製作 bar
-    public function makeBootStrap3Bar($url_page = 'none', $bootstrap = 3)
+    public function makeBootStrapBar($url_page = 'none')
     {
         if ('none' !== $url_page and '' != $url_page) {
             $this->url_page = $url_page;
