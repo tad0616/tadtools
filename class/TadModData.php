@@ -27,7 +27,7 @@ class TadModData
     private $show_right = 10;
     private $form_left = 2;
     private $form_right = 10;
-    private $use_file;
+    private $use_file = [];
     private $TadUpFiles;
     private $file_index_mode;
     private $file_show_mode;
@@ -106,7 +106,7 @@ class TadModData
     {
         $clean = [];
         foreach ($_REQUEST as $var => $val) {
-            if (strpos($this->var_type[$var], 'int') !== false) {
+            if (isset($this->var_type[$var]) and strpos($this->var_type[$var], 'int') !== false) {
                 $clean[$var] = Request::getInt($var);
             } elseif (is_numeric($val)) {
                 $clean[$var] = Request::getInt($var);
@@ -234,6 +234,7 @@ class TadModData
 
         $elements = [];
         $i = 0;
+        // Utility::dd($this->change_elements);
         foreach ($this->schema as $col_name => $schema) {
             if (!empty($this->disable_create_col) and in_array($col_name, $this->disable_create_col)) {
                 continue;
@@ -244,8 +245,10 @@ class TadModData
 
             $validate = $this->get_validate($col_name);
 
+            $default_value = isset($def_val[$col_name]) ? $def_val[$col_name] : null;
+
             if (!empty($this->my_elements[$col_name])) {
-                $elements[$i]['form'] = $this->mk_elements($col_name, $def_val[$col_name], $validate);
+                $elements[$i]['form'] = $this->mk_elements($col_name, $default_value, $validate);
             } elseif (!empty($this->change_elements[$col_name])) {
                 $elements[$i]['form'] = $this->change_elements[$col_name];
             } elseif ($schema['Field'] == 'uid') {
@@ -254,19 +257,19 @@ class TadModData
                 $elements[$i]['form'] = '<input type="hidden" name="' . $schema['Field'] . '" value="' . $uid . '">';
             } elseif ($schema['Key'] == 'PRI') {
                 $elements[$i]['show'] = false;
-                $elements[$i]['form'] = '<input type="hidden" name="' . $schema['Field'] . '" value="' . $def_val[$col_name] . '">';
+                $elements[$i]['form'] = '<input type="hidden" name="' . $schema['Field'] . '" value="' . $default_value . '">';
             } elseif ($schema['Type'] == 'date') {
                 My97DatePicker::render();
-                $elements[$i]['form'] = '<input type="text" name="' . $schema['Field'] . '" class="form-control cal ' . $validate . '" onClick="WdatePicker({dateFmt:\'yyyy-MM-dd\', startDate:\'%y-%M-%d\'})" value="' . $def_val[$col_name] . '">';
+                $elements[$i]['form'] = '<input type="text" name="' . $schema['Field'] . '" class="form-control cal ' . $validate . '" onClick="WdatePicker({dateFmt:\'yyyy-MM-dd\', startDate:\'%y-%M-%d\'})" value="' . $default_value . '">';
             } elseif ($schema['Type'] == 'datetime') {
                 My97DatePicker::render();
-                $elements[$i]['form'] = '<input type="text" name="' . $schema['Field'] . '" class="form-control time ' . $validate . '" onClick="WdatePicker({dateFmt:\'yyyy-MM-dd HH:mm:ss\', startDate:\'%y-%M-%d %H:%m:%s\'})" value="' . $def_val[$col_name] . '">';
+                $elements[$i]['form'] = '<input type="text" name="' . $schema['Field'] . '" class="form-control time ' . $validate . '" onClick="WdatePicker({dateFmt:\'yyyy-MM-dd HH:mm:ss\', startDate:\'%y-%M-%d %H:%m:%s\'})" value="' . $default_value . '">';
             } elseif (strpos($schema['Type'], 'text') !== false) {
-                $elements[$i]['form'] = '<textarea name="' . $schema['Field'] . '" class="form-control ' . $validate . '">' . $def_val[$col_name] . '</textarea>';
+                $elements[$i]['form'] = '<textarea name="' . $schema['Field'] . '" class="form-control ' . $validate . '">' . $default_value . '</textarea>';
             } elseif (strpos($schema['Type'], 'enum') !== false) {
                 \preg_match_all("/'(\W|\d)'/", $schema['Type'], $opt);
                 foreach ($opt[1] as $v) {
-                    $checked = (isset($def_val[$col_name]) and $def_val[$col_name] == $v) ? 'checked' : '';
+                    $checked = (isset($default_value) and $default_value == $v) ? 'checked' : '';
                     $elements[$i]['form'] .= '
                     <div class="form-check form-check-inline radio-inline">
                         <label class="form-check-label">
@@ -276,19 +279,20 @@ class TadModData
                     ';
                 }
             } else {
-                $value = ($col_name == $this->sort_col and !isset($def_val[$col_name])) ? $this->get_max_sort() : $def_val[$col_name];
+                $value = ($col_name == $this->sort_col and !isset($def_val[$col_name])) ? $this->get_max_sort() : $default_value;
                 $elements[$i]['form'] = '<input type="text" name="' . $schema['Field'] . '" class="form-control ' . $validate . '" value="' . $value . '">';
             }
             $i++;
         }
 
-        if ($this->use_file) {
+        foreach ($this->use_file as $col_name) {
             $i++;
 
+            $default_value = isset($def_val[$col_name]) ? $def_val[$col_name] : '';
             $elements[$i]['col_name'] = $col_name . '_file';
             $elements[$i]['show'] = true;
             $elements[$i]['label'] = _TM_FILE_UPLOAD;
-            $this->TadUpFiles->set_col($this->use_file, $def_val[$this->use_file]);
+            $this->TadUpFiles->set_col($col_name, $default_value);
             $this->TadUpFiles->set_var('show_tip', false);
             $elements[$i]['form'] = $this->TadUpFiles->upform(true, $col_name . '_file', $this->file_maxlength, true, $this->file_only_type);
         }
@@ -388,13 +392,13 @@ class TadModData
             } else {
                 $all[$k] = $myts->htmlSpecialChars($v);
             }
-        }
 
-        if ($this->use_file) {
-            $this->TadUpFiles->set_col($this->use_file, $id);
-            $all["{$this->use_file}_file"] = $this->TadUpFiles->show_files("{$this->use_file}_file", true, $this->file_show_mode, false, false, null, null, false);
-            $all["{$this->use_file}_var"] = $this->TadUpFiles->get_file(null, null, null, false, false, '', false, '_self', '', false);
-            $my_label["{$this->use_file}_file"] = _TM_FILES;
+            if (in_array($k, $this->use_file)) {
+                $this->TadUpFiles->set_col($k, $id);
+                $all["{$k}_file"] = $this->TadUpFiles->show_files("{$k}_file", true, $this->file_show_mode, false, false, null, null, false);
+                $all["{$k}_var"] = $this->TadUpFiles->get_file(null, null, null, false, false, '', false, '_self', '', false);
+                $my_label["{$k}_file"] = _TM_FILES;
+            }
         }
 
         $my_btn = '';
@@ -464,7 +468,7 @@ class TadModData
                 </div>';
             } else {
                 $value = $this->render_show_val($col_name, $value, $all);
-                $label = empty($this->schema[$col_name]['Comment']) ? $my_label[$col_name] : $this->schema[$col_name]['Comment'];
+                $label = isset($my_label[$col_name]) ? $my_label[$col_name] : $this->schema[$col_name]['Comment'];
 
                 $this->set_attr($col_name . '_row', ['class' => 'row my-3'], 'default');
                 $row = $this->get_attr($col_name . '_row');
@@ -504,7 +508,7 @@ class TadModData
         // 替換資料
         $value = in_array($col_name, $this->need_replace) ? $this->replace_col[$col_name][$value] : $value;
 
-        if ($this->replace_callback[$col_name]) {
+        if (isset($this->replace_callback[$col_name])) {
             foreach ($this->replace_callback[$col_name] as $func_name => $func_parameter_arr) {
                 foreach ($func_parameter_arr as $parameter_key => $parameter_value) {
                     if ($parameter_value == 'this') {
@@ -544,7 +548,7 @@ class TadModData
         //安全判斷
         if (!$GLOBALS['xoopsSecurity']->check()) {
             $error = implode("<br>", $GLOBALS['xoopsSecurity']->getErrors());
-            redirect_header('index.php', 3, $_SERVER['HTTP_REFERER']);
+            redirect_header($_SERVER['HTTP_REFERER'], 3, $error);
         }
 
         $myts = \MyTextSanitizer::getInstance();
@@ -563,8 +567,8 @@ class TadModData
         $sql = "update `" . $xoopsDB->prefix($this->table) . "` set " . implode(', ', $update_arr) . " where `{$this->primary}`='{$id}'";
         $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
-        if ($this->use_file) {
-            $this->TadUpFiles->set_col($this->use_file, $id);
+        foreach ($this->use_file as $col_name) {
+            $this->TadUpFiles->set_col($col_name, $id);
             $this->TadUpFiles->upload_file($col_name . '_file');
         }
         return true;
@@ -581,7 +585,7 @@ class TadModData
         //安全判斷
         if (!$GLOBALS['xoopsSecurity']->check()) {
             $error = implode("<br>", $GLOBALS['xoopsSecurity']->getErrors());
-            redirect_header('index.php', 3, $_SERVER['HTTP_REFERER']);
+            redirect_header($_SERVER['HTTP_REFERER'], 3, $error);
         }
 
         $myts = \MyTextSanitizer::getInstance();
@@ -600,8 +604,9 @@ class TadModData
         $sql = "insert into `" . $xoopsDB->prefix($this->table) . "` (`" . implode('`, `', $col_name_arr) . "`) values('" . implode("', '", $col_val_arr) . "')";
         $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $InsertId = $xoopsDB->getInsertId();
-        if ($this->use_file) {
-            $this->TadUpFiles->set_col($this->use_file, $InsertId);
+
+        foreach ($this->use_file as $col_name) {
+            $this->TadUpFiles->set_col($col_name, $InsertId);
             $this->TadUpFiles->upload_file($col_name . '_file');
         }
         return $InsertId;
@@ -617,10 +622,12 @@ class TadModData
 
         $sql = "delete from `" . $xoopsDB->prefix($this->table) . "` where `{$this->primary}`='$id'";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-        if ($this->use_file) {
-            $this->TadUpFiles->set_col($this->use_file, $id);
-            $this->TadUpFiles->del_files();
+
+        foreach ($this->use_file as $col_name) {
+            $this->TadUpFiles->set_col($col_name, $id);
+            $this->TadUpFiles->upload_file($col_name . '_file');
         }
+
         return true;
     }
 
@@ -640,20 +647,21 @@ class TadModData
         if ($_SESSION[$session_name] or strpos($_SERVER['PHP_SELF'], '/admin/') !== false) {
 
             if (!isset($this->func['destroy']) or $this->func['destroy'] !== false) {
-                $to = $this->func['destroy'] == '' ? $_SERVER['PHP_SELF'] : $this->func['destroy'];
+                $to = !isset($this->func['destroy']) ? $_SERVER['PHP_SELF'] : $this->func['destroy'];
                 $SweetAlert = new SweetAlert();
                 $SweetAlert->render("del_{$xoopsDB->prefix($this->table)}", "{$to}?op=destroy&{$this->primary}=", $this->primary);
             }
 
             $create_button = '';
             if (!isset($this->func['create']) or $this->func['create'] !== false) {
-                $to = $this->func['create'] == '' ? $_SERVER['PHP_SELF'] : $this->func['create'];
+                $to = !isset($this->func['create']) ? $_SERVER['PHP_SELF'] : $this->func['create'];
                 $create_button = '<a href="' . $to . '?op=create" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> ' . _TAD_ADD . '</a>';
             }
         }
 
         $sql = "select * from `" . $xoopsDB->prefix($this->table) . "` {$this->where} {$this->order}";
 
+        $bar = '';
         if ($this->pagebar) {
             $PageBar = Utility::getPageBar($sql, $this->pagebar, 10);
             $bar = $PageBar['bar'];
@@ -664,7 +672,7 @@ class TadModData
         }
 
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-        $all_data = [];
+        $all_data = $show_files = [];
         $td = '';
 
         while ($all = $xoopsDB->fetchArray($result)) {
@@ -680,21 +688,23 @@ class TadModData
                     $all[$k . '_name'] = $uid_name = \XoopsUser::getUnameFromId($v, $this->uid_col[$k]);
                     $this->replace($k, [$v => $uid_name]);
                     $is_my = $my_uid == $v ? true : false;
-                } elseif (strpos($this->var_type[$k], "text") !== false) {
+                    // Utility::dd($is_my);
+                } elseif (isset($this->var_type[$k]) and strpos($this->var_type[$k], "text") !== false) {
                     $all[$k] = $myts->displayTarea($v, 1, 0, 0, 0, 0);
                 } else {
                     $all[$k] = $myts->htmlSpecialChars($v);
+                }
+
+                if (in_array($k, $this->use_file)) {
+                    $this->TadUpFiles->set_col($k, $all[$k]);
+                    $all["{$k}_file"] = $this->TadUpFiles->show_files("{$k}_file", true, $this->file_index_mode, false, false, null, null, false);
+                    $all["{$k}_var"] = $this->TadUpFiles->get_file(null, null, null, false, false, '', false, '_self', '', false);
+                    $show_files[$k] = $all["{$k}_file"];
                 }
             }
 
             if ($_SESSION[$session_name] or strpos($_SERVER['PHP_SELF'], '/admin/') !== false or $is_my) {
                 $all['del'] = "javascript:del_{$xoopsDB->prefix($this->table)}({$primary})";
-            }
-
-            if ($this->use_file) {
-                $this->TadUpFiles->set_col($this->use_file, $all[$this->use_file]);
-                $all["{$this->use_file}_file"] = $this->TadUpFiles->show_files("{$this->use_file}_file", true, $this->file_index_mode, false, false, null, null, false);
-                $all["{$this->use_file}_var"] = $this->TadUpFiles->get_file(null, null, null, false, false, '', false, '_self', '', false);
             }
 
             // 開始製作顯示內容
@@ -714,7 +724,7 @@ class TadModData
                 // 替換內容
                 $td_val = in_array($col_name, $this->need_replace) ? $this->replace_col[$col_name][$all[$col_name]] : $all[$col_name];
 
-                if ($this->replace_callback[$col_name]) {
+                if (isset($this->replace_callback[$col_name])) {
                     foreach ($this->replace_callback[$col_name] as $func_name => $func_parameter_arr) {
                         foreach ($func_parameter_arr as $parameter_key => $parameter_value) {
                             if ($parameter_value == 'this') {
@@ -753,9 +763,9 @@ class TadModData
 
             // 附檔
             $td_attr = $this->get_attr('td');
-            if ($this->use_file) {
+            foreach ($this->use_file as $col_name) {
                 $td .= '
-                <td ' . $td_attr . '>' . $all["{$this->use_file}_file"] . '</td>';
+                <td ' . $td_attr . '>' . $show_files[$col_name] . '</td>';
             }
 
             $my_btn = '';
@@ -792,7 +802,7 @@ class TadModData
 
                 $edit_button = '';
                 if (!isset($this->func['edit']) or $this->func['edit'] !== false) {
-                    $to = $this->func['edit'] == '' ? $_SERVER['PHP_SELF'] : $this->func['edit'];
+                    $to = !isset($this->func['edit']) ? $_SERVER['PHP_SELF'] : $this->func['edit'];
                     $edit_button = '<a href="' . $to . '?op=edit&' . $this->primary . '=' . $primary . '" class="btn btn-warning btn-sm">' . _TAD_EDIT . '</a>';
                 }
 
@@ -830,15 +840,15 @@ class TadModData
         }
 
         $th_attr = $this->get_attr('th');
-        if ($this->use_file) {
-            $th .= '<th ' . $th_attr . '>' . _TM_FILES . '</th>';
+        foreach ($this->use_file as $col_name) {
+            $th .= '<th ' . $th_attr . ' title="' . $col_name . '">' . _TM_FILES . '</th>';
         }
 
         if ($_SESSION[$session_name] or strpos($_SERVER['PHP_SELF'], '/admin/') !== false or !empty($this->add_index_btn) or $display_function_th) {
             $th .= '<th ' . $th_attr . '>' . _TAD_FUNCTION . '</th>';
         }
 
-        $save_msg == '';
+        $save_msg = '';
         if (!empty($this->sort_col)) {
             Utility::get_jquery(true);
             $xoTheme->addScript('', null, "
@@ -1013,7 +1023,7 @@ class TadModData
     /*********** 表單元件 ************/
 
     // 製作套用的表單元件
-    private function mk_elements($col_name, $db_val = '', $validate = '')
+    private function mk_elements($col_name, $db_val = null, $validate = '')
     {
         $type = $this->my_elements[$col_name];
         $options = $this->my_elements_options[$col_name];
@@ -1043,7 +1053,7 @@ class TadModData
         if ($type == 'star') {
             $return = '<span class="text-danger" data-toggle="tooltip" title="此欄位必填">*</span> ';
         } else {
-            $opt = $this->require_col[$col_name];
+            $opt = isset($this->require_col[$col_name]) ? $this->require_col[$col_name] : '';
             $return = ($opt) ? 'validate[required, ' . $opt . ']' : 'validate[required]';
         }
 
@@ -1060,7 +1070,7 @@ class TadModData
             if ($validate === true) {
                 $validate = "validate[required]";
             }
-            $select = '<select name="' . $col_name . '" class="form-control ' . $validate . '">';
+            $select = '<select id="' . $col_name . '" name="' . $col_name . '" class="form-control ' . $validate . '">';
             foreach ($options as $val => $label) {
                 $selected = ($def_val == $val) ? 'selected' : '';
                 $select .= '<option value="' . $val . '" ' . $selected . '>' . $label . '</option>';
@@ -1086,7 +1096,7 @@ class TadModData
                 $radio .= '
                 <div class="form-check form-check-inline radio-inline">
                     <label class="form-check-label">
-                        <input type="radio" name="' . $col_name . '"  value="' . $val . '" ' . $checked . ' class="form-check-input ' . $validate . '">' . $label . '
+                        <input type="radio" id="' . $col_name . '-' . $val . '" name="' . $col_name . '"  value="' . $val . '" ' . $checked . ' class="form-check-input ' . $validate . '">' . $label . '
                     </label>
                 </div>
                 ';
@@ -1112,12 +1122,53 @@ class TadModData
     }
 
     // 套用隱藏欄位
+    public function use_hidden($col_name, $options = [], $def_val = null, $validate = '', $from_lazy = false)
+    {
+        if (!$from_lazy) {
+            $this->my_elements($col_name, 'hidden', $options, $def_val);
+        } else {
+            $hidden = '<input type="hidden" id="' . $col_name . '" name="' . $col_name . '" value="' . $def_val . '">';
+            return $hidden;
+        }
+    }
+
+    // 套用文字欄位
+    public function use_text($col_name, $options = [], $def_val = null, $validate = '', $from_lazy = false)
+    {
+        if (!$from_lazy) {
+            $this->my_elements($col_name, 'text', $options, $def_val);
+        } else {
+            $hidden = '<input type="text" id="' . $col_name . '" name="' . $col_name . '" value="' . $def_val . '" class="form-control ' . $validate . '">';
+            return $hidden;
+        }
+    }
+
+    // 套用日期時間欄位
+    public function use_datetime($col_name, $options = [], $def_val = null, $validate = '', $from_lazy = false)
+    {
+        if (!$from_lazy) {
+            $this->my_elements($col_name, 'datetime', $options, $def_val);
+        } else {
+            My97DatePicker::render();
+            $datetime = '<input type="text" name="' . $col_name . '" class="form-control time ' . $validate . '" onClick="WdatePicker({dateFmt:\'yyyy-MM-dd HH:mm:ss\', startDate:\'%y-%M-%d %H:%m:%s\'})" value="' . $def_val . '">';
+            return $datetime;
+        }
+    }
+
+    // 套用隱藏欄位
     // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1620
-    public function set_hidden($col_name, $def_val)
+    public function set_hidden($col_name, $def_val = '')
     {
 
         $this->hide_create_col[] = $col_name;
-        $this->change_elements[$col_name] = '<input type="hidden" name="' . $col_name . '" value="' . $def_val . '">';
+        $this->my_elements($col_name, 'hidden', null, $def_val);
+        return $this;
+    }
+
+    // 套用日期時間欄位
+    public function set_datetime($col_name, $def_val = '')
+    {
+        $this->my_elements($col_name, 'datetime', null, $def_val);
         return $this;
     }
 
@@ -1139,7 +1190,7 @@ class TadModData
     public function set_file($col_name, $index_mode = 'small', $show_mode = '', $subdir = '', $maxlength = '', $only_type = '')
     {
         $this->TadUpFiles = new TadUpFiles($this->dirname, $subdir);
-        $this->use_file = $col_name;
+        $this->use_file[] = $col_name;
         $this->file_index_mode = $index_mode;
         $this->file_show_mode = $show_mode;
         $this->file_maxlength = $maxlength;

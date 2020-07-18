@@ -38,6 +38,8 @@ class TadMod
         } else {
             die(_TM_FILE_NOT_DIR);
         }
+        xoops_loadLanguage('modinfo_common', 'tadtools');
+        xoops_loadLanguage('main', 'tadtools');
         $this->add_adm_menu(_MI_TAD_ADMIN_HOME, 'admin/index.php', 'images/admin/home.png');
         $this->interface_menu[_TAD_TO_MOD] = "index.php";
     }
@@ -65,13 +67,13 @@ class TadMod
 
     //  新增偏好設定
     // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1639
-    public function add_config($name, $title = '', $desc = '', $formtype = 'textbox', $valuetype = 'text', $default = '', $options = [])
+    public function add_config($name, $title = '', $desc = '', $formtype = 'textbox', $valuetype = 'text', $default = '', $options = '')
     {
         $config['name'] = $name;
         $config['formtype'] = $formtype;
         $config['valuetype'] = $valuetype;
         $config['default'] = $default;
-        if ($options) {
+        if (!empty($options)) {
             $config['options'] = $options;
         }
 
@@ -182,7 +184,7 @@ class TadMod
         $modversion['image'] = 'images/logo.png';
         $modversion['dirname'] = $this->dirname;
         $modversion['release_date'] = $this->release_date;
-        if ($this->website_url) {
+        if (isset($this->website_url)) {
             $modversion['module_website_url'] = $this->website_url;
             $modversion['module_website_name'] = $this->website_name;
             $modversion['author_website_url'] = $this->website_url;
@@ -251,6 +253,9 @@ class TadMod
             $modversion['config'][$i]['formtype'] = $config['formtype'];
             $modversion['config'][$i]['valuetype'] = $config['valuetype'];
             $modversion['config'][$i]['default'] = $config['default'];
+            if (isset($config['options'])) {
+                $modversion['config'][$i]['options'] = $config['options'];
+            }
         }
 
         foreach ($this->block_arr as $i => $block) {
@@ -259,7 +264,7 @@ class TadMod
             $modversion['blocks'][$i]['description'] = constant($block['lang']['desc']);
             $modversion['blocks'][$i]['show_func'] = $block['name'];
             $modversion['blocks'][$i]['template'] = "{$block['name']}.tpl";
-            if ($block['options']) {
+            if (isset($block['options'])) {
                 $modversion['blocks'][$i]['edit_func'] = "{$block['name']}_edit";
                 $modversion['blocks'][$i]['options'] = $block['options'];
             }
