@@ -126,3 +126,5 @@ define('_TM_FILES', '相關檔案');
 
 //TadMod.php
 define('_TM_FILE_NOT_DIR', '無法取得目錄');
+
+define('_TM_FILE_DEL_BY', '由「%s」上傳，需由「%s」或管理員刪除');

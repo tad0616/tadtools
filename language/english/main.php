@@ -125,3 +125,5 @@ define('_TM_FILES', 'Related Files');
 
 //TadMod.php
 define('_TM_FILE_NOT_DIR', 'Catalog not available');
+
+define('_TM_FILE_DEL_BY', "Uploaded by '%s', must be deleted by '%s' or administrator");

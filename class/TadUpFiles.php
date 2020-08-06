@@ -157,7 +157,8 @@ class TadUpFiles
     public $col_sn;
     public $sort;
     public $subdir;
-    public $prefix;
+    public $dir;
+    public $db_prefix;
     public $hash;
     public $filename;
     public $file_dir = '/file';
@@ -188,22 +189,24 @@ class TadUpFiles
 
     public $tag = '';
 
-    public function __construct($prefix = '', $subdir = '', $file = '/file', $image = '/image', $thumbs = '/image/.thumbs')
+    public function __construct($dir = '', $subdir = '', $file = '/file', $image = '/image', $thumbs = '/image/.thumbs')
     {
         global $xoopsDB;
-        if (!empty($prefix)) {
-            $this->set_prefix($prefix);
+        if (!empty($dir)) {
+            $this->set_prefix($dir);
         }
 
         if (!empty($subdir)) {
             $this->set_dir('subdir', $subdir);
         }
 
+        if (empty($this->db_prefix)) {
+            $this->set_db_prefix($dir);
+        }
+
         $this->set_dir('file', $file);
         $this->set_dir('image', $image);
         $this->set_dir('thumbs', $thumbs);
-
-        $this->TadUpFilesTblName = $xoopsDB->prefix("{$this->prefix}_files_center");
 
         $modhandler = xoops_getHandler('module');
         $TadToolsModule = $modhandler->getByDirname('tadtools');
@@ -215,12 +218,12 @@ class TadUpFiles
     //設定路徑
     public function set_path()
     {
-        $this->TadUpFilesDir = XOOPS_ROOT_PATH . "/uploads/{$this->prefix}{$this->subdir}{$this->file_dir}";
-        $this->TadUpFilesUrl = XOOPS_URL . "/uploads/{$this->prefix}{$this->subdir}{$this->file_dir}";
-        $this->TadUpFilesImgDir = XOOPS_ROOT_PATH . "/uploads/{$this->prefix}{$this->subdir}{$this->image_dir}";
-        $this->TadUpFilesImgUrl = XOOPS_URL . "/uploads/{$this->prefix}{$this->subdir}{$this->image_dir}";
-        $this->TadUpFilesThumbDir = XOOPS_ROOT_PATH . "/uploads/{$this->prefix}{$this->subdir}{$this->thumbs_dir}";
-        $this->TadUpFilesThumbUrl = XOOPS_URL . "/uploads/{$this->prefix}{$this->subdir}{$this->thumbs_dir}";
+        $this->TadUpFilesDir = XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$this->subdir}{$this->file_dir}";
+        $this->TadUpFilesUrl = XOOPS_URL . "/uploads/{$this->dir}{$this->subdir}{$this->file_dir}";
+        $this->TadUpFilesImgDir = XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$this->subdir}{$this->image_dir}";
+        $this->TadUpFilesImgUrl = XOOPS_URL . "/uploads/{$this->dir}{$this->subdir}{$this->image_dir}";
+        $this->TadUpFilesThumbDir = XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$this->subdir}{$this->thumbs_dir}";
+        $this->TadUpFilesThumbUrl = XOOPS_URL . "/uploads/{$this->dir}{$this->subdir}{$this->thumbs_dir}";
     }
 
     //取得路徑
@@ -293,10 +296,17 @@ class TadUpFiles
         }
     }
 
-    public function set_prefix($prefix = '')
+    public function set_prefix($dir = '')
     {
-        $this->prefix = $prefix;
+        $this->dir = $dir;
         $this->set_path();
+    }
+
+    public function set_db_prefix($db_prefix = '')
+    {
+        global $xoopsDB;
+        $this->db_prefix = $db_prefix;
+        $this->TadUpFilesTblName = $xoopsDB->prefix("{$db_prefix}_files_center");
     }
 
     public function set_filename($filename = '')
@@ -431,7 +441,7 @@ class TadUpFiles
         } else {
             $sql = "select * from `{$this->TadUpFilesTblName}`  where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' $and_tag order by sort";
         }
-
+        // die($sql);
         $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $i = 0;
 
@@ -441,7 +451,11 @@ class TadUpFiles
                 $$k = $v;
             }
 
-            // echo "{$file_name}<br>";
+            //以uid取得使用者名稱
+            $uid_name = \XoopsUser::getUnameFromId($uid, 1);
+            if (empty($uid_name)) {
+                $uid_name = \XoopsUser::getUnameFromId($uid, 0);
+            }
 
             // $fileidname = str_replace('.', '', $file_name);
             $file_name = $this->hash ? $hash_filename : $file_name;
@@ -458,7 +472,7 @@ class TadUpFiles
                         <div class='col-sm-3 text-left'>
                         </div>
                         <div class='col-sm-6 text-center'>
-                            <a href=\"javascript:remove_file('{$files_sn}');\" style='font-size: 0.8em;' class='text-danger'>
+                            <a href=\"javascript:remove_file('{$files_sn}');\" style='font-size: 0.8rem;' class='text-danger' data-toggle=\"tooltip\" title=\"" . sprintf(_TM_FILE_DEL_BY, $uid_name, $uid_name) . "\">
                                 <i class=\"fa fa-trash\"></i> " . _TAD_DEL . "
                             </a></div>
                         <div class='col-sm-3 text-right'>
@@ -476,15 +490,15 @@ class TadUpFiles
                     <table class='table'>
                         <tr>
                         <td class='text-right'>
-                            <a href=\"javascript:rotate_img('left','{$files_sn}','{$this->prefix}{$this->subdir}','{$this->image_dir}','{$this->thumbs_dir}','{$file_name}','{$file_type}')\" id='left90'><i class=\"fa fa-undo text-success\" title='" . TADTOOLS_ROTATE_LEFT . "'></i></a>
+                            <a href=\"javascript:rotate_img('left','{$files_sn}','{$this->dir}{$this->subdir}','{$this->image_dir}','{$this->thumbs_dir}','{$file_name}','{$file_type}')\" id='left90'><i class=\"fa fa-undo text-success\" title='" . TADTOOLS_ROTATE_LEFT . "'></i></a>
                         </td>
                         <td class='text-center'>
-                            <a href=\"javascript:remove_file('{$files_sn}');\" style='font-size: 0.8em;' class='text-danger'>
+                            <a href=\"javascript:remove_file('{$files_sn}');\" style='font-size: 0.8rem;' class='text-danger'>
                                 <i class=\"fa fa-times text-danger\" title=\"" . _TAD_DEL . "\"></i>
                             </a>
                         </td>
                         <td class='text-left'>
-                            <a href=\"javascript:rotate_img('right','{$files_sn}','{$this->prefix}{$this->subdir}','{$this->image_dir}','{$this->thumbs_dir}','{$file_name}','{$file_type}')\" id='right90'><i class=\"fa fa-repeat text-info\" title='" . TADTOOLS_ROTATE_RIGHT . "'></i></a>
+                            <a href=\"javascript:rotate_img('right','{$files_sn}','{$this->dir}{$this->subdir}','{$this->image_dir}','{$this->thumbs_dir}','{$file_name}','{$file_type}')\" id='right90'><i class=\"fa fa-repeat text-info\" title='" . TADTOOLS_ROTATE_RIGHT . "'></i></a>
                         </td>
                         </tr>
                     </table>";
@@ -499,7 +513,7 @@ class TadUpFiles
                 $w = 'width:130px; word-break: break-word;';
                 $w2 = "width:{$this->thumb_width}; float:left; margin-right:10px;";
             } else {
-                $thumb_tool = "<a href=\"javascript:remove_file('{$files_sn}');\" style='font-size: 0.8em;' class='text-danger'>
+                $thumb_tool = "<a href=\"javascript:remove_file('{$files_sn}');\" style='font-size: 0.8rem;' class='text-danger'>
                                 <i class=\"fa fa-trash\"></i> " . _TAD_DEL . '</a></div>';
                 $thumb_style = '';
                 $thumb_style2 = '';
@@ -612,12 +626,12 @@ class TadUpFiles
                 if (!sure){
                     return;
                 } else{
-                    $.post('" . XOOPS_URL . "/modules/tadtools/ajax_file.php', {op: 'remove_file', mod_name: '{$this->prefix}', files_sn: files_sn}, function(data){
+                    $.post('" . XOOPS_URL . "/modules/tadtools/ajax_file.php', {op: 'remove_file', mod_name: '{$this->dir}', db_prefix: '{$this->db_prefix}', files_sn: files_sn}, function(data){
                         if(data=='1'){
                             $('#fdtr_' + files_sn).html('<li>已刪除</li>');
                             $('#fdtr_' + files_sn).remove();
                         }else{
-                            $('#fdtr_' + files_sn).html('<li>刪敗刪除：'+data+'</li>');
+                            $('#fdtr_' + files_sn).html('<li>刪除失敗：'+data+'</li>');
                         }
                     });
                 }
@@ -710,7 +724,7 @@ class TadUpFiles
         // 更新權限
         if ($this->permission) {
             $modhandler = xoops_getHandler('module');
-            $theModule = $modhandler->getByDirname($this->prefix);
+            $theModule = $modhandler->getByDirname($this->dir);
             $mod_id = $theModule->mid();
         }
 
@@ -1415,9 +1429,10 @@ class TadUpFiles
         global $xoopsDB, $xoopsUser;
 
         $modhandler = xoops_getHandler('module');
-        $theModule = $modhandler->getByDirname($this->prefix);
+        $theModule = $modhandler->getByDirname($this->dir);
         $mod_id = $theModule->mid();
         $isAdmin = is_object($xoopsUser) ? $xoopsUser->isAdmin($mod_id) : false;
+        $my_uid = is_object($xoopsUser) ? $xoopsUser->uid() : 0;
 
         if (!empty($files_sn)) {
             $del_what = "`files_sn`='{$files_sn}'";
@@ -1431,9 +1446,7 @@ class TadUpFiles
         }
 
         $sql = "select * from `{$this->TadUpFilesTblName}`  where $del_what";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-
-        $my_uid = is_object($xoopsUser) ? $xoopsUser->uid() : 0;
+        $result = $xoopsDB->query($sql) or die($sql);
 
         while ($all = $xoopsDB->fetchArray($result)) {
             foreach ($all as $k => $v) {
@@ -1449,10 +1462,10 @@ class TadUpFiles
                 }
 
                 if ($kind === 'img') {
-                    unlink(XOOPS_ROOT_PATH . "/uploads/{$this->prefix}{$sub_dir}{$this->image_dir}/{$file_name}");
-                    unlink(XOOPS_ROOT_PATH . "/uploads/{$this->prefix}{$sub_dir}{$this->thumbs_dir}/{$file_name}");
+                    unlink(XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$sub_dir}{$this->image_dir}/{$file_name}");
+                    unlink(XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$sub_dir}{$this->thumbs_dir}/{$file_name}");
                 } else {
-                    unlink(XOOPS_ROOT_PATH . "/uploads/{$this->prefix}{$sub_dir}{$this->file_dir}/{$file_name}");
+                    unlink(XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$sub_dir}{$this->file_dir}/{$file_name}");
                 }
 
                 $f = explode('.', $hash_filename);
@@ -1460,7 +1473,7 @@ class TadUpFiles
                     unlink("{$this->TadUpFilesDir}/{$f[0]}_info.txt");
                 }
 
-                $tmp_dir = XOOPS_ROOT_PATH . "/uploads/{$this->prefix}/tmp/{$files_sn}";
+                $tmp_dir = XOOPS_ROOT_PATH . "/uploads/{$this->dir}/tmp/{$files_sn}";
                 Utility::delete_directory($tmp_dir);
             }
         }
@@ -1945,6 +1958,7 @@ class TadUpFiles
             }
         }
         $file = $this->get_one_file($files_sn);
+
         $this->set_dir('subdir', $file['sub_dir']);
         if ($hash) {
             $this->set_hash($hash);
@@ -2017,18 +2031,24 @@ class TadUpFiles
         } else {
             $file_display = $real_filename;
         }
+        // $file_display = \str_replace(' ', '', $file_display);
 
-        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/{$this->prefix}");
-        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/{$this->prefix}/tmp");
-        $tmp_dir = XOOPS_ROOT_PATH . "/uploads/{$this->prefix}/tmp/{$file['files_sn']}";
-        $tmp_url = XOOPS_URL . "/uploads/{$this->prefix}/tmp/{$file['files_sn']}";
+        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/{$this->dir}");
+        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/{$this->dir}/tmp");
+        $tmp_dir = XOOPS_ROOT_PATH . "/uploads/{$this->dir}/tmp/{$file['files_sn']}";
+        $tmp_url = XOOPS_URL . "/uploads/{$this->dir}/tmp/{$file['files_sn']}";
         Utility::mk_dir($tmp_dir);
         $tmp_file = $tmp_dir . '/' . $file_display;
         $tmp_file_url = $tmp_url . '/' . $file_display;
-
-        //die("$file_hd_saved,$tmp_file");
+        // Utility::dd($force);
+        // die("cp $file_hd_saved $tmp_file");
         if (!file_exists($tmp_file)) {
-            copy($file_hd_saved, $tmp_file);
+            if (!copy($file_hd_saved, $tmp_file)) {
+                $errors = error_get_last();
+                echo "COPY ERROR: " . $errors['type'];
+                echo "<br />\n" . $errors['message'];
+                exit;
+            }
         }
 
         if ($this->auto_charset != 0) {

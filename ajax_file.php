@@ -11,10 +11,12 @@ $sort_col = Request::getString('sort_col');
 $primary_key = Request::getString('primary_key');
 $files_sn = Request::getInt('files_sn');
 $sort_arr = Request::getArray('sort_arr');
+$db_prefix = Request::getString('db_prefix');
 
 switch ($op) {
     case 'remove_file':
         $TadUpFiles = new TadUpFiles($mod_name);
+        $TadUpFiles->set_db_prefix($db_prefix);
         if ($TadUpFiles->del_files($files_sn)) {
             echo '1';
         }
