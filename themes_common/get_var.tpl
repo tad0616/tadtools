@@ -433,7 +433,7 @@ foreach ($config2_files as $config2_file) {
         foreach ($theme_config as $k => $config) {
             $name = $config['name'];
             $value = is_null($config2[$name]) ? $config['default'] : $config2[$name];
-            
+
             if ($config['type'] == "array") {
                 $value = str_replace("{XOOPS_URL}", XOOPS_URL, $value);
                 $value = json_decode($value, true);
@@ -470,5 +470,6 @@ list($allow_register) = $xoopsDB->fetchRow($result);
 $this->assign('allow_register', $allow_register);
 
 <{/php}>
+<{includeq file="$xoops_rootpath/modules/tadtools/themes_common/get_main_var.tpl"}>
 <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/get_menu_var.tpl"}>
 <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/get_slider_var.tpl"}>

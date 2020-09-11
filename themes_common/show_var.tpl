@@ -106,6 +106,24 @@
             <tr><th>導覽列圖示(舊)</th><th>$navlogo_img</th><td><{$navlogo_img}></td></tr>
             <tr><th>導覽列 logo 圖</th><th>$logo_img</th><td><{$logo_img}></td></tr>
 
+            <tr><th colspan=3><h2>主選單 $main_menu_var</h2></th></tr>
+
+            <{foreach from=$main_menu_var item=m}>
+
+                <tr>
+                    <th><{$m.title}></th>
+                    <th>$main_menu_var[<{$m.id}>]</th>
+                    <td>
+                        $main_menu_var[<{$m.id}>]['id'] = <{$m.id}>;<br>
+                        $main_menu_var[<{$m.id}>]['title'] = "<{$m.title}>";<br>
+                        $main_menu_var[<{$m.id}>]['url'] = "<{$m.url}>";<br>
+                        $main_menu_var[<{$m.id}>]['target'] = "<{$m.target}>";<br>
+                        $main_menu_var[<{$m.id}>]['icon'] = "<{$m.icon}>";<br>
+                        $main_menu_var[<{$m.id}>]['img'] = "<{$m.img}>";<br>
+                        $main_menu_var[<{$m.id}>]['submenu'] = "<{$m.submenu}>";
+                    </td>
+                </tr>
+            <{/foreach}>
             <tr><th colspan=3><h2>自訂選單 $menu_var</h2></th></tr>
 
             <{foreach from=$menu_var item=m}>

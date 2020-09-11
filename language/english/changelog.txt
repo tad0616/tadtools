@@ -2,6 +2,7 @@ TadTools 3.3.9 (Released on 2020-09-12)
 =============================================================
 1. Fix the bug in TadModData.php part, and add new function.
 2.TadUpFiles.php Add Required Settings
+3.Add main_menu_var Main Menu Template Parameters
 
 TadTools 3.3.8 (Released on 2020-06-16)
 =============================================================
