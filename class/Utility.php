@@ -861,11 +861,12 @@ class Utility
             }
 
             foreach ($interface_menu as $title => $url) {
-                if ('admin/index.php' === mb_substr($url, -15) or 'admin/main.php' === mb_substr($url, -14)) {
+                if (strpos($url, 'admin/index.php') !== false or strpos($url, 'admin/main.php') !== false) {
                     continue;
                 }
 
-                $urlPath = (empty($moduleName) or 'http://' === mb_substr($url, 0, 7)) ? $url : XOOPS_URL . "/modules/{$moduleName}/{$url}";
+                $urlPath = (empty($moduleName) or 'http' === mb_substr($url, 0, 4)) ? $url : XOOPS_URL . "/modules/{$moduleName}/{$url}";
+
                 if (!empty($op) and false !== strpos($url, "?op=") and false !== strpos($url, "{$basename}?op={$op}")) {
                     $active = "class='current' title='{$_SERVER['SCRIPT_NAME']}?op={$op}=={$url}'";
                 } elseif (!isset($op) and false !== strpos($_SERVER['SCRIPT_NAME'], $url)) {

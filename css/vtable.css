@@ -73,6 +73,15 @@ margin-bottom: -1px;*/
   vertical-align: middle;
 }
 
+.vtable li.c {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.vtable li.m {
+  vertical-align: middle;
+}
+
 /* 隱藏欄位，手機才會出現 */
 
 .vtable .vcell {
@@ -81,6 +90,14 @@ margin-bottom: -1px;*/
 
 .vtable li.w {
   display: none;
+}
+
+.vtable li.w025 {
+  width: 2.5%;
+}
+
+.vtable li.w05 {
+  width: 5%;
 }
 
 .vtable li.w1 {
@@ -176,6 +193,8 @@ Mobile Responsiveness
     display: inline;
   }
 
+  .vtable li.w025,
+  .vtable li.w05,
   .vtable li.w1,
   .vtable li.w2,
   .vtable li.w3,
@@ -190,6 +209,7 @@ Mobile Responsiveness
   }
 }
 /*
+$xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/vtable.css');
 <link href="<{$xoops_url}>/modules/tadtools/css/vtable.css" media="all" rel="stylesheet">
 <!-- 左標右格 -->
 <div class="vtable">

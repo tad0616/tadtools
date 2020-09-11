@@ -267,7 +267,7 @@ class TadModData
             } elseif (strpos($schema['Type'], 'text') !== false) {
                 $elements[$i]['form'] = '<textarea name="' . $schema['Field'] . '" class="form-control ' . $validate . '">' . $default_value . '</textarea>';
             } elseif (strpos($schema['Type'], 'enum') !== false) {
-                \preg_match_all("/'(\W|\d)'/", $schema['Type'], $opt);
+                \preg_match_all("/'(.*?)'/", $schema['Type'], $opt);
                 foreach ($opt[1] as $v) {
                     $checked = (isset($default_value) and $default_value == $v) ? 'checked' : '';
                     $elements[$i]['form'] .= '
@@ -358,14 +358,18 @@ class TadModData
 
     // 編輯表單
     // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1605
-    public function edit($id, $action = '', $id_name = 'myForm')
+    public function edit($id, $action = '', $id_name = 'myForm', $def_val = [])
     {
         global $xoopsDB;
 
         $this->chk_allow(__FUNCTION__);
 
         $values = $this->find([$this->primary => $id]);
-        $this->create($values);
+        $def_values = [];
+        foreach ($values as $key => $value) {
+            $def_values[$key] = isset($def_val[$key]) ? $def_val[$key] : $value;
+        }
+        $this->create($def_values);
     }
 
     // 單一顯示
@@ -1002,7 +1006,11 @@ class TadModData
         }
 
         foreach ($where_item as $col => $val) {
-            $where_sql[] = "`$col` = '{$val}'";
+            if (is_array($val)) {
+                $where_sql[] = "`$col` $val[0] '{$val[1]}'";
+            } else {
+                $where_sql[] = "`$col` = '{$val}'";
+            }
         }
 
         $this->where = "where " . implode(' and ', $where_sql);

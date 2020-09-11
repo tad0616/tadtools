@@ -19,6 +19,8 @@ $TadUpFiles->upload_file($upname,$width,$thumb_width,$files_sn,$desc,$safe_name=
 use XoopsModules\Tadtools\TadUpFiles;
 $TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="/file",$image="/image",$thumbs="/image/.thumbs");
 //$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
+$TadUpFiles->set_var('require', true);  //必填
+$TadUpFiles->set_var("show_tip", false); //不顯示提示
 $TadUpFiles->set_col($col_name,$col_sn); //若 $show_list_del_file ==true 時一定要有
 $upform=$TadUpFiles->upform($show_edit,$upname,$maxlength,$show_list_del_file,$only_type,$thumb);
 
@@ -188,6 +190,7 @@ class TadUpFiles
     public $thumb_css;
 
     public $tag = '';
+    public $require = '';
 
     public function __construct($dir = '', $subdir = '', $file = '/file', $image = '/image', $thumbs = '/image/.thumbs')
     {
@@ -386,9 +389,11 @@ class TadUpFiles
             }
         }
 
+        $require = ($this->require) ? 'validate[required]' : '';
+
         $main = "
             $jquery
-            <input type='file' name='{$upname}[]' id='{$id}' $multiple $accept class='form-control' style='height: initial;'>
+            <input type='file' name='{$upname}[]' id='{$id}' $multiple $accept class='form-control $require' style='height: initial;'>
             $permission
             {$list_del_file}
             ";
@@ -1457,15 +1462,19 @@ class TadUpFiles
                 $del_sql = "delete  from `{$this->TadUpFilesTblName}`  where files_sn='{$files_sn}'";
                 $xoopsDB->queryF($del_sql) or Utility::web_error($del_sql, __FILE__, __LINE__);
 
-                if (!empty($hash_filename)) {
-                    $file_name = $hash_filename;
-                }
-
                 if ($kind === 'img') {
+                    // die(XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$sub_dir}{$this->image_dir}/{$file_name}");
                     unlink(XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$sub_dir}{$this->image_dir}/{$file_name}");
                     unlink(XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$sub_dir}{$this->thumbs_dir}/{$file_name}");
+                    if (!empty($hash_filename)) {
+                        unlink(XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$sub_dir}{$this->image_dir}/{$hash_filename}");
+                        unlink(XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$sub_dir}{$this->thumbs_dir}/{$hash_filename}");
+                    }
                 } else {
                     unlink(XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$sub_dir}{$this->file_dir}/{$file_name}");
+                    if (!empty($hash_filename)) {
+                        unlink(XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$sub_dir}{$this->file_dir}/{$hash_filename}");
+                    }
                 }
 
                 $f = explode('.', $hash_filename);
@@ -1591,7 +1600,7 @@ class TadUpFiles
                 $pic_name = $this->TadUpFilesImgUrl . "/{$file_name}";
                 $thumb_pic = $this->TadUpFilesThumbUrl . "/{$file_name}";
 
-                if (mb_strpos($tag, '360') !== false) {
+                if ($tag == '360') {
                     $fancyboxset = "fancybox_{$this->col_name} $tag";
                     $rel = "data-fancybox-type='iframe'";
                 } else {
@@ -1634,7 +1643,7 @@ class TadUpFiles
     }
 
     //取得smarty用的檔案陣列
-    public function get_file_for_smarty($files_sn = '', $limit = null, $path = null)
+    public function get_file_for_smarty($files_sn = '', $limit = null, $path = null,$remove_blank=false)
     {
         global $xoopsDB, $xoopsUser;
 
@@ -1669,7 +1678,13 @@ class TadUpFiles
             if ($os_charset != _CHARSET) {
                 $file_name = iconv($os_charset, _CHARSET, $file_name);
             }
-
+            // 移除實體檔案不存在的紀錄
+            $check_dir=($kind === 'img')?$this->TadUpFilesImgDir:$this->TadUpFilesDir;
+            if($remove_blank and !file_exists("{$check_dir}/{$file_name}")){
+                $sql = "delete from `{$this->TadUpFilesTblName}` where files_sn='$files_sn'";
+                $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                continue;
+            }
             $files[$i]['files_sn'] = $files_sn;
             $files[$i]['kind'] = $kind;
             $files[$i]['sort'] = $sort;
@@ -1829,7 +1844,7 @@ class TadUpFiles
                     if ($file_info['kind'] === 'file') {
                         $all_files .= "<li><span>{$file_info['link']}</span></li>";
                     } else {
-                        if (mb_strpos($file_info['tag'], '360') !== false) {
+                        if ($file_info['tag'] == '360') {
                             $linkto = XOOPS_URL . "/modules/tadtools/360.php?photo={$file_info['path']}";
                             $all_files .= "<li><span><a href='{$linkto}' class='fancybox_{$this->col_name}' data-fancybox-type='iframe'>{$file_info['original_filename']}</a></span></li>";
                         } else {
@@ -1859,7 +1874,7 @@ class TadUpFiles
                             }
                             $linkto = XOOPS_URL . "/modules/tadtools/video.php?file_name={$file_info['original_file_path']}";
                         } elseif ($fext === 'jpg' or $fext === 'gif' or $fext === 'png' or $fext === 'jpeg') {
-                            if (mb_strpos($file_info['tag'], '360') !== false) {
+                            if ($file_info['tag'] == '360') {
                                 $fancyboxset = "fancybox_{$this->col_name}";
                                 $rel = "data-fancybox-type='iframe'";
                                 $linkto = XOOPS_URL . "/modules/tadtools/360.php?photo={$file_info['path']}";
@@ -1875,7 +1890,7 @@ class TadUpFiles
                     } else {
                         $thumb_pic = ($thumb) ? $file_info['tb_path'] : $file_info['path'];
                         if ($this->showFancyBox) {
-                            if (mb_strpos($file_info['tag'], '360') !== false) {
+                            if ($file_info['tag'] == '360') {
                                 $fancyboxset = "fancybox_{$this->col_name}";
                                 $rel = "data-fancybox-type='iframe'";
                                 $linkto = XOOPS_URL . "/modules/tadtools/360.php?photo={$file_info['path']}";
