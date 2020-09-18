@@ -45,7 +45,7 @@ function get_theme_main_menu_items()
         $main_menu[$i]['target']     = '_self';
         $main_menu[$i]['icon']       = '';
         $main_menu[$i]['img']        = '';
-        $main_menu[$i]['read_group'] = $read_group;
+        $main_menu[$i]['read_group'] = explode(',', $read_group);
         $i++;
     }
 

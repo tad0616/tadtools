@@ -1,9 +1,8 @@
 <{php}>
-
 global $xoopsDB, $xoopsConfig, $aggreg;
 
-$left_count = count($aggreg->blocks['canvas_left']);
-$right_count = count($aggreg->blocks['canvas_right']);
+$left_count = $aggreg ? count($aggreg->blocks['canvas_left']) : 0;
+$right_count =  $aggreg ? count($aggreg->blocks['canvas_right']) : 0;
 $xoops_showlblock = empty($left_count) ? false : true;
 $xoops_showrblock = empty($right_count) ? false : true;
 
@@ -30,6 +29,7 @@ $theme_name = $xoopsConfig['theme_set'];
 require_once XOOPS_ROOT_PATH . "/themes/{$theme_name}/config.php";
 require_once XOOPS_ROOT_PATH . "/modules/tadtools/language/{$xoopsConfig['language']}/main.php";
 
+$this->assign('config_tabs', $config_tabs);
 foreach ($config_enable as $k => $v) {
     $$k = $v['default'];
     $this->assign($k, $v['default']);
@@ -455,12 +455,14 @@ foreach ($config2_files as $config2_file) {
 }
 
 /****佈景 TadDataCenter 設定****/
-require_once XOOPS_ROOT_PATH . "/modules/tadtools/TadDataCenter.php";
-$TadDataCenter = new TadDataCenter('tad_themes');
-$TadDataCenter->set_col('theme_id', $theme_id);
-$data = $TadDataCenter->getData();
-foreach ($data as $var_name => $var_val) {
-    $this->assign($var_name, $var_val[0]);
+if(file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/TadDataCenter.php")){
+    require XOOPS_ROOT_PATH . "/modules/tadtools/TadDataCenter.php";
+    $TadDataCenter = new TadDataCenter('tad_themes');
+    $TadDataCenter->set_col('theme_id', $theme_id);
+    $data = $TadDataCenter->getData();
+    foreach ($data as $var_name => $var_val) {
+        $this->assign($var_name, $var_val[0]);
+    }
 }
 
 /****檢查是否開放註冊****/

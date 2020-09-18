@@ -12,7 +12,7 @@ define('TF_USER_ENTER', '登入');
 define('TF_USER_EXIT', '登出');
 define('TF_USER_ADMIN', '管理');
 define('TF_USER_BLOCK', '區塊');
-define('TF_USER_TAD_BLOCK', '區塊進階');
+define('TF_USER_TAD_BLOCK', '進階區塊');
 define('TF_THEME_ADMIN', '佈景');
 define('TF_THEME_DEBUG', '開除錯');
 define('TF_THEME_UNDEBUG', '關除錯');

@@ -331,11 +331,11 @@ class TadModData
             $submit = implode("\n", $this->submit);
         } else {
 
-            $op = !empty($def_val) ? 'update' : 'store';
+            $op = !empty($def_val[$this->primary]) ? 'update' : 'store';
             $this->set_attr('submit', ['name' => 'op', 'value' => $op, 'class' => 'btn btn-primary'], 'default');
             $submit_attr = $this->get_attr('submit');
 
-            $label = !empty($def_val) ? _TM_SAVE : _TM_ADD;
+            $label = !empty($def_val[$this->primary]) ? _TM_SAVE : _TM_ADD;
             $submit = '<button type="submit" ' . $submit_attr . '>' . $label . '</button>';
         }
 
