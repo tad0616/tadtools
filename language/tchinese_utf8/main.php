@@ -63,7 +63,7 @@ define('_TAD_TF_SYSTEM_DBADM', '資料庫管理');
 define('_TAD_TF_MODULE_CONFIG', '模組管理區');
 define('_TAD_TF_USER_ADMIN', '管理');
 define('_TAD_TF_USER_BLOCK', '區塊');
-define('_TAD_TF_USER_TAD_BLOCK', '區塊進階');
+define('_TAD_TF_USER_TAD_BLOCK', '進階區塊');
 define('_TAD_TF_THEME_ADMIN', '佈景');
 define('_TAD_TF_THEME_DEBUG', '開除錯');
 define('_TAD_TF_THEME_UNDEBUG', '關除錯');

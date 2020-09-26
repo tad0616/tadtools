@@ -13,7 +13,7 @@ $this->assign('right_count', $right_count);
 $moduleHandler = xoops_getHandler('module');
 $TadThemesModule = $moduleHandler->getByDirname("tad_themes");
 $TadThemesMid = ($TadThemesModule) ? $TadThemesModule->getVar('mid') : 0;
-$this->assign('mid', $TadThemesMid);
+$this->assign('TadThemesMid', $TadThemesMid);
 $use_default_config = false;
 
 /**** 取得 Tad Tools 偏好設定****/
