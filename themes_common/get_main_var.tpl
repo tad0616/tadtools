@@ -17,9 +17,8 @@ if ($xoTheme) {
     $xoTheme->addStylesheet("modules/tadtools/jquery/themes/base/jquery.ui.all.css");
     $xoTheme->addScript('modules/tadtools/jquery/ui/jquery-ui.js');
 }
-
-$main_menu  = get_theme_main_menu_items();
-$xoopsTpl->assign('main_menu_var', $main_menu);
+;
+$xoopsTpl->assign('main_menu_var', get_theme_main_menu_items());
 $xoopsTpl->assign('admin_menu_var', get_theme_admin_menu_items());
 $xoopsTpl->assign('user_menu_var', get_theme_user_menu_items());
 
@@ -38,7 +37,7 @@ function get_theme_main_menu_items()
         $main_menu[$i]['title']      = $name;
         $main_menu[$i]['url']        = XOOPS_URL."/modules/{$dirname}/";
         $main_menu[$i]['target']     = '_self';
-        $main_menu[$i]['icon']       = '';
+        $main_menu[$i]['icon']       = 'fa-th-list';
         $main_menu[$i]['img']        = '';
         $i++;
     }

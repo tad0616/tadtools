@@ -4,6 +4,11 @@ TadTools 3.4 (尚未釋出)
 2.新增 admin_menu_var 管理選單樣板參數
 3.新增 user_menu_var 使用者選單樣板參數
 4.利用樣板參數簡化 menu_user*.tpl
+5.讓佈景選單可以支援到無限多層
+6.BootStrap 升級為 4.5.2
+7.jQuery 升級為 v3.5.1
+8.將是否釘選導覽列的偏好設定移至 tad_themes 佈景管理
+9.用 jquery.sticky 取代 jquery.pin
 
 
 TadTools 3.3.9 (2020-09-12 釋出)

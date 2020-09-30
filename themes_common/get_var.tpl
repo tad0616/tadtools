@@ -13,18 +13,14 @@ $this->assign('right_count', $right_count);
 $moduleHandler = xoops_getHandler('module');
 $TadThemesModule = $moduleHandler->getByDirname("tad_themes");
 $TadThemesMid = ($TadThemesModule) ? $TadThemesModule->getVar('mid') : 0;
+$configHandler = xoops_getHandler('config');
+$TadThemesConfig = $configHandler->getConfigsByCat(0, $TadThemesMid);
 $this->assign('TadThemesMid', $TadThemesMid);
+$this->assign('use_pin', $TadThemesConfig['use_pin']);
 $use_default_config = false;
 
-/**** 取得 Tad Tools 偏好設定****/
-$TadtoolsModule = $moduleHandler->getByDirname("tadtools");
-$Tadtoolsmid = ($TadtoolsModule) ? $TadtoolsModule->getVar('mid') : 0;
-$configHandler = xoops_getHandler('config');
-$tadToolsConfig = $configHandler->getConfigsByCat(0, $Tadtoolsmid);
-$this->assign('use_pin', $tadToolsConfig['use_pin']);
 
 /****檔案預設值****/
-
 $theme_name = $xoopsConfig['theme_set'];
 require_once XOOPS_ROOT_PATH . "/themes/{$theme_name}/config.php";
 require_once XOOPS_ROOT_PATH . "/modules/tadtools/language/{$xoopsConfig['language']}/main.php";

@@ -8,8 +8,6 @@ define('_MI_TADTOOLS_ADMENU1_DESC', '佈景是否引入bootstrap的設定');
 define('_MI_TADTOOLS_NAME', 'Tad Tools 工具包');
 define('_MI_TADTOOLS_DESC', 'Tad Tools 工具包只是一個常用工具的集合，可以讓其他的模組引用相同工具');
 
-define('_MI_TADTOOLS_TITLE4', '是否使用導覽列的釘住功能');
-define('_MI_TADTOOLS_DESC4', '選「是」時，在畫面往下移動時，導覽列會自動維持在最上方。');
 define('_MI_TADTOOLS_TITLE5', '下載檔案的路徑是否根據主機環境自動轉碼');
 define('_MI_TADTOOLS_DESC5', '若是中文檔名無法下載的時候，試試改變此設定值。');
 

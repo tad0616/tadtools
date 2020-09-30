@@ -65,15 +65,6 @@ $modversion['templates'][$i]['description'] = 'tadtools_adm_index.tpl';
 
 //---偏好設定---//
 $i = 1;
-
-$modversion['config'][$i]['name'] = 'use_pin';
-$modversion['config'][$i]['title'] = '_MI_TADTOOLS_TITLE4';
-$modversion['config'][$i]['description'] = '_MI_TADTOOLS_DESC4';
-$modversion['config'][$i]['formtype'] = 'yesno';
-$modversion['config'][$i]['valuetype'] = 'int';
-$modversion['config'][$i]['default'] = '1';
-
-$i++;
 $modversion['config'][$i]['name'] = 'auto_charset';
 $modversion['config'][$i]['title'] = '_MI_TADTOOLS_TITLE5';
 $modversion['config'][$i]['description'] = '_MI_TADTOOLS_DESC5';

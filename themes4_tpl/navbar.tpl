@@ -96,4 +96,13 @@
             </ul>
         </div>
     </nav>
+
+    <{if $use_pin=="1"}>
+        <script type="text/javascript" src="<{xoAppUrl modules/tadtools/jquery.sticky/jquery.sticky.js}>"></script>
+        <script type="text/javascript">
+        $(document).ready(function(){
+            $("nav#main-nav").sticky({topSpacing:0 , zIndex: 100});
+        });
+        </script>
+    <{/if}>
 <{/if}>

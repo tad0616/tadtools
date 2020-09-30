@@ -15,36 +15,29 @@ class JqueryPin
     }
 
     //產生語法
-    public function render($name = '', $minWidth = 940)
+    public function render($name = '', $minWidth = '')
     {
         global $xoTheme;
-        if (empty($minWidth)) {
-            $minWidth = 940;
-        }
 
         $jquery = $this->show_jquery ? Utility::get_jquery() : '';
 
         if ($xoTheme) {
-            $xoTheme->addScript('modules/tadtools/jquery.pin/jquery.pin.js');
+            $xoTheme->addScript('modules/tadtools/jquery.sticky/jquery.sticky.js');
 
             $xoTheme->addScript('', null, "
                 (function(\$){
-                \$(document).ready(function(){
-                    \$('{$name}').pin({
-                    minWidth: {$minWidth}
+                    \$(document).ready(function(){
+                        \$('{$name}').sticky({topSpacing:0 , zIndex: 100});
                     });
-                });
                 })(jQuery);
             ");
         } else {
             $main = "
             {$jquery}
-            <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/jquery.pin/jquery.pin.js}>'></script>
+            <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/jquery.sticky/jquery.sticky.js}>'></script>
             <script type='text/javascript'>
                 $(document).ready(function(){
-                $('{$name}').pin({
-                    minWidth: {$minWidth}
-                });
+                    $('{$name}').sticky({topSpacing:0 , zIndex: 100});
                 });
             </script>
             ";
