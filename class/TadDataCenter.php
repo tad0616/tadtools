@@ -2,6 +2,7 @@
 namespace XoopsModules\Tadtools;
 
 use Xmf\Request;
+use XoopsModules\Tadtools\CkEditor;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
@@ -193,7 +194,7 @@ class TadDataCenter
             $attr_str .= " {$k}=\"{$v}\"";
         }
 
-        $arr = $sort > 0 ? "[$sort]" : '';
+        $arr = !empty($sort) ? "[$sort]" : '';
         switch ($form_tag) {
             case 'input':
                 if ('radio' === $type) {
@@ -235,18 +236,19 @@ class TadDataCenter
                 {$options_str}
                 </select>";
                 break;
+
             case 'textarea':
                 $form = "<textarea name=\"TDC[{$name}]{$arr}\" {$attr_str}>{$value}</textarea>";
                 break;
-                $options_str = '';
-                foreach ($options as $k => $v) {
-                    $selected = $k == $value ? 'selected' : '';
-                    $options_str .= "<option value=\"{$k}\" {$selected}>{$v}</option>\n";
-                }
-                $form = "<select name=\"TDC[{$name}]{$arr}\" value=\"{$value}\" {$attr_str}>
-                {$options_str}
-                </select>";
+
+            case 'ckeditor':
+                $ck = new CkEditor($this->module_dirname, "TDC[{$name}]{$arr}", $value);
+                $ck->setHeight(120);
+                $ck->setToolbarSet('tadSimple');
+                $form = $ck->render();
+
                 break;
+
             case 'note':
                 $options_str = implode('', $options);
                 $form = "<div class='form-control-static'><b>{$options_str}</b></div>";
@@ -274,7 +276,7 @@ class TadDataCenter
         global $xoopsDB;
         $myts = \MyTextSanitizer::getInstance();
 
-        $TDC = Request::getArray('TDC');
+        $TDC = $_POST['TDC'];
         $dc_op = Request::getString('dc_op');
 
         foreach ($TDC as $name => $value) {

@@ -219,19 +219,19 @@
                     <table class="table table-striped table-bordered table-hover" style="background:white;">
 
                         <tr><th colspan=3><h2>主選單 &lt;{$main_menu_var}&gt;</h2></th></tr>
-                        <{foreach from=$main_menu_var item=m}>
+                        <{foreach from=$main_menu_var key=k item=m}>
                             <tr>
                                 <th rowspan=7>
-                                    <{$m.title}><br>&lt;{$main_menu_var.<{$m.id}>}&gt;
+                                    <{$m.title}><br>&lt;{$main_menu_var.<{$k}>}&gt;
                                 </th>
-                                <th>&lt;{$main_menu_var.<{$m.id}>.id}&gt;</th><td><{$m.id}></td>
+                                <th>&lt;{$main_menu_var.<{$k}>.id}&gt;</th><td><{$m.id}></td>
                             </tr>
-                            <tr><th>&lt;{$main_menu_var.<{$m.id}>.title}&gt;</th><td><{$m.title}></td></tr>
-                            <tr><th>&lt;{$main_menu_var.<{$m.id}>.url}&gt;</th><td><{$m.url}></td></tr>
-                            <tr><th>&lt;{$main_menu_var.<{$m.id}>.target}&gt;</th><td><{$m.target}></td></tr>
-                            <tr><th>&lt;{$main_menu_var.<{$m.id}>.icon}&gt;</th><td><{$m.icon}></td></tr>
-                            <tr><th>&lt;{$main_menu_var.<{$m.id}>.img}&gt;</th><td><{$m.img}></td></tr>
-                            <tr><th>&lt;{$main_menu_var.<{$m.id}>.read_group}&gt;</th><td>
+                            <tr><th>&lt;{$main_menu_var.<{$k}>.title}&gt;</th><td><{$m.title}></td></tr>
+                            <tr><th>&lt;{$main_menu_var.<{$k}>.url}&gt;</th><td><{$m.url}></td></tr>
+                            <tr><th>&lt;{$main_menu_var.<{$k}>.target}&gt;</th><td><{$m.target}></td></tr>
+                            <tr><th>&lt;{$main_menu_var.<{$k}>.icon}&gt;</th><td><{$m.icon}></td></tr>
+                            <tr><th>&lt;{$main_menu_var.<{$k}>.img}&gt;</th><td><{$m.img}></td></tr>
+                            <tr><th>&lt;{$main_menu_var.<{$k}>.read_group}&gt;</th><td>
                                 <{foreach from=$m.read_group item=read_group}>
                                     <span><{$read_group}></span>
                                 <{/foreach}>
@@ -245,21 +245,21 @@
                     <table class="table table-striped table-bordered table-hover" style="background:white;">
                         <tr><th colspan=3><h2>自訂選單 &lt;{$menu_var}&gt;</h2></th></tr>
 
-                        <{foreach from=$menu_var item=m}>
+                        <{foreach from=$menu_var key=k item=m}>
                             <tr>
                                 <th rowspan=7>
-                                    <{$m.title}><br>&lt;{$menu_var.<{$m.id}>}&gt;
+                                    <{$m.title}><br>&lt;{$menu_var.<{$k}>}&gt;
                                 </th>
-                                <th>&lt;{$menu_var.<{$m.id}>.id}&gt;</th><td><{$m.id}></td>
+                                <th>&lt;{$menu_var.<{$k}>.id}&gt;</th><td><{$m.id}></td>
                             </tr>
-                            <tr><th>&lt;{$menu_var.<{$m.id}>.title}&gt;</th><td><{$m.title}></td></tr>
-                            <tr><th>&lt;{$menu_var.<{$m.id}>.url}&gt;</th><td><{$m.url}></td></tr>
-                            <tr><th>&lt;{$menu_var.<{$m.id}>.target}&gt;</th><td><{$m.target}></td></tr>
-                            <tr><th>&lt;{$menu_var.<{$m.id}>.icon}&gt;</th><td><{$m.icon}></td></tr>
-                            <tr><th>&lt;{$menu_var.<{$m.id}>.img}&gt;</th><td><{$m.img}></td></tr>
+                            <tr><th>&lt;{$menu_var.<{$k}>.title}&gt;</th><td><{$m.title}></td></tr>
+                            <tr><th>&lt;{$menu_var.<{$k}>.url}&gt;</th><td><{$m.url}></td></tr>
+                            <tr><th>&lt;{$menu_var.<{$k}>.target}&gt;</th><td><{$m.target}></td></tr>
+                            <tr><th>&lt;{$menu_var.<{$k}>.icon}&gt;</th><td><{$m.icon}></td></tr>
+                            <tr><th>&lt;{$menu_var.<{$k}>.img}&gt;</th><td><{$m.img}></td></tr>
                             <{if $m.submenu}>
                                 <tr><td colspan=2 style="background-color: rgb(248, 248, 219);">
-                                    <p><b>&lt;{$menu_var.<{$m.id}>.submenu}&gt;</b></p>
+                                    <p><b>&lt;{$menu_var.<{$k}>.submenu}&gt;</b></p>
                                     <table class="table table-striped table-bordered table-hover table-condensed table-sm">
                                         <tr>
                                             <th>id</th>
@@ -311,7 +311,7 @@
                                     </td>
                                 </tr>
                             <{else}>
-                                <tr><th>&lt;{$menu_var.<{$m.id}>.submenu}&gt;</th><td></td></tr>
+                                <tr><th>&lt;{$menu_var.<{$k}>.submenu}&gt;</th><td></td></tr>
                             <{/if}>
 
                         <{/foreach}>

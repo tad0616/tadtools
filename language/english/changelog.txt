@@ -1,3 +1,18 @@
+TadTools 3.4 (Released on 2020-10-24)
+====================================
+1. Modify the presentation of show_var.tpl to make it easier to read.
+2.Add admin_menu_var Manage Menu Template Parameters
+3. Add user_menu_var user menu template parameter.
+4. Simplify menu_user*.tpl with template parameters.
+5. Support unlimited multi-layers with the scenery menu.
+6.BootStrap upgrade to 4.5.2
+Upgraded jQuery to v3.5.1.
+8.Move the preference of whether to pin the navigation bar to tad_themes theme management
+9. Use jquery.sticky instead of jquery.pin.
+
+Translated with www.DeepL.com/Translator (free version)
+
+
 TadTools 3.3.9 (Released on 2020-09-12)
 =============================================================
 1. Fix the bug in TadModData.php part, and add new function.
