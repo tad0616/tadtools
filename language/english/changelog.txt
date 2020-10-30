@@ -1,3 +1,8 @@
+TadTools 3.41 (Released 2020-10-30)
+====================================
+1.Allow TadDataCenter.php to store HTML
+2.Upgrade elFinder to 2.1.57 to support jQuery 3.5.1
+
 TadTools 3.4 (Released on 2020-10-24)
 ====================================
 1. Modify the presentation of show_var.tpl to make it easier to read.
