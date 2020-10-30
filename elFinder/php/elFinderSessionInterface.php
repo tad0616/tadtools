@@ -5,8 +5,9 @@
  * Session Wrapper Interface.
  *
  * @package elfinder
- * @author Naoki Sawada
+ * @author  Naoki Sawada
  **/
+
 interface elFinderSessionInterface
 {
     /**
@@ -25,11 +26,10 @@ interface elFinderSessionInterface
 
     /**
      * Get session data
-     *
      * This method must be equipped with an automatic start / close.
      *
-     * @param   string  $key   Target key
-     * @param   mixed   $empty Return value of if session target key does not exist
+     * @param   string $key   Target key
+     * @param   mixed  $empty Return value of if session target key does not exist
      *
      * @return  mixed
      **/
@@ -37,11 +37,10 @@ interface elFinderSessionInterface
 
     /**
      * Set session data
-     *
      * This method must be equipped with an automatic start / close.
      *
-     * @param   string  $key   Target key
-     * @param   mixed   $data  Value
+     * @param   string $key  Target key
+     * @param   mixed  $data Value
      *
      * @return  self
      **/
@@ -50,7 +49,7 @@ interface elFinderSessionInterface
     /**
      * Get session data
      *
-     * @param   string  $key   Target key
+     * @param   string $key Target key
      *
      * @return  self
      **/

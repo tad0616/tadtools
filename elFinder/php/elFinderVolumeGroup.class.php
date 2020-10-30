@@ -7,6 +7,7 @@
  **/
 class elFinderVolumeGroup extends elFinderVolumeDriver
 {
+
     /**
      * Driver id
      * Must be started from letter and contains [a-z0-9]
@@ -15,6 +16,7 @@ class elFinderVolumeGroup extends elFinderVolumeDriver
      * @var string
      **/
     protected $driverId = 'g';
+
 
     /**
      * Constructor
@@ -26,21 +28,23 @@ class elFinderVolumeGroup extends elFinderVolumeDriver
         $this->options['path'] = '/';
         $this->options['dirUrlOwn'] = true;
         $this->options['syncMinMs'] = 0;
-        $this->options['disabled'] = [
+        $this->options['tmbPath'] = '';
+        $this->options['disabled'] = array(
             'archive',
+            'copy',
             'cut',
             'duplicate',
             'edit',
+            'empty',
             'extract',
             'getfile',
             'mkdir',
             'mkfile',
             'paste',
-            'rename',
             'resize',
             'rm',
-            'upload',
-        ];
+            'upload'
+        );
     }
 
     /*********************************************************************/
@@ -113,6 +117,8 @@ class elFinderVolumeGroup extends elFinderVolumeDriver
         return false;
     }
 
+
+
     /***************** file stat ********************/
 
     /**
@@ -120,8 +126,8 @@ class elFinderVolumeGroup extends elFinderVolumeDriver
      **/
     protected function _stat($path)
     {
-        if ('/' === $path) {
-            return [
+        if ($path === '/') {
+            return array(
                 'size' => 0,
                 'ts' => 0,
                 'mime' => 'directory',
@@ -129,10 +135,9 @@ class elFinderVolumeGroup extends elFinderVolumeDriver
                 'write' => false,
                 'locked' => true,
                 'hidden' => false,
-                'dirs' => 0,
-            ];
+                'dirs' => 0
+            );
         }
-
         return false;
     }
 
@@ -141,12 +146,7 @@ class elFinderVolumeGroup extends elFinderVolumeDriver
      **/
     protected function _subdirs($path)
     {
-        $dirs = false;
-        if ('/' === $path) {
-            return true;
-        }
-
-        return $dirs;
+        return false;
     }
 
     /**
@@ -156,7 +156,6 @@ class elFinderVolumeGroup extends elFinderVolumeDriver
     {
         return false;
     }
-
     /******************** file/dir content *********************/
 
     /**
@@ -172,7 +171,7 @@ class elFinderVolumeGroup extends elFinderVolumeDriver
      **/
     protected function _scandir($path)
     {
-        return [];
+        return array();
     }
 
     /**
@@ -278,6 +277,7 @@ class elFinderVolumeGroup extends elFinderVolumeDriver
      **/
     protected function _checkArchivers()
     {
+        return;
     }
 
     /**
@@ -312,3 +312,4 @@ class elFinderVolumeGroup extends elFinderVolumeDriver
         return false;
     }
 }
+
