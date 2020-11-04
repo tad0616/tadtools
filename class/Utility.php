@@ -617,7 +617,7 @@ class Utility
     }
 
     //細部權限判斷
-    public static function power_chk($perm_name = '', $perm_itemid = '', $module_id = '')
+    public static function power_chk($perm_name = '', $perm_itemid = '', $module_id = '', $trueifadmin = true)
     {
         global $xoopsUser, $xoopsModule;
         if (!$xoopsModule) {
@@ -642,7 +642,7 @@ class Utility
         //權限項目編號
         $perm_itemid = (int) $perm_itemid;
         //依據該群組是否對該權限項目有使用權之判斷 ，做不同之處理
-        if ($gperm_handler->checkRight($perm_name, $perm_itemid, $_SESSION['groups'], $module_id)) {
+        if ($gperm_handler->checkRight($perm_name, $perm_itemid, $_SESSION['groups'], $module_id, $trueifadmin)) {
             return true;
         }
 

@@ -1,26 +1,22 @@
 ﻿/**
- * @license Copyright (c) 2003-2020, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
-/**
+ /**
  * @fileOverview Rich code snippets for CKEditor.
  */
 
 'use strict';
 
 ( function() {
+	var isBrowserSupported = !CKEDITOR.env.ie || CKEDITOR.env.version > 8;
+
 	CKEDITOR.plugins.add( 'codesnippet', {
 		requires: 'widget,dialog',
-		// jscs:disable maximumLineLength
-		lang: 'ar,az,bg,ca,cs,da,de,de-ch,el,en,en-au,en-gb,eo,es,es-mx,et,eu,fa,fi,fr,fr-ca,gl,he,hr,hu,id,it,ja,km,ko,ku,lt,lv,nb,nl,no,oc,pl,pt,pt-br,ro,ru,sk,sl,sq,sr,sr-latn,sv,th,tr,tt,ug,uk,vi,zh,zh-cn', // %REMOVE_LINE_CORE%
-		// jscs:enable maximumLineLength
+		lang: 'ar,az,bg,ca,cs,da,de,de-ch,el,en,en-gb,eo,es,et,eu,fa,fi,fr,fr-ca,gl,he,hr,hu,id,it,ja,km,ko,ku,lt,lv,nb,nl,no,oc,pl,pt,pt-br,ro,ru,sk,sl,sq,sv,th,tr,tt,ug,uk,vi,zh,zh-cn', // %REMOVE_LINE_CORE%
 		icons: 'codesnippet', // %REMOVE_LINE_CORE%
 		hidpi: true, // %REMOVE_LINE_CORE%
-
-		isSupportedEnvironment: function() {
-			return !CKEDITOR.env.ie || CKEDITOR.env.version > 8;
-		},
 
 		beforeInit: function( editor ) {
 			editor._.codesnippet = {};
@@ -35,7 +31,7 @@
 			 * the three callbacks).
 			 * * This method is accessible through the `editor.plugins.codesnippet` namespace only.
 			 *
-			 * @since 4.4.0
+			 * @since 4.4
 			 * @member CKEDITOR.plugins.codesnippet
 			 * @param {CKEDITOR.plugins.codesnippet.highlighter} highlighter
 			 */
@@ -48,13 +44,8 @@
 				// We might escape special regex chars below, but we expect that there
 				// should be no crazy values used as lang keys.
 				editor._.codesnippet.langsRegex = new RegExp( '(?:^|\\s)language-(' +
-					CKEDITOR.tools.object.keys( langs ).join( '|' ) + ')(?:\\s|$)' );
+					CKEDITOR.tools.objectKeys( langs ).join( '|' ) + ')(?:\\s|$)' );
 			};
-
-			editor.once( 'pluginsLoaded', function() {
-				// Remove the method once it cannot be used, because it leaks the editor reference (#589).
-				this.setHighlighter = null;
-			}, this );
 		},
 
 		onLoad: function() {
@@ -79,37 +70,163 @@
 			if ( !editor._.codesnippet.highlighter ) {
 				var hljsHighlighter = new CKEDITOR.plugins.codesnippet.highlighter( {
 					languages: {
-						apache: 'Apache',
-						bash: 'Bash',
-						coffeescript: 'CoffeeScript',
-						cpp: 'C++',
-						cs: 'C#',
+						markup: 'Markup',
 						css: 'CSS',
-						diff: 'Diff',
-						html: 'HTML',
-						http: 'HTTP',
-						ini: 'INI',
-						java: 'Java',
+						// clike: 'C-like',
 						javascript: 'JavaScript',
-						json: 'JSON',
-						makefile: 'Makefile',
+						// abap: 'ABAP',
+						// actionscript: 'ActionScript',
+						// ada: 'Ada',
+						// apacheconf: 'ApacheConfiguration',
+						// apl: 'APL',
+						// applescript: 'AppleScript',
+						// arduino: 'Arduino',
+						// arff: 'ARFF',
+						// asciidoc: 'AsciiDoc',
+						// asm6502: '6502Assembly',
+						// aspnet: 'ASP.NET(C#)',
+						// autohotkey: 'AutoHotkey',
+						// autoit: 'AutoIt',
+						bash: 'Bash',
+						// basic: 'BASIC',
+						// batch: 'Batch',
+						// bison: 'Bison',
+						// brainfuck: 'Brainfuck',
+						// bro: 'Bro',
+						c: 'C',
+						csharp: 'C#',
+						cpp: 'C++',
+						// coffeescript: 'CoffeeScript',
+						// clojure: 'Clojure',
+						// crystal: 'Crystal',
+						// csp: 'Content-Security-Policy',
+						// 'css-extras': 'CSSExtras',
+						// d: 'D',
+						dart: 'Dart',
+						// diff: 'Diff',
+						// django: 'Django/Jinja2',
+						// docker: 'Docker',
+						// eiffel: 'Eiffel',
+						// elixir: 'Elixir',
+						// elm: 'Elm',
+						// erb: 'ERB',
+						// erlang: 'Erlang',
+						// fsharp: 'F#',
+						// flow: 'Flow',
+						// fortran: 'Fortran',
+						// gedcom: 'GEDCOM',
+						// gherkin: 'Gherkin',
+						// git: 'Git',
+						// glsl: 'GLSL',
+						go: 'Go',
+						// graphql: 'GraphQL',
+						// groovy: 'Groovy',
+						// haml: 'Haml',
+						// handlebars: 'Handlebars',
+						// haskell: 'Haskell',
+						// haxe: 'Haxe',
+						// http: 'HTTP',
+						// hpkp: 'HTTPPublic-Key-Pins',
+						// hsts: 'HTTPStrict-Transport-Security',
+						// ichigojam: 'IchigoJam',
+						// icon: 'Icon',
+						// inform7: 'Inform7',
+						ini: 'Ini',
+						// io: 'Io',
+						// j: 'J',
+						java: 'Java',
+						// jolie: 'Jolie',
+						// json: 'JSON',
+						// julia: 'Julia',
+						// keyman: 'Keyman',
+						// kotlin: 'Kotlin',
+						// latex: 'LaTeX',
+						// less: 'Less',
+						// liquid: 'Liquid',
+						// lisp: 'Lisp',
+						// livescript: 'LiveScript',
+						// lolcode: 'LOLCODE',
+						// lua: 'Lua',
+						// makefile: 'Makefile',
 						markdown: 'Markdown',
-						nginx: 'Nginx',
-						objectivec: 'Objective-C',
+						// 'markup-templating': 'Markuptemplating',
+						matlab: 'MATLAB',
+						// mel: 'MEL',
+						// mizar: 'Mizar',
+						// monkey: 'Monkey',
+						// n4js: 'N4JS',
+						// nasm: 'NASM',
+						// nginx: 'nginx',
+						// nim: 'Nim',
+						// nix: 'Nix',
+						// nsis: 'NSIS',
+						// objectivec: 'Objective-C',
+						// ocaml: 'OCaml',
+						// opencl: 'OpenCL',
+						// oz: 'Oz',
+						// parigp: 'PARI/GP',
+						// parser: 'Parser',
+						// pascal: 'Pascal',
 						perl: 'Perl',
 						php: 'PHP',
+						// 'php-extras': 'PHPExtras',
+						// plsql: 'PL/SQL',
+						// powershell: 'PowerShell',
+						// processing: 'Processing',
+						// prolog: 'Prolog',
+						// properties: '.properties',
+						// protobuf: 'ProtocolBuffers',
+						// pug: 'Pug',
+						// puppet: 'Puppet',
+						// pure: 'Pure',
 						python: 'Python',
+						// q: 'Q(kdb+database)',
+						// qore: 'Qore',
+						r: 'R',
+						jsx: 'ReactJSX',
+						tsx: 'ReactTSX',
+						// renpy: 'Ren\'py',
+						// reason: 'Reason',
+						// rest: 'reST(reStructuredText)',
+						// rip: 'Rip',
+						// roboconf: 'Roboconf',
 						ruby: 'Ruby',
+						// rust: 'Rust',
+						sas: 'SAS',
+						sass: 'Sass(Sass)',
+						scss: 'Sass(Scss)',
+						// scala: 'Scala',
+						// scheme: 'Scheme',
+						// smalltalk: 'Smalltalk',
+						smarty: 'Smarty',
 						sql: 'SQL',
-						vbscript: 'VBScript',
-						xhtml: 'XHTML',
-						xml: 'XML'
-					},
+						// soy: 'Soy(ClosureTemplate)',
+						// stylus: 'Stylus',
+						swift: 'Swift',
+						// tap: 'TAP',
+						// tcl: 'Tcl',
+						textile: 'Textile',
+						// tt2: 'TemplateToolkit2',
+						// twig: 'Twig',
+						// typescript: 'TypeScript',
+						vbnet: 'VB.Net',
+						// velocity: 'Velocity',
+						// verilog: 'Verilog',
+						// vhdl: 'VHDL',
+						// vim: 'vim',
+						// 'visual-basic': 'VisualBasic',
+						// wasm: 'WebAssembly',
+						// wiki: 'Wikimarkup',
+						// xeora: 'Xeora',
+						// xojo: 'Xojo(REALbasic)',
+						// xquery: 'XQuery',
+						yaml: 'YAML'
+					  },
 
 					init: function( callback ) {
 						var that = this;
 
-						if ( editor.plugins.codesnippet.isSupportedEnvironment() ) {
+						if ( isBrowserSupported ) {
 							CKEDITOR.scriptLoader.load( path + 'lib/highlight/highlight.pack.js', function() {
 								that.hljs = window.hljs;
 								callback();
@@ -139,7 +256,7 @@
 	/**
 	 * Global helpers and classes of the Code Snippet plugin.
 	 *
-	 * For more information see the {@glink features/codesnippet Code Snippet Guide}.
+	 * For more information see the [Code Snippet Guide](#!/guide/dev_codesnippet).
 	 *
 	 * @class
 	 * @singleton
@@ -185,7 +302,7 @@
 	 *			}
 	 *		} );
 	 *
-	 * @since 4.4.0
+	 * @since 4.4
 	 * @class CKEDITOR.plugins.codesnippet.highlighter
 	 * @extends CKEDITOR.plugins.codesnippet
 	 * @param {Object} def Highlighter definition. See {@link #highlighter}, {@link #init} and {@link #languages}.
@@ -251,7 +368,7 @@
 		 *		}
 		 *
 		 * More information on how to change the list of languages is available
-		 * in the {@glink features/codesnippet#changing-supported-languages Code Snippet documentation}.
+		 * in the [Code Snippet documentation](#!/guide/dev_codesnippet-section-changing-languages-list).
 		 *
 		 * @property {Object} languages
 		 */
@@ -317,7 +434,7 @@
 					callback = function( formatted ) {
 						// IE8 (not supported browser) have issue with new line chars, when using innerHTML.
 						// It will simply strip it.
-						that.parts.code.setHtml( editor.plugins.codesnippet.isSupportedEnvironment() ?
+						that.parts.code.setHtml( isBrowserSupported ?
 							formatted : formatted.replace( newLineRegex, '<br>' ) );
 					};
 
@@ -366,7 +483,7 @@
 				if ( childrenArray.length != 1 || ( code = childrenArray[ 0 ] ).name != 'code' )
 					return;
 
-				// Upcast <code> with text only: https://dev.ckeditor.com/ticket/11926#comment:4
+				// Upcast <code> with text only: http://dev.ckeditor.com/ticket/11926#comment:4
 				if ( code.children.length != 1 || code.children[ 0 ].type != CKEDITOR.NODE_TEXT )
 					return;
 
@@ -376,7 +493,7 @@
 				if ( matchResult )
 					data.lang = matchResult[ 1 ];
 
-				// Use textarea to decode HTML entities (https://dev.ckeditor.com/ticket/11926).
+				// Use textarea to decode HTML entities (#11926).
 				textarea.setHtml( code.getHtml() );
 				data.code = textarea.getValue();
 
@@ -428,7 +545,7 @@
 
 /**
  * A CSS class of the `<code>` element used internally for styling
- * (by default [highlight.js](https://highlightjs.org) themes, see
+ * (by default [highlight.js](http://highlightjs.org) themes, see
  * {@link CKEDITOR.config#codeSnippet_theme config.codeSnippet_theme}),
  * which means that it is **not present** in the editor output data.
  *
@@ -436,13 +553,13 @@
  *		config.codeSnippet_codeClass = 'myCustomClass';
  *
  * **Note**: The class might need to be changed when you are using a custom
- * highlighter (the default is [highlight.js](https://highlightjs.org)).
+ * highlighter (the default is [highlight.js](http://highlightjs.org)).
  * See {@link CKEDITOR.plugins.codesnippet.highlighter} to read more.
  *
- * Read more in the {@glink features/codesnippet documentation}
- * and see the {@glink examples/codesnippet example}.
+ * Read more in the [documentation](#!/guide/dev_codesnippet)
+ * and see the [SDK sample](http://sdk.ckeditor.com/samples/codesnippet.html).
  *
- * @since 4.4.0
+ * @since 4.4
  * @cfg {String} [codeSnippet_codeClass='hljs']
  * @member CKEDITOR.config
  */
@@ -452,11 +569,11 @@ CKEDITOR.config.codeSnippet_codeClass = 'hljs';
  * Restricts languages available in the "Code Snippet" dialog window.
  * An empty value is always added to the list.
  *
- * **Note**: If using a custom highlighter library (the default is [highlight.js](https://highlightjs.org)),
+ * **Note**: If using a custom highlighter library (the default is [highlight.js](http://highlightjs.org)),
  * you may need to refer to external documentation to set `config.codeSnippet_languages` properly.
  *
- * Read more in the {@glink features/codesnippet#changing-supported-languages documentation}
- * and see the {@glink examples/codesnippet example}.
+ * Read more in the [documentation](#!/guide/dev_codesnippet-section-changing-supported-languages)
+ * and see the [SDK sample](http://sdk.ckeditor.com/samples/codesnippet.html).
  *
  *		// Restricts languages to JavaScript and PHP.
  *		config.codeSnippet_languages = {
@@ -464,24 +581,24 @@ CKEDITOR.config.codeSnippet_codeClass = 'hljs';
  *			php: 'PHP'
  *		};
  *
- * @since 4.4.0
+ * @since 4.4
  * @cfg {Object} [codeSnippet_languages=null]
  * @member CKEDITOR.config
  */
 
 /**
- * A theme used to render code snippets. See [available themes](https://highlightjs.org/static/demo/).
+ * A theme used to render code snippets. See [available themes](http://highlightjs.org/static/test.html).
  *
  * **Note**: This will only work with the default highlighter
- * ([highlight.js](https://highlightjs.org/static/demo/)).
+ * ([highlight.js](http://highlightjs.org/static/test.html)).
  *
- * Read more in the {@glink features/codesnippet#changing-highlighter-theme documentation}
- * and see the {@glink examples/codesnippet example}.
+ * Read more in the [documentation](#!/guide/dev_codesnippet-section-changing-highlighter-theme)
+ * and see the [SDK sample](http://sdk.ckeditor.com/samples/codesnippet.html).
  *
  *		// Changes the theme to "pojoaque".
  *		config.codeSnippet_theme = 'pojoaque';
  *
- * @since 4.4.0
+ * @since 4.4
  * @cfg {String} [codeSnippet_theme='default']
  * @member CKEDITOR.config
  */
