@@ -50,6 +50,7 @@ class Bootstrap3Editable
 use XoopsModules\Tadtools\Bootstrap3Editable;
 $Bootstrap3Editable=new Bootstrap3Editable();
 $Bootstrap3EditableCode=$Bootstrap3Editable->render('.editable','ajax.php');
+$xoopsTpl->assign('Bootstrap3EditableCode', $Bootstrap3EditableCode);
 
 http://vitalets.github.io/x-editable/docs.html
 <a href="#" class="editable" data-name="username" data-type="text" data-pk="1" data-title="Enter username" data-params="{op: 'en'}">superuser</a>
