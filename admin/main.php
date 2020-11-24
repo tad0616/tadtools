@@ -167,16 +167,19 @@ function save()
 {
     global $xoopsDB;
 
+    $sql = 'delete from `' . $xoopsDB->prefix('tadtools_setup') . "`";
+    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
     $myts = \MyTextSanitizer::getInstance();
     $tt_use_bootstrap = Request::getArray('tt_use_bootstrap');
     $tt_bootstrap_color = Request::getArray('tt_bootstrap_color');
     $tt_theme_kind = Request::getArray('tt_theme_kind');
 
-    foreach ($tt_use_bootstrap as $tt_theme => $tt_use_bootstrap) {
-        $tt_bootstrap_color = $myts->addSlashes($tt_bootstrap_color[$tt_theme]);
-        $tt_theme_kind = $myts->addSlashes($tt_theme_kind[$tt_theme]);
+    foreach ($tt_use_bootstrap as $tt_theme => $use_bootstrap) {
+        $bootstrap_color = $myts->addSlashes($tt_bootstrap_color[$tt_theme]);
+        $theme_kind = $myts->addSlashes($tt_theme_kind[$tt_theme]);
 
-        $sql = 'replace into `' . $xoopsDB->prefix('tadtools_setup') . "` (`tt_theme` , `tt_use_bootstrap`,`tt_bootstrap_color` , `tt_theme_kind`) values('{$tt_theme}', '{$tt_use_bootstrap}', '{$tt_bootstrap_color}', '{$tt_theme_kind}')";
+        $sql = 'replace into `' . $xoopsDB->prefix('tadtools_setup') . "` (`tt_theme` , `tt_use_bootstrap`,`tt_bootstrap_color` , `tt_theme_kind`) values('{$tt_theme}', '{$use_bootstrap}', '{$bootstrap_color}', '{$theme_kind}')";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 }
