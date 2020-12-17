@@ -54,7 +54,9 @@ function get_theme_admin_menu_items()
 
     $moduleHandler = xoops_getHandler('module');
     $TadThemesModule = $moduleHandler->getByDirname("tad_themes");
-    $TadThemesMid = ($TadThemesModule) ? $TadThemesModule->getVar('mid') : 0;
+    $TadThemesMid = ($TadThemesModule) ? $TadThemesModule->mid() : 0;
+    $TadBlocksModule = $moduleHandler->getByDirname("tad_blocks");
+    $TadBlocksMid = ($TadBlocksModule) ? $TadBlocksModule->mid() : 0;
 
 
     $sql         = "select conf_value from " . $xoopsDB->prefix("config") . " where conf_title ='_MD_AM_DEBUGMODE'";
@@ -81,7 +83,11 @@ function get_theme_admin_menu_items()
 
     }
     $admin_menu[]=['title'=>_TAD_TF_USER_BLOCK, 'url'=>XOOPS_URL.'/modules/system/admin.php?fct=blocksadmin&op=list&filter=1&selgen=-1&selmod=-2&selgrp=-1&selvis=1', 'icon'=>'fa-th', 'target'=> '_blank'];
-    $admin_menu[]=['title'=>_TAD_TF_USER_TAD_BLOCK, 'url'=>XOOPS_URL.'/modules/tad_blocks/blocks.php', 'icon'=>'fa-cubes', 'target'=> '_blank'];
+    if($TadBlocksMid){
+        $admin_menu[]=['title'=>_TAD_TF_USER_TAD_BLOCK, 'url'=>XOOPS_URL.'/modules/tad_blocks/blocks.php', 'icon'=>'fa-cubes', 'target'=> '_blank'];
+    }else{
+        $admin_menu[]=['title'=>_TAD_TF_USER_TAD_BLOCK, 'url'=>XOOPS_URL.'/modules/tad_adm/admin/main.php#modTab2', 'icon'=>'fa-cubes', 'target'=> '_blank'];
+    }
 
     return $admin_menu;
 }
