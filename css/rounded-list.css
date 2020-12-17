@@ -22,7 +22,8 @@
   transform: rotate(360deg);
 }
 
-.rounded-list a:before.rounded-list span:before {
+.rounded-list a:before,
+.rounded-list span:before {
   content: counter(li);
   counter-increment: li;
   position: absolute;
@@ -40,6 +41,7 @@
   transition: all .3s ease-out;
 }
 
+.rectangle-list a,
 .rectangle-list span {
   position: relative;
   display: block;
@@ -52,10 +54,12 @@
   transition: all .3s ease-out;
 }
 
+.rectangle-list a:hover,
 .rectangle-list span:hover {
   background: #eee;
 }
 
+.rectangle-list a:before,
 .rectangle-list span:before {
   content: counter(li);
   counter-increment: li;
@@ -71,6 +75,7 @@
   font-weight: bold;
 }
 
+.rectangle-list a:after,
 .rectangle-list span:after {
   position: absolute;
   content: '';
@@ -81,6 +86,7 @@
   transition: all .3s ease-out;
 }
 
+.rectangle-list a:hover:after,
 .rectangle-list span:hover:after {
   left: -.5em;
   border-left-color: #fa8072;
