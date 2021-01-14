@@ -1453,6 +1453,7 @@ class TadUpFiles
         $sql = "select * from `{$this->TadUpFilesTblName}`  where $del_what";
         $result = $xoopsDB->query($sql) or die($sql);
 
+        $del_amount = 0;
         while ($all = $xoopsDB->fetchArray($result)) {
             foreach ($all as $k => $v) {
                 $$k = $v;
@@ -1484,10 +1485,11 @@ class TadUpFiles
 
                 $tmp_dir = XOOPS_ROOT_PATH . "/uploads/{$this->dir}/tmp/{$files_sn}";
                 Utility::delete_directory($tmp_dir);
+                $del_amount++;
             }
         }
 
-        return true;
+        return $del_amount;
     }
 
     //改檔名
@@ -1643,7 +1645,7 @@ class TadUpFiles
     }
 
     //取得smarty用的檔案陣列
-    public function get_file_for_smarty($files_sn = '', $limit = null, $path = null,$remove_blank=false)
+    public function get_file_for_smarty($files_sn = '', $limit = null, $path = null, $remove_blank = false)
     {
         global $xoopsDB, $xoopsUser;
 
@@ -1679,8 +1681,8 @@ class TadUpFiles
                 $file_name = iconv($os_charset, _CHARSET, $file_name);
             }
             // 移除實體檔案不存在的紀錄
-            $check_dir=($kind === 'img')?$this->TadUpFilesImgDir:$this->TadUpFilesDir;
-            if($remove_blank and !file_exists("{$check_dir}/{$file_name}")){
+            $check_dir = ($kind === 'img') ? $this->TadUpFilesImgDir : $this->TadUpFilesDir;
+            if ($remove_blank and !file_exists("{$check_dir}/{$file_name}")) {
                 $sql = "delete from `{$this->TadUpFilesTblName}` where files_sn='$files_sn'";
                 $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
                 continue;
