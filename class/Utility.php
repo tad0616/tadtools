@@ -805,7 +805,7 @@ class Utility
             $main['bar'] = "
                 <div class='text-center'>
                     <nav>
-                        <ul class='pagination justify-content-center'>
+                        <ul class='pagination justify-content-center flex-wrap'>
                         {$mybar['left']}
                         {$mybar['center']}
                         {$mybar['right']}
