@@ -498,7 +498,7 @@ class TadUpFiles
                             <a href=\"javascript:rotate_img('left','{$files_sn}','{$this->dir}{$this->subdir}','{$this->image_dir}','{$this->thumbs_dir}','{$file_name}','{$file_type}')\" id='left90'><i class=\"fa fa-undo text-success\" title='" . TADTOOLS_ROTATE_LEFT . "'></i></a>
                         </td>
                         <td class='text-center'>
-                            <a href=\"javascript:remove_file('{$files_sn}');\" style='font-size: 0.8rem;' class='text-danger'>
+                            <a href=\"javascript:remove_file('{$files_sn}');\" style='font-size: 0.8rem;' class='text-danger' data-toggle=\"tooltip\" title=\"" . sprintf(_TM_FILE_DEL_BY, $uid_name, $uid_name) . "\">
                                 <i class=\"fa fa-times text-danger\" title=\"" . _TAD_DEL . "\"></i>
                             </a>
                         </td>
@@ -518,7 +518,7 @@ class TadUpFiles
                 $w = 'width:130px; word-break: break-word;';
                 $w2 = "width:{$this->thumb_width}; float:left; margin-right:10px;";
             } else {
-                $thumb_tool = "<a href=\"javascript:remove_file('{$files_sn}');\" style='font-size: 0.8rem;' class='text-danger'>
+                $thumb_tool = "<a href=\"javascript:remove_file('{$files_sn}');\" style='font-size: 0.8rem;' class='text-danger' data-toggle=\"tooltip\" title=\"" . sprintf(_TM_FILE_DEL_BY, $uid_name, $uid_name) . "\">
                                 <i class=\"fa fa-trash\"></i> " . _TAD_DEL . '</a></div>';
                 $thumb_style = '';
                 $thumb_style2 = '';
@@ -571,7 +571,7 @@ class TadUpFiles
                 $all_file .= "
                 <li id='fdtr_{$files_sn}'>
                     <span name='{$files_sn}'>
-                        <i class='fa fa-times-circle' aria-hidden='true' onClick=\"remove_file('{$files_sn}');\" style='color: red;'></i>
+                        <i class='fa fa-times-circle' aria-hidden='true' onClick=\"remove_file('{$files_sn}');\" style='color: red;' data-toggle=\"tooltip\" title=\"" . sprintf(_TM_FILE_DEL_BY, $uid_name, $uid_name) . "\"></i>
                         <a $file_href>{$original_filename}</a>
                     </span>
                 </li>
@@ -847,7 +847,6 @@ class TadUpFiles
                 $path = ($kind === 'img') ? $this->TadUpFilesImgDir : $this->TadUpFilesDir;
                 $readme = ($this->hash) ? "{$path}/{$hash_name}_info.txt" : '';
 
-                //die($path);
                 //新增限制檔案類型
                 if (!empty($allow)) {
                     $file_handle->allowed = $allow_arr;
