@@ -2,10 +2,29 @@
 
 namespace XoopsModules\Tadtools;
 
+use Xmf\Jwt\TokenReader;
+
 class SimpleRest
 {
 
+    private $uid;
+    private $user;
+    private $groups;
     private $httpVersion = "HTTP/1.1";
+
+    public function __construct($token)
+    {
+        if ($token) {
+            $rememberClaims = TokenReader::fromString('rememberme', $token);
+            if (false !== $rememberClaims && !empty($rememberClaims->uid)) {
+                $this->uid = $rememberClaims->uid;
+                $member_handler = xoops_gethandler('member');
+                $this->user = $member_handler->getUser($rememberClaims->uid);
+                $this->groups = $this->user->getGroups();
+            }
+            return $data = ['uid' => $this->uid, 'groups' => $this->groups, 'user' => $this->user->vars];
+        }
+    }
 
     public function setHttpHeaders($statusCode)
     {
@@ -80,4 +99,37 @@ class SimpleRest
             505 => 'HTTP Version Not Supported');
         return ($httpStatus[$statusCode]) ? $httpStatus[$statusCode] : $status[500];
     }
+
+    public function getAll($token = '')
+    {
+        if ($token) {
+            $rememberClaims = TokenReader::fromString('rememberme', $token);
+            if (false !== $rememberClaims && !empty($rememberClaims->uid)) {
+                $this->uid = $rememberClaims->uid;
+                $member_handler = xoops_gethandler('member');
+                $this->user = $member_handler->getUser($rememberClaims->uid);
+                $this->groups = $this->user->getGroups();
+            }
+            return $data = ['uid' => $this->uid, 'groups' => $this->groups, 'user' => $this->user->vars];
+        }
+    }
+
+    public function getUid($token = '')
+    {
+        $this->getAll($token);
+        return $this->uid;
+    }
+
+    public function getGroups($token = '')
+    {
+        $this->getAll($token);
+        return $this->groups;
+    }
+
+    public function getUser($token = '')
+    {
+        $this->getAll($token);
+        return $this->user->vars;
+    }
+
 }

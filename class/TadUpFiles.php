@@ -1837,7 +1837,7 @@ class TadUpFiles
             } elseif ($show_mode === 'filename') {
                 $all_files .= "<ol class='rectangle-list' style=\"counter-reset: li; list-style: none; *list-style: decimal; font: " . $this->filename_size . " 'trebuchet MS', 'lucida sans'; padding: 0; text-shadow: 0 1px 0 rgba(255,255,255,.5);\">";
             } else {
-                $all_files .= '<ul>';
+                $all_files .= '<ul class="tuf-icon">';
             }
 
             foreach ($file_arr as $files_sn => $file_info) {
@@ -1921,7 +1921,7 @@ class TadUpFiles
                     $bgs = $this->background_size;
 
                     $all_files .= ($show_mode === 'small') ? "<a href='{$linkto}' data-toggle='tooltip' data-placement='top' title='{$description}' class='iconize {$fancyboxset}' {$rel}>&nbsp;</a> " : "
-                    <li style='width:120px;height:180px;float:left;list-style:none;{$this->other_css}'>
+                    <li class='tuf-icon-item' style='width:120px;height:180px;float:left;list-style:none;{$this->other_css}'>
                     <a href='{$linkto}' class='thumbnail {$fancyboxset}' {$rel} style=\"display:inline-block; width: $w; height: $h; overflow: hidden; {$thumb_css} background-image: url('{$thumb_pic}'); background-size: {$bgs}; background-repeat: no-repeat; background-position: center center; margin-bottom: 4px;\">&nbsp;</a>{$show_description_txt}
                     </li>";
                 }
