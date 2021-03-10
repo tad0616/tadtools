@@ -44,11 +44,11 @@
             <span class="icon-bar"></span>
             </button>
             <{if $show_sitename !='2' }>
-            <{if $navlogo_img}>
-                <a class="navbar-brand" href="<{$xoops_url}>/index.php" style="padding: 4px 20px 4px;"><img src="<{$navlogo_img}>" alt="<{$xoops_sitename}>"></a>
-            <{elseif $show_sitename=='1'}>
-                <a class="navbar-brand" href="<{$xoops_url}>/index.php" style="color:<{$navbar_color}>"><{$xoops_sitename}></a>
-            <{/if}>
+                <{if $navlogo_img}>
+                    <a class="navbar-brand" href="<{$xoops_url}>/index.php" style="padding: 4px 20px 4px;"><img src="<{$navlogo_img}>" alt="<{$xoops_sitename}>" class="img-responsive"></a>
+                <{elseif $show_sitename=='1'}>
+                    <a class="navbar-brand" href="<{$xoops_url}>/index.php" style="color:<{$navbar_color}>"><{$xoops_sitename}></a>
+                <{/if}>
             <{/if}>
         </div>
 

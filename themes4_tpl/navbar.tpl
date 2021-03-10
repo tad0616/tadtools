@@ -35,7 +35,7 @@
     <nav id="main-nav" class="navbar navbar-expand-lg navbar-custom <{$navbar_pos}>">
         <{if $show_sitename !='2' }>
             <{if $navlogo_img}>
-                <a class="navbar-brand" href="<{$xoops_url}>/index.php"><img src="<{$navlogo_img}>" alt="<{$xoops_sitename}>"></a>
+                <a class="navbar-brand" href="<{$xoops_url}>/index.php"><img src="<{$navlogo_img}>" alt="<{$xoops_sitename}>" class="img-fluid"></a>
             <{elseif $show_sitename=='1'}>
                 <a class="navbar-brand" href="<{$xoops_url}>/index.php" style="color:<{$navbar_color}>"><{$xoops_sitename}></a>
             <{/if}>
