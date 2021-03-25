@@ -679,7 +679,7 @@ class TadUpFiles
     }
 
     //上傳圖檔，$this->col_name=對應欄位名稱,$col_sn=對應欄位編號,$種類：img,file,$sort=圖片排序,$files_sn="更新編號"
-    public function upload_file($upname = 'upfile', $main_width = '1920', $thumb_width = '240', $files_sn = '', $desc = null, $safe_name = false, $hash = false, $return_col = 'file_name', $allow = '', $deny = 'php')
+    public function upload_file($upname = 'upfile', $main_width = '1920', $thumb_width = '240', $files_sn = '', $desc = null, $safe_name = false, $hash = false, $return_col = 'file_name', $allow = '', $deny = '')
     {
         global $xoopsDB, $xoopsUser;
         if ($hash) {
@@ -708,7 +708,15 @@ class TadUpFiles
         //新增限制不允許檔案類型
         if (!empty($deny)) {
             $deny = explode(';', $deny);
-            $deny_arr = [];
+            $deny_arr[] = 'php';
+            foreach ($deny as $key => $value) {
+                $mime_arr = $this->ext2mime($value);
+                foreach ($mime_arr as $k => $v) {
+                    $deny_arr[] = $v;
+                }
+            }
+        } else {
+            $deny_arr[] = 'php';
             foreach ($deny as $key => $value) {
                 $mime_arr = $this->ext2mime($value);
                 foreach ($mime_arr as $k => $v) {
@@ -786,6 +794,7 @@ class TadUpFiles
                     $main_width = 0;
                 }
             }
+            $randStr = Utility::randStr(3);
 
             //先刪除舊檔
             if (!empty($files_sn)) {
@@ -821,7 +830,7 @@ class TadUpFiles
                 if ($this->hash) {
                     $new_filename = $hash_name;
                 } else {
-                    $new_filename = ($safe_name) ? "{$this->col_name}_{$this->col_sn}_{$this->sort}_" . Utility::randStr(3) : $file_handle->file_src_name_body;
+                    $new_filename = ($safe_name) ? "{$this->col_name}_{$this->col_sn}_{$this->sort}_{$randStr}" : $file_handle->file_src_name_body;
                 }
 
                 if ($this->filename != '') {
@@ -894,7 +903,7 @@ class TadUpFiles
                         fclose($fp);
                     }
 
-                    $file_name = ($safe_name) ? "{$this->col_name}_{$this->col_sn}_{$this->sort}.{$ext}" : $file['name'];
+                    $file_name = ($safe_name) ? "{$this->col_name}_{$this->col_sn}_{$this->sort}_{$randStr}.{$ext}" : $file['name'];
 
                     if ($this->filename != '') {
                         $file_name = $this->filename . '-' . $this->sort . ".{$ext}";
@@ -1002,8 +1011,9 @@ class TadUpFiles
             }
         }
 
+        $randStr = Utility::randStr(3);
         $path = ($kind === 'img') ? $this->TadUpFilesImgDir : $this->TadUpFilesDir;
-        $new_filename = ($safe_name) ? "{$this->col_name}_{$this->col_sn}_{$this->sort}.{$ext}" : $filename;
+        $new_filename = ($safe_name) ? "{$this->col_name}_{$this->col_sn}_{$this->sort}_{$randStr}.{$ext}" : $filename;
 
         $readme = '';
         $hash_name = md5(mt_rand(0, 1000) . $filename);
@@ -1295,6 +1305,7 @@ class TadUpFiles
             }
 
             $hash_name = md5(mt_rand(0, 1000) . $name);
+            $randStr = Utility::randStr(3);
 
             $file_handle->file_safe_name = false;
             $file_handle->mime_check = ($allow == '' and $deny == '') ? false : true;
@@ -1303,7 +1314,7 @@ class TadUpFiles
             if ($this->hash) {
                 $file_handle->file_new_name_body = $hash_name;
             } else {
-                $file_handle->file_new_name_body = ($safe_name) ? "{$this->col_name}_{$this->col_sn}_{$this->sort}" : $file_handle->file_src_name_body;
+                $file_handle->file_new_name_body = ($safe_name) ? "{$this->col_name}_{$this->col_sn}_{$this->sort}_{$randStr}" : $file_handle->file_src_name_body;
             }
 
             //若是圖片才縮圖
@@ -1334,7 +1345,7 @@ class TadUpFiles
                 if ($this->hash) {
                     $file_handle->file_new_name_body = $hash_name;
                 } else {
-                    $file_handle->file_new_name_body = ($safe_name) ? "{$this->col_name}_{$this->col_sn}_{$this->sort}" : $file_handle->file_src_name_body;
+                    $file_handle->file_new_name_body = ($safe_name) ? "{$this->col_name}_{$this->col_sn}_{$this->sort}_{$randStr}" : $file_handle->file_src_name_body;
                 }
                 if ($file_handle->image_src_x > $thumb_width) {
                     $file_handle->image_resize = true;
@@ -1364,7 +1375,7 @@ class TadUpFiles
                     fclose($fp);
                 }
 
-                $file_name = ($safe_name) ? "{$this->col_name}_{$this->col_sn}_{$this->sort}.{$ext}" : $name;
+                $file_name = ($safe_name) ? "{$this->col_name}_{$this->col_sn}_{$this->sort}_{$randStr}.{$ext}" : $name;
 
                 chmod("{$path}/{$file_name}", 0755);
                 if ($kind === 'img') {
@@ -1829,7 +1840,7 @@ class TadUpFiles
             $i = 1;
 
             if ($show_mode === 'file_url') {
-                $all_files .= '<ul>';
+                $all_files .= '<ul class="tuf-icon">';
             } elseif ($show_mode === 'app') {
                 $all_files = array();
             } elseif ($show_mode === 'file_text_url' or $show_mode === 'small') {
@@ -1922,7 +1933,7 @@ class TadUpFiles
 
                     $all_files .= ($show_mode === 'small') ? "<a href='{$linkto}' data-toggle='tooltip' data-placement='top' title='{$description}' class='iconize {$fancyboxset}' {$rel}>&nbsp;</a> " : "
                     <li class='tuf-icon-item' style='width:120px;height:180px;float:left;list-style:none;{$this->other_css}'>
-                    <a href='{$linkto}' class='thumbnail {$fancyboxset}' {$rel} style=\"display:inline-block; width: $w; height: $h; overflow: hidden; {$thumb_css} background-image: url('{$thumb_pic}'); background-size: {$bgs}; background-repeat: no-repeat; background-position: center center; margin-bottom: 4px;\">&nbsp;</a>{$show_description_txt}
+                    <a href='{$linkto}' class='thumbnail {$fancyboxset}' target='{$target}' {$rel} style=\"display:inline-block; width: $w; height: $h; overflow: hidden; {$thumb_css} background-image: url('{$thumb_pic}'); background-size: {$bgs}; background-repeat: no-repeat; background-position: center center; margin-bottom: 4px;\">&nbsp;</a>{$show_description_txt}
                     </li>";
                 }
 
@@ -2061,9 +2072,7 @@ class TadUpFiles
         if (!file_exists($tmp_file)) {
             if (!copy($file_hd_saved, $tmp_file)) {
                 $errors = error_get_last();
-                echo "COPY ERROR: " . $errors['type'];
-                echo "<br />\n" . $errors['message'];
-                exit;
+                die("COPY ERROR: copy $file_hd_saved to $tmp_file fail!");
             }
         }
 
