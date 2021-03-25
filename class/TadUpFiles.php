@@ -679,7 +679,7 @@ class TadUpFiles
     }
 
     //上傳圖檔，$this->col_name=對應欄位名稱,$col_sn=對應欄位編號,$種類：img,file,$sort=圖片排序,$files_sn="更新編號"
-    public function upload_file($upname = 'upfile', $main_width = '1920', $thumb_width = '240', $files_sn = '', $desc = null, $safe_name = false, $hash = false, $return_col = 'file_name', $allow = '', $deny = '')
+    public function upload_file($upname = 'upfile', $main_width = '1920', $thumb_width = '240', $files_sn = '', $desc = null, $safe_name = false, $hash = false, $return_col = 'file_name', $allow = '', $deny = 'php')
     {
         global $xoopsDB, $xoopsUser;
         if ($hash) {
@@ -821,7 +821,7 @@ class TadUpFiles
                 if ($this->hash) {
                     $new_filename = $hash_name;
                 } else {
-                    $new_filename = ($safe_name) ? "{$this->col_name}_{$this->col_sn}_{$this->sort}" : $file_handle->file_src_name_body;
+                    $new_filename = ($safe_name) ? "{$this->col_name}_{$this->col_sn}_{$this->sort}_" . Utility::randStr(3) : $file_handle->file_src_name_body;
                 }
 
                 if ($this->filename != '') {
@@ -1843,13 +1843,13 @@ class TadUpFiles
             foreach ($file_arr as $files_sn => $file_info) {
                 if ($show_mode === 'filename') {
                     if ($file_info['kind'] === 'file') {
-                        $all_files .= "<li><span>{$file_info['link']}</span></li>";
+                        $all_files .= "<li> {$file_info['link']} </li>";
                     } else {
                         if ($file_info['tag'] == '360') {
                             $linkto = XOOPS_URL . "/modules/tadtools/360.php?photo={$file_info['path']}";
-                            $all_files .= "<li><span><a href='{$linkto}' class='fancybox_{$this->col_name}' data-fancybox-type='iframe'>{$file_info['original_filename']}</a></span></li>";
+                            $all_files .= "<li> <a href='{$linkto}' class='fancybox_{$this->col_name}' data-fancybox-type='iframe'>{$file_info['original_filename']}</a> </li>";
                         } else {
-                            $all_files .= "<li><span>{$file_info['url']}</span></li>";
+                            $all_files .= "<li> {$file_info['url']} </li>";
                         }
                     }
                 } elseif ($show_mode === 'app') {
