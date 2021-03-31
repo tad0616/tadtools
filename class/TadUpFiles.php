@@ -679,7 +679,7 @@ class TadUpFiles
     }
 
     //上傳圖檔，$this->col_name=對應欄位名稱,$col_sn=對應欄位編號,$種類：img,file,$sort=圖片排序,$files_sn="更新編號"
-    public function upload_file($upname = 'upfile', $main_width = '1920', $thumb_width = '240', $files_sn = '', $desc = null, $safe_name = false, $hash = false, $return_col = 'file_name', $allow = '', $deny = '')
+    public function upload_file($upname = 'upfile', $main_width = '1920', $thumb_width = '240', $files_sn = '', $desc = null, $safe_name = false, $hash = false, $return_col = 'file_name', $allow = '', $deny = 'php')
     {
         global $xoopsDB, $xoopsUser;
         if ($hash) {
@@ -715,16 +715,7 @@ class TadUpFiles
                     $deny_arr[] = $v;
                 }
             }
-        } else {
-            $deny_arr[] = 'php';
-            foreach ($deny as $key => $value) {
-                $mime_arr = $this->ext2mime($value);
-                foreach ($mime_arr as $k => $v) {
-                    $deny_arr[] = $v;
-                }
-            }
         }
-        // die(var_dump($deny_arr));
 
         //引入上傳物件
         include_once XOOPS_ROOT_PATH . '/modules/tadtools/upload/class.upload.php';
