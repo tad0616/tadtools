@@ -861,20 +861,23 @@ class Utility
             }
 
             foreach ($interface_menu as $title => $url) {
-                if (strpos($url, 'admin/index.php') !== false or strpos($url, 'admin/main.php') !== false) {
-                    continue;
-                }
-
                 $urlPath = (empty($moduleName) or 'http' === mb_substr($url, 0, 4)) ? $url : XOOPS_URL . "/modules/{$moduleName}/{$url}";
 
-                if (!empty($op) and false !== strpos($url, "?op=") and false !== strpos($url, "{$basename}?op={$op}")) {
-                    $active = "class='current' title='{$_SERVER['SCRIPT_NAME']}?op={$op}=={$url}'";
-                } elseif (!isset($op) and false !== strpos($_SERVER['SCRIPT_NAME'], $url)) {
-                    $active = "class='current' title='hi'";
+                if (strpos($url, 'admin/index.php') !== false or strpos($url, 'admin/main.php') !== false) {
+                    continue;
+                } elseif (strpos($url, 'index.php') !== false) {
+                    $options = "<li {$active}><a href='{$urlPath}'><i class='fa fa-home'></i> {$title}</a></li>";
                 } else {
-                    $active = '';
+
+                    if (!empty($op) and false !== strpos($url, "?op=") and false !== strpos($url, "{$basename}?op={$op}")) {
+                        $active = "class='current' title='{$_SERVER['SCRIPT_NAME']}?op={$op}=={$url}'";
+                    } elseif (!isset($op) and false !== strpos($_SERVER['SCRIPT_NAME'], $url)) {
+                        $active = "class='current' title='hi'";
+                    } else {
+                        $active = '';
+                    }
+                    $options .= "<li {$active}><a href='{$urlPath}'>{$title}</a></li>";
                 }
-                $options .= "<li {$active}><a href='{$urlPath}'>{$title}</a></li>";
             }
 
             if ($isAdmin and $module_id) {
