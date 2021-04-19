@@ -176,7 +176,7 @@ use XoopsModules\Tadtools\StarRating;
 
 //票選
 $StarRating=new StarRating("tad_player","10",'','simple');
-$StarRating->add_rating("psn",$get_psn);
+$StarRating->add_rating('index.php',"psn",$get_psn);
 $StarRating->render();
 $all['star_rating']="<div id='rating_psn_{$get_psn}'></div>";
 
@@ -184,12 +184,13 @@ use XoopsModules\Tadtools\StarRating;
 //顯示
 $StarRating=new StarRating("tad_player","10",'show','simple');
 while(){
-$StarRating->add_rating("psn",$psn);
+$StarRating->add_rating('index.php',"psn",$psn);
 <div id='rating_psn_{$psn}'></div>
 <div id='rating_result_{$col_name}_{$col_sn}'></div>
 }
 $StarRating->render();
 
+// index.php
 use XoopsModules\Tadtools\StarRating;
 case 'save_rating':
 StarRating::save_rating($_POST['mod_name'], $_POST['col_name'], $_POST['col_sn'], $_POST['rank']);
