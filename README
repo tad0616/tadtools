@@ -1,6 +1,8 @@
 TadTools 3.43 (尚未釋出)
 ====================================
 1.更新 jquery-ui 為 1.12.1
+2.改為自動相容Bootstrap3及Bootstrap4
+3.本站App下載設定 QRCode加入自動登入功能（需等 App 支援）
 
 
 TadTools 3.42 (2021-03-25釋出)
