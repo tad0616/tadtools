@@ -772,7 +772,7 @@ class Utility
     }
 
     //取得分頁工具
-    public static function getPageBar($sql = '', $show_num = 20, $page_list = 10, $to_page = '', $url_other = '', $bootstrap = '3')
+    public static function getPageBar($sql = '', $show_num = 20, $page_list = 10, $to_page = '', $url_other = '', $bootstrap = '3', $g2p_name = 'none')
     {
         global $xoopsDB;
         if (empty($show_num)) {
@@ -801,7 +801,7 @@ class Utility
         }
 
         if ('3' == $bootstrap or '4' == $bootstrap) {
-            $mybar = $navbar->makeBootStrapBar('', $bootstrap);
+            $mybar = $navbar->makeBootStrapBar($g2p_name);
             $main['bar'] = "
                 <div class='text-center'>
                     <nav>
@@ -814,7 +814,7 @@ class Utility
                 </div>
                 ";
         } else {
-            $mybar = $navbar->makeBar();
+            $mybar = $navbar->makeBar($g2p_name);
             $main['bar'] = "<div style='text-align:center;margin:4px;'>{$mybar['left']}{$mybar['center']}{$mybar['right']}<div style='zoom:1;clear:both;'></div></div>";
         }
 

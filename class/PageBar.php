@@ -126,8 +126,9 @@ class PageBar
         $QUERY_STRING = htmlspecialchars($_SERVER['QUERY_STRING']);
         $vars = explode('&', $QUERY_STRING);
         //die(var_export($vars));
+        $len = \mb_strlen('amp;' . $this->url_page);
         for ($i = 0; $i < count($vars); $i++) {
-            if ('amp;g2p' === mb_substr($vars[$i], 0, 7)) {
+            if ('amp;' . $this->url_page === mb_substr($vars[$i], 0, $len)) {
                 continue;
             }
 

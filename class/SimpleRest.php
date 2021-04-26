@@ -7,23 +7,14 @@ use Xmf\Jwt\TokenReader;
 class SimpleRest
 {
 
-    private $uid;
-    private $user;
-    private $groups;
+    private $uid = 0;
+    private $groups = [];
+    private $user = [];
     private $httpVersion = "HTTP/1.1";
 
     public function __construct($token)
     {
-        if ($token) {
-            $rememberClaims = TokenReader::fromString('rememberme', $token);
-            if (false !== $rememberClaims && !empty($rememberClaims->uid)) {
-                $this->uid = $rememberClaims->uid;
-                $member_handler = xoops_gethandler('member');
-                $this->user = $member_handler->getUser($rememberClaims->uid);
-                $this->groups = $this->user->getGroups();
-            }
-            return $data = ['uid' => $this->uid, 'groups' => $this->groups, 'user' => $this->user->vars];
-        }
+        $this->getXoopsSUser($token);
     }
 
     public function setHttpHeaders($statusCode)
@@ -100,36 +91,52 @@ class SimpleRest
         return ($httpStatus[$statusCode]) ? $httpStatus[$statusCode] : $status[500];
     }
 
-    public function getAll($token = '')
+    public function getXoopsSUser($token = '')
     {
         if ($token) {
             $rememberClaims = TokenReader::fromString('rememberme', $token);
             if (false !== $rememberClaims && !empty($rememberClaims->uid)) {
                 $this->uid = $rememberClaims->uid;
                 $member_handler = xoops_gethandler('member');
-                $this->user = $member_handler->getUser($rememberClaims->uid);
-                $this->groups = $this->user->getGroups();
+                $user = $member_handler->getUser($rememberClaims->uid);
+                $this->groups = $user->getGroups();
+                $int_arr = ['uid', 'user_viewemail', 'posts', 'attachsig', 'rank', 'level', 'last_login', 'uorder', 'notify_method', 'notify_mode', 'user_mailok'];
+                foreach ($user->vars as $key => $v) {
+                    if (in_array($key, $int_arr)) {
+                        $this->user_vars[$key] = (int) $v['value'];
+                    } else {
+                        $this->user_vars[$key] = $v['value'];
+                    }
+                }
             }
-            return $data = ['uid' => $this->uid, 'groups' => $this->groups, 'user' => $this->user->vars];
+            return $data = ['uid' => (int) $this->uid, 'groups' => $this->groups, 'user' => $this->user_vars];
         }
     }
 
     public function getUid($token = '')
     {
-        $this->getAll($token);
         return $this->uid;
     }
 
     public function getGroups($token = '')
     {
-        $this->getAll($token);
         return $this->groups;
     }
 
     public function getUser($token = '')
     {
-        $this->getAll($token);
-        return $this->user->vars;
+        return $this->user_vars;
+    }
+
+    public function isAdmin($module_name = '')
+    {
+        $modhandler = xoops_gethandler('module');
+        $xoopsModule = $modhandler->getByDirname($module_name);
+        $module_id = $xoopsModule->mid();
+        $moduleperm_handler = xoops_getHandler('groupperm');
+
+        return $moduleperm_handler->checkRight('module_admin', $module_id, $this->getGroups());
+
     }
 
 }

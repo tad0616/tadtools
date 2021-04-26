@@ -15,7 +15,7 @@ class SweetAlert
     }
 
     //產生語法 $type=error,warning,info,success
-    public function render($func_name = '', $url = '', $var = '', $title = _TAD_DEL_CONFIRM_TITLE, $text = _TAD_DEL_CONFIRM_TEXT, $confirmButtonText = _TAD_DEL_CONFIRM_BTN, $type = 'warning', $showCancelButton = true)
+    public function render($func_name = '', $url = '', $var = '', $title = _TAD_DEL_CONFIRM_TITLE, $text = _TAD_DEL_CONFIRM_TEXT, $confirmButtonText = _TAD_DEL_CONFIRM_BTN, $type = 'warning', $showCancelButton = 'true', $html = '')
     {
         global $xoTheme;
         $jquery = $this->show_jquery ? Utility::get_jquery() : '';
@@ -24,12 +24,14 @@ class SweetAlert
             $xoTheme->addStylesheet('modules/tadtools/sweet-alert/sweet-alert.css');
             $xoTheme->addScript('modules/tadtools/sweet-alert/sweet-alert.js');
 
+            $href = empty($var) ? "'$url'" : "'$url' + $var";
             $xoTheme->addScript('', null, "
             function {$func_name}($var){
                 swal({
                     title: '$title',
                     text: '$text',
                     type: '$type',
+                    html: '$html',
                     showCancelButton: $showCancelButton,
                     confirmButtonColor: '#DD6B55',
                     confirmButtonText: '$confirmButtonText',
@@ -37,7 +39,7 @@ class SweetAlert
                     allowOutsideClick: true
                 },
                 function(){
-                    location.href='$url' + $var;
+                    location.href=$href;
                 });
             }
             ");
@@ -52,6 +54,7 @@ class SweetAlert
                         title: '$title',
                         text: '$text',
                         type: '$type',
+                        html: '$html',
                         showCancelButton: $showCancelButton,
                         confirmButtonColor: '#DD6B55',
                         confirmButtonText: '$confirmButtonText',
@@ -59,7 +62,7 @@ class SweetAlert
                         allowOutsideClick: true
                     },
                     function(){
-                        location.href='$url' + $var;
+                        location.href=$href;
                         //swal('Deleted!', 'Your imaginary file has been deleted.', 'success');
                     });
                 }

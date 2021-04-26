@@ -1517,6 +1517,18 @@ class TadUpFiles
         $this->update_col_val($files_sn, 'file_name', $new_name);
     }
 
+    // 取得檔案網址
+    public function get_files_url($files_sn = '', $limit = null, $path = null, $hash = false, $desc_as_name = false, $keyword = '', $only_keyword = false, $target = '_self', $my_where = '', $file_sn_key = true)
+    {
+        $files_url = [];
+        $files = $this->get_file($files_sn = '', $limit = null, $path = null, $hash = false, $desc_as_name = false, $keyword = '', $only_keyword = false, $target = '_self', $my_where = '', $file_sn_key = true);
+        foreach ($files as $files_sn => $file) {
+            $files_url[$files_sn]['image'] = $file['path'];
+            $files_url[$files_sn]['thumb'] = $file['tb_path'];
+        }
+        return $files_url;
+    }
+
     //取得檔案
     public function get_file($files_sn = '', $limit = null, $path = null, $hash = false, $desc_as_name = false, $keyword = '', $only_keyword = false, $target = '_self', $my_where = '', $file_sn_key = true)
     {

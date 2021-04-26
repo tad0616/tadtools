@@ -35,6 +35,8 @@ $xoopsTpl->assign('now_url',$url);
 <{/if}>
 <{if $fb_image}>
         <meta property="og:image" content="<{$fb_image}>">
+<{elseif $og_image}>
+        <meta property="og:image" content="<{$og_image}>">
 <{elseif $logo_img}>
         <meta property="og:image" content="<{$logo_img}>">
 <{/if}>
