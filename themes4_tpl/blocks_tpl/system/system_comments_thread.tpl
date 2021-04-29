@@ -1,8 +1,8 @@
 <div class="xoops-comment-body">
     <{section name=i loop=$comments}>
         <div class="row">
-            <div class="col-xs-2 col-md-2"><strong><{$lang_poster}></strong></div>
-            <div class="col-xs-10 col-md-10"><strong><{$lang_thread}></strong></div>
+            <div class="col-sm-2 col-lg-2"><strong><{$lang_poster}></strong></div>
+            <div class="col-sm-10 col-lg-10"><strong><{$lang_thread}></strong></div>
         </div>
         <{include file="db:system_comment.tpl" comment=$comments[i]}>
 
@@ -14,28 +14,28 @@
         <{if $comments[i].show_replies == true}>
             <!-- start comment tree -->
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-lg-4">
                     <strong><{$lang_subject}></strong>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-lg-4">
                     <strong><{$lang_poster}></strong>
                 </div>
-                <div class="col-md-4">
+                <div class="col-lg-4">
                     <strong><{$lang_posted}></strong>
                 </div>
             </div>
             <{foreach item=reply from=$comments[i].replies}>
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-lg-4">
                         <{$reply.prefix}> <a href="<{$comment_url}>&amp;com_id=<{$reply.id}>&amp;com_rootid=<{$reply.root_id}>" title=""><{$reply.title}></a>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-lg-4">
                         <{$reply.poster.uname}>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-lg-4">
                         <{$reply.date_posted}>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">&times;</button>
+                        <button type="button" class="btn btn-light" data-dismiss="modal">&times;</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->

@@ -2,8 +2,8 @@
 <div id="xoops_theme_center" style="<{$centerBlocksContent}>">
     <{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/centerBlock.tpl"}>
     <div class="row">
-        <div class="col-sm-6"><{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/centerLeft.tpl"}></div>
-        <div class="col-sm-6"><{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/centerRight.tpl"}></div>
+        <div class="col-md-6"><{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/centerLeft.tpl"}></div>
+        <div class="col-md-6"><{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/centerRight.tpl"}></div>
     </div>
 
     <{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/xoopsContents.tpl"}>
@@ -11,7 +11,7 @@
     <{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/centerBottom.tpl"}>
 
     <div class="row">
-        <div class="col-sm-6"><{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/centerBottomLeft.tpl"}></div>
-        <div class="col-sm-6"><{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/centerBottomRight.tpl"}></div>
+        <div class="col-md-6"><{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/centerBottomLeft.tpl"}></div>
+        <div class="col-md-6"><{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/centerBottomRight.tpl"}></div>
     </div>
 </div>

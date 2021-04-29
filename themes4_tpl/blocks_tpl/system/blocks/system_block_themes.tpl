@@ -5,6 +5,6 @@
 </div>
 <script>
     $(document).ready(function(){
-        $('#xoops_theme_img').css("width","100%").addClass("img-rounded");
+        $('#xoops_theme_img').css("width","100%").addClass("rounded");
     });
 </script>

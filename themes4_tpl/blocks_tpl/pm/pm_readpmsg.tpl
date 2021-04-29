@@ -25,12 +25,12 @@
 
 <div class="row message-body">
 <form name="<{$pmform.name}>" id="<{$pmform.name}>" action="<{$pmform.action}>" method="<{$pmform.method}>" <{$pmform.extra}>>
-<div class="col-xs-4 col-sm-4 sender-info">
+<div class="col-sm-4 col-md-4 sender-info">
 <{if $op==out}><strong><{$smarty.const._PM_TO}>: </strong><{else}><strong><{$smarty.const._PM_FROM}>: </strong><{/if}>
 <{if ( $poster != false ) }>
 <a href="<{$xoops_url}>/userinfo.php?uid=<{$poster->getVar('uid')}>"><{$poster->getVar('uname')}></a>
 <{if ( $poster->getVar("user_avatar") != "")}>
-<img src="<{$xoops_url}>/uploads/<{$poster->getVar('user_avatar')}>" alt="<{$poster->getVar('uname')}>" class="img-fluid img-rounded img-thumbnail">
+<img src="<{$xoops_url}>/uploads/<{$poster->getVar('user_avatar')}>" alt="<{$poster->getVar('uname')}>" class="img-fluid rounded img-thumbnail">
 <{/if}>
 <{if ( $poster->getVar("user_from") != "" ) }>
 <{$smarty.const._PM_FROMC}><{$poster->getVar("user_from")}>
@@ -43,8 +43,8 @@
 <{/if}>
 </div><!-- .sender-info -->
 
-<div class="col-xs-8 col-sm-8 message-read">
-<p class="label label-info"><strong><{$smarty.const._PM_SENTC}> </strong><{$message.msg_time}></p>
+<div class="col-sm-8 col-md-8 message-read">
+<p class="badge badge-info"><strong><{$smarty.const._PM_SENTC}> </strong><{$message.msg_time}></p>
 
 <p><{$message.msg_text}></p>
 

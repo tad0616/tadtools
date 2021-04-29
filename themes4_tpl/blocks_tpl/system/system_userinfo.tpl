@@ -12,14 +12,14 @@
 
 
 <{elseif $xoops_isadmin != false}>
-    <button type="button" class="btn btn-default"
+    <button type="button" class="btn btn-light"
     onclick="location='<{$xoops_url}>/modules/system/admin.php?fct=users&amp;uid=<{$user_uid}>&amp;op=modifyUser'"><{$lang_editprofile}></button>
-    <button type="button" class="btn btn-default"
+    <button type="button" class="btn btn-light"
     onclick="location='<{$xoops_url}>/modules/system/admin.php?fct=users&amp;op=delUser&amp;uid=<{$user_uid}>'"><{$lang_deleteaccount}></button>
 <{/if}>
 
 <{if $user_avatarurl}>
-    <div class="text-center"><img src="<{$user_avatarurl}>" alt="Avatar" class="img-circle"></div>
+    <div class="text-center"><img src="<{$user_avatarurl}>" alt="Avatar" class="rounded-circle"></div>
 <{/if}>
 
 <{if $user_realname}>

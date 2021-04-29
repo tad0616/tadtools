@@ -42,8 +42,8 @@
     <div class="container-fluid" id="full">
 
         <div class="row" style="margin-top: 10%;">
-            <div class="col-sm-3"></div>
-            <div class="col-sm-6">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
                 <div class="panel panel-primary">
                   <div class="panel-heading"><{$message}></div>
                   <div class="panel-body">
@@ -51,7 +51,7 @@
                   </div>
                 </div>
             </div>
-            <div class="col-sm-3"></div>
+            <div class="col-md-3"></div>
         </div>
 
     </div>

@@ -8,28 +8,28 @@
                     <legend>
                     <{$smarty.const.TF_USER_ENTER}>
                     </legend>
-                    <div class="form-group row">
-                    <label class="col-sm-4 col-form-label text-sm-right" for="uname">
+                    <div class="form-group row row">
+                    <label class="col-md-4 col-form-label text-sm-right" for="uname">
                         <{$smarty.const.TF_USER_S_ID}>
                     </label>
-                    <div class="col-sm-8">
+                    <div class="col-md-8">
                         <input type="text" name="uname"  id="uname" placeholder="<{$smarty.const.TF_USER_ID}>"  class="form-control">
                     </div>
                     </div>
 
-                    <div class="form-group row">
-                    <label class="col-sm-4 col-form-label text-sm-right" for="pass">
+                    <div class="form-group row row">
+                    <label class="col-md-4 col-form-label text-sm-right" for="pass">
                         <{$smarty.const.TF_USER_S_PASS}>
                     </label>
-                    <div class="col-sm-8">
+                    <div class="col-md-8">
                     <input type="password" name="pass" id="pass" placeholder="<{$smarty.const.TF_USER_PASS}>" class="form-control">
                     </div>
                     </div>
 
-                    <div class="form-group row">
-                    <label class="col-sm-4 col-form-label text-sm-right">
+                    <div class="form-group row row">
+                    <label class="col-md-4 col-form-label text-sm-right">
                     </label>
-                    <div class="col-sm-8">
+                    <div class="col-md-8">
                         <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>">
                         <input type="hidden" name="rememberme" value="On">
                         <input type="hidden" name="op" value="login">
@@ -39,14 +39,14 @@
                     </div>
 
                     <{if $allow_register=='1'}>
-                    <div class="form-group row">
-                        <div class="col-sm-5">
+                    <div class="form-group row row">
+                        <div class="col-md-5">
                         <a href="<{$xoops_url}>/register.php" class="btn btn-sm btn-link" style="background: transparent; width: auto; color: #303030; font-size: 0.75em;">
                             <span class="fa fa-pencil"></span>
                             <{$smarty.const.TF_USER_REGIST}>
                         </a>
                         </div>
-                        <div class="col-sm-7">
+                        <div class="col-md-7">
                         <a href="<{$xoops_url}>/user.php#lost" class="btn btn-sm btn-link" style="background: transparent; width: auto; color: #303030; font-size: 0.75em;">
                             <span class="fa fa-search"></span>
                             <{$smarty.const.TF_USER_FORGET_PASS}>

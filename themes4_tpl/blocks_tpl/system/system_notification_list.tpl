@@ -39,8 +39,8 @@
         <{/foreach}>
         </tbody>
     </table>
-    <input class="btn btn-default" type="submit" name="delete_cancel" value="<{$lang_cancel}>"/>
-    <input class="btn btn-default" type="reset" name="delete_reset" value="<{$lang_clear}>"/>
-    <input class="btn btn-default" type="submit" name="delete" value="<{$lang_delete}>"/>
+    <input class="btn btn-light" type="submit" name="delete_cancel" value="<{$lang_cancel}>"/>
+    <input class="btn btn-light" type="reset" name="delete_reset" value="<{$lang_clear}>"/>
+    <input class="btn btn-light" type="submit" name="delete" value="<{$lang_delete}>"/>
     <input type="hidden" name="XOOPS_TOKEN_REQUEST" value="<{$notification_token}>"/>
 </form>

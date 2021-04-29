@@ -1,25 +1,25 @@
 <div class="xoops-comment-body">
     <{section name=i loop=$comments}>
     <div class="row">
-        <div class="col-xs-2 col-md-2"><strong><{$lang_poster}></strong></div>
-        <div class="col-xs-10 col-md-10"><strong><{$lang_thread}></strong></div>
+        <div class="col-sm-2 col-lg-2"><strong><{$lang_poster}></strong></div>
+        <div class="col-sm-10 col-lg-10"><strong><{$lang_thread}></strong></div>
     </div>
     <{include file="db:system_comment.tpl" comment=$comments[i]}>
     <!-- start comment replies -->
     <{foreach item=reply from=$comments[i].replies}>
-    <{assign var="indent" value="`$reply.prefix/25`"}>
-    <{assign var="fullcolwidth" value="12"}>
+        <{assign var="indent" value="`$reply.prefix/25`"}>
+        <{assign var="fullcolwidth" value="12"}>
 
-    <{if $indent>3}>
-    <{assign var="indent" value="3"}>
-    <{/if}>
-    <{assign var="replyspace" value="`$fullcolwidth-$indent`"}>
+        <{if $indent>3}>
+            <{assign var="indent" value="3"}>
+        <{/if}>
+        <{assign var="replyspace" value="`$fullcolwidth-$indent`"}>
 
-    <div class="row">
-        <div class="col-md-offset-<{$indent}> col-md-<{$replyspace}> col-xs-offset-<{$indent}> col-xs-<{$replyspace}>">
-        <{include file="db:system_comment.tpl" comment=$reply}>
+        <div class="row">
+            <div class="offset--md<{$indent}> col-lg-<{$replyspace}>">
+            <{include file="db:system_comment.tpl" comment=$reply}>
+            </div>
         </div>
-    </div>
     <{/foreach}>
     <{/section}>
     <{if $commentform}>
@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">&times;</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">&times;</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
