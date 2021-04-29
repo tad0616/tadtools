@@ -1878,9 +1878,12 @@ class TadUpFiles
                     if ($file_info['kind'] === 'file') {
                         $fext = strtolower(pathinfo($file_info['path'], PATHINFO_EXTENSION));
                         $thumb_pic = XOOPS_URL . "/modules/tadtools/images/mimetype/{$fext}.png";
+                        if (!\file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/images/mimetype/{$fext}.png")) {
+                            $thumb_pic = XOOPS_URL . "/modules/tadtools/images/mimetype/none.png";
+                        }
+
                         //$fext=strtolower(substr($file_info['path'], -3));
                         if ($fext === 'mp4' or $fext === 'flv' or $fext === '3gp' or $fext === 'mp3') {
-                            // $thumb_pic = XOOPS_URL . "/modules/tadtools/images/video.png";
                             if ($this->showFancyBox) {
                                 $fancyboxset = "fancybox_{$this->col_name}";
                                 $rel = "data-fancybox-type='iframe'";
@@ -1898,7 +1901,6 @@ class TadUpFiles
                                 $rel = "rel='f{$this->col_name}'";
                             }
                         } else {
-                            // $thumb_pic   = XOOPS_URL . "/modules/tadtools/multiple-file-upload/downloads.png";
                             $fancyboxset = $rel = '';
                         }
                         $thumb_css = $this->thumb_css == '' ? 'background-color: tranparent;' : $this->thumb_css;

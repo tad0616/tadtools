@@ -38,13 +38,13 @@
     <{if $allow_register=='1'}>
       <div class="form-group row">
         <div class="col-sm-5">
-          <a href="<{$xoops_url}>/register.php" class="btn btn-xs btn-link">
+          <a href="<{$xoops_url}>/register.php" class="btn btn-sm btn-link">
             <span class="fa fa-pencil"></span>
             <{$smarty.const.TF_USER_REGIST}>
           </a>
         </div>
         <div class="col-sm-7">
-          <a href="<{$xoops_url}>/user.php#lost" class="btn btn-xs btn-link">
+          <a href="<{$xoops_url}>/user.php#lost" class="btn btn-sm btn-link">
             <span class="fa fa-search"></span>
             <{$smarty.const.TF_USER_FORGET_PASS}>
           </a>

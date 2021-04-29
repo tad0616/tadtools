@@ -191,3 +191,8 @@ a.iconize[href$='.odp'],a.iconize[href$='.sxi'] {
 	padding: 5px 0px 5px 20px;
 	background: transparent url('../images/icons/ooo_impress.gif') no-repeat center left;
 }
+
+a.iconize[href$='.sb3'],a.iconize[href$='.sb'] {
+	padding: 5px 0px 5px 20px;
+	background: transparent url('../images/icons/sb3.gif') no-repeat center left;
+}

@@ -41,24 +41,24 @@
     <div class="row">
         <div class="col-xs-12 col-md-12 alignright">
             <{if $xoops_iscommentadmin == true}>
-                <a href="<{$editcomment_link}>&amp;com_id=<{$comment.id}>" title="<{$lang_edit}>" class="btn btn-default btn-xs">
+                <a href="<{$editcomment_link}>&amp;com_id=<{$comment.id}>" title="<{$lang_edit}>" class="btn btn-default btn-sm">
                     <span class="glyphicon glyphicon-edit"></span>
                 </a>
-                <a href="<{$replycomment_link}>&amp;com_id=<{$comment.id}>" title="<{$lang_reply}>" class="btn btn-default btn-xs">
+                <a href="<{$replycomment_link}>&amp;com_id=<{$comment.id}>" title="<{$lang_reply}>" class="btn btn-default btn-sm">
                     <span class="glyphicon glyphicon-comment"></span>
                 </a>
-                <a href="<{$deletecomment_link}>&amp;com_id=<{$comment.id}>" title="<{$lang_delete}>" class="btn btn-default btn-xs">
+                <a href="<{$deletecomment_link}>&amp;com_id=<{$comment.id}>" title="<{$lang_delete}>" class="btn btn-default btn-sm">
                     <span class="glyphicon glyphicon-trash"></span>
                 </a>
             <{elseif $xoops_isuser == true && $xoops_userid == $comment.poster.id}>
-                <a href="<{$editcomment_link}>&amp;com_id=<{$comment.id}>" title="<{$lang_edit}>" class="btn btn-default btn-xs">
+                <a href="<{$editcomment_link}>&amp;com_id=<{$comment.id}>" title="<{$lang_edit}>" class="btn btn-default btn-sm">
                     <span class="glyphicon glyphicon-edit"></span>
                 </a>
-                <a href="<{$replycomment_link}>&amp;com_id=<{$comment.id}>" title="<{$lang_reply}>" class="btn btn-default btn-xs">
+                <a href="<{$replycomment_link}>&amp;com_id=<{$comment.id}>" title="<{$lang_reply}>" class="btn btn-default btn-sm">
                     <span class="glyphicon glyphicon-comment"></span>
                 </a>
             <{elseif $xoops_isuser == true || $anon_canpost == true}>
-                <a href="<{$replycomment_link}>&amp;com_id=<{$comment.id}>" class="btn btn-default btn-xs">
+                <a href="<{$replycomment_link}>&amp;com_id=<{$comment.id}>" class="btn btn-default btn-sm">
                     <span class="glyphicon glyphicon-comment"></span>
                 </a>
             <{else}>
