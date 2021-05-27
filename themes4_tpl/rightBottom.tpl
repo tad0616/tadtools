@@ -3,7 +3,7 @@
         <div class="row">
         <{foreach item=block from=$xoBlocks.canvas_right}>
             <{if $block.content}>
-                <div class="col-md-3">
+                <div class="col-md-6 col-lg-6 col-xl-4">
                     <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/blockTitle.tpl"}>
                     <div class="blockContent" style="clear:both;">
                         <{$block.content}>

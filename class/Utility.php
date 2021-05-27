@@ -865,7 +865,7 @@ class Utility
 
                 if (strpos($url, 'admin/index.php') !== false or strpos($url, 'admin/main.php') !== false) {
                     continue;
-                } elseif (strpos($url, 'index.php') !== false) {
+                } elseif ($url == 'index.php') {
                     $options = "<li {$active}><a href='{$urlPath}'><i class='fa fa-home'></i> {$title}</a></li>";
                 } else {
 

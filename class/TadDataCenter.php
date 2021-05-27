@@ -201,19 +201,34 @@ class TadDataCenter
                     $form = '';
                     foreach ($options as $k => $v) {
                         $checked = $v == $value ? 'checked' : '';
-                        $form .= "<label class=\"radio-inline\"><input type=\"{$type}\" name=\"TDC[{$name}]{$arr}\" value=\"{$v}\" {$checked} {$attr_str}>{$k}</label>\n";
+                        $form .= "<div class=\"form-check-inline radio-inline\">
+                            <label class=\"form-check-label\">
+                                <input class=\"form-check-input\" type=\"{$type}\" name=\"TDC[{$name}]{$arr}\" value=\"{$v}\" {$checked} {$attr_str}>
+                                {$k}
+                            </label>
+                        </div>\n";
                     }
                 } elseif ('checkbox' === $type) {
                     $form = '';
                     foreach ($options as $k => $v) {
                         $checked = in_array($v, $value) ? 'checked' : '';
-                        $form .= "<label class=\"checkbox-inline\"><input type=\"{$type}\" name=\"TDC[{$name}]{$arr}[]\" value=\"{$v}\" {$checked} {$attr_str}>{$k}</label>\n";
+                        $form .= "<div class=\"form-check-inline checkbox-inline\">
+                            <label class=\"form-check-label\">
+                                <input class=\"form-check-input\" type=\"{$type}\" name=\"TDC[{$name}]{$arr}[]\" value=\"{$v}\" {$checked} {$attr_str}>
+                                {$k}
+                            </label>
+                        </div>\n";
                     }
                 } elseif ('checkbox-radio' === $type) {
                     $form = '';
                     foreach ($options as $k => $v) {
                         $checked = in_array($v, $value) ? 'checked' : '';
-                        $form .= "<label class=\"checkbox\"><input type=\"checkbox\" name=\"TDC[{$name}]{$arr}\" value=\"{$v}\" {$checked} {$attr_str}>{$k}</label>\n";
+                        $form .= "<div class=\"form-check-inline checkbox-inline\">
+                            <label class=\"form-check-label\">
+                                <input class=\"form-check-input\" type=\"checkbox\" name=\"TDC[{$name}]{$arr}\" value=\"{$v}\" {$checked} {$attr_str}>
+                                {$k}
+                            </label>
+                        </div>\n";
                     }
                 } elseif ('date' === $type) {
                     include_once XOOPS_ROOT_PATH . '/modules/tadtools/cal.php';

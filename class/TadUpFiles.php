@@ -10,9 +10,9 @@ use XoopsModules\Tadtools\Utility;
 /*
 $TadUpFiles->set_var("permission", true); //要使用權限控管時才需要
 
-//加入上傳檔案MIME types篩選
-//新增ext2mime函數，可將副檔名轉換為MIME types，提供給$file_handle->allowed使用
-//$allow = "doc;docx;pdf"，利用分號;區分允許上傳的檔案類型
+/// 加入上傳檔案MIME types篩選
+/// 新增ext2mime函數，可將副檔名轉換為MIME types，提供給$file_handle->allowed使用
+/// $allow = "doc;docx;pdf"，利用分號;區分允許上傳的檔案類型
 $TadUpFiles->upload_file($upname,$width,$thumb_width,$files_sn,$desc,$safe_name=false,$hash=false,$return_col,$allow,$deny);
 
 //上傳表單（enctype='multipart/form-data'）
@@ -695,24 +695,26 @@ class TadUpFiles
         }
         //新增限制允許檔案類型
         if (!empty($allow)) {
-            $allow = explode(';', $allow);
+            $allows = explode(';', $allow);
             $allow_arr = [];
-            foreach ($allow as $key => $value) {
-                $mime_arr = $this->ext2mime($value);
-                foreach ($mime_arr as $k => $v) {
-                    $allow_arr[] = $v;
+            foreach ($allows as $ext) {
+                $mime_arr = $this->ext2mime($ext);
+                foreach ($mime_arr as $mimetype) {
+                    $allow_arr[] = $mimetype;
                 }
             }
+        } else {
+            $allow_arr = $this->ext2mime('all');
         }
 
         //新增限制不允許檔案類型
         if (!empty($deny)) {
-            $deny = explode(';', $deny);
-            $deny_arr[] = 'php';
-            foreach ($deny as $key => $value) {
-                $mime_arr = $this->ext2mime($value);
-                foreach ($mime_arr as $k => $v) {
-                    $deny_arr[] = $v;
+            $denys = explode(';', $deny);
+            $deny_arr = [];
+            foreach ($denys as $ext) {
+                $mime_arr = $this->ext2mime($ext);
+                foreach ($mime_arr as $mimetype) {
+                    $deny_arr[] = $mimetype;
                 }
             }
         }
@@ -813,7 +815,7 @@ class TadUpFiles
                 }
 
                 $file_handle->file_safe_name = false;
-                $file_handle->mime_check = ($allow == '' and $deny == '') ? false : true;
+                $file_handle->mime_check = (empty($allow) and empty($deny)) ? false : true;
                 $file_handle->file_overwrite = true;
                 $file_handle->no_script = false;
                 $file_handle->file_new_name_ext = $ext;
@@ -848,12 +850,14 @@ class TadUpFiles
                 $readme = ($this->hash) ? "{$path}/{$hash_name}_info.txt" : '';
 
                 //新增限制檔案類型
-                if (!empty($allow)) {
+                if (!empty($allow_arr)) {
                     $file_handle->allowed = $allow_arr;
                 }
-                if (!empty($deny)) {
+
+                if (!empty($deny_arr)) {
                     $file_handle->forbidden = $deny_arr;
                 }
+
                 $file_handle->process($path);
                 $file_handle->auto_create_dir = true;
 
@@ -863,7 +867,7 @@ class TadUpFiles
                 //若是圖片才製作小縮圖
                 if ($kind === 'img') {
                     $file_handle->file_safe_name = false;
-                    $file_handle->mime_check = ($allow == '' and $deny == '') ? false : true;
+                    $file_handle->mime_check = (empty($allow) and empty($deny)) ? false : true;
                     $file_handle->file_overwrite = true;
                     $file_handle->file_new_name_ext = $ext;
                     $file_handle->file_new_name_body = $new_filename;
@@ -874,10 +878,11 @@ class TadUpFiles
                         $file_handle->image_ratio_y = true;
                     }
                     //新增限制檔案類型
-                    if (!empty($allow)) {
+                    if (!empty($allow_arr)) {
                         $file_handle->allowed = $allow_arr;
                     }
-                    if (!empty($deny)) {
+
+                    if (!empty($deny_arr)) {
                         $file_handle->forbidden = $deny_arr;
                     }
                     $file_handle->process($this->TadUpFilesThumbDir);
@@ -1242,7 +1247,7 @@ class TadUpFiles
     }
 
     //上傳單一檔案，$this->col_name=對應欄位名稱,$col_sn=對應欄位編號,$種類：img,file,$sort=圖片排序,$files_sn="更新編號"
-    public function upload_one_file($name = '', $tmp_name = '', $type = '', $size = '', $main_width = '1280', $thumb_width = '120', $files_sn = '', $desc = '', $safe_name = false, $hash = false, $allow = '', $deny = '')
+    public function upload_one_file($name = '', $tmp_name = '', $type = '', $size = '', $main_width = '1280', $thumb_width = '120', $files_sn = '', $desc = '', $safe_name = false, $hash = false, $allow = '', $deny = 'php')
     {
         global $xoopsDB, $xoopsUser;
 
@@ -1277,6 +1282,32 @@ class TadUpFiles
             $this->sort = $this->auto_sort();
         }
 
+        //新增限制允許檔案類型
+        if (!empty($allow)) {
+            $allows = explode(';', $allow);
+            $allow_arr = [];
+            foreach ($allows as $ext) {
+                $mime_arr = $this->ext2mime($ext);
+                foreach ($mime_arr as $mimetype) {
+                    $allow_arr[] = $mimetype;
+                }
+            }
+        } else {
+            $allow_arr = $this->ext2mime('all');
+        }
+
+        //新增限制不允許檔案類型
+        if (!empty($deny)) {
+            $denys = explode(';', $deny);
+            $deny_arr = [];
+            foreach ($denys as $ext) {
+                $mime_arr = $this->ext2mime($ext);
+                foreach ($mime_arr as $mimetype) {
+                    $deny_arr[] = $mimetype;
+                }
+            }
+        }
+
         $file['name'] = $name;
         $file['tmp_name'] = $tmp_name;
         $file['type'] = $type;
@@ -1299,7 +1330,7 @@ class TadUpFiles
             $randStr = Utility::randStr(3);
 
             $file_handle->file_safe_name = false;
-            $file_handle->mime_check = ($allow == '' and $deny == '') ? false : true;
+            $file_handle->mime_check = (empty($allow) and empty($deny)) ? false : true;
             $file_handle->file_overwrite = true;
             $file_handle->file_new_name_ext = $ext;
             if ($this->hash) {
@@ -1320,7 +1351,15 @@ class TadUpFiles
 
             $readme = ($this->hash) ? "{$path}/{$hash_name}_info.txt" : '';
 
-            //die($path);
+            //新增限制檔案類型
+            if (!empty($allow_arr)) {
+                $file_handle->allowed = $allow_arr;
+            }
+
+            if (!empty($deny_arr)) {
+                $file_handle->forbidden = $deny_arr;
+            }
+
             $file_handle->process($path);
             $file_handle->auto_create_dir = true;
 
@@ -1330,7 +1369,7 @@ class TadUpFiles
             //若是圖片才製作小縮圖
             if ($kind === 'img') {
                 $file_handle->file_safe_name = false;
-                $file_handle->mime_check = ($allow == '' and $deny == '') ? false : true;
+                $file_handle->mime_check = (empty($allow) and empty($deny)) ? false : true;
                 $file_handle->file_overwrite = true;
                 $file_handle->file_new_name_ext = $ext;
                 if ($this->hash) {
@@ -1343,6 +1382,16 @@ class TadUpFiles
                     $file_handle->image_x = $thumb_width;
                     $file_handle->image_ratio_y = true;
                 }
+
+                //新增限制檔案類型
+                if (!empty($allow_arr)) {
+                    $file_handle->allowed = $allow_arr;
+                }
+
+                if (!empty($deny_arr)) {
+                    $file_handle->forbidden = $deny_arr;
+                }
+
                 $file_handle->process($this->TadUpFilesThumbDir);
                 $file_handle->auto_create_dir = true;
 
@@ -1520,11 +1569,14 @@ class TadUpFiles
     // 取得檔案網址
     public function get_files_url($files_sn = '', $limit = null, $path = null, $hash = false, $desc_as_name = false, $keyword = '', $only_keyword = false, $target = '_self', $my_where = '', $file_sn_key = true)
     {
-        $files_url = [];
+        $files_url = null;
         $files = $this->get_file($files_sn = '', $limit = null, $path = null, $hash = false, $desc_as_name = false, $keyword = '', $only_keyword = false, $target = '_self', $my_where = '', $file_sn_key = true);
+        $i = 0;
         foreach ($files as $files_sn => $file) {
-            $files_url[$files_sn]['image'] = $file['path'];
-            $files_url[$files_sn]['thumb'] = $file['tb_path'];
+            $files_url['image'][$i] = $file['path'];
+            $files_url['thumb'][$i] = $file['tb_path'];
+            $files_url['files_sn'][$i] = (int) $files_sn;
+            $i++;
         }
         return $files_url;
     }
@@ -1935,9 +1987,11 @@ class TadUpFiles
                     $w = $this->show_width;
                     $h = $this->show_height;
                     $bgs = $this->background_size;
+                    $item_h = \intval($h);
+                    $item_h = $show_description ? $item_h + 60 : $item_h;
 
                     $all_files .= ($show_mode === 'small') ? "<a href='{$linkto}' data-toggle='tooltip' data-placement='top' title='{$description}' class='iconize {$fancyboxset}' {$rel}>&nbsp;</a> " : "
-                    <li class='tuf-icon-item' style='width:120px;height:180px;float:left;list-style:none;{$this->other_css}'>
+                    <li class='tuf-icon-item' style='width:{$w};height:{$item_h}px;float:left;list-style:none;{$this->other_css}'>
                     <a href='{$linkto}' class='thumbnail {$fancyboxset}' target='{$target}' {$rel} style=\"display:inline-block; width: $w; height: $h; overflow: hidden; {$thumb_css} background-image: url('{$thumb_pic}'); background-size: {$bgs}; background-repeat: no-repeat; background-position: center center; margin-bottom: 4px;\">&nbsp;</a>{$show_description_txt}
                     </li>";
                 }
@@ -2816,7 +2870,7 @@ class TadUpFiles
             'osf' => ['application/vnd.yamaha.openscoreformat'],
             'osfpvg' => ['application/vnd.yamaha.openscoreformat.osfpvg+xml'],
             'otc' => ['application/vnd.oasis.opendocument.chart-template'],
-            'otf' => ['font/opentype'],
+            'otf' => ['font/opentype', 'application/octet-stream', 'application/vnd.ms-opentype'],
             'otg' => ['application/vnd.oasis.opendocument.graphics-template'],
             'oth' => ['application/vnd.oasis.opendocument.text-web'],
             'oti' => ['application/vnd.oasis.opendocument.image-template'],
@@ -2980,6 +3034,7 @@ class TadUpFiles
             's3m' => ['audio/s3m'],
             'saf' => ['application/vnd.yamaha.smaf-audio'],
             'saveme' => ['aapplication/octet-stream'],
+            'sb3' => ['application/x.scratch.sb3'],
             'sbk' => ['application/x-tbook'],
             'sbml' => ['application/sbml+xml'],
             'sc' => ['application/vnd.ibm.secure-container'],
@@ -3135,8 +3190,8 @@ class TadUpFiles
             'tsi' => ['audio/tsp-audio'],
             'tsp' => ['application/dsptype', 'audio/tsplayer'],
             'tsv' => ['text/tab-separated-values'],
-            'ttc' => ['application/x-font-ttf'],
-            'ttf' => ['application/x-font-ttf'],
+            'ttc' => ['application/x-font-ttf', 'application/octet-stream', 'application/font-sfnt'],
+            'ttf' => ['application/x-font-ttf', 'application/octet-stream', 'application/font-sfnt'],
             'ttl' => ['text/turtle'],
             'turbot' => ['image/florian'],
             'twd' => ['application/vnd.simtech-mindmapper'],
@@ -3372,12 +3427,12 @@ class TadUpFiles
             '123' => ['application/vnd.lotus-1-2-3'],
         ];
 
-        foreach ($all_mimes as $key => $value) {
-            if ($ext == $key) {
-                return $value; //array
-            }
+        if ($ext == 'all') {
+            return ['text/*', 'image/*', 'audio/*', 'video/*', 'application/*'];
+        } else {
+            return $all_mimes[$ext];
+
         }
-        return [];
     }
 
     public function files_count($where = '')

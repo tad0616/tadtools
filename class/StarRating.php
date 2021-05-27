@@ -8,10 +8,10 @@ class StarRating
 {
     public $code = [];
     public $rank_total;
-    public $mode;
-    public $show_mode;
-    public $rate_mode;
-    public $mod_name;
+    private $mode;
+    private $show_mode;
+    private $rate_mode;
+    private $mod_name;
 
     //建構函數
     public function __construct($mod_name = '', $rank_total = '10', $mode = '', $show_mode = '', $rate_mode = '')
@@ -27,8 +27,7 @@ class StarRating
     public function add_rating($save_url = '', $col_name = '', $col_sn = '')
     {
         global $xoopsUser;
-
-        if ($xoopsUser and 'show' !== $this->mode) {
+        if ($xoopsUser and $this->mode != 'show') {
             $rate = $this->get_uid_rank($col_name, $col_sn);
             $score = $rate['rank'];
             $msg = sprintf(_TAD_STAR_RATING_DATE_SAVE, $rate['rank_date'], $score);
@@ -106,20 +105,22 @@ class StarRating
     }
 
     //儲存分數
-    public static function save_rating($mod_name = '', $col_name = '', $col_sn = '', $rank = '')
+    public static function save_rating($mod_name = '', $col_name = '', $col_sn = '', $rank = '', $uid = '', $mode = '')
     {
         global $xoopsDB, $xoopsUser;
         $now = date('Y-m-d H:i:s', xoops_getUserTimestamp(time()));
 
-        if (!$xoopsUser) {
+        if (!$xoopsUser && empty($uid)) {
             return;
         }
 
-        $uid = $xoopsUser->uid();
+        $uid = $uid ? $uid : $xoopsUser->uid();
         $sql = 'replace into ' . $xoopsDB->prefix("{$mod_name}_rank") . " (`col_name`, `col_sn`, `rank`, `uid`, `rank_date`) values('{$col_name}' , '{$col_sn}' , '{$rank}', '{$uid}' , '{$now}')";
         $xoopsDB->queryF($sql) or Utility::web_error($sql);
 
-        die(sprintf(_TAD_STAR_RATING_SAVE, $rank));
+        if ($mode != 'return') {
+            die(sprintf(_TAD_STAR_RATING_SAVE, $rank));
+        }
     }
 
     //產生路徑工具

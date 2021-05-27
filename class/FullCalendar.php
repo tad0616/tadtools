@@ -27,13 +27,13 @@ class FullCalendar
     }
 
     //產生月曆
-    public function render($selector = '#calendar', $json_file = '')
+    public function render($selector = '#calendar', $json_file = '', $mode = '')
     {
         global $xoTheme;
 
         $jquery = Utility::get_jquery();
 
-        if ($xoTheme) {
+        if ($xoTheme and $mode == '') {
             $xoTheme->addStylesheet('modules/tadtools/fullcalendar/fullcalendar.css');
             $xoTheme->addScript('modules/tadtools/fullcalendar/lib/moment.min.js');
             $xoTheme->addScript('modules/tadtools/fullcalendar/fullcalendar.js');

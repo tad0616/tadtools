@@ -1,3 +1,16 @@
+TadTools 3.43 (released 2021-05-27)
+====================================
+1. Update jquery-ui to 1.12.1
+2. change to auto-compatible with Bootstrap3 and Bootstrap4
+3. Add auto-login function to QRCode for App download settings on this site (need to wait for App support)
+4. Modify the toolbar to comply with Accessibility 2.0
+5. Add the variable name of pagination tool to specify the pagination by yourself
+6. Allow SweetAlert to support more modes
+7. Add new sb3 icons
+8. Adjust BootStrap4 templates
+9. Fine-tune the layout
+10. Fix the problem that the specified type cannot run correctly when uploading files.
+
 TadTools 3.42 (Released 2021-03-25)
 ====================================
 1. Fix the problem that the initial setting of background scenery is incorrectly stored.
