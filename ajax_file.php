@@ -25,7 +25,6 @@ switch ($op) {
     case 'save_sort':
         save_sort($table, $sort_col, $primary_key, $sort_arr);
         exit;
-
     default:
         # code...
         break;

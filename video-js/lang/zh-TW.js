@@ -83,8 +83,5 @@ videojs.addLanguage('zh-TW', {
   "Seek to live, currently behind live": "試圖直播，目前延時播放",
   "Seek to live, currently playing live": "試圖直播，目前即時播放",
   "progress bar timing: currentTime={1} duration={2}": "{1}/{2}",
-  "{1} is loading.": "{1} 正在載入。",
-  "Now Playing": "正在播放",
-  "Up Next": "播放下一個",
-  "Untitled Video": "未命名視訊"
+  "{1} is loading.": "{1} 正在載入。"
 });

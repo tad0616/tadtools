@@ -11,6 +11,7 @@ class VideoJs
     public $autoplay;
     public $loop;
     public $position;
+    public $start;
 
     //建構函數
     public function __construct($id = '', $file = '', $image = '', $mode = '', $autoplay = 'false', $loop = 'false', $position = 'bottom')
@@ -23,6 +24,18 @@ class VideoJs
         $this->autoplay = $autoplay !== 'true' ? 'false' : 'true';
         $this->loop = $loop !== 'true' ? 'false' : 'true';
         $this->position = $position !== 'right' ? 'bottom' : 'right';
+    }
+
+    //設定變數
+    public function set_var($name = '', $val = '')
+    {
+        $this->$name = $val;
+    }
+
+    //取得變數
+    public function get_var($name = '')
+    {
+        return $this->$name;
     }
 
     //設定自定義影片檔
@@ -38,14 +51,19 @@ class VideoJs
     }
 
     //產生播放器
-    public function render()
+    // $length['col_name'] = $tbsn;
+    // $length['col_sn'] = $tbdsn;
+    // $log['col_name'] = $xoopsUser ? $xoopsUser->uid : 0;
+    // $log['col_sn'] = $tbdsn;
+    public function render($module_dirname = '', $ajax_file = '', $length = [], $log = [])
     {
         global $xoTheme;
         $player = '
         <video
             id="' . $this->id . '"
-            class="video-js vjs-fluid vjs-big-play-centered vjs-theme-fantasy">
+            class="video-js vjs-fluid vjs-big-play-centered vjs-theme-fantasy" controls preload="auto">
         </video>
+        <div id="' . $this->id . 'timer" ></div>
         ';
 
         if ('playlist' === $this->mode) {
@@ -107,8 +125,10 @@ class VideoJs
                 $type = 'video/x-flv';
             }
 
+            $poster = $this->image ? "poster: '{$this->image}'," : '';
+
             $source = "
-            poster: '{$this->image}',
+            $poster
             sources: [
                 {
                     'type': '$type',
@@ -147,20 +167,73 @@ class VideoJs
             ";
         }
 
+        $video_log = '';
+        if ($module_dirname) {
+            $video_log = "
+            player.on('loadedmetadata',function(){
+                console.log('影片長度'+ player.duration());
+                $.post('$ajax_file', { op:'video_length', mod: '$module_dirname', col_name: '{$length['col_name']}', col_sn: '{$length['col_sn']}', length: player.duration()} );
+            });
+
+            player.on('pause',()=>{
+                console.log('暫停影片'+ player.currentTime());
+                $.post('$ajax_file', { op:'video_log', mod: '$module_dirname', col_name: '{$log['col_name']}', col_sn: '{$log['col_sn']}', time: player.currentTime()} );
+            });
+
+            player.on('ended',()=>{
+                console.log('影片結束'+ player.currentTime());
+                $.post('$ajax_file', { op:'video_log', mod: '$module_dirname', col_name: '{$log['col_name']}', col_sn: '{$log['col_sn']}', time: player.currentTime()} );
+            });
+            ";
+        }
+
+        $start_form = '';
+        if ($this->start > 0) {
+            $start_form = "
+            console.log('從這裡開始播放'+ $this->start);
+            player.currentTime($this->start);
+            ";
+        }
+
         $player .= "
         <script>
+            document.getElementById('" . $this->id . "').addEventListener('timeupdate', function() {
+                document.getElementById('" . $this->id . "timer').innerHTML = this.currentTime;
+                currentTime = this.currentTime;
+            });
+
             var options = {
+                preload: 'auto',
                 $source
-                responsive: true,
                 controls: true,
+                fluid: true,
                 fill: true,
                 loop: {$this->loop},
                 autoplay: {$this->autoplay},
                 language: 'zh-TW',
+                controlBar:{
+                    children: [
+                        {name: 'playToggle'},
+                        {name: 'currentTimeDisplay'},
+                        {name: 'progressControl'},
+                        {name: 'durationDisplay'},
+                        {
+                            name: 'playbackRateMenuButton',
+                            'playbackRates': [0.5, 1, 1.5, 2, 2.5]
+                        },
+                        {
+                            name: 'volumePanel',
+                            inline: false,
+                        },
+                        {name: 'FullscreenToggle'}
+                    ]
+                },
                 liveui: true
             };
             var player = videojs('#{$this->id}', options);
+            $start_form
             $playlist
+            $video_log
         </script>";
         return $player;
     }

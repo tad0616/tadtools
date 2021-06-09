@@ -101,7 +101,7 @@
         <script type="text/javascript" src="<{xoAppUrl modules/tadtools/jquery.sticky/jquery.sticky.js}>"></script>
         <script type="text/javascript">
         $(document).ready(function(){
-            $("nav#main-nav").sticky({topSpacing:0 , zIndex: 100});
+            $("#nav-container").sticky({topSpacing:0 , zIndex: 100});
         });
         </script>
     <{/if}>
