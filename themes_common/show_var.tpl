@@ -359,10 +359,20 @@
                         list($theme_id)=$xoopsDB->fetchRow($result);
 
                         $config2=[];
-                        $sql = "select `name`, `type`, `value` from " . $xoopsDB->prefix("tad_themes_config2") . " where `theme_id`='{$theme_id}'";
-                        $result = $xoopsDB->query($sql);
-                        while (list($name, $type, $value) = $xoopsDB->fetchRow($result)) {
-                            $config2[$name] = $value;
+                        $config2_json_file = XOOPS_VAR_PATH . "/data/tad_themes_config2.json";
+                        if(file_exists($config2_json_file)){
+                            $json_content = file_get_contents($config2_json_file);
+                            $config2 = json_decode($json_content, true);
+                        }else{
+
+                            $sql = "select `name`, `type`, `value` from " . $xoopsDB->prefix("tad_themes_config2") . " where `theme_id`='{$theme_id}'";
+                            $result = $xoopsDB->query($sql);
+                            while (list($name, $type, $value) = $xoopsDB->fetchRow($result)) {
+                                $config2[$name] = $value;
+                            }
+
+                            $json_content = json_encode($config2, 256);
+                            file_put_contents($config2_json_file, $json_content);
                         }
 
 

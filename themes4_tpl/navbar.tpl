@@ -46,7 +46,7 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <a accesskey="U" href="#xoops_theme_nav_key" title="<{$smarty.const._TAD_ZAV_ZONE}>" id="xoops_theme_nav_key" style="color: transparent; font-size: 0.625em;">:::</a>
+            <a accesskey="U" href="#xoops_theme_nav_key" title="<{$smarty.const._TAD_ZAV_ZONE}>" id="xoops_theme_nav_key" style="color: transparent; font-size: 0.625rem;">:::</a>
 
             <!-- Left nav -->
             <ul id="main-menu" class="nav navbar-nav mr-auto">

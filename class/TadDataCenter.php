@@ -905,6 +905,9 @@ class TadDataCenter
         foreach ($setups as $setup) {
             $setup = \trim($setup);
             $cols = \explode(",", $setup);
+            if (!isset($cols[1])) {
+                $cols[1] = '';
+            }
             $options = $attrs = [];
             $type = $help = $other = '';
             $require = '';

@@ -415,16 +415,28 @@ $this->assign('positions', $positions);
 //額外佈景設定
 $config2=[];
 $config2_files = array('config2_base', 'config2_bg', 'config2_slide', 'config2_logo', 'config2_block', 'config2_nav', 'config2');
+
+if ($TadThemesMid) {
+    $config2_json_file = XOOPS_VAR_PATH . "/data/tad_themes_config2.json";
+    if(file_exists($config2_json_file)){
+        $json_content = file_get_contents($config2_json_file);
+        $config2 = json_decode($json_content, true);
+    }else{
+
+        $sql = "select `name`, `type`, `value` from " . $xoopsDB->prefix("tad_themes_config2") . " where `theme_id`='{$theme_id}'";
+        $result = $xoopsDB->query($sql);
+        while (list($name, $type, $value) = $xoopsDB->fetchRow($result)) {
+            $config2[$name] = $value;
+        }
+
+        $json_content = json_encode($config2, 256);
+        file_put_contents($config2_json_file, $json_content);
+    }
+}
+
 foreach ($config2_files as $config2_file) {
     if (file_exists(XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php")) {
         require_once XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php";
-        if ($TadThemesMid) {
-            $sql = "select `name`, `type`, `value` from " . $xoopsDB->prefix("tad_themes_config2") . " where `theme_id`='{$theme_id}'";
-            $result = $xoopsDB->query($sql);
-            while (list($name, $type, $value) = $xoopsDB->fetchRow($result)) {
-                $config2[$name] = $value;
-            }
-        }
 
         foreach ($theme_config as $k => $config) {
             $name = $config['name'];

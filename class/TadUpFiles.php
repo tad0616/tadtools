@@ -168,6 +168,7 @@ class TadUpFiles
     public $image_dir = '/image';
     public $thumbs_dir = '/image/.thumbs';
     public $permission = false;
+    public $upname = 'upfile';
 
     public $thumb_width = '120px';
     public $thumb_height = '70px';
@@ -376,6 +377,7 @@ class TadUpFiles
         $accept = ($only_type) ? "accept='{$only_type}'" : '';
         $list_del_file = ($show_list_del_file) ? $this->list_del_file($show_edit, $thumb, null, $show_filename) : '';
         $jquery = Utility::get_jquery(true);
+        $this->upname = $upname;
         $id = empty($id) ? $upname : $id;
 
         $multiple = ($maxlength == 1) ? $maxlength_code : "$maxlength_code multiple='multiple'";
@@ -562,7 +564,7 @@ class TadUpFiles
                     </td>
                     <td>
                     {$filename_label}
-                    <textarea name='save_description[$files_sn]' rows=1 size=2 class='form-control'>{$description}</textarea>
+                    <textarea name='{$this->upname}_save_description[$files_sn]' rows=1 size=2 class='form-control'>{$description}</textarea>
                     $permission
                     </td>
                 </tr>";
@@ -683,6 +685,9 @@ class TadUpFiles
     public function upload_file($upname = 'upfile', $main_width = '1920', $thumb_width = '240', $files_sn = '', $desc = null, $safe_name = false, $hash = false, $return_col = 'file_name', $allow = '', $deny = 'php')
     {
         global $xoopsDB, $xoopsUser;
+
+        $this->upname = $upname;
+
         if ($hash) {
             $this->set_hash($hash);
         }
@@ -736,7 +741,8 @@ class TadUpFiles
         }
 
         //儲存檔案描述
-        $save_description = Request::getArray('save_description');
+        $save_description = Request::getArray("{$this->upname}_save_description");
+
         $dl_group = Request::getArray('dl_group');
 
         if (!empty($save_description)) {
@@ -755,7 +761,6 @@ class TadUpFiles
                 }
             }
         }
-
         //刪除勾選檔案
         $del_file = Request::getArray('del_file');
 
@@ -917,7 +922,9 @@ class TadUpFiles
 
                     if (empty($files_sn)) {
                         $sql = "replace into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`counter`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}',0,'{$file['name']}','{$this->subdir}','{$hash_name}','{$upload_date}','{$uid}','{$this->tag}')";
-
+                        // if ($this->col_sn == 12714) {
+                        //     die('a:' . $sql);
+                        // }
                         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
                         //取得最後新增資料的流水編號
                         $insert_files_sn = $xoopsDB->getInsertId();
@@ -932,9 +939,12 @@ class TadUpFiles
                             }
                         }
                     } else {
+                        $description = !isset($save_description[$files_sn]) ? $save_description[$files_sn] : $description;
                         $sql = "replace into `{$this->TadUpFilesTblName}` (`files_sn`,`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$files_sn}','{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}','{$file['name']}','{$this->subdir}','{$hash_name}','{$upload_date}','{$uid}','{$this->tag}')";
-
-                        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                        // if ($this->col_sn == 12714) {
+                        //     die('b:' . $sql);
+                        // }
+                        // $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
                     }
 
                     $all_files_sn[] = $insert_files_sn;
@@ -1264,7 +1274,6 @@ class TadUpFiles
             $this->set_hash($hash);
         }
 
-        //die(var_dump($_FILES[$upname]));
         //引入上傳物件
         include_once XOOPS_ROOT_PATH . '/modules/tadtools/upload/class.upload.php';
 
@@ -1638,6 +1647,7 @@ class TadUpFiles
             $key = $file_sn_key ? $files_sn : $i;
             $files[$key]['show_file_name'] = $show_file_name;
 
+            $files[$key]['files_sn'] = $files_sn;
             $files[$key]['kind'] = $kind;
             $files[$key]['sort'] = $sort;
             $files[$key]['file_name'] = $file_name;
@@ -1856,6 +1866,7 @@ class TadUpFiles
     {
         global $xoTheme;
 
+        $this->upname = $upname;
         $all_files = '';
         if ($xoTheme) {
             if ($show_mode === 'small') {

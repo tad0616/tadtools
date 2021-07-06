@@ -542,7 +542,7 @@ class Utility
         self::mk_dir(XOOPS_ROOT_PATH . '/uploads/qrcode');
         if (!file_exists(XOOPS_ROOT_PATH . "/uploads/qrcode/{$imgurl}.gif")) {
             include_once 'qrcode/qrcode.php';
-            $url = chk_qrcode_url($url);
+            $url = self::chk_qrcode_url($url);
             $a = new \QR("{$_SERVER['HTTP_HOST']}{$url}");
             //die(XOOPS_ROOT_PATH."/uploads/qrcode/{$imgurl}.gif");
             file_put_contents(XOOPS_ROOT_PATH . "/uploads/qrcode/{$imgurl}.gif", $a->image(2));

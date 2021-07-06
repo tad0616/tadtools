@@ -12,6 +12,7 @@ class VideoJs
     public $loop;
     public $position;
     public $start;
+    public $vtt;
 
     //建構函數
     public function __construct($id = '', $file = '', $image = '', $mode = '', $autoplay = 'false', $loop = 'false', $position = 'bottom')
@@ -58,10 +59,21 @@ class VideoJs
     public function render($module_dirname = '', $ajax_file = '', $length = [], $log = [])
     {
         global $xoTheme;
+
+        if (!empty($this->vtt)) {
+            $vtt = '<track kind="captions" src="' . $this->vtt . '" srclang="zh-TW" label="正體中文" default>';
+        }
+
+        $poster = '';
+        if (empty($this->start)) {
+            $poster = 'poster="' . $this->image . '"';
+        }
+
         $player = '
         <video
-            id="' . $this->id . '"
-            class="video-js vjs-fluid vjs-big-play-centered vjs-theme-fantasy" controls preload="auto">
+            id="' . $this->id . '"  ' . $poster . '
+            class="video-js vjs-fluid vjs-big-play-centered vjs-theme-fantasy" controls>
+            ' . $vtt . '
         </video>
         <div id="' . $this->id . 'timer" ></div>
         ';
@@ -125,10 +137,12 @@ class VideoJs
                 $type = 'video/x-flv';
             }
 
-            $poster = $this->image ? "poster: '{$this->image}'," : '';
+            // $poster = "PosterImage: false,";
+            // if (empty($this->start)) {
+            //     $poster = "PosterImage: '{$this->image}',";
+            // }
 
             $source = "
-            $poster
             sources: [
                 {
                     'type': '$type',
@@ -208,18 +222,18 @@ class VideoJs
                 controls: true,
                 fluid: true,
                 fill: true,
+                responsive: true,
                 loop: {$this->loop},
                 autoplay: {$this->autoplay},
                 language: 'zh-TW',
                 controlBar:{
                     children: [
-                        {name: 'playToggle'},
-                        {name: 'currentTimeDisplay'},
+                        {name: 'PlayToggle'},
                         {name: 'progressControl'},
-                        {name: 'durationDisplay'},
+                        {name: 'SubsCapsButton'},
                         {
                             name: 'playbackRateMenuButton',
-                            'playbackRates': [0.5, 1, 1.5, 2, 2.5]
+                            'playbackRates': [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]
                         },
                         {
                             name: 'volumePanel',
@@ -231,6 +245,18 @@ class VideoJs
                 liveui: true
             };
             var player = videojs('#{$this->id}', options);
+
+            player.ready(function(){
+                var settings = this.textTrackSettings;
+                settings.setValues({
+                    // 'fontFamily': 'Microsoft JhengHei',
+                    'color': '#f4ff84',
+                    'backgroundColor': 'transparent',
+                    'backgroundOpacity': '0',
+                    'edgeStyle': 'uniform',
+                });
+                settings.updateDisplay();
+            });
             $start_form
             $playlist
             $video_log
