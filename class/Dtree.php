@@ -43,7 +43,9 @@ class Dtree
             $open = false;
         }
 
+        $myts = \MyTextSanitizer::getInstance();
         foreach ($this->title_opt as $ncsn => $title) {
+            $title = $myts->htmlSpecialChars($title);
             $opt .= "{$this->name}.add($ncsn , {$this->cate_opt[$ncsn]} , '{$title}' , '{$this->url_opt[$ncsn]}', null, null, null, null, '$open');\n";
         }
 

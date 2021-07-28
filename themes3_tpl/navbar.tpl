@@ -57,7 +57,7 @@
             <a accesskey="U" href="#xoops_theme_nav_key" title="<{$smarty.const._TAD_ZAV_ZONE}>" id="xoops_theme_nav_key" style="color: transparent; font-size: 0.625rem;">:::</a>
             <ul class="nav navbar-nav" id="main-menu-left">
             <{if $show_sitename==0 or $show_sitename==''}>
-                <li><a href="<{$xoops_url}>/index.php"><i class="fa fa-home" aria-hidden="true"></i> <{$smarty.const._TAD_HOME}></a></li>
+                <li><a href="<{$xoops_url}>/index.php">&#xf015; <{$smarty.const._TAD_HOME}></a></li>
             <{/if}>
             <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_main.tpl"}>
             <{if "$xoops_rootpath/uploads/docs_top_menu_b3.tpl"|file_exists}>

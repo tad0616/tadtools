@@ -3,27 +3,29 @@
   --vjs-theme-fantasy--secondary: #fff;
 }
 
+/* by tad */
 .vjs-theme-fantasy .vjs-big-play-button {
-  font-size: 4em;
-  height: 1.4em;
-  width: 1.4em;
-  line-height: 1.4em;
-  top: 50%;
-  left: 50%;
-  margin-top: -0.7em;
-  margin-left: -0.7em;
+  font-size: 6vw;
+  height: 8vw;
+  width: 8vw;
+  line-height: 8vw;
+  top: 48%;
+  left: 48%;
+  margin-top: -0.7vw;
+  margin-left: -0.7vw;
   box-sizing: content-box;
   -moz-box-sizing: border-box;
   color: var(--vjs-theme-fantasy--secondary);
-  border-radius: 1em;
-  border: 4px solid var(--vjs-theme-fantasy--secondary);
+  border-radius: 8vw;
+  border: 0.5vw solid #4c7faf;
   background: var(--vjs-theme-fantasy--primary);
 }
 
 .vjs-theme-fantasy:hover .vjs-big-play-button,
 .vjs-theme-fantasy.vjs-big-play-button:focus {
-  background-color: rgb(189, 218, 87);
-  color: #fff;
+  background-color: var(--vjs-theme-fantasy--secondary);
+  border: 0.5vw solid orange;
+  color: orange;
 }
 
 .vjs-theme-fantasy .vjs-control-bar {

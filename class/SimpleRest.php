@@ -139,4 +139,15 @@ class SimpleRest
 
     }
 
+    public function powerChk($module_name = '', $item_id = '')
+    {
+        $modhandler = xoops_gethandler('module');
+        $xoopsModule = $modhandler->getByDirname($module_name);
+        $module_id = $xoopsModule->mid();
+        $moduleperm_handler = xoops_getHandler('groupperm');
+
+        return $moduleperm_handler->checkRight($module_name, $item_id, $this->getGroups(), $module_id, true);
+
+    }
+
 }

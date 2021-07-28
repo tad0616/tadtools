@@ -30,8 +30,8 @@ $TadDataCenter->saveData();
 $data_arr=[
 $data_name => [0 => $data_value],
 $data_name => [0 => $data_value],
-]
-]
+];
+
 $TadDataCenter->saveCustomData($data_arr = array());
 
 ///取得資料陣列：
@@ -125,6 +125,7 @@ class TadDataCenter
     public $mid;
     public $TadDataCenterTblName;
     public $col_id;
+    public $attr_merge = true;
 
     public function __construct($module_dirname = '')
     {
@@ -197,7 +198,9 @@ class TadDataCenter
             $defalut_attr = ['class' => ['my-input', 'my-100'], 'id' => $name];
         }
 
-        $attr = array_merge_recursive($attr, $defalut_attr);
+        if ($this->attr_merge) {
+            $attr = array_merge_recursive($attr, $defalut_attr);
+        }
 
         $attr_str = '';
         foreach ($attr as $k => $v) {
@@ -245,6 +248,11 @@ class TadDataCenter
                     $cal = new My97DatePicker();
                     $cal::render();
                     $form = "<input type=\"text\" name=\"TDC[{$name}]{$arr}\" value=\"{$value}\" {$attr_str} onClick=\"WdatePicker({dateFmt:'yyyy-MM-dd', startDate:'%y-%M-%d'})\">";
+                } elseif ('datetime' === $type) {
+                    include_once XOOPS_ROOT_PATH . '/modules/tadtools/cal.php';
+                    $cal = new My97DatePicker();
+                    $cal::render();
+                    $form = "<input type=\"text\" name=\"TDC[{$name}]{$arr}\" value=\"{$value}\" {$attr_str} onClick=\"WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss', startDate:'%y-%M-%d %H:%m:%s'})\">";
                 } elseif ('' == $type) {
                     $form = "<input type=\"text\" name=\"TDC[{$name}]{$arr}\" value=\"{$value}\" {$attr_str}>";
                 } else {
@@ -364,7 +372,7 @@ class TadDataCenter
 
                 $this->delData($name, $data_sort, __FILE__, __LINE__);
 
-                $sql = "insert into `{$this->TadDataCenterTblName}`
+                $sql = "replace into `{$this->TadDataCenterTblName}`
                 (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`, `col_id`, `sort`, `update_time`)
                 values('{$this->mid}' , '{$this->col_name}' , '{$this->col_sn}' , '{$name}' , '{$val}' , '{$data_sort}', '{$v['col_id']}' , '{$sort}', now())";
                 $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);

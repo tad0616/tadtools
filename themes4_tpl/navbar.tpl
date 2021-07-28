@@ -32,7 +32,7 @@
     </script>
 
     <!-- Navbar -->
-    <nav id="main-nav" class="navbar navbar-expand-lg navbar-custom <{$navbar_pos}>">
+    <nav id="main-nav" class="navbar navbar-light navbar-expand-lg navbar-custom <{$navbar_pos}>">
         <{if $show_sitename !='2' }>
             <{if $navlogo_img}>
                 <a class="navbar-brand" href="<{$xoops_url}>/index.php"><img src="<{$navlogo_img}>" alt="<{$xoops_sitename}>" class="img-fluid"></a>
@@ -52,7 +52,7 @@
             <ul id="main-menu" class="nav navbar-nav mr-auto">
 
                 <{if $show_sitename==0 or $show_sitename==''}>
-                    <li><a class="nav-link" href="<{$xoops_url}>/index.php"><i class="fa fa-home" aria-hidden="true"></i> <{$smarty.const._TAD_HOME}></a></li>
+                    <li><a class="nav-link" href="<{$xoops_url}>/index.php">&#xf015; <{$smarty.const._TAD_HOME}></a></li>
                 <{/if}>
                 <{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/menu_main.tpl"}>
                 <{if "$xoops_rootpath/uploads/docs_top_menu_b4.tpl"|file_exists}>

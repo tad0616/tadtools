@@ -1,5 +1,5 @@
 <div id="xoops_theme_content_zone" class="row" style="<{$content_zone}>">
-    <{if $xoBlocks.canvas_left or $need_left}>
+    <{if $xoBlocks.canvas_left}>
         <div id="xoops_theme_center_zone" class="col-lg-<{$cb_width}>" style="<{$centerBlocks}>">
             <{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/centerZone.tpl"}>
         </div>
@@ -18,7 +18,7 @@
     <div style="clear: both;"></div>
 </div>
 
-<{if $xoBlocks.canvas_left or $need_right}>
+<{if $xoBlocks.canvas_left}>
     <div id="xoops_theme_right_zone" class="row" style="background-color:<{$rb_color}>;">
         <a accesskey="R" href="#xoops_theme_right_zone_key" title="<{$smarty.const._TAD_RIGHT_ZONE}>" id="xoops_theme_right_zone_key" style="color: transparent; font-size: 0.625rem;">:::</a>
         <div class="col-lg-<{$rb_width}>">

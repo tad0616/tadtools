@@ -213,6 +213,10 @@ class Utility
     //路徑導覽，需搭配 get_模組_cate_path($分類編號);
     public static function tad_breadcrumb($cate_sn = '0', $cate_path_array = [], $url_page = 'index.php', $page_cate_name = 'csn', $cate_title_name = 'title', $last = '')
     {
+        global $xoTheme;
+        if (is_object($xoTheme)) {
+            $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops.css');
+        }
         $item = '';
         if (is_array($cate_path_array)) {
             foreach ($cate_path_array as $path_cate_sn => $cate) {
@@ -420,10 +424,7 @@ class Utility
 
     public static function auto_link($text)
     {
-        $pattern = '/(((http[s]?:\/\/(.+(:.+)?@)?)|(www\.))[a-z0-9](([-a-z0-9]+\.)*\.[a-z]{2,})?\/?[a-z0-9.,_\/~#&=:;%+!?-]+)/is';
-        $text = preg_replace($pattern, ' <a href="$1" target="_blank">$1</a>', $text);
-        // fix URLs without protocols
-        $text = preg_replace('/href="www/', 'href="http://www', $text);
+        $text = self::autolink($text);
         return $text;
     }
 
@@ -437,11 +438,10 @@ class Utility
             array_walk($urls, '_autolink_create_html_tags', ['target' => $target, 'nofollow' => $nofollow]);
             $text = strtr($text, $urls);
         }
-        // self::dd($text);
         return $text;
     }
 
-    public static function _autolink_find_URLS($text)
+    private static function _autolink_find_URLS($text)
     {
         // build the patterns
         $scheme = '(http:\/\/|https:\/\/)';
@@ -463,7 +463,7 @@ class Utility
         return ([]);
     }
 
-    public static function _autolink_create_html_tags($value, $key, $other = null)
+    private static function _autolink_create_html_tags($value, $key, $other = null)
     {
         $target = $nofollow = null;
         if (is_array($other)) {
@@ -508,7 +508,7 @@ class Utility
         return $main;
     }
 
-//facebook的留言
+    //facebook的留言
     public static function facebook_comments($facebook_comments_width = 600, $modules = '', $page = '', $col_name = '', $col_sn = '')
     {
         if (empty($facebook_comments_width)) {
@@ -550,7 +550,7 @@ class Utility
     }
 
     //產生QR Code檔案的名稱
-    public static function mk_qrcode_name($url = '')
+    private static function mk_qrcode_name($url = '')
     {
         $url = self::chk_qrcode_url($url);
         $imgurl = str_replace(XOOPS_URL, '', $url);
@@ -564,7 +564,7 @@ class Utility
         return $imgurl;
     }
 
-    public static function chk_qrcode_url($url)
+    private static function chk_qrcode_url($url)
     {
         $var = explode('?', $url);
         if (empty($var[1])) {
@@ -650,13 +650,13 @@ class Utility
     }
 
     //把字串換成群組
-    public static function txt_to_group_name($enable_group = '', $default_txt = '', $syb = '<br>')
+    public static function txt_to_group_name($groupid_txt = '', $default_txt = '', $syb = '<br>')
     {
         $groups_array = self::get_all_groups();
-        if (empty($enable_group)) {
+        if (empty($groupid_txt)) {
             $g_txt_all = $default_txt;
         } else {
-            $gs = explode(',', $enable_group);
+            $gs = explode(',', $groupid_txt);
             $g_txt = [];
             foreach ($gs as $gid) {
                 $g_txt[] = $groups_array[$gid];
@@ -667,7 +667,7 @@ class Utility
         return $g_txt_all;
     }
 
-    //取得所有群組
+    //取得所有群組陣列
     public static function get_all_groups()
     {
         global $xoopsDB;
@@ -826,8 +826,11 @@ class Utility
 
     public static function toolbar_bootstrap($interface_menu = [], $force = false)
     {
-        global $xoopsUser, $xoopsModule, $xoopsModuleConfig;
+        global $xoTheme,$xoopsUser, $xoopsModule, $xoopsModuleConfig;
 
+        if (is_object($xoTheme)) {
+            $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops.css');
+        }
         xoops_loadLanguage('main', 'tadtools');
         $op = Request::getString('op');
 
@@ -853,7 +856,7 @@ class Utility
 
         self::get_jquery();
 
-        $options = "<li><a href='index.php' title='" . _TAD_HOME . "'><i class='fa fa-home'></i></a></li>";
+        $options = "<li><a href='index.php' title='" . _TAD_HOME . "'>&#xf015;";
         if (is_array($interface_menu)) {
             $basename = basename($_SERVER['SCRIPT_NAME']);
             if (1 == count($interface_menu) and 'index.php' === mb_substr($_SERVER['REQUEST_URI'], -9)) {
@@ -866,7 +869,7 @@ class Utility
                 if (strpos($url, 'admin/index.php') !== false or strpos($url, 'admin/main.php') !== false) {
                     continue;
                 } elseif ($url == 'index.php') {
-                    $options = "<li {$active}><a href='{$urlPath}'><i class='fa fa-home'></i> {$title}</a></li>";
+                    $options = "<li {$active}><a href='{$urlPath}'>&#xf015; {$title}</a></li>";
                 } else {
 
                     if (!empty($op) and false !== strpos($url, "?op=") and false !== strpos($url, "{$basename}?op={$op}")) {

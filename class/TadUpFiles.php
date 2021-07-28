@@ -373,11 +373,11 @@ class TadUpFiles
     public function upform($show_edit = false, $upname = 'upfile', $maxlength = '', $show_list_del_file = true, $only_type = '', $thumb = true, $id = '', $show_filename = true)
     {
         global $xoopsDB;
+        $this->upname = $upname;
         $maxlength_code = empty($maxlength) ? '' : "maxlength='{$maxlength}'";
         $accept = ($only_type) ? "accept='{$only_type}'" : '';
         $list_del_file = ($show_list_del_file) ? $this->list_del_file($show_edit, $thumb, null, $show_filename) : '';
         $jquery = Utility::get_jquery(true);
-        $this->upname = $upname;
         $id = empty($id) ? $upname : $id;
 
         $multiple = ($maxlength == 1) ? $maxlength_code : "$maxlength_code multiple='multiple'";
@@ -2005,7 +2005,7 @@ class TadUpFiles
 
                     $all_files .= ($show_mode === 'small') ? "<a href='{$linkto}' data-toggle='tooltip' data-placement='top' title='{$description}' class='iconize {$fancyboxset}' {$rel}>&nbsp;</a> " : "
                     <li class='tuf-icon-item' style='width:{$w};height:{$item_h}px;float:left;list-style:none;{$this->other_css}'>
-                    <a href='{$linkto}' class='thumbnail {$fancyboxset}' target='{$target}' {$rel} style=\"display:inline-block; width: $w; height: $h; overflow: hidden; {$thumb_css} background-image: url('{$thumb_pic}'); background-size: {$bgs}; background-repeat: no-repeat; background-position: center center; margin-bottom: 4px;\">&nbsp;</a>{$show_description_txt}
+                    <a href='{$linkto}' class='thumbnail {$fancyboxset}' target='{$target}' {$rel} style=\"display:inline-block; width: $w; height: $h; overflow: hidden; {$thumb_css} background-image: url('{$thumb_pic}'); background-size: {$bgs}; background-repeat: no-repeat; background-position: center center; margin-bottom: 4px;\" title='{$description}'>&nbsp;</a>{$show_description_txt}
                     </li>";
                 }
 
@@ -2067,7 +2067,7 @@ class TadUpFiles
         $file_size = $file['file_size'];
         $real_filename = $file['original_filename'];
         $dl_name = ($this->hash) ? $file['hash_filename'] : $file['file_name'];
-        // die($dl_name);
+
         $sql = "update `{$this->TadUpFilesTblName}` set `counter`=`counter`+1 where `files_sn`='{$files_sn}'";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
@@ -2078,7 +2078,6 @@ class TadUpFiles
             $file_saved = "{$this->TadUpFilesUrl}/{$dl_name}";
             $file_hd_saved = "{$this->TadUpFilesDir}/{$dl_name}";
         }
-        // die($file_hd_saved);
 
         $os_charset = (PATH_SEPARATOR === ':') ? 'UTF-8' : 'Big5';
 
@@ -2139,8 +2138,7 @@ class TadUpFiles
         Utility::mk_dir($tmp_dir);
         $tmp_file = $tmp_dir . '/' . $file_display;
         $tmp_file_url = $tmp_url . '/' . $file_display;
-        // Utility::dd($force);
-        // die("cp $file_hd_saved $tmp_file");
+
         if (!file_exists($tmp_file)) {
             if (!copy($file_hd_saved, $tmp_file)) {
                 $errors = error_get_last();
