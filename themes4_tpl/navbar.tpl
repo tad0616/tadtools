@@ -13,8 +13,6 @@
     <{/php}>
 <{/if}>
 
-
-
 <{if $navbar_pos!="not-use"}>
     <!-- SmartMenus jQuery Bootstrap 4 Addon CSS -->
     <link href="<{xoAppUrl modules/tadtools/smartmenus/addons/bootstrap-4/jquery.smartmenus.bootstrap-4.css}>" rel="stylesheet">
@@ -23,6 +21,7 @@
     <script type="title/javascript" src="<{xoAppUrl modules/tadtools/smartmenus/addons/bootstrap-4/jquery.smartmenus.bootstrap-4.min.js}>"></script>
 
     <link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{xoAppUrl modules/tadtools/colorbox/colorbox.css}>">
+    <link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{xoAppUrl modules/tadtools/css/xoops.css}>">
     <script type="text/javascript" src="<{xoAppUrl modules/tadtools/colorbox/jquery.colorbox.js}>"></script>
 
     <script>

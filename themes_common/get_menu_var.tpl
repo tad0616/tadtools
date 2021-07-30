@@ -2,20 +2,20 @@
 use XoopsModules\Tadtools\Utility;
 global $xoopsDB, $xoopsTpl, $xoopsModule, $xoTheme;
 
-if ($xoTheme) {
-    $xoTheme->addScript('browse.php?Frameworks/jquery/jquery.js');
+$GLOBALS['xoTheme']->addScript('browse.php?Frameworks/jquery/jquery.js');
 
-    $ver = intval(str_replace('.', '', substr(XOOPS_VERSION, 6, 5)));
+$ver = intval(str_replace('.', '', substr(XOOPS_VERSION, 6, 5)));
 
-    if ($ver >= 259) {
-        $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
-    } else {
-        $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-1.4.1.min.js');
-    }
-
-    $xoTheme->addStylesheet("modules/tadtools/jquery/themes/base/jquery.ui.all.css");
-    $xoTheme->addScript('modules/tadtools/jquery/ui/jquery-ui.js');
+if ($ver >= 259) {
+    $GLOBALS['xoTheme']->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
+} else {
+    $GLOBALS['xoTheme']->addScript('modules/tadtools/jquery/jquery-migrate-1.4.1.min.js');
 }
+
+$GLOBALS['xoTheme']->addStylesheet("modules/tadtools/jquery/themes/base/jquery.ui.all.css");
+$GLOBALS['xoTheme']->addScript('modules/tadtools/jquery/ui/jquery-ui.js');
+$GLOBALS['xoTheme']->addStylesheet('modules/tadtools/css/xoops.css');
+
 
 $my_menu  = get_theme_menu_items(0);
 $i        = sizeof($my_menu);
