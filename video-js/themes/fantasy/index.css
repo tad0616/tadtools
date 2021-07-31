@@ -1,10 +1,28 @@
 .vjs-theme-fantasy {
-  --vjs-theme-fantasy--primary: #69aef0;
+  --vjs-theme-fantasy--primary: #69aef08c;
   --vjs-theme-fantasy--secondary: #fff;
 }
 
 /* by tad */
+
 .vjs-theme-fantasy .vjs-big-play-button {
+  width: 90px;
+  height: 90px;
+  background: none;
+  line-height: 95px;
+  font-size: 5rem;
+  border: none;
+  top: 50%;
+  left: 50%;
+  margin-top: -45px;
+  margin-left: -45px;
+  color: var(--vjs-theme-fantasy--secondary);
+  border-radius: 90px;
+  border: 0.4vw solid #4c7faf;
+  background: var(--vjs-theme-fantasy--primary);
+}
+
+/* .vjs-theme-fantasy .vjs-big-play-button {
   font-size: 6vw;
   height: 8vw;
   width: 8vw;
@@ -19,12 +37,12 @@
   border-radius: 8vw;
   border: 0.5vw solid #4c7faf;
   background: var(--vjs-theme-fantasy--primary);
-}
+} */
 
 .vjs-theme-fantasy:hover .vjs-big-play-button,
 .vjs-theme-fantasy.vjs-big-play-button:focus {
   background-color: var(--vjs-theme-fantasy--secondary);
-  border: 0.5vw solid orange;
+  border: 0.4vw solid orange;
   color: orange;
 }
 

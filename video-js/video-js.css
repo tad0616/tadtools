@@ -341,7 +341,7 @@
   background-color: #000;
   position: relative;
   padding: 0;
-  font-size: 10px;
+  font-size: 0.625
   line-height: 1;
   font-weight: normal;
   font-style: normal;
@@ -459,7 +459,7 @@ body.vjs-full-window {
   padding: 20px;
   color: #fff;
   background-color: #000;
-  font-size: 18px;
+  font-size: 1.125em;
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;
   width: 300px;
