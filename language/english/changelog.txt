@@ -1,3 +1,11 @@
+TadTools 3.44 (released on 2021-08-01)
+====================================
+1.TadDataCenter.php add text to form function (compatible with eguide syntax)
+2. Fix the problem that Dtree cannot display correctly if there are special symbols.
+3.Comply with 2021/07 new version of AA accessibility standard
+4.Video.js add subtitle support
+
+
 TadTools 3.43 (released 2021-05-27)
 ====================================
 1. Update jquery-ui to 1.12.1
