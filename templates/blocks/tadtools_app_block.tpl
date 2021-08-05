@@ -11,7 +11,7 @@
         <{$smarty.const._MB_TT_APP_DOWNLOAD}>
     </div>
     <div <{if $block.direction=='h'}>class="col-sm-6"<{/if}>>
-        <img id="auto_login_qrcode" src="https://chart.apis.google.com/chart?cht=qr&chs=<{$block.width}>x<{$block.width}>&chl=<{$block.url2}>|<{$block.title}>|<{$block.token}>&chld=H|0" class="img-fluid img-responsive" style="float:left;margin:0px 6px 6px 0px;display:none;">
+        <img id="auto_login_qrcode" alt="auto login qrcode" src="https://chart.apis.google.com/chart?cht=qr&chs=<{$block.width}>x<{$block.width}>&chl=<{$block.url2}>|<{$block.title}>|<{$block.token}>&chld=H|0" class="img-fluid img-responsive" style="float:left;margin:0px 6px 6px 0px;display:none;">
         <{$smarty.const._MB_TT_APP_SETUP}>
     </div>
 </div>

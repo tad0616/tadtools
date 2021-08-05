@@ -67,7 +67,6 @@ case "tufdl":
 $files_sn=isset($_GET['files_sn'])?intval($_GET['files_sn']):"";
 $TadUpFiles->add_file_counter($files_sn,$hash=false,$force=false);
 exit;
-break;
 
 ///刪除：
 use XoopsModules\Tadtools\TadUpFiles;
