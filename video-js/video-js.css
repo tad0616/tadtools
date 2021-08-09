@@ -341,8 +341,8 @@
   background-color: #000;
   position: relative;
   padding: 0;
-  font-size: 0.625
-  line-height: 1;
+  font-size: 1rem;
+  line-height: 2rem;
   font-weight: normal;
   font-style: normal;
   font-family: Arial, Helvetica, sans-serif;
@@ -595,8 +595,8 @@ body.vjs-full-window {
   color: rgb(187, 218, 223) !important;
   margin: 0;
   padding: 0;
-  line-height: 1.4em;
-  font-size: 1.2em;
+  line-height: 2rem;
+  font-size: 1rem;
   text-align: center;
   text-transform: lowercase;
 }
@@ -1386,19 +1386,19 @@ video::-webkit-media-text-track-display {
 
 .vjs-playback-rate .vjs-playback-rate-value {
   pointer-events: none;
-  font-size: 1.5em;
+  font-size: 1rem;
   line-height: 2;
   color: #fff;
   text-align: center;
 }
 
 .vjs-playback-rate .vjs-menu {
-  width: 4em;
+  width: 4rem;
   left: 0em;
 }
 
 .vjs-error .vjs-error-display .vjs-modal-dialog-content {
-  font-size: 1.4em;
+  font-size: 1.4rem;
   text-align: center;
 }
 
@@ -1406,7 +1406,7 @@ video::-webkit-media-text-track-display {
   color: #fff;
   content: "X";
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 4em;
+  font-size: 4rem;
   left: 0;
   line-height: 1;
   margin-top: -0.5em;

@@ -258,7 +258,7 @@ function get_user_submenu_item()
 
         $my_menu[$i]['id']      = $i;
         $my_menu[$i]['title']   = _TAD_TF_SYSTEM_DBADM;
-        $my_menu[$i]['url']     = XOOPS_URL . "/modules/tad_adm/pma.php";
+        $my_menu[$i]['url']     = XOOPS_URL . "/modules/tad_adm/pma.php?server=".XOOPS_DB_HOST."&db=".XOOPS_DB_NAME;
         $my_menu[$i]['target']  = "_blank";
         $my_menu[$i]['icon']    = "fa-database";
         $my_menu[$i]['submenu'] = "";

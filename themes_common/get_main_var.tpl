@@ -72,7 +72,7 @@ function get_theme_admin_menu_items()
     $admin_menu[]=['title'=>_TAD_TF_USER_ADMIN, 'url'=>XOOPS_URL.'/admin.php', 'icon'=>'fa-lock', 'target'=> '_self'];
     $admin_menu[]=['title'=>_TAD_TF_SYSTEM_CONFIG, 'url'=>XOOPS_URL.'/modules/system/admin.php?fct=preferences&op=show&confcat_id=1', 'icon'=>'fa-cog', 'target'=> '_blank'];
     $admin_menu[]=['title'=>_TAD_TF_SYSTEM_MODADM, 'url'=>XOOPS_URL.'/modules/tad_adm/admin/main.php', 'icon'=>'fa-wrench', 'target'=> '_blank'];
-    $admin_menu[]=['title'=>_TAD_TF_SYSTEM_DBADM, 'url'=>XOOPS_URL.'/modules/tad_adm/pma.php', 'icon'=>'fa-database', 'target'=> '_blank'];
+    $admin_menu[]=['title'=>_TAD_TF_SYSTEM_DBADM, 'url'=>XOOPS_URL.'/modules/tad_adm/pma.php?server='.XOOPS_DB_HOST.'&db='.XOOPS_DB_NAME, 'icon'=>'fa-database', 'target'=> '_blank'];
     if($TadThemesMid){
         $admin_menu[]=['title'=>_TAD_TF_THEME_ADMIN, 'url'=>XOOPS_URL.'/modules/tad_themes/admin/main.php', 'icon'=>'fa-list-alt', 'target'=> '_blank'];
     }

@@ -2141,7 +2141,7 @@ class TadUpFiles
         if (!file_exists($tmp_file)) {
             if (!copy($file_hd_saved, $tmp_file)) {
                 $errors = error_get_last();
-                die("COPY ERROR: copy $file_hd_saved to $tmp_file fail!");
+                redirect_header($_SERVER['PHP_SELF'], 10, "COPY ERROR: copy $file_hd_saved to $tmp_file fail!");
             }
         }
 
