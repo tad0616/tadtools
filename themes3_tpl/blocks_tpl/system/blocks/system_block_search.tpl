@@ -4,16 +4,15 @@
 
         <div class="input-group">
 
-            <input class="form-control" type="text" name="query" placeholder="<{$smarty.const.THEME_SEARCH_TEXT}>">
+            <input class="form-control" type="text" name="query" title="search" placeholder="<{$smarty.const.THEME_SEARCH_TEXT}>">
 
             <input type="hidden" name="action" value="results">
 
             <span class="input-group-btn">
 
                 <button class="btn btn-primary" type="submit">
-
                     <span class="glyphicon glyphicon-search"></span>
-
+                    <span class="sr-only">search</span>
                 </button>
 
             </span>

@@ -2064,7 +2064,7 @@ class TadUpFiles
 
         $file_type = $file['file_type'];
         $file_size = $file['file_size'];
-        $real_filename = $file['original_filename'];
+        $real_filename = $file['original_filename'] ? $file['original_filename'] : $file['description'];
         $dl_name = ($this->hash) ? $file['hash_filename'] : $file['file_name'];
 
         $sql = "update `{$this->TadUpFilesTblName}` set `counter`=`counter`+1 where `files_sn`='{$files_sn}'";
@@ -2084,6 +2084,11 @@ class TadUpFiles
         if (function_exists('mb_http_output')) {
             mb_http_output('pass');
         }
+
+        // 為了無礙，改成下載
+        $force_arr = ['application/pdf', 'audio/mp3', 'video/mp4'];
+        $force = in_array($mimetype, $force_arr) ? true : false;
+        // $force = ($kind == 'img' or in_array($mimetype, $force_arr)) ? true : false;
 
         if ($force) {
             if ($os_charset != _CHARSET) {
@@ -2157,10 +2162,12 @@ class TadUpFiles
                 Utility::mk_dir($path);
             }
             rename($tmp_file, $path . '/' . $file_display);
-        } else {
+        } elseif (file_exists($tmp_file)) {
             header('Content-Type: application/octet-stream');
             header("location:{$tmp_file_url}");
             exit;
+        } else {
+            redirect_header($_SERVER['PHP_SELF'], 3, "File does not exist");
         }
         exit;
     }
