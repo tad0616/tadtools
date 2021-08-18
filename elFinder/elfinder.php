@@ -3,6 +3,7 @@ use Xmf\Request;
 
 require_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
 if (!$xoopsUser) {
+    header('location:' . XOOPS_URL);
     exit;
 }
 

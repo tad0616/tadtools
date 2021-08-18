@@ -1,7 +1,7 @@
 <{foreach from=$positions item=bt}>
     .<{$bt.block_position}> .blockTitle{
-        font-size:<{$bt.bt_text_size}>;
-        color:<{$bt.bt_text}> ;
+        <{if $bt.bt_text_size}>font-size: <{$bt.bt_text_size}>;<{/if}>
+        <{if $bt.bt_text}>color: <{$bt.bt_text}>;<{/if}>
         <{if $bt.bt_bg_color}>background-color: <{$bt.bt_bg_color}>;<{/if}>
         <{if $bt.bt_bg_img}>background-image: url(<{$bt.bt_bg_img}>);<{/if}>
         <{if $bt.bt_bg_repeat==0}>background-repeat: no-repeat;<{/if}>
@@ -15,8 +15,8 @@
     }
 
     .<{$bt.block_position}> a.block_config{
-        float:<{$bt.block_config}>;
-        position:relative;
+        float: <{$bt.block_config}>;
+        position: relative;
         z-index: 1;
     }
 

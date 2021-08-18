@@ -1947,7 +1947,7 @@ class TadUpFiles
                         }
 
                         //$fext=strtolower(substr($file_info['path'], -3));
-                        if ($fext === 'mp4' or $fext === 'flv' or $fext === '3gp' or $fext === 'mp3') {
+                        if ($fext === 'mp4' or $fext === 'flv' or $fext === '3gp' or $fext === 'mp3' or $fext === 'm4a') {
                             if ($this->showFancyBox) {
                                 $fancyboxset = "fancybox_{$this->col_name}";
                                 $rel = "data-fancybox-type='iframe'";
@@ -2086,9 +2086,9 @@ class TadUpFiles
         }
 
         // 為了無礙，改成下載
-        $force_arr = ['application/pdf', 'audio/mp3', 'video/mp4'];
-        $force = in_array($mimetype, $force_arr) ? true : false;
-        // $force = ($kind == 'img' or in_array($mimetype, $force_arr)) ? true : false;
+        $force_arr = ['application/pdf', 'audio/mp3', 'video/mp4', 'audio/mp4'];
+        // $force = in_array($mimetype, $force_arr) ? true : false;
+        $force = ($kind == 'img' or in_array($mimetype, $force_arr)) ? true : false;
 
         if ($force) {
             if ($os_charset != _CHARSET) {
@@ -2123,7 +2123,7 @@ class TadUpFiles
             }
             fclose($handle);
 
-            die;
+            exit;
         }
 
         if ($os_charset != _CHARSET) {
