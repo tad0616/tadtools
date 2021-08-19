@@ -4,6 +4,7 @@ TadTools 3.45 (尚未釋出)
 2.Video.js 加入 flv 支援
 3.加入 tmt 雙框挑選器
 3.為了符合新版無障礙，TadUpFiles.php 將 pdf、mp3、mp4 改成強制下載
+4.修正單欄式佈景若沒有左區塊時，右邊區域不會出現的問題
 
 
 TadTools 3.44 (2021-08-01 釋出)
