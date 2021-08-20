@@ -127,3 +127,15 @@ define('_TM_FILES', 'Related Files');
 define('_TM_FILE_NOT_DIR', 'Catalog not available');
 
 define('_TM_FILE_DEL_BY', "Uploaded by '%s', must be deleted by '%s' or administrator");
+
+// Wcag.php
+define('TADTOOLS_CHK_FONTSIZE', 'Font Unit Check');
+define('TADTOOLS_CHK_FONTSIZE2', 'Font Unit Check 2');
+define('TADTOOLS_CHK_NEED_TITLE', 'Missing title check');
+define('TADTOOLS_CHK_IMG', 'Photo Check');
+define('TADTOOLS_CHK_BLOCKQUOTE', 'blockquote Check');
+define('TADTOOLS_CHK_UNABLE_TAG', 'Conversion of invalid labels');
+define('TADTOOLS_CHK_TH', 'Form Check');
+define('TADTOOLS_CHK_A_BLANK', 'empty link Check');
+define('TADTOOLS_CHK_HEAD_BLANK', 'Title correction');
+define('TADTOOLS_CHK_LANG_ZH_TW', 'Correction of the same language system');

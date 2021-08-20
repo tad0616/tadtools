@@ -2,10 +2,10 @@
 <fieldset class="pad10">
     <legend class="bold"><{$lang_login}></legend>
     <form action="user.php" method="post">
-        <{$lang_username}> <input type="text" name="uname" size="26" maxlength="25" value=""/><br><br>
-        <{$lang_password}> <input type="password" name="pass" size="21" maxlength="32"/><br><br>
+        <{$lang_username}> <input type="text" name="uname" size="26" maxlength="25" value="" title="uname"/><br><br>
+        <{$lang_password}> <input type="password" name="pass" size="21" maxlength="32" title="pass"/><br><br>
         <{if isset($lang_rememberme)}>
-            <input type="checkbox" name="rememberme" value="On" checked/>
+            <input type="checkbox" name="rememberme" value="On" checked title="rememberme"/>
             <{$lang_rememberme}>
             <br>
             <br>
@@ -27,6 +27,6 @@
     <legend class="bold"><{$lang_lostpassword}></legend>
     <div><br><{$lang_noproblem}></div>
     <form action="lostpass.php" method="post">
-        <{$lang_youremail}> <input type="text" name="email" size="26" maxlength="60"/>&nbsp;&nbsp;<input type="hidden" name="op" value="mailpasswd"/><input type="hidden" name="t" value="<{$mailpasswd_token}>"/><input type="submit" value="<{$lang_sendpassword}>"/>
+        <{$lang_youremail}> <input type="text" name="email" size="26" maxlength="60" title="email"/>&nbsp;&nbsp;<input type="hidden" name="op" value="mailpasswd"/><input type="hidden" name="t" value="<{$mailpasswd_token}>"/><input type="submit" value="<{$lang_sendpassword}>"/>
     </form>
 </fieldset>

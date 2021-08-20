@@ -126,5 +126,16 @@ define('_TM_FILES', '相關檔案');
 
 //TadMod.php
 define('_TM_FILE_NOT_DIR', '無法取得目錄');
-
 define('_TM_FILE_DEL_BY', '由「%s」上傳，需由「%s」或管理員刪除');
+
+// Wcag.php
+define('TADTOOLS_CHK_FONTSIZE', '字型單位檢查');
+define('TADTOOLS_CHK_FONTSIZE2', '字型單位檢查2');
+define('TADTOOLS_CHK_NEED_TITLE', '缺少 title 檢查');
+define('TADTOOLS_CHK_IMG', '圖片檢查');
+define('TADTOOLS_CHK_BLOCKQUOTE', 'blockquote 檢查');
+define('TADTOOLS_CHK_UNABLE_TAG', '轉換無效標籤');
+define('TADTOOLS_CHK_TH', '表格檢查');
+define('TADTOOLS_CHK_A_BLANK', '空連結檢查');
+define('TADTOOLS_CHK_HEAD_BLANK', '空標題修正');
+define('TADTOOLS_CHK_LANG_ZH_TW', '同語系修正');
