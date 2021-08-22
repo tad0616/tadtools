@@ -60,7 +60,7 @@ class Wcag
 
     public static function amend($content)
     {
-        $regular = Wcag::getVar('regular');
+        $regular = self::getVar('regular');
         foreach ($regular as $kind => $regular_rules) {
             foreach ($regular_rules as $func => $regular_rule) {
                 $num = preg_match_all($regular_rule, $content, $matches);
@@ -357,6 +357,7 @@ class Wcag
         }
         return $v;
     }
+
 }
 
 /*
