@@ -1,3 +1,13 @@
+TadTools 3.45 (Released 2021-08-22)
+====================================
+1.Fix for 2021/07 new version of AA accessibility standard
+2.Video.js add flv support
+3.Add tmt double frame picker
+4.In order to comply with the new version of accessibility, TadUpFiles.php change pdf, mp3, mp4 to mandatory download
+5. Fix the problem that the right area does not appear if there is no left block in the single column layout.
+6. Add accessibility 2.1 AA auto-correct Wcga function object.
+
+
 TadTools 3.44 (released on 2021-08-01)
 ====================================
 1.TadDataCenter.php add text to form function (compatible with eguide syntax)

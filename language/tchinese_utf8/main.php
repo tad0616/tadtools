@@ -117,6 +117,7 @@ define('_TDC_COL_ID', '程式辨識碼');
 
 //TadUpFiles.php
 define('_TUF_PERMISSION_NOTE', '不選即全部開放下載：');
+define('_TUF_FILE_DOES_NOT_EXIST', '原始檔案不存在，無法下載。');
 
 //TadModData.php
 define('_TM_FILE_UPLOAD', '檔案上傳');
@@ -139,3 +140,4 @@ define('TADTOOLS_CHK_TH', '表格檢查');
 define('TADTOOLS_CHK_A_BLANK', '空連結檢查');
 define('TADTOOLS_CHK_HEAD_BLANK', '空標題修正');
 define('TADTOOLS_CHK_LANG_ZH_TW', '同語系修正');
+define('TADTOOLS_CHK_NO_NEED', '無用語法修正');

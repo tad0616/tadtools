@@ -116,6 +116,7 @@ define('_TDC_INPUT_COL_ID', 'Do not move, for program');
 define('_TDC_COL_ID', 'Identifier');
 //TadUpFiles.php
 define('_TUF_PERMISSION_NOTE', 'If not checked, all open downloads');
+define('_TUF_FILE_DOES_NOT_EXIST', 'The original file does not exist and cannot be downloaded.');
 
 //TadModData.php
 define('_TM_FILE_UPLOAD', 'File Upload');
@@ -139,3 +140,4 @@ define('TADTOOLS_CHK_TH', 'Form Check');
 define('TADTOOLS_CHK_A_BLANK', 'empty link Check');
 define('TADTOOLS_CHK_HEAD_BLANK', 'Title correction');
 define('TADTOOLS_CHK_LANG_ZH_TW', 'Correction of the same language system');
+define('TADTOOLS_CHK_NO_NEED', 'Useless syntax correction');

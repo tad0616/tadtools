@@ -15,13 +15,17 @@ class Wcag
         self::$check_title['fontsize'] = TADTOOLS_CHK_FONTSIZE;
         self::$regular['fontsize'] = ['fontsize' => "/font-size:\s*([+-]?\d*|\d*\.\d*)(px|pt|)\s*;/Ui"];
 
+        self::$check_items['no_need'] = ['font-size-adjust:'];
+        self::$check_title['no_need'] = TADTOOLS_CHK_NO_NEED;
+        self::$regular['no_need'] = ['font_size_adjust' => "/font-size-adjust:.*;/Uim"];
+
         self::$check_items['size'] = ['font:'];
         self::$check_title['size'] = TADTOOLS_CHK_FONTSIZE2;
         self::$regular['size'] = ['size' => "/font:\s?(\d*|\d*\.\d*)(px|pt)/Ui"];
 
         self::$check_items['need_title'] = ['<iframe ', '<object ', '<applet ', '<embed ', '<input ', '<select ', '<textarea '];
         self::$check_title['need_title'] = TADTOOLS_CHK_NEED_TITLE;
-        self::$regular['need_title'] = ['iframe' => "/(<iframe[^>]*>.*<\/iframe>)/Uims", 'object' => "/<object (.*)><\/object>/Ui", 'applet' => "/<applet (.*)><\/applet>/Ui", 'embed' => "/<embed (.*)><\/applet>/Ui", 'input' => "/<input.*?\s.*?>/im", 'select' => "/<select.*?\s.*?>/im", 'textarea' => "/<textarea.*?\s.*?>/im"];
+        self::$regular['need_title'] = ['iframe' => "/(<iframe[^>]*>.*<\/iframe>)/Uims", 'object' => "/<object (.*)><\/object>/Ui", 'applet' => "/<applet (.*)><\/applet>/Ui", 'embed' => "/<embed (.*)><\/embed>/Ui", 'input' => "/<input.*?\s.*?>/im", 'select' => "/<select.*?\s.*?>/im", 'textarea' => "/<textarea.*?\s.*?>/im"];
 
         self::$check_items['img'] = ['<img '];
         self::$check_title['img'] = TADTOOLS_CHK_IMG;
@@ -92,6 +96,14 @@ class Wcag
         return $v;
     }
 
+    public static function font_size_adjust($v, $matches)
+    {
+        foreach ($matches[0] as $old_str) {
+            $v = str_ireplace($old_str, '', $v);
+        }
+        return $v;
+    }
+
     public static function size($v, $matches)
     {
         foreach ($matches[0] as $sk => $s) {
@@ -142,6 +154,9 @@ class Wcag
         if (stripos($v, ' title') === false) {
             $v = str_ireplace('<embed ', "<embed title=embed ", $v);
             $v = str_ireplace('</embed>', "<span class='sr-only'>some embed</span></embed>", $v);
+        }
+        if (stripos($v, 'noembed') === false) {
+            $v = str_ireplace('</embed>', "<noembed>No way to embed content</noembed></embed>", $v);
         }
 
         return $v;
@@ -351,6 +366,7 @@ use XoopsModules\Tadtools\Wcag;
 $check_items = Wcag::getVar('check_items');
 $check_title= Wcag::getVar('check_title');
 $regular= Wcag::getVar('regular');
-$content= Wcag::amend('content');
+
+$content= Wcag::amend($content);
 
  */

@@ -2091,6 +2091,10 @@ class TadUpFiles
         $force = ($kind == 'img' or in_array($mimetype, $force_arr)) ? true : false;
 
         if ($force) {
+            if(!\file_exists($file_hd_saved)){
+                redirect_header($_SERVER['PHP_SELF'], 3, _TUF_FILE_DOES_NOT_EXIST);
+            }
+
             if ($os_charset != _CHARSET) {
                 $file_display = iconv($os_charset, _CHARSET, $real_filename);
                 $file_hd_saved = iconv($os_charset, _CHARSET, $file_hd_saved);
