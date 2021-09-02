@@ -2091,7 +2091,7 @@ class TadUpFiles
         $force = ($kind == 'img' or in_array($mimetype, $force_arr)) ? true : false;
 
         if ($force) {
-            if(!\file_exists($file_hd_saved)){
+            if (!\file_exists($file_hd_saved)) {
                 redirect_header($_SERVER['PHP_SELF'], 3, _TUF_FILE_DOES_NOT_EXIST);
             }
 
@@ -3211,8 +3211,8 @@ class TadUpFiles
             'tsi' => ['audio/tsp-audio'],
             'tsp' => ['application/dsptype', 'audio/tsplayer'],
             'tsv' => ['text/tab-separated-values'],
-            'ttc' => ['application/x-font-ttf', 'application/octet-stream', 'application/font-sfnt'],
-            'ttf' => ['application/x-font-ttf', 'application/octet-stream', 'application/font-sfnt'],
+            'ttc' => ['application/x-font-ttf', 'application/octet-stream', 'application/font-sfnt', 'font/sfnt'],
+            'ttf' => ['application/x-font-ttf', 'application/octet-stream', 'application/font-sfnt', 'font/sfnt'],
             'ttl' => ['text/turtle'],
             'turbot' => ['image/florian'],
             'twd' => ['application/vnd.simtech-mindmapper'],

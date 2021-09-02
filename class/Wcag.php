@@ -63,8 +63,8 @@ class Wcag
         $regular = self::getVar('regular');
         foreach ($regular as $kind => $regular_rules) {
             foreach ($regular_rules as $func => $regular_rule) {
-                $num = preg_match_all($regular_rule, $content, $matches);
-                if (!empty($num)) {
+                preg_match_all($regular_rule, $content, $matches);
+                if (!empty($matches)) {
                     $content = self::$func($content, $matches);
                 }
             }
