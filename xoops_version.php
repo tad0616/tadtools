@@ -122,6 +122,22 @@ $modversion['config'][$i]['formtype'] = 'textbox';
 $modversion['config'][$i]['valuetype'] = 'int';
 $modversion['config'][$i]['default'] = '1280';
 
+$i++;
+$modversion['config'][$i]['name'] = 'insert_spacing';
+$modversion['config'][$i]['title'] = '_MI_TADTOOLS_INSERT_SPACING';
+$modversion['config'][$i]['description'] = '_MI_TADTOOLS_INSERT_SPACING_DESC';
+$modversion['config'][$i]['formtype'] = 'yesno';
+$modversion['config'][$i]['valuetype'] = 'int';
+$modversion['config'][$i]['default'] = '1';
+
+$i++;
+$modversion['config'][$i]['name'] = 'linkify';
+$modversion['config'][$i]['title'] = '_MI_TADTOOLS_LINKIFY';
+$modversion['config'][$i]['description'] = '_MI_TADTOOLS__MI_TADTOOLS_LINKIFY_DESC';
+$modversion['config'][$i]['formtype'] = 'yesno';
+$modversion['config'][$i]['valuetype'] = 'int';
+$modversion['config'][$i]['default'] = '1';
+
 $i = 0;
 $modversion['blocks'][$i]['file'] = 'tadtools_qrcode.php';
 $modversion['blocks'][$i]['name'] = _MI_TADTOOLS_QRCODE_BLOCK_NAME;

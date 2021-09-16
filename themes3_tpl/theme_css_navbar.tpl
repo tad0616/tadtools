@@ -13,7 +13,7 @@
 .navbar-default .navbar-nav > li > a {
   color: <{$navbar_color}>;
   padding: <{$navbar_py}>px <{$navbar_px}>px;
-  font-size: <{$navbar_font_size}>%;
+  font-size: <{$navbar_font_size/100}>rem;
 }
 .navbar-default .navbar-nav > li > a:focus,
 .navbar-default .navbar-nav > li > a:hover {
@@ -42,7 +42,7 @@
 }
 
 .dropdown-menu > li > a{
-  font-size: <{$navbar_font_size}>%;
+  font-size: <{$navbar_font_size/100}>rem;
 }
 
 <{if $navbar_pos=='navbar-fixed-top'}>

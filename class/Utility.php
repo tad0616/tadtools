@@ -42,14 +42,19 @@ class Utility
     // 在中文和英文之間自動加入空格
     public static function insert_spacing($str)
     {
-        $str = preg_replace('/([\x{4e00}-\x{9fa5}\x{3002}\x{ff1b}\x{ff0c}\x{ff1a}\x{201c}\x{201d}\x{ff08}\x{ff09}\x{3001}\x{ff1f}\x{300a}\x{300b}]+)([A-Za-z0-9_]+)/u', '${1} ${2}', $str);
-        $str = preg_replace('/([A-Za-z0-9_]+)([\x{4e00}-\x{9fa5}\x{3002}\x{ff1b}\x{ff0c}\x{ff1a}\x{201c}\x{201d}\x{ff08}\x{ff09}\x{3001}\x{ff1f}\x{300a}\x{300b}]+)/u', '${1} ${2}', $str);
+        $str = preg_replace('/([\x{4e00}-\x{9fa5}\x{3002}\x{ff1b}\x{ff0c}\x{ff1a}\x{201c}\x{201d}\x{ff08}\x{ff09}\x{3001}\x{ff1f}\x{300a}\x{300b}]+)([A-Za-z0-9]+)/u', '${1} ${2}', $str);
+        $str = preg_replace('/([A-Za-z0-9]+)([\x{4e00}-\x{9fa5}\x{3002}\x{ff1b}\x{ff0c}\x{ff1a}\x{201c}\x{201d}\x{ff08}\x{ff09}\x{3001}\x{ff1f}\x{300a}\x{300b}]+)/u', '${1} ${2}', $str);
         return $str;
     }
 
     // 將網址轉為連結
     public static function linkify($value, $protocols = array('http', 'mail'), array $attributes = array())
     {
+        $TadToolsXoopsModuleConfig = self::TadToolsXoopsModuleConfig();
+
+        if (!$TadToolsXoopsModuleConfig['linkify']) {
+            return $value;
+        }
 
         // Link attributes
         $attr = '';
@@ -59,7 +64,10 @@ class Utility
 
         $links = array();
 
-        $value = self::insert_spacing($value);
+        if ($TadToolsXoopsModuleConfig['insert_spacing']) {
+            $value = self::insert_spacing($value);
+        }
+
         // Extract existing links and tags
         $value = preg_replace_callback('~(<a .*?>.*?</a>|<.*?>)~i', function ($match) use (&$links) {return '<' . array_push($links, $match[1]) . '>';}, $value);
 
