@@ -1,3 +1,11 @@
+TadTools 3.46 (Released 2021-10-06)
+====================================
+1. Change the font size of the navigation bar from % to rem
+2. Add "Add spaces between Chinese and English" and "Convert URL to link" settings.
+3. Add BootStrap5
+4. Add FooTableBootStrap package
+
+
 TadTools 3.45 (Released 2021-08-22)
 ====================================
 1.Fix for 2021/07 new version of AA accessibility standard
