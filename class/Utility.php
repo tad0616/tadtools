@@ -3,6 +3,7 @@
 namespace XoopsModules\Tadtools;
 
 use Xmf\Request;
+use XoopsModules\Tadtools\SyntaxHighlighter;
 
 // use XoopsModules\Tadtools\PageBar;
 
@@ -317,7 +318,7 @@ class Utility
         return $filename;
     }
 
-    public static function html5($content = '', $ui = false, $bootstrap = true, $bootstrap_version = 3, $use_jquery = true, $container = 'container', $title = 'XOOPS', $head_code = '')
+    public static function html5($content = '', $ui = false, $bootstrap = true, $bootstrap_version = 3, $use_jquery = true, $container = 'container', $title = 'XOOPS', $head_code = '', $font_awesome = true, $SyntaxHighlighter = 3)
     {
         $jquery = '';
         if ($use_jquery) {
@@ -325,6 +326,12 @@ class Utility
         }
 
         $bootstrap_link = $bootstrap ? "<link rel='stylesheet' type='text/css' media='all' href='" . XOOPS_URL . "/modules/tadtools/bootstrap{$bootstrap_version}/css/bootstrap.css' />" : '';
+        $font_awesome_link = $font_awesome ? " <link href=\"" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css\" rel=\"stylesheet\" media=\"all\">" : '';
+        $SyntaxHighlighter_link = '';
+        if ($SyntaxHighlighter) {
+            $SyntaxHighlighter = new SyntaxHighlighter();
+            $SyntaxHighlighter_link = $SyntaxHighlighter->render('return', 3);
+        }
 
         $main = "<!DOCTYPE html>\n";
         $main .= "<html lang='zh-TW'>\n";
@@ -332,8 +339,10 @@ class Utility
         $main .= "  <meta charset='utf-8'>\n";
         $main .= "  <title>{$title}</title>\n";
         $main .= "  <meta name='viewport' content='width=device-width, initial-scale=1.0'>\n";
-        $main .= "  $bootstrap_link\n";
         $main .= "  {$jquery}\n";
+        $main .= "  $bootstrap_link\n";
+        $main .= "  $font_awesome_link\n";
+        $main .= "  $SyntaxHighlighter_link\n";
         $main .= "  {$head_code}\n";
         $main .= "</head>\n";
         $main .= "<body>\n";
@@ -1055,6 +1064,44 @@ class Utility
                 $xoTheme->addScript('modules/tadtools/jquery/jquery.ui.touch-punch.min.js');
             }
         }
+    }
+
+    //遠端取得資料
+    public static function vita_get_url_content($url)
+    {
+        if (function_exists('curl_init')) {
+            $ch = curl_init();
+            $timeout = 5;
+
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+            $file_contents = curl_exec($ch);
+            curl_close($ch);
+        } elseif (function_exists('file_get_contents')) {
+            $file_contents = file_get_contents($url, false, stream_context_create(['ssl' => ['verify_peer' => false, 'verify_peer_name' => false]]));
+        }
+
+        return $file_contents;
+    }
+
+    //複製檔案
+    public static function copyemz($file1, $file2)
+    {
+        $contentx = self::vita_get_url_content($file1);
+        $openedfile = fopen($file2, 'wb');
+        fwrite($openedfile, $contentx);
+        fclose($openedfile);
+        if (false === $contentx) {
+            $status = false;
+        } else {
+            $status = true;
+        }
+
+        return $status;
     }
 
     public static function mobile_device_detect($iphone = true, $ipad = true, $android = true, $opera = true, $blackberry = true, $palm = true, $windows = true, $mobileredirect = false, $desktopredirect = false)

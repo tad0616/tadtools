@@ -12,17 +12,26 @@ class SyntaxHighlighter
     }
 
     //產生語法
-    public function render()
+    public function render($mode = "", $version = "")
     {
         global $xoTheme;
         Utility::get_jquery();
         $TadToolsModuleConfig = Utility::TadToolsXoopsModuleConfig();
+
         $syntaxhighlighter_themes = !empty($TadToolsModuleConfig['syntaxhighlighter_themes']) ? $TadToolsModuleConfig['syntaxhighlighter_themes'] : 'shThemeDefault';
 
-        if ($xoTheme) {
-            $dir = !empty($TadToolsModuleConfig['syntaxhighlighter_version']) ? 'modules/tadtools/' . $TadToolsModuleConfig['syntaxhighlighter_version'] : 'modules/tadtools/syntaxhighlighter';
+        if ($xoTheme && $mode != 'return') {
+            if ($version == 2) {
+                $dir = 'modules/tadtools/syntaxhighlighter_2';
+                $dir2 = XOOPS_URL . '/modules/tadtools/syntaxhighlighter_2';
+            } elseif ($version == 3) {
+                $dir = 'modules/tadtools/syntaxhighlighter';
+                $dir2 = XOOPS_URL . '/modules/tadtools/syntaxhighlighter';
+            } else {
+                $dir = !empty($TadToolsModuleConfig['syntaxhighlighter_version']) ? 'modules/tadtools/' . $TadToolsModuleConfig['syntaxhighlighter_version'] : 'modules/tadtools/syntaxhighlighter';
 
-            $dir2 = !empty($TadToolsModuleConfig['syntaxhighlighter_version']) ? XOOPS_URL . '/modules/tadtools/' . $TadToolsModuleConfig['syntaxhighlighter_version'] : XOOPS_URL . '/modules/tadtools/syntaxhighlighter';
+                $dir2 = !empty($TadToolsModuleConfig['syntaxhighlighter_version']) ? XOOPS_URL . '/modules/tadtools/' . $TadToolsModuleConfig['syntaxhighlighter_version'] : XOOPS_URL . '/modules/tadtools/syntaxhighlighter';
+            }
 
             $xoTheme->addStylesheet("$dir/styles/shCore.css");
             $xoTheme->addStylesheet("$dir/styles/{$syntaxhighlighter_themes}.css");

@@ -126,6 +126,15 @@ class TadDataCenter
     public $TadDataCenterTblName;
     public $col_id;
     public $attr_merge = true;
+    public $col_kind = [
+        'radio' => ['form_tag' => 'input', 'type' => 'radio'],
+        'checkbox' => ['form_tag' => 'input', 'type' => 'checkbox'],
+        'select' => ['form_tag' => 'select', 'type' => 'select'],
+        'textarea' => ['form_tag' => 'textarea', 'type' => 'textarea'],
+        'hidden' => ['form_tag' => 'input', 'type' => 'hidden'],
+        'const' => ['form_tag' => 'input', 'type' => 'hidden'],
+        'text' => ['form_tag' => 'input', 'type' => 'text'],
+    ];
 
     public function __construct($module_dirname = '')
     {
@@ -135,6 +144,7 @@ class TadDataCenter
         }
 
         $this->TadDataCenterTblName = $xoopsDB->prefix("{$this->module_dirname}_data_center");
+
     }
 
     //設定模組名稱
@@ -898,7 +908,7 @@ class TadDataCenter
     }
 
     // 文字轉表單
-    public function strToForm($str = '')
+    public function strToForm($setup = '')
     {
         global $xoTheme;
         if ($xoTheme) {
@@ -908,87 +918,114 @@ class TadDataCenter
             $main = '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/modules/tadtools/css/my-input.css">';
         }
 
-        $setups = \explode("\n", $str);
+        $cols = $this->getAllCols($setup);
         $sort = 0;
-        foreach ($setups as $setup) {
-            $setup = \trim($setup);
-            $cols = \explode(",", $setup);
-            if (!isset($cols[1])) {
-                $cols[1] = '';
-            }
-            $options = $attrs = [];
-            $type = $help = $other = '';
-            $require = '';
+        foreach ($cols as $col) {
             $sort++;
-            unset($value);
-            foreach ($cols as $i => $col) {
-                if (\strpos($col, '#') !== false) {
-                    $help = \str_replace('#', '', $col);
-                } elseif ($i == 0) {
-                    $label = $col;
-                    if (\strpos($label, '*') !== false) {
-                        $require = 1;
-                        $attrs['class'][] = 'validate[required]';
-                        $label = \str_replace('*', '', $label);
-                    }
-                } elseif ($i == 1) {
-                    switch ($cols[1]) {
-                        case 'radio':
-                            $form_tag = 'input';
-                            $type = 'radio';
-                            break;
-                        case 'checkbox':
-                            $form_tag = 'input';
-                            $type = 'checkbox';
-                            break;
-                        case 'select':
-                            $form_tag = 'select';
-                            $type = 'select';
-                            break;
-                        case 'textarea':
-                            $form_tag = 'textarea';
-                            $type = 'textarea';
-                            break;
-                        case 'hidden':
-                            $form_tag = 'input';
-                            $type = 'hidden';
-                            break;
-                        case 'const':
-                            $form_tag = 'input';
-                            $type = 'hidden';
-                            break;
-                        default:
-                            $form_tag = 'input';
-                            $type = 'text';
-                            break;
-                    }
-                } else {
-                    if (\strpos($col, '+') !== false) {
-                        $col = \str_replace('+', '', $col);
-                        if ($type == 'checkbox') {
-                            $value[] = $col;
-                        } else {
-                            $value = $col;
-                        }
-                    } elseif ($cols[1] == 'const') {
-                        $other = $value = $col;
-                    } elseif ($cols[1] == 'hidden') {
-                        $value = $col;
-                    }
-
-                    if (\in_array($type, ['select', 'radio', 'checkbox'])) {
-                        $options[$col] = $col;
-                    } elseif (strpos($col, '=') !== false) {
-                        list($k, $v) = explode('=', $col);
-                        $attrs[$k] = $v;
-                    }
-                }
-            }
-
-            $form = $this->getForm('return', $form_tag, $label, $type, $value, $options, $attrs) . $other;
-            $main .= $this->mk_form_group(2, 10, $label, $form, false, $help, $require);
+            $form = $this->getForm('return', $col['form_tag'], $col['label'], $col['type'], $col['value'], $col['options'], $col['attrs']) . $col['other'];
+            $main .= $this->mk_form_group(2, 10, $col['label'], $form, false, $col['help'], $col['require']);
         }
         return $main;
+    }
+
+    // 取得所有的欄位設定
+    public function getAllCols($setup)
+    {
+        $setups = \explode("\n", $setup);
+        $cols = [];
+        foreach ($setups as $setup) {
+            $cols[] = $this->getColSetup($setup);
+        }
+        return $cols;
+    }
+
+    // 取得所有欄位的某個項目值
+    public function getAllColItems($setup, $item = 'label')
+    {
+        $setups = \explode("\n", $setup);
+        $items = [];
+        foreach ($setups as $setup) {
+            $col = $this->getColSetup($setup);
+            $label = $col['label'];
+            $items[$label] = $col[$item];
+        }
+        return $items;
+    }
+
+    // 取得欄位設定
+    public function getColSetup($setup)
+    {
+        $setup = \trim($setup);
+        $cols = \explode(",", $setup);
+        if (!isset($cols[1])) {
+            $cols[1] = '';
+        }
+        $options = $attrs = [];
+        $type = $help = $other = '';
+        $require = '';
+        unset($value);
+        foreach ($cols as $i => $col) {
+            if (\strpos($col, '#') !== false) {
+                $help = \str_replace('#', '', $col);
+            } elseif ($i == 0) {
+                $label = $col;
+                if (\strpos($label, '*') !== false) {
+                    $require = 1;
+                    $attrs['class'][] = 'validate[required]';
+                    $label = \str_replace('*', '', $label);
+                }
+            } elseif ($i == 1) {
+                if (strpos($cols[1], '=') === false) {
+                    $col_kind = $cols[1];
+                    if (!empty($col_kind) && isset($this->col_kind[$col_kind])) {
+                        $form_tag = $this->col_kind[$col_kind]['form_tag'];
+                        $type = $this->col_kind[$col_kind]['type'];
+                    } else {
+                        $form_tag = 'input';
+                        $type = 'text';
+                    }
+                } else {
+                    list($k, $v) = explode('=', $cols[1]);
+                    $attrs[$k] = $v;
+                    $form_tag = 'input';
+                    $col_kind = $type = 'text';
+                }
+            } else {
+                if (\strpos($col, '+') !== false) {
+                    $col = \str_replace('+', '', $col);
+
+                    if ($type == 'checkbox') {
+                        $value[] = $col;
+                    } else {
+                        $value = $col;
+                    }
+                } elseif ($cols[1] == 'const') {
+                    $other = $value = $col;
+                } elseif ($cols[1] == 'hidden') {
+                    $value = $col;
+                }
+
+                if (\in_array($type, ['select', 'radio', 'checkbox'])) {
+                    $options[$col] = $col;
+                } elseif (strpos($col, '=') !== false) {
+                    list($k, $v) = explode('=', $col);
+                    $attrs[$k] = $v;
+                }
+            }
+        }
+
+        $col_setup['form_tag'] = $form_tag;
+        $col_setup['label'] = $label;
+        $col_setup['type'] = $type;
+        $col_setup['value'] = $value;
+        $col_setup['options'] = $options;
+        $col_setup['attrs'] = $attrs;
+        $col_setup['other'] = $other;
+        $col_setup['help'] = $help;
+        $col_setup['require'] = $require;
+        $col_setup['kind'] = $col_kind;
+
+        return $col_setup;
     }
 
     private function rand_str($len = 6, $format = 'ALL')

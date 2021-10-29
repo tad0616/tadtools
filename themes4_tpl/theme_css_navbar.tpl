@@ -42,7 +42,9 @@
 .navbar-custom .nav-item.active .nav-link,
 .navbar-custom .nav-item:focus .nav-link,
 .navbar-custom .nav-item:hover .nav-link {
+    <{if $navbar_font_size}>
     font-size: <{$navbar_font_size/100}>rem;
+    <{/if}>
     color: <{$navbar_color}>;
     padding: <{$navbar_py}>px <{$navbar_px}>px;
 }
