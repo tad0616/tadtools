@@ -947,7 +947,8 @@ class TadDataCenter
         foreach ($setups as $setup) {
             $col = $this->getColSetup($setup);
             $label = $col['label'];
-            $items[$label] = $col[$item];
+            // $items[$label] = $col[$item];
+            $items[] = $col[$item];
         }
         return $items;
     }

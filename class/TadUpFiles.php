@@ -686,6 +686,7 @@ class TadUpFiles
         global $xoopsDB, $xoopsUser;
 
         $this->upname = $upname;
+        $myts = \MyTextSanitizer::getInstance();
 
         if ($hash) {
             $this->set_hash($hash);
@@ -919,6 +920,10 @@ class TadUpFiles
 
                     $hash_name = ($this->hash) ? "{$hash_name}.{$ext}" : '';
 
+                    $file_name = $myts->addSlashes($file_name);
+                    $description = $myts->addSlashes($description);
+                    $file['name'] = $myts->addSlashes($file['name']);
+                    $$save_description[$files_sn] = $myts->addSlashes($save_description[$files_sn]);
                     if (empty($files_sn)) {
                         $sql = "replace into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`counter`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}',0,'{$file['name']}','{$this->subdir}','{$hash_name}','{$upload_date}','{$uid}','{$this->tag}')";
                         // if ($this->col_sn == 12714) {
@@ -940,25 +945,17 @@ class TadUpFiles
                     } else {
                         $description = !isset($save_description[$files_sn]) ? $save_description[$files_sn] : $description;
                         $sql = "replace into `{$this->TadUpFilesTblName}` (`files_sn`,`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$files_sn}','{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}','{$file['name']}','{$this->subdir}','{$hash_name}','{$upload_date}','{$uid}','{$this->tag}')";
-                        // if ($this->col_sn == 12714) {
-                        //     die('b:' . $sql);
-                        // }
-                        // $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
                     }
 
                     $all_files_sn[] = $insert_files_sn;
                 } else {
-                    // if (!empty($_SERVER['HTTPS'])) {
-                    //     $http = ($_SERVER['HTTPS'] === 'on') ? 'https://' : 'http://';
-                    // }
-                    // redirect_header("{$http}{$_SERVER["HTTP_HOST"]}{$_SERVER['REQUEST_URI']}", 3, 'Error:' . $file_handle->error);
                     redirect_header($_SERVER["HTTP_REFERER"], 3, 'Error:' . $file_handle->error);
                 }
             }
             $this->sort = '';
         }
 
-        // die(var_dump($all_files_sn));
         if ($return_col === 'files_sn') {
             return $all_files_sn;
         }
