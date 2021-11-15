@@ -571,11 +571,9 @@ class TadUpFiles
                 //無編輯框，無圖示
                 $file_href = ($kind === 'file') ? "href='{$this->TadUpFilesUrl}/{$file_name}'" : "href='{$this->TadUpFilesImgUrl}/{$file_name}' class='fancybox_demo' rel='demo'";
                 $all_file .= "
-                <li id='fdtr_{$files_sn}'>
-                    <span name='{$files_sn}'>
-                        <i class='fa fa-times-circle' aria-hidden='true' onClick=\"remove_file('{$files_sn}');\" style='color: red;' data-toggle=\"tooltip\" title=\"" . sprintf(_TM_FILE_DEL_BY, $uid_name, $uid_name) . "\"></i>
-                        <a $file_href>{$original_filename}</a>
-                    </span>
+                <li id='fdtr_{$files_sn}' name='{$files_sn}'>
+                    <i class='fa fa-times-circle' aria-hidden='true' onClick=\"remove_file('{$files_sn}');\" style='color: red;position: relative; float:right; z-index:10;' data-toggle=\"tooltip\" title=\"" . sprintf(_TM_FILE_DEL_BY, $uid_name, $uid_name) . "\"></i>
+                    <a $file_href style='position: relative;z-index:9;'>{$original_filename}</a>
                 </li>
                 ";
             } else {
