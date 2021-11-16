@@ -37,30 +37,91 @@ CKEDITOR.editorConfig = function (config) {
     CKEDITOR.config.syntaxhighlight_firstLine = 0;
     CKEDITOR.config.syntaxhighlight_lang = 'PHP';
 
-    // CKEDITOR.config.stylesSet = 'myStyles';
-    config.stylesSet = [
-        // Block-level styles
-        { name: '陰影標題h2', element: 'h2', styles: { 'text-shadow': '1px 1px 1px #aaaaaa' } },
-        { name: '陰影標題h3', element: 'h3', styles: { 'text-shadow': '1px 1px 1px #aaaaaa' } },
-        { name: 'Info 提示框', element: 'div', attributes: { 'class': 'alert alert-info' } },
-        { name: 'Success 提示框', element: 'div', attributes: { 'class': 'alert alert-success' } },
-        { name: 'Warning 提示框', element: 'div', attributes: { 'class': 'alert alert-warning' } },
-        { name: 'Danger 提示框', element: 'div', attributes: { 'class': 'alert alert-danger' } },
+    var bootstrap = getCookie('bootstrap')
+    console.log('bootstrap',bootstrap);
 
-        // Inline styles
-        { name: '自適應圖片', element: 'img', styles: { 'height': 'auto' }, attributes: { 'class': 'img-responsive img-fluid' } },
-        { name: '自適應圖框', element: 'img', styles: { 'height': 'auto' }, attributes: { 'class': 'img-responsive img-thumbnail img-fluid' } },
-        { name: '語法', element: 'code' },
-        { name: '按鍵', element: 'kbd' },
-        { name: 'Secondary 徽章', element: 'span', attributes: { 'class': 'badge badge-secondary' } },
-        { name: 'Primary 徽章', element: 'span', attributes: { 'class': 'badge badge-primary' } },
-        { name: 'Success 徽章', element: 'span', attributes: { 'class': 'badge badge-success' } },
-        { name: 'Info 徽章', element: 'span', attributes: { 'class': 'badge badge-info' } },
-        { name: 'Warning 徽章', element: 'span', attributes: { 'class': 'badge badge-warning' } },
-        { name: 'Danger 徽章', element: 'span', attributes: { 'class': 'badge badge-danger' } },
-        { name: 'Light 徽章', element: 'span', attributes: { 'class': 'badge badge-light' } },
-        { name: 'Dark 徽章', element: 'span', attributes: { 'class': 'badge badge-dark' } }
-    ];
+    var shadow_h2={ name: '陰影標題h2', element: 'h2', styles: { 'text-shadow': '1px 1px 1px #aaaaaa' } };
+    var shadow_h3={ name: '陰影標題h3', element: 'h3', styles: { 'text-shadow': '1px 1px 1px #aaaaaa' } };
+    var alert_info = { name: 'Info 提示框', element: 'div', attributes: { 'class': 'alert alert-info' } };
+    var alert_success = { name: 'Success 提示框', element: 'div', attributes: { 'class': 'alert alert-success' } };
+    var alert_warning = { name: 'Warning 提示框', element: 'div', attributes: { 'class': 'alert alert-warning' } };
+    var alert_danger = { name: 'Danger 提示框', element: 'div', attributes: { 'class': 'alert alert-danger' } };
+    var img_responsive={ name: '自適應圖片', element: 'img', styles: { 'height': 'auto' }, attributes: { 'class': 'img-responsive img-fluid' } };
+    var img_thumbnail={ name: '自適應圖框', element: 'img', styles: { 'height': 'auto' }, attributes: { 'class': 'img-responsive img-thumbnail img-fluid' } };
+    var code ={ name: '語法', element: 'code' };
+    var kbd ={ name: '按鍵', element: 'kbd' };
+
+    // CKEDITOR.config.stylesSet = 'myStyles';
+    if(bootstrap == 3){
+        config.stylesSet = [
+            // Block-level styles
+            shadow_h2,
+            shadow_h3,
+            alert_info,
+            alert_success,
+            alert_warning,
+            alert_danger,
+            // Inline styles
+            img_responsive,
+            img_thumbnail,
+            code,
+            kbd,
+            { name: 'default 標籤', element: 'span', attributes: { 'class': 'label label-default' } },
+            { name: 'Primary 標籤', element: 'span', attributes: { 'class': 'label label-primary' } },
+            { name: 'Success 標籤', element: 'span', attributes: { 'class': 'label label-success' } },
+            { name: 'Info 標籤', element: 'span', attributes: { 'class': 'label label-info' } },
+            { name: 'Warning 標籤', element: 'span', attributes: { 'class': 'label label-warning' } },
+            { name: 'Danger 標籤', element: 'span', attributes: { 'class': 'label label-danger' } },
+            { name: 'badge 徽章', element: 'span', attributes: { 'class': 'badge' } }
+        ];
+    } else if(bootstrap == 4){
+        config.stylesSet = [
+            // Block-level styles
+            shadow_h2,
+            shadow_h3,
+            alert_info,
+            alert_success,
+            alert_warning,
+            alert_danger,
+            // Inline styles
+            img_responsive,
+            img_thumbnail,
+            code,
+            kbd,
+            { name: 'Secondary 徽章', element: 'span', attributes: { 'class': 'badge badge-secondary' } },
+            { name: 'Primary 徽章', element: 'span', attributes: { 'class': 'badge badge-primary' } },
+            { name: 'Success 徽章', element: 'span', attributes: { 'class': 'badge badge-success' } },
+            { name: 'Info 徽章', element: 'span', attributes: { 'class': 'badge badge-info' } },
+            { name: 'Warning 徽章', element: 'span', attributes: { 'class': 'badge badge-warning' } },
+            { name: 'Danger 徽章', element: 'span', attributes: { 'class': 'badge badge-danger' } },
+            { name: 'Light 徽章', element: 'span', attributes: { 'class': 'badge badge-light' } },
+            { name: 'Dark 徽章', element: 'span', attributes: { 'class': 'badge badge-dark' } }
+        ];
+    }else if(bootstrap == 5){
+        config.stylesSet = [
+            // Block-level styles
+            shadow_h2,
+            shadow_h3,
+            alert_info,
+            alert_success,
+            alert_warning,
+            alert_danger,
+
+            // Inline styles
+            img_responsive,
+            img_thumbnail,
+            code,
+            kbd,
+            { name: 'Secondary 徽章', element: 'span', attributes: { 'class': 'badge bg-secondary' } },
+            { name: 'Primary 徽章', element: 'span', attributes: { 'class': 'badge bg-primary' } },
+            { name: 'Success 徽章', element: 'span', attributes: { 'class': 'badge bg-success' } },
+            { name: 'Info 徽章', element: 'span', attributes: { 'class': 'badge bg-info' } },
+            { name: 'Warning 徽章', element: 'span', attributes: { 'class': 'badge bg-warning' } },
+            { name: 'Danger 徽章', element: 'span', attributes: { 'class': 'badge bg-danger' } },
+            { name: 'Light 徽章', element: 'span', attributes: { 'class': 'badge bg-light' } },
+            { name: 'Dark 徽章', element: 'span', attributes: { 'class': 'badge bg-dark' } }
+        ];
+    }
 
     // config.pasteFromWordRemoveFontStyles = false;
     config.toolbar = 'myBasic';
@@ -155,3 +216,9 @@ CKEDITOR.editorConfig = function (config) {
         showAutoCompleteButton: true
     };
 };
+
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  }

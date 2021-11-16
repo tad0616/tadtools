@@ -392,7 +392,15 @@ class Utility
 
         $_SESSION['theme_kind'] = $tt_theme_kind;
         $_SESSION[$theme_set]['bootstrap_version'] = $tt_theme_kind;
-        $_SESSION['bootstrap'] = 'bootstrap4' === $tt_theme_kind ? '4' : '3';
+        if (strpos($tt_theme_kind, 'bootstrap') !== false) {
+            $_SESSION['bootstrap'] = substr($tt_theme_kind, -1);
+        } else {
+            $_SESSION['bootstrap'] = 4;
+        }
+
+        if ($_COOKIE['bootstrap'] != $_SESSION['bootstrap']) {
+            setcookie("bootstrap", $_SESSION['bootstrap']);
+        }
 
         if ($in_admin) {
             if ($xoopsTpl) {

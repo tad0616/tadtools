@@ -1,5 +1,4 @@
 <?php
-
 namespace XoopsModules\Tadtools;
 
 use XoopsModules\Tadtools\Utility;
@@ -101,7 +100,7 @@ class CkEditor
         $TadToolsModuleConfig = Utility::TadToolsXoopsModuleConfig();
         $codemirror = $TadToolsModuleConfig['use_codemirror'] ? ',codemirror' : '';
 
-        $bs = $_SESSION['bootstrap'] ? $_SESSION['bootstrap'] : 3;
+        $bs = $_SESSION['bootstrap'] ? $_SESSION['bootstrap'] : 4;
         $editor .= "
         <textarea name='{$this->ColName}' id='editor_{$this->ColName}' class='ckeditor_css'>{$content}</textarea>
 

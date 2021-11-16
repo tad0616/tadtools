@@ -9,7 +9,7 @@
             <{else}>
                 <{if $m.submenu}>
                     <{assign var=submenu value=$m.submenu}>
-                    <{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/menu_sub.tpl"}>
+                    <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_sub.tpl"}>
                 <{/if}>
             <{/if}>
         <{/if}>
