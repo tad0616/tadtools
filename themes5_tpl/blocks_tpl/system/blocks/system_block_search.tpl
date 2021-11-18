@@ -9,7 +9,7 @@
         </div>
     </form>
 
-    <p class="text-right">
+    <p class="text-end">
         <a href="<{xoAppUrl search.php}>" title="<{$block.lang_advsearch}>">
             <{$block.lang_advsearch}>
         </a>

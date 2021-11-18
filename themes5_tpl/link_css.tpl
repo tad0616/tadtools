@@ -15,9 +15,10 @@
 <{else}>
         <link href="<{$xoops_url}>/modules/tadtools/bootstrap5/css/bootstrap.css" rel="stylesheet" media="all">
 <{/if}>
-
+<{*
         <!-- SmartMenus jQuery Bootstrap Addon CSS -->
         <link href="<{$xoops_url}>/modules/tadtools/smartmenus/addons/bootstrap-4/jquery.smartmenus.bootstrap-4.css" media="all" rel="stylesheet">
+*}>
         <!-- font-awesome -->
         <link href="<{$xoops_url}>/modules/tadtools/css/font-awesome/css/font-awesome.css" rel="stylesheet" media="all">
 <{if $xoops_themecss}>

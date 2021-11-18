@@ -1,7 +1,7 @@
 <div class="loginform">
   <form action="<{xoAppUrl user.php}>" method="post" role="form">
     <div class="form-group row row">
-      <label class="col-md-4 col-form-label text-sm-right" for="uname">
+      <label class="col-md-4 col-form-label text-sm-end" for="uname">
         <{$smarty.const.TF_USER_S_ID}>
       </label>
       <div class="col-md-8">
@@ -10,7 +10,7 @@
     </div>
 
     <div class="form-group row row">
-      <label class="col-md-4 col-form-label text-sm-right" for="pass">
+      <label class="col-md-4 col-form-label text-sm-end" for="pass">
         <{$smarty.const.TF_USER_S_PASS}>
       </label>
       <div class="col-md-8">
@@ -19,7 +19,7 @@
     </div>
 
     <div class="form-group row row">
-      <label class="col-md-4 col-form-label text-sm-right checkbox" for="rememberme">
+      <label class="col-md-4 col-form-label text-sm-end checkbox" for="rememberme">
         <{if isset($block.lang_rememberme)}>
             <input type="checkbox" name="rememberme" id="rememberme" value="On" class="formButton">
             <{$block.lang_rememberme}>

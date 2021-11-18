@@ -2,13 +2,13 @@
 <div class="jumbotron">
     <form action="<{$xoops_url}>/user.php" method="post" role="form">
         <div class="form-group row row">
-            <label class="col-md-2 col-form-label text-md-right">
+            <label class="col-md-2 col-form-label text-md-end">
                 <{$smarty.const.TF_USER_S_ID}>
             </label>
             <div class="col-md-3">
                 <input type="text" name="uname"  id="uname" placeholder="<{$smarty.const.TF_USER_ID}>"  class="form-control">
             </div>
-            <label class="col-md-2 col-form-label text-md-right">
+            <label class="col-md-2 col-form-label text-md-end">
                 <{$smarty.const.TF_USER_S_PASS}>
             </label>
             <div class="col-md-3">

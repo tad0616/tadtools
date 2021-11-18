@@ -74,29 +74,6 @@ CKEDITOR.editorConfig = function (config) {
             { name: 'Danger 標籤', element: 'span', attributes: { 'class': 'label label-danger' } },
             { name: 'badge 徽章', element: 'span', attributes: { 'class': 'badge' } }
         ];
-    } else if(bootstrap == 4){
-        config.stylesSet = [
-            // Block-level styles
-            shadow_h2,
-            shadow_h3,
-            alert_info,
-            alert_success,
-            alert_warning,
-            alert_danger,
-            // Inline styles
-            img_responsive,
-            img_thumbnail,
-            code,
-            kbd,
-            { name: 'Secondary 徽章', element: 'span', attributes: { 'class': 'badge badge-secondary' } },
-            { name: 'Primary 徽章', element: 'span', attributes: { 'class': 'badge badge-primary' } },
-            { name: 'Success 徽章', element: 'span', attributes: { 'class': 'badge badge-success' } },
-            { name: 'Info 徽章', element: 'span', attributes: { 'class': 'badge badge-info' } },
-            { name: 'Warning 徽章', element: 'span', attributes: { 'class': 'badge badge-warning' } },
-            { name: 'Danger 徽章', element: 'span', attributes: { 'class': 'badge badge-danger' } },
-            { name: 'Light 徽章', element: 'span', attributes: { 'class': 'badge badge-light' } },
-            { name: 'Dark 徽章', element: 'span', attributes: { 'class': 'badge badge-dark' } }
-        ];
     }else if(bootstrap == 5){
         config.stylesSet = [
             // Block-level styles
@@ -120,6 +97,29 @@ CKEDITOR.editorConfig = function (config) {
             { name: 'Danger 徽章', element: 'span', attributes: { 'class': 'badge bg-danger' } },
             { name: 'Light 徽章', element: 'span', attributes: { 'class': 'badge bg-light' } },
             { name: 'Dark 徽章', element: 'span', attributes: { 'class': 'badge bg-dark' } }
+        ];
+    } else{
+        config.stylesSet = [
+            // Block-level styles
+            shadow_h2,
+            shadow_h3,
+            alert_info,
+            alert_success,
+            alert_warning,
+            alert_danger,
+            // Inline styles
+            img_responsive,
+            img_thumbnail,
+            code,
+            kbd,
+            { name: 'Secondary 徽章', element: 'span', attributes: { 'class': 'badge badge-secondary' } },
+            { name: 'Primary 徽章', element: 'span', attributes: { 'class': 'badge badge-primary' } },
+            { name: 'Success 徽章', element: 'span', attributes: { 'class': 'badge badge-success' } },
+            { name: 'Info 徽章', element: 'span', attributes: { 'class': 'badge badge-info' } },
+            { name: 'Warning 徽章', element: 'span', attributes: { 'class': 'badge badge-warning' } },
+            { name: 'Danger 徽章', element: 'span', attributes: { 'class': 'badge badge-danger' } },
+            { name: 'Light 徽章', element: 'span', attributes: { 'class': 'badge badge-light' } },
+            { name: 'Dark 徽章', element: 'span', attributes: { 'class': 'badge badge-dark' } }
         ];
     }
 

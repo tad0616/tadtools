@@ -64,11 +64,11 @@
     <{/if}>
     <{if ( $next < $total_messages ) }>
     <a class="btn btn-primary btn-sm" href="readpmsg.php?start=<{$next}>&amp;total_messages=<{$total_messages}>&amp;op=<{$op}>" title="<{$smarty.const._PM_NEXT}>">
-		<span class="glyphicon glyphicon-circle-arrow-right"></span>
+		<span class="glyphicon glyphicon-circle-arrow-end"></span>
     </a>
     <{else}>
 	<button class="btn btn-primary btn-sm" disabled="disabled">
-	    <span class="glyphicon glyphicon-circle-arrow-right"></span>
+	    <span class="glyphicon glyphicon-circle-arrow-end"></span>
     </button>
     <{/if}>
     </div><!-- .message-read -->

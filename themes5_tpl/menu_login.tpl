@@ -9,7 +9,7 @@
                     <{$smarty.const.TF_USER_ENTER}>
                     </legend>
                     <div class="form-group row row">
-                    <label class="col-md-4 col-form-label text-sm-right" for="uname">
+                    <label class="col-md-4 col-form-label text-sm-end" for="uname">
                         <{$smarty.const.TF_USER_S_ID}>
                     </label>
                     <div class="col-md-8">
@@ -18,7 +18,7 @@
                     </div>
 
                     <div class="form-group row row">
-                    <label class="col-md-4 col-form-label text-sm-right" for="pass">
+                    <label class="col-md-4 col-form-label text-sm-end" for="pass">
                         <{$smarty.const.TF_USER_S_PASS}>
                     </label>
                     <div class="col-md-8">
@@ -27,7 +27,7 @@
                     </div>
 
                     <div class="form-group row row">
-                    <label class="col-md-4 col-form-label text-sm-right">
+                    <label class="col-md-4 col-form-label text-sm-end">
                     </label>
                     <div class="col-md-8">
                         <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>">

@@ -42,7 +42,7 @@
             <a class="selected" href="<{xoAppUrl viewpmsg.php}>" title="<{$block.lang_inbox}>">
                 <i class="fa fa-envelope"></i>
                 <{$block.lang_inbox}>
-                <i class="badge pull-right"><strong><{$block.new_messages}></strong></i>
+                <i class="badge float-end"><strong><{$block.new_messages}></strong></i>
             </a>
         </li>
     <{else}>

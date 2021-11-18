@@ -1,6 +1,6 @@
 <{if $auto_mainmenu}>
     <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle"  href="index.php">
+        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside">
             <{$smarty.const.THEME_MODULE0}>
         </a>
         <ul class="dropdown-menu">

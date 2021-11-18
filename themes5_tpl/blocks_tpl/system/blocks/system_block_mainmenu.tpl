@@ -9,7 +9,7 @@
     <{foreach item=module from=$block.modules}>
         <li <{if $module.highlight}>class="selected"<{/if}>>
             <a href="<{$xoops_url}>/modules/<{$module.directory}>/" title="<{$module.name}>">
-            <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+            <i class="fa fa-arrow-circle-end" aria-hidden="true"></i>
             <{$module.name}>
             </a>
         </li>
@@ -18,7 +18,7 @@
                 <li style="padding-left: 2em; font-size: 0.9em;">
                     <a href="<{$sublink.url}>" title="<{$sublink.name}>">
                     <{$sublink.name}>
-                    <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
+                    <i class="fa fa-arrow-circle-o-end" aria-hidden="true"></i>
                     </a>
                 </li>
             <{/foreach}>

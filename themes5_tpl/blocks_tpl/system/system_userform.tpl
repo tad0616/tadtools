@@ -3,7 +3,7 @@
 </div>
 <form action="user.php" method="post" role="form">
     <div class="form-group row">
-      <label class="col-sm-2 col-form-label text-sm-right" for="uname">
+      <label class="col-sm-2 col-form-label text-sm-end" for="uname">
         <{$lang_username}>
       </label>
       <div class="col-sm-10">
@@ -12,7 +12,7 @@
     </div>
 
     <div class="form-group row">
-      <label class="col-sm-2 col-form-label text-sm-right" for="pass">
+      <label class="col-sm-2 col-form-label text-sm-end" for="pass">
         <{$lang_password}>
       </label>
       <div class="col-sm-10">
@@ -23,7 +23,7 @@
 
     <{if isset($lang_rememberme)}>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label text-sm-right sr-only" for="rememberme">
+          <label class="col-sm-2 col-form-label text-sm-end sr-only" for="rememberme">
             <{$lang_rememberme}>
           </label>
           <div class="col-sm-10">
@@ -37,13 +37,13 @@
 
 
     <div class="form-group row">
-      <label class="col-sm-2 col-form-label text-sm-right sr-only" for="submit">
+      <label class="col-sm-2 col-form-label text-sm-end sr-only" for="submit">
       </label>
       <div class="col-sm-7 col-sm-offset-2">
         <span id="lost"></span>
         <{$lang_notregister}>
       </div>
-      <div class="col-sm-3 text-right">
+      <div class="col-sm-3 text-end">
         <input type="hidden" name="op" value="login">
         <input type="hidden" name="xoops_redirect" value="<{$redirect_page}>">
         <button type="submit" id="submit" title="login" class="btn btn-primary"><{$lang_login}></button>
@@ -59,7 +59,7 @@
 <div class="alert alert-info"><{$lang_noproblem}></div>
 <form action="lostpass.php" method="post" role="form">
     <div class="form-group row">
-      <label class="col-sm-2 col-form-label text-sm-right" for="email">
+      <label class="col-sm-2 col-form-label text-sm-end" for="email">
         <{$lang_youremail}>
       </label>
       <div class="col-sm-8">
