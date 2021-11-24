@@ -19,12 +19,12 @@ class SweetAlert
     {
         global $xoTheme;
         $jquery = $this->show_jquery ? Utility::get_jquery() : '';
+        $href = empty($var) ? "'$url'" : "'$url' + $var";
 
         if ($xoTheme) {
             $xoTheme->addStylesheet('modules/tadtools/sweet-alert/sweet-alert.css');
             $xoTheme->addScript('modules/tadtools/sweet-alert/sweet-alert.js');
 
-            $href = empty($var) ? "'$url'" : "'$url' + $var";
             $xoTheme->addScript('', null, "
             function {$func_name}($var){
                 swal({

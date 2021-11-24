@@ -14,7 +14,7 @@ class MColorPicker
         $this->show_jquery = $show_jquery;
     }
 
-    public function render()
+    public function render($show_picker = 'pic')
     {
         global $xoTheme;
         $jquery = $this->show_jquery ? Utility::get_jquery() : '';
@@ -24,7 +24,8 @@ class MColorPicker
 
             $xoTheme->addScript('', null, "
                 \$('{$this->name}').mColorPicker({
-                imageFolder: '" . XOOPS_URL . "/modules/tadtools/mColorPicker/images/'
+                    imageFolder: '" . XOOPS_URL . "/modules/tadtools/mColorPicker/images/',
+                    showPicker: '$show_picker'
                 });
             ");
         } else {
@@ -33,7 +34,8 @@ class MColorPicker
             <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/mColorPicker/javascripts/mColorPicker.js'></script>
             <script>
                 \$('{$this->name}').mColorPicker({
-                imageFolder: '" . XOOPS_URL . "/modules/tadtools/mColorPicker/images/'
+                    imageFolder: '" . XOOPS_URL . "/modules/tadtools/mColorPicker/images/',
+                    showPicker: '$show_picker'
                 });
             </script>
             ";

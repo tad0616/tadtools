@@ -15,10 +15,11 @@
 <{else}>
         <link href="<{$xoops_url}>/modules/tadtools/bootstrap5/css/bootstrap.css" rel="stylesheet" media="all">
 <{/if}>
-<{*
-        <!-- SmartMenus jQuery Bootstrap Addon CSS -->
-        <link href="<{$xoops_url}>/modules/tadtools/smartmenus/addons/bootstrap-4/jquery.smartmenus.bootstrap-4.css" media="all" rel="stylesheet">
-*}>
+
+        <!-- SmartMenus core CSS (required) -->
+        <link href="<{$xoops_url}>/modules/tadtools/smartmenus/css/sm-core-css.css" media="all" rel="stylesheet">
+        <!-- "sm-blue" menu theme (optional, you can use your own CSS, too) -->
+        <link href='<{$xoops_url}>/modules/tadtools/smartmenus/css/sm-mint/sm-mint.css' rel='stylesheet' type='text/css' />
         <!-- font-awesome -->
         <link href="<{$xoops_url}>/modules/tadtools/css/font-awesome/css/font-awesome.css" rel="stylesheet" media="all">
 <{if $xoops_themecss}>

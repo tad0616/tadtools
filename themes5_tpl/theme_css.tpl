@@ -54,10 +54,14 @@
         <{/if}>
     }
 
-
-    #nav-container{
-        position: relative;
-        z-index: 10;
+    #nav-container {
+        <{if $navbar_pos=='fixed-bottom'}>
+            position: fixed;
+            bottom: 0px;
+        <{else}>
+            position: relative;
+        <{/if}>
+        z-index: 11;
         <{if $nav_display_type=='not_full'}>
             background-color:tranparent;
         <{else}>
@@ -73,7 +77,7 @@
         <{/if}>
     }
 
-    #nav-container-display{
+    #xoops_theme_nav {
         <{if $nav_display_type=='not_full'}>
             <{if $navbar_img}>
                 background-color: tranparent;

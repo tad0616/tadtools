@@ -1,8 +1,8 @@
-<ul class="dropdown-menu">
+<ul>
     <{if $xoops_isadmin}>
         <{foreach from=$admin_menu_var item=admin_menu}>
             <li>
-                <a href="<{$admin_menu.url}>" class="dropdown-item" target="<{$admin_menu.target}>">
+                <a href="<{$admin_menu.url}>" target="<{$admin_menu.target}>">
                     <span class="fa <{$admin_menu.icon}>"></span>
                     <{$admin_menu.title}>
                 </a>
@@ -13,7 +13,7 @@
 
     <{foreach from=$user_menu_var item=user_menu}>
         <li>
-            <a href="<{$user_menu.url}>" class="dropdown-item" target="<{$user_menu.target}>">
+            <a href="<{$user_menu.url}>" target="<{$user_menu.target}>">
                 <span class="fa <{$user_menu.icon}>"></span>
                 <{$user_menu.title}>
             </a>

@@ -62,6 +62,7 @@
 
   $.fn.mColorPicker.defaults = {
     imageFolder: 'images/',
+    showPicker: 'pic',
     swatches: [
       "#ffffff",
       "#ffff00",
@@ -136,9 +137,18 @@
         'background-image': image
       }).css({
         'color': $.fn.mColorPicker.textColor($('#' + id).css('background-color'))
-      }).after(
-        '<span style="cursor:pointer;" id="icp_' + id + '" class="mColorPickerTrigger"><img src="' + $o.imageFolder + 'color.png" style="border:0;margin:0 0 0 3px" align="absmiddle"></span>'
-      ).addClass('mColorPickerInput');
+      }).addClass('mColorPickerInput');
+
+      if($o.showPicker == 'pic'){
+        $('#' + id).after(
+          '<span style="cursor:pointer;" id="icp_' + id + '" class="mColorPickerTrigger"><img src="' + $o.imageFolder + 'color.png" style="border:0;margin:0 0 0 3px"></span>'
+        )
+      }else if($o.showPicker == 'bootstrap'){
+        $('#' + id).after(
+          '<div class="input-group-append input-group-addon"><span style="cursor:pointer;" id="icp_' + id + '" class="mColorPickerTrigger input-group-text"><img src="' + $o.imageFolder + 'color.png" style="margin: 4px 0px;"></span></div>'
+        )
+      }
+
     }
 
     $('#icp_' + id).attr('data-mcolorpicker', 'true');
@@ -284,9 +294,9 @@
 
     if ($i.attr('disabled')) return false;
 
-                // KEEP COLOR PICKER IN VIEWPORT
-                if (pickerTop + $m.height() > $d.height()) pickerTop = pos.top - $m.height();
-                if (pickerLeft + $m.width() > $d.width()) pickerLeft = pos.left - $m.width() + $e.outerWidth();
+    // KEEP COLOR PICKER IN VIEWPORT
+    if (pickerTop + $m.height() > $d.height()) pickerTop = pos.top - $m.height();
+    if (pickerLeft + $m.width() > $d.width()) pickerLeft = pos.left - $m.width() + $e.outerWidth();
 
     $m.css({
       'top':(pickerTop) + "px",
@@ -357,7 +367,6 @@
   };
 
   $.fn.mColorPicker.setInputColor = function (id, color) {
-
     var image = (color == 'transparent')? "url('" + $o.imageFolder + "grid.gif')": '',
         textColor = $.fn.mColorPicker.textColor(color);
 
@@ -367,7 +376,6 @@
   };
 
   $.fn.mColorPicker.textColor = function (val) {
-
     if (typeof val == 'undefined' || val == 'transparent') return "black";
     val = $.fn.mColorPicker.RGBtoHex(val);
     return (parseInt(val.substr(1, 2), 16) + parseInt(val.substr(3, 2), 16) + parseInt(val.substr(5, 2), 16) < 400)? 'white': 'black';
@@ -543,11 +551,10 @@
       $.fn.mColorPicker.liveEvents();
     }
 
-    //$('.mColorPicker').live('keyup', function () {
+    //$('.mColorPicker').on('keyup', function () {
 
     $(document).on('keyup','.mColorPicker', function () {
       try {
-
         $(this).css({
           'background-color': $(this).val()
         }).css({
@@ -556,7 +563,7 @@
       } catch (r) {}
     });
 
-    //$('.mColorPickerTrigger').live('click', function () {
+    //$('.mColorPickerTrigger').on('click', function () {
     $(document).on('click','.mColorPickerTrigger', function () {
 
       $.fn.mColorPicker.colorShow($(this).attr('id').replace('icp_', ''));

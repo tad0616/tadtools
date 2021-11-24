@@ -55,6 +55,7 @@ $default['navlogo_img'] = !empty($navlogo_img) ? XOOPS_URL . "/themes/{$theme_na
 $default['navbar_img'] = !empty($navbar_img) ? XOOPS_URL . "/themes/{$theme_name}/images/nav_bg/{$navbar_img}" : "";
 $default['bt_bg_img'] = !empty($bt_bg_img) ? XOOPS_URL . "/themes/{$theme_name}/images/bt_bg/{$bt_bg_img}" : "";
 
+
 foreach ($default as $k => $v) {
     $$k = $v;
     $this->assign($k, $$k);
@@ -469,6 +470,10 @@ if(file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/TadDataCenter.php")){
     $TadDataCenter->set_col('theme_id', $theme_id);
     $data = $TadDataCenter->getData();
     foreach ($data as $var_name => $var_val) {
+        if($var_name =='navbar_font_size' and $var_val[0] > 10){
+            $var_val[0] =  round($var_val[0]/100,2);
+        }
+
         $this->assign($var_name, $var_val[0]);
     }
 }

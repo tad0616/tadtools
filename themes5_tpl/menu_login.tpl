@@ -1,8 +1,8 @@
 <{if $openid_login!="3"}>
-    <ul class="dropdown-menu">
+    <ul>
 
     <{if $openid_login=="0" or $openid_login=="1"}>
-        <li class="nav-item">
+        <li>
             <form action="<{$xoops_url}>/user.php" method="post">
                 <fieldset style="min-width: 200px; margin: 10px;">
                     <legend>
@@ -127,7 +127,7 @@
         }
         <{/php}>
 
-        <li class="nav-item">
+        <li>
             <{foreach from=$tlogin item=login}>
                 <a href="<{$login.link}>" class="btn" <{if $openid_logo!=1}>style="display:inline-block; width:32px; height:32px;padding:3px; margin:3px; background-color:transparent;"<{/if}>>
                     <img src="<{$login.img}>" alt="<{$login.text}>" title="<{$login.text}>" <{if $openid_logo!=1}>style="width:32px;height:32px;"<{/if}>>

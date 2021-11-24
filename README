@@ -5,7 +5,7 @@ TadTools 3.47 (尚未釋出)
 3.修改 TadUpFiles 編輯表單時，檔案為列表模式時畫面不正確的情況
 4.修改 CKEditor 編輯器樣式可以相容各版本 BootStrap
 5.修改 BootStrap 版本判斷機制
-6.新增 MDBootstrap5 套件
+6.優化 mColorPicker.js
 
 TadTools 3.46 (2021-10-06 釋出)
 ====================================
