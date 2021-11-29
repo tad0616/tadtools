@@ -50,8 +50,7 @@
         <{/if}>
 
 
-        <!-- Left nav -->
-        <ul id="main-menu" class="sm sm-mint">
+        <ul id="main-menu" class="sm sm-mint d-md-flex">
             <{if $show_sitename==0 or $show_sitename==''}>
                 <li>
                     <a href="<{$xoops_url}>/index.php">&#xf015; <{$smarty.const._TAD_HOME}></a>
@@ -63,12 +62,12 @@
             <{/if}>
 
             <{includeq file="$xoops_rootpath/modules/tadtools/themes5_tpl/menu_my.tpl"}>
-            <li class="me-auto">
-                <a accesskey="U" href="#xoops_theme_nav_key" title="<{$smarty.const._TAD_ZAV_ZONE}>" id="xoops_theme_nav_key" style="color: transparent; font-size: 0.625rem;">:::</a>
+            <li class="flex-grow-1 hide-in-phone">
+                <a accesskey="U" href="#xoops_theme_nav_key" title="<{$smarty.const._TAD_ZAV_ZONE}>" id="xoops_theme_nav_key" style="color: transparent; font-size: 0.625rem;" class="disabled">:::</a>
             </li>
 
             <{if $xoops_isadmin}>
-                <li class="ms-auto">
+                <li>
                     <a href="<{$xoops_url}>/modules/tad_themes/admin/dropdown.php" title="<{$smarty.const._TAD_MENU_CONFIG}>"><i class="fa fa-plus-circle"></i></a>
                 </li>
                 <{if $xoops_dirname=="" || $xoops_dirname=="system"}>
@@ -83,14 +82,14 @@
             <{/if}>
 
             <{if $xoops_isuser}>
-                <li class="ms-auto">
+                <li>
                     <a title="<{$smarty.const.TF_USER_WELCOME}>">
                         <{$smarty.const.TF_USER_WELCOME}><{$xoops_name}>
                     </a>
                     <{includeq file="$xoops_rootpath/modules/tadtools/themes5_tpl/menu_user.tpl"}>
                 </li>
             <{elseif $openid_login!="3"}>
-                <li class="ms-auto">
+                <li>
                     <a href="#">
                         <{$smarty.const.TF_USER_ENTER}>
                     </a>
@@ -113,7 +112,21 @@
         <script type="text/javascript" src="<{xoAppUrl modules/tadtools/jquery.sticky/jquery.sticky.js}>"></script>
         <script type="text/javascript">
             $(document).ready(function(){
-                $("#nav-container").sticky({topSpacing:0 , zIndex: 100});
+                if($( window ).width() > 768){
+                    $("#nav-container").sticky({topSpacing:0 , zIndex: 100});
+                }else{
+                    $('li.hide-in-phone').hide();
+                }
+            });
+
+            $( window ).resize(function() {
+                if($( window ).width() > 768){
+                    $("#nav-container").sticky({topSpacing:0 , zIndex: 100});
+                    $('li.hide-in-phone').show();
+                }else{
+                    $("#nav-container").unstick();
+                    $('li.hide-in-phone').hide();
+                }
             });
         </script>
     <{/if}>

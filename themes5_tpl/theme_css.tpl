@@ -68,7 +68,7 @@
             <{if $navbar_img}>
                 background-color:tranparent;
                 background-image: url(<{$navbar_img}>);
-                background-size: cover;
+                /* background-size: cover; */
             <{elseif $navbar_bg_top==$navbar_bg_bottom}>
                 background: <{$navbar_bg_top}>;
             <{else}>
@@ -82,7 +82,7 @@
             <{if $navbar_img}>
                 background-color: tranparent;
                 background-image: url(<{$navbar_img}>);
-                background-size: cover;
+                /* background-size: cover; */
             <{elseif $navbar_bg_top==$navbar_bg_bottom}>
                 background: <{$navbar_bg_top}>;
             <{else}>

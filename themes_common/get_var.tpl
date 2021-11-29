@@ -446,6 +446,8 @@ foreach ($config2_files as $config2_file) {
             if ($config['type'] == "array") {
                 $value = str_replace("{XOOPS_URL}", XOOPS_URL, $value);
                 $value = json_decode($value, true);
+            } elseif ($config['type'] == "checkbox") {
+                $value = json_decode($value, true);
             } elseif ($config['type'] == "file" or $config['type'] == "bg_file") {
                 $value = !empty($value) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/config2/{$value}":'';
             }

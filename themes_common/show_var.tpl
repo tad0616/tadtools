@@ -202,9 +202,6 @@
                                         <tr><th>導覽選項上下距離</th><th>$navbar_py</th><td><{$navbar_py}></td></tr>
                                         <tr><th>導覽選項左右距離</th><th>$navbar_px</th><td><{$navbar_px}></td></tr>
                                         <tr><th>導覽列背景圖</th><th>$navbar_img</th><td><{$navbar_img}></td></tr>
-
-                                        <tr><th>選項左右間距</th><th>$navbar_px</th><td><{$navbar_px}></td></tr>
-                                        <tr><th>選項上下間距</th><th>$navbar_py</th><td><{$navbar_py}></td></tr>
                                         <tr><th>選項文字大小</th><th>$navbar_font_size</th><td><{$navbar_font_size}></td></tr>
 
                                         <tr><th colspan=3><h2>導覽列 logo 圖設定</h2></th></tr>

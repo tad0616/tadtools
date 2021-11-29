@@ -11,6 +11,9 @@
             // SmartMenus init
             $(function() {
                 $('#main-menu').smartmenus({
+                    <{if $navbar_pos=='fixed-bottom'}>
+                    bottomToTopSubMenus: true,
+                    <{/if}>
                     subMenusSubOffsetX: 6,
                     subMenusSubOffsetY: -8
                 });

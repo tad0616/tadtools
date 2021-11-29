@@ -1,7 +1,7 @@
 TadTools 3.47 (尚未釋出)
 ====================================
 1.TadDataCenter 新增數個 eguide 相關方法
-2.TadUpFiles 加強安全性
+2.加強 TadUpFiles.php 檔名過濾
 3.修改 TadUpFiles 編輯表單時，檔案為列表模式時畫面不正確的情況
 4.修改 CKEditor 編輯器樣式可以相容各版本 BootStrap
 5.修改 BootStrap 版本判斷機制

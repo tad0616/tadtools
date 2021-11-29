@@ -921,7 +921,8 @@ class TadUpFiles
                     $file_name = $myts->addSlashes($file_name);
                     $description = $myts->addSlashes($description);
                     $file['name'] = $myts->addSlashes($file['name']);
-                    $$save_description[$files_sn] = $myts->addSlashes($save_description[$files_sn]);
+                    $save_description[$files_sn] = $myts->addSlashes($save_description[$files_sn]);
+
                     if (empty($files_sn)) {
                         $sql = "replace into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`counter`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}',0,'{$file['name']}','{$this->subdir}','{$hash_name}','{$upload_date}','{$uid}','{$this->tag}')";
                         // if ($this->col_sn == 12714) {
@@ -1268,6 +1269,8 @@ class TadUpFiles
             $this->set_hash($hash);
         }
 
+        $myts = \MyTextSanitizer::getInstance();
+
         //引入上傳物件
         include_once XOOPS_ROOT_PATH . '/modules/tadtools/upload/class.upload.php';
 
@@ -1312,7 +1315,7 @@ class TadUpFiles
             }
         }
 
-        $file['name'] = $name;
+        $file['name'] = $myts->addSlashes($name);
         $file['tmp_name'] = $tmp_name;
         $file['type'] = $type;
         $file['size'] = $size;

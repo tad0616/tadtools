@@ -8,7 +8,7 @@
                 </a>
             </li>
         <{/foreach}>
-        <li><hr></li>
+        <li class="hide-in-phone"><hr></li>
     <{/if}>
 
     <{foreach from=$user_menu_var item=user_menu}>

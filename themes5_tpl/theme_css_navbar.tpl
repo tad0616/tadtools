@@ -1,10 +1,10 @@
 .sm-mint {
-  border-top: 2px solid <{$navbar_bg_top}>;
-  border-bottom: 2px solid <{$navbar_bg_bottom}>;
+  border-top: 2px solid <{$nav_sub_bg_color}>;
+  border-bottom: 2px solid <{$nav_sub_bg_color}>;
   background: transparent;
 }
 .sm-mint a, .sm-mint a:hover, .sm-mint a:focus, .sm-mint a:active {
-  padding: 13px 20px;
+  padding: <{$navbar_py}>px <{$navbar_px}>px;
   /* make room for the toggle button (sub indicator) */
   padding-right: 58px;
   color: <{$navbar_color}>;
@@ -29,10 +29,11 @@
   width: 34px;
   height: 34px;
   overflow: hidden;
-  font: bold 14px/34px monospace !important;
+  font: bold 0.875rem/2.125rem monospace !important;
   text-align: center;
   text-shadow: none;
-  background: <{$navbar_bg_bottom}>;
+  background: <{$navbar_hover}>;
+  color:<{$navbar_color_hover}>;
   border-radius: 4px;
 }
 .sm-mint a .sub-arrow::before {
@@ -42,15 +43,16 @@
   content: '-';
 }
 .sm-mint li {
-  border-top: 1px solid <{$navbar_color}>;
+  border-top: 1px solid <{$nav_sub_font_color}>22;
 }
 .sm-mint > li:first-child {
   border-top: 0;
 }
 .sm-mint ul {
-  background: <{$nav_sub_bg_color}>;
+  background: <{$nav_sub_bg_color}>88;
 }
 .sm-mint ul a, .sm-mint ul a:hover, .sm-mint ul a:focus, .sm-mint ul a:active {
+  color: <{$nav_sub_font_color}>;
   font-size: <{$navbar_font_size}>rem;
   border-left: 8px solid transparent;
 }
@@ -58,25 +60,29 @@
 .sm-mint ul ul a:hover,
 .sm-mint ul ul a:focus,
 .sm-mint ul ul a:active {
-  border-left: 16px solid transparent;
+  color: <{$nav_sub_font_color}>;
+  border-left: 1.4rem solid transparent;
 }
 .sm-mint ul ul ul a,
 .sm-mint ul ul ul a:hover,
 .sm-mint ul ul ul a:focus,
 .sm-mint ul ul ul a:active {
-  border-left: 24px solid transparent;
+  color: <{$nav_sub_font_color}>;
+  border-left: 2.8rem solid transparent;
 }
 .sm-mint ul ul ul ul a,
 .sm-mint ul ul ul ul a:hover,
 .sm-mint ul ul ul ul a:focus,
 .sm-mint ul ul ul ul a:active {
-  border-left: 32px solid transparent;
+  color: <{$nav_sub_font_color}>;
+  border-left: 4.2rem solid transparent;
 }
 .sm-mint ul ul ul ul ul a,
 .sm-mint ul ul ul ul ul a:hover,
 .sm-mint ul ul ul ul ul a:focus,
 .sm-mint ul ul ul ul ul a:active {
-  border-left: 40px solid transparent;
+  color: <{$nav_sub_font_color}>;
+  border-left: 5.6rem solid transparent;
 }
 
 @media (min-width: 768px) {
@@ -122,7 +128,7 @@
     background: transparent;
   }
   .sm-mint a, .sm-mint a:hover, .sm-mint a:focus, .sm-mint a:active, .sm-mint a.highlighted {
-    padding: 11px 20px;
+    padding: <{$navbar_py}>px <{$navbar_px}>px;
     color: <{$navbar_color}>;
     border-radius: 4px 4px 0 0;
     border-radius: 0;
@@ -184,7 +190,6 @@
   .sm-mint ul a, .sm-mint ul a:hover, .sm-mint ul a:focus, .sm-mint ul a:active, .sm-mint ul a.highlighted {
     border: 0 !important;
     padding: 10px 20px;
-    color: <{$navbar_color}>;
     border-radius: 0;
   }
   .sm-mint ul a:hover, .sm-mint ul a:focus, .sm-mint ul a:active, .sm-mint ul a.highlighted {
@@ -333,16 +338,6 @@
 
 /*# sourceMappingURL=sm-mint.css.map */
 
-<{if $navbar_pos=='fixed-top' or $navbar_pos=='fixed-bottom'}>
-    <{assign var=nav_display_type value='not_full'}>
-    nav.navbar {
-        box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.5);
-        -webkit-box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.5);
-        -moz-box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.5);
-        -o-box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.5);
-    }
-<{/if}>
-
 <{if $navbar_pos=='fixed-top'}>
     <{assign var=margin_top value=50}>
 <{/if}>
@@ -357,7 +352,7 @@
         <{if $navbar_img}>
             background-color: tranparent;
             background-image: url(<{$navbar_img}>);
-            background-size: cover;
+            /* background-size: cover; */
         <{elseif $navbar_bg_top==$navbar_bg_bottom}>
             background: <{$navbar_bg_top}>;
         <{else}>
@@ -366,25 +361,11 @@
     <{/if}>
 }
 
-h2.navbar-brand,
-#main-menu>li>a {
-    <{if $navbar_font_size}>
-      font-size: <{$navbar_font_size}>rem;
-    <{/if}>
-    color: <{$navbar_color}>;
-    padding: <{$navbar_py}>px <{$navbar_px}>px;
-}
-
-/* #main-menu>li>a:hover {
-    background: <{$navbar_hover}>;
-    color: <{$navbar_color_hover}>;
-} */
-
 /* Complete navbar .sm-mint */
 
 .main-nav {
-  border-bottom: 2px solid #8db863;
-  background: #fff;
+  /* border-bottom: 2px solid #8db863;
+  background: #fff; */
 }
 
 .main-nav:after {
@@ -392,7 +373,7 @@ h2.navbar-brand,
   content: "\00a0";
   display: block;
   height: 0;
-  font: 0px/0 serif;
+  font: 0rem/0 serif;
   overflow: hidden;
 }
 
