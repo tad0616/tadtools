@@ -1,15 +1,8 @@
 <script src="<{xoAppUrl modules/tadtools/themes_common/slider/sliderman/js/sliderman.1.3.8.js}>"></script>
 <link rel="stylesheet" type="text/css" href="<{xoAppUrl modules/tadtools/themes_common/slider/sliderman/css/sliderman.css}>" />
 
-<{if $slide_width < 20}>
-    <{assign var=slide_width value=800}>
-<{/if}>
-<{if !$slide_height}>
-    <{assign var=slide_height value=200}>
-<{/if}>
-
 <div style="padding:0px;margin:0px;">
-    <div id="SliderName_3" class="SliderName_3" style="padding:0px;margin:0px; width: <{$slide_width}>px; height: <{$slide_height}>px;">
+    <div id="SliderName_3" class="SliderName_3" style="padding:0px;margin:0px; width: 100%;">
         <{foreach from=$slider_var item=slide}>
             <a href="<{$slide.slide_url}>" <{$slide.slide_target}>><img src="<{$slide.file_url}>" alt="<{$slide.text_description}>" title="<{$slide.text_description}>"></a>
             <div class="SliderName_3Description"><{$slide.description}></div>
@@ -29,8 +22,8 @@
 
         var demoSlider_3 = Sliderman.slider({
             container: 'SliderName_3',
-            width: <{$slide_width}>,
-            height: <{$slide_height}>,
+            width: <{$theme_width}>,
+            height: 200,
             effects: effectsDemo3,
             display: {
                 autoplay: 3000,

@@ -1,6 +1,6 @@
-<{if $slide_width > 0 }>
+<{if $use_slide}>
     <{if $logo_img and $logo_position=="slide"}>
-        <div style="position:relative; width:100%; <{if $slide_height}>height:<{$slide_height}>px; overflow:hidden;<{/if}>">
+        <div style="position:relative; width:100%; overflow:hidden;<{/if}>">
             <{includeq file="$xoops_rootpath/modules/tadtools/themes5_tpl/logo.tpl"}>
             <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/slider/responsive_slide.tpl"}>
         </div>

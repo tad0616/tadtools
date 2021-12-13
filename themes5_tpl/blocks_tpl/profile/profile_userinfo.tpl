@@ -24,35 +24,35 @@
 <{if $user_ownpage == true}>
 
     <form name="usernav" action="user.php" method="post">
-        <input class="btn btn-success btn-sm btn-block" type="button" value="<{$lang_editprofile}>" onclick="location='<{$xoops_url}>/modules/<{$xoops_dirname}>/edituser.php'">
-        <input class="btn btn-success btn-sm btn-block" type="button" value="<{$lang_changepassword}>" onclick="location='<{$xoops_url}>/modules/<{$xoops_dirname}>/changepass.php'">
+        <input class="btn btn-success btn-sm" type="button" value="<{$lang_editprofile}>" onclick="location='<{$xoops_url}>/modules/<{$xoops_dirname}>/edituser.php'">
+        <input class="btn btn-success btn-sm" type="button" value="<{$lang_changepassword}>" onclick="location='<{$xoops_url}>/modules/<{$xoops_dirname}>/changepass.php'">
         <{if $user_changeemail}>
-		<input class="btn btn-success btn-sm btn-block" type="button" value="<{$smarty.const._PROFILE_MA_CHANGEMAIL}>" onclick="location='<{$xoops_url}>/modules/<{$xoops_dirname}>/changemail.php'">
+		<input class="btn btn-success btn-sm" type="button" value="<{$smarty.const._PROFILE_MA_CHANGEMAIL}>" onclick="location='<{$xoops_url}>/modules/<{$xoops_dirname}>/changemail.php'">
         <{/if}>
 
         <{if $user_candelete == true}>
         <form method="post" action="<{$xoops_url}>/modules/<{$xoops_dirname}>/user.php">
             <input  type="hidden" name="op" value="delete">
             <input type="hidden" name="uid" value="<{$user_uid}>">
-            <input class="btn btn-success btn-sm btn-block" type="button" value="<{$lang_deleteaccount}>" onclick="submit();">
+            <input class="btn btn-success btn-sm" type="button" value="<{$lang_deleteaccount}>" onclick="submit();">
         </form>
         <{/if}>
 
-        <input class="btn btn-success btn-sm btn-block" type="button" value="<{$lang_avatar}>" onclick="location='edituser.php?op=avatarform'">
-        <input class="btn btn-success btn-sm btn-block" type="button" value="<{$lang_inbox}>" onclick="location='<{$xoops_url}>/viewpmsg.php'">
-        <input class="btn btn-success btn-sm btn-block" type="button" value="<{$lang_logout}>" onclick="location='<{$xoops_url}>/modules/<{$xoops_dirname}>/user.php?op=logout'">
+        <input class="btn btn-success btn-sm" type="button" value="<{$lang_avatar}>" onclick="location='edituser.php?op=avatarform'">
+        <input class="btn btn-success btn-sm" type="button" value="<{$lang_inbox}>" onclick="location='<{$xoops_url}>/viewpmsg.php'">
+        <input class="btn btn-success btn-sm" type="button" value="<{$lang_logout}>" onclick="location='<{$xoops_url}>/modules/<{$xoops_dirname}>/user.php?op=logout'">
     </form>
 
 <{elseif $xoops_isadmin != false}>
     <form method="post" action="<{$xoops_url}>/modules/<{$xoops_dirname}>/admin/deactivate.php">
-        <input class="btn btn-info btn-sm btn-block" type="button" value="<{$lang_editprofile}>" onclick="location='<{$xoops_url}>/modules/<{$xoops_dirname}>/admin/user.php?op=edit&amp;id=<{$user_uid}>'">
+        <input class="btn btn-info btn-sm" type="button" value="<{$lang_editprofile}>" onclick="location='<{$xoops_url}>/modules/<{$xoops_dirname}>/admin/user.php?op=edit&amp;id=<{$user_uid}>'">
         <input type="hidden" name="uid" value="<{$user_uid}>">
         <{if $userlevel == 1}>
             <input type="hidden" name="level" value="0">
-            <input class="btn btn-info btn-sm btn-block" type="button" value="<{$smarty.const._PROFILE_MA_DEACTIVATE}>" onclick="submit();">
+            <input class="btn btn-info btn-sm" type="button" value="<{$smarty.const._PROFILE_MA_DEACTIVATE}>" onclick="submit();">
         <{else}>
             <input type="hidden" name="level" value="1">
-            <input class="btn btn-info btn-sm btn-block" type="button" value="<{$smarty.const._PROFILE_MA_ACTIVATE}>" onclick="submit();">
+            <input class="btn btn-info btn-sm" type="button" value="<{$smarty.const._PROFILE_MA_ACTIVATE}>" onclick="submit();">
     <{/if}>
     </form>
 <{/if}>

@@ -1,7 +1,7 @@
 <h1 class="text-center"><{$lang_siteclosemsg}></h1>
 <div class="jumbotron">
     <form action="<{$xoops_url}>/user.php" method="post" role="form">
-        <div class="form-group row row">
+        <div class="form-group row mb-3">
             <label class="col-md-2 col-form-label text-md-end">
                 <{$smarty.const.TF_USER_S_ID}>
             </label>
@@ -15,7 +15,7 @@
             <input type="password" name="pass" id="pass" placeholder="<{$smarty.const.TF_USER_PASS}>" class="form-control">
             </div>
 
-            <div class="col-md-2">
+            <div class="col-md-2 d-grid gap-2">
                 <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>">
                 <input type="hidden" name="rememberme" value="On">
                 <input type="hidden" name="op" value="login">

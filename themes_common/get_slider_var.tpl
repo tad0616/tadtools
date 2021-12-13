@@ -7,7 +7,7 @@ $xoopsTpl->assign('slider_var', $slider_var);
 function get_theme_slide_items()
 {
     global $xoopsDB, $xoopsConfig;
-    $sql = "select a.*,b.slide_width,b.slide_height from " . $xoopsDB->prefix("tad_themes_files_center") . " as a left join " . $xoopsDB->prefix("tad_themes") . " as b on a.col_sn=b.theme_id  where a.`col_name`='slide' and b.`theme_name`='{$xoopsConfig['theme_set']}'";
+    $sql = "select a.* from " . $xoopsDB->prefix("tad_themes_files_center") . " as a left join " . $xoopsDB->prefix("tad_themes") . " as b on a.col_sn=b.theme_id  where a.`col_name`='slide' and b.`theme_name`='{$xoopsConfig['theme_set']}'";
 
     $result = $xoopsDB->query($sql);
 

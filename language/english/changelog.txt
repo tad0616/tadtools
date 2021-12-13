@@ -1,3 +1,13 @@
+TadTools 3.47 (Released 2021-12-13)
+====================================
+1.TadDataCenter added several eguide related methods
+2. Enhance TadUpFiles.php file name filtering
+3.Modify TadUpFiles to edit forms with incorrect screen when the file is in list mode.
+4.Modify the CKEditor editor style to be compatible with all versions of BootStrap
+5.Modify BootStrap version determination mechanism
+6.Optimize mColorPicker.js
+7. Support BootStrap5
+
 TadTools 3.46 (Released 2021-10-06)
 ====================================
 1. Change the font size of the navigation bar from % to rem

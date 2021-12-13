@@ -10,6 +10,7 @@ class FancyBox
     public $width;
     public $height;
     public $autoSize;
+    public $type;
 
     //建構函數
     public function __construct($name = '', $width = '90%', $height = null, $show_jquery = true, $show_js = true)
@@ -29,6 +30,11 @@ class FancyBox
         $this->show_js = $show_js;
     }
 
+    public function set_type($value = '')
+    {
+        $this->type = $value;
+    }
+
     //產生語法
     public function render($reload = true, $prevent_closed_outside = false, $auto_play = false, $playSpeed = 0)
     {
@@ -44,6 +50,7 @@ class FancyBox
             overlay : {closeClick: false}
         }' : '';
 
+        $type_opt = $this->type ? "type: '{$this->type}'," : '';
         $autoPlay = $auto_play ? 'autoPlay: true,' : '';
         $playSpeed = $playSpeed ? "playSpeed: {$playSpeed}," : '';
 
@@ -57,6 +64,7 @@ class FancyBox
             $xoTheme->addScript('', null, "
                 jQuery(document).ready(function(){
                     \$('{$this->name}').fancybox({
+                    {$type_opt}
                     fitToView : true,
                     width   : '{$this->width}',
                     height    : '{$this->height}',

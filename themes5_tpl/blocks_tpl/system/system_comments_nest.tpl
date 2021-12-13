@@ -24,7 +24,7 @@
     <{/section}>
     <{if $commentform}>
     <div class="aligncenter">
-        <button class="btn-comment btn btn-primary btn-md" data-toggle="modal" data-target="#comments-form">
+        <button class="btn-comment btn btn-primary btn-md" data-bs-toggle="modal" data-bs-target="#comments-form">
             <span class="glyphicon glyphicon-comment"></span> Add Comment
         </button>
     </div>
@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-dismiss="modal">&times;</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">&times;</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

@@ -25,7 +25,6 @@ class ResponsiveSlides
         $this->item[$sn]['date'] = $date;
         $this->item[$sn]['url'] = $url;
         $this->item[$sn]['width'] = $width;
-        $this->item[$sn]['height'] = $height;
         $this->item[$sn]['target'] = $target;
     }
 
@@ -64,32 +63,14 @@ class ResponsiveSlides
                 {$content_div}
             </div>" : '';
 
-            if ('swf' === mb_strtolower(mb_substr($image, -3))) {
-                //exactfit,default
-                $all .= "
+            $alt = empty($title) ? 'slider image ' . $sn : $title;
+            $caption_link = $caption ? "<a href='{$item_content['url']}' {$item_content['target']}>$caption</a>" : '';
+            $all .= "
                 <li>
-                <object
-                type='application/x-shockwave-flash'
-                data='$image'
-                width='100%'
-                height='{$item_content['height']}'>
-                <param name='scale' value='default'>
-                <param name='movie'
-                value='$image' width='100%' height='{$item_content['height']}' scale='default'>
-                </object>
-                $caption
+                    <a href='{$item_content['url']}' {$item_content['target']}><img src='$image' alt='{$alt}'></a>
+                    $caption_link
                 </li>
-                ";
-            } else {
-                $alt = empty($title) ? 'slider image ' . $sn : $title;
-                $caption_link = $caption ? "<a href='{$item_content['url']}' {$item_content['target']}>$caption</a>" : '';
-                $all .= "
-                    <li>
-                        <a href='{$item_content['url']}' {$item_content['target']}><img src='$image' alt='{$alt}'></a>
-                        $caption_link
-                    </li>
-                ";
-            }
+            ";
 
             $nav .= "<li><span>{$i}</span></li>";
             $i++;

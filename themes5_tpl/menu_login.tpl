@@ -8,7 +8,7 @@
                     <legend>
                     <{$smarty.const.TF_USER_ENTER}>
                     </legend>
-                    <div class="form-group row row">
+                    <div class="form-group row mb-3">
                     <label class="col-md-4 col-form-label text-sm-end" for="uname">
                         <{$smarty.const.TF_USER_S_ID}>
                     </label>
@@ -17,7 +17,7 @@
                     </div>
                     </div>
 
-                    <div class="form-group row row">
+                    <div class="form-group row mb-3">
                     <label class="col-md-4 col-form-label text-sm-end" for="pass">
                         <{$smarty.const.TF_USER_S_PASS}>
                     </label>
@@ -26,10 +26,10 @@
                     </div>
                     </div>
 
-                    <div class="form-group row row">
+                    <div class="form-group row mb-3">
                     <label class="col-md-4 col-form-label text-sm-end">
                     </label>
-                    <div class="col-md-8">
+                    <div class="col-md-8 d-grid gap-2">
                         <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>">
                         <input type="hidden" name="rememberme" value="On">
                         <input type="hidden" name="op" value="login">
@@ -39,7 +39,7 @@
                     </div>
 
                     <{if $allow_register=='1'}>
-                    <div class="form-group row row">
+                    <div class="form-group row mb-3">
                         <div class="col-md-5">
                         <a href="<{$xoops_url}>/register.php" class="btn btn-sm btn-link" style="background: transparent; width: auto; color: #303030; font-size: 0.75em;">
                             <span class="fa fa-pencil"></span>

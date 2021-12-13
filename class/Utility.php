@@ -318,11 +318,15 @@ class Utility
         return $filename;
     }
 
-    public static function html5($content = '', $ui = false, $bootstrap = true, $bootstrap_version = 3, $use_jquery = true, $container = 'container', $title = 'XOOPS', $head_code = '', $font_awesome = true, $SyntaxHighlighter = 3)
+    public static function html5($content = '', $ui = false, $bootstrap = true, $bootstrap_version = '', $use_jquery = true, $container = 'container', $title = 'XOOPS', $head_code = '', $font_awesome = true, $SyntaxHighlighter = 3)
     {
         $jquery = '';
         if ($use_jquery) {
             $jquery = self::get_jquery($ui, true);
+        }
+
+        if (empty($bootstrap_version)) {
+            $bootstrap_version = $_SESSION['bootstrap'];
         }
 
         $bootstrap_link = $bootstrap ? "<link rel='stylesheet' type='text/css' media='all' href='" . XOOPS_URL . "/modules/tadtools/bootstrap{$bootstrap_version}/css/bootstrap.css' />" : '';
@@ -406,38 +410,19 @@ class Utility
             if ($xoopsTpl) {
                 $xoopsTpl->assign('bootstrap_version', $_SESSION['bootstrap']);
             }
-            //die($tt_bootstrap_color);
+
             if ($xoTheme) {
-                if ('bootstrap3' === $tt_bootstrap_color) {
-                    // $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap3/css/bootstrap.css');
-                    // $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm3.css');
-                } elseif ('bootstrap4' === $tt_bootstrap_color) {
-                    $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap4/css/bootstrap.css');
-                    $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm4.css');
-                } else {
-                    $c = explode('/', $tt_bootstrap_color);
-                    if ('bootstrap4' === $c[0]) {
-                        $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap4/css/bootstrap.css');
-                        $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm4.css');
-                        $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/' . $tt_bootstrap_color . '/bootstrap.min.css');
-                    } elseif ('bootstrap3' === $c[0]) {
-                        $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/bootstrap3/css/bootstrap.css');
-                        $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops_adm3.css');
-                        $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/' . $tt_bootstrap_color . '/bootstrap.min.css');
-                    }
-                }
+                $xoTheme->addStylesheet(XOOPS_URL . "/modules/tadtools/bootstrap{$_SESSION['bootstrap']}/css/bootstrap.css");
+                $xoTheme->addStylesheet(XOOPS_URL . "/modules/tadtools/css/xoops_adm{$_SESSION['bootstrap']}.css");
                 $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/fix-bootstrap.css');
                 $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/font-awesome/css/font-awesome.css');
             }
         } elseif ('return' === $mode) {
-            if ('bootstrap4' === $tt_theme_kind) {
-                $main = "
-                <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/bootstrap4/css/bootstrap.css'>";
-            } else {
-                $main = "
-                <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/bootstrap3/css/bootstrap.css'>";
-            }
-            $main .= "<link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css'>";
+            $main = "
+            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/bootstrap{$_SESSION['bootstrap']}/css/bootstrap.css'>
+            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/css/xoops_adm{$_SESSION['bootstrap']}.css'>
+            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/css/fix-bootstrap.css'>
+            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css'>";
 
             return $main;
         }
@@ -1042,7 +1027,7 @@ class Utility
                 $jquery_path = "
                 <script type='text/javascript'>
                 if(typeof jQuery == 'undefined') {
-                document.write(\"<script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/jquery/jquery-3.2.1.js'><\/script>\");
+                document.write(\"<script type='text/javascript' src='" . XOOPS_URL . "/browse.php?Frameworks/jquery/jquery.js'><\/script>\");
                 // document.write(\"<script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/jquery/jquery-migrate-3.0.0.min.js'><\/script>\");
                 // document.write(\"<script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/jquery/jquery.jgrowl.js'><\/script>\");
                 }
@@ -1053,7 +1038,7 @@ class Utility
                 $jquery_path = "
                 <script type='text/javascript'>
                 if(typeof jQuery == 'undefined') {
-                document.write(\"<script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/jquery/jquery-3.2.1.js'><\/script>\");
+                document.write(\"<script type='text/javascript' src='" . XOOPS_URL . "/browse.php?Frameworks/jquery/jquery.js'><\/script>\");
                 // document.write(\"<script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/jquery/jquery-migrate-1.4.1.min.js'><\/script>\");
                 // document.write(\"<script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/jquery/jquery.jgrowl.js'><\/script>\");
                 }

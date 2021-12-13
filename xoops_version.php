@@ -4,7 +4,7 @@ global $xoopsConfig;
 
 $modversion = [];
 $modversion['name'] = _MI_TADTOOLS_NAME;
-$modversion['version'] = 3.46;
+$modversion['version'] = 3.47;
 $modversion['description'] = _MI_TADTOOLS_DESC;
 $modversion['author'] = 'Tad (tad0616@gmail.com)';
 $modversion['credits'] = '';
@@ -19,7 +19,7 @@ $modversion['icons32'] = '../../Frameworks/moduleclasses/icons/32';
 
 //about
 $modversion['module_status'] = 'Final';
-$modversion['release_date'] = '2021/10/06';
+$modversion['release_date'] = '2021/12/13';
 $modversion['module_website_url'] = 'https://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=1';
 $modversion['module_website_name'] = 'XOOPS EZGO';
 $modversion['author_website_url'] = 'https://www.tad0616.net';
@@ -128,7 +128,7 @@ $modversion['config'][$i]['title'] = '_MI_TADTOOLS_INSERT_SPACING';
 $modversion['config'][$i]['description'] = '_MI_TADTOOLS_INSERT_SPACING_DESC';
 $modversion['config'][$i]['formtype'] = 'yesno';
 $modversion['config'][$i]['valuetype'] = 'int';
-$modversion['config'][$i]['default'] = '1';
+$modversion['config'][$i]['default'] = '0';
 
 $i++;
 $modversion['config'][$i]['name'] = 'linkify';

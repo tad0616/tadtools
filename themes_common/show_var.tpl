@@ -138,8 +138,6 @@
                                 <h2>滑動圖片設定</h2>
                                 <table class="table table-striped table-bordered table-hover" style="background:white;">
                                     <tbody <{if !$config_tabs.3}>class="unable"<{/if}>>
-                                        <tr><th>滑動圖片寬度</th><th>$slide_width</th><td><{$slide_width}></td></tr>
-                                        <tr><th>滑動圖片高度</th><th>$slide_height</th><td><{$slide_height}></td></tr>
                                         <tr><th>是否可上傳滑動圖片</th><th>$use_slide</th><td><{$use_slide}></td></tr>
 
                                     </tbody>

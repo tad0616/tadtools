@@ -4,7 +4,7 @@
             <input class="form-control" type="text" name="query" title="search" placeholder="<{$smarty.const.THEME_SEARCH_TEXT}>">
             <input type="hidden" name="action" value="results">
             <div class="input-group-append">
-                <button class="btn btn-info" type="submit"><i class="fa fa-search" aria-hidden="true"></i><span class="sr-only">search</span></button>
+                <button class="btn btn-info" type="submit"><i class="fa fa-search" aria-hidden="true"></i><span class="sr-only visually-hidden">search</span></button>
             </div>
         </div>
     </form>

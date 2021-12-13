@@ -34,7 +34,7 @@ if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/flexslider2.php")) {
     }
 
     if ($no_item_slide_images) {
-        $sql = "select a.*,b.slide_width,b.slide_height from " . $xoopsDB->prefix("tad_themes_files_center") . " as a left join " . $xoopsDB->prefix("tad_themes") . " as b on a.col_sn=b.theme_id  where a.`col_name`='slide' and b.`theme_name`='{$xoopsConfig['theme_set']}'";
+        $sql = "select a.* from " . $xoopsDB->prefix("tad_themes_files_center") . " as a left join " . $xoopsDB->prefix("tad_themes") . " as b on a.col_sn=b.theme_id  where a.`col_name`='slide' and b.`theme_name`='{$xoopsConfig['theme_set']}'";
 
         $result = $xoopsDB->query($sql);
 
@@ -60,13 +60,7 @@ if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/flexslider2.php")) {
                 $slide_target = "";
             }
 
-            if (strtolower(substr($file_name, -3)) == "swf" and $slide_width <= 12) {
-                $slide_width = round((100 / 12) * 12, 0) . "%";
-                if ($slide_height == 0) {
-                    $slide_height = 250;
-                }
-            }
-            $flexslider->add_content($files_sn, $title, $description, XOOPS_URL . "/uploads/tad_themes/{$xoopsConfig['theme_set']}/slide/{$file_name}", $date, $url, $slide_width, $slide_height, $slide_target);
+            $flexslider->add_content($files_sn, $title, $description, XOOPS_URL . "/uploads/tad_themes/{$xoopsConfig['theme_set']}/slide/{$file_name}", $date, $url);
         }
 
         if (empty($slide_images)) {

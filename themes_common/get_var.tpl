@@ -94,6 +94,8 @@ if ($TadThemesMid) {
                 }
                 $this->assign($k, $v);
             }
+            $use_slide=$slide_width>0?1:0;
+            $this->assign('use_slide', $use_slide);
         } elseif (file_exists(XOOPS_ROOT_PATH . "/modules/tad_themes/auto_import_theme.php")) {
             require_once XOOPS_ROOT_PATH . "/modules/tad_themes/auto_import_theme.php";
             auto_import_theme();
@@ -355,10 +357,9 @@ if ($debug == 0) {
 }
 $this->assign('debug', $debug);
 
-/****滑動圖片區設定****/
-if ($slide_height >= 30) {
-    $this->assign('use_search', 1);
-}
+/****是否使用搜尋****/
+$this->assign('use_search', 1);
+
 
 /****導覽工具列、區塊標題CSS設定****/
 $this->assign('navbar_pos', $navbar_pos);

@@ -1,6 +1,6 @@
-<{if $slide_width > 0 }>
+<{if $use_slide}>
   <div <{if $theme_kind|substr:0:9=="bootstrap"}>class="row"<{/if}>>
-    <div <{if $theme_kind|substr:0:9=="bootstrap"}>class="col-sm-<{$slide_width}>"<{/if}> style="position:relative;<{if $slide_height}>height:<{$slide_height}>px;overflow:hidden;<{/if}><{if $theme_kind=="html"}>width:<{$slide_width}>px;<{/if}> ">
+    <div <{if $theme_kind|substr:0:9=="bootstrap"}>class="col-sm-12"<{/if}> style="position:relative;<{if $theme_kind=="html"}>width:100%px;<{/if}> ">
 
     <{if $logo_img and $logo_position=="slide"}>
       <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/logo.tpl"}>

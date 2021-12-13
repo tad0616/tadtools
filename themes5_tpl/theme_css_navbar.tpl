@@ -338,14 +338,6 @@
 
 /*# sourceMappingURL=sm-mint.css.map */
 
-<{if $navbar_pos=='fixed-top'}>
-    <{assign var=margin_top value=50}>
-<{/if}>
-
-<{if $navbar_pos=='fixed-bottom'}>
-    <{assign var=margin_bottom value=50}>
-<{/if}>
-
 #main-nav {
     border: none;
     <{if $nav_display_type=='not_full'}>
