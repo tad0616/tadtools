@@ -1,0 +1,141 @@
+/*****滑動圖片所需樣式 *****/
+
+/*隱藏其它圖片*/
+.slider-wrapper {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 300px;
+  padding: 0px;
+  /* border: 1px solid red; */
+}
+
+/*.s1 .slider-wrapper {border: 1px solid #ccc; position:relative;}*/
+/*.s1 .slider-wrapper {width:600px; height:295px;}*/
+
+/*.slider-holder {overflow:hidden; width:750px; display:block; height:400px; padding:0; margin:0;}*/
+
+/*才有換場動畫效果*/
+.s-active {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+.s1 .slider-wrapper {
+  width: 100%;
+  height: 300px;
+}
+
+/*.s1 .slider-holder {width:600px; display:block; height:295px;}*/
+
+/*****滑動圖片自訂樣式 *****/
+div.slider {
+  width: 100%;
+  height: 300px;
+  position: relative;
+  margin: 0 auto;
+}
+
+ul.slider-holder {
+  padding-left: 0px !important;
+}
+
+.slider-holder li {
+  list-style: none;
+  height: 300px;
+}
+
+.slider-holder li a img {
+  /*和div.slider寬度相同*/
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  /*max-height: 200px;*/
+}
+
+.slider-nav li a,
+.slider-nav li a:visited,
+.slider-nav li a:focus {
+  /* padding: 18px; */
+  text-decoration: none;
+  display: block;
+  color: #fff;
+  font-size: 0.8rem;
+}
+
+.slider-nav li a:hover {
+  background: none repeat scroll 0% 0% rgba(82, 83, 84, 0.8);
+  color: #fff;
+}
+
+.slider-nav {
+  position: absolute;
+  margin: 0;
+  /*完全貼齊上個容器*/
+  top: 0;
+  right: 0;
+}
+
+ul.slider-nav {
+  padding-left: 0px;
+}
+
+.slider-nav li {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  width: 200px;
+  height: 59px;
+  margin: 0px;
+  padding: 0px;
+  /*border-bottom:1px solid #ccc;*/
+  border-bottom: 1px solid #818181;
+  background: none repeat scroll 0% 0% rgba(82, 83, 84, 0.8);
+}
+
+.slider-nav li:last-child {
+  border-bottom: none;
+}
+
+.s1 .slider-nav li a{
+  display: flex;
+  align-items: center;
+  list-style: none;
+  width: 200px;
+  height: 59px;
+  margin: 0px;
+  padding: 0px 10px;
+  border-bottom: 1px solid #818181;
+  background: none repeat scroll 0% 0% rgba(82, 83, 84, 0.8);
+}
+
+.s1 .slider-nav li.active a{
+  background: none repeat scroll 0% 0% #363739;
+}
+
+/*.slider-nav .active {font-weight:bold;}*/
+
+.slider_shadow {
+  width: 100%;
+  margin: 0 auto;
+  background: url("./slidershadowbg.png") no-repeat scroll center center / 100% auto transparent;
+  height: 38px;
+  margin-top: -15px;
+  z-index: -1000;
+}
+
+/*顯示向左箭頭*/
+.slider-nav li.active a .slider-arrow-left {
+  visibility: visible;
+}
+
+.slider-nav li a .slider-arrow-left {
+  position: absolute;
+  left: -8px;
+  /*top: 52px;*/
+  color: #363739;
+  /*color:rgba(82, 83, 84, 0.8);*/
+  font-size: 1.56em;
+  visibility: hidden;
+}

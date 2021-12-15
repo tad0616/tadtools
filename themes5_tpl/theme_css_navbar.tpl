@@ -188,9 +188,13 @@
     border-radius: 4px;
   }
   .sm-mint ul a, .sm-mint ul a:hover, .sm-mint ul a:focus, .sm-mint ul a:active, .sm-mint ul a.highlighted {
-    border: 0 !important;
     padding: 10px 20px;
     border-radius: 0;
+    <{if $nav_line=='1'}>
+    border-top: 1px solid #eee;
+    <{else}>
+    border: 0 !important;
+    <{/if}>
   }
   .sm-mint ul a:hover, .sm-mint ul a:focus, .sm-mint ul a:active, .sm-mint ul a.highlighted {
     background: <{$navbar_hover}>;
