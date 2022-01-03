@@ -73,7 +73,7 @@
 							break;
 
 						case "slide-vertical":
-							newPos = $m.slideAnimSetup($m.props.sHeight+1,"top",pos);
+							newPos = $m.slideAnimSetup($m.props.sHeight+2,"top",pos);
 							$m.props.sUL.animate({"top": newPos + "px"}, $m.props.animTime, $m.props.easingStyle, $m.transAnimCallback);
 							break;
 

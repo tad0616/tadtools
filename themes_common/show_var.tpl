@@ -376,13 +376,21 @@
 
 
                         //額外佈景設定
-                        $config2_files=array('config2_base','config2_bg','config2_slide','config2_logo','config2_block','config2_nav','config2');
+                        $config2_files = ['config2_base', 'config2_bg', 'config2_logo', 'config2_nav', 'config2_slide', 'config2_content', 'config2_block', 'config2_topdiv', 'config2_footer', 'config2'];
                         foreach($config2_files as $config2_file){
+                            $theme_config=[];
 
                             if(file_exists(XOOPS_ROOT_PATH."/themes/{$theme_name}/{$config2_file}.php")){
 
                                 echo "                <tr><th colspan=3><h2>佈景額外{$config2_file}設定</h2></th></tr>\n";
+
                                 require XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php";
+                                //if (file_exists(XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}/{$config2_file}.php")) {
+                                //    require XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}/{$config2_file}.php";
+                                //}else{
+                                //    require XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php";
+                                //}
+
                                 foreach($theme_config as $k=>$config){
                                     $name = $config['name'];
 
@@ -406,6 +414,8 @@
                                         $value = !empty($value) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/config2/{$value}":'';
                                     }
 
+                                    $value=htmlspecialchars($value);
+
                                     echo "                        <tr><th>{$config['text']}</th><th>\${$name}</th><td>{$value}</td></tr>\n";
 
                                     if($config['type'] == "bg_file") {
@@ -415,6 +425,11 @@
                                         echo "                        <tr><th>{$config['text']} position</th><th>\${$name}_position</th><td>{$value_position}</td></tr>\n";
                                         $value_size =is_null($config2[$name.'_size']) ? $config['sub_default']['size'] : $config2[$name.'_size'];
                                         echo "                        <tr><th>{$config['text']} size</th><th>\${$name}_size</th><td>{$value_size}</td></tr>\n";
+                                    }elseif($config['type'] == "padding_margin") {
+                                        $value_mt =is_null($config2[$name.'_mt']) ? $config['sub_default']['mt'] : $config2[$name.'_mt'];
+                                        echo "                        <tr><th>{$config['text']} margin-top</th><th>\${$name}_mt</th><td>{$value_mt}</td></tr>\n";
+                                        $value_mb =is_null($config2[$name.'_mb']) ? $config['sub_default']['mb'] : $config2[$name.'_mb'];
+                                        echo "                        <tr><th>{$config['text']} margin-bottom</th><th>\${$name}_mb</th><td>{$value_mb}</td></tr>\n";
                                     }
                                 }
                             }

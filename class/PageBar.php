@@ -123,7 +123,8 @@ class PageBar
     public function processQuery($used_query)
     {
         // 將 URL 字串分離成二維陣列
-        $QUERY_STRING = htmlspecialchars($_SERVER['QUERY_STRING']);
+        // $QUERY_STRING = htmlspecialchars($_SERVER['QUERY_STRING']);
+        $QUERY_STRING = $_SERVER['QUERY_STRING'];
         $vars = explode('&', $QUERY_STRING);
         //die(var_export($vars));
         $len = \mb_strlen('amp;' . $this->url_page);
@@ -135,6 +136,7 @@ class PageBar
             //echo substr($vars[$i],0,7)."<br>";
             $var[$i] = explode('=', $vars[$i]);
         }
+        // Utility::dd($var);
 
         // 過濾要使用的 URL 變數名稱
         for ($i = 0; $i < count($var); $i++) {

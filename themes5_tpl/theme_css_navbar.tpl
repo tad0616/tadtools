@@ -344,7 +344,8 @@
 
 #main-nav {
     border: none;
-    <{if $nav_display_type=='not_full'}>
+    position: relative;
+    <{* <{if $nav_display_type=='not_full'}>
         <{if $navbar_img}>
             background-color: tranparent;
             background-image: url(<{$navbar_img}>);
@@ -354,12 +355,12 @@
         <{else}>
             background: linear-gradient(<{$navbar_bg_top}>, <{$navbar_bg_bottom}>);
         <{/if}>
-    <{/if}>
+    <{/if}> *}>
 }
 
 /* Complete navbar .sm-mint */
 
-.main-nav {
+<{* .main-nav {
   /* border-bottom: 2px solid #8db863;
   background: #fff; */
 }
@@ -371,7 +372,7 @@
   height: 0;
   font: 0rem/0 serif;
   overflow: hidden;
-}
+} *}>
 
 .nav-brand {
   float: left;

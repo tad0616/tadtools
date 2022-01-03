@@ -416,7 +416,7 @@ $this->assign('positions', $positions);
 /****佈景額外設定****/
 //額外佈景設定
 $config2=[];
-$config2_files = array('config2_base', 'config2_bg', 'config2_slide', 'config2_logo', 'config2_block', 'config2_nav', 'config2');
+$config2_files = ['config2_base', 'config2_bg', 'config2_logo', 'config2_nav', 'config2_slide', 'config2_block', 'config2_topdiv', 'config2_footer', 'config2_content', 'config2'];
 
 if ($TadThemesMid) {
     $config2_json_file = XOOPS_VAR_PATH . "/data/tad_themes_config2.json";
@@ -437,8 +437,17 @@ if ($TadThemesMid) {
 }
 
 foreach ($config2_files as $config2_file) {
+    $theme_config=[];
     if (file_exists(XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php")) {
-        require_once XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php";
+        require XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php";
+
+        //if (file_exists(XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}/{$config2_file}.php")) {
+        //    require XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}/{$config2_file}.php";
+        //}else{
+        //    require XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php";
+        //}
+
+        //$value_arr=[];
 
         foreach ($theme_config as $k => $config) {
             $name = $config['name'];
@@ -452,18 +461,34 @@ foreach ($config2_files as $config2_file) {
             } elseif ($config['type'] == "file" or $config['type'] == "bg_file") {
                 $value = !empty($value) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/config2/{$value}":'';
             }
+            //$value_arr[$name] = $value;
             $this->assign($name, $value);
 
             if($config['type'] == "bg_file") {
                 $value_repeat =is_null($config2[$name.'_repeat']) ? $config['sub_default']['repeat'] : $config2[$name.'_repeat'];
                 $this->assign($name.'_repeat', $value_repeat);
+                //$value_arr[$name.'_repeat']=$value_repeat;
+
                 $value_position =is_null($config2[$name.'_position']) ? $config['sub_default']['position'] : $config2[$name.'_position'];
                 $this->assign($name.'_position', $value_position);
+                //$value_arr[$name.'_position']=$value_position;
+
                 $value_size =is_null($config2[$name.'_size']) ? $config['sub_default']['size'] : $config2[$name.'_size'];
                 $this->assign($name.'_size', $value_size);
+                //$value_arr[$name.'_size']=$value_size;
+
+            }elseif($config['type'] == "padding_margin") {
+                $value_mt =is_null($config2[$name.'_mt']) ? $config['sub_default']['mt'] : $config2[$name.'_mt'];
+                $this->assign($name.'_mt', $value_mt);
+                //$value_arr[$name.'_mt']=$value_mt;
+
+                $value_mb =is_null($config2[$name.'_mb']) ? $config['sub_default']['mb'] : $config2[$name.'_mb'];
+                $this->assign($name.'_mb', $value_mb);
+                //$value_arr[$name.'_mb']=$value_mb;
             }
         }
     }
+    //$this->assign($config2_file, $value_arr);
 }
 
 /****佈景 TadDataCenter 設定****/

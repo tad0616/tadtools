@@ -113,7 +113,7 @@
         <script type="text/javascript">
             $(document).ready(function(){
                 if($( window ).width() > 768){
-                    $("#nav-container").sticky({topSpacing:0 , zIndex: 100});
+                    $("#nav-wrapper").sticky({topSpacing:0 , zIndex: 100});
                 }else{
                     $('li.hide-in-phone').hide();
                 }
@@ -121,10 +121,10 @@
 
             $( window ).resize(function() {
                 if($( window ).width() > 768){
-                    $("#nav-container").sticky({topSpacing:0 , zIndex: 100});
+                    $("#nav-wrapper").sticky({topSpacing:0 , zIndex: 100});
                     $('li.hide-in-phone').show();
                 }else{
-                    $("#nav-container").unstick();
+                    $("#nav-wrapper").unstick();
                     $('li.hide-in-phone').hide();
                 }
             });

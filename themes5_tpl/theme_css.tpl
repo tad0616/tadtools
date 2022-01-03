@@ -21,45 +21,14 @@
         color:<{$hover_color}>;
     }
 
-    #logo-container{
-        <{if $logo_display_type!='not_full'}>
-        background-color: <{$logo_bgcolor}>;
-        <{else}>
-        background-color: transparent;
-        <{/if}>
-    }
 
-    #logo-container-display{
-        <{if $logo_display_type=='not_full'}>
-        background-color: <{$logo_bgcolor}>;
-        <{else}>
-        background-color: transparent;
-        <{/if}>
-    }
-
-
-    #slide-container{
-        <{if $slide_display_type!='not_full'}>
-        background-color: <{$slide_bgcolor}>;
-        <{else}>
-        background-color: transparent;
-        <{/if}>
-    }
-
-    #slide-container-display{
-        <{if $slide_display_type=='not_full'}>
-        background-color: <{$slide_bgcolor}>;
-        <{else}>
-        background-color: transparent;
-        <{/if}>
-    }
 
     #nav-container {
         <{if $navbar_pos=='fixed-bottom'}>
             position: fixed;
             bottom: 0px;
         <{else}>
-            position: relative;
+            /* position: relative; */
         <{/if}>
         z-index: 11;
         <{if $nav_display_type=='not_full'}>
@@ -93,50 +62,6 @@
         <{/if}>
     }
 
-    #content-container{
-        <{if $content_display_type=='not_full'}>
-            background-color: tranparent;
-        <{else}>
-            background-color: <{$base_color}>;
-        <{/if}>
-    }
-
-    #content-container-display{
-        <{if $content_display_type=='not_full'}>
-            background-color: <{$base_color}>;
-        <{else}>
-            background-color:tranparent;
-        <{/if}>
-    }
-
-    #footer-container{
-        position: relative;
-        z-index: 8;
-        <{if $footer_display_type=='not_full'}>
-            background-color:tranparent;
-        <{else}>
-            background-color: <{$footer_bgcolor}>;
-            margin-bottom:<{$margin_bottom}>px;
-            min-height:<{$footer_height}>;
-            background:<{$footer_bgcolor}> <{if $footer_img}>url(<{$footer_img}>)<{/if}>;
-            <{$foot_bg_css}>
-        <{/if}>
-    }
-
-    #footer-container-display{
-        padding:<{$footer_padding}>;
-        color:<{$footer_color}>;
-        <{$footer_style}>
-        <{if $footer_display_type=='not_full'}>
-            background-color: <{$footer_bgcolor}>;
-            margin-bottom:<{$margin_bottom}>px;
-            min-height:<{$footer_height}>;
-            background:<{$footer_bgcolor}> <{if $footer_img}>url(<{$footer_img}>)<{/if}>;
-            <{$foot_bg_css}>
-        <{else}>
-            background-color:tranparent;
-        <{/if}>
-    }
 
     <{includeq file="$xoops_rootpath/modules/tadtools/themes5_tpl/theme_css_blocks.tpl"}>
 
