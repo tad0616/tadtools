@@ -47,6 +47,7 @@
                     <table class="table table-striped table-bordered table-hover" style="background:white;">
                         <tr><th colspan=3><h2>基本設定</h2></th></tr>
                         <tr><th>佈景種類</th><th>$theme_kind</th><td><{$theme_kind}></td></tr>
+                        <tr><th>BootStrap版本</th><th>$bootstrap</th><td><{$bootstrap}></td></tr>
                         <tr><th>佈景編號</th><th>$theme_id</th><td><{$theme_id}></td></tr>
                         <tr><th>佈景名稱</th><th>$theme_name</th><td><{$theme_name}></td></tr>
                         <tr><th>bootstrap顏色</th><th>$theme_color</th><td><{$theme_color}></td></tr>

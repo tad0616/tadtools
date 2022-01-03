@@ -5,14 +5,14 @@
         </div>
 
         <div id="xoops_theme_left_zone" class="col-xl-<{$lb_width}>">
-            <div id="xoops_theme_left" style="background-color:<{$lb_color}>;<{$leftBlocks}>">
+            <div id="xoops_theme_left" style="<{$leftBlocks}>">
                 <a accesskey="L" href="#xoops_theme_left_zone_key" title="<{$smarty.const._TAD_LEFT_ZONE}>" id="xoops_theme_left_zone_key" style="color: transparent; font-size: 0.625rem;">:::</a>
                 <{includeq file="$xoops_rootpath/modules/tadtools/themes5_tpl/leftBlock.tpl"}>
             </div>
         </div>
 
         <div id="xoops_theme_right_zone" class="col-xl-<{$rb_width}>">
-            <div id="xoops_theme_right" style="background-color:<{$rb_color}>;<{$rightBlocks}>">
+            <div id="xoops_theme_right" style="<{$rightBlocks}>">
                 <a accesskey="R" href="#xoops_theme_right_zone_key" title="<{$smarty.const._TAD_RIGHT_ZONE}>" id="xoops_theme_right_zone_key" style="color: transparent; font-size: 0.625rem;">:::</a>
                 <{includeq file="$xoops_rootpath/modules/tadtools/themes5_tpl/rightBlock.tpl"}>
             </div>
@@ -23,7 +23,7 @@
         </div>
 
         <div id="xoops_theme_left_zone" class="col-xl-3">
-            <div id="xoops_theme_left" style="background-color:<{$lb_color}>;<{$leftBlocks}>">
+            <div id="xoops_theme_left" style="<{$leftBlocks}>">
                 <a accesskey="L" href="#xoops_theme_left_zone_key" title="<{$smarty.const._TAD_LEFT_ZONE}>" id="xoops_theme_left_zone_key" style="color: transparent; font-size: 0.625rem;">:::</a>
                 <{includeq file="$xoops_rootpath/modules/tadtools/themes5_tpl/leftBlock.tpl"}>
             </div>
@@ -34,7 +34,7 @@
         </div>
 
         <div id="xoops_theme_right_zone" class="col-xl-3">
-            <div id="xoops_theme_right" style="background-color:<{$rb_color}>;<{$rightBlocks}>">
+            <div id="xoops_theme_right" style="<{$rightBlocks}>">
                 <a accesskey="R" href="#xoops_theme_right_zone_key" title="<{$smarty.const._TAD_RIGHT_ZONE}>" id="xoops_theme_right_zone_key" style="color: transparent; font-size: 0.625rem;">:::</a>
                 <{includeq file="$xoops_rootpath/modules/tadtools/themes5_tpl/rightBlock.tpl"}>
             </div>

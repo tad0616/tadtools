@@ -140,7 +140,7 @@ if ($theme_type == 'theme_type_1') {
         $center_block .= "float:right; width:{$center_width}px;";
         $center_block_content = "width:{$center_content_width}px;";
         $right_block .= " width:{$rb_width}px;";
-    } elseif ($theme_kind == "bootstrap4") {
+    } elseif ($theme_kind == "bootstrap4" || $theme_kind == "bootstrap5") {
         $center_width = $cb_width;
         if ($lb_width == 'auto') {
             $lb_width = 12 - $cb_width;
@@ -162,7 +162,7 @@ if ($theme_type == 'theme_type_1') {
         $center_block .= "float:left;  width:{$center_width}px; padding-left: 15px;";
         $center_block_content = $center_block;
         $right_block .= "width:{$rb_width}px;";
-    } elseif ($theme_kind == "bootstrap4") {
+    } elseif ($theme_kind == "bootstrap4" || $theme_kind == "bootstrap5") {
         $center_width = $cb_width;
         if ($rb_width == 'auto') {
             $rb_width = 12 - $cb_width;
@@ -186,7 +186,7 @@ if ($theme_type == 'theme_type_1') {
         $right_block .= "float:none;  width:{$theme_width}px; clear:both;";
         $left_block2 = "";
         $right_block2 .= "float:left; padding-left: 15px;";
-    } elseif ($theme_kind == "bootstrap4") {
+    } elseif ($theme_kind == "bootstrap4" || $theme_kind == "bootstrap5") {
         $center_width = $cb_width;
         if ($lb_width == 'auto') {
             $lb_width = 12 - $cb_width;
@@ -211,7 +211,7 @@ if ($theme_type == 'theme_type_1') {
         $right_block .= "float:none; width:{$theme_width}px; clear:both;";
         $left_block2 = "";
         $right_block2 .= "float:left; padding-left: 15px;";
-    } elseif ($theme_kind == "bootstrap4") {
+    } elseif ($theme_kind == "bootstrap4" || $theme_kind == "bootstrap5") {
         $center_width = $cb_width;
         if ($lb_width == 'auto') {
             $lb_width = 12 - $cb_width;
@@ -239,7 +239,7 @@ if ($theme_type == 'theme_type_1') {
         $center_block .= "float:left;  width:{$center_width}px;";
         $right_block .= "float:right;  width:{$rb_width}px;";
         $left_block2 = $right_block2 = $center_block_content = "";
-    } elseif ($theme_kind == "bootstrap4") {
+    } elseif ($theme_kind == "bootstrap4" || $theme_kind == "bootstrap5") {
         $center_width = $cb_width;
     } else {
         $center_width = $theme_width - $lb_width - $rb_width;
@@ -263,7 +263,7 @@ if ($theme_type == 'theme_type_1') {
         $center_block_content = "width:{$center_content_width}px;";
         $right_block .= "float:left;  width:{$rb_width}px;";
         $left_block2 = $right_block2 = "";
-    } elseif ($theme_kind == "bootstrap4") {
+    } elseif ($theme_kind == "bootstrap4" || $theme_kind == "bootstrap5") {
         $center_width = $cb_width;
     } else {
         $center_width = $theme_width - $lb_width - $rb_width;
@@ -285,7 +285,7 @@ if ($theme_type == 'theme_type_1') {
         $center_block .= "float:left;  width:{$center_width}px; padding-left: 15px;";
         $right_block .= "float:right;  width:{$rb_width}px;";
         $left_block2 = $right_block2 = $center_block_content = "";
-    } elseif ($theme_kind == "bootstrap4") {
+    } elseif ($theme_kind == "bootstrap4" || $theme_kind == "bootstrap5") {
         $center_width = $cb_width;
     } else {
         $center_width = $theme_width - $lb_width - $rb_width;
@@ -301,7 +301,7 @@ if ($theme_type == 'theme_type_1') {
         $left_block2 .= "";
         $right_block2 .= "";
         $center_block_content = "";
-    } elseif ($theme_kind == "bootstrap4") {
+    } elseif ($theme_kind == "bootstrap4" || $theme_kind == "bootstrap5") {
         $lb_width = $center_width = $rb_width = "12";
     } else {
         $lb_width = $center_width = $rb_width = "12";
@@ -511,6 +511,10 @@ $sql = "select conf_value from " . $xoopsDB->prefix("config") . " where conf_nam
 $result = $xoopsDB->query($sql);
 list($allow_register) = $xoopsDB->fetchRow($result);
 $this->assign('allow_register', $allow_register);
+
+if(strpos($theme_kind,"bootstrap")!==false){
+    $this->assign('bootstrap', substr($theme_kind,-1));
+}
 
 <{/php}>
 <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/get_main_var.tpl"}>
