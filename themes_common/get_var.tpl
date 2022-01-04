@@ -61,6 +61,11 @@ foreach ($default as $k => $v) {
     $this->assign($k, $$k);
 }
 
+if(!file_exists(XOOPS_ROOT_PATH . "/uploads/bootstrap.conf")){
+    $bootstrap = (strpos($theme_kind, 'bootstrap') !== false) ? substr($theme_kind, -1) : '4';
+    file_put_contents(XOOPS_ROOT_PATH . "/uploads/bootstrap.conf", "bootstrap = {$bootstrap}");
+}
+
 if ($TadThemesMid) {
 
     $TadThemesModuleConfig = $configHandler->getConfigsByCat(0, $TadThemesMid);
@@ -512,9 +517,6 @@ $result = $xoopsDB->query($sql);
 list($allow_register) = $xoopsDB->fetchRow($result);
 $this->assign('allow_register', $allow_register);
 
-if(strpos($theme_kind,"bootstrap")!==false){
-    $this->assign('bootstrap', substr($theme_kind,-1));
-}
 
 <{/php}>
 <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/get_main_var.tpl"}>
