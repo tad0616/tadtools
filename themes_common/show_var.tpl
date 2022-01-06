@@ -377,7 +377,7 @@
 
 
                         //額外佈景設定
-                        $config2_files = [['config2_base', 'config2_bg', 'config2_top', 'config2_logo', 'config2_nav', 'config2_slide', 'config2_content', 'config2_block', 'config2_footer', 'config2_bottom', 'config2']];
+                        $config2_files = ['config2_base', 'config2_bg', 'config2_top', 'config2_logo', 'config2_nav', 'config2_slide', 'config2_content', 'config2_block', 'config2_footer', 'config2_bottom', 'config2'];
                         foreach($config2_files as $config2_file){
                             $theme_config=[];
 
