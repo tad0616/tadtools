@@ -322,7 +322,7 @@ class Utility
     {
         $jquery = '';
         if ($use_jquery) {
-            $jquery = self::get_jquery($ui, true);
+            $jquery = self::get_jquery($ui, 'return');
         }
 
         if (empty($bootstrap_version)) {

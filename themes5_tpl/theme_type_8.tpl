@@ -1,4 +1,4 @@
-<div id="xoops_theme_content_zone" class="row">
+<div id="xoops_theme_content_zone" class="row g-0">
     <{if $xoBlocks.canvas_left}>
         <div class="col-xl-12" id="xoops_theme_left_zone">
             <a accesskey="L" href="#xoops_theme_left_zone_key" title="<{$smarty.const._TAD_LEFT_ZONE}>" id="xoops_theme_left_zone_key" style="color: transparent; font-size: 0.625rem;">:::</a>

@@ -61,6 +61,8 @@
                 'width': '',
                 'position': '',
                 'top': '',
+                'left': '',
+                'margin-left': '',
                 'z-index': ''
               });
             s.stickyElement.parent().removeClass(s.className);
@@ -87,11 +89,18 @@
             if (newWidth == null) {
                 newWidth = s.stickyElement.width();
             }
+
             s.stickyElement
               .css('width', newWidth)
               .css('position', 'fixed')
               .css('top', newTop)
               .css('z-index', s.zIndex);
+
+            if (s.getWidthFrom) {
+              s.stickyElement
+              .css('left', '50%')
+              .css('margin-left', '-'+newWidth/2+'px');
+            }
 
             s.stickyElement.parent().addClass(s.className);
 
@@ -121,6 +130,8 @@
             s.stickyElement
               .css('position', 'absolute')
               .css('top', '')
+              .css('left', '')
+              .css('margin-left', '')
               .css('bottom', 0)
               .css('z-index', '');
           } else {
@@ -129,6 +140,11 @@
               .css('top', newTop)
               .css('bottom', '')
               .css('z-index', s.zIndex);
+              if (s.getWidthFrom) {
+                s.stickyElement
+                .css('left', '50%')
+                .css('margin-left', '-'+newWidth/2+'px');
+              }
           }
         }
       }
@@ -245,6 +261,8 @@
                 'width': '',
                 'position': '',
                 'top': '',
+                'left': '',
+                'margin-left': '',
                 'float': '',
                 'z-index': ''
               })

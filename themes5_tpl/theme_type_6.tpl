@@ -1,4 +1,4 @@
-<div id="xoops_theme_content_zone" class="row">
+<div id="xoops_theme_content_zone" class="row g-0">
     <!-- 若是有左、右區塊 -->
     <{if $xoBlocks.canvas_left and $xoBlocks.canvas_right}>
         <{assign var=push_width value=$lb_width+$rb_width}>

@@ -1,4 +1,4 @@
-<div class="row" id="xoops_theme_content_zone">
+<div class="row g-0" id="xoops_theme_content_zone">
     <{if $xoBlocks.canvas_left or $xoBlocks.canvas_right}>
         <div class="col-xl-<{$cb_width}>" id="xoops_theme_center_zone" style="<{$centerBlocks}>">
             <{includeq file="$xoops_rootpath/modules/tadtools/themes5_tpl/centerZone.tpl"}>
