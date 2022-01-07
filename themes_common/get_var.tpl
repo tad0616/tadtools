@@ -1,6 +1,7 @@
 <{php}>
 global $xoopsDB, $xoopsConfig, $aggreg;
 
+/**** 取得左右區塊數 ****/
 $left_count = $aggreg ? count($aggreg->blocks['canvas_left']) : 0;
 $right_count =  $aggreg ? count($aggreg->blocks['canvas_right']) : 0;
 $xoops_showlblock = empty($left_count) ? false : true;
@@ -20,7 +21,7 @@ $this->assign('use_pin', $TadThemesConfig['use_pin']);
 $use_default_config = false;
 
 
-/****檔案預設值****/
+/**** 取得佈景設定的各個預設值 ****/
 $theme_name = $xoopsConfig['theme_set'];
 require_once XOOPS_ROOT_PATH . "/themes/{$theme_name}/config.php";
 require_once XOOPS_ROOT_PATH . "/modules/tadtools/language/{$xoopsConfig['language']}/main.php";
@@ -30,7 +31,8 @@ foreach ($config_enable as $k => $v) {
     $$k = $v['default'];
     $this->assign($k, $v['default']);
 }
-//模擬偏好設定預設值
+
+/**** 模擬偏好設定預設值（避免沒裝 tad_theme 無法取得資料庫資料） ****/
 $default['auto_mainmenu'] = '1';
 $default['show_sitename'] = '1';
 $default['openid_login'] = '0';
@@ -55,17 +57,19 @@ $default['navlogo_img'] = !empty($navlogo_img) ? XOOPS_URL . "/themes/{$theme_na
 $default['navbar_img'] = !empty($navbar_img) ? XOOPS_URL . "/themes/{$theme_name}/images/nav_bg/{$navbar_img}" : "";
 $default['bt_bg_img'] = !empty($bt_bg_img) ? XOOPS_URL . "/themes/{$theme_name}/images/bt_bg/{$bt_bg_img}" : "";
 
-
 foreach ($default as $k => $v) {
     $$k = $v;
     $this->assign($k, $$k);
 }
 
+/**** 產生 Smarty 的設定檔（以取得 bootstrap 版本） ****/
 if(!file_exists(XOOPS_ROOT_PATH . "/uploads/bootstrap.conf")){
     $bootstrap = (strpos($theme_kind, 'bootstrap') !== false) ? substr($theme_kind, -1) : '4';
     file_put_contents(XOOPS_ROOT_PATH . "/uploads/bootstrap.conf", "bootstrap = {$bootstrap}");
 }
 
+
+/**** 有裝 tad_theme 取得資料庫資料 ****/
 if ($TadThemesMid) {
 
     $TadThemesModuleConfig = $configHandler->getConfigsByCat(0, $TadThemesMid);
@@ -82,13 +86,12 @@ if ($TadThemesMid) {
     $this->assign('openid_login', $TadThemesModuleConfig['openid_login']);
     $this->assign('openid_logo', $TadThemesModuleConfig['openid_logo']);
 
-    /****Tad Themes的設定值****/
+    /**** Tad Themes 的設定值****/
     if (file_exists(XOOPS_ROOT_PATH . "/modules/tad_themes/xoops_version.php")) {
         $file_col = ['bg_img' => 'bg', 'logo_img' => 'logo', 'navlogo_img' => 'navlogo', 'navbar_img' => 'nav_bg'];
         $file_cols = array_keys($file_col);
         $sql = "select * from " . $xoopsDB->prefix("tad_themes") . " where `theme_name`='{$theme_name}'";
         $result = $xoopsDB->query($sql);
-        //$theme_exist=$xoopsDB->getRowsNum($result);
         $data = $xoopsDB->fetchArray($result);
 
         if (!empty($data) and !empty($data['theme_width'])) {
@@ -99,7 +102,8 @@ if ($TadThemesMid) {
                 }
                 $this->assign($k, $v);
             }
-            $use_slide=$slide_width>0?1:0;
+
+            $use_slide = $slide_width > 0 ? 1 : 0;
             $this->assign('use_slide', $use_slide);
         } elseif (file_exists(XOOPS_ROOT_PATH . "/modules/tad_themes/auto_import_theme.php")) {
             require_once XOOPS_ROOT_PATH . "/modules/tad_themes/auto_import_theme.php";
@@ -418,7 +422,8 @@ foreach ($block_position as $position) {
 }
 $this->assign('positions', $positions);
 
-/****佈景額外設定****/
+/**** 佈景額外設定 ****/
+
 //額外佈景設定
 $config2=[];
 $config2_files = ['config2_base', 'config2_bg', 'config2_top', 'config2_logo', 'config2_nav', 'config2_slide', 'config2_content', 'config2_block', 'config2_footer', 'config2_bottom', 'config2'];
@@ -429,7 +434,6 @@ if ($TadThemesMid) {
         $json_content = file_get_contents($config2_json_file);
         $config2 = json_decode($json_content, true);
     }else{
-
         $sql = "select `name`, `type`, `value` from " . $xoopsDB->prefix("tad_themes_config2") . " where `theme_id`='{$theme_id}'";
         $result = $xoopsDB->query($sql);
         while (list($name, $type, $value) = $xoopsDB->fetchRow($result)) {
@@ -441,18 +445,11 @@ if ($TadThemesMid) {
     }
 }
 
+/**** 依序讀取佈景額外設定檔 ****/
 foreach ($config2_files as $config2_file) {
     $theme_config=[];
     if (file_exists(XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php")) {
         require XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php";
-
-        //if (file_exists(XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}/{$config2_file}.php")) {
-        //    require XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}/{$config2_file}.php";
-        //}else{
-        //    require XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php";
-        //}
-
-        //$value_arr=[];
 
         foreach ($theme_config as $k => $config) {
             $name = $config['name'];
@@ -466,34 +463,27 @@ foreach ($config2_files as $config2_file) {
             } elseif ($config['type'] == "file" or $config['type'] == "bg_file") {
                 $value = !empty($value) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/config2/{$value}":'';
             }
-            //$value_arr[$name] = $value;
             $this->assign($name, $value);
 
             if($config['type'] == "bg_file") {
                 $value_repeat =is_null($config2[$name.'_repeat']) ? $config['sub_default']['repeat'] : $config2[$name.'_repeat'];
                 $this->assign($name.'_repeat', $value_repeat);
-                //$value_arr[$name.'_repeat']=$value_repeat;
 
                 $value_position =is_null($config2[$name.'_position']) ? $config['sub_default']['position'] : $config2[$name.'_position'];
                 $this->assign($name.'_position', $value_position);
-                //$value_arr[$name.'_position']=$value_position;
 
                 $value_size =is_null($config2[$name.'_size']) ? $config['sub_default']['size'] : $config2[$name.'_size'];
                 $this->assign($name.'_size', $value_size);
-                //$value_arr[$name.'_size']=$value_size;
 
             }elseif($config['type'] == "padding_margin") {
                 $value_mt =is_null($config2[$name.'_mt']) ? $config['sub_default']['mt'] : $config2[$name.'_mt'];
                 $this->assign($name.'_mt', $value_mt);
-                //$value_arr[$name.'_mt']=$value_mt;
 
                 $value_mb =is_null($config2[$name.'_mb']) ? $config['sub_default']['mb'] : $config2[$name.'_mb'];
                 $this->assign($name.'_mb', $value_mb);
-                //$value_arr[$name.'_mb']=$value_mb;
             }
         }
     }
-    //$this->assign($config2_file, $value_arr);
 }
 
 /****佈景 TadDataCenter 設定****/

@@ -364,7 +364,6 @@
                             $json_content = file_get_contents($config2_json_file);
                             $config2 = json_decode($json_content, true);
                         }else{
-
                             $sql = "select `name`, `type`, `value` from " . $xoopsDB->prefix("tad_themes_config2") . " where `theme_id`='{$theme_id}'";
                             $result = $xoopsDB->query($sql);
                             while (list($name, $type, $value) = $xoopsDB->fetchRow($result)) {
