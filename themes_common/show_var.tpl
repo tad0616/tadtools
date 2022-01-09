@@ -430,6 +430,13 @@
                                         echo "                        <tr><th>{$config['text']} margin-top</th><th>\${$name}_mt</th><td>{$value_mt}</td></tr>\n";
                                         $value_mb =is_null($config2[$name.'_mb']) ? $config['sub_default']['mb'] : $config2[$name.'_mb'];
                                         echo "                        <tr><th>{$config['text']} margin-bottom</th><th>\${$name}_mb</th><td>{$value_mb}</td></tr>\n";
+                                    }elseif($config['type'] == "checkbox" and !empty($config2[$name.'_bid'])) {
+                                        $sql = "select options from " . $xoopsDB->prefix('newblocks') . "
+                                        where `bid` = {$config2[$name.'_bid']}";
+                                        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                                        list ($options) = $xoopsDB->fetchRow($result);
+                                        echo "                        <tr><th>{$config['text']} bid</th><th>\${$name}_bid</th><td>{$config2[$name.'_bid']}</td></tr>\n";
+                                        echo "                        <tr><th>{$config['text']} options</th><th>\${$name}_options</th><td>{$options}</td></tr>\n";
                                     }
                                 }
                             }

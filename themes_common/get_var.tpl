@@ -3,7 +3,7 @@ global $xoopsDB, $xoopsConfig, $aggreg;
 
 /**** 取得左右區塊數 ****/
 $left_count = $aggreg ? count($aggreg->blocks['canvas_left']) : 0;
-$right_count =  $aggreg ? count($aggreg->blocks['canvas_right']) : 0;
+$right_count = $aggreg ? count($aggreg->blocks['canvas_right']) : 0;
 $xoops_showlblock = empty($left_count) ? false : true;
 $xoops_showrblock = empty($right_count) ? false : true;
 
@@ -19,7 +19,6 @@ $TadThemesConfig = $configHandler->getConfigsByCat(0, $TadThemesMid);
 $this->assign('TadThemesMid', $TadThemesMid);
 $this->assign('use_pin', $TadThemesConfig['use_pin']);
 $use_default_config = false;
-
 
 /**** 取得佈景設定的各個預設值 ****/
 $theme_name = $xoopsConfig['theme_set'];
@@ -63,11 +62,10 @@ foreach ($default as $k => $v) {
 }
 
 /**** 產生 Smarty 的設定檔（以取得 bootstrap 版本） ****/
-if(!file_exists(XOOPS_ROOT_PATH . "/uploads/bootstrap.conf")){
+if (!file_exists(XOOPS_ROOT_PATH . "/uploads/bootstrap.conf")) {
     $bootstrap = (strpos($theme_kind, 'bootstrap') !== false) ? substr($theme_kind, -1) : '4';
     file_put_contents(XOOPS_ROOT_PATH . "/uploads/bootstrap.conf", "bootstrap = {$bootstrap}");
 }
-
 
 /**** 有裝 tad_theme 取得資料庫資料 ****/
 if ($TadThemesMid) {
@@ -97,7 +95,7 @@ if ($TadThemesMid) {
         if (!empty($data) and !empty($data['theme_width'])) {
             foreach ($data as $k => $v) {
                 $$k = $v;
-                if (in_array($k, $file_cols) and $v!='') {
+                if (in_array($k, $file_cols) and $v != '') {
                     $v = XOOPS_URL . "/uploads/tad_themes/{$theme_name}/{$file_col[$k]}/{$v}";
                 }
                 $this->assign($k, $v);
@@ -369,7 +367,6 @@ $this->assign('debug', $debug);
 /****是否使用搜尋****/
 $this->assign('use_search', 1);
 
-
 /****導覽工具列、區塊標題CSS設定****/
 $this->assign('navbar_pos', $navbar_pos);
 $this->assign('navbar_bg_top', $navbar_bg_top);
@@ -393,13 +390,13 @@ if ($TadThemesMid) {
     //`theme_id`, `block_position`, `block_config`, `bt_text`, `bt_text_padding`, `bt_text_size`, `bt_bg_color`, `bt_bg_img`, `bt_bg_repeat`, `bt_radius`
     while (false !== ($all = $xoopsDB->fetchArray($result))) {
         $block_position = $all['block_position'];
-        $all['bt_bg_img'] = $all['bt_bg_img']? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/bt_bg/{$all['bt_bg_img']}":'';
+        $all['bt_bg_img'] = $all['bt_bg_img'] ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/bt_bg/{$all['bt_bg_img']}" : '';
         $db[$block_position] = $all;
     }
 
 }
 
-$block_position = array("leftBlock", "rightBlock", "centerBlock", "centerLeftBlock", "centerRightBlock", "centerBottomBlock", "centerBottomLeftBlock", "centerBottomRightBlock", "footerCenterBlock" ,"footerLeftBlock", "footerRightBlock");
+$block_position = array("leftBlock", "rightBlock", "centerBlock", "centerLeftBlock", "centerRightBlock", "centerBottomBlock", "centerBottomLeftBlock", "centerBottomRightBlock", "footerCenterBlock", "footerLeftBlock", "footerRightBlock");
 $this->assign('block_position', $block_position);
 $i = 0;
 $positions = array();
@@ -425,15 +422,15 @@ $this->assign('positions', $positions);
 /**** 佈景額外設定 ****/
 
 //額外佈景設定
-$config2=[];
+$config2 = [];
 $config2_files = ['config2_base', 'config2_bg', 'config2_top', 'config2_logo', 'config2_nav', 'config2_slide', 'config2_content', 'config2_block', 'config2_footer', 'config2_bottom', 'config2'];
 
 if ($TadThemesMid) {
     $config2_json_file = XOOPS_VAR_PATH . "/data/tad_themes_config2.json";
-    if(file_exists($config2_json_file)){
+    if (file_exists($config2_json_file)) {
         $json_content = file_get_contents($config2_json_file);
         $config2 = json_decode($json_content, true);
-    }else{
+    } else {
         $sql = "select `name`, `type`, `value` from " . $xoopsDB->prefix("tad_themes_config2") . " where `theme_id`='{$theme_id}'";
         $result = $xoopsDB->query($sql);
         while (list($name, $type, $value) = $xoopsDB->fetchRow($result)) {
@@ -447,7 +444,7 @@ if ($TadThemesMid) {
 
 /**** 依序讀取佈景額外設定檔 ****/
 foreach ($config2_files as $config2_file) {
-    $theme_config=[];
+    $theme_config = [];
     if (file_exists(XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php")) {
         require XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php";
 
@@ -461,40 +458,47 @@ foreach ($config2_files as $config2_file) {
             } elseif ($config['type'] == "checkbox") {
                 $value = json_decode($value, true);
             } elseif ($config['type'] == "file" or $config['type'] == "bg_file") {
-                $value = !empty($value) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/config2/{$value}":'';
+                $value = !empty($value) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/config2/{$value}" : '';
             }
             $this->assign($name, $value);
 
-            if($config['type'] == "bg_file") {
-                $value_repeat =is_null($config2[$name.'_repeat']) ? $config['sub_default']['repeat'] : $config2[$name.'_repeat'];
-                $this->assign($name.'_repeat', $value_repeat);
+            if ($config['type'] == "bg_file") {
+                $value_repeat = is_null($config2[$name . '_repeat']) ? $config['sub_default']['repeat'] : $config2[$name . '_repeat'];
+                $this->assign($name . '_repeat', $value_repeat);
 
-                $value_position =is_null($config2[$name.'_position']) ? $config['sub_default']['position'] : $config2[$name.'_position'];
-                $this->assign($name.'_position', $value_position);
+                $value_position = is_null($config2[$name . '_position']) ? $config['sub_default']['position'] : $config2[$name . '_position'];
+                $this->assign($name . '_position', $value_position);
 
-                $value_size =is_null($config2[$name.'_size']) ? $config['sub_default']['size'] : $config2[$name.'_size'];
-                $this->assign($name.'_size', $value_size);
+                $value_size = is_null($config2[$name . '_size']) ? $config['sub_default']['size'] : $config2[$name . '_size'];
+                $this->assign($name . '_size', $value_size);
 
-            }elseif($config['type'] == "padding_margin") {
-                $value_mt =is_null($config2[$name.'_mt']) ? $config['sub_default']['mt'] : $config2[$name.'_mt'];
-                $this->assign($name.'_mt', $value_mt);
+            } elseif ($config['type'] == "padding_margin") {
+                $value_mt = is_null($config2[$name . '_mt']) ? $config['sub_default']['mt'] : $config2[$name . '_mt'];
+                $this->assign($name . '_mt', $value_mt);
 
-                $value_mb =is_null($config2[$name.'_mb']) ? $config['sub_default']['mb'] : $config2[$name.'_mb'];
-                $this->assign($name.'_mb', $value_mb);
+                $value_mb = is_null($config2[$name . '_mb']) ? $config['sub_default']['mb'] : $config2[$name . '_mb'];
+                $this->assign($name . '_mb', $value_mb);
+            } elseif ($config['type'] == "checkbox" and !empty($config2[$name . '_bid'])) {
+                $sql = "select options from " . $xoopsDB->prefix('newblocks') . "
+                where `bid` = {$config2[$name . '_bid']}";
+                $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                list($options) = $xoopsDB->fetchRow($result);
+                $this->assign($name . '_bid', $config2[$name . '_bid']);
+                $this->assign($name . '_options', $options);
             }
         }
     }
 }
 
 /****佈景 TadDataCenter 設定****/
-if(file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/TadDataCenter.php")){
+if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/TadDataCenter.php")) {
     require XOOPS_ROOT_PATH . "/modules/tadtools/TadDataCenter.php";
     $TadDataCenter = new TadDataCenter('tad_themes');
     $TadDataCenter->set_col('theme_id', $theme_id);
     $data = $TadDataCenter->getData();
     foreach ($data as $var_name => $var_val) {
-        if($var_name =='navbar_font_size' and $var_val[0] > 10){
-            $var_val[0] =  round($var_val[0]/100,2);
+        if ($var_name == 'navbar_font_size' and $var_val[0] > 10) {
+            $var_val[0] = round($var_val[0] / 100, 2);
         }
 
         $this->assign($var_name, $var_val[0]);
@@ -506,7 +510,6 @@ $sql = "select conf_value from " . $xoopsDB->prefix("config") . " where conf_nam
 $result = $xoopsDB->query($sql);
 list($allow_register) = $xoopsDB->fetchRow($result);
 $this->assign('allow_register', $allow_register);
-
 
 <{/php}>
 <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/get_main_var.tpl"}>
