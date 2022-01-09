@@ -376,7 +376,7 @@
 
 
                         //額外佈景設定
-                        $config2_files = ['config2_base', 'config2_bg', 'config2_top', 'config2_logo', 'config2_nav', 'config2_slide', 'config2_content', 'config2_block', 'config2_footer', 'config2_bottom', 'config2'];
+                        $config2_files = ['config2_base', 'config2_bg', 'config2_top', 'config2_logo', 'config2_nav', 'config2_slide', 'config2_middle', 'config2_content', 'config2_block', 'config2_footer', 'config2_bottom', 'config2'];
                         foreach($config2_files as $config2_file){
                             $theme_config=[];
 
@@ -431,12 +431,13 @@
                                         $value_mb =is_null($config2[$name.'_mb']) ? $config['sub_default']['mb'] : $config2[$name.'_mb'];
                                         echo "                        <tr><th>{$config['text']} margin-bottom</th><th>\${$name}_mb</th><td>{$value_mb}</td></tr>\n";
                                     }elseif($config['type'] == "checkbox" and !empty($config2[$name.'_bid'])) {
+                                        $bid = $config2[$name . '_bid'];
                                         $sql = "select options from " . $xoopsDB->prefix('newblocks') . "
-                                        where `bid` = {$config2[$name.'_bid']}";
+                                        where `bid` = {$bid}";
                                         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-                                        list ($options) = $xoopsDB->fetchRow($result);
-                                        echo "                        <tr><th>{$config['text']} bid</th><th>\${$name}_bid</th><td>{$config2[$name.'_bid']}</td></tr>\n";
-                                        echo "                        <tr><th>{$config['text']} options</th><th>\${$name}_options</th><td>{$options}</td></tr>\n";
+                                        list($options) = $xoopsDB->fetchRow($result);
+                                        echo "                        <tr><th>{$config['text']} bid</th><th>\$bids['{$name}']['bid']</th><td>{$bid}</td></tr>\n";
+                                        echo "                        <tr><th>{$config['text']} options</th><th>\$bids['{$name}']['options']</th><td>{$options}</td></tr>\n";
                                     }
                                 }
                             }

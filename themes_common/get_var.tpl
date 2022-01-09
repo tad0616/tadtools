@@ -423,7 +423,7 @@ $this->assign('positions', $positions);
 
 //額外佈景設定
 $config2 = [];
-$config2_files = ['config2_base', 'config2_bg', 'config2_top', 'config2_logo', 'config2_nav', 'config2_slide', 'config2_content', 'config2_block', 'config2_footer', 'config2_bottom', 'config2'];
+$config2_files = ['config2_base', 'config2_bg', 'config2_top', 'config2_logo', 'config2_nav', 'config2_slide', 'config2_middle', 'config2_content', 'config2_block', 'config2_footer', 'config2_bottom', 'config2'];
 
 if ($TadThemesMid) {
     $config2_json_file = XOOPS_VAR_PATH . "/data/tad_themes_config2.json";
@@ -443,6 +443,7 @@ if ($TadThemesMid) {
 }
 
 /**** 依序讀取佈景額外設定檔 ****/
+$bids= [];
 foreach ($config2_files as $config2_file) {
     $theme_config = [];
     if (file_exists(XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php")) {
@@ -479,16 +480,19 @@ foreach ($config2_files as $config2_file) {
                 $value_mb = is_null($config2[$name . '_mb']) ? $config['sub_default']['mb'] : $config2[$name . '_mb'];
                 $this->assign($name . '_mb', $value_mb);
             } elseif ($config['type'] == "checkbox" and !empty($config2[$name . '_bid'])) {
+                $bid = $config2[$name . '_bid'];
                 $sql = "select options from " . $xoopsDB->prefix('newblocks') . "
-                where `bid` = {$config2[$name . '_bid']}";
+                where `bid` = {$bid}";
                 $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
                 list($options) = $xoopsDB->fetchRow($result);
-                $this->assign($name . '_bid', $config2[$name . '_bid']);
-                $this->assign($name . '_options', $options);
+                $bids[$name]['bid'] = $bid;
+                $bids[$name]['options'] = $options;
             }
         }
     }
 }
+
+$this->assign('bids', $bids);
 
 /****佈景 TadDataCenter 設定****/
 if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/TadDataCenter.php")) {
