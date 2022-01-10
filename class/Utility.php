@@ -388,18 +388,22 @@ class Utility
 
         $theme_set = $xoopsConfig['theme_set'];
 
-        $sql = 'select `tt_use_bootstrap`,`tt_bootstrap_color`,`tt_theme_kind` from `' . $xoopsDB->prefix('tadtools_setup') . "`  where `tt_theme`='{$theme_set}'";
+        $sql = 'select `tt_theme_kind` from `' . $xoopsDB->prefix('tadtools_setup') . "`  where `tt_theme`='{$theme_set}'";
 
         $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error() . '<br>' . __FILE__ . ':' . __LINE__);
 
-        list($tt_use_bootstrap, $tt_bootstrap_color, $tt_theme_kind) = $xoopsDB->fetchRow($result);
+        list($tt_theme_kind) = $xoopsDB->fetchRow($result);
 
         $_SESSION['theme_kind'] = $tt_theme_kind;
         $_SESSION[$theme_set]['bootstrap_version'] = $tt_theme_kind;
-        if (strpos($tt_theme_kind, 'bootstrap') !== false) {
+
+        if (file_exists(XOOPS_ROOT_PATH . "/uploads/bootstrap.conf")) {
+            $bootstrap = substr(file_get_contents(XOOPS_ROOT_PATH . "/uploads/bootstrap.conf"), -1);
+            $_SESSION['bootstrap'] = $bootstrap ? $bootstrap : 4;
+        } elseif (strpos($tt_theme_kind, 'bootstrap') !== false) {
             $_SESSION['bootstrap'] = substr($tt_theme_kind, -1);
         } else {
-            $_SESSION['bootstrap'] = 4;
+            $_SESSION['bootstrap'] = '4';
         }
 
         if ($_COOKIE['bootstrap'] != $_SESSION['bootstrap']) {

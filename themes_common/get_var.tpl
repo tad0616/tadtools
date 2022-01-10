@@ -65,6 +65,7 @@ foreach ($default as $k => $v) {
 if (!file_exists(XOOPS_ROOT_PATH . "/uploads/bootstrap.conf")) {
     $bootstrap = (strpos($theme_kind, 'bootstrap') !== false) ? substr($theme_kind, -1) : '4';
     file_put_contents(XOOPS_ROOT_PATH . "/uploads/bootstrap.conf", "bootstrap = {$bootstrap}");
+    $_SESSION['bootstrap'] = $bootstrap;
 }
 
 /**** 有裝 tad_theme 取得資料庫資料 ****/
@@ -519,3 +520,5 @@ $this->assign('allow_register', $allow_register);
 <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/get_main_var.tpl"}>
 <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/get_menu_var.tpl"}>
 <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/get_slider_var.tpl"}>
+<{config_load file="$xoops_rootpath/uploads/bootstrap.conf"}>
+<{assign var="bootstrap" value=$smarty.config.bootstrap}>
