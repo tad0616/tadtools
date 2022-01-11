@@ -4,7 +4,17 @@
 
 <script type='text/javascript'>
 $(function(){
-    $('#nivoSlider').nivoSlider();
+    $('#nivoSlider').nivoSlider({
+        pauseTime: <{$slide_timeout}>,
+        <{if $slide_nav}>
+        directionNav: true,
+        controlNav: true,
+        <{else}>
+        directionNav: false,
+        controlNav: false,
+        <{/if}>
+        boxCols: 16
+    });
 });
 </script>
 

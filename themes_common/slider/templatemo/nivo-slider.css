@@ -123,7 +123,7 @@
 	bottom: 20px;
 	height: 36px;
 	padding: 9px 20px;
-	z-index: 1000;
+	z-index: 10;
 	background: url(templatemo_slider_nbg.png) bottom right;
   background-size: cover;
 }

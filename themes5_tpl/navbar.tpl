@@ -38,7 +38,7 @@
     <{if $show_sitename !='2' }>
         <{if $navlogo_img}>
             <h2 class="nav-brand">
-                <a class="img-fluid" href="<{$xoops_url}>/index.php"><img src="<{$navlogo_img}>" alt="<{$xoops_sitename}>"></a>
+                <a href="<{$xoops_url}>/index.php"><img src="<{$navlogo_img}>" alt="<{$xoops_sitename}>" class="img-fluid"></a>
             </h2>
         <{elseif $show_sitename=='1'}>
             <h2 class="nav-brand">
@@ -104,30 +104,20 @@
             e.target.children[0].classList.toggle('active');
         }
     });
+
+    $(document).ready(function(){
+        if($( window ).width() > 768){
+            $('li.hide-in-phone').show();
+        }else{
+            $('li.hide-in-phone').hide();
+        }
+    });
+
+    $( window ).resize(function() {
+        if($( window ).width() > 768){
+            $('li.hide-in-phone').show();
+        }else{
+            $('li.hide-in-phone').hide();
+        }
+    });
 </script>
-
-<{if $use_pin=="1" or $navbar_pos=='fixed-top'}>
-    <script type="text/javascript" src="<{xoAppUrl modules/tadtools/jquery.sticky/jquery.sticky.js}>"></script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $("#nav-wrapper").sticky({topSpacing:0 , zIndex: 500, getWidthFrom:'#nav-wrapper'});
-            if($( window ).width() > 768){
-                // $("#nav-wrapper").sticky({topSpacing:0 , zIndex: 500, getWidthFrom:'#nav-wrapper'});
-                $('li.hide-in-phone').show();
-            }else{
-                $('li.hide-in-phone').hide();
-            }
-        });
-
-        $( window ).resize(function() {
-            $("#nav-wrapper").sticky({topSpacing:0 , zIndex: 500, getWidthFrom:'#nav-wrapper'});
-            if($( window ).width() > 768){
-                // $("#nav-wrapper").sticky({topSpacing:0 , zIndex: 500, getWidthFrom:'#nav-wrapper'});
-                $('li.hide-in-phone').show();
-            }else{
-                // $("#nav-wrapper").unstick();
-                $('li.hide-in-phone').hide();
-            }
-        });
-    </script>
-<{/if}>

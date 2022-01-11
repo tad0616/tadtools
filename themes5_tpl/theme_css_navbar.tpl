@@ -61,28 +61,28 @@
 .sm-mint ul ul a:focus,
 .sm-mint ul ul a:active {
   color: <{$nav_sub_font_color}>;
-  border-left: 1.4rem solid transparent;
+  border-left: 8px solid transparent;
 }
 .sm-mint ul ul ul a,
 .sm-mint ul ul ul a:hover,
 .sm-mint ul ul ul a:focus,
 .sm-mint ul ul ul a:active {
   color: <{$nav_sub_font_color}>;
-  border-left: 2.8rem solid transparent;
+  border-left: 8px solid transparent;
 }
 .sm-mint ul ul ul ul a,
 .sm-mint ul ul ul ul a:hover,
 .sm-mint ul ul ul ul a:focus,
 .sm-mint ul ul ul ul a:active {
   color: <{$nav_sub_font_color}>;
-  border-left: 4.2rem solid transparent;
+  border-left: 8px solid transparent;
 }
 .sm-mint ul ul ul ul ul a,
 .sm-mint ul ul ul ul ul a:hover,
 .sm-mint ul ul ul ul ul a:focus,
 .sm-mint ul ul ul ul ul a:active {
   color: <{$nav_sub_font_color}>;
-  border-left: 5.6rem solid transparent;
+  border-left: 8px solid transparent;
 }
 
 @media (min-width: 768px) {
@@ -95,7 +95,7 @@
   .sm-mint ul {
     position: absolute;
     width: 12em;
-    z-index: 15;
+    z-index: 250;
   }
 
   .sm-mint li {
@@ -191,11 +191,16 @@
     padding: 10px 20px;
     border-radius: 0;
     <{if $nav_line=='1'}>
-    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
     <{else}>
     border: 0 !important;
     <{/if}>
   }
+
+  .sm-mint li:last-child {
+    border-bottom: none;
+  }
+
   .sm-mint ul a:hover, .sm-mint ul a:focus, .sm-mint ul a:active, .sm-mint ul a.highlighted {
     background: <{$navbar_hover}>;
     color: <{$navbar_color_hover}>;

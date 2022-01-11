@@ -31,6 +31,13 @@ a.btn, a.btn:hover {
     text-decoration: none;
 }
 
+a.btn.btn-light, a.btn.btn-light:hover {
+    font-weight: normal;
+    background-color: none;
+    color: rgb(88, 88, 88) !important;
+    text-decoration: none;
+}
+
 input[type="submit"]:hover,
 input[type="reset"]:hover,
 input[type="button"]:hover,

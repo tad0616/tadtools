@@ -14,8 +14,9 @@
                     <{if $navbar_pos=='fixed-bottom'}>
                     bottomToTopSubMenus: true,
                     <{/if}>
-                    subMenusSubOffsetX: 6,
-                    subMenusSubOffsetY: -8
+                    // subMenusMinWidth: '2 rem',
+                    // subMenusSubOffsetX: 6,
+                    // subMenusSubOffsetY: -8
                 });
             });
 
