@@ -51,7 +51,7 @@ class BubblePopup
                 \$(document).ready(function(){
                     {$all_code}
                 });
-          ");
+            ");
         } else {
             // die('bbbbb');
             $main = "$jquery

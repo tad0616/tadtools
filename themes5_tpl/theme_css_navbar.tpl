@@ -56,6 +56,7 @@
   font-size: <{$navbar_font_size}>rem;
   border-left: 8px solid transparent;
 }
+
 .sm-mint ul ul a,
 .sm-mint ul ul a:hover,
 .sm-mint ul ul a:focus,
@@ -63,6 +64,7 @@
   color: <{$nav_sub_font_color}>;
   border-left: 8px solid transparent;
 }
+
 .sm-mint ul ul ul a,
 .sm-mint ul ul ul a:hover,
 .sm-mint ul ul ul a:focus,
@@ -77,6 +79,7 @@
   color: <{$nav_sub_font_color}>;
   border-left: 8px solid transparent;
 }
+
 .sm-mint ul ul ul ul ul a,
 .sm-mint ul ul ul ul ul a:hover,
 .sm-mint ul ul ul ul ul a:focus,
@@ -188,17 +191,18 @@
     border-radius: 4px;
   }
   .sm-mint ul a, .sm-mint ul a:hover, .sm-mint ul a:focus, .sm-mint ul a:active, .sm-mint ul a.highlighted {
-    padding: 10px 20px;
+    padding: 12px 20px;
     border-radius: 0;
     <{if $nav_line=='1'}>
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #00000011;
     <{else}>
-    border: 0 !important;
+    border: none !important;
     <{/if}>
   }
 
-  .sm-mint li:last-child {
+  .sm-mint ul li:last-child a{
     border-bottom: none;
+    padding: 12px 20px 6px;
   }
 
   .sm-mint ul a:hover, .sm-mint ul a:focus, .sm-mint ul a:active, .sm-mint ul a.highlighted {

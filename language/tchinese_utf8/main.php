@@ -112,7 +112,7 @@ define('_TDC_OPTIONS', '選項');
 define('_TDC_OPTIONS_NOTE', '選項請用;隔開，如：「男;女」，若選項值和選項文字不同，請用=設定，如「1=男;0=女」');
 // define('_TDC_', '必填');
 define('_TDC_FILL_PEOPLE', '填寫人');
-define('_TDC_INPUT_COL_ID', '沒事勿動，給程式用的');
+define('_TDC_INPUT_COL_ID', '可留空以隨機產生，沒事勿動，給程式用的');
 define('_TDC_COL_ID', '程式辨識碼');
 
 //TadUpFiles.php
