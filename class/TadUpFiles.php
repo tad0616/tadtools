@@ -1486,7 +1486,7 @@ class TadUpFiles
     }
 
     //刪除實體檔案
-    public function del_files($files_sn = '')
+    public function del_files($files_sn = '', $trash_can_table = '')
     {
         global $xoopsDB, $xoopsUser;
 
@@ -1517,6 +1517,13 @@ class TadUpFiles
             }
             if ($isAdmin or $uid == $my_uid or empty($uid)) {
                 $this->set_col($col_name, $col_sn, $sort);
+
+                if (!empty($trash_can_table)) {
+                    $sql = "REPLACE INTO " . $xoopsDB->prefix($trash_can_table) . " SELECT *
+                    FROM `{$this->TadUpFilesTblName}` WHERE files_sn='{$files_sn}'";
+                    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                }
+
                 $del_sql = "delete  from `{$this->TadUpFilesTblName}`  where files_sn='{$files_sn}'";
                 $xoopsDB->queryF($del_sql) or Utility::web_error($del_sql, __FILE__, __LINE__);
 

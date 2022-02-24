@@ -10,12 +10,14 @@
             // SmartMenus init
             $(function() {
                 $('#main-menu').smartmenus({
-                    <{if $navbar_pos=='fixed-bottom'}>
-                    bottomToTopSubMenus: true,
+                    <{if $noMouseOver}>
+                    noMouseOver: true,
                     <{/if}>
-                    // subMenusMinWidth: '2 rem',
-                    // subMenusSubOffsetX: 6,
-                    // subMenusSubOffsetY: -8
+                    <{if $navbar_pos=='fixed-bottom'}>
+                    bottomToTopSubMenus: true
+                    <{else}>
+                    bottomToTopSubMenus: false
+                    <{/if}>
                 });
             });
 
