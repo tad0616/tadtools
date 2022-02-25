@@ -102,6 +102,7 @@ define('_TDC_CHECKBOX', '複選方框');
 define('_TDC_SELECT', '下拉選單');
 define('_TDC_TEXTAREA', '大量文字框');
 define('_TDC_DATE', '日期選單');
+define('_TDC_FILE', '檔案上傳');
 define('_TDC_NOTE', '說明文字');
 define('_TDC_TITLE', '題目');
 define('_TDC_INPUT_TITLE', '請輸入題目');

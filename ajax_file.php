@@ -44,7 +44,7 @@ $data_name = Request::getString('data_name');
 switch ($dcq_op) {
     case 'save_dcq_sort':
         $col_ids = Request::getArray('col_ids');
-        $sql = 'update ' . $xoopsDB->prefix("{$dirname}_data_center") . " set `data_sort`=`data_sort`+1000 where  `col_name`='{$col_name}' and `col_sn`='{$col_sn}'";
+        $sql = 'update ' . $xoopsDB->prefix("{$dirname}_data_center") . " set `data_sort`=`data_sort`+1000 where `data_name`='dcq' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}'";
         $xoopsDB->queryF($sql) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
 
         $sort = 0;

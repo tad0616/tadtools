@@ -1828,7 +1828,7 @@ class TadUpFiles
         $where = $files_sn ? "where `files_sn`='{$files_sn}'" : "where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' $and_sort $and_kind order by sort limit 0,1";
 
         $sql = "select * from `{$this->TadUpFilesTblName}` $where";
-        // die($sql);
+
         $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $files = '';
         while ($all = $xoopsDB->fetchArray($result)) {
@@ -1842,13 +1842,14 @@ class TadUpFiles
                 $files = (file_exists("{$this->TadUpFilesThumbDir}/{$file_name}")) ? "{$path}/{$file_name}" : '';
             } elseif ($showkind === 'file') {
                 $path = ($show_kind === 'dir') ? $this->TadUpFilesDir : $this->TadUpFilesUrl;
+                // die("{$this->TadUpFilesDir}/{$file_name}");
                 $files = (file_exists("{$this->TadUpFilesDir}/{$file_name}")) ? "{$path}/{$file_name}" : '';
             } else {
                 $path = ($show_kind === 'dir') ? $this->TadUpFilesImgDir : $this->TadUpFilesImgUrl;
                 $files = (file_exists("{$this->TadUpFilesImgDir}/{$file_name}")) ? "{$path}/{$file_name}" : '';
             }
         }
-        // die(var_dump($files));
+
         return $files;
     }
 
@@ -2034,7 +2035,7 @@ class TadUpFiles
     }
 
     //下載並新增計數器
-    public function add_file_counter($files_sn = '', $hash = false, $force = false, $path = '')
+    public function add_file_counter($files_sn = '', $hash = false, $force = false, $path = '',$can_groupid=[], $can_uid=[])
     {
         global $xoopsDB, $xoopsUser;
 
@@ -2059,6 +2060,10 @@ class TadUpFiles
                     redirect_header($_SERVER['HTTP_REFERER'], 3, _TAD_PERMISSION_DENIED);
                 }
             }
+        }elseif(!empty($can_groupid)){
+
+        }elseif(!empty($can_uid)){
+
         }
         $file = $this->get_one_file($files_sn);
 

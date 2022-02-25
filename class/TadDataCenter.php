@@ -5,6 +5,7 @@ use Xmf\Request;
 use XoopsModules\Tadtools\CkEditor;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
+use XoopsModules\Tadtools\TadUpFiles;
 use XoopsModules\Tadtools\Utility;
 
 /*
@@ -208,6 +209,10 @@ class TadDataCenter
         }
         if (in_array($type, ['radio', 'checkbox', 'checkbox-radio'])) {
             $defalut_attr = ['class' => 'form-check-input'];
+        } elseif (in_array($type, ['file'])) {
+            $require = $attr['require'];
+            $attr = [];
+            $defalut_attr = ['class' => 'form-check-input'];
         } else {
             $defalut_attr = ['class' => ['my-input', 'my-100'], 'id' => $name . $sort];
         }
@@ -265,6 +270,18 @@ class TadDataCenter
                     $cal = new My97DatePicker();
                     $cal::render();
                     $form = "<input type=\"text\" name=\"TDC[{$name}]{$arr}\" value=\"{$value}\" {$attr_str} onClick=\"WdatePicker({dateFmt:'yyyy-MM-dd', startDate:'%y-%M-%d'})\">";
+                } elseif ('file' === $type) {
+                    // $file_name = str_replace([' ', '-'], '_', $name);
+                    $file_name = $name;
+                    $TadUpFiles = new TadUpFiles($this->module_dirname, '/' . $file_name);
+                    if ($require) {
+                        $TadUpFiles->set_var('require', true);
+                    }
+                    //必填
+                    $TadUpFiles->set_var("show_tip", false); //不顯示提示
+                    $TadUpFiles->set_col($this->ans_col_name, $this->ans_col_sn);
+                    $form = $TadUpFiles->upform('list', $file_name, $maxlength, true, implode(',', $options), true, '', true);
+                    $form .= "<input type='hidden' name='uploads[{$name}]' value='{$file_name}'>";
                 } elseif ('datetime' === $type) {
                     include_once XOOPS_ROOT_PATH . '/modules/tadtools/cal.php';
                     $cal = new My97DatePicker();
@@ -353,6 +370,21 @@ class TadDataCenter
                 values('{$this->mid}' , '{$this->col_name}' , '{$this->col_sn}' , '{$name}' , '{$val}' , '{$data_sort}', '{$col_id}', '{$sort}', now())";
                 $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             }
+            $sort++;
+        }
+
+        foreach ($_POST['uploads'] as $name => $file_name) {
+            $TadUpFiles = new TadUpFiles($this->module_dirname, '/' . $file_name);
+            $TadUpFiles->set_col($this->col_name, $this->col_sn);
+            $files_sn = $TadUpFiles->upload_file($file_name, 1920, 640, '', '', true, false, 'files_sn');
+
+            $data_sort = 0;
+            $col_id = $this->col_id ? $this->col_id : "{$this->mid}-{$this->col_name}-{$this->col_sn}-{$name}-{$data_sort}";
+
+            $sql = "replace into `{$this->TadDataCenterTblName}`
+                (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`, `col_id`, `sort`, `update_time`)
+                values('{$this->mid}' , '{$this->col_name}' , '{$this->col_sn}' , '{$name}' , 'files=" . implode(',', $files_sn) . "' , $data_sort, '{$col_id}', '{$sort}', now())";
+            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__, true);
             $sort++;
         }
     }
@@ -525,24 +557,28 @@ class TadDataCenter
     }
 
     //$form_arr[]=array('0'=>4,'1'=>'xxx','2'='<input>');
-    public function mk_form_group_arr($form_arr, $id_content = '')
+    public function mk_form_group_arr($form_arr, $id_content = '', $theme = '')
     {
-        $main = "
-        <ul $id_content>
-        ";
+        $main = $theme == 'vtable' ? "<ul $id_content>" : "<tr $id_content>";
         foreach ($form_arr as $k => $form) {
-            $main .= '
-            <li class="vcell">' . $form[1] . '</li>
-            <li class="vm w' . $form[0] . '">' . $form[2] . '</li>
-            ';
+            if ($theme == 'vtable') {
+                $main .= '
+                <li class="vcell">' . $form[1] . '</li>
+                <li class="vm w' . $form[0] . '">' . $form[2] . '</li>
+                ';
+            } else {
+                $main .= '
+                <td class="' . $form[0] . '" ' . $form[3] . '>' . $form[2] . '</td>
+                ';
+            }
         }
-        $main .= '</ul>';
+        $main .= $theme == 'vtable' ? '</ul>' : '</tr>';
 
         return $main;
     }
 
     //從界面取得自訂表單
-    public function getCustomSetupForm($action = "", $use_form = true, $id = "dcq_sort")
+    public function getCustomSetupForm($action = "", $use_form = true, $id = "dcq_sort", $theme = 'vtable')
     {
         global $xoTheme;
         $action = empty($action) ? $_SERVER['PHP_SELF'] : $action;
@@ -616,59 +652,82 @@ class TadDataCenter
             //     $(this).closest("#form_data_' . $id . '" + $(this).prop("name")).remove();
             // });
             ' . $id . '_count++;
-
-
             return ' . $id . '_count;
         }
-
         ';
 
-        if ($xoTheme) {
-            $main = '';
-            $xoTheme->addStylesheet('modules/tadtools/css/my-input.css');
-            $xoTheme->addStylesheet('modules/tadtools/css/vtable.css');
-            $xoTheme->addScript('', null, $document_ready);
+        if ($theme == 'vtable') {
+            if ($xoTheme) {
+                $main = '';
+                $xoTheme->addStylesheet('modules/tadtools/css/my-input.css');
+                $xoTheme->addStylesheet('modules/tadtools/css/vtable.css');
+                $xoTheme->addScript('', null, $document_ready);
+            } else {
+                $main = '
+                <link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/modules/tadtools/css/my-input.css">
+                <link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/modules/tadtools/css/vtable.css">
+                <script type="text/javascript">
+                ' . $document_ready . '
+                </script>';
+            }
         } else {
-            $main = '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/modules/tadtools/css/my-input.css">
-            <link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/modules/tadtools/css/vtable.css">
-            <script type="text/javascript">
-            ' . $document_ready . '
-            </script>';
+            if ($xoTheme) {
+                $main = '';
+                $xoTheme->addScript('', null, $document_ready);
+            } else {
+                $main = '
+                <script type="text/javascript">
+                ' . $document_ready . '
+                </script>';
+            }
         }
 
         $main .= $use_form ? '<form action="' . $action . '" method="post" class="form-horizontal" id="' . $id . '">' : '';
         $id_col = $use_form ? '' : 'id="' . $id . '"';
 
-        $main .= '
+        if ($theme == 'vtable') {
+            $main .= '
         <div id="save_msg"></div>
         <div class="vtable" ' . $id_col . '>
             <ul class="vhead">
             <li class="w1">題號</li>
             <li class="w1">欄位名稱</li>
-            <li class="w2">說明</li>
-            <li class="w1">類型</li>
-            <li class="w2">選項</li>
+            <li class="w2">提示或說明</li>
+            <li class="w1">欄位類型</li>
+            <li class="w2">選項（用 ; 隔開）</li>
             <li class="w1">必填</li>
-            <li class="w1"><span data-toggle="tooltip" data-placement="top" data-bs-toggle="tooltip" data-bs-placement="top" title="給程式讀取用，無須修改，若要修改，影確保其為唯一值">唯一碼</span></li>
+            <li class="w1"><span data-toggle="tooltip" data-placement="top" data-bs-toggle="tooltip" data-bs-placement="top" title="給程式讀取用，無須修改，若要修改，影確保其為唯一值">隨機唯一碼</span></li>
             </ul>';
+        } else {
+            $main .= '
+            <div id="save_msg"></div>
+            <div class="table-responsive">
+            <table class="table table-bordered table-sm" >
+                <tr class="bg-light">
+                <td class="c nw">題號</td>
+                <td class="c nw">欄位名稱</td>
+                <td class="c nw">提示或說明</td>
+                <td class="c nw">欄位類型</td>
+                <td class="c nw">選項（用 ; 隔開）</td>
+                <td class="c nw">必填</td>
+                <td class="c nw"><span data-toggle="tooltip" data-placement="top" data-bs-toggle="tooltip" data-bs-placement="top" title="給程式讀取用，無須修改，若要修改，影確保其為唯一值">隨機唯一碼</span></td>
+                </tr>
+                <tbody ' . $id_col . '>
+                ';
+        }
 
         foreach ($DcqData as $sort => $data) {
-            $main .= $this->getCustomSetupCol($sort, $data['data_value'], $data['col_id'], $id);
+            $main .= $this->getCustomSetupCol($sort, $data['data_value'], $data['col_id'], $id, $theme);
             $sort++;
         }
 
-        // if (empty($sort)) {
-        //     $main .= $this->getCustomSetupCol($sort);
-        //     $sort++;
-        // }
-
         // 樣板
-        $main .= '<span style="display:none;">';
-        $main .= $this->getCustomSetupCol($sort, 'template', '', $id);
+        $main .= $theme == 'vtable' ? "\n<span style='display:none;'>\n" : "\n</tbody>\n<tbody style='display:none;'>\n";
+        $main .= $this->getCustomSetupCol($sort, 'template', '', $id, $theme);
         $sort++;
-        $main .= '</span>';
+        $main .= $theme == 'vtable' ? "\n</span>\n" : "\n</tbody>\n";
 
-        $main .= '</div>';
+        $main .= "\n</table>\n</div>\n";
         $main .= '<input type="hidden" name="dc_op" value="saveCustomSetupForm">';
         $main .= '<input type="hidden" name="' . $this->col_name . '" value="' . $this->col_sn . '">';
         $main .= $use_form ? '<div class="text-center" style="margin:10px auto;"><button type="submit" class="btn btn-primary">儲存</button></div>' : '';
@@ -684,7 +743,7 @@ class TadDataCenter
     }
 
     //取得設定界面的單一欄位
-    private function getCustomSetupCol($sort, $json = '', $col_id = '', $id = '')
+    private function getCustomSetupCol($sort, $json = '', $col_id = '', $id = '', $theme = '')
     {
         $val = $json != 'template' ? json_decode($json, true) : [];
         $id_content = $json != 'template' ? '' : 'id="form_data_' . $id . '"';
@@ -695,6 +754,7 @@ class TadDataCenter
         $col_type_arr['input=radio'] = _TDC_RADIO;
         $col_type_arr['input=checkbox'] = _TDC_CHECKBOX;
         $col_type_arr['input=date'] = _TDC_DATE;
+        $col_type_arr['input=file'] = _TDC_FILE;
         $col_type_arr['select'] = _TDC_SELECT;
         $col_type_arr['textarea'] = _TDC_TEXTAREA;
         $col_type_arr['note'] = _TDC_NOTE;
@@ -712,31 +772,37 @@ class TadDataCenter
         }
 
         $i = $sort + 1;
-        $form_arr[] = [1, '', $del . "<span id='{$id}-num-{$i}' class='num'>#{$i}</span>"];
+        $class = $theme == 'vtable' ? '1' : 'px-2 nw';
+        $form_arr[] = [$class, '', $del . "<span id='{$id}-num-{$i}' class='num'>#{$i}</span>"];
 
         $col_name_sn = 'dcq[' . $this->col_name . '][' . $this->col_sn . ']';
-
         $name_id = $json != 'template' ? 'name="' . $col_name_sn . '[' . $sort . '][title]"' : 'id="' . $col_name_sn . '" data-col-name="title"';
-        $form_arr[] = [2, '#' . $i, '<input type="text" ' . $name_id . ' class="my-input my-100" placeholder="' . _TDC_INPUT_TITLE . '" value="' . $myts->htmlSpecialChars($val['title']) . '">'];
+        $class = $theme == 'vtable' ? '2' : 'c';
+        $form_arr[] = [$class, '#' . $i, '<input type="text" ' . $name_id . ' class="my-input my-100" placeholder="' . _TDC_INPUT_TITLE . '" value="' . $myts->htmlSpecialChars($val['title']) . '">'];
 
         $name_id = $json != 'template' ? 'name="' . $col_name_sn . '[' . $sort . '][placeholder]"' : 'id="' . $col_name_sn . '" data-col-name="placeholder"';
-        $form_arr[] = [1, _TDC_DESCRIPTION, '<input type="text" ' . $name_id . ' class="my-input my-100" placeholder="' . _TDC_INPUT_DESCRIPTION . '" value="' . $myts->htmlSpecialChars($val['placeholder']) . '">'];
+        $class = $theme == 'vtable' ? '1' : 'c';
+        $form_arr[] = [$class, _TDC_DESCRIPTION, '<input type="text" ' . $name_id . ' class="my-input my-100" placeholder="' . _TDC_INPUT_DESCRIPTION . '" value="' . $myts->htmlSpecialChars($val['placeholder']) . '">'];
 
         $name_id = $json != 'template' ? 'name="' . $col_name_sn . '[' . $sort . '][type]"' : 'id="' . $col_name_sn . '" data-col-name="type"';
-        $form_arr[] = [1, _TDC_TYPE, '<select ' . $name_id . ' class="my-input my-100">' . $option . '</select>'];
+        $class = $theme == 'vtable' ? '1' : 'c';
+        $form_arr[] = [$class, _TDC_TYPE, '<select ' . $name_id . ' class="my-input my-100">' . $option . '</select>'];
 
         $name_id = $json != 'template' ? 'name="' . $col_name_sn . '[' . $sort . '][opt]"' : 'id="' . $col_name_sn . '" data-col-name="opt"';
-        $form_arr[] = [2, _TDC_OPTIONS, '<input type="text" ' . $name_id . ' class="my-input my-100" placeholder="' . _TDC_OPTIONS_NOTE . '" value="' . $myts->htmlSpecialChars($val['opt']) . '">'];
+        $class = $theme == 'vtable' ? '2' : 'c';
+        $form_arr[] = [$class, _TDC_OPTIONS, '<input type="text" ' . $name_id . ' class="my-input my-100" placeholder="' . _TDC_OPTIONS_NOTE . '" value="' . $myts->htmlSpecialChars($val['opt']) . '">'];
 
         $name_id = $json != 'template' ? 'name="' . $col_name_sn . '[' . $sort . '][require]"' : 'id="' . $col_name_sn . '" data-col-name="require"';
         $checked = 1 == $val['require'] ? 'checked' : '';
-        $form_arr[] = [1, _TDC_REQUIRE . $i, '<label class="checkbox-inline"><input type="checkbox" ' . $name_id . ' value="1" ' . $checked . '>' . _TDC_REQUIRE . '</label>'];
+        $class = $theme == 'vtable' ? '1' : 'px-2 nw';
+        $form_arr[] = [$class, _TDC_REQUIRE . $i, '<label class="checkbox-inline"><input type="checkbox" ' . $name_id . ' value="1" ' . $checked . '>' . _TDC_REQUIRE . '</label>'];
 
         $name_id1 = $json != 'template' ? 'name="' . $col_name_sn . '[' . $sort . '][old_col_id]"' : 'id="' . $col_name_sn . '" data-col-name="old_col_id"';
         $name_id2 = $json != 'template' ? 'name="' . $col_name_sn . '[' . $sort . '][col_id]"' : 'id="' . $col_name_sn . '" data-col-name="col_id"';
-        $form_arr[] = [1, _TDC_COL_ID, '<input type="hidden" ' . $name_id1 . ' value="' . $col_id . '"><input type="text" ' . $name_id2 . ' class="my-input my-100" placeholder="' . _TDC_INPUT_COL_ID . '" value="' . $col_id . '" title="' . _TDC_INPUT_COL_ID . '">'];
+        $class = $theme == 'vtable' ? '1' : 'c';
+        $form_arr[] = [$class, _TDC_COL_ID, '<input type="hidden" ' . $name_id1 . ' value="' . $col_id . '"><input type="text" ' . $name_id2 . ' class="my-input my-100" placeholder="' . _TDC_INPUT_COL_ID . '" value="' . $col_id . '" title="' . _TDC_INPUT_COL_ID . '">'];
 
-        $main = $this->mk_form_group_arr($form_arr, $id_content);
+        $main = $this->mk_form_group_arr($form_arr, $id_content, $theme);
 
         return $main;
     }
@@ -836,8 +902,11 @@ class TadDataCenter
         $DcqData = $this->getDcqData();
 
         $form_col = '';
+
         foreach ($DcqData as $data) {
+            // 該欄位的細項設定
             $dcq = json_decode($data['data_value'], true);
+
             list($form_tag, $type) = explode('=', $dcq['type']);
 
             $name = "{$this->col_name}_{$this->col_sn}_dcq_{$data['col_id']}";
@@ -855,6 +924,8 @@ class TadDataCenter
             $require = 1 == $dcq['require'] ? ' validate[required]' : '';
             if (in_array($type, ['radio', 'checkbox', 'checkbox-radio'])) {
                 $attr_arr = ['class' => $require];
+            } elseif (in_array($type, ['file'])) {
+                $attr_arr = ['require' => $dcq['require']];
             } else {
                 $attr_arr = ['class' => "my-input my-100 $require"];
             }

@@ -102,6 +102,7 @@ define('_TDC_CHECKBOX', 'Checkbox');
 define('_TDC_SELECT', 'Select');
 define('_TDC_TEXTAREA', 'Textarea');
 define('_TDC_DATE', 'Date Picker');
+define('_TDC_FILE', 'File Upload');
 define('_TDC_NOTE', 'Description text');
 define('_TDC_TITLE', 'Title');
 define('_TDC_INPUT_TITLE', 'Please enter title');
