@@ -231,39 +231,45 @@ class TadDataCenter
             case 'input':
                 if ('radio' === $type) {
                     $form = '';
+                    $tmp_id = $this->rand_str();
+                    $idi = 0;
                     foreach ($options as $k => $v) {
-                        $tmp_id = $this->rand_str();
                         $checked = $v == $value ? 'checked' : '';
                         $form .= "<div class=\"form-check-inline radio-inline\">
-                            <label class=\"form-check-label\" for=\"{$tmp_id}\" >
-                                <input {$attr_str} type=\"{$type}\" name=\"TDC[{$name}]{$arr}\" id=\"{$tmp_id}\" value=\"{$v}\" {$checked}>
+                            <label class=\"form-check-label\" for=\"{$tmp_id}{$idi}\" >
+                                <input {$attr_str} type=\"{$type}\" name=\"TDC[{$name}]{$arr}\" id=\"{$tmp_id}{$idi}\" value=\"{$v}\" {$checked}>
                                 {$k}
                             </label>
                         </div>\n";
+                        $idi++;
                     }
                 } elseif ('checkbox' === $type) {
                     $form = '';
+                    $tmp_id = $this->rand_str();
+                    $idi = 0;
                     foreach ($options as $k => $v) {
-                        $tmp_id = $this->rand_str();
                         $checked = in_array($v, $value) ? 'checked' : '';
                         $form .= "<div class=\"form-check-inline checkbox-inline\">
-                            <label class=\"form-check-label\" for=\"{$tmp_id}\">
-                                <input {$attr_str} type=\"{$type}\" name=\"TDC[{$name}]{$arr}[]\" id=\"{$tmp_id}\" value=\"{$v}\" {$checked}>
+                            <label class=\"form-check-label\" for=\"{$tmp_id}{$idi}\">
+                                <input {$attr_str} type=\"{$type}\" name=\"TDC[{$name}]{$arr}[]\" id=\"{$tmp_id}{$idi}\" value=\"{$v}\" {$checked}>
                                 {$k}
                             </label>
                         </div>\n";
+                        $idi++;
                     }
                 } elseif ('checkbox-radio' === $type) {
                     $form = '';
+                    $tmp_id = $this->rand_str();
+                    $idi = 0;
                     foreach ($options as $k => $v) {
-                        $tmp_id = $this->rand_str();
                         $checked = in_array($v, $value) ? 'checked' : '';
                         $form .= "<div class=\"form-check-inline checkbox-inline\">
-                            <label class=\"form-check-label\" for=\"{$tmp_id}\">
-                                <input {$attr_str} type=\"checkbox\" name=\"TDC[{$name}]{$arr}\" id=\"{$tmp_id}\" value=\"{$v}\" {$checked}>
+                            <label class=\"form-check-label\" for=\"{$tmp_id}{$idi}\">
+                                <input {$attr_str} type=\"checkbox\" name=\"TDC[{$name}]{$arr}\" id=\"{$tmp_id}{$idi}\" value=\"{$v}\" {$checked}>
                                 {$k}
                             </label>
                         </div>\n";
+                        $idi++;
                     }
                 } elseif ('date' === $type) {
                     include_once XOOPS_ROOT_PATH . '/modules/tadtools/cal.php';
@@ -419,7 +425,7 @@ class TadDataCenter
                 $v = json_decode($val, true);
                 $val = $myts->addSlashes($val);
 
-                $this->delData($name, $this->col_name, $this->col_sn, $data_sort, __FILE__, __LINE__);
+                $this->delData($name, $data_sort, $this->col_name, $this->col_sn, __FILE__, __LINE__);
 
                 $sql = "replace into `{$this->TadDataCenterTblName}`
                 (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`, `col_id`, `sort`, `update_time`)
@@ -514,11 +520,13 @@ class TadDataCenter
     }
 
     //刪除資料
-    public function delData($name = '', $col_name = '', $col_sn = '', $data_sort = '', $file = '', $line = '', $trash_can_table = '')
+    public function delData($name = '', $data_sort = '', $col_name = null, $col_sn = null, $file = '', $line = '', $trash_can_table = '')
     {
         global $xoopsDB;
         $and_name = ('' != $name) ? "and `data_name`='{$name}'" : '';
         $and_sort = ('' != $data_sort) ? "and `data_sort`='{$data_sort}'" : '';
+        $col_name = !is_null($col_name) ? $col_name : $this->col_name;
+        $col_sn = !is_null($col_sn) ? $col_sn : $this->col_sn;
         if (!empty($trash_can_table)) {
             $sql = "REPLACE INTO " . $xoopsDB->prefix($trash_can_table) . " SELECT *
             FROM `{$this->TadDataCenterTblName}` WHERE `mid`= '{$this->mid}' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}' {$and_name} {$and_sort}";
@@ -526,6 +534,7 @@ class TadDataCenter
         }
         $sql = "delete from `{$this->TadDataCenterTblName}`
             where `mid`= '{$this->mid}' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}' {$and_name} {$and_sort}";
+        // die($sql);
         $xoopsDB->queryF($sql) or Utility::web_error($sql, $file, $line);
     }
 
@@ -842,7 +851,7 @@ class TadDataCenter
                     $json_val = json_encode($item, JSON_UNESCAPED_UNICODE);
                     $json_val = $myts->addSlashes($json_val);
 
-                    $this->delData('dcq', $col_name, $col_sn, $data_sort, __FILE__, __LINE__);
+                    $this->delData('dcq', $data_sort, $col_name, $col_sn, __FILE__, __LINE__);
                     $col_id = (empty($item['col_id'])) ? $this->rand_str() : $item['col_id'];
                     $sql = "insert into `{$this->TadDataCenterTblName}`
                             (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`, `col_id` , `sort`, `update_time`)

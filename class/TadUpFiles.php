@@ -2035,7 +2035,7 @@ class TadUpFiles
     }
 
     //下載並新增計數器
-    public function add_file_counter($files_sn = '', $hash = false, $force = false, $path = '',$can_groupid=[], $can_uid=[])
+    public function add_file_counter($files_sn = '', $hash = false, $force = false, $path = '', $can_groupid = [], $can_uid = [], $prefix = '')
     {
         global $xoopsDB, $xoopsUser;
 
@@ -2057,13 +2057,16 @@ class TadUpFiles
                 }
 
                 if (!array_intersect($groups, $gperm_groupid_arr)) {
-                    redirect_header($_SERVER['HTTP_REFERER'], 3, _TAD_PERMISSION_DENIED);
+                    redirect_header(XOOPS_URL, 3, _TAD_PERMISSION_DENIED);
                 }
             }
-        }elseif(!empty($can_groupid)){
+        } elseif (!empty($can_groupid)) {
 
-        }elseif(!empty($can_uid)){
-
+        } elseif (!empty($can_uid)) {
+            $now_uid = $xoopsUser ? $xoopsUser->uid() : 0;
+            if (!in_array($now_uid, $can_uid)) {
+                redirect_header(XOOPS_URL, 3, _TAD_PERMISSION_DENIED);
+            }
         }
         $file = $this->get_one_file($files_sn);
 
@@ -2097,8 +2100,7 @@ class TadUpFiles
 
         // 為了無礙，改成下載
         $force_arr = ['application/pdf', 'audio/mp3', 'video/mp4', 'audio/mp4'];
-        // $force = in_array($mimetype, $force_arr) ? true : false;
-        $force = ($kind == 'img' or in_array($mimetype, $force_arr)) ? true : false;
+        $force = ($kind == 'img' or in_array($mimetype, $force_arr)) ? true : $force;
 
         if ($force) {
             if (!\file_exists($file_hd_saved)) {
@@ -2110,6 +2112,10 @@ class TadUpFiles
                 $file_hd_saved = iconv($os_charset, _CHARSET, $file_hd_saved);
             } else {
                 $file_display = $real_filename;
+            }
+
+            if ($prefix) {
+                $file_display = $prefix . '-' . $file_display;
             }
 
             header('Expires: 0');
