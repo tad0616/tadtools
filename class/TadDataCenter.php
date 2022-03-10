@@ -352,6 +352,7 @@ class TadDataCenter
         $TDC = $_POST['TDC'];
         $dc_op = Request::getString('dc_op');
         $sort = 0;
+
         foreach ($TDC as $name => $value) {
             $name = $myts->addSlashes($name);
             $values = [];
@@ -362,7 +363,7 @@ class TadDataCenter
                 $values = $value;
             }
 
-            $this->delData($name, $this->col_name, $this->col_sn, '', __FILE__, __LINE__);
+            $this->delData($name, '', $this->col_name, $this->col_sn, __FILE__, __LINE__);
             foreach ($values as $data_sort => $val) {
                 if ('saveCustomSetupForm' === $dc_op and empty($val)) {
                     continue;
@@ -370,11 +371,10 @@ class TadDataCenter
                 $val = $myts->addSlashes($val);
 
                 $col_id = $this->col_id ? $this->col_id : "{$this->mid}-{$this->col_name}-{$this->col_sn}-{$name}-{$data_sort}";
-
-                $sql = "insert into `{$this->TadDataCenterTblName}`
+                $sql = "replace into `{$this->TadDataCenterTblName}`
                 (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`, `col_id`, `sort`, `update_time`)
                 values('{$this->mid}' , '{$this->col_name}' , '{$this->col_sn}' , '{$name}' , '{$val}' , '{$data_sort}', '{$col_id}', '{$sort}', now())";
-                $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                $xoopsDB->queryF($sql) or die($xoopsDB->error());
             }
             $sort++;
         }
@@ -500,6 +500,7 @@ class TadDataCenter
         while ($all = $xoopsDB->fetchArray($result)) {
             $data_sort = $all['data_sort'];
             $all['name'] = "{$all['col_name']}_{$all['col_sn']}_dcq_{$all['col_id']}";
+            $all['data_json'] = json_decode($all['data_value'], true);
             $values[$data_sort] = $all;
         }
 
@@ -534,7 +535,7 @@ class TadDataCenter
         }
         $sql = "delete from `{$this->TadDataCenterTblName}`
             where `mid`= '{$this->mid}' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}' {$and_name} {$and_sort}";
-        // die($sql);
+
         $xoopsDB->queryF($sql) or Utility::web_error($sql, $file, $line);
     }
 
@@ -853,7 +854,7 @@ class TadDataCenter
 
                     $this->delData('dcq', $data_sort, $col_name, $col_sn, __FILE__, __LINE__);
                     $col_id = (empty($item['col_id'])) ? $this->rand_str() : $item['col_id'];
-                    $sql = "insert into `{$this->TadDataCenterTblName}`
+                    $sql = "replace into `{$this->TadDataCenterTblName}`
                             (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`, `col_id` , `sort`, `update_time`)
                             values('{$this->mid}' , '{$col_name}' , '{$col_sn}' , 'dcq' , '{$json_val}' , '{$data_sort}' , '{$col_id}' , '{$sort}' , now())";
                     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
