@@ -207,10 +207,13 @@ class TadDataCenter
             $dbv = $this->getData($name, null, $ans_col_name, $ans_col_sn);
             $value = isset($dbv[$name]) ? $dbv[$name][0] : $def_value;
         }
+
         if (in_array($type, ['radio', 'checkbox', 'checkbox-radio'])) {
             $defalut_attr = ['class' => 'form-check-input'];
         } elseif (in_array($type, ['file'])) {
-            $require = $attr['require'];
+            if (empty($dbv[$name][0]) || $dbv[$name][0] == 'files=') {
+                $require = $attr['require'];
+            }
             $attr = [];
             $defalut_attr = ['class' => 'form-check-input'];
         } else {
@@ -277,7 +280,6 @@ class TadDataCenter
                     $cal::render();
                     $form = "<input type=\"text\" name=\"TDC[{$name}]{$arr}\" value=\"{$value}\" {$attr_str} onClick=\"WdatePicker({dateFmt:'yyyy-MM-dd', startDate:'%y-%M-%d'})\">";
                 } elseif ('file' === $type) {
-                    // $file_name = str_replace([' ', '-'], '_', $name);
                     $file_name = $name;
                     $TadUpFiles = new TadUpFiles($this->module_dirname, '/' . $file_name);
                     if ($require) {
@@ -287,7 +289,8 @@ class TadDataCenter
                     $TadUpFiles->set_var("show_tip", false); //不顯示提示
                     $TadUpFiles->set_col($this->ans_col_name, $this->ans_col_sn);
                     $form = $TadUpFiles->upform('list', $file_name, $maxlength, true, implode(',', $options), true, '', true);
-                    $form .= "<input type='hidden' name='uploads[{$name}]' value='{$file_name}'>";
+                    $form .= "<input type='hidden' name='uploads[{$name}]' value='{$file_name}'>
+                    <input type='hidden' name=\"TDC[{$name}][0]\" value=\"{$value}\">";
                 } elseif ('datetime' === $type) {
                     include_once XOOPS_ROOT_PATH . '/modules/tadtools/cal.php';
                     $cal = new My97DatePicker();
@@ -350,6 +353,7 @@ class TadDataCenter
         $myts = \MyTextSanitizer::getInstance();
 
         $TDC = $_POST['TDC'];
+
         $dc_op = Request::getString('dc_op');
         $sort = 0;
 
@@ -379,19 +383,26 @@ class TadDataCenter
             $sort++;
         }
 
-        foreach ($_POST['uploads'] as $name => $file_name) {
-            $TadUpFiles = new TadUpFiles($this->module_dirname, '/' . $file_name);
-            $TadUpFiles->set_col($this->col_name, $this->col_sn);
-            $files_sn = $TadUpFiles->upload_file($file_name, 1920, 640, '', '', true, false, 'files_sn');
+        if ($_POST['uploads']) {
+            foreach ($_POST['uploads'] as $name => $file_name) {
+                $TadUpFiles = new TadUpFiles($this->module_dirname, '/' . $file_name);
+                $TadUpFiles->set_col($this->col_name, $this->col_sn);
+                if (!empty($_FILES[$file_name]['name'][0])) {
+                    $TadUpFiles->upload_file($file_name, 1920, 640, '', '', true, false, 'files_sn');
+                }
 
-            $data_sort = 0;
-            $col_id = $this->col_id ? $this->col_id : "{$this->mid}-{$this->col_name}-{$this->col_sn}-{$name}-{$data_sort}";
+                $files = $TadUpFiles->get_file();
+                $files_sn_arr = array_keys($files);
 
-            $sql = "replace into `{$this->TadDataCenterTblName}`
+                $data_sort = 0;
+                $col_id = $this->col_id ? $this->col_id : "{$this->mid}-{$this->col_name}-{$this->col_sn}-{$name}-{$data_sort}";
+
+                $sql = "replace into `{$this->TadDataCenterTblName}`
                 (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`, `col_id`, `sort`, `update_time`)
-                values('{$this->mid}' , '{$this->col_name}' , '{$this->col_sn}' , '{$name}' , 'files=" . implode(',', $files_sn) . "' , $data_sort, '{$col_id}', '{$sort}', now())";
-            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__, true);
-            $sort++;
+                values('{$this->mid}' , '{$this->col_name}' , '{$this->col_sn}' , '{$name}' , 'files=" . implode(',', $files_sn_arr) . "' , $data_sort, '{$col_id}', '{$sort}', now())";
+                $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__, true);
+                $sort++;
+            }
         }
     }
 
@@ -455,17 +466,17 @@ class TadDataCenter
         $result = $xoopsDB->queryF($sql);
         $orderby = $xoopsDB->getRowsNum($result) ? "order by `sort` , `data_sort`" : "order by `data_sort`";
 
-        $sql = "select `col_name`,`col_sn`,`data_name`,`data_sort`, `data_value` from `{$this->TadDataCenterTblName}`
+        $sql = "select `col_sn`,`data_name`,`data_sort`, `data_value` from `{$this->TadDataCenterTblName}`
             where `mid`= '{$this->mid}' {$and_col_name} {$and_col_sn} {$and_name} {$and_value} {$and_sort} {$orderby}";
 
         $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         if (isset($data_sort)) {
-            list($col_name, $col_sn, $data_name, $data_sort, $data_value) = $xoopsDB->fetchRow($result);
-
+            list($col_sn, $data_name, $data_sort, $data_value) = $xoopsDB->fetchRow($result);
             return $data_value;
         }
         $values = [];
-        while (list($col_name, $col_sn, $data_name, $data_sort, $data_value) = $xoopsDB->fetchRow($result)) {
+        while (list($col_sn, $data_name, $data_sort, $data_value) = $xoopsDB->fetchRow($result)) {
+
             if (empty($def_col_sn) and ('' != $name)) {
                 $values[$col_sn][$data_sort] = $data_value;
             } else {
@@ -535,7 +546,6 @@ class TadDataCenter
         }
         $sql = "delete from `{$this->TadDataCenterTblName}`
             where `mid`= '{$this->mid}' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}' {$and_name} {$and_sort}";
-
         $xoopsDB->queryF($sql) or Utility::web_error($sql, $file, $line);
     }
 
@@ -984,6 +994,7 @@ class TadDataCenter
             $main = '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/modules/tadtools/css/vtable.css">';
         }
 
+        $col_type = [];
         if ('vertical' === $display_mode) {
             $main .= "<div class='vtable'>";
 
@@ -997,9 +1008,7 @@ class TadDataCenter
                 $dcq_title = $dcq['title'];
                 $data_name = "{$this->col_name}_{$this->col_sn}_dcq_{$data['col_id']}";
                 $ans = $this->getDcqDataArr($data_name);
-                // if($_GET['debug']==1){
-                //     die(var_export($this->ans_col_sn));
-                // }
+                $col_type[$data_name] = $dcq['type'];
                 $answer = [];
                 foreach ($ans as $a) {
                     $answer[] = nl2br(implode('、', $a[$data_name]));
@@ -1032,7 +1041,8 @@ class TadDataCenter
                     continue;
                 }
                 $dcq_title = $dcq['title'];
-                $name[$dcq_title] = "{$this->col_name}_{$this->col_sn}_dcq_{$data['col_id']}";
+                $name[$dcq_title] = $data_name = "{$this->col_name}_{$this->col_sn}_dcq_{$data['col_id']}";
+                $col_type[$data_name] = $dcq['type'];
                 $main .= "<li style='text-align: center;'>{$dcq_title}</li>";
             }
 
@@ -1048,11 +1058,18 @@ class TadDataCenter
                 $main .= "<ul>
                 <li class='vcell'>" . _TDC_FILL_PEOPLE . "</li>
                 <li style='text-align: center;'>{$title}</li>";
-                // foreach ($ans_arr as $data_name => $value) {
+
                 foreach ($name as $dcq_title => $data_name) {
+                    $css = $col_type[$data_name] == 'textarea' ? '' : "class='text-center'";
                     $main .= "<li class='vcell'>{$dcq_title}</li>
-                    <li class='text-center'>";
-                    $main .= nl2br(implode('、', $ans_arr[$data_name]));
+                    <li $css>";
+                    if ($col_type[$data_name] == 'input=file') {
+                        $TadUpFiles = new TadUpFiles($this->module_dirname, '/' . $data_name);
+                        $TadUpFiles->set_col($this->ans_col_name, $col_sn);
+                        $main .= $TadUpFiles->show_files('', true, 'filename', false, false, null, null, false);
+                    } else {
+                        $main .= nl2br(implode('、', $ans_arr[$data_name]));
+                    }
                     $main .= '</li>';
 
                     $data_name_arr[$data_name] = $data_name;
