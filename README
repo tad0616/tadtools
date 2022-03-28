@@ -4,6 +4,9 @@ TadTools 3.49 (尚未釋出)
 2.TadDataCenter 支援題目拉動排序
 3.TadDataCenter、TadUpFiles 支援垃圾桶機制
 4.TadDataCenter 支援 TadUpFiles 上傳機制
+5.新增 62 個線上字型
+6.新增 ScrollTable 套件
+7.取消分頁工具的 BootStrap 預設值，已增加相容性
 
 
 TadTools 3.48 (2022-01-11 釋出)

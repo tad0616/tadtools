@@ -832,7 +832,7 @@ class Utility
     }
 
     //取得分頁工具
-    public static function getPageBar($sql = '', $show_num = 20, $page_list = 10, $to_page = '', $url_other = '', $bootstrap = '3', $g2p_name = 'none')
+    public static function getPageBar($sql = '', $show_num = 20, $page_list = 10, $to_page = '', $url_other = '', $bootstrap = '', $g2p_name = 'none')
     {
         global $xoopsDB;
         if (empty($show_num)) {

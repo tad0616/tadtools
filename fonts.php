@@ -18,8 +18,16 @@ $fonts = [
     'Crayon' => '黑板粉筆體',
     'Cubic' => '俐方體11號',
     'Doudouziti' => '豆豆體',
+    'HanWangHeiHeavy' => '王漢宗特黑體',
+    'HanWangHeiLight' => '王漢宗細黑體',
+    'HanWangKaiMediumChuIn' => '王漢宗中楷注音',
+    'HanWangKanTan' => '王漢宗勘亭流',
+    'HanWangLiSuMedium' => '王漢宗中隸書',
     'HanWangMingBlack' => '王漢宗超明體',
     'HanWangWeBe' => '王漢宗魏碑體',
+    'HanWangYenHeavy' => '王漢宗特圓體',
+    'HanWangYenLight' => '王漢宗細圓體',
+    'HanWangZonYi' => '王漢宗綜藝體',
     'HanZiBiShunZiTi' => '漢字筆順體原版',
     'HengShanMaoBiCaoShu' => '衡山毛筆草書',
     'I-Ngaan' => '刻石錄顏體',
@@ -29,6 +37,7 @@ $fonts = [
     'JasonHandwriting2' => '清松手寫體2',
     'JasonHandwriting3' => '清松手寫體3',
     'JasonHandwriting4' => '清松手寫體4',
+    'JfOpenhuninn' => 'jf open 粉圓體',
     'KaiseiTokumin' => '解星 B',
     'KingnamMaiyuan' => '荊南麥圓體',
     'Kurewa' => '苦累蛙圓體',
@@ -43,6 +52,7 @@ $fonts = [
     'QianTuMaKeShouXieTi' => '千圖馬克手寫體',
     'Qiang' => '黒薔薇',
     'QingLiuShu' => '青柳隷書',
+    'SuiFengTi ' => '隨峰體',
     'SweiFistLegCJKjp' => '獅尾詠腿黑體',
     'SweiSpringSugarCJKtc' => '獅尾四季春',
     'SweiToothpasteCJKtc' => '獅尾牙膏圓體',
@@ -61,7 +71,6 @@ $fonts = [
     'ZhaiZaiJiaMaiKeBi' => '宅在家麥克筆',
     'ZhaiZaiJiaZiDongBi' => '宅在家自動筆',
     'ZuoZuoMuZiTi' => '佐佐木字體',
-    'jf-openhuninn' => 'jf open 粉圓體',
 ];
 
 // $bad_fonts = [
@@ -127,11 +136,26 @@ if ($font) {
     <p>近年來，Google一直在對安卓系統進行調整，這些都是為了確保用戶的手機能有更長久的續航力。</p>
     </div>";
 
-    echo Utility::html5($data, false, true, '4', false, 'container', $title = '線上字型大量文字預覽', '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/modules/tadtools/css/xoops.css">');
+    echo Utility::html5($data, false, true, '4', true, 'container', $title = '線上字型大量文字預覽', '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/modules/tadtools/css/xoops.css">');
 
 } else {
 
-    $data = '
+    $title_arr = [];
+    if (empty($demo)) {
+        $sql = "select `title` from " . $xoopsDB->prefix('newblocks') . "
+        where `title` != '' and `visible` = 1";
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        while (list($title) = $xoopsDB->fetchRow($result)) {
+            $title_arr[] = $title;
+        }
+    }
+
+    $data = "
+    <link href='" . XOOPS_URL . "/modules/tadtools/ScrollTable/superTables.css' rel='stylesheet' type='text/css'>
+    <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/ScrollTable/superTables.js'></script>
+    <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/ScrollTable/jquery.superTable.js'></script>";
+
+    $data .= '
     <div class="alert alert-info" role="alert">
         <form action="fonts.php">
             <div class="input-group">
@@ -154,29 +178,38 @@ if ($font) {
     </div>
 
     <h2>線上字型一覽</h2>
-    <div class="table-responsive" style="height: 600px; overflow: auto;">
-    <table class="table table-bordered table-sm">';
+    <table id="font_list" class="table table-bordered table-sm">
+    <tr>
+    <th class="align-middle text-center" nowrap>編號</th>
+    <th class="align-middle text-center" nowrap>字型中文名稱</th>
+    <th class="align-middle text-center" nowrap>字型英文名稱</th>';
 
-    $title_arr = [];
     if (empty($demo)) {
-        $sql = "select `title` from " . $xoopsDB->prefix('newblocks') . "
-        where `title` != '' and `visible` = 1";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-        while (list($title) = $xoopsDB->fetchRow($result)) {
-            $title_arr[] = $title;
+        foreach ($title_arr as $title) {
+            $data .= "
+            <th class='align-middle text-center' nowrap>$title</th>
+            ";
         }
+    } else {
+        $data .= "
+        <th class='align-middle text-center'>語法</th>
+        <th class='align-middle text-center'>實際範例</th>
+        ";
     }
+    $data .= "</tr>";
 
+    $i=1;
     foreach ($fonts as $font_family => $font_title) {
         $data .= "
         <tr>
-        <th class='align-middle' nowrap><a href='fonts.php?font={$font_family}'>$font_title</a></th>
-        <td class='align-middle' nowrap><a href='fonts.php?font={$font_family}'>$font_family</a></td>";
+        <th class='align-middle text-center' nowrap>$i</th>
+        <th class='align-middle text-center' nowrap><a href='fonts.php?font={$font_family}'>$font_title</a></th>
+        <td class='align-middle text-center' nowrap><a href='fonts.php?font={$font_family}'>$font_family</a></td>";
 
         if (empty($demo)) {
             foreach ($title_arr as $title) {
                 $data .= "
-                <td class='align-middle' nowrap><div style=\"font-family: '{$font_family}'; font-size: {$size}rem;\">$title</div></td>
+                <td class='align-middle text-center' nowrap><div style=\"font-family: '{$font_family}'; font-size: {$size}rem;\">$title</div></td>
                 ";
             }
         } else {
@@ -185,12 +218,23 @@ if ($font) {
             <td class='align-middle'><div style=\"font-family: '{$font_family}'; font-size: {$size}rem;\">$demo</div></td>
             ";
         }
-        $data .= "
-        </tr>
-        ";
+        $data .= "</tr>";
+        $i++;
     }
-    $data .= '</table>
-    </div>';
+    $data .= '</table>';
+
+    $data .= "
+    <script type='text/javascript'>
+        $(document).ready(function(){
+            var height = $('#font_list').height();
+            if(height > 600){
+                height = 600;
+            }else{
+                height=height+12;
+            }
+            $('#font_list').toSuperTable({ width: '100%', height: height+'px', fixedCols: 1, headerRows: 1 });
+        });
+    </script>";
 
     // $data .= '$fonts = [<br>';
     // foreach ($fonts as $font_family => $font_title) {
@@ -198,6 +242,6 @@ if ($font) {
     // }
     // $data .= '];';
 
-    echo Utility::html5($data, false, true, '4', false, 'container-fluid', $title = '線上字型一覽', '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/modules/tadtools/css/xoops.css">');
+    echo Utility::html5($data, false, true, '4', true, 'container-fluid', $title = '線上字型一覽', '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/modules/tadtools/css/xoops.css">');
 
 }
