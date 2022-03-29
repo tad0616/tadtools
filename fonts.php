@@ -7,7 +7,7 @@ $demo = Request::getString('demo');
 $size = Request::getFloat('size', '1.5');
 $font = Request::getString('font');
 $title_font = Request::getString('title_font', $font);
-
+$otf_arr = ['BoTa', 'Chalk', 'KingnamMaiyuan', 'Mamelon', 'MamelonHi', 'PangPangZhuRouTi', 'PoSuiLingHaoZi', 'TanugoTangGuoShouXieTiBold', 'TanugoTangGuoShouXieTiRegular', 'WuXinShouXieTi', 'YOzShouXieTi', 'YouZi'];
 $fonts = [
     '851DianJiWenZiTi' => '851電機文字',
     'Bakudai' => '莫大毛筆字體',
@@ -18,6 +18,7 @@ $fonts = [
     'Crayon' => '黑板粉筆體',
     'Cubic' => '俐方體11號',
     'Doudouziti' => '豆豆體',
+    'HanWangFangSongMedium' => '王漢宗中仿宋',
     'HanWangHeiHeavy' => '王漢宗特黑體',
     'HanWangHeiLight' => '王漢宗細黑體',
     'HanWangKaiMediumChuIn' => '王漢宗中楷注音',
@@ -198,12 +199,18 @@ if ($font) {
     }
     $data .= "</tr>";
 
-    $i=1;
+    $i = 1;
+    $url = "https://cdn.jsdelivr.net/gh/tadlearn/webfonts/fonts";
     foreach ($fonts as $font_family => $font_title) {
+        $file_name = in_array($font_family, $otf_arr) ? "{$url}/{$font_family}.otf" : "{$url}/{$font_family}.ttf";
+
         $data .= "
         <tr>
         <th class='align-middle text-center' nowrap>$i</th>
-        <th class='align-middle text-center' nowrap><a href='fonts.php?font={$font_family}'>$font_title</a></th>
+        <th class='align-middle text-center' nowrap>
+        <a href='fonts.php?font={$font_family}'>{$font_title}</a>
+        | <a href='{$file_name}'>下載</a>
+        </th>
         <td class='align-middle text-center' nowrap><a href='fonts.php?font={$font_family}'>$font_family</a></td>";
 
         if (empty($demo)) {
@@ -244,4 +251,31 @@ if ($font) {
 
     echo Utility::html5($data, false, true, '4', true, 'container-fluid', $title = '線上字型一覽', '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/modules/tadtools/css/xoops.css">');
 
+}
+
+function remoteFileExists($url)
+{
+    $curl = curl_init($url);
+
+    //don't fetch the actual page, you only want to check the connection is ok
+    curl_setopt($curl, CURLOPT_NOBODY, true);
+
+    //do request
+    $result = curl_exec($curl);
+
+    $ret = false;
+
+    //if request did not fail
+    if ($result !== false) {
+        //if request was ok, check response code
+        $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+        if ($statusCode == 200) {
+            $ret = true;
+        }
+    }
+
+    curl_close($curl);
+
+    return $ret;
 }

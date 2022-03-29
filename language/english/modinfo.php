@@ -43,3 +43,10 @@ define('_MI_TADTOOLS_IMAGE_MAX_HEIGHT', 'The maximum height of the image uploade
 define('_MI_TADTOOLS_IMAGE_MAX_HEIGHT_DESC', 'Please fill in the number, the unit is px');
 define('_MI_TADTOOLS_MIME_TYPE_CHECK', 'Do you need to perform MIME TYPE check of the file when uploading the file');
 define('_MI_TADTOOLS_MIME_TYPE_CHECK_DESC', 'This check is to avoid fake files. If the file cannot be uploaded, you can cancel this check and try');
+
+define('_MI_TADTOOLS_INSERT_SPACING', 'Automatically add spaces between Chinese and English');
+define('_MI_TADTOOLS_INSERT_SPACING_DESC', 'Automatically add spaces between Chinese and English when displaying articles to avoid conversion errors when converting URLs to links (but if there is a mix of Chinese and English in the URL, it may not be downloaded)');
+define('_MI_TADTOOLS_LINKIFY', 'Convert URL to link');
+define('_MI_TADTOOLS_LINKIFY_DESC', 'Automatically convert URLs from internal text to links');
+define('_MI_TADTOOLS_PDF_FORCE_DL', 'Does PDF file force download?');
+define('_MI_TADTOOLS_PDF_FORCE_DL_DESC', "To comply with Accessibility 2.1, please select 'Yes', if you want to preview directly online please select 'No'");

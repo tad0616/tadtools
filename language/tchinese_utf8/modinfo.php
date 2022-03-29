@@ -47,3 +47,5 @@ define('_MI_TADTOOLS_INSERT_SPACING', '自動在中文和英文之間自動加�
 define('_MI_TADTOOLS_INSERT_SPACING_DESC', '顯示文章時會自動在中文和英文之間自動加入空格，避免將網址轉為連結時轉換錯誤（但若網址中有中英文混雜狀況時，可能會導致無法下載）');
 define('_MI_TADTOOLS_LINKIFY', '將網址轉為連結');
 define('_MI_TADTOOLS_LINKIFY_DESC', '自動將內文的網址轉換成連結');
+define('_MI_TADTOOLS_PDF_FORCE_DL', 'PDF 檔是否強制下載？');
+define('_MI_TADTOOLS_PDF_FORCE_DL_DESC', '若要符合無障礙 2.1，請選「是」，若想直接線上預覽請選「否」');

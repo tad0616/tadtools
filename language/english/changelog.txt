@@ -1,3 +1,16 @@
+TadTools 3.49 (Released 2022-03-29)
+====================================
+1. TadDataCenter supports multi-table support
+2. TadDataCenter supports pulling and sorting of topics
+3. TadDataCenter, TadUpFiles support trash mechanism
+4. TadDataCenter supports TadUpFiles upload mechanism.
+5. 62 new online fonts
+6. New ScrollTable package
+7. Cancel the BootStrap preset of the paging tool to increase compatibility
+8. Add the setting of whether pdf is mandatory to download
+
+
+
 TadTools 3.48 (Released on 2022-01-11)
 ====================================
 1. Upgrade to BootStrap 5.1.3

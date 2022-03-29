@@ -1,4 +1,4 @@
-TadTools 3.49 (尚未釋出)
+TadTools 3.49 (2022-03-29 釋出)
 ====================================
 1.TadDataCenter 支援多表單
 2.TadDataCenter 支援題目拉動排序
@@ -7,6 +7,7 @@ TadTools 3.49 (尚未釋出)
 5.新增 62 個線上字型
 6.新增 ScrollTable 套件
 7.取消分頁工具的 BootStrap 預設值，已增加相容性
+8.加入pdf是否強制下載的設定
 
 
 TadTools 3.48 (2022-01-11 釋出)

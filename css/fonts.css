@@ -52,6 +52,12 @@
   src: url(https://cdn.jsdelivr.net/gh/tadlearn/webfonts/Doudouziti.woff2) format("woff2");
 }
 
+/* 王漢宗中仿宋 */
+@font-face {
+  font-family: "HanWangFangSongMedium";
+  src: url(https://cdn.jsdelivr.net/gh/tadlearn/webfonts/HanWangFangSongMedium.woff2) format("woff2");
+}
+
 /* 王漢宗特黑體 */
 @font-face {
   font-family: "HanWangHeiHeavy";
@@ -173,6 +179,12 @@
 /* jf open 粉圓 */
 @font-face {
   font-family: "JfOpenhuninn";
+  src: url(https://cdn.jsdelivr.net/gh/tadlearn/webfonts/JfOpenhuninn.woff2) format("woff2");
+}
+
+/* jf open 粉圓 */
+@font-face {
+  font-family: "jf-openhuninn";
   src: url(https://cdn.jsdelivr.net/gh/tadlearn/webfonts/JfOpenhuninn.woff2) format("woff2");
 }
 

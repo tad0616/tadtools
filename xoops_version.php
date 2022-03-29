@@ -4,7 +4,7 @@ global $xoopsConfig;
 
 $modversion = [];
 $modversion['name'] = _MI_TADTOOLS_NAME;
-$modversion['version'] = 3.48;
+$modversion['version'] = 3.49;
 $modversion['description'] = _MI_TADTOOLS_DESC;
 $modversion['author'] = 'Tad (tad0616@gmail.com)';
 $modversion['credits'] = '';
@@ -19,7 +19,7 @@ $modversion['icons32'] = '../../Frameworks/moduleclasses/icons/32';
 
 //about
 $modversion['module_status'] = 'Final';
-$modversion['release_date'] = '2022-01-11';
+$modversion['release_date'] = '2022-03-29';
 $modversion['module_website_url'] = 'https://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=1';
 $modversion['module_website_name'] = 'XOOPS EZGO';
 $modversion['author_website_url'] = 'https://www.tad0616.net';
@@ -137,6 +137,14 @@ $modversion['config'][$i]['description'] = '_MI_TADTOOLS__MI_TADTOOLS_LINKIFY_DE
 $modversion['config'][$i]['formtype'] = 'yesno';
 $modversion['config'][$i]['valuetype'] = 'int';
 $modversion['config'][$i]['default'] = '1';
+
+$i++;
+$modversion['config'][$i]['name'] = 'pdf_force_dl';
+$modversion['config'][$i]['title'] = '_MI_TADTOOLS_PDF_FORCE_DL';
+$modversion['config'][$i]['description'] = '_MI_TADTOOLS__MI_TADTOOLS_PDF_FORCE_DL_DESC';
+$modversion['config'][$i]['formtype'] = 'yesno';
+$modversion['config'][$i]['valuetype'] = 'int';
+$modversion['config'][$i]['default'] = '0';
 
 $i = 0;
 $modversion['blocks'][$i]['file'] = 'tadtools_qrcode.php';

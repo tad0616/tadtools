@@ -2037,7 +2037,7 @@ class TadUpFiles
     //下載並新增計數器
     public function add_file_counter($files_sn = '', $hash = false, $force = false, $path = '', $can_groupid = [], $can_uid = [], $prefix = '')
     {
-        global $xoopsDB, $xoopsUser;
+        global $xoopsDB, $xoopsUser, $xoopsModuleConfig;
 
         // 權限設定
         if ($this->permission) {
@@ -2099,7 +2099,7 @@ class TadUpFiles
         }
 
         // 為了無礙，改成下載
-        $force_arr = ['application/pdf', 'audio/mp3', 'video/mp4', 'audio/mp4'];
+        $force_arr = $xoopsModuleConfig['pdf_force_dl'] ? ['application/pdf', 'audio/mp3', 'video/mp4', 'audio/mp4'] : [];
         $force = ($kind == 'img' or in_array($mimetype, $force_arr)) ? true : $force;
 
         if ($force) {
