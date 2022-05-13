@@ -1,5 +1,4 @@
 <?php
-
 namespace XoopsModules\Tadtools;
 
 use XoopsModules\Tadtools\Utility;
@@ -15,7 +14,7 @@ class ScrollTable
     }
 
     //產生語法
-    public function render($name = '', $fixedCols = '1', $headerRows = '1',$max_height=500, $add_height = 12)
+    public function render($name = '', $fixedCols = '1', $headerRows = '1', $max_height = 500, $add_height = 12)
     {
         global $xoTheme;
 
@@ -62,5 +61,5 @@ class ScrollTable
 /*
 use XoopsModules\Tadtools\ScrollTable;
 $ScrollTable=new ScrollTable();
-$ScrollTable->render('#table',1,1,12);
+$ScrollTable->render('#table',1,1,500,12);
  */

@@ -6,7 +6,7 @@
 
 <!-- SmartMenus jQuery Bootstrap Addon -->
 <script type="text/javascript" src="<{xoAppUrl modules/tadtools/smartmenus/addons/bootstrap/jquery.smartmenus.bootstrap.js}>"></script>
-
+<{*
 <script type="text/javascript">
 // SmartMenus init
 $(function() {
@@ -21,4 +21,4 @@ $(function() {
         <{/if}>
     });
 });
-</script>
+</script> *}>

@@ -9,7 +9,7 @@
         <!-- SmartMenus jQuery Bootstrap Addon -->
         <script type="text/javascript" src="<{xoAppUrl modules/tadtools/smartmenus/addons/bootstrap-4/jquery.smartmenus.bootstrap-4.js}>"></script>
 
-        <script type="text/javascript">
+        <{* <script type="text/javascript">
             // SmartMenus init
             $(function() {
                 $('#main-menu').smartmenus({
@@ -23,4 +23,4 @@
                     <{/if}>
                 });
             });
-        </script>
+        </script> *}>

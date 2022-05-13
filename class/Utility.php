@@ -825,10 +825,7 @@ class Utility
     //刪除整個目錄
     public static function rrmdir($path)
     {
-        return is_file($path) ?
-        @unlink($path) :
-        array_map('rrmdir', glob($path . '/*')) == @rmdir($path)
-        ;
+        return is_file($path) ? @unlink($path) : array_map('rrmdir', glob($path . '/*')) == @rmdir($path);
     }
 
     //取得分頁工具
@@ -860,7 +857,7 @@ class Utility
             $navbar->set_url_other($url_other);
         }
 
-        if ('3' == $bootstrap or '4' == $bootstrap) {
+        if ('3' == $bootstrap or '4' == $bootstrap or '5' == $bootstrap) {
             $mybar = $navbar->makeBootStrapBar($g2p_name);
             $main['bar'] = "
                 <div class='text-center'>

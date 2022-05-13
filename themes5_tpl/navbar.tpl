@@ -48,7 +48,7 @@
     <{/if}>
 
 
-    <ul id="main-menu" class="sm sm-mint d-md-flex">
+    <ul id="main-menu" class="sm sm-mint d-md-flex flex-md-wrap">
         <{if $show_sitename==0 or $show_sitename==''}>
             <li>
                 <a href="<{$xoops_url}>/index.php">&#xf015; <{$smarty.const._TAD_HOME}></a>

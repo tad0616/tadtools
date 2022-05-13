@@ -192,6 +192,7 @@ class TadUpFiles
 
     public $tag = '';
     public $require = '';
+    public $pdf_force_dl = false;
 
     public function __construct($dir = '', $subdir = '', $file = '/file', $image = '/image', $thumbs = '/image/.thumbs')
     {
@@ -217,6 +218,7 @@ class TadUpFiles
         $config_handler = xoops_getHandler('config');
         $TadToolsModuleConfig = $config_handler->getConfigsByCat(0, $TadToolsModule->mid());
         $this->auto_charset = $TadToolsModuleConfig['auto_charset'];
+        $this->pdf_force_dl = $TadToolsModuleConfig['pdf_force_dl'];
     }
 
     //設定路徑
@@ -603,7 +605,7 @@ class TadUpFiles
             return;
         }
 
-        $fancybox = new FancyBox('.fancybox_demo', 640, 480);
+        $fancybox = new FancyBox('.fancybox_demo', '1200', '800');
         $fancybox->render(false, null, false);
 
         $files = "
@@ -1894,7 +1896,7 @@ class TadUpFiles
         $autoPlay = empty($playSpeed) ? false : true;
 
         if ($this->showFancyBox) {
-            $fancybox = new FancyBox(".fancybox_{$this->col_name}", 640, 480);
+            $fancybox = new FancyBox(".fancybox_{$this->col_name}", '1920', '1080');
             $all_files .= ($show_mode === 'file_text_url' or $show_mode === 'file_url') ? '' : $fancybox->render(false, null, $autoPlay, $playSpeed);
         }
 
@@ -1904,10 +1906,6 @@ class TadUpFiles
         if (empty($file_arr)) {
             return;
         }
-
-        // if ($show_mode === 'app') {
-        //     return $file_arr;
-        // }
 
         if ($file_arr) {
             $i = 1;
@@ -1961,6 +1959,10 @@ class TadUpFiles
                                 $fancyboxset = $rel = '';
                             }
                             $linkto = XOOPS_URL . "/modules/tadtools/video.php?file_name={$file_info['original_file_path']}";
+                        } elseif ($fext === 'pdf' && $this->pdf_force_dl != 1) {
+                            $fancyboxset = "fancybox_{$this->col_name}";
+                            $rel = "data-fancybox-type='iframe'";
+                            $linkto = $file_info['path'];
                         } elseif ($fext === 'jpg' or $fext === 'gif' or $fext === 'png' or $fext === 'jpeg') {
                             if ($file_info['tag'] == '360') {
                                 $fancyboxset = "fancybox_{$this->col_name}";
@@ -2099,7 +2101,7 @@ class TadUpFiles
         }
 
         // 為了無礙，改成下載
-        $force_arr = $xoopsModuleConfig['pdf_force_dl'] ? ['application/pdf', 'audio/mp3', 'video/mp4', 'audio/mp4'] : [];
+        $force_arr = $this->pdf_force_dl ? ['application/pdf', 'audio/mp3', 'video/mp4', 'audio/mp4'] : [];
         $force = ($kind == 'img' or in_array($mimetype, $force_arr)) ? true : $force;
 
         if ($force) {
