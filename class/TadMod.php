@@ -172,7 +172,7 @@ class TadMod
     // https://campus-xoops.tn.edu.tw/modules/tad_book3/post.php?op=tad_book3_docs_form&tbsn=48&tbdsn=1645
     public function xoops_version()
     {
-        global $xoTheme;
+        global $xoTheme, $xoopsConfig;
         $modversion['name'] = $this->name;
         $modversion['version'] = $this->version;
         $modversion['description'] = $this->description;
@@ -203,9 +203,14 @@ class TadMod
             $modversion['paypal'] = $paypal;
         }
 
-        if (\file_exists(XOOPS_ROOT_PATH . "/modules/{$this->dirname}/sql/mysql.sql")) {
+        if (\file_exists(XOOPS_ROOT_PATH . "/modules/{$this->dirname}/sql/" . $xoopsConfig['language'] . "/mysql.sql")) {
+            $modversion['sqlfile']['mysql'] = 'sql/' . $xoopsConfig['language'] . '/mysql.sql';
+            $sql                            = \file_get_contents(XOOPS_ROOT_PATH . "/modules/{$this->dirname}/sql/" . $xoopsConfig['language'] . "/mysql.sql");
+            preg_match_all('/CREATE TABLE `([a-z_]*)`/i', $sql, $tables);
+            $modversion['tables'] = $tables[1];
+        } elseif (\file_exists(XOOPS_ROOT_PATH . "/modules/{$this->dirname}/sql/mysql.sql")) {
             $modversion['sqlfile']['mysql'] = 'sql/mysql.sql';
-            $sql = \file_get_contents(XOOPS_ROOT_PATH . "/modules/{$this->dirname}/sql/mysql.sql");
+            $sql                            = \file_get_contents(XOOPS_ROOT_PATH . "/modules/{$this->dirname}/sql/mysql.sql");
             preg_match_all('/CREATE TABLE `([a-z_]*)`/i', $sql, $tables);
             $modversion['tables'] = $tables[1];
         }
