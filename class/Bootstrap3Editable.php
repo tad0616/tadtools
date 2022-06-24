@@ -15,7 +15,7 @@ class Bootstrap3Editable
     }
 
     //產生語法
-    public function render($name = '.editable', $url = 'ajax.php')
+    public function render($name = '.editable', $url = '')
     {
         global $xoTheme;
 
@@ -24,20 +24,27 @@ class Bootstrap3Editable
         // if ($xoTheme) {
         //     $xoTheme->addStylesheet("modules/tadtools/bootstrap{$_SESSION['bootstrap']}-editable/css/bootstrap-editable.css");
         //     $xoTheme->addScript("modules/tadtools/bootstrap{$_SESSION['bootstrap']}-editable/js/bootstrap-editable.min.js");
-        //     $xoTheme->addScript('', null, "\$(document).ready(function(){
+
+        //     if ($url) {
+        //         $xoTheme->addScript('', null, "\$(document).ready(function(){
         //             \$('{$name}').editable({url: '$url'});
         //         });");
+        //     }
         // } else {
         $main = "
             {$jquery}
             <link href='" . XOOPS_URL . "/modules/tadtools/bootstrap{$_SESSION['bootstrap']}-editable/css/bootstrap-editable.css' rel='stylesheet'>
             <script src='" . XOOPS_URL . "/modules/tadtools/bootstrap{$_SESSION['bootstrap']}-editable/js/bootstrap-editable.js'></script>
-            <script type='text/javascript'>
-                $(document).ready(function(){
-                    $('{$name}').editable({url: '$url'});
-                });
-            </script>
             ";
+        if ($url) {
+            $main .= "
+                <script type='text/javascript'>
+                    $(document).ready(function(){
+                        $('{$name}').editable({url: '$url'});
+                    });
+                </script>
+                ";
+        }
 
         return $main;
         // }

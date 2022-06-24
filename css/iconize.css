@@ -70,7 +70,7 @@ a.iconize[href$='.dmg'], a.iconize[href$='.app'] {
 
 a.iconize[href$='.pps'],a.iconize[href$='.ppt'],a.iconize[href$='.pptx'] {
 	padding: 5px 0px 5px 20px;
-	background: transparent url('../images/icons/icon_pps.gif') no-repeat center left;
+	background: transparent url('../images/icons/icon_pptx.gif') no-repeat center left;
 }
 
 a.iconize[href$='.pdf'] {

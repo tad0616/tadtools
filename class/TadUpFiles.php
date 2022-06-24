@@ -2080,7 +2080,7 @@ class TadUpFiles
         $file_type = $file['file_type'];
         $file_size = $file['file_size'];
         $real_filename = $file['original_filename'] ? $file['original_filename'] : $file['description'];
-        $dl_name = ($this->hash) ? $file['hash_filename'] : $file['file_name'];
+        $dl_name = ($this->hash) ? $file['hash_filename'] : str_replace(['/', '|', '\\', '?', '"', '*', ':', '<', '>'], '', $file['file_name']);
 
         $sql = "update `{$this->TadUpFilesTblName}` set `counter`=`counter`+1 where `files_sn`='{$files_sn}'";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -2120,6 +2120,8 @@ class TadUpFiles
                 $file_display = $prefix . '-' . $file_display;
             }
 
+            $file_display = str_replace(['/', '|', '\\', '?', '"', '*', ':', '<', '>'], '', $file_display);
+
             header('Expires: 0');
             header('Content-Type: ' . $mimetype);
             //header('Content-Type: application/octet-stream');
@@ -2155,7 +2157,7 @@ class TadUpFiles
         } else {
             $file_display = $real_filename;
         }
-        // $file_display = \str_replace(' ', '', $file_display);
+        $file_display = str_replace(['/', '|', '\\', '?', '"', '*', ':', '<', '>'], '', $file_display);
 
         Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/{$this->dir}");
         Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/{$this->dir}/tmp");

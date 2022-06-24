@@ -354,6 +354,7 @@
 #main-nav {
     border: none;
     position: relative;
+    min-height: 50px;
     <{* <{if $nav_display_type=='not_full'}>
         <{if $navbar_img}>
             background-color: tranparent;

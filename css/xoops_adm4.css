@@ -7,7 +7,7 @@
 } */
 
 @import url('my-input.css');
-.tooltip {
+a.tooltip, img.tooltip {
     opacity: 100;
     position: relative;
     display: inline;

@@ -25,7 +25,7 @@
     }
 </script>
 
-<!-- $navbar_pos -->
+<!-- <{$navbar_pos}> -->
 <nav role="navigation" id="main-nav">
 
     <!-- Mobile menu toggle button (hamburger/x icon) -->

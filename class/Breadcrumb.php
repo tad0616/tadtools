@@ -31,9 +31,14 @@ class Breadcrumb
      * Render System BreadCrumb
      *
      */
-    public function render()
+    public function render($only_home_hide = false)
     {
         global $xoTheme;
+
+        if (count($this->_bread) <= 1 && $only_home_hide) {
+            return;
+        }
+
         $out = $menu = '';
         if ($xoTheme) {
             $xoTheme->addStylesheet('modules/tadtools/breadcrumb/breadcrumb.css');

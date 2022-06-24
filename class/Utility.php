@@ -217,9 +217,8 @@ class Utility
             }
         }
         closedir($dir_handle);
-        rmdir($dirname);
 
-        return true;
+        return rmdir($dirname);
     }
 
     //拷貝目錄
