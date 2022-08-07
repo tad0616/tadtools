@@ -89,7 +89,8 @@
         <{elseif $openid_login!="3"}>
             <li>
                 <a href="#">
-                    <{$smarty.const.TF_USER_ENTER}>
+                <{if $login_text}><{$login_text}><{else}>
+                <{$smarty.const.TF_USER_ENTER}><{/if}>
                 </a>
                 <{includeq file="$xoops_rootpath/modules/tadtools/themes5_tpl/menu_login.tpl"}>
             </li>

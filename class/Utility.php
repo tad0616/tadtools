@@ -856,7 +856,18 @@ class Utility
             $navbar->set_url_other($url_other);
         }
 
-        if ('3' == $bootstrap or '4' == $bootstrap or '5' == $bootstrap) {
+        if ('gmail' == $bootstrap) {
+            $mybar = $navbar->makeBootStrapBar($g2p_name);
+            $main['bar'] = "
+                <nav class='my-0'>
+                    <ul class='pagination justify-content-end justify-content-right align-items-center flex-wrap'>
+                    <li>{$mybar['start']}-{$mybar['end']}則（共 {$total} 則）</li>
+                    {$mybar['bar_left']}
+                    {$mybar['bar_right']}
+                    </ul>
+                </nav>
+                ";
+        } elseif ('3' == $bootstrap or '4' == $bootstrap or '5' == $bootstrap) {
             $mybar = $navbar->makeBootStrapBar($g2p_name);
             $main['bar'] = "
                 <div class='text-center'>

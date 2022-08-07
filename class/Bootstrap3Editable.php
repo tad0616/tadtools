@@ -31,6 +31,10 @@ class Bootstrap3Editable
         //         });");
         //     }
         // } else {
+        if (!isset($_SESSION['bootstrap'])) {
+            $_SESSION['bootstrap'] = 3;
+        }
+
         $main = "
             {$jquery}
             <link href='" . XOOPS_URL . "/modules/tadtools/bootstrap{$_SESSION['bootstrap']}-editable/css/bootstrap-editable.css' rel='stylesheet'>

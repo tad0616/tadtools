@@ -333,6 +333,12 @@ class PageBar
         $page_bar['right'] = $bar_right . $bar_r . $bar_last;
         $page_bar['current'] = $this->current;
         $page_bar['total'] = $this->pTotal;
+        $page_bar['start'] = ($this->current * $this->limit) - $this->limit + 1;
+        $page_bar['end'] = $this->current * $this->limit;
+        $page_bar['bar_first'] = $bar_first;
+        $page_bar['bar_left'] = $bar_left;
+        $page_bar['bar_right'] = $bar_right;
+        $page_bar['bar_last'] = $bar_last;
         $page_bar['sql'] = $this->sqlQuery();
 
         return $page_bar;

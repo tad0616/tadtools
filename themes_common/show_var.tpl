@@ -70,6 +70,8 @@
                         <tr><th>導覽列的登入呈現方式</th><th>$openid_login</th><td><{$openid_login}></td></tr>
                         <tr><th>登入選單一排要呈現幾個OpenID圖示</th><th>$openid_logo</th><td><{$openid_logo}></td></tr>
                         <tr><th>是否釘選住導覽列？</th><th>$use_pin</th><td><{$use_pin}></td></tr>
+                        <tr><th>導覽列的登入文字</th><th>$login_text</th><td><{$login_text}></td></tr>
+                        <tr><th>登入說明</th><th>$login_description</th><td><{$login_description}></td></tr>
 
                         <tr><th colspan=3><h2>其他設定</h2></th></tr>
                         <tr><th>左邊區塊數</th><th>$left_count</th><td><{$left_count}></td></tr>

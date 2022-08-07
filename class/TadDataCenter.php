@@ -438,9 +438,10 @@ class TadDataCenter
 
                 $this->delData($name, $data_sort, $this->col_name, $this->col_sn, __FILE__, __LINE__);
 
+                $col_id = $this->col_id ? $this->col_id : $v['col_id'];
                 $sql = "replace into `{$this->TadDataCenterTblName}`
                 (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`, `col_id`, `sort`, `update_time`)
-                values('{$this->mid}' , '{$this->col_name}' , '{$this->col_sn}' , '{$name}' , '{$val}' , '{$data_sort}', '{$v['col_id']}' , '{$sort}', now())";
+                values('{$this->mid}' , '{$this->col_name}' , '{$this->col_sn}' , '{$name}' , '{$val}' , '{$data_sort}', '{$col_id}' , '{$sort}', now())";
                 $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             }
             $sort++;

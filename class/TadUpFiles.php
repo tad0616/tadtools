@@ -1488,7 +1488,7 @@ class TadUpFiles
     }
 
     //刪除實體檔案
-    public function del_files($files_sn = '', $trash_can_table = '')
+    public function del_files($files_sn = '', $trash_can_table = '', $force = false)
     {
         global $xoopsDB, $xoopsUser;
 
@@ -1517,7 +1517,7 @@ class TadUpFiles
             foreach ($all as $k => $v) {
                 $$k = $v;
             }
-            if ($isAdmin or $uid == $my_uid or empty($uid)) {
+            if ($isAdmin or $uid == $my_uid or empty($uid) or $force) {
                 $this->set_col($col_name, $col_sn, $sort);
 
                 if (!empty($trash_can_table)) {
@@ -1683,6 +1683,11 @@ class TadUpFiles
                 $file_name = $this->hash ? $hash_filename : $file_name;
                 $pic_name = $this->TadUpFilesImgUrl . "/{$file_name}";
                 $thumb_pic = $this->TadUpFilesThumbUrl . "/{$file_name}";
+
+                if (!file_exists($this->TadUpFilesThumbDir . "/{$file_name}")) {
+                    Utility::mk_dir($this->TadUpFilesThumbDir);
+                    $this->thumbnail($this->TadUpFilesImgDir . "/{$file_name}", $this->TadUpFilesThumbDir . "/{$file_name}", '', $this->thumb_width);
+                }
 
                 if ($tag == '360') {
                     $fancyboxset = "fancybox_{$this->col_name} $tag";
@@ -2008,7 +2013,7 @@ class TadUpFiles
                     $h = $this->show_height;
                     $bgs = $this->background_size;
                     $item_h = \intval($h);
-                    $item_h = $show_description ? $item_h + 60 : $item_h;
+                    $item_h = $show_description ? $item_h + 140 : $item_h;
 
                     $all_files .= ($show_mode === 'small') ? "<a href='{$linkto}' data-toggle='tooltip' data-placement='top' title='{$description}' class='iconize {$fancyboxset}' {$rel}>&nbsp;</a> " : "
                     <li class='tuf-icon-item' style='width:{$w};height:{$item_h}px;float:left;list-style:none;{$this->other_css}'>

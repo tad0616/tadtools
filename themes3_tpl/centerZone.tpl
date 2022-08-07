@@ -1,4 +1,4 @@
-<a accesskey="C" href="#xoops_theme_center_zone_key" title="<{$smarty.const._TAD_CENTER_ZONE}>" id="xoops_theme_center_zone_key" style="color: transparent; font-size: 0.625rem;">:::</a>
+<a accesskey="C" href="#xoops_theme_center_zone_key" title="<{$smarty.const._TAD_CENTER_ZONE}>" id="xoops_theme_center_zone_key" style="color: transparent; font-size: 0.625rem; position: absolute;">:::</a>
 <div id="xoops_theme_center" style="<{$centerBlocksContent}>">
   <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/centerBlock.tpl"}>
   <div class="row">

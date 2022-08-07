@@ -18,6 +18,8 @@ $configHandler = xoops_getHandler('config');
 $TadThemesConfig = $configHandler->getConfigsByCat(0, $TadThemesMid);
 $this->assign('TadThemesMid', $TadThemesMid);
 $this->assign('use_pin', $TadThemesConfig['use_pin']);
+$this->assign('login_text', $TadThemesConfig['login_text']);
+$this->assign('login_description', $TadThemesConfig['login_description']);
 $use_default_config = false;
 
 /**** 取得佈景設定的各個預設值 ****/

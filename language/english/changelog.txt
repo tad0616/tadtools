@@ -1,3 +1,13 @@
+TadTools 3.5 (Released on 2022-08-07)
+====================================
+1. Solve the problem that the navigation bar option cannot be changed to a new line
+2.Fix the problem that the paging tool is not displayed correctly under BootStrap5
+3. Modify some icons
+4.TadUpFiles automatically filters special symbols in file names when downloading.
+5. Support changing the text and description of the "Login" option in the navigation bar (need to go to tad_themes preference to change)
+6. Modify SweetAlert to support multiple parameters
+
+
 TadTools 3.49 (Released 2022-03-29)
 ====================================
 1. TadDataCenter supports multi-table support

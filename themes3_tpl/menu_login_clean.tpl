@@ -6,8 +6,10 @@
         <form action="<{$xoops_url}>/user.php" method="post" class="form-horizontal" role="form">
           <fieldset style="min-width: 200px; margin: 10px;">
             <legend>
-              <{$smarty.const.TF_USER_ENTER}>
+            <{if $login_text}><{$login_text}><{else}>
+            <{$smarty.const.TF_USER_ENTER}><{/if}>
             </legend>
+            <{if $login_description}><div class="alert alert-warning" style="font-size: 0.825rem;"><{$login_description}></div><{/if}>
             <div class="form-group">
               <label class="col-sm-4 control-label" for="uname">
                 <{$smarty.const.TF_USER_S_ID}>

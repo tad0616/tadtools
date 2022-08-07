@@ -6,15 +6,17 @@
             <form action="<{$xoops_url}>/user.php" method="post">
                 <fieldset style="min-width: 200px; margin: 10px;">
                     <legend>
-                    <{$smarty.const.TF_USER_ENTER}>
+                    <{if $login_text}><{$login_text}><{else}>
+                    <{$smarty.const.TF_USER_ENTER}><{/if}>
                     </legend>
+                    <{if $login_description}><div class="alert alert-warning" style="font-size: 0.825rem;"><{$login_description}></div><{/if}>
                     <div class="form-group row mb-3">
-                    <label class="col-md-4 col-form-label text-sm-end" for="uname">
-                        <{$smarty.const.TF_USER_S_ID}>
-                    </label>
-                    <div class="col-md-8">
-                        <input type="text" name="uname"  id="uname" placeholder="<{$smarty.const.TF_USER_ID}>"  class="form-control">
-                    </div>
+                        <label class="col-md-4 col-form-label text-sm-end" for="uname">
+                            <{$smarty.const.TF_USER_S_ID}>
+                        </label>
+                        <div class="col-md-8">
+                            <input type="text" name="uname"  id="uname" placeholder="<{$smarty.const.TF_USER_ID}>"  class="form-control">
+                        </div>
                     </div>
 
                     <div class="form-group row mb-3">

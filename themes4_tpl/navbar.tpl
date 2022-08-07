@@ -45,7 +45,7 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <a accesskey="U" href="#xoops_theme_nav_key" title="<{$smarty.const._TAD_ZAV_ZONE}>" id="xoops_theme_nav_key" style="color: transparent; font-size: 0.625rem;">:::</a>
+            <a accesskey="U" href="#xoops_theme_nav_key" title="<{$smarty.const._TAD_ZAV_ZONE}>" id="xoops_theme_nav_key" style="color: transparent; font-size: 0.625rem; position: absolute;">:::</a>
 
             <!-- Left nav -->
             <ul id="main-menu" class="nav navbar-nav mr-auto">
@@ -87,7 +87,8 @@
                 <{elseif $openid_login!="3"}>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle">
-                            <{$smarty.const.TF_USER_ENTER}>
+                        <{if $login_text}><{$login_text}><{else}>
+                        <{$smarty.const.TF_USER_ENTER}><{/if}>
                         </a>
                         <{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/menu_login.tpl"}>
                     </li>
