@@ -429,7 +429,7 @@ $config2 = [];
 $config2_files = ['config2_base', 'config2_bg', 'config2_top', 'config2_logo', 'config2_nav', 'config2_slide', 'config2_middle', 'config2_content', 'config2_block', 'config2_footer', 'config2_bottom', 'config2'];
 
 if ($TadThemesMid) {
-    $config2_json_file = XOOPS_VAR_PATH . "/data/tad_themes_config2.json";
+    $config2_json_file = XOOPS_VAR_PATH . "/data/tad_themes_config2_{$theme_id}.json";
     if (file_exists($config2_json_file)) {
         $json_content = file_get_contents($config2_json_file);
         $config2 = json_decode($json_content, true);

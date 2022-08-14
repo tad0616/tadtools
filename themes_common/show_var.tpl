@@ -361,7 +361,7 @@
                         list($theme_id)=$xoopsDB->fetchRow($result);
 
                         $config2=[];
-                        $config2_json_file = XOOPS_VAR_PATH . "/data/tad_themes_config2.json";
+                        $config2_json_file = XOOPS_VAR_PATH . "/data/tad_themes_config2_{$theme_id}.json";
                         if(file_exists($config2_json_file)){
                             $json_content = file_get_contents($config2_json_file);
                             $config2 = json_decode($json_content, true);

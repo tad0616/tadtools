@@ -25,7 +25,7 @@ $(function(){
             <div id="nivoSlider" class="nivoSlider">
                 <{foreach from=$slider_var item=slide}>
                     <{if $slide.slide_url}>
-                        <a href="<{$slide.slide_url}>">
+                        <a href="<{$slide.slide_url}>" <{$slide.slide_target}>>
                             <img src="<{$slide.file_url}>" alt="Slider" title="<{$slide.description}>">
                         </a>
                     <{else}>
