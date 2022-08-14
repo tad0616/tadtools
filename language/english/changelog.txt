@@ -6,7 +6,8 @@ TadTools 3.5 (Released on 2022-08-13)
 4.TadUpFiles automatically filters special symbols in file names when downloading.
 5. Support changing the text and description of the "Login" option in the navigation bar (need to go to tad_themes preference to change)
 6. Modify SweetAlert to support multiple parameters
-7.Fixed the problem that some sliding images cannot be linked to a new window.
+7. Fixed the problem that some sliding images cannot be linked to a new window.
+8. CKEditor adds 63 sets of online fonts
 
 
 TadTools 3.49 (Released 2022-03-29)
