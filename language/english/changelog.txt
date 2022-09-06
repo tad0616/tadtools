@@ -1,3 +1,11 @@
+TadTools 3.51 (Released on 2022-09-01)
+====================================
+1. Support the integration of layout customization settings
+2.Fix the default value of Tmt double frame picker
+3. remove jquery.mobile, jquery-1.11.1.min.js, multiple-file-upload and other old packages
+4.CKEditor add font WYSIWYG
+5. CKEditor upload directory, support for mandatory upload to subdirectories (for developers)
+
 TadTools 3.5 (Released on 2022-08-13)
 ====================================
 1. Solve the problem that the navigation bar option cannot be changed to a new line

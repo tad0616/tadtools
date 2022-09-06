@@ -12,11 +12,11 @@ class Tmt
     }
 
     //產生語法 $type=error,warning,info,success
-    public function render($id, $from_arr = [], $to_arr = [], $hidden_arr = ['op' => 'save_tmt'], $only_value = false, $submit = true, $size = '15rem', $from_name = 'repository', $to_name = 'destination')
+    public function render($id, $from_arr = [], $to_arr = [], $hidden_arr = ['op' => 'save_tmt'], $only_value = false, $submit = true, $size = '15rem', $from_name = 'repository', $to_name = 'destination', $sep = ',')
     {
         global $xoTheme;
 
-        $id_value = implode(',', $to_arr);
+        $id_value = implode($sep, array_keys($to_arr));
         $from_options = '';
         foreach ($from_arr as $key => $value) {
             if ($only_value) {
@@ -37,7 +37,7 @@ class Tmt
             if ($only_value) {
                 $key = $value;
             }
-            $hidden .= "<input type='hidden' name='{$key}' id='{$key}' value='<{$value}>'>";
+            $hidden .= "<input type='hidden' name='{$key}' id='{$key}' value='{$value}'>";
         }
 
         $jquery = Utility::get_jquery();

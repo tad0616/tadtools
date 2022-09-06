@@ -10,6 +10,7 @@ if (!$xoopsUser) {
 $LANGCODE = str_replace('-', '_', _LANGCODE);
 $type = Request::getString('type');
 $mod_dir = Request::getString('mod_dir');
+$subDir = Request::getString('subDir');
 
 ?>
 <!DOCTYPE html>
@@ -29,7 +30,7 @@ $mod_dir = Request::getString('mod_dir');
 				// Documentation for client options:
 				// https://github.com/Studio-42/elFinder/wiki/Client-configuration-options
 				defaultOpts : {
-					url : '<?php echo XOOPS_URL; ?>/modules/tadtools/elFinder/php/connector.minimal.php?type=<?php echo $type; ?>', // or connector.maximal.php : connector URL (REQUIRED)
+					url : '<?php echo XOOPS_URL; ?>/modules/tadtools/elFinder/php/connector.minimal.php?type=<?php echo $type; ?>&subDir=<?php echo $subDir; ?>', // or connector.maximal.php : connector URL (REQUIRED)
                     lang: '<?php echo $LANGCODE; ?>',
 					commandsOptions : {
 						edit : {

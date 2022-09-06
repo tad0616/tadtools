@@ -57,14 +57,14 @@ define('_TAD_UPDATE', '更新「%s」');
 define('_TAD_BLOCKS', '「%s」區塊管理');
 
 define('_TAD_TF_BLOCK_CONFIG', '設定本區塊');
-define('_TAD_TF_SYSTEM_CONFIG', '系統偏好設定');
+define('_TAD_TF_SYSTEM_CONFIG', '一般設定');
 define('_TAD_TF_SYSTEM_MODADM', '線上安裝升級');
 define('_TAD_TF_SYSTEM_DBADM', '資料庫管理');
 define('_TAD_TF_MODULE_CONFIG', '模組管理區');
 define('_TAD_TF_USER_ADMIN', '管理');
 define('_TAD_TF_USER_BLOCK', '區塊');
 define('_TAD_TF_USER_TAD_BLOCK', '進階區塊');
-define('_TAD_TF_THEME_ADMIN', '佈景');
+define('_TAD_TF_THEME_ADMIN', '佈景設定');
 define('_TAD_TF_THEME_DEBUG', '開除錯');
 define('_TAD_TF_THEME_UNDEBUG', '關除錯');
 define('_TAD_TF_MYMENU', '我的選單');

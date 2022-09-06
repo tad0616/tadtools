@@ -36,7 +36,7 @@ class FancyBox
     }
 
     //產生語法
-    public function render($reload = true, $prevent_closed_outside = false, $auto_play = false, $playSpeed = 0)
+    public function render($reload = true, $prevent_closed_outside = false, $auto_play = false, $playSpeed = 0, $return = false)
     {
         global $xoTheme;
 
@@ -56,7 +56,7 @@ class FancyBox
 
         $jquery = $this->show_jquery ? Utility::get_jquery() : '';
 
-        if ($xoTheme) {
+        if ($xoTheme and !$return) {
             $xoTheme->addScript('modules/tadtools/fancyBox/lib/jquery.mousewheel.pack.js');
             $xoTheme->addScript('modules/tadtools/fancyBox/source/jquery.fancybox.js');
             $xoTheme->addStylesheet('modules/tadtools/fancyBox/source/jquery.fancybox.css');

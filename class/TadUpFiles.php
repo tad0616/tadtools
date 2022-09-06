@@ -177,6 +177,7 @@ class TadUpFiles
     public $thumb_size = 'contain';
     public $show_width = '120px';
     public $show_height = '120px';
+    public $desc_height = 140;
     public $background_size = 'contain';
 
     public $showFancyBox = true;
@@ -474,7 +475,7 @@ class TadUpFiles
                     if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/images/mimetype/{$fext}.png")) {
                         $thumb_pic = XOOPS_URL . "/modules/tadtools/images/mimetype/{$fext}.png";
                     } else {
-                        $thumb_pic = XOOPS_URL . '/modules/tadtools/multiple-file-upload/downloads.png';
+                        $thumb_pic = XOOPS_URL . '/modules/tadtools/images/downloads.png';
                     }
                     $thumb_tool = "
                     <div class='row'>
@@ -2012,8 +2013,8 @@ class TadUpFiles
                     $w = $this->show_width;
                     $h = $this->show_height;
                     $bgs = $this->background_size;
-                    $item_h = \intval($h);
-                    $item_h = $show_description ? $item_h + 140 : $item_h;
+
+                    $item_h = $show_description ? $h + $this->desc_height : $h;
 
                     $all_files .= ($show_mode === 'small') ? "<a href='{$linkto}' data-toggle='tooltip' data-placement='top' title='{$description}' class='iconize {$fancyboxset}' {$rel}>&nbsp;</a> " : "
                     <li class='tuf-icon-item' style='width:{$w};height:{$item_h}px;float:left;list-style:none;{$this->other_css}'>

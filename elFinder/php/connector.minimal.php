@@ -1,5 +1,6 @@
 <?php
 use Xmf\Request;
+use XoopsModules\Tadtools\Utility;
 
 require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
 $mdir = $_SESSION['xoops_mod_name'];
@@ -14,6 +15,15 @@ $image_max_width = $xoopsModuleConfig['image_max_width'] ? (int) $xoopsModuleCon
 $image_max_height = $xoopsModuleConfig['image_max_height'] ? (int) $xoopsModuleConfig['image_max_height'] : 640;
 
 $type = Request::getString('type');
+$subDir = Request::getString('subDir');
+
+$path = XOOPS_ROOT_PATH . "/uploads/{$mdir}/{$type}/";
+$URL = XOOPS_URL . "/uploads/{$mdir}/{$type}/";
+if (!empty($subDir)) {
+    $path .= "{$subDir}/";
+    Utility::mk_dir($path);
+    $URL .= "{$subDir}/";
+}
 
 error_reporting(0); // Set E_ALL for debuging
 
@@ -177,8 +187,8 @@ $opts = array(
         // Items volume
         array(
             'driver' => 'LocalFileSystem', // driver for accessing file system (REQUIRED)
-            'path' => XOOPS_ROOT_PATH . "/uploads/{$mdir}/{$type}/", // path to files (REQUIRED)
-            'URL' => XOOPS_URL . "/uploads/{$mdir}/{$type}/", // URL to files (REQUIRED),
+            'path' => $path, // path to files (REQUIRED)
+            'URL' => $URL, // URL to files (REQUIRED),
             'plugin' => [
                 'AutoResize' => [
                     'enable' => true, // For control by volume driver

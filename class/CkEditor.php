@@ -14,14 +14,16 @@ class CkEditor
     public $Value;
     public $ContentsCss = [];
     public $demopublickey = '';
+    public $subDir = '';
 
     //建構函數
-    public function __construct($xoopsDirName = '', $ColName = '', $Value = '')
+    public function __construct($xoopsDirName = '', $ColName = '', $Value = '', $subDir = '')
     {
         $TadToolsModuleConfig = Utility::TadToolsXoopsModuleConfig();
         $this->xoopsDirName = $xoopsDirName;
         $this->ColName = $ColName;
         $this->Value = $Value;
+        $this->subDir = $subDir;
         if (!empty($TadToolsModuleConfig['uploadcare_publickey'])) {
             $this->set_demopublickey($TadToolsModuleConfig['uploadcare_publickey']);
         }
@@ -112,21 +114,18 @@ class CkEditor
             height : '{$this->Height}' ,
             language : '" . _LANGCODE . "' ,
             toolbar : '{$this->ToolbarSet}' ,
-            contentsCss : ['" . XOOPS_URL . "/modules/tadtools/bootstrap{$bs}/css/bootstrap.css','" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css'{$other_css}],
+            contentsCss : ['" . XOOPS_URL . "/modules/tadtools/bootstrap{$bs}/css/bootstrap.css', '" . XOOPS_URL . "/modules/tadtools/css/fonts.css', '" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css'{$other_css}],
             extraPlugins: 'font,syntaxhighlight,dialog,oembed,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak,fontawesome,prism,codesnippet{$codemirror}{$extra_uploadcare}',
             {$uploadcare_setup}
-            filebrowserBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=file&mod_dir=' . $this->xoopsDirName . "',
-            filebrowserImageBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=image&mod_dir=' . $this->xoopsDirName . "',
-            filebrowserFlashBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=flash&mod_dir=' . $this->xoopsDirName . "',
-            // filebrowserUploadUrl : '" . XOOPS_URL . '/modules/tadtools/upload.php?type=file&mod_dir=' . $this->xoopsDirName . "',
-            // filebrowserImageUploadUrl : '" . XOOPS_URL . '/modules/tadtools/upload.php?type=image&mod_dir=' . $this->xoopsDirName . "',
-            // filebrowserFlashUploadUrl : '" . XOOPS_URL . '/modules/tadtools/upload.php?type=flash&mod_dir=' . $this->xoopsDirName . "',
+            filebrowserBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=file&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',
+            filebrowserImageBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=image&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',
+            filebrowserFlashBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=flash&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',
             qtRows: 10, // Count of rows
             qtColumns: 10, // Count of columns
             qtBorder: '1', // Border of inserted table
             qtWidth: '100%', // Width of inserted table
             qtStyle: { 'border-collapse' : 'collapse' },
-            qtClass: 'table table-bordered table-hover table-condensed', // Class of table
+            qtClass: 'table table-bordered table-hover table-condensed table-sm', // Class of table
             qtCellPadding: '0', // Cell padding table
             qtCellSpacing: '0', // Cell spacing table
             qtPreviewBorder: '1px double black', // preview table border

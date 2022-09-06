@@ -22,7 +22,7 @@
         <{* <link href='<{$xoops_url}>/modules/tadtools/smartmenus/css/sm-mint/sm-mint.css' rel='stylesheet' type='text/css' /> *}>
         <!-- font-awesome -->
         <link href="<{$xoops_url}>/modules/tadtools/css/font-awesome/css/font-awesome.css" rel="stylesheet" media="all">
-<{if $xoops_themecss}>
+<{if $xoops_themecss!=''}>
         <!-- Theme Sheet Css -->
         <link rel="stylesheet" type="text/css" media="all" href="<{$xoops_themecss}>">
 <{/if}>

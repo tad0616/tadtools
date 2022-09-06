@@ -446,7 +446,10 @@ if ($TadThemesMid) {
 }
 
 /**** 依序讀取佈景額外設定檔 ****/
-$bids= [];
+/**** $config 是來自 config2_xxx.php 中的設定（一律先讀取佈景檔，非風格檔，這樣才能讀到最新架構） ****/
+/**** $config2 是來自 tad_themes_config2_xxx.json （或資料庫中） 中的設定 ****/
+
+$bids = [];
 foreach ($config2_files as $config2_file) {
     $theme_config = [];
     if (file_exists(XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php")) {
@@ -459,7 +462,7 @@ foreach ($config2_files as $config2_file) {
             if ($config['type'] == "array") {
                 $value = str_replace("{XOOPS_URL}", XOOPS_URL, $value);
                 $value = json_decode($value, true);
-            } elseif ($config['type'] == "checkbox") {
+            } elseif ($config['type'] == "checkbox" or $config['type'] == "custom_zone") {
                 $value = json_decode($value, true);
             } elseif ($config['type'] == "file" or $config['type'] == "bg_file") {
                 $value = !empty($value) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/config2/{$value}" : '';
@@ -467,29 +470,58 @@ foreach ($config2_files as $config2_file) {
             $this->assign($name, $value);
 
             if ($config['type'] == "bg_file") {
-                $value_repeat = is_null($config2[$name . '_repeat']) ? $config['sub_default']['repeat'] : $config2[$name . '_repeat'];
+                $value_repeat = is_null($config2[$name . '_repeat']) ? $config[$k]['repeat'] : $config2[$name . '_repeat'];
                 $this->assign($name . '_repeat', $value_repeat);
 
-                $value_position = is_null($config2[$name . '_position']) ? $config['sub_default']['position'] : $config2[$name . '_position'];
+                $value_position = is_null($config2[$name . '_position']) ? $config[$k]['position'] : $config2[$name . '_position'];
                 $this->assign($name . '_position', $value_position);
 
-                $value_size = is_null($config2[$name . '_size']) ? $config['sub_default']['size'] : $config2[$name . '_size'];
+                $value_size = is_null($config2[$name . '_size']) ? $config[$k]['size'] : $config2[$name . '_size'];
                 $this->assign($name . '_size', $value_size);
 
+            } elseif ($config['type'] == 'custom_zone') {
+                $block_json = is_null($config2[$name . '_block']) ? $config[$k]['block'] : $config2[$name . '_block'];
+                $b = json_decode($block_json, true);
+                $this->assign($name . '_block', $b);
+                $this->assign($name . '_bid', $b['bid']);
+
+                // 舊版相容性設定
+                $old_content = $config2[$name . '_content'];
+
+                $value_html_content = $value_fa_content = $value_menu_content = '';
+                if (in_array('html', $value)) {
+                    if (!empty($config2[$name . '_html_content'])) {
+                        $value_html_content = $config2[$name . '_html_content'];
+                    } else {
+                        $value_html_content = !empty($old_content) ? $old_content : '';
+                    }
+                }
+                $this->assign($name . '_html_content', $value_html_content);
+
+                if (in_array('fa-icon', $value)) {
+                    if (!empty($config2[$name . '_fa_content'])) {
+                        $value_fa_content = $config2[$name . '_fa_content'];
+                    } else {
+                        $value_fa_content = !empty($old_content) ? $old_content : '';
+                    }
+                }
+                $this->assign($name . '_fa_content', $value_fa_content);
+
+                if (in_array('menu', $value) and !empty($old_content)) {
+                    if (!empty($config2[$name . '_menu_content'])) {
+                        $value_menu_content = $config2[$name . '_menu_content'];
+                    } else {
+                        $value_menu_content = !empty($old_content) ? $old_content : '';
+                    }
+                }
+                $this->assign($name . '_menu_content', $value_menu_content);
+
             } elseif ($config['type'] == "padding_margin") {
-                $value_mt = is_null($config2[$name . '_mt']) ? $config['sub_default']['mt'] : $config2[$name . '_mt'];
+                $value_mt = is_null($config2[$name . '_mt']) ? $config[$k]['mt'] : $config2[$name . '_mt'];
                 $this->assign($name . '_mt', $value_mt);
 
-                $value_mb = is_null($config2[$name . '_mb']) ? $config['sub_default']['mb'] : $config2[$name . '_mb'];
+                $value_mb = is_null($config2[$name . '_mb']) ? $config[$k]['mb'] : $config2[$name . '_mb'];
                 $this->assign($name . '_mb', $value_mb);
-            } elseif ($config['type'] == "checkbox" and !empty($config2[$name . '_bid'])) {
-                $bid = $config2[$name . '_bid'];
-                $sql = "select options from " . $xoopsDB->prefix('newblocks') . "
-                where `bid` = {$bid}";
-                $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-                list($options) = $xoopsDB->fetchRow($result);
-                $bids[$name]['bid'] = $bid;
-                $bids[$name]['options'] = $options;
             }
         }
     }
