@@ -80,7 +80,7 @@ foreach ($config2_files as $config2_file) {
             } elseif ($config['type'] == "custom_zone") {
 
                 $block_json = is_null($config2[$name . '_block']) ? $config[$k]['block'] : $config2[$name . '_block'];
-                $b = json_decode($block_json, true);
+                $b = json_decode(str_replace(["\r", "\n"], "", $block_json), true);
 
                 echo "{$tab2}<tr><th>{$config['text']} bid</th><th>\${$name}_bid</th><td>{$b['bid']}</td></tr>\n";
 

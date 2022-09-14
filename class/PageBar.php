@@ -62,8 +62,10 @@ class PageBar
     public $to_page;
     //其他連結參數
     public $url_other;
+    //在limit前額外加入排序
+    public $order_sql;
 
-    public function __construct($total, $limit, $page_limit)
+    public function __construct($total, $limit, $page_limit, $order_sql)
     {
         $limit = (int) $limit;
         $mydirname = basename(__DIR__);
@@ -79,6 +81,7 @@ class PageBar
         $this->limit = $limit;
         $this->total = $total;
         $this->pLimit = $page_limit;
+        $this->order_sql = $order_sql;
 
     }
 
@@ -170,7 +173,11 @@ class PageBar
     public function sqlQuery()
     {
         $row_start = ($this->current * $this->limit) - $this->limit;
-        $sql_query = " LIMIT {$row_start}, {$this->limit}";
+        if ($this->order_sql != '') {
+            $sql_query = " {$this->order_sql} LIMIT {$row_start}, {$this->limit}";
+        } else {
+            $sql_query = " LIMIT {$row_start}, {$this->limit}";
+        }
 
         return $sql_query;
     }

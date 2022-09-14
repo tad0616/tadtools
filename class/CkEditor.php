@@ -15,6 +15,7 @@ class CkEditor
     public $ContentsCss = [];
     public $demopublickey = '';
     public $subDir = '';
+    public $Style = [];
 
     //建構函數
     public function __construct($xoopsDirName = '', $ColName = '', $Value = '', $subDir = '')
@@ -59,6 +60,46 @@ class CkEditor
         $this->ContentsCss[] = $ContentsCss;
     }
 
+    //新增樣式 stylesSet :
+    public function setStyle($name, $element, $attributes = [], $styles = [])
+    {
+        $Style['name'] = $name;
+        $Style['element'] = $element;
+        if ($attributes) {
+            $Style['attributes'] = $attributes;
+        }
+        if ($styles) {
+            $Style['styles'] = $styles;
+        }
+        $this->Style[] = $Style;
+    }
+
+    private function getStyle()
+    {
+        $this->setStyle('陰影標題h2', 'h2', [], ['text-shadow' => '1px 1px 1px #aaaaaa']);
+        $this->setStyle('陰影標題h3', 'h3', [], ['text-shadow' => '1px 1px 1px #aaaaaa']);
+        $this->setStyle('Info 提示框', 'div', ['class' => 'alert alert-info']);
+        $this->setStyle('Success 提示框', 'div', ['class' => 'alert alert-success']);
+        $this->setStyle('Warning 提示框', 'div', ['class' => 'alert alert-warning']);
+        $this->setStyle('Danger 提示框', 'div', ['class' => 'alert alert-danger']);
+        $this->setStyle('自適應圖片', 'img', ['class' => 'img-responsive img-fluid'], ['height' => 'auto']);
+        $this->setStyle('自適應圖框', 'img', ['class' => 'img-responsive img-thumbnail img-fluid'], ['height' => 'auto']);
+        $this->setStyle('語法', 'code');
+        $this->setStyle('按鍵', 'kbd');
+
+        $this->setStyle('Secondary 徽章', 'span', ['class' => 'label label-default badge badge-secondary bg-secondary']);
+        $this->setStyle('Primary 徽章', 'span', ['class' => 'label label-primary badge badge-primary bg-primary']);
+        $this->setStyle('Success 徽章', 'span', ['class' => 'label label-success badge badge-success bg-success']);
+        $this->setStyle('Info 徽章', 'span', ['class' => 'label label-info badge badge-info bg-info']);
+        $this->setStyle('Warning 徽章', 'span', ['class' => 'label label-warning badge badge-warning bg-warning']);
+        $this->setStyle('Danger 徽章', 'span', ['class' => 'label label-danger badge badge-danger bg-danger']);
+        $this->setStyle('Light 徽章', 'span', ['class' => 'label label-default badge badge-light bg-light']);
+        $this->setStyle('Dark 徽章', 'span', ['class' => 'label label-default badge badge-dark bg-dark']);
+
+        $defStyle = json_encode($this->Style, 256);
+        return str_replace('"', "'", "stylesSet : {$defStyle},");
+    }
+
     public function set_demopublickey($demopublickey = '')
     {
         $this->demopublickey = $demopublickey;
@@ -72,6 +113,8 @@ class CkEditor
         Utility::get_jquery();
         $_SESSION['xoops_mod_name'] = $this->xoopsDirName;
 
+        $stylesSet = $this->getStyle();
+        // die($stylesSet);
         // before being fed to the textarea of CKEditor
         $content = str_replace('&', '&amp;', $this->Value);
         $content = str_replace('[', '&#91;', $content);
@@ -114,6 +157,7 @@ class CkEditor
             height : '{$this->Height}' ,
             language : '" . _LANGCODE . "' ,
             toolbar : '{$this->ToolbarSet}' ,
+            $stylesSet
             contentsCss : ['" . XOOPS_URL . "/modules/tadtools/bootstrap{$bs}/css/bootstrap.css', '" . XOOPS_URL . "/modules/tadtools/css/fonts.css', '" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css'{$other_css}],
             extraPlugins: 'font,syntaxhighlight,dialog,oembed,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak,fontawesome,prism,codesnippet{$codemirror}{$extra_uploadcare}',
             {$uploadcare_setup}

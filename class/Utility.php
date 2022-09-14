@@ -828,7 +828,7 @@ class Utility
     }
 
     //取得分頁工具
-    public static function getPageBar($sql = '', $show_num = 20, $page_list = 10, $to_page = '', $url_other = '', $bootstrap = '', $g2p_name = 'none')
+    public static function getPageBar($sql = '', $show_num = 20, $page_list = 10, $to_page = '', $url_other = '', $bootstrap = '', $g2p_name = 'none', $order_sql = '')
     {
         global $xoopsDB;
         if (empty($show_num)) {
@@ -846,7 +846,7 @@ class Utility
         $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 10, $xoopsDB->error() . '<br>' . __FILE__ . ':' . __LINE__ . "<br>$sql");
         $total = $xoopsDB->getRowsNum($result);
 
-        $navbar = new \XoopsModules\Tadtools\PageBar($total, $show_num, $page_list);
+        $navbar = new \XoopsModules\Tadtools\PageBar($total, $show_num, $page_list, $order_sql);
 
         if (!empty($to_page)) {
             $navbar->set_to_page($to_page);

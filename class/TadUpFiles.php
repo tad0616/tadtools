@@ -175,8 +175,8 @@ class TadUpFiles
     public $thumb_position = 'center center';
     public $thumb_repeat = 'no-repeat';
     public $thumb_size = 'contain';
-    public $show_width = '120px';
-    public $show_height = '120px';
+    public $show_width = 120;
+    public $show_height = 120;
     public $desc_height = 140;
     public $background_size = 'contain';
 
@@ -2014,11 +2014,11 @@ class TadUpFiles
                     $h = $this->show_height;
                     $bgs = $this->background_size;
 
-                    $item_h = $show_description ? $h + $this->desc_height : $h;
+                    $item_h = !empty($show_description) ? $h + $this->desc_height : $h;
 
                     $all_files .= ($show_mode === 'small') ? "<a href='{$linkto}' data-toggle='tooltip' data-placement='top' title='{$description}' class='iconize {$fancyboxset}' {$rel}>&nbsp;</a> " : "
-                    <li class='tuf-icon-item' style='width:{$w};height:{$item_h}px;float:left;list-style:none;{$this->other_css}'>
-                    <a href='{$linkto}' class='thumbnail {$fancyboxset}' target='{$target}' {$rel} style=\"display:inline-block; width: $w; height: $h; overflow: hidden; {$thumb_css} background-image: url('{$thumb_pic}'); background-size: {$bgs}; background-repeat: no-repeat; background-position: center center; margin-bottom: 4px;\" title='{$description}'>&nbsp;</a>{$show_description_txt}
+                    <li class='tuf-icon-item' style='width:{$w}px;height:{$item_h}px;float:left;list-style:none;{$this->other_css}'>
+                    <a href='{$linkto}' class='thumbnail {$fancyboxset}' target='{$target}' {$rel} style=\"display:inline-block; width: {$w}px; height: {$h}px; overflow: hidden; {$thumb_css} background-image: url('{$thumb_pic}'); background-size: {$bgs}; background-repeat: no-repeat; background-position: center center; margin-bottom: 4px;\" title='{$description}'>&nbsp;</a>{$show_description_txt}
                     </li>";
                 }
 
