@@ -470,7 +470,7 @@ class TadDataCenter
         $sql = "select `col_sn`,`data_name`,`data_sort`, `data_value` from `{$this->TadDataCenterTblName}`
             where `mid`= '{$this->mid}' {$and_col_name} {$and_col_sn} {$and_name} {$and_value} {$and_sort} {$orderby}";
 
-        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->queryF($sql);
         if (isset($data_sort)) {
             list($col_sn, $data_name, $data_sort, $data_value) = $xoopsDB->fetchRow($result);
             return $data_value;

@@ -1718,6 +1718,7 @@ class TadUpFiles
 
                 $files[$key]['link'] = "<a href='{$dl_url}#{$original_filename}' target='{$target}'>{$show_file_name}</a>";
                 $files[$key]['path'] = "{$dl_url}#{$original_filename}";
+                $files[$key]['dl_url'] = $dl_url;
                 $files[$key]['original_file_path'] = $this->TadUpFilesUrl . "/{$file_name}";
                 $files[$key]['physical_file_path'] = $this->TadUpFilesDir . "/{$file_name}";
             }
@@ -1948,6 +1949,7 @@ class TadUpFiles
                     $all_files .= "{$file_info['text_link']},";
                 } else {
                     $linkto = $file_info['path'];
+                    $linkto_clean = $file_info['full_dl_url'];
                     $description = empty($file_info['description']) ? $file_info['original_filename'] : $file_info['description'];
                     if ($file_info['kind'] === 'file') {
                         $fext = strtolower(pathinfo($file_info['path'], PATHINFO_EXTENSION));
@@ -2008,10 +2010,10 @@ class TadUpFiles
                     $show_dl_txt = ($show_dl) ? "<span class='label label-info'>{$file_info['counter']}</span>" : '';
 
                     //描述顯示
-                    $show_description_txt = ($show_description) ? "<div style='font-weight: normal; font-size: 0.8em; word-break: break-all; line-height: 1.2; margin: 4px auto 4px 0px; text-align: left;'>{$i}) {$description} {$show_dl_txt}</div>" : (string) ($show_dl_txt);
+                    $show_description_txt = ($show_description) ? "<div class='file_description' style='font-weight: normal; font-size: 0.8em; word-break: break-all; line-height: 1.2; margin: 4px auto 4px 0px; text-align: left;'><a href='{$linkto_clean}' target='{$target}' {$rel} class='file_url'>{$i}) {$description} {$show_dl_txt}</a></div>" : (string) ($show_dl_txt);
 
-                    $w = $this->show_width;
-                    $h = $this->show_height;
+                    $w = (int) $this->show_width;
+                    $h = (int) $this->show_height;
                     $bgs = $this->background_size;
 
                     $item_h = !empty($show_description) ? $h + $this->desc_height : $h;

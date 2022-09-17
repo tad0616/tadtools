@@ -15,7 +15,7 @@
     margin: 6px 0px;
     font-weight: bold;
     display: block;
-    font-size: 1em;
+    font-size: 1rem;
 }
 
 .my-label:before {
@@ -30,7 +30,8 @@
 
 .my-input {
     padding: 2px 4px;
-    font-size: 0.9em;
+    font-size: 0.9rem;
+    height: unset;
     color: #555;
     background-color: #fff;
     background-image: none;
@@ -41,6 +42,10 @@
     -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
     -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+input[type=checkbox].my-input {
+    height: 1em;
 }
 
 .my-100 {
@@ -71,7 +76,7 @@ textarea.my-input {
 
 .my-help::before {
     font-family: "FontAwesome";
-    font-size: 1.1em;
+    font-size: 1.1rem;
     content: "\f0a5  ";
     margin-right: 4px;
 }
