@@ -87,6 +87,11 @@ class CkEditor
         $this->setStyle('語法', 'code');
         $this->setStyle('按鍵', 'kbd');
 
+        $this->setStyle('清單「壹、貳」', 'ol', ['class' => 'big-tw'], []);
+        $this->setStyle('清單「一、二」', 'ol', ['class' => 'small-tw'], []);
+        $this->setStyle('清單「(一)、(二)」', 'ol', ['class' => 'brackets-tw'], []);
+        $this->setStyle('清單「(1)、(2)」', 'ol', ['class' => 'brackets-num'], []);
+
         $this->setStyle('Secondary 徽章', 'span', ['class' => 'label label-default badge badge-secondary bg-secondary']);
         $this->setStyle('Primary 徽章', 'span', ['class' => 'label label-primary badge badge-primary bg-primary']);
         $this->setStyle('Success 徽章', 'span', ['class' => 'label label-success badge badge-success bg-success']);
@@ -158,7 +163,7 @@ class CkEditor
             language : '" . _LANGCODE . "' ,
             toolbar : '{$this->ToolbarSet}' ,
             $stylesSet
-            contentsCss : ['" . XOOPS_URL . "/modules/tadtools/bootstrap{$bs}/css/bootstrap.css', '" . XOOPS_URL . "/modules/tadtools/css/fonts.css', '" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css'{$other_css}],
+            contentsCss : ['" . XOOPS_URL . "/modules/tadtools/bootstrap{$bs}/css/bootstrap.css', '" . XOOPS_URL . "/modules/tadtools/css/fonts.css', '" . XOOPS_URL . "/modules/tadtools/css/ckeditor.css', '" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css'{$other_css}],
             extraPlugins: 'font,syntaxhighlight,dialog,oembed,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak,fontawesome,prism,codesnippet{$codemirror}{$extra_uploadcare}',
             {$uploadcare_setup}
             filebrowserBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=file&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',

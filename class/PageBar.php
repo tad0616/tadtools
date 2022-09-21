@@ -65,7 +65,7 @@ class PageBar
     //在limit前額外加入排序
     public $order_sql;
 
-    public function __construct($total, $limit, $page_limit, $order_sql)
+    public function __construct($total, $limit = '20', $page_limit = '10', $order_sql = '')
     {
         $limit = (int) $limit;
         $mydirname = basename(__DIR__);

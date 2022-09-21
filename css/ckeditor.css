@@ -1,0 +1,50 @@
+ol.big-tw {
+  list-style-type: trad-chinese-formal;
+  margin-left: 2rem;
+}
+
+ol.small-tw {
+  counter-reset: small-tw-list;
+  list-style-type: cjk-ideographic;
+  margin-left: 2rem;
+}
+ol.small-tw li {
+    list-style-type: none;
+    position: relative;
+  }
+ol.small-tw li::before{
+  counter-increment: small-tw-list;
+  content: counter(small-tw-list, cjk-ideographic) "、" ;
+  position: absolute;
+  left: -2.5rem;
+}
+
+ol.brackets-tw {
+  counter-reset: brackets-tw-list;
+  margin-left: 1rem;
+}
+ol.brackets-tw li {
+  list-style-type: none;
+  position: relative;
+}
+ol.brackets-tw li:before {
+  counter-increment: brackets-tw-list;
+  content: "(" counter(brackets-tw-list, cjk-ideographic) ") ";
+  position: absolute;
+  left: -2.5rem;
+}
+
+ol.brackets-num {
+  counter-reset: brackets-num-list;
+  /* margin-left: 2rem; */
+}
+ol.brackets-num li {
+  list-style-type: none;
+  position: relative;
+}
+ol.brackets-num li:before {
+  counter-increment: brackets-num-list;
+  content: "(" counter(brackets-num-list, decimal) ") ";
+  position: absolute;
+  left: -30px;
+}

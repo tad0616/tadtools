@@ -190,11 +190,13 @@ class TadDataCenter
     //取得表單
     public function getForm($mode, $form_tag, $name, $type = '', $def_value = '', $options = [], $attr = [], $sort = null, $ans_col_name = '', $ans_col_sn = '')
     {
-        global $xoopsTpl;
+        global $xoopsTpl, $xoopsUser;
 
+        $myts = \MyTextSanitizer::getInstance();
         if ('checkbox' === $type) {
             $dbv = $this->getData($name, null, $ans_col_name, $ans_col_sn);
             $value = isset($dbv[$name]) ? $dbv[$name] : $def_value;
+
         } elseif ($sort > 0) {
             $dbv = $this->getData($name, $sort, $ans_col_name, $ans_col_sn);
             if (is_array($dbv)) {
@@ -208,8 +210,19 @@ class TadDataCenter
             $value = isset($dbv[$name]) ? $dbv[$name][0] : $def_value;
         }
 
+        if (is_array($value)) {
+            foreach ($value as $k => $v) {
+                $value[$k] = $myts->htmlSpecialChars($v);
+            }
+        } else {
+            $value = $myts->htmlSpecialChars($value);
+
+        }
+
         if (in_array($type, ['radio', 'checkbox', 'checkbox-radio'])) {
             $defalut_attr = ['class' => 'form-check-input'];
+        } elseif (in_array($form_tag, ['user_name', 'user_email'])) {
+            $defalut_attr = ['class' => "my-text"];
         } elseif (in_array($type, ['file'])) {
             if (empty($dbv[$name][0]) || $dbv[$name][0] == 'files=') {
                 $require = $attr['require'];
@@ -250,6 +263,7 @@ class TadDataCenter
                     $form = '';
                     $tmp_id = $this->rand_str();
                     $idi = 0;
+
                     foreach ($options as $k => $v) {
                         $checked = in_array($v, $value) ? 'checked' : '';
                         $form .= "<div class=\"form-check-inline checkbox-inline\">
@@ -328,6 +342,38 @@ class TadDataCenter
             case 'note':
                 $options_str = implode('', $options);
                 $form = "<div class='form-control-static'><b>{$options_str}</b></div>";
+                break;
+            case 'user_name':
+                $user_name = $xoopsUser ? $xoopsUser->name() : '';
+                $value = empty($value) ? $user_name : $value;
+                $form = "<input type=\"text\" name=\"TDC[{$name}]{$arr}\" readonly value=\"{$value}\" {$attr_str}>";
+                break;
+            case 'user_email':
+                $email = $xoopsUser ? $xoopsUser->email() : '';
+                $value = empty($value) ? $email : $value;
+                $form = "<input type=\"text\" name=\"TDC[{$name}]{$arr}\" readonly value=\"{$value}\" {$attr_str}>";
+                break;
+            case 'SchoolCode':
+                $SchoolCode = $xoopsUser ? $xoopsUser->user_intrest() : '';
+                $value = empty($value) ? $SchoolCode : $value;
+                if (empty($value)) {
+                    $form = "<input type=\"text\" name=\"TDC[{$name}]{$arr}\" value=\"{$value}\" {$attr_str}>";
+                } else {
+                    $form = "<input type=\"text\" name=\"TDC[{$name}]{$arr}\" readonly class=\"my-text\" value=\"{$value}\" {$attr_str}>";
+                }
+                break;
+            case 'SchoolName':
+                $SchoolCode = $xoopsUser ? $xoopsUser->user_intrest() : '';
+                $handle = fopen("http://120.115.2.93/modules/epass/api.php?op=get_school_name&SchoolCode=$SchoolCode", "rb");
+                $SchoolName = stream_get_contents($handle);
+                curl_close($ch);
+
+                $value = empty($value) ? $SchoolName : $value;
+                if (empty($value)) {
+                    $form = "<input type=\"text\" name=\"TDC[{$name}]{$arr}\" value=\"{$value}\" {$attr_str}>";
+                } else {
+                    $form = "<input type=\"text\" name=\"TDC[{$name}]{$arr}\" readonly class=\"my-text\" value=\"{$value}\" {$attr_str}>";
+                }
                 break;
         }
 
@@ -708,16 +754,16 @@ class TadDataCenter
 
         if ($theme == 'vtable') {
             $main .= '
-        <div id="save_msg"></div>
-        <div class="vtable" ' . $id_col . '>
+            <div id="save_msg"></div>
+            <div class="vtable" ' . $id_col . '>
             <ul class="vhead">
-            <li class="w1">題號</li>
-            <li class="w1">欄位名稱</li>
-            <li class="w2">提示或說明</li>
-            <li class="w1">欄位類型</li>
-            <li class="w2">選項（用 ; 隔開）</li>
-            <li class="w1">必填</li>
-            <li class="w1"><span data-toggle="tooltip" data-placement="top" data-bs-toggle="tooltip" data-bs-placement="top" title="給程式讀取用，無須修改，若要修改，影確保其為唯一值">隨機唯一碼</span></li>
+                <li class="w1">題號</li>
+                <li class="w1">欄位名稱</li>
+                <li class="w2">提示或說明</li>
+                <li class="w1">欄位類型</li>
+                <li class="w2">選項（用 ; 隔開）</li>
+                <li class="w1">必填</li>
+                <li class="w1"><span data-toggle="tooltip" data-placement="top" data-bs-toggle="tooltip" data-bs-placement="top" title="給程式讀取用，無須修改，若要修改，影確保其為唯一值">隨機唯一碼</span></li>
             </ul>';
         } else {
             $main .= '
@@ -725,13 +771,13 @@ class TadDataCenter
             <div class="table-responsive">
             <table class="table table-bordered table-sm" >
                 <tr class="bg-light">
-                <td class="c nw">題號</td>
-                <td class="c nw">欄位名稱</td>
-                <td class="c nw">提示或說明</td>
-                <td class="c nw">欄位類型</td>
-                <td class="c nw">選項（用 ; 隔開）</td>
-                <td class="c nw">必填</td>
-                <td class="c nw"><span data-toggle="tooltip" data-placement="top" data-bs-toggle="tooltip" data-bs-placement="top" title="給程式讀取用，無須修改，若要修改，影確保其為唯一值">隨機唯一碼</span></td>
+                    <td class="c nw">題號</td>
+                    <td class="c nw">欄位名稱</td>
+                    <td class="c nw">提示或說明</td>
+                    <td class="c nw">欄位類型</td>
+                    <td class="c nw">選項（用 ; 隔開）</td>
+                    <td class="c nw">必填</td>
+                    <td class="c nw"><span data-toggle="tooltip" data-placement="top" data-bs-toggle="tooltip" data-bs-placement="top" title="給程式讀取用，無須修改，若要修改，影確保其為唯一值">隨機唯一碼</span></td>
                 </tr>
                 <tbody ' . $id_col . '>
                 ';
@@ -778,7 +824,12 @@ class TadDataCenter
         $col_type_arr['input=file'] = _TDC_FILE;
         $col_type_arr['select'] = _TDC_SELECT;
         $col_type_arr['textarea'] = _TDC_TEXTAREA;
+        $col_type_arr['ckeditor'] = _TDC_CKEDITOR;
         $col_type_arr['note'] = _TDC_NOTE;
+        $col_type_arr['user_name'] = _TDC_USER_NAME;
+        $col_type_arr['user_email'] = _TDC_USER_EMAIL;
+        $col_type_arr['SchoolCode'] = _TDC_SCHOOL_CODE;
+        $col_type_arr['SchoolName'] = _TDC_SCHOOL_NAME;
         $option = '';
         foreach ($col_type_arr as $type => $text) {
             $selected = $val['type'] == $type ? 'selected' : '';
@@ -944,6 +995,8 @@ class TadDataCenter
 
             $require = 1 == $dcq['require'] ? ' validate[required]' : '';
             if (in_array($type, ['radio', 'checkbox', 'checkbox-radio'])) {
+                $attr_arr = ['class' => $require];
+            } elseif (in_array($form_tag, ['user_name', 'user_email', 'SchoolCode', 'SchoolName'])) {
                 $attr_arr = ['class' => $require];
             } elseif (in_array($type, ['file'])) {
                 $attr_arr = ['require' => $dcq['require']];

@@ -29,7 +29,11 @@ class ScrollTable
                 (function(\$){
                     \$(document).ready(function(){
                         var height = \$('{$name}').height();
-                        height=height+$add_height;
+                        if(height > $max_height){
+                            height = $max_height;
+                        }else{
+                            height=height+$add_height;
+                        }
                         \$('{$name}').toSuperTable({ width: '100%', height: height+'px', fixedCols: $fixedCols , headerRows: $headerRows });
                     });
                 })(jQuery);
