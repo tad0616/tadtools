@@ -223,6 +223,8 @@ class TadDataCenter
             $defalut_attr = ['class' => 'form-check-input'];
         } elseif (in_array($form_tag, ['user_name', 'user_email'])) {
             $defalut_attr = ['class' => "my-text"];
+        } elseif (in_array($form_tag, ['SchoolCode'])) {
+            $defalut_attr = ['class' => "my-input"];
         } elseif (in_array($type, ['file'])) {
             if (empty($dbv[$name][0]) || $dbv[$name][0] == 'files=') {
                 $require = $attr['require'];
@@ -353,26 +355,35 @@ class TadDataCenter
                 $value = empty($value) ? $email : $value;
                 $form = "<input type=\"text\" name=\"TDC[{$name}]{$arr}\" readonly value=\"{$value}\" {$attr_str}>";
                 break;
+
             case 'SchoolCode':
                 $SchoolCode = $xoopsUser ? $xoopsUser->user_intrest() : '';
                 $value = empty($value) ? $SchoolCode : $value;
-                if (empty($value)) {
-                    $form = "<input type=\"text\" name=\"TDC[{$name}]{$arr}\" value=\"{$value}\" {$attr_str}>";
-                } else {
-                    $form = "<input type=\"text\" name=\"TDC[{$name}]{$arr}\" readonly class=\"my-text\" value=\"{$value}\" {$attr_str}>";
+                if (!empty($value)) {
+                    $handle = fopen("http://120.115.2.90/get_schools.php?SchoolCode=$SchoolCode&mode=andCounty", "rb");
+                    $school_name = stream_get_contents($handle);
                 }
-                break;
-            case 'SchoolName':
-                $SchoolCode = $xoopsUser ? $xoopsUser->user_intrest() : '';
-                $handle = fopen("http://120.115.2.93/modules/epass/api.php?op=get_school_name&SchoolCode=$SchoolCode", "rb");
-                $SchoolName = stream_get_contents($handle);
-                curl_close($ch);
 
-                $value = empty($value) ? $SchoolName : $value;
                 if (empty($value)) {
-                    $form = "<input type=\"text\" name=\"TDC[{$name}]{$arr}\" value=\"{$value}\" {$attr_str}>";
+                    $form = "
+                    <script type=\"text/javascript\">
+                        $(document).ready(function(){
+                            $('#school_code').autocomplete({
+                                source: \"http://120.115.2.90/get_schools.php\",
+                                select: function( event, ui ) {
+                                    console.log(ui.item.label);
+                                    $('#school_name').val(ui.item.label);
+                                }
+                            });
+                        });
+
+                    </script>
+                    <input type=\"text\" name=\"TDC[{$name}]{$arr}\" id='school_code' value=\"{$value}\" {$attr_str}>
+                    <input type=\"text\" name=\"TDC[school_name]{$arr}\" id='school_name' readonly class=\"my-text\">";
                 } else {
-                    $form = "<input type=\"text\" name=\"TDC[{$name}]{$arr}\" readonly class=\"my-text\" value=\"{$value}\" {$attr_str}>";
+                    $form = "
+                    <input type=\"text\" name=\"TDC[school_name]{$arr}\" readonly class=\"my-text\" value=\"{$school_name}\" {$attr_str}>
+                    <input type=\"text\" name=\"TDC[{$name}]{$arr}\" readonly class=\"my-text\" value=\"{$value}\" {$attr_str}> ";
                 }
                 break;
         }
@@ -526,9 +537,15 @@ class TadDataCenter
 
             if (empty($def_col_sn) and ('' != $name)) {
                 $values[$col_sn][$data_sort] = $data_value;
+            } elseif (strpos($data_value, 'files=') !== false) {
+                $files_sn = str_replace('files=', '', $data_value);
+                $TadUpFiles = new TadUpFiles($this->module_dirname, '/' . $data_name);
+                $TadUpFiles->set_col($this->col_name, $this->col_sn);
+                $values[$data_name][$data_sort] = $TadUpFiles->get_file($files_sn);
             } else {
                 $values[$data_name][$data_sort] = $data_value;
             }
+
         }
 
         return $values;
@@ -829,7 +846,6 @@ class TadDataCenter
         $col_type_arr['user_name'] = _TDC_USER_NAME;
         $col_type_arr['user_email'] = _TDC_USER_EMAIL;
         $col_type_arr['SchoolCode'] = _TDC_SCHOOL_CODE;
-        $col_type_arr['SchoolName'] = _TDC_SCHOOL_NAME;
         $option = '';
         foreach ($col_type_arr as $type => $text) {
             $selected = $val['type'] == $type ? 'selected' : '';
@@ -915,7 +931,19 @@ class TadDataCenter
                     $json_val = $myts->addSlashes($json_val);
 
                     $this->delData('dcq', $data_sort, $col_name, $col_sn, __FILE__, __LINE__);
-                    $col_id = (empty($item['col_id'])) ? $this->rand_str() : $item['col_id'];
+                    if (!empty($item['col_id'])) {
+                        $col_id = $item['col_id'];
+                    } else {
+                        if ($item['type'] == "SchoolCode") {
+                            $col_id = 'schoolcode';
+                        } elseif ($item['type'] == "user_name") {
+                            $col_id = 'username';
+                        } elseif ($item['type'] == "user_email") {
+                            $col_id = 'useremail';
+                        } else {
+                            $col_id = $this->rand_str();
+                        }
+                    }
                     $sql = "replace into `{$this->TadDataCenterTblName}`
                             (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`, `col_id` , `sort`, `update_time`)
                             values('{$this->mid}' , '{$col_name}' , '{$col_sn}' , 'dcq' , '{$json_val}' , '{$data_sort}' , '{$col_id}' , '{$sort}' , now())";
@@ -996,7 +1024,7 @@ class TadDataCenter
             $require = 1 == $dcq['require'] ? ' validate[required]' : '';
             if (in_array($type, ['radio', 'checkbox', 'checkbox-radio'])) {
                 $attr_arr = ['class' => $require];
-            } elseif (in_array($form_tag, ['user_name', 'user_email', 'SchoolCode', 'SchoolName'])) {
+            } elseif (in_array($form_tag, ['user_name', 'user_email', 'SchoolCode'])) {
                 $attr_arr = ['class' => $require];
             } elseif (in_array($type, ['file'])) {
                 $attr_arr = ['require' => $dcq['require']];

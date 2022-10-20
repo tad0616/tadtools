@@ -16,6 +16,7 @@ $type = Request::getString('type');
 $pic = XOOPS_ROOT_PATH . "/uploads/{$subdir}{$image_dir}/{$filename}";
 $thumb = XOOPS_ROOT_PATH . "/uploads/{$subdir}{$thumbs_dir}/{$filename}";
 
+header('HTTP/1.1 200 OK');
 if ('image/jpeg' === $type or 'image/jpg' === $type or 'image/pjpg' === $type or 'image/pjpeg' === $type) {
     $pic_im = imagecreatefromjpeg($pic);
     $thumb_im = imagecreatefromjpeg($thumb);

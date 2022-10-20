@@ -95,11 +95,12 @@ class Utility
     }
 
     // XOOPS表單安全檢查
-    public static function xoops_security_check()
+    public static function xoops_security_check($file = '', $line = '')
     {
+        $where = $file ? "( $file $line )" : "";
         if (!$GLOBALS['xoopsSecurity']->check()) {
             $error = implode("<br>", $GLOBALS['xoopsSecurity']->getErrors());
-            redirect_header($_SERVER['PHP_SELF'], 3, $error);
+            redirect_header($_SERVER['PHP_SELF'], 3, $error . $where);
         }
     }
 

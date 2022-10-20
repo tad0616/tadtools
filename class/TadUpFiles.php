@@ -1629,6 +1629,10 @@ class TadUpFiles
         }
 
         $sql = "select * from `{$this->TadUpFilesTblName}` $where";
+        // if ($this->col_name == "sign_id") {
+        //     die($sql);
+        // }
+
         $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $i = 0;
         while ($all = $xoopsDB->fetchArray($result)) {
@@ -2047,7 +2051,7 @@ class TadUpFiles
     //下載並新增計數器
     public function add_file_counter($files_sn = '', $hash = false, $force = false, $path = '', $can_groupid = [], $can_uid = [], $prefix = '')
     {
-        global $xoopsDB, $xoopsUser, $xoopsModuleConfig;
+        global $xoopsDB, $xoopsUser;
 
         // 權限設定
         if ($this->permission) {
@@ -2118,18 +2122,21 @@ class TadUpFiles
             }
 
             if ($os_charset != _CHARSET) {
-                $file_display = iconv($os_charset, _CHARSET, $real_filename);
-                $file_hd_saved = iconv($os_charset, _CHARSET, $file_hd_saved);
+                // $file_display = iconv($os_charset, _CHARSET, $real_filename);
+                // $file_hd_saved = iconv($os_charset, _CHARSET, $file_hd_saved);
+
+                $file_display = mb_convert_encoding($real_filename, $os_charset, _CHARSET);
+                $file_hd_saved = mb_convert_encoding($file_hd_saved, $os_charset, _CHARSET);
+
             } else {
                 $file_display = $real_filename;
             }
-
             if ($prefix) {
                 $file_display = $prefix . '-' . $file_display;
             }
 
             $file_display = str_replace(['/', '|', '\\', '?', '"', '*', ':', '<', '>'], '', $file_display);
-
+            header('HTTP/1.1 200 OK');
             header('Expires: 0');
             header('Content-Type: ' . $mimetype);
             //header('Content-Type: application/octet-stream');

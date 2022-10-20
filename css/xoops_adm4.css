@@ -6,29 +6,38 @@
   font-size: 14px;
 } */
 
-@import url('my-input.css');
-a.tooltip, img.tooltip {
-    opacity: 100;
-    position: relative;
-    display: inline;
-    filter: none;
+@import url("my-input.css");
+a.tooltip,
+img.tooltip {
+  opacity: 100;
+  position: relative;
+  display: inline;
+  filter: none;
 }
 
-.table-striped tbody>tr:nth-child(2n+1)>th,
+.table-striped tbody > tr:nth-child(2n + 1) > th,
 th {
-    background-color: rgb(46, 50, 59);
-    color: white;
+  background-color: rgb(46, 50, 59);
+  color: white;
 }
 
 li {
-    line-height: 1.5em;
+  line-height: 1.5em;
 }
 
-a.btn, a.btn:hover {
-    font-weight: normal;
-    background-color: none;
-    color: white !important;
-    text-decoration: none;
+a.btn,
+a.btn:hover {
+  font-weight: normal;
+  background-color: none;
+  color: white !important;
+  text-decoration: none;
+}
+
+a.btn-warning,
+a.btn-info,
+a.btn-warning:hover,
+a.btn-info:hover {
+  color: #000 !important;
 }
 
 input[type="submit"]:hover,
@@ -37,22 +46,22 @@ input[type="button"]:hover,
 .xo-formbuttons:hover,
 .formButton:hover,
 button:hover {
-    padding: 6px 12px;
+  padding: 6px 12px;
 }
 
 .page-header {
-    font-family: "微軟正黑體";
-    color: #4c636d;
-    padding-bottom: 9px;
-    margin: 40px 0 20px;
-    border-bottom: 1px solid #eee;
+  font-family: "微軟正黑體";
+  color: #4c636d;
+  padding-bottom: 9px;
+  margin: 40px 0 20px;
+  border-bottom: 1px solid #eee;
 }
 ol {
-    list-style-type: decimal;
-    list-style-position: inside;
+  list-style-type: decimal;
+  list-style-position: inside;
 }
 
 ul {
-    list-style-type: disc;
-    list-style-position: inside;
+  list-style-type: disc;
+  list-style-position: inside;
 }
