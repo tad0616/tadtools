@@ -1,0 +1,326 @@
+.vtb {
+  width: 100%;
+  display: table;
+  border-left: 0px solid #d9e6f3;
+  border-top: 1px solid #d9e6f3;
+  margin: 0px;
+}
+
+.vtb a {
+  /*color: #8e352e;*/
+  text-decoration: none;
+}
+
+.vtb ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  display: table-row;
+}
+
+.vtb li,
+.vtb li.blank {
+  display: table-cell;
+  background: #ffffff;
+  /*float: left;*/
+  width: 14%;
+  padding: 8px 6px;
+  box-sizing: border-box;
+  border-right: 0px solid #d9e6f3;
+  border-bottom: 1px solid #d9e6f3;
+}
+
+.vtb ul.odd li {
+  background: #ffffff;
+}
+
+.vtb ul.even li {
+  background: #d9e6f322;
+}
+
+.vtb ul.unable > li {
+  background: #efefef;
+}
+
+.vtb ul.vhead {
+  height: 30px;
+}
+
+.vtb ul.vhead.light {
+  height: 1.1rem;
+}
+
+.vtb ul.vhead li {
+  text-align: center;
+  text-transform: uppercase;
+  line-height: 15px;
+  padding: 8px 6px;
+  background: #d9e6f3;
+  color: rgb(75, 75, 75);
+  border: 1px solid #d9e6f3;
+  font-weight: 900;
+}
+
+.vtb ul.vhead.light li {
+  background: transparent;
+  color: rgb(75, 75, 75);
+  line-height: 1em;
+  padding: 8px 6px;
+  text-align: left;
+}
+
+.vtb li.vbody {
+  /*height: 280px;*/
+}
+
+.vtb li.vtitle {
+  background: #d9e6f3;
+  /* color:#000;*/
+  width: 8%;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.vtb li.c {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.vtb li.m {
+  vertical-align: middle;
+}
+
+/* 隱藏欄位，手機才會出現 */
+
+.vtb .vcell {
+  display: none;
+}
+
+.vtb li.w {
+  display: none;
+}
+
+.vtb li.w2 {
+  width: 2%;
+}
+
+.vtb li.w5 {
+  width: 5%;
+}
+
+.vtb li.w10 {
+  width: 10%;
+}
+
+.vtb li.w15 {
+  width: 15%;
+}
+
+.vtb li.w20 {
+  width: 20%;
+}
+
+.vtb li.w25 {
+  width: 25%;
+}
+
+.vtb li.w30 {
+  width: 30%;
+}
+
+.vtb li.w35 {
+  width: 35%;
+}
+
+.vtb li.w40 {
+  width: 40%;
+}
+
+.vtb li.w45 {
+  width: 45%;
+}
+
+.vtb li.w50 {
+  width: 50%;
+}
+
+.vtb li.w55 {
+  width: 55%;
+}
+
+.vtb li.w60 {
+  width: 60%;
+}
+
+.vtb li.w65 {
+  width: 65%;
+}
+
+.vtb li.w70 {
+  width: 70%;
+}
+
+.vtb li.w75 {
+  width: 75%;
+}
+
+.vtb li.w80 {
+  width: 80%;
+}
+
+.vtb li.w85 {
+  width: 85%;
+}
+
+.vtb li.w90 {
+  width: 90%;
+}
+
+.vtb li.w95 {
+  width: 95%;
+}
+
+.vtb li.w100 {
+  width: 100%;
+}
+
+.vtb li.vt {
+  vertical-align: top;
+}
+
+.vtb li.vm {
+  vertical-align: middle;
+}
+
+.vtb.no_border,
+.vtb.no_border li,
+.vtb.no_border ul li {
+  border: none;
+}
+
+/* ============================
+  Mobile Responsiveness
+  ============================*/
+
+@media (max-width: 768px) {
+  .vtb .vhead,
+  .vtb .other-month {
+    display: none;
+  }
+
+  .vtb li,
+  .vtb li.vtitle {
+    display: block;
+    height: auto !important;
+    border: 1px solid rgba(200, 200, 200, 0.5);
+    width: 100%;
+    padding: 10px;
+    background: #ffffff;
+    /*margin-bottom: -1px;*/
+  }
+
+  .vtb li.mobile-title,
+  .vtb ul.odd li.mobile-title,
+  .vtb ul.even li.mobile-title {
+    background: #d9e6f3;
+  }
+
+  .vtb .date {
+    float: none;
+  }
+
+  .vtb li.vcell,
+  .vtb ul.odd li.vcell,
+  .vtb ul.even li.vcell,
+  .vtb li.vcell:hover {
+    display: block;
+    background: #7aa0ba;
+    color: white;
+  }
+
+  .vtb div.vcell,
+  .vtb div.vcell:hover {
+    display: inline-block;
+    background: #224257;
+    color: white;
+    padding: 2px 8px;
+    margin-bottom: 4px;
+    border-radius: 4px;
+    font-weight: 900;
+  }
+
+  .vtb li.vcell.light,
+  .vtb ul.odd li.vcell.light,
+  .vtb ul.even li.vcell.light,
+  .vtb li.vcell.light:hover {
+    display: block;
+    background: #f5f8fa;
+    color: rgb(22, 22, 26);
+  }
+
+  .vtb li.blank {
+    display: none;
+  }
+
+  .w {
+    display: inline;
+  }
+
+  .vtb li.c {
+    text-align: left;
+  }
+
+  .vtb li.w2,
+  .vtb li.w5,
+  .vtb li.w10,
+  .vtb li.w20,
+  .vtb li.w30,
+  .vtb li.w40,
+  .vtb li.w50,
+  .vtb li.w60,
+  .vtb li.w70,
+  .vtb li.w80,
+  .vtb li.w90,
+  .vtb li.w100,
+  .vtb li.w15,
+  .vtb li.w25,
+  .vtb li.w35,
+  .vtb li.w45,
+  .vtb li.w55,
+  .vtb li.w65,
+  .vtb li.w75,
+  .vtb li.w85,
+  .vtb li.w95 {
+    width: 100%;
+  }
+}
+
+/*
+  $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/vtb.css');
+  <link href="<{$xoops_url}>/modules/tadtools/css/vtb.css" media="all" rel="stylesheet">
+  <!-- 左標右格 -->
+  <div class="vtb">
+  <ul>
+  <li class="w2 vtitle">到園日期</li>
+  <li class="w8">
+  <{$order_start}>～<{$order_end}>
+  </li>
+  </ul>
+  </div>
+
+  <!-- 上標下格 -->
+  <div class="vtb">
+  <ul class="vhead">
+  <li>日期</li>
+  <li>營位名稱</li>
+  </ul>
+  <ul>
+  <li class="vcell">日期</li>
+  <li class="vm">XXXX</li>
+  <li class="vcell">營位名稱</li>
+  <li class="vm">XXXX</li>
+  </ul>
+  </div>
+
+  */

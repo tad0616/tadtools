@@ -364,7 +364,7 @@ class TadDataCenter
                     $school_name = stream_get_contents($handle);
                 }
 
-                if (empty($value)) {
+                if (empty($SchoolCode)) {
                     $form = "
                     <script type=\"text/javascript\">
                         $(document).ready(function(){

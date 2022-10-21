@@ -7,11 +7,29 @@ $demo = Request::getString('demo');
 $size = Request::getFloat('size', '1.5');
 $font = Request::getString('font');
 $title_font = Request::getString('title_font', $font);
+$demo_title = Request::getString('demo_title', '台式麵包熱量排行榜曝光 最肥不是奶酥麵包…');
+$demo_content = Request::getString('demo_content', '台式麵包鬆軟好入口、組織細膩，內餡又豐富可口，讓不少人非常喜愛，不過營養師就公開了市面上常見販售的台式麵包熱量，第一名並非奶酥麵包或菠蘿麵包，而是由熱量高達565大卡的蔥花肉鬆捲奪得冠軍。');
 $otf_arr = ['BoTa', 'Chalk', 'KingnamMaiyuan', 'Mamelon', 'MamelonHi', 'PangPangZhuRouTi', 'PoSuiLingHaoZi', 'TanugoTangGuoShouXieTiBold', 'TanugoTangGuoShouXieTiRegular', 'WuXinShouXieTi', 'YOzShouXieTi', 'YouZi'];
 $fonts = [
     '851DianJiWenZiTi' => '851電機文字',
     'Bakudai' => '莫大毛筆字體',
     'BoTa' => '波塔',
+    'BpmfGenRyuMin-B' => '源流注音明體-粗體',
+    'BpmfGenRyuMin-R' => '源流注音明體',
+    'BpmfGenSekiGothic-B' => '源石注音黑體-粗體',
+    'BpmfGenSekiGothic-R' => '源石注音黑體',
+    'BpmfGenSenRounded-B' => '源泉注音圓體-粗體',
+    'BpmfGenSenRounded-R' => '源泉注音圓體',
+    'BpmfGenWanMin-R' => '源雲注音明體',
+    'BpmfGenYoGothic-B' => '源樣注音黑體-粗體',
+    'BpmfGenYoGothic-R' => '源樣注音黑體',
+    'BpmfGenYoMin-B' => '源樣注音明體-粗體',
+    'BpmfGenYoMin-R' => '源樣注音明體',
+    'BpmfZihiKaiStd-Regular' => '字嗨注音標楷',
+    'BpmfZihiSans-Bold' => '字嗨注音黑體-粗體',
+    'BpmfZihiSans-Regular' => '字嗨注音黑體',
+    'BpmfZihiSerif-Bold' => '字嗨注音宋體-粗體',
+    'BpmfZihiSerif-Regular' => '字嗨注音宋體',
     'Chalk' => '粉筆體',
     'ChaoJiXi' => '超級細ゴシック體',
     'CorpRound' => '公司LOGO圓體',
@@ -83,6 +101,9 @@ $fonts = [
 ksort($fonts);
 
 if ($font) {
+
+    $bpmfvs = strpos($font, 'Bpmf') !== false ? "| <a href='https://buttaiwan.github.io/bpmfvs/' target='_blank'>選破音字</a>" : '';
+
     $title_size = $size * 1.5;
     $title_font_select = '';
     foreach ($fonts as $font_family => $font_title) {
@@ -120,22 +141,30 @@ if ($font) {
                     <span class="input-group-text">rem</span>
                 </div>
                 <div class="input-group-append input-group-btn">
+                    <input type="hidden" name="demo_title" value="' . $demo_title . '">
+                    <input type="hidden" name="demo_content" value="' . $demo_content . '">
                     <button type="submit" class="btn btn-primary">送出</button>
                 </div>
             </div>
         </form>
     </div>
-    <h2><a href="fonts.php">回線上字型一覽</a></h2>';
+    <h2><a href="fonts.php">回線上字型一覽</a> ' . $bpmfvs . ' </h2>';
     $data .= "<div style=\"border:1px solid gray; padding: 3rem; font-family: '{$font}'; font-size: {$size}rem;\">
+    <h1 style=\"margin-bottom:2rem; font-family: '{$title_font}'; font-size: {$title_size}rem;\">{$demo_title}</h1>
+    " . nl2br($demo_content) . "
+    </div>
+    <form action='fonts.php' method='post' class='mt-3'>
 
-    <h1 style=\"margin-bottom:2rem; font-family: '{$title_font}'; font-size: {$title_size}rem;\">流氓App剋星！Android 13有警告功能　提醒用戶留意高耗電應用程式</h1>
-
-    <p>電池續航力一直是現代手機用戶最關注的一點，無論手機中裝了多大的電池，有些應用程式依然會在短時間內大量消耗手機電量。最新版本的 Android系統 Android 13多了項新功能，就是能夠在應用程式後台電池使用量過大時，通知用戶。</p>
-    <p>Google宣布針對 Pixel 4 以上機型提供 Android 13 開發人員預覽版第二版，使開發者能率先針對新版本帶來的變化進行先期開發與體驗，此次的 Android 13 開發人員預覽版第二版也將帶來多項新功能，其中包括更新了一個功能，只要應用程式在24 小時內消耗了過多的電量，系統就會發通知提醒用戶。</p>
-    <p>谷歌指出，某一個應用程式的前台服務消耗大量電池時，警告不會顯示，只有在此後繼續在後台高耗電的情況下，才會顯示警告。發出首條警告通知之後，警告將不會再次顯示，直到至少24 小時之後。</p>
-    <p>此外，如果Android 13 系統檢測到一個App 在24 小時內至少在前台運行了20 個小時，將顯示以下通知：「App 在後台運行了很長時間」。點擊這個通知將打開前台服務 (FGS) 任務管理器，供用戶採取行動。這個通知在30 天內只對一個應用顯示一次。</p>
-    <p>近年來，Google一直在對安卓系統進行調整，這些都是為了確保用戶的手機能有更長久的續航力。</p>
-    </div>";
+    <input type='text' name='demo_title' value='{$demo_title}' class='form-control my-2'>
+    <textarea name='demo_content'class='form-control my-2'>{$demo_content}</textarea>
+    <div class='bar'>
+        <input type='hidden' name='title_font' value='{$title_font}'>
+        <input type='hidden' name='size' value='{$size}'>
+        <input type='hidden' name='font' value='{$font}'>
+        <button type='submit' class='btn btn-primary'>置換範例內容</button>
+    </div>
+    </form>
+    ";
 
     echo Utility::html5($data, false, true, '4', true, 'container', $title = '線上字型大量文字預覽', '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/modules/tadtools/css/xoops.css">');
 
@@ -204,12 +233,14 @@ if ($font) {
     foreach ($fonts as $font_family => $font_title) {
         $file_name = in_array($font_family, $otf_arr) ? "{$url}/{$font_family}.otf" : "{$url}/{$font_family}.ttf";
 
+        $bpmfvs = strpos($font_family, 'Bpmf') !== false ? "| <a href='https://buttaiwan.github.io/bpmfvs/' target='_blank'>選破音字</a>" : '';
         $data .= "
         <tr>
         <th class='align-middle text-center' nowrap>$i</th>
         <th class='align-middle text-center' nowrap>
         <a href='fonts.php?font={$font_family}'>{$font_title}</a>
         | <a href='{$file_name}'>下載</a>
+        $bpmfvs
         </th>
         <td class='align-middle text-center' nowrap><a href='fonts.php?font={$font_family}'>$font_family</a></td>";
 
