@@ -2,6 +2,18 @@
 class TadtoolsCorePreload extends XoopsPreloadItem
 {
 
+    public static function eventCoreHeaderStart($args)
+    {
+        if (file_exists(XOOPS_ROOT_PATH . "/uploads/bootstrap.conf")) {
+            $bootstrap = substr(file_get_contents(XOOPS_ROOT_PATH . "/uploads/bootstrap.conf"), -1);
+            $_SESSION['bootstrap'] = $bootstrap ? $bootstrap : 4;
+        } elseif (strpos($tt_theme_kind, 'bootstrap') !== false) {
+            $_SESSION['bootstrap'] = substr($tt_theme_kind, -1);
+        } else {
+            $_SESSION['bootstrap'] = '4';
+        }
+    }
+
     public static function eventCoreFooterStart($args)
     {
         global $xoopsConfig, $xoopsDB, $xoTheme, $xoopsTpl, $xoTheme;
@@ -52,20 +64,6 @@ class TadtoolsCorePreload extends XoopsPreloadItem
 
         $_SESSION['theme_kind'] = $tt_theme_kind;
         $_SESSION[$theme_set]['bootstrap_version'] = $tt_theme_kind;
-        // if (strpos($tt_theme_kind, 'bootstrap') !== false) {
-        //     $_SESSION['bootstrap'] = substr($tt_theme_kind, -1);
-        // } else {
-        //     $_SESSION['bootstrap'] = 4;
-        // }
-
-        if (file_exists(XOOPS_ROOT_PATH . "/uploads/bootstrap.conf")) {
-            $bootstrap = substr(file_get_contents(XOOPS_ROOT_PATH . "/uploads/bootstrap.conf"), -1);
-            $_SESSION['bootstrap'] = $bootstrap ? $bootstrap : 4;
-        } elseif (strpos($tt_theme_kind, 'bootstrap') !== false) {
-            $_SESSION['bootstrap'] = substr($tt_theme_kind, -1);
-        } else {
-            $_SESSION['bootstrap'] = '4';
-        }
 
         if ($_COOKIE['bootstrap'] != $_SESSION['bootstrap']) {
             setcookie("bootstrap", $_SESSION['bootstrap']);

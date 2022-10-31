@@ -25,6 +25,7 @@ if (!empty($subDir)) {
     $URL .= "{$subDir}/";
 }
 
+header('HTTP/1.1 200 OK');
 error_reporting(0); // Set E_ALL for debuging
 
 // // Optional exec path settings (Default is called with command name only)

@@ -1,3 +1,15 @@
+TadTools 3.52 (Released on 2022-11-01)
+====================================
+1.CKEditor add custom style function
+2. Fix the problem that some custom blocks cannot be placed in the custom area
+3. Add additional sorting parameters to the paging tool
+4.Upgrade jQuery-UI to 1.13.2
+5.CKEditor add several kinds of Chinese list style
+6.TadDataCenter add several automatic fields.
+7. Add 16 sets of phonetic fonts that support broken phonetic characters.
+8.Adjust the font list page and add a link to the broken character selection tool.
+9.BootStrap Table with filtering function.
+
 TadTools 3.51 (Released on 2022-09-01)
 ====================================
 1. Support the integration of layout customization settings

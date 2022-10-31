@@ -26,6 +26,7 @@ define('_TAD_UNABLE', 'Disable');
 define('_TAD_ADD', 'Add');
 define('_TAD_ADD_CATE', 'Add category');
 define('_TAD_FOR', ' : ');
+define('_TAD_AND', ' & ');
 define('_TAD_GO', 'Go');
 define('_TAD_SAVE', 'Save');
 define('_TAD_NEXT', 'Next');

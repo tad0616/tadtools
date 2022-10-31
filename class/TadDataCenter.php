@@ -360,8 +360,11 @@ class TadDataCenter
                 $SchoolCode = $xoopsUser ? $xoopsUser->user_intrest() : '';
                 $value = empty($value) ? $SchoolCode : $value;
                 if (!empty($value)) {
-                    $handle = fopen("http://120.115.2.90/get_schools.php?SchoolCode=$SchoolCode&mode=andCounty", "rb");
-                    $school_name = stream_get_contents($handle);
+                    // $handle = fopen("https://campus-xoops.tn.edu.tw/get_schools.php?SchoolCode=$value&mode=andCounty", "rb");
+                    // $school_name = stream_get_contents($handle);
+                    // $school_name = file_get_contents("https://campus-xoops.tn.edu.tw/get_schools.php?SchoolCode=$value&mode=andCounty");
+                    $school_name = Utility::vita_get_url_content("https://campus-xoops.tn.edu.tw/get_schools.php?SchoolCode=$value&mode=andCounty");
+                    // die($school_name);
                 }
 
                 if (empty($SchoolCode)) {
@@ -369,7 +372,7 @@ class TadDataCenter
                     <script type=\"text/javascript\">
                         $(document).ready(function(){
                             $('#school_code').autocomplete({
-                                source: \"http://120.115.2.90/get_schools.php\",
+                                source: \"https://campus-xoops.tn.edu.tw/get_schools.php\",
                                 select: function( event, ui ) {
                                     console.log(ui.item.label);
                                     $('#school_name').val(ui.item.label);

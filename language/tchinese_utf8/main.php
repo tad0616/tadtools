@@ -26,6 +26,7 @@ define('_TAD_UNABLE', '隱藏');
 define('_TAD_ADD', '新增資料');
 define('_TAD_ADD_CATE', '建立分類');
 define('_TAD_FOR', '：');
+define('_TAD_AND', '、');
 define('_TAD_GO', '執行');
 define('_TAD_SAVE', '儲存');
 define('_TAD_NEXT', '下一步');
