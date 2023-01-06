@@ -16,6 +16,7 @@ class CkEditor
     public $demopublickey = '';
     public $subDir = '';
     public $Style = [];
+    public $Modal_ID = '';
 
     //建構函數
     public function __construct($xoopsDirName = '', $ColName = '', $Value = '', $subDir = '')
@@ -36,7 +37,7 @@ class CkEditor
         $this->CustomConfigurationsPath = $path;
     }
 
-    //設定自定義工具列
+    //設定自定義工具列（$ToolbarSet 預設為 my，可選：myBasic、mySimple、tadSimple）
     public function setToolbarSet($ToolbarSet = '')
     {
         $this->ToolbarSet = $ToolbarSet;
@@ -52,6 +53,12 @@ class CkEditor
     public function setHeight($Height = '')
     {
         $this->Height = $Height;
+    }
+
+    //設定自定義設高度
+    public function setVar($var = '', $val = '')
+    {
+        $this->$var = $val;
     }
 
     //新增樣式
@@ -151,39 +158,64 @@ class CkEditor
         $codemirror = $TadToolsModuleConfig['use_codemirror'] ? ',codemirror' : '';
 
         $bs = $_SESSION['bootstrap'] ? $_SESSION['bootstrap'] : 4;
+
+        $editor_setup = "{$demopublickey_js}
+        CKEDITOR.replace('editor_{$this->ColName}' , {
+        skin : 'moono' ,
+        width : '{$this->Width}' ,
+        height : '{$this->Height}' ,
+        language : '" . _LANGCODE . "' ,
+        toolbar : '{$this->ToolbarSet}' ,
+        $stylesSet
+        contentsCss : ['" . XOOPS_URL . "/modules/tadtools/bootstrap{$bs}/css/bootstrap.css', '" . XOOPS_URL . "/modules/tadtools/css/fonts.css', '" . XOOPS_URL . "/modules/tadtools/css/ckeditor.css', '" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css'{$other_css}],
+        extraPlugins: 'font,syntaxhighlight,dialog,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak,fontawesome,prism,codesnippet,undo,autoembed,autolink,clipboard,toolbar,button,dialogui,notification,textmatch,embed,embedbase,widgetselection,notificationaggregator,embedsemantic,panel,floatpanel,menu{$codemirror}{$extra_uploadcare}',
+        {$uploadcare_setup}
+        filebrowserBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=file&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',
+        filebrowserImageBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=image&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',
+        qtRows: 10, // Count of rows
+        qtColumns: 10, // Count of columns
+        qtBorder: '1', // Border of inserted table
+        qtWidth: '100%', // Width of inserted table
+        qtStyle: { 'border-collapse' : 'collapse' },
+        qtClass: 'table table-bordered table-hover table-condensed table-sm', // Class of table
+        qtCellPadding: '0', // Cell padding table
+        qtCellSpacing: '0', // Cell spacing table
+        qtPreviewBorder: '1px double black', // preview table border
+        qtPreviewSize: '15px', // Preview table cell size
+        qtPreviewBackground: '#c8def4' // preview table background (hover)
+        } );";
+
+        if ($this->Modal_ID != '') {
+            $editor_setup = "
+            $(document).on('click', '#btn{$this->Modal_ID}', function(e){
+                \$('#{$this->Modal_ID}').modal('show');
+                $editor_setup
+            });
+            ";
+        }
+
+// <script>
+        // $.fn.modal.Constructor.prototype.enforceFocus = function () {
+        //     var $modalElement = this.$element;
+        //     $(document).on('focusin.modal',
+        //         function (e) {
+        //             var $parent = $(e.target.parentNode);
+        //             if ($modalElement[0] !== e.target &&
+        //                 !$modalElement.has(e.target).length &&
+        //                 !$parent.hasClass('cke_dialog_ui_input_select') &&
+        //                 !$parent.hasClass('cke_dialog_ui_input_text')) {
+        //                 $modalElement.focus();
+        //             }
+        //         });
+        // };
+        // </script>
+
         $editor .= "
         <textarea name='{$this->ColName}' id='editor_{$this->ColName}' class='ckeditor_css'>{$content}</textarea>
-
         <script type='text/javascript'>
-            {$demopublickey_js}
-            CKEDITOR.replace('editor_{$this->ColName}' , {
-            skin : 'moono' ,
-            width : '{$this->Width}' ,
-            height : '{$this->Height}' ,
-            language : '" . _LANGCODE . "' ,
-            toolbar : '{$this->ToolbarSet}' ,
-            $stylesSet
-            contentsCss : ['" . XOOPS_URL . "/modules/tadtools/bootstrap{$bs}/css/bootstrap.css', '" . XOOPS_URL . "/modules/tadtools/css/fonts.css', '" . XOOPS_URL . "/modules/tadtools/css/ckeditor.css', '" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css'{$other_css}],
-            extraPlugins: 'font,syntaxhighlight,dialog,oembed,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak,fontawesome,prism,codesnippet{$codemirror}{$extra_uploadcare}',
-            {$uploadcare_setup}
-            filebrowserBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=file&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',
-            filebrowserImageBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=image&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',
-            filebrowserFlashBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=flash&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',
-            qtRows: 10, // Count of rows
-            qtColumns: 10, // Count of columns
-            qtBorder: '1', // Border of inserted table
-            qtWidth: '100%', // Width of inserted table
-            qtStyle: { 'border-collapse' : 'collapse' },
-            qtClass: 'table table-bordered table-hover table-condensed table-sm', // Class of table
-            qtCellPadding: '0', // Cell padding table
-            qtCellSpacing: '0', // Cell spacing table
-            qtPreviewBorder: '1px double black', // preview table border
-            qtPreviewSize: '15px', // Preview table cell size
-            qtPreviewBackground: '#c8def4' // preview table background (hover)
-            } );
+        $editor_setup
         </script>
-        <script>CKEDITOR.dtd.\$removeEmpty['span'] = false;</script>
-            ";
+        ";
 
         return $editor;
     }

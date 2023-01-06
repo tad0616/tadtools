@@ -1,6 +1,6 @@
 /*
-Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'clipboard', 'nl', {
 	copy: 'Kopiëren',
@@ -8,8 +8,9 @@ CKEDITOR.plugins.setLang( 'clipboard', 'nl', {
 	cut: 'Knippen',
 	cutError: 'De beveiligingsinstelling van de browser verhinderen het automatisch knippen. Gebruik de sneltoets Ctrl/Cmd+X van het toetsenbord.',
 	paste: 'Plakken',
+	pasteNotification: 'Plakken met de knop in de werkbalk wordt niet ondersteund door de browser. Gebruik de sneltoets %1 van het toetsenbord.',
 	pasteArea: 'Plakgebied',
-	pasteMsg: 'Plak de tekst in het volgende vak gebruikmakend van uw toetsenbord (<strong>Ctrl/Cmd+V</strong>) en klik op OK.',
-	securityMsg: 'Door de beveiligingsinstellingen van uw browser is het niet mogelijk om direct vanuit het klembord in de editor te plakken. Middels opnieuw plakken in dit venster kunt u de tekst alsnog plakken in de editor.',
-	title: 'Plakken'
+	pasteMsg: 'Plak de inhoud in het vak hieronder en druk op OK.',
+	fileFormatNotSupportedNotification: 'The ${formats} file format(s) are not supported.', // MISSING
+	fileWithoutFormatNotSupportedNotification: 'The file format is not supported.' // MISSING
 } );

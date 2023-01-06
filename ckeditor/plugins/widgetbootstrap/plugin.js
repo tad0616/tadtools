@@ -1,24 +1,17 @@
 // Init default alert classes
 
-CKEDITOR.config.widgetbootstrapAlert_alertTypes = {
-    'alert-danger': 'Danger',
-    'alert-info': 'Info',
-    'alert-warning': 'Warning',
-    'alert-success': 'Success'
-};
-
+// CKEDITOR.config.widgetbootstrapAlert_alertTypes = {
+//     'alert-danger': 'Danger',
+//     'alert-info': 'Info',
+//     'alert-warning': 'Warning',
+//     'alert-success': 'Success'
+// };
 
 CKEDITOR.plugins.add( 'widgetbootstrap', {
     requires: 'widget',
 
-    icons: 'widgetbootstrapLeftCol,widgetbootstrapRightCol,widgetbootstrapTwoCol,widgetbootstrapThreeCol,widgetbootstrapAlert',
-
-    /*defaults : {
-        name: 'accordion',
-        count: 3,
-        activePanel: 1,
-        multiExpand: false
-    },*/
+    // icons: 'widgetbootstrapLeftCol,widgetbootstrapRightCol,widgetbootstrapTwoCol,widgetbootstrapThreeCol,widgetbootstrapFourCol,widgetbootstrapSixCol,widgetbootstrapPdfP,widgetbootstrapPdfL',
+    icons: 'widgetbootstrapLeftCol,widgetbootstrapRightCol,widgetbootstrapTwoCol,widgetbootstrapThreeCol,widgetbootstrapFourCol,widgetbootstrapSixCol',
 
     init: function( editor ) {
 
@@ -30,7 +23,6 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
         //var allowedText = editor.config.widgetbootstrap_allowedText != undefined ? editor.config.widgetbootstrap_allowedFull :
         //    'p span br ul ol li strong em';
 
-
         allowedWidget = allowedFull;
         //allowedText = allowedWidget;
 
@@ -39,12 +31,12 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
         // Define the widgets
         editor.widgets.add( 'widgetbootstrapLeftCol', {
 
-            button: showButtons ? 'Add left column box' : undefined,
+            button: showButtons ? '新增 1:2 雙欄' : undefined,
 
             template:
                 '<div class="row two-col-left">' +
-                    '<div class="col-sm-4 span4 col-sidebar"><p><img src="http://placehold.it/300x250&text=Image" class="img-responsive img-fluid" /></p></div>' +
-                    '<div class="col-sm-8 span8 col-main"><p>Content</p></div>' +
+                    '<div class="col-sm-4 span4 col-sidebar img-box-1-5"><img src="https://placeholder.pics/svg/300x250/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /></div>' +
+                    '<div class="col-sm-8 span8 col-main"><p>輸入內容</p></div>' +
                 '</div>',
 
             editables: {
@@ -68,12 +60,12 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
 
         editor.widgets.add( 'widgetbootstrapRightCol', {
 
-            button: showButtons ? 'Add right column box' : undefined,
+            button: showButtons ? '新增 2:1 雙欄' : undefined,
 
             template:
                 '<div class="row two-col-right">' +
-                    '<div class="col-sm-8 span8 col-main"><p>Content</p></div>' +
-                    '<div class="col-sm-4 span4 col-sidebar"><p><img src="http://placehold.it/300x250&text=Image" class="img-responsive img-fluid" /></p></div>' +
+                    '<div class="col-sm-8 span8 col-main"><p>輸入內容</p></div>' +
+                    '<div class="col-sm-4 span4 col-sidebar img-box-1-5"><img src="https://placeholder.pics/svg/300x250/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /></div>' +
                 '</div>',
 
             editables: {
@@ -96,15 +88,12 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
         } );
 
         editor.widgets.add( 'widgetbootstrapTwoCol', {
-
-            button: showButtons ? 'Add two column box' : undefined,
-
+            button: showButtons ? '新增 2 欄' : undefined,
             template:
                 '<div class="row two-col">' +
-                    '<div class="col-sm-6 span6 coln-1"><p><img src="http://placehold.it/500x280&text=Image" class="img-responsive img-fluid" /></p><p>Content</p></div>' +
-                    '<div class="col-sm-6 span6 coln-2"><p><img src="http://placehold.it/500x280&text=Image" class="img-responsive img-fluid" /></p><p>Content</p></div>' +
+                    '<div class="col-sm-6 span6 coln-1 img-box-1-5"><img src="https://placeholder.pics/svg/500x280/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入內容</p></div>' +
+                    '<div class="col-sm-6 span6 coln-2 img-box-1-5"><img src="https://placeholder.pics/svg/500x280/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入內容</p></div>' +
                 '</div>',
-
             editables: {
                 col1: {
                     selector: '.coln-1',
@@ -115,24 +104,21 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
                     allowedContent: allowedWidget
                 }
             },
-
             allowedContent: allowedFull,
-
             upcast: function( element ) {
                 return element.name == 'div' && element.hasClass( 'two-col' );
             }
-
         } );
 
         editor.widgets.add( 'widgetbootstrapThreeCol', {
 
-            button: showButtons ? 'Add three column box' : undefined,
+            button: showButtons ? '新增 3 欄' : undefined,
 
             template:
                 '<div class="row three-col">' +
-                    '<div class="col-sm-4 span4 coln-1"><p><img src="http://placehold.it/400x225&text=Image" class="img-responsive img-fluid" /></p><p>Text below</p></div>' +
-                    '<div class="col-sm-4 span4 coln-2"><p><img src="http://placehold.it/400x225&text=Image" class="img-responsive img-fluid" /></p><p>Text below</p></div>' +
-                    '<div class="col-sm-4 span4 coln-3"><p><img src="http://placehold.it/400x225&text=Image" class="img-responsive img-fluid" /></p><p>Text below</p></div>' +
+                    '<div class="col-sm-4 span4 coln-1 img-box-2"><img src="https://placeholder.pics/svg/400x225/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-4 span4 coln-2 img-box-2"><img src="https://placeholder.pics/svg/400x225/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-4 span4 coln-3 img-box-2"><img src="https://placeholder.pics/svg/400x225/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
                 '</div>',
 
             editables: {
@@ -158,83 +144,215 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
 
         } );
 
-        editor.addCommand( 'openwidgetbootstrapAlert', new CKEDITOR.dialogCommand( 'widgetbootstrapAlert' ) );
+        editor.widgets.add( 'widgetbootstrapFourCol', {
+
+            button: showButtons ? '新增 4 欄' : undefined,
+
+            template:
+                '<div class="row four-col">' +
+                    '<div class="col-sm-3 span3 coln-1 img-box-3"><img src="https://placeholder.pics/svg/400x225/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-3 span3 coln-2 img-box-3"><img src="https://placeholder.pics/svg/400x225/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-3 span3 coln-3 img-box-3"><img src="https://placeholder.pics/svg/400x225/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-3 span3 coln-4 img-box-3"><img src="https://placeholder.pics/svg/400x225/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                '</div>',
+
+            editables: {
+                col1: {
+                    selector: '.coln-1',
+                    allowedContent: allowedWidget
+                },
+                col2: {
+                    selector: '.coln-2',
+                    allowedContent: allowedWidget
+                },
+                col3: {
+                    selector: '.coln-3',
+                    allowedContent: allowedWidget
+                },
+                col4: {
+                    selector: '.coln-4',
+                    allowedContent: allowedWidget
+                }
+            },
+
+            allowedContent: allowedFull,
+
+            upcast: function( element ) {
+                return element.name == 'div' && element.hasClass( 'four-col' );
+            }
+
+        } );
+
+        editor.widgets.add( 'widgetbootstrapSixCol', {
+
+            button: showButtons ? '新增 6 欄' : undefined,
+
+            template:
+                '<div class="row six-col">' +
+                    '<div class="col-sm-2 span2 coln-1 img-box-4"><img src="https://placeholder.pics/svg/400x225/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-2 span2 coln-2 img-box-4"><img src="https://placeholder.pics/svg/400x225/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-2 span2 coln-3 img-box-4"><img src="https://placeholder.pics/svg/400x225/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-2 span2 coln-4 img-box-4"><img src="https://placeholder.pics/svg/400x225/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-2 span2 coln-5 img-box-4"><img src="https://placeholder.pics/svg/400x225/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-2 span2 coln-6 img-box-4"><img src="https://placeholder.pics/svg/400x225/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                '</div>',
+
+            editables: {
+                col1: {
+                    selector: '.coln-1',
+                    allowedContent: allowedWidget
+                },
+                col2: {
+                    selector: '.coln-2',
+                    allowedContent: allowedWidget
+                },
+                col3: {
+                    selector: '.coln-3',
+                    allowedContent: allowedWidget
+                },
+                col4: {
+                    selector: '.coln-4',
+                    allowedContent: allowedWidget
+                },
+                col5: {
+                    selector: '.coln-5',
+                    allowedContent: allowedWidget
+                },
+                col6: {
+                    selector: '.coln-6',
+                    allowedContent: allowedWidget
+                }
+            },
+
+            allowedContent: allowedFull,
+
+            upcast: function( element ) {
+                return element.name == 'div' && element.hasClass( 'six-col' );
+            }
+
+        } );
+
+        // editor.widgets.add( 'widgetbootstrapPdfP', {
+        //     button: showButtons ? '嵌入直式PDF' : undefined,
+        //     template:
+        //     '<div class="pdf-col">' +
+        //         '<div class="embed-responsive embed-responsive-210by297 ratio ratio-210by297 coln-pdf">' +
+        //             '<link href="https://campus-xoops.tn.edu.tw/modules/tad_blocks/type/pdf/embed-responsive.css" rel="stylesheet">' +
+        //             '<iframe title="嵌入直式PDF" class="embed-responsive-item" src="https://campus-xoops.tn.edu.tw/uploads/tadtools/pdf-p.pdf" allowfullscreen scrolling="no"></iframe>' +
+        //         '</div>' +
+        //     '</div>',
+        //     editables: {
+        //         col1: {
+        //             selector: '.coln-pdf',
+        //             allowedContent: allowedWidget
+        //         }
+        //     },
+        //     allowedContent: allowedFull,
+
+        //     upcast: function( element ) {
+        //         return element.name == 'div' && element.hasClass( 'pdf-col' );
+        //     }
+        // } );
+
+        // editor.widgets.add( 'widgetbootstrapPdfL', {
+        //     button: showButtons ? '嵌入橫式PDF' : undefined,
+        //     template:
+        //     '<div class="pdf-col">' +
+        //         '<div class="embed-responsive embed-responsive-297by210 ratio ratio-297by210 coln-pdf">' +
+        //             '<link href="https://campus-xoops.tn.edu.tw/modules/tad_blocks/type/pdf/embed-responsive.css" rel="stylesheet">' +
+        //             '<iframe title="嵌入橫式PDF" class="embed-responsive-item" src="https://campus-xoops.tn.edu.tw/uploads/tadtools/pdf-l.pdf" allowfullscreen scrolling="no"></iframe>' +
+        //         '</div>' +
+        //     '</div>',
+        //     editables: {
+        //         col1: {
+        //             selector: '.coln-pdf',
+        //             allowedContent: allowedWidget
+        //         }
+        //     },
+        //     allowedContent: allowedFull,
+
+        //     upcast: function( element ) {
+        //         return element.name == 'div' && element.hasClass( 'pdf-col' );
+        //     }
+        // } );
+
+        // editor.addCommand( 'openwidgetbootstrapAlert', new CKEDITOR.dialogCommand( 'widgetbootstrapAlert' ) );
 
         // Add foundation alert button
         // Textare decodes html entities
         //var textarea = new CKEDITOR.dom.element( 'textarea' );
 
-        editor.widgets.add( 'widgetbootstrapAlert', {
+        // editor.widgets.add( 'widgetbootstrapAlert', {
 
-            button: showButtons ? 'Add alert box' : undefined,
-            dialog: 'widgetbootstrapAlert',
+        //     button: showButtons ? 'Add alert box' : undefined,
+        //     dialog: 'widgetbootstrapAlert',
 
-            template: '<div class="alert alert-box"><div class="alert-text">Some Text</span></div>',
+        //     template: '<div class="alert alert-box"><div class="alert-text">Some Text</span></div>',
 
-            editables: {
-                alertBox: {
-                    selector: '.alert-text',
-                    allowedContent: allowedWidget
-                },
-            },
+        //     editables: {
+        //         alertBox: {
+        //             selector: '.alert-text',
+        //             allowedContent: allowedWidget
+        //         },
+        //     },
 
-            allowedContent: allowedFull,
+        //     allowedContent: allowedFull,
 
-            data: function() {
-                var newData = this.data,
-                    oldData = this.oldData;
+        //     data: function() {
+        //         var newData = this.data,
+        //             oldData = this.oldData;
 
-                /*if( newData.alertText ) {
-                    this.element.getChild( 0 ).setHtml( CKEDITOR.tools.htmlEncode( newData.alertText ) );
-                }*/
+        //         /*if( newData.alertText ) {
+        //             this.element.getChild( 0 ).setHtml( CKEDITOR.tools.htmlEncode( newData.alertText ) );
+        //         }*/
 
-                if ( oldData && newData.type != oldData.type )
-                    this.element.removeClass(oldData.type);
+        //         if ( oldData && newData.type != oldData.type )
+        //             this.element.removeClass(oldData.type);
 
-                if ( newData.type )
-                    this.element.addClass(newData.type);
+        //         if ( newData.type )
+        //             this.element.addClass(newData.type);
 
-                // Save oldData.
-                this.oldData = CKEDITOR.tools.copy( newData );
-            },
+        //         // Save oldData.
+        //         this.oldData = CKEDITOR.tools.copy( newData );
+        //     },
 
-            upcast: function( el, data ) {
-                if (el.name != 'div' || !el.hasClass( 'alert-box' ))
-                    return;
+        //     upcast: function( el, data ) {
+        //         if (el.name != 'div' || !el.hasClass( 'alert-box' ))
+        //             return;
 
-                var childrenArray = el.children,
-                    alertText;
+        //         var childrenArray = el.children,
+        //             alertText;
 
-                if ( childrenArray.length !== 1 || !( alertText = childrenArray[ 0 ] ).hasClass('alert-text'))
-                    return;
+        //         if ( childrenArray.length !== 1 || !( alertText = childrenArray[ 0 ] ).hasClass('alert-text'))
+        //             return;
 
-                // Acceptable alert types
-                var alertTypes = CKEDITOR.config.widgetbootstrapAlert_alertTypes;
-                // Check alert types
-                for(var i = 0; i < el.attributes.length; i++) {
-                    if(el.attributes[i] != 'alert-box') {
-                        for ( alertName in alertTypes ) {
-                            if(el.attributes[i] == alertName) {
-                                data.type = alertName;
-                            }
-                        }
-                    }
-                }
+        //         // Acceptable alert types
+        //         var alertTypes = CKEDITOR.config.widgetbootstrapAlert_alertTypes;
+        //         // Check alert types
+        //         for(var i = 0; i < el.attributes.length; i++) {
+        //             if(el.attributes[i] != 'alert-box') {
+        //                 for ( alertName in alertTypes ) {
+        //                     if(el.attributes[i] == alertName) {
+        //                         data.type = alertName;
+        //                     }
+        //                 }
+        //             }
+        //         }
 
-                // Use textarea to decode HTML entities (#11926).
-                //textarea.setHtml( alertText.getHtml() );
-                //data.alertText = textarea.getValue();
+        //         // Use textarea to decode HTML entities (#11926).
+        //         //textarea.setHtml( alertText.getHtml() );
+        //         //data.alertText = textarea.getValue();
 
-                return el;
-            },
+        //         return el;
+        //     },
 
-            downcast: function( el ) {
-                return el;
-            }
+        //     downcast: function( el ) {
+        //         return el;
+        //     }
 
-        } );
+        // } );
         // Alert dialog
-        CKEDITOR.dialog.add( 'widgetbootstrapAlert', this.path + 'dialogs/widgetbootstrapAlert.js' );
+        // CKEDITOR.dialog.add( 'widgetbootstrapAlert', this.path + 'dialogs/widgetbootstrapAlert.js' );
 
         /*CKEDITOR.dialog.add( 'widgetbootstrapAccordion', this.path + 'dialogs/widgetbootstrapAccordion.js' );
         editor.widgets.add( 'widgetbootstrapAccordion', {
@@ -243,7 +361,6 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
 
             template:
                 '<dl class="accordion" data-accordion><div class="col-1"></div></dl>',
-
 
             allowedContent: allowedFull,
 
@@ -266,7 +383,6 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
             },
 
             data: function() {
-
 
                 var name = this.data.name != undefined ? this.data.name : 'accordion';
                 var count = this.data.count != undefined ? this.data.count : 0;
@@ -304,7 +420,6 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
                     // @todo
                 }
 
-
                 this.data.prevCount = i;
             }
         } );*/
@@ -321,6 +436,5 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
         }
 
     }
-
 
 } );

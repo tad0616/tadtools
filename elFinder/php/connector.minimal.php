@@ -20,9 +20,12 @@ $subDir = Request::getString('subDir');
 $path = XOOPS_ROOT_PATH . "/uploads/{$mdir}/{$type}/";
 $URL = XOOPS_URL . "/uploads/{$mdir}/{$type}/";
 if (!empty($subDir)) {
-    $path .= "{$subDir}/";
-    Utility::mk_dir($path);
-    $URL .= "{$subDir}/";
+    $subDir_arr = explode('/', $subDir);
+    foreach ($subDir_arr as $sub_dir) {
+        $path .= "{$sub_dir}/";
+        Utility::mk_dir($path);
+        $URL .= "{$sub_dir}/";
+    }
 }
 
 header('HTTP/1.1 200 OK');

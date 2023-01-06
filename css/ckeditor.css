@@ -9,12 +9,12 @@ ol.small-tw {
   margin-left: 2rem;
 }
 ol.small-tw li {
-    list-style-type: none;
-    position: relative;
-  }
-ol.small-tw li::before{
+  list-style-type: none;
+  position: relative;
+}
+ol.small-tw li::before {
   counter-increment: small-tw-list;
-  content: counter(small-tw-list, cjk-ideographic) "、" ;
+  content: counter(small-tw-list, cjk-ideographic) "、";
   position: absolute;
   left: -2.5rem;
 }
@@ -48,3 +48,35 @@ ol.brackets-num li:before {
   position: absolute;
   left: -30px;
 }
+
+.img-box-1-5 img,
+.img-box-2 img,
+.img-box-3 img,
+.img-box-4 img {
+  transition: transform 0.25s ease;
+}
+
+.img-box-1-5 img:hover {
+  -webkit-transform: scale(1.5);
+  transform: scale(1.5);
+}
+.img-box-2 img:hover {
+  -webkit-transform: scale(2);
+  transform: scale(2);
+}
+.img-box-3 img:hover {
+  -webkit-transform: scale(3);
+  transform: scale(3);
+}
+.img-box-4 img:hover {
+  -webkit-transform: scale(24);
+  transform: scale(4);
+}
+/* .cke_dialog {
+  z-index: 10055 !important;
+}
+
+.ck-body-wrapper {
+  position: fixed;
+  z-index: 1300;
+} */

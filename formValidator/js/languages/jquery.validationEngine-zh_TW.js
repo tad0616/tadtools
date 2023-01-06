@@ -17,6 +17,28 @@
                     },
                     "alertText": "* Field must equal test"
                 },
+                "checkSize":  {
+                    "func": function(field, rules, i, options){
+                        console.log('rules',rules[2]);
+                        const max_size = rules[2] ;
+                        const max_size_byte = max_size * 1024 *1024;
+
+                        var have_file=field.val();
+                        if(have_file){
+                            const fileList=field[0].files;
+                            const file_size = Array.from(fileList).reduce((total, file) => {
+                                return total + file.size;
+                            }, 0);
+                            console.log('file_size',file_size);
+                            console.log('max_size',max_size_byte);
+
+                            return (file_size < max_size_byte) ? true : false;
+                        }else{
+                            return true;
+                        }
+                    },
+                    "alertText": "* 檔案超過限制的大小"
+                },
                 "dateRange": {
                     "regex": "none",
                     "alertText": "* 無效的 ",
@@ -87,8 +109,8 @@
                 },
                 "pid": {
                     // credit: jquery.h5validate.js / orefalo
-                    "regex": /^[a-z](1|2|8|9)\d{8}$/i,
-                    "alertText": "* 無效的身份證號格式"
+                    "regex": /^[a-zA-Z][0-9]{9}$|^[a-zA-Z][C|D|c|d][0-9]{8}$/,
+                    "alertText": "* 無效的中華民國身份證號或中華民國居留證格式"
                 },
                 "email": {
                     // Shamelessly lifted from Scott Gonzalez via the Bassistance Validation plugin http://projects.scottsplayground.com/email_address_validation/
@@ -133,8 +155,8 @@
                     "alertText": "* 只限英文字母及空白"
                 },
                 "onlyLetter": {
-                    "regex": /^[\u4e00-\u9fa5_a-zA-Z\']+$/,
-                    "alertText": "* 只限中英文字母"
+                    "regex": /^[\u4e00-\u9fa5_a-zA-Z\ \']+$/,
+                    "alertText": "* 只限中英文字母及空白"
                 },
                 "onlyNumber": {
                     "regex": /^[0-9]+$/,
@@ -168,6 +190,7 @@
                     "regex": /^(97(8|9))?\d{9}(\d|X)$/,
                     "alertText": "* isbn格式不正確！"
                 },
+
                 // --- CUSTOM RULES -- Those are specific to the demos, they can be removed or changed to your likings
                 "ajaxUserCall": {
                     "url": "ajaxValidateFieldUser",

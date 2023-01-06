@@ -10,7 +10,7 @@ CKEDITOR.editorConfig = function (config) {
         [
             { name: 'bar1', items: ['Source'] },
             { name: 'bar2', items: ['Cut', 'Copy', 'Paste', 'PasteFromWord', 'Undo', 'Redo'] },
-            { name: 'bar3', items: ['Image', 'oembed', 'EqnEditor', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'Link', 'Unlink'] },
+            { name: 'bar3', items: ['Image','EmbedSemantic', 'EqnEditor', 'Table', 'HorizontalRule', 'Smiley', 'Link', 'Unlink'] },
             { name: 'bar4', items: ['NumberedList', 'BulletedList', 'RemoveFormat', 'Syntaxhighlight', 'CodeSnippet'] },
             { name: 'bar5', items: ['Blockquote', 'CreateDiv'] },
             { name: 'bar6', items: ['PageBreak', 'WidgetTemplateMenu', 'Uploadcare'] },
@@ -22,12 +22,14 @@ CKEDITOR.editorConfig = function (config) {
         ];
 
     //CKEDITOR.config.autoGrow_maxHeight = 450;
+    CKEDITOR.dtd.$removeEmpty['span'] = false;
     CKEDITOR.config.entities = false;
     CKEDITOR.config.htmlEncodeOutput = false;
     CKEDITOR.config.allowedContent = true;
-    CKEDITOR.config.oembed_maxWidth = '560';
-    CKEDITOR.config.oembed_maxHeight = '315';
-    CKEDITOR.config.oembed_WrapperClass = 'embededContent';
+    CKEDITOR.config.baseFloatZIndex = 100001;
+
+    CKEDITOR.config.embed_provider = '//ckeditor.iframe.ly/api/oembed?url={url}&callback={callback}'
+
     CKEDITOR.config.syntaxhighlight_hideGutter = [true | false];
 
     CKEDITOR.config.syntaxhighlight_hideControls = true;

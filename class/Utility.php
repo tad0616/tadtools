@@ -329,7 +329,9 @@ class Utility
             $bootstrap_version = $_SESSION['bootstrap'];
         }
 
-        $bootstrap_link = $bootstrap ? "<link rel='stylesheet' type='text/css' media='all' href='" . XOOPS_URL . "/modules/tadtools/bootstrap{$bootstrap_version}/css/bootstrap.css' />" : '';
+        $bootstrap_link = $bootstrap ? "<link rel='stylesheet' type='text/css' media='all' href='" . XOOPS_URL . "/modules/tadtools/bootstrap{$bootstrap_version}/css/bootstrap.css' />
+        <script src='" . XOOPS_URL . "/modules/tadtools/bootstrap{$bootstrap_version}/js/popper.min.js' crossorigin='anonymous'></script>
+        <script src='" . XOOPS_URL . "/modules/tadtools/bootstrap{$bootstrap_version}/js/bootstrap.js'></script>" : '';
         $font_awesome_link = $font_awesome ? " <link href=\"" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css\" rel=\"stylesheet\" media=\"all\">" : '';
         $SyntaxHighlighter_link = '';
         if ($SyntaxHighlighter) {
@@ -892,9 +894,9 @@ class Utility
         return $main;
     }
 
-    public static function toolbar_bootstrap($interface_menu = [], $force = false)
+    public static function toolbar_bootstrap($interface_menu = [], $force = false, $interface_icon = [])
     {
-        global $xoTheme, $xoopsUser, $xoopsModule, $xoopsModuleConfig;
+        global $xoTheme, $xoopsUser, $xoopsModule;
 
         if (is_object($xoTheme)) {
             $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops.css');
@@ -924,7 +926,8 @@ class Utility
 
         self::get_jquery();
 
-        $options = "<li><a href='index.php' title='" . _TAD_HOME . "'>&#xf015;";
+        $options = !in_array('index.php', $interface_menu) ? "<li><a href='index.php' title='" . _TAD_HOME . "'>&#xf015;" : '';
+
         if (is_array($interface_menu)) {
             $basename = basename($_SERVER['SCRIPT_NAME']);
             if (1 == count($interface_menu) and 'index.php' === mb_substr($_SERVER['REQUEST_URI'], -9)) {
@@ -936,18 +939,20 @@ class Utility
 
                 if (strpos($url, 'admin/index.php') !== false or strpos($url, 'admin/main.php') !== false) {
                     continue;
-                } elseif ($url == 'index.php') {
-                    $options = "<li {$active}><a href='{$urlPath}'>&#xf015; {$title}</a></li>";
+                    // } elseif ($url == 'index.php') {
+                    //     $options = "<li class='current'><a href='{$urlPath}'>&#xf015; {$title}</a></li>";
                 } else {
+                    $target = substr($url, 0, 4) == 'http' ? "target='_blank'" : '';
 
                     if (!empty($op) and false !== strpos($url, "?op=") and false !== strpos($url, "{$basename}?op={$op}")) {
                         $active = "class='current' title='{$_SERVER['SCRIPT_NAME']}?op={$op}=={$url}'";
-                    } elseif (!isset($op) and false !== strpos($_SERVER['SCRIPT_NAME'], $url)) {
-                        $active = "class='current' title='hi'";
+                    } elseif (false !== strpos($_SERVER['SCRIPT_NAME'], $url)) {
+                        $active = "class='current' title='$title'";
                     } else {
                         $active = '';
                     }
-                    $options .= "<li {$active}><a href='{$urlPath}'>{$title}</a></li>";
+                    $icon = isset($interface_icon[$title]) ? "<i class='fa {$interface_icon[$title]}'></i> " : '';
+                    $options .= "<li {$active}><a href='{$urlPath}' $target>{$icon}{$title}</a></li>";
                 }
             }
 

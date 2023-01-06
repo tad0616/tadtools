@@ -21,34 +21,34 @@ class Bootstrap4Editable
 
         $jquery = $this->show_jquery ? Utility::get_jquery() : '';
 
-        if ($xoTheme) {
-            $xoTheme->addStylesheet('modules/tadtools/bootstrap4-editable/css/bootstrap-editable.css');
-            $xoTheme->addScript('modules/tadtools/bootstrap4-editable/js/bootstrap-editable.min.js');
+        // if ($xoTheme) {
+        //     $xoTheme->addStylesheet('modules/tadtools/bootstrap4-editable/css/bootstrap-editable.css');
+        //     $xoTheme->addScript('modules/tadtools/bootstrap4-editable/js/bootstrap-editable.min.js');
 
-            if ($url) {
-                $xoTheme->addScript('', null, "\$(document).ready(function(){
-                    \$('{$name}').editable({url: '$url'});
-                });");
-            }
-        } else {
-            $main = "
+        //     if ($url) {
+        //         $xoTheme->addScript('', null, "\$(document).ready(function(){
+        //             \$('{$name}').editable({url: '$url'});
+        //         });");
+        //     }
+        // } else {
+        $main = "
             {$jquery}
             <link href='" . XOOPS_URL . "/modules/tadtools/bootstrap4-editable/css/bootstrap-editable.css' rel='stylesheet'>
             <script src='" . XOOPS_URL . "/modules/tadtools/bootstrap4-editable/js/bootstrap-editable.js'></script>
             ";
-            if ($url) {
-                $main .= "
+        if ($url) {
+            $main .= "
                 <script type='text/javascript'>
                     $(document).ready(function(){
                         $('{$name}').editable({url: '$url'});
                     });
                 </script>
                 ";
-            }
-
-            return $main;
         }
+
+        return $main;
     }
+    // }
 }
 
 /*

@@ -1,6 +1,6 @@
 /*
-Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.md or http://ckeditor.com/license
+Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 */
 CKEDITOR.plugins.setLang( 'clipboard', 'mk', {
 	copy: 'Копирај (Copy)',
@@ -8,8 +8,9 @@ CKEDITOR.plugins.setLang( 'clipboard', 'mk', {
 	cut: 'Исечи (Cut)',
 	cutError: 'Опциите за безбедност на вашиот прелистувач не дозволуваат уредувачот автоматски да изврши сечење. Ве молиме употребете ја тастатурата. (Ctrl/Cmd+C)',
 	paste: 'Залепи (Paste)',
+	pasteNotification: 'Press %1 to paste. Your browser doesn‘t support pasting with the toolbar button or context menu option.', // MISSING
 	pasteArea: 'Простор за залепување',
-	pasteMsg: 'Ве молиме да залепите во следниот квадрат користејќи ја тастатурата (<string>Ctrl/Cmd+V</string>) и да притиснете OK',
-	securityMsg: 'Опциите за безбедност на вашиот прелистувач не дозволуваат уредувачот директно да пристапи до копираните податоци. Потребно е повторно да се обидете во овој прозорец.',
-	title: 'Залепи (Paste)'
+	pasteMsg: 'Paste your content inside the area below and press OK.', // MISSING
+	fileFormatNotSupportedNotification: 'The ${formats} file format(s) are not supported.', // MISSING
+	fileWithoutFormatNotSupportedNotification: 'The file format is not supported.' // MISSING
 } );

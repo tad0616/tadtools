@@ -4,7 +4,7 @@
   var TO_RADIANS = Math.PI / 180;
 
   CKEDITOR.plugins.add('imagerotate', {
-    lang: 'en,et',
+    lang: 'en,et,fr',
     hidpi: true,
     icons: 'rotate-left.png,rotate-right.png', // is this line necessary?
     init: function (editor) {

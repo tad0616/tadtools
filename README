@@ -1,3 +1,14 @@
+TadTools 3.53 (尚未釋出)
+====================================
+1.toolbar_bootstrap() 自動偵測外部連結時會開到新視窗
+2.BootStrap Table 加入點擊編輯功能
+3.CKEditor 升級為 4.20.1 版
+4.CKEditor 加入複製嵌入（Auto Embed）功能
+5.CKEditor 新增各種自適應欄位
+6.TadUpFiles 加入上傳檔案上限檢查
+7.jquery.validationEngine.js 新增檔案大小檢查
+8.修改 toolbar_bootstrap() 加入圖示支援
+
 TadTools 3.52 (2022-11-01 釋出)
 ====================================
 1.CKEditor 加入自訂樣式功能

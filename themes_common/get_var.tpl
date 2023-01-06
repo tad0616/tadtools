@@ -507,7 +507,7 @@ foreach ($config2_files as $config2_file) {
                 }
                 $this->assign($name . '_fa_content', $value_fa_content);
 
-                if (in_array('menu', $value) and !empty($old_content)) {
+                if (in_array('menu', $value)) {
                     if (!empty($config2[$name . '_menu_content'])) {
                         $value_menu_content = $config2[$name . '_menu_content'];
                     } else {

@@ -21,6 +21,7 @@ $TadUpFiles=new TadUpFiles("模組名稱",$subdir,$file="/file",$image="/image",
 
 ///$TadUpFiles->set_dir('subdir',"/{$xoopsConfig['theme_set']}/logo");
 $TadUpFiles->set_var('require', true);  //必填
+$TadUpFiles->set_var('max_size', 10);  //大小限制 10MB
 $TadUpFiles->set_var("show_tip", false); //不顯示提示
 $TadUpFiles->set_col($col_name,$col_sn); //若 $show_list_del_file ==true 時一定要有
 $upform=$TadUpFiles->upform($show_edit,$upname,$maxlength,$show_list_del_file,$only_type,$thumb);
@@ -163,6 +164,8 @@ class TadUpFiles
     public $db_prefix;
     public $hash;
     public $filename;
+    public $force_filename;
+
     public $file_dir = '/file';
     public $image_dir = '/image';
     public $thumbs_dir = '/image/.thumbs';
@@ -193,6 +196,7 @@ class TadUpFiles
 
     public $tag = '';
     public $require = '';
+    public $max_size = '';
     public $pdf_force_dl = false;
 
     public function __construct($dir = '', $subdir = '', $file = '/file', $image = '/image', $thumbs = '/image/.thumbs')
@@ -316,9 +320,14 @@ class TadUpFiles
         $this->TadUpFilesTblName = $xoopsDB->prefix("{$db_prefix}_files_center");
     }
 
-    public function set_filename($filename = '')
+    public function set_filename($filename = '', $force = false)
     {
-        $this->filename = $filename;
+        if ($force) {
+            $this->force_filename = $filename;
+        } else {
+            $this->filename = $filename;
+        }
+
     }
 
     //設定目錄
@@ -394,7 +403,14 @@ class TadUpFiles
             }
         }
 
-        $require = ($this->require) ? 'validate[required]' : '';
+        $require = '';
+        if ($this->require && $this->max_size) {
+            $require = 'validate[required,custom[checkSize[' . $this->max_size . ']]]';
+        } elseif ($this->require) {
+            $require = 'validate[required]';
+        } elseif ($this->max_size) {
+            $require = 'validate[custom[checkSize[' . $this->max_size . ']]]';
+        }
 
         $main = "
             $jquery
@@ -433,8 +449,10 @@ class TadUpFiles
         if ($show_edit == 'list') {
             if ($xoTheme) {
                 $xoTheme->addStylesheet('modules/tadtools/css/rounded-list.css');
+                $xoTheme->addStylesheet('modules/tadtools/css/font-awesome/css/font-awesome.css');
             } else {
-                $files = '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/modules/tadtools/css/rounded-list.css">';
+                $files = '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/modules/tadtools/css/rounded-list.css">
+                <link href="' . XOOPS_URL . '/modules/tadtools/css/font-awesome/css/font-awesome.css" rel="stylesheet">';
             }
         }
 
@@ -610,7 +628,6 @@ class TadUpFiles
         $fancybox->render(false, null, false);
 
         $files = "
-        <link href=\"" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css\" rel=\"stylesheet\">
         <script type='text/javascript'>
             $(document).ready(function(){
                 $('#list_del_file_sort_{$this->col_name}').sortable({ opacity: 0.6, cursor: 'move', update: function() {
@@ -621,14 +638,6 @@ class TadUpFiles
                     }
                 });
             });
-
-            function rotate_img(op, files_sn, subdir, image_dir, thumbs_dir, filename, type){
-                $.post('" . XOOPS_URL . "/modules/tadtools/imagerotate.php', {op: op, files_sn:files_sn , subdir: subdir , image_dir: image_dir , thumbs_dir: thumbs_dir , filename:filename ,type:type}, function(data){
-                    $('#thumb' + files_sn).css('background-image', 'url(\''+data+'?timestamp=' + new Date().getTime()+'\')' ).css('border', '1px solid red' );
-                    console.log(data+'?timestamp=' + new Date().getTime());
-                });
-            }
-
             function remove_file(files_sn){
                 var sure = window.confirm('" . _TAD_DEL_CONFIRM . "');
                 if (!sure){
@@ -643,8 +652,18 @@ class TadUpFiles
                         }
                     });
                 }
-
+            }";
+        if ($thumb) {
+            $files .= "
+            function rotate_img(op, files_sn, subdir, image_dir, thumbs_dir, filename, type){
+                $.post('" . XOOPS_URL . "/modules/tadtools/imagerotate.php', {op: op, files_sn:files_sn , subdir: subdir , image_dir: image_dir , thumbs_dir: thumbs_dir , filename:filename ,type:type}, function(data){
+                    $('#thumb' + files_sn).css('background-image', 'url(\''+data+'?timestamp=' + new Date().getTime()+'\')' ).css('border', '1px solid red' );
+                    console.log(data+'?timestamp=' + new Date().getTime());
+                });
             }
+            ";
+        }
+        $files .= "
         </script>";
 
         $del_alert = ($show_edit === 'list') ? TADTOOLS_CHECKBOX_TO_DEL : '';
@@ -837,6 +856,10 @@ class TadUpFiles
                     $new_filename = $this->filename . '-' . $this->sort;
                 }
 
+                if ($this->force_filename != '') {
+                    $new_filename = $this->force_filename;
+                }
+
                 //die($new_filename);
                 $os_charset = (PATH_SEPARATOR === ':') ? 'UTF-8' : 'Big5';
 
@@ -910,6 +933,9 @@ class TadUpFiles
 
                     if ($this->filename != '') {
                         $file_name = $this->filename . '-' . $this->sort . ".{$ext}";
+                    }
+                    if ($this->force_filename != '') {
+                        $file_name = $this->force_filename . ".{$ext}";
                     }
 
                     $description = $desc === null ? $file['name'] : $desc;
@@ -1280,7 +1306,7 @@ class TadUpFiles
         //取消上傳時間限制
         set_time_limit(0);
         //設置上傳大小
-        ini_set('memory_limit', '80M');
+        ini_set('memory_limit', '200M');
 
         //先刪除舊檔
         if (!empty($files_sn)) {
@@ -1439,10 +1465,15 @@ class TadUpFiles
                     $db_hash_name = '';
                 }
                 if (empty($files_sn)) {
-                    $sql = "insert into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}','{$file['name']}','{$this->subdir}','{$db_hash_name}','{$upload_date}','{$uid}','{$this->tag}')";
-                    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-                    //取得最後新增資料的流水編號
-                    $files_sn = $xoopsDB->getInsertId();
+                    if ($this->col_name && $this->col_sn) {
+                        $sql = "insert into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}','{$file['name']}','{$this->subdir}','{$db_hash_name}','{$upload_date}','{$uid}','{$this->tag}')";
+                        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                        //取得最後新增資料的流水編號
+                        $files_sn = $xoopsDB->getInsertId();
+                    } else {
+                        redirect_header($_SERVER['PHP_SELF'], 3, 'Error: empty $this->col_name(' . $this->col_name . ') || $this->col_sn(' . $this->col_sn . ')');
+
+                    }
                 } else {
                     $sql = "replace into `{$this->TadUpFilesTblName}` (`files_sn`,`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$files_sn}','{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}','{$file['name']}','{$this->subdir}','{$db_hash_name}','{$upload_date}','{$uid}','{$this->tag}')";
                     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -1629,6 +1660,7 @@ class TadUpFiles
         }
 
         $sql = "select * from `{$this->TadUpFilesTblName}` $where";
+        // die($sql);
         // if ($this->col_name == "sign_id") {
         //     die($sql);
         // }
@@ -1670,6 +1702,13 @@ class TadUpFiles
             $files[$key]['hash_filename'] = $hash_filename;
             $files[$key]['upload_date'] = $upload_date;
             $files[$key]['uid'] = $uid;
+
+            $uid_name = \XoopsUser::getUnameFromId($uid, 1);
+            if (empty($uid_name)) {
+                $uid_name = \XoopsUser::getUnameFromId($uid, 0);
+            }
+
+            $files[$key]['uid_name'] = $uid_name;
             $files[$key]['tag'] = $tag;
 
             $mark = strpos($link_path, '?') !== false ? '&' : '?';
@@ -1883,7 +1922,6 @@ class TadUpFiles
     public function show_files($upname = '', $thumb = true, $show_mode = '', $show_description = false, $show_dl = false, $limit = null, $path = null, $hash = false, $playSpeed = 0, $desc_as_name = false, $keyword = '', $only_keyword = false, $target = '_self')
     {
         global $xoTheme;
-
         $this->upname = $upname;
         $all_files = '';
         if ($xoTheme) {
@@ -1911,7 +1949,6 @@ class TadUpFiles
             $all_files .= ($show_mode === 'file_text_url' or $show_mode === 'file_url') ? '' : $fancybox->render(false, null, $autoPlay, $playSpeed);
         }
 
-        $file_arr = [];
         $file_arr = $this->get_file(null, $limit, $path, $hash, $desc_as_name, $keyword, $only_keyword, $target);
 
         if (empty($file_arr)) {

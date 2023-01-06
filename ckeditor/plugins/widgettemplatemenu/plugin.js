@@ -9,7 +9,7 @@ CKEDITOR.plugins.add( 'widgettemplatemenu', {
     },
 
     init: function( editor ) {
-        
+
         // Set the default button info based on installed plugins
         var buttonData = {};
         // @todo: make these if statement work
@@ -18,11 +18,14 @@ CKEDITOR.plugins.add( 'widgettemplatemenu', {
             buttonData.widgetcommonQuotebox = 'Insert quote box';
         }
         if (editor.plugins.widgetbootstrap != undefined) {
-            buttonData.widgetbootstrapLeftCol = 'Insert left column template';
-            buttonData.widgetbootstrapRightCol = 'Insert right column template';
-            buttonData.widgetbootstrapTwoCol = 'Insert two column template';
-            buttonData.widgetbootstrapThreeCol = 'Insert three column template';
-            buttonData.widgetbootstrapAlert = 'Insert Alert box';
+            buttonData.widgetbootstrapLeftCol = '新增 1:2 雙欄';
+            buttonData.widgetbootstrapRightCol = '新增 2:1 雙欄';
+            buttonData.widgetbootstrapTwoCol = '新增 2 欄';
+            buttonData.widgetbootstrapThreeCol = '新增 3 欄';
+            buttonData.widgetbootstrapFourCol = '新增 4 欄';
+            buttonData.widgetbootstrapSixCol = '新增 6 欄';
+            // buttonData.widgetbootstrapPdfP = '嵌入直式PDF';
+            // buttonData.widgetbootstrapPdfL = '嵌入橫式PDF';
         }
         if (editor.commands.oembed != undefined) {
             buttonData.oembed = 'Insert media';
@@ -45,7 +48,7 @@ CKEDITOR.plugins.add( 'widgettemplatemenu', {
         else {
             var buttons = buttonData;
         }
-        
+
         // Build the list of menu items
         var items =  {};
         for(var key in buttons) {
@@ -74,7 +77,10 @@ CKEDITOR.plugins.add( 'widgettemplatemenu', {
                     widgetbootstrapRightCol: editor.commands.widgetbootstrapRightCol == undefined ? false : editor.commands.widgetbootstrapRightCol.state,
                     widgetbootstrapTwoCol: editor.commands.widgetbootstrapTwoCol == undefined ? false : editor.commands.widgetbootstrapTwoCol.state,
                     widgetbootstrapThreeCol: editor.commands.widgetbootstrapThreeCol == undefined ? false : editor.commands.widgetbootstrapThreeCol.state,
-                    widgetbootstrapAlert: editor.commands.widgetbootstrapAlert == undefined ? false : editor.commands.widgetbootstrapAlert.state,
+                    widgetbootstrapFourCol: editor.commands.widgetbootstrapFourCol == undefined ? false : editor.commands.widgetbootstrapFourCol.state,
+                    widgetbootstrapSixCol: editor.commands.widgetbootstrapSixCol == undefined ? false : editor.commands.widgetbootstrapSixCol.state,
+                    // widgetbootstrapPdfP: editor.commands.widgetbootstrapPdfP == undefined ? false : editor.commands.widgetbootstrapPdfP.state,
+                    // widgetbootstrapPdfL: editor.commands.widgetbootstrapPdfL == undefined ? false : editor.commands.widgetbootstrapPdfL.state,
                     widgetbootstrapAccordion: editor.commands.widgetbootstrapAccordion == undefined ? false : editor.commands.widgetbootstrapAccordion.state,
                     oembed: editor.commands.oembed == undefined ? false : editor.commands.oembed.state,
                     codeSnippet: editor.commands.codeSnippet == undefined ? false : editor.commands.codeSnippet.state,
@@ -83,8 +89,7 @@ CKEDITOR.plugins.add( 'widgettemplatemenu', {
                 };
             }
         } );
-        
-    }
 
+    }
 
 } );
