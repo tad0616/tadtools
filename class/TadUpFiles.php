@@ -1006,15 +1006,24 @@ class TadUpFiles
             $this->sort = $this->auto_sort();
         }
 
-        $filename = empty($filename_new) ? Utility::get_basename($from) : $filename_new;
-        $type = $this->mime_content_type($filename);
-        $size = filesize($from);
+        if (is_array($from)) {
+            $ext = substr(strrchr($from['name'], '.'), 1);
+            $filename = empty($filename_new) ? $from['name'] : "{$filename_new}.{$ext}";
+            $type = $from['type'];
+            $size = $from['size'];
+            $from = $from['tmp_name'];
+        } else {
+            $filename = empty($filename_new) ? Utility::get_basename($from) : $filename_new;
+            $type = $this->mime_content_type($filename);
+            $size = filesize($from);
+            $ext = substr(strrchr($filename, '.'), 1);
+        }
 
         //取得副檔名
-        $extarr = explode('.', $filename);
-        foreach ($extarr as $val) {
-            $ext = mb_strtolower($val);
-        }
+        // $ext_arr = explode('.', $filename);
+        // foreach ($ext_arr as $val) {
+        //     $ext = mb_strtolower($val);
+        // }
 
         //判斷檔案種類
         if ($ext === 'jpg' or $ext === 'jpeg' or $ext === 'png' or $ext === 'gif') {
@@ -1045,6 +1054,8 @@ class TadUpFiles
         $randStr = Utility::randStr(3);
         $path = ($kind === 'img') ? $this->TadUpFilesImgDir : $this->TadUpFilesDir;
         $new_filename = ($safe_name) ? "{$this->col_name}_{$this->col_sn}_{$this->sort}_{$randStr}.{$ext}" : $filename;
+
+        Utility::mk_dir($path);
 
         $readme = '';
         $hash_name = md5(mt_rand(0, 1000) . $filename);

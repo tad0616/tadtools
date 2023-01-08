@@ -185,16 +185,21 @@ class Utility
         if (empty($dir)) {
             return;
         }
+        $dir_path = explode('/', $dir);
+        $mk_dir = '';
+        foreach ($dir_path as $i => $sub_dir) {
+            $mk_dir .= $i > 0 ? "/{$sub_dir}" : $sub_dir;
 
-        //若目錄不存在的話建立目錄
-        if (!is_dir($dir)) {
-            umask(000);
-            //若建立失敗秀出警告訊息
-            if (!mkdir($dir, 0777) && !is_dir($dir)) {
-                throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));
+            //若目錄不存在的話建立目錄
+            if (!is_dir($mk_dir)) {
+                umask(000);
+                //若建立失敗秀出警告訊息
+                if (!mkdir($mk_dir, 0777) && !is_dir($mk_dir)) {
+                    throw new \RuntimeException(sprintf('Directory "%s" was not created', $mk_dir));
+                }
             }
-            return $dir;
         }
+        return $dir;
     }
 
     //刪除目錄
