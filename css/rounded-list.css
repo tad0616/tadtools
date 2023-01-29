@@ -45,7 +45,8 @@
 .rectangle-list span {
   position: relative;
   display: block;
-  padding: .1em .4em .1em .8em;
+  /* padding: .1em .4em .1em .8em; */
+  padding: .4em .4em .4em .8em;
   *padding: .4em;
   margin: .5em 0 .5em 2.5em;
   background: rgba(221, 221, 221, 0.411);

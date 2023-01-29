@@ -1,3 +1,14 @@
+TadTools 3.53 (Released on 2023-01-29)
+====================================
+1. toolbar_bootstrap() automatically detects external links and opens a new window
+2.BootStrap Table add click to edit function
+3.CKEditor upgraded to version 4.20.1
+4.CKEditor added Auto Embed function
+5.CKEditor added various adaptive fields
+6.TadUpFiles add upload file limit check
+7.jquery.validationEngine.js add file size check
+8. modify toolbar_bootstrap() add icon support
+
 TadTools 3.52 (Released on 2022-11-01)
 ====================================
 1.CKEditor add custom style function

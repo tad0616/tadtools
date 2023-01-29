@@ -191,7 +191,7 @@ class Utility
             $mk_dir .= $i > 0 ? "/{$sub_dir}" : $sub_dir;
 
             //若目錄不存在的話建立目錄
-            if (!is_dir($mk_dir)) {
+            if ($mk_dir != '' && !is_dir($mk_dir)) {
                 umask(000);
                 //若建立失敗秀出警告訊息
                 if (!mkdir($mk_dir, 0777) && !is_dir($mk_dir)) {

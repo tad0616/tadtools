@@ -2072,7 +2072,7 @@ class TadUpFiles
 
                     $all_files .= ($show_mode === 'small') ? "<a href='{$linkto}' data-toggle='tooltip' data-placement='top' title='{$description}' class='iconize {$fancyboxset}' {$rel}>&nbsp;</a> " : "
                     <li class='tuf-icon-item' style='width:{$w}px;height:{$item_h}px;float:left;list-style:none;{$this->other_css}'>
-                    <a href='{$linkto}' class='thumbnail {$fancyboxset}' target='{$target}' {$rel} style=\"display:inline-block; width: {$w}px; height: {$h}px; overflow: hidden; {$thumb_css} background-image: url('{$thumb_pic}'); background-size: {$bgs}; background-repeat: no-repeat; background-position: center center; margin-bottom: 4px;\" title='{$description}'>&nbsp;</a>{$show_description_txt}
+                    <a href='{$linkto}' class='thumbnail {$fancyboxset}' target='{$target}' {$rel} style=\"display:inline-block; width: {$w}px; height: {$h}px; overflow: hidden; background-image: url('{$thumb_pic}'); background-size: {$bgs}; background-repeat: no-repeat; background-position: center center; margin-bottom: 4px; {$thumb_css}\" title='{$description}'>&nbsp;</a>{$show_description_txt}
                     </li>";
                 }
 

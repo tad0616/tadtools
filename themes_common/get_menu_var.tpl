@@ -151,8 +151,7 @@ function get_module_menu_item($i)
         if(!isset($xoopsModuleConfig['tootbar_in_navbar']) or $xoopsModuleConfig['tootbar_in_navbar']==1)
         {
             require XOOPS_ROOT_PATH . "/modules/{$dir}/interface_menu.php";
-            //die(var_dump($interface_menu));
-            //global $interface_menu, $interface_menu_img, $interface_icon;
+
             foreach ($interface_menu as $title => $url) {
                 $my_menu[$i]['id']      = $i;
                 $my_menu[$i]['title']   = $title;
@@ -161,7 +160,7 @@ function get_module_menu_item($i)
                 $my_menu[$i]['img']     = ($interface_menu_img[$title]) ? XOOPS_URL . "/modules/{$dir}/images/{$interface_menu_img[$title]}" : '';
 
                 if(is_array($url)){
-                    $my_menu[$i]['url']     = '';
+                    $my_menu[$i]['url']     = 'index.php';
                     $sub_menu=[];
                     $j=0;
                     foreach ($url as $title2 => $url2) {
