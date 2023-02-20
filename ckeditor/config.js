@@ -9,7 +9,7 @@ CKEDITOR.editorConfig = function (config) {
     config.toolbar_my =
         [
             { name: 'bar1', items: ['Source'] },
-            { name: 'bar2', items: ['Cut', 'Copy', 'Paste', 'PasteFromWord', 'Undo', 'Redo'] },
+            { name: 'bar2', items: ['Cut', 'Copy', 'Undo', 'Redo'] },
             { name: 'bar3', items: ['Image','EmbedSemantic', 'EqnEditor', 'Table', 'HorizontalRule', 'Smiley', 'Link', 'Unlink'] },
             { name: 'bar4', items: ['NumberedList', 'BulletedList', 'RemoveFormat', 'Syntaxhighlight', 'CodeSnippet'] },
             { name: 'bar5', items: ['Blockquote', 'CreateDiv'] },
@@ -28,7 +28,7 @@ CKEDITOR.editorConfig = function (config) {
     CKEDITOR.config.allowedContent = true;
     CKEDITOR.config.baseFloatZIndex = 100001;
 
-    CKEDITOR.config.embed_provider = '//ckeditor.iframe.ly/api/oembed?url={url}&callback={callback}'
+    CKEDITOR.config.embed_provider = '//ckeditor.iframe.ly/api/oembed?url={url}&callback={callback}';
 
     CKEDITOR.config.syntaxhighlight_hideGutter = [true | false];
 
@@ -44,14 +44,14 @@ CKEDITOR.editorConfig = function (config) {
     config.toolbar = 'myBasic';
     config.toolbar_myBasic =
         [
-            ['Source', 'Format', 'FontSize', 'TextColor', 'BGColor', 'Bold', 'Italic', '-', 'NumberedList', 'BulletedList', 'Outdent', 'Indent', '-', 'Link', 'Unlink', '-', 'PasteText', 'PasteFromWord', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'Table', 'Undo', 'Redo']
+            ['Source', 'Format', 'FontSize', 'TextColor', 'BGColor', 'Bold', 'Italic', '-', 'NumberedList', 'BulletedList', 'Outdent', 'Indent', '-', 'Link', 'Unlink', '-', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'Table', 'Undo', 'Redo']
         ];
 
     config.toolbar = 'mySimple';
     config.toolbar_mySimple =
         [
             { name: 'bar1', items: ['Source'] },
-            { name: 'bar1_1', items: ['Cut', 'Copy', 'Paste', 'PasteFromWord', 'Undo', 'Redo'] },
+            { name: 'bar1_1', items: ['Cut', 'Copy', 'Undo', 'Redo'] },
             { name: 'bar1_2', items: ['Image', 'Table', 'HorizontalRule', 'Link', 'Unlink'] },
             { name: 'bar1_3', items: ['NumberedList', 'BulletedList', 'RemoveFormat', '-', 'Outdent', 'Indent'] },
             '/',
@@ -61,7 +61,7 @@ CKEDITOR.editorConfig = function (config) {
     config.toolbar = 'tadSimple';
     config.toolbar_tadSimple =
         [
-            { name: 'bar1', items: ['Image', 'Table', 'oembed', 'EqnEditor', 'Link', 'Unlink'] },
+            { name: 'bar1', items: ['Image', 'Table', 'EqnEditor', 'Link', 'Unlink'] },
             { name: 'bar2', items: ['FontSize', 'TextColor', 'BGColor', 'Bold', 'Italic', 'Underline', 'Strike'] },
             { name: 'bar3', items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight'] },
             { name: 'bar4', items: ['NumberedList', 'BulletedList', 'Outdent', 'Indent', '-', 'RemoveFormat'] },

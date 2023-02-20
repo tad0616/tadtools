@@ -14,7 +14,8 @@
     <{/if}>
   }
 
-  .<{$bt.block_position}> a.block_config{
+  .<{$bt.block_position}> a.block_config,
+  .<{$bt.block_position}> a.tad_block_config{
     float:<{$bt.block_config}>;
     position: relative;
     z-index: 1;

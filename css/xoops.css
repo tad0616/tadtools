@@ -4,6 +4,33 @@ body {
   overflow-x: hidden;
 }
 
-#xoops_theme_center_zone{
+#xoops_theme_center_zone {
   padding-bottom: 3rem;
+}
+
+a.block_config {
+  position: absolute;
+  z-index: 1;
+  top: 6px;
+  right: 10px;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-image: url(../images/block_config.png);
+}
+
+a.tad_block_config {
+  position: absolute;
+  z-index: 2;
+  top: 6px;
+  right: 20px;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-image: url(../images/tad_block_config.png);
+}
+
+a.block_config:hover,
+a.tad_block_config:hover {
+  background-image: url(../images/block_config_hover.png);
 }

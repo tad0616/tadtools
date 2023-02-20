@@ -7,7 +7,8 @@ TadTools 3.53 (Released on 2023-01-29)
 5.CKEditor added various adaptive fields
 6.TadUpFiles add upload file limit check
 7.jquery.validationEngine.js add file size check
-8. modify toolbar_bootstrap() add icon support
+8.modify toolbar_bootstrap() add icon support
+9.Edit button for adding advanced blocks to the block
 
 TadTools 3.52 (Released on 2022-11-01)
 ====================================

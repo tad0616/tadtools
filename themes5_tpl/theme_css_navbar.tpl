@@ -391,13 +391,14 @@
 
 .nav-brand a {
   display: block;
+  <{if !$navlogo_img}>
   padding: 11px 11px 11px 20px;
+  <{/if}>
   color: <{$navbar_color}>;
   <{if $navbar_font_size}>
     font-size: <{$navbar_font_size}>rem;
   <{/if}>
   font-weight: normal;
-  line-height: 17px;
   text-decoration: none;
 }
 

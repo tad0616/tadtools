@@ -8,6 +8,7 @@ TadTools 3.53 (2023-01-29 釋出)
 6.TadUpFiles 加入上傳檔案上限檢查
 7.jquery.validationEngine.js 新增檔案大小檢查
 8.修改 toolbar_bootstrap() 加入圖示支援
+9.區塊加入進階區塊的編輯按鈕
 
 TadTools 3.52 (2022-11-01 釋出)
 ====================================

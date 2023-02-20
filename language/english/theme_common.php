@@ -30,3 +30,4 @@ define('TF_SYSTEM_CONFIG', 'Preferences');
 define('TF_SYSTEM_MODADM', 'Online install');
 define('TF_MODULE_CONFIG', 'Administration');
 define('TF_DL_TAD_THEMES', 'Please install \"Tad Themes\" module.');
+define('TF_EDIT_bY_TAD_BLOCKS', 'Managed with advanced modules');

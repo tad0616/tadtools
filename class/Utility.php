@@ -79,7 +79,7 @@ class Utility
                 case 'https':$value = preg_replace_callback('~(?:(https?)://([^\s<]+)|(www\.[^\s<]+?\.[^\s<]+))(?<![\.,:])~i', function ($match) use ($protocol, &$links, $attr) {if ($match[1]) {
                         $protocol = $match[1];
                     }
-                        $link = $match[2] ?: $match[3];return '<' . array_push($links, "<a $attr href=\"$protocol://$link\">$protocol://$link</a>") . '>';}, $value);
+                        $link = $match[2] ?: $match[3];return '<' . array_push($links, "<a $attr href=\"$protocol://$link\" target=\"_blank\">$protocol://$link</a>") . '>';}, $value);
                     break;
                 // case 'mail':$value = preg_replace_callback('~([^\s<]+?@[^\s<]+?\.[^\s<]+)(?<![\.,:])~', function ($match) use (&$links, $attr) {return '<' . array_push($links, "<a $attr href=\"mailto:{$match[1]}\">{$match[1]}</a>") . '>';}, $value);
                 //     break;
@@ -377,7 +377,7 @@ class Utility
         $main = '<h1>' . _TAD_OOPS_SOMETHING_WRONG . '</h1>';
 
         if ($isAdmin or $in_admin or $force) {
-            $main .= "<div class='well'>{$sql}</div>";
+            $main .= "<div class='code'>{$sql}</div>";
         }
 
         $show_position = ($file) ? "<br>{$file}:{$line}" : '';
@@ -1117,6 +1117,78 @@ class Utility
         }
 
         return $status;
+    }
+
+    // 產生縮圖
+    public static function generateThumbnail($imagePath, $imagethumbPath = '', $width = '', $height = '')
+    {
+        global $xoopsModuleConfig;
+
+        // 檢查文件是否存在
+        if (!file_exists($imagePath)) {
+            return "{$imagePath} 不存在";
+        }
+
+        $width = $width ? $width : (int) $xoopsModuleConfig['image_max_width'];
+        $height = $height ? $height : (int) $xoopsModuleConfig['image_max_height'];
+
+        // 獲取圖片信息，包括類型、尺寸等
+        $imageInfo = getimagesize($imagePath);
+        $imageType = $imageInfo[2];
+
+        // 根據不同的圖片類型，使用不同的函數讀取圖片
+        switch ($imageType) {
+            case IMAGETYPE_JPEG:
+                $image = imagecreatefromjpeg($imagePath);
+                break;
+            case IMAGETYPE_PNG:
+                $image = imagecreatefrompng($imagePath);
+                break;
+            case IMAGETYPE_GIF:
+                $image = imagecreatefromgif($imagePath);
+                break;
+            case IMAGETYPE_WEBP:
+                $image = imagecreatefromwebp($imagePath);
+                break;
+            default:
+                return "{$imageType} 不支援";
+        }
+
+        // 計算縮圖尺寸
+        $originalWidth = imagesx($image);
+        $originalHeight = imagesy($image);
+        $scale = min($width / $originalWidth, $height / $originalHeight);
+        $newWidth = $originalWidth * $scale;
+        $newHeight = $originalHeight * $scale;
+
+        // 創建一個新的圖片，並將原始圖片縮放到新尺寸
+        $newImage = imagecreatetruecolor($newWidth, $newHeight);
+        imagecopyresampled($newImage, $image, 0, 0, 0, 0, $newWidth, $newHeight, $originalWidth, $originalHeight);
+
+        if (empty($imagethumbPath)) {
+            $imagethumbPath = $imagePath;
+        }
+        // 根據不同的圖片類型，使用不同的函數保存縮圖
+        switch ($imageType) {
+            case IMAGETYPE_JPEG:
+                imagejpeg($newImage, $imagethumbPath, 90);
+                break;
+            case IMAGETYPE_PNG:
+                imagepng($newImage, $imagethumbPath);
+                break;
+            case IMAGETYPE_GIF:
+                imagegif($newImage, $imagethumbPath);
+                break;
+            case IMAGETYPE_WEBP:
+                imagewebp($newImage, $imagethumbPath, 90);
+                break;
+        }
+
+        // 釋放圖片資源
+        imagedestroy($image);
+        imagedestroy($newImage);
+
+        return true;
     }
 
     public static function mobile_device_detect($iphone = true, $ipad = true, $android = true, $opera = true, $blackberry = true, $palm = true, $windows = true, $mobileredirect = false, $desktopredirect = false)

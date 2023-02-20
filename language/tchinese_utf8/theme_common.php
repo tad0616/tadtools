@@ -30,3 +30,4 @@ define('TF_SYSTEM_CONFIG', '一般設定');
 define('TF_SYSTEM_MODADM', '線上安裝升級');
 define('TF_MODULE_CONFIG', '模組管理區');
 define('TF_DL_TAD_THEMES', '請安裝 Tad Themes 模組，可以讓您更進一步的調整佈景！');
+define('TF_EDIT_bY_TAD_BLOCKS', '用進階模組管理之');

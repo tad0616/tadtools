@@ -145,14 +145,14 @@ class CkEditor
         }
 
         $demopublickey_js = $extra_uploadcare = $uploadcare_setup = '';
-        if ($this->demopublickey) {
-            $demopublickey_js = "UPLOADCARE_PUBLIC_KEY = '{$this->demopublickey}',";
-            $extra_uploadcare = ',uploadcare';
-            $uploadcare_setup = '
-                uploadcare: {
-                    multiple: true
-                },';
-        }
+        // if ($this->demopublickey) {
+        //     $demopublickey_js = "UPLOADCARE_PUBLIC_KEY = '{$this->demopublickey}',";
+        //     $extra_uploadcare = ',uploadcare';
+        //     $uploadcare_setup = '
+        //         uploadcare: {
+        //             multiple: true
+        //         },';
+        // }
 
         $TadToolsModuleConfig = Utility::TadToolsXoopsModuleConfig();
         $codemirror = $TadToolsModuleConfig['use_codemirror'] ? ',codemirror' : '';
@@ -168,10 +168,15 @@ class CkEditor
         toolbar : '{$this->ToolbarSet}' ,
         $stylesSet
         contentsCss : ['" . XOOPS_URL . "/modules/tadtools/bootstrap{$bs}/css/bootstrap.css', '" . XOOPS_URL . "/modules/tadtools/css/fonts.css', '" . XOOPS_URL . "/modules/tadtools/css/ckeditor.css', '" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css'{$other_css}],
-        extraPlugins: 'font,syntaxhighlight,dialog,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak,fontawesome,prism,codesnippet,undo,autoembed,autolink,clipboard,toolbar,button,dialogui,notification,textmatch,embed,embedbase,widgetselection,notificationaggregator,embedsemantic,panel,floatpanel,menu{$codemirror}{$extra_uploadcare}',
+        extraPlugins: 'pasteUploadImage,sourcearea,font,syntaxhighlight,dialog,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak,fontawesome,prism,codesnippet,undo,autoembed,autolink,clipboard,toolbar,button,dialogui,notification,textmatch,embed,embedbase,widgetselection,notificationaggregator,embedsemantic,panel,floatpanel,menu{$codemirror}{$extra_uploadcare}',
         {$uploadcare_setup}
         filebrowserBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=file&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',
         filebrowserImageBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=image&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',
+
+        pasteUploadFileApi: '" . XOOPS_URL . '/modules/tadtools/upload.php?type=image&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',
+        pasteUploadImageUrlApi: '" . XOOPS_URL . '/modules/tadtools/upload.php?type=image&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',
+
+
         qtRows: 10, // Count of rows
         qtColumns: 10, // Count of columns
         qtBorder: '1', // Border of inserted table
