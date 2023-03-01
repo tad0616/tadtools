@@ -4,6 +4,9 @@ use XoopsModules\Tadtools\Utility;
 
 require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
 $mdir = $_SESSION['xoops_mod_name'];
+if (empty($mdir)) {
+    die('畫面靜止操作過久，已無法讀取檔案，請關閉視窗，並重新整理畫面再繼續操作。');
+}
 if (!$xoopsModuleConfig) {
     $moduleHandler = xoops_getHandler('module');
     $TadToolsModule = $moduleHandler->getByDirname('tadtools');

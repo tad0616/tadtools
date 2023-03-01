@@ -14,7 +14,7 @@
   color: <{$navbar_color}>;
   padding: <{$navbar_py}>px <{$navbar_px}>px;
   <{if $navbar_font_size}>
-  font-size: <{$navbar_font_size}>rem;
+  font-size: <{$navbar_font_size}>;
   <{/if}>
 }
 .navbar-default .navbar-nav > li > a:focus,
@@ -45,7 +45,7 @@
 
 .dropdown-menu > li > a{
   <{if $navbar_font_size}>
-    font-size: <{$navbar_font_size}>rem;
+    font-size: <{$navbar_font_size}>;
   <{/if}>
 }
 

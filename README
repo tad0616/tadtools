@@ -4,6 +4,8 @@ TadTools 3.54 (尚未釋出)
 2.更新 SyntaxHighlighter 為 v3.0.90
 3.CKEditor 加入直接貼上圖片便自動上傳功能
 4.Utility 加入 generateThumbnail() 產生縮圖方法
+5.修改字型大小為相對大小
+6.自訂 interface_menu 子選單支援 icon
 
 TadTools 3.53 (2023-01-29 釋出)
 ====================================

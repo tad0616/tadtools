@@ -927,7 +927,7 @@ class Utility
             return;
         }
 
-        self::make_menu_json($interface_menu, $moduleName);
+        // self::make_menu_json($interface_menu, $moduleName);
 
         self::get_jquery();
 
@@ -1134,60 +1134,62 @@ class Utility
 
         // 獲取圖片信息，包括類型、尺寸等
         $imageInfo = getimagesize($imagePath);
-        $imageType = $imageInfo[2];
+        if ($imageInfo[0] > $width || $imageInfo[1] > $height) {
 
-        // 根據不同的圖片類型，使用不同的函數讀取圖片
-        switch ($imageType) {
-            case IMAGETYPE_JPEG:
-                $image = imagecreatefromjpeg($imagePath);
-                break;
-            case IMAGETYPE_PNG:
-                $image = imagecreatefrompng($imagePath);
-                break;
-            case IMAGETYPE_GIF:
-                $image = imagecreatefromgif($imagePath);
-                break;
-            case IMAGETYPE_WEBP:
-                $image = imagecreatefromwebp($imagePath);
-                break;
-            default:
-                return "{$imageType} 不支援";
+            $imageType = $imageInfo[2];
+
+            // 根據不同的圖片類型，使用不同的函數讀取圖片
+            switch ($imageType) {
+                case IMAGETYPE_JPEG:
+                    $image = imagecreatefromjpeg($imagePath);
+                    break;
+                case IMAGETYPE_PNG:
+                    $image = imagecreatefrompng($imagePath);
+                    break;
+                case IMAGETYPE_GIF:
+                    $image = imagecreatefromgif($imagePath);
+                    break;
+                case IMAGETYPE_WEBP:
+                    $image = imagecreatefromwebp($imagePath);
+                    break;
+                default:
+                    return "{$imageType} 不支援";
+            }
+
+            // 計算縮圖尺寸
+            $originalWidth = imagesx($image);
+            $originalHeight = imagesy($image);
+            $scale = min($width / $originalWidth, $height / $originalHeight);
+            $newWidth = $originalWidth * $scale;
+            $newHeight = $originalHeight * $scale;
+
+            // 創建一個新的圖片，並將原始圖片縮放到新尺寸
+            $newImage = imagecreatetruecolor($newWidth, $newHeight);
+            imagecopyresampled($newImage, $image, 0, 0, 0, 0, $newWidth, $newHeight, $originalWidth, $originalHeight);
+
+            if (empty($imagethumbPath)) {
+                $imagethumbPath = $imagePath;
+            }
+            // 根據不同的圖片類型，使用不同的函數保存縮圖
+            switch ($imageType) {
+                case IMAGETYPE_JPEG:
+                    imagejpeg($newImage, $imagethumbPath, 90);
+                    break;
+                case IMAGETYPE_PNG:
+                    imagepng($newImage, $imagethumbPath);
+                    break;
+                case IMAGETYPE_GIF:
+                    imagegif($newImage, $imagethumbPath);
+                    break;
+                case IMAGETYPE_WEBP:
+                    imagewebp($newImage, $imagethumbPath, 90);
+                    break;
+            }
+
+            // 釋放圖片資源
+            imagedestroy($image);
+            imagedestroy($newImage);
         }
-
-        // 計算縮圖尺寸
-        $originalWidth = imagesx($image);
-        $originalHeight = imagesy($image);
-        $scale = min($width / $originalWidth, $height / $originalHeight);
-        $newWidth = $originalWidth * $scale;
-        $newHeight = $originalHeight * $scale;
-
-        // 創建一個新的圖片，並將原始圖片縮放到新尺寸
-        $newImage = imagecreatetruecolor($newWidth, $newHeight);
-        imagecopyresampled($newImage, $image, 0, 0, 0, 0, $newWidth, $newHeight, $originalWidth, $originalHeight);
-
-        if (empty($imagethumbPath)) {
-            $imagethumbPath = $imagePath;
-        }
-        // 根據不同的圖片類型，使用不同的函數保存縮圖
-        switch ($imageType) {
-            case IMAGETYPE_JPEG:
-                imagejpeg($newImage, $imagethumbPath, 90);
-                break;
-            case IMAGETYPE_PNG:
-                imagepng($newImage, $imagethumbPath);
-                break;
-            case IMAGETYPE_GIF:
-                imagegif($newImage, $imagethumbPath);
-                break;
-            case IMAGETYPE_WEBP:
-                imagewebp($newImage, $imagethumbPath, 90);
-                break;
-        }
-
-        // 釋放圖片資源
-        imagedestroy($image);
-        imagedestroy($newImage);
-
         return true;
     }
 
