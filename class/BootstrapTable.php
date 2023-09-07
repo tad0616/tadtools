@@ -14,7 +14,7 @@ class BootstrapTable
 
     }
 
-    public static function render()
+    public static function render($editable = true)
     {
         global $xoTheme;
         $jquery = Utility::get_jquery();
@@ -25,7 +25,9 @@ class BootstrapTable
             $xoTheme->addScript('modules/tadtools/bootstrap-table/locale/bootstrap-table-' . _LANGCODE . '.min.js');
             $xoTheme->addScript('modules/tadtools/bootstrap-table/extensions/mobile/bootstrap-table-mobile.min.js');
             $xoTheme->addScript('modules/tadtools/bootstrap-table/extensions/filter-control/bootstrap-table-filter-control.min.js');
-            $xoTheme->addScript('modules/tadtools/bootstrap-table/extensions/editable/bootstrap-table-editable.min.js');
+            if ($editable) {
+                $xoTheme->addScript('modules/tadtools/bootstrap-table/extensions/editable/bootstrap-table-editable.min.js');
+            }
 
         } else {
             $bootstrap_table = "
@@ -35,8 +37,10 @@ class BootstrapTable
             <script type='text/javascript' src='" . TADTOOLS_URL . "/bootstrap-table/locale/bootstrap-table-" . _LANGCODE . ".min.js'></script>
             <script type='text/javascript' src='" . TADTOOLS_URL . "/bootstrap-table/extensions/mobile/bootstrap-table-mobile.min.js'></script>
             <script type='text/javascript' src='" . TADTOOLS_URL . "/bootstrap-table/extensions/filter-control/bootstrap-table-filter-control.min.js'></script>
-            <script type='text/javascript' src='" . TADTOOLS_URL . "/bootstrap-table/extensions/editable/bootstrap-table-editable.min.js'></script>
             ";
+            if ($editable) {
+                $bootstrap_table .= "<script type='text/javascript' src='" . TADTOOLS_URL . "/bootstrap-table/extensions/editable/bootstrap-table-editable.min.js'></script>";
+            }
 
         }
         return $bootstrap_table;

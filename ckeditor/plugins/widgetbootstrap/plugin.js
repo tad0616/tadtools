@@ -35,7 +35,7 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
 
             template:
                 '<div class="row two-col-left">' +
-                    '<div class="col-sm-4 span4 col-sidebar img-box-1-5"><img src="https://placeholder.pics/svg/300x250/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /></div>' +
+                    '<div class="col-sm-4 span4 col-sidebar img-box-1-5"><img src="https://fakeimg.pl/300x250/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /></div>' +
                     '<div class="col-sm-8 span8 col-main"><p>輸入內容</p></div>' +
                 '</div>',
 
@@ -65,7 +65,7 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
             template:
                 '<div class="row two-col-right">' +
                     '<div class="col-sm-8 span8 col-main"><p>輸入內容</p></div>' +
-                    '<div class="col-sm-4 span4 col-sidebar img-box-1-5"><img src="https://placeholder.pics/svg/300x250/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /></div>' +
+                    '<div class="col-sm-4 span4 col-sidebar img-box-1-5"><img src="https://fakeimg.pl/300x250/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /></div>' +
                 '</div>',
 
             editables: {
@@ -91,8 +91,8 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
             button: showButtons ? '新增 2 欄' : undefined,
             template:
                 '<div class="row two-col">' +
-                    '<div class="col-sm-6 span6 coln-1 img-box-1-5"><img src="https://placeholder.pics/svg/500x280/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入內容</p></div>' +
-                    '<div class="col-sm-6 span6 coln-2 img-box-1-5"><img src="https://placeholder.pics/svg/500x280/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入內容</p></div>' +
+                    '<div class="col-sm-6 span6 coln-1 img-box-1-5"><img src="https://fakeimg.pl/500x280/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入內容</p></div>' +
+                    '<div class="col-sm-6 span6 coln-2 img-box-1-5"><img src="https://fakeimg.pl/500x280/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入內容</p></div>' +
                 '</div>',
             editables: {
                 col1: {
@@ -116,9 +116,9 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
 
             template:
                 '<div class="row three-col">' +
-                    '<div class="col-sm-4 span4 coln-1 img-box-2"><img src="https://placeholder.pics/svg/400x225/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
-                    '<div class="col-sm-4 span4 coln-2 img-box-2"><img src="https://placeholder.pics/svg/400x225/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
-                    '<div class="col-sm-4 span4 coln-3 img-box-2"><img src="https://placeholder.pics/svg/400x225/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-4 span4 coln-1 img-box-2"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-4 span4 coln-2 img-box-2"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-4 span4 coln-3 img-box-2"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
                 '</div>',
 
             editables: {
@@ -150,10 +150,10 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
 
             template:
                 '<div class="row four-col">' +
-                    '<div class="col-sm-3 span3 coln-1 img-box-3"><img src="https://placeholder.pics/svg/400x225/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
-                    '<div class="col-sm-3 span3 coln-2 img-box-3"><img src="https://placeholder.pics/svg/400x225/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
-                    '<div class="col-sm-3 span3 coln-3 img-box-3"><img src="https://placeholder.pics/svg/400x225/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
-                    '<div class="col-sm-3 span3 coln-4 img-box-3"><img src="https://placeholder.pics/svg/400x225/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-3 span3 coln-1 img-box-3"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-3 span3 coln-2 img-box-3"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-3 span3 coln-3 img-box-3"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-3 span3 coln-4 img-box-3"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
                 '</div>',
 
             editables: {
@@ -189,12 +189,12 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
 
             template:
                 '<div class="row six-col">' +
-                    '<div class="col-sm-2 span2 coln-1 img-box-4"><img src="https://placeholder.pics/svg/400x225/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
-                    '<div class="col-sm-2 span2 coln-2 img-box-4"><img src="https://placeholder.pics/svg/400x225/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
-                    '<div class="col-sm-2 span2 coln-3 img-box-4"><img src="https://placeholder.pics/svg/400x225/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
-                    '<div class="col-sm-2 span2 coln-4 img-box-4"><img src="https://placeholder.pics/svg/400x225/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
-                    '<div class="col-sm-2 span2 coln-5 img-box-4"><img src="https://placeholder.pics/svg/400x225/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
-                    '<div class="col-sm-2 span2 coln-6 img-box-4"><img src="https://placeholder.pics/svg/400x225/DEDEDE/FFFFFF/%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-2 span2 coln-1 img-box-4"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-2 span2 coln-2 img-box-4"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-2 span2 coln-3 img-box-4"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-2 span2 coln-4 img-box-4"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-2 span2 coln-5 img-box-4"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-2 span2 coln-6 img-box-4"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
                 '</div>',
 
             editables: {

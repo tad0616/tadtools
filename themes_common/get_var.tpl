@@ -345,12 +345,11 @@ if (!empty($logo_bottom)) {
 if ($logo_center == '1') {
     $logo_place .= "margin-left: auto; margin-right: auto; left: 0; right: 0;";
 } else {
-    if (!empty($logo_right)) {
-        $logo_place .= "right:{$logo_right}%;";
-    }
 
     if (!empty($logo_left)) {
         $logo_place .= "left:{$logo_left}%;";
+    }elseif (!empty($logo_right)) {
+        $logo_place .= "right:{$logo_right}%;";
     }
 
 }
@@ -549,6 +548,13 @@ $sql = "select conf_value from " . $xoopsDB->prefix("config") . " where conf_nam
 $result = $xoopsDB->query($sql);
 list($allow_register) = $xoopsDB->fetchRow($result);
 $this->assign('allow_register', $allow_register);
+
+
+/****檢查是否有廣播檔（會放到左區塊最上方）****/
+if(file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/broadcast.php")){
+    $all_broadcast=file_get_contents(XOOPS_URL . "/modules/tadtools/broadcast.php");
+    $this->assign('all_broadcast', json_decode($all_broadcast,true));
+}
 
 <{/php}>
 <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/get_main_var.tpl"}>

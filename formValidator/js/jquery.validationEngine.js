@@ -266,9 +266,6 @@
 
             }
 
-
-
-
 		},
 		/**
 		* Called when the form is submited, shows prompts accordingly
@@ -597,7 +594,6 @@
 					break;
 				}
 
-
 				var errorMsg = undefined;
 				switch (rules[i]) {
 
@@ -860,7 +856,6 @@
 			 }
 			 // Change the rule to the composite rule, if it was different from the original
 			 var alteredRule = rule;
-
 
 			 var element_classes = (field.attr("data-validation-engine")) ? field.attr("data-validation-engine") : field.attr("class");
 			 var element_classes_array = element_classes.split(" ");
@@ -1717,7 +1712,6 @@
 				}).data("callerField", field);
 		    	}
 
-
 			if (options.autoHidePrompt) {
 				setTimeout(function(){
 					prompt.animate({
@@ -1864,12 +1858,10 @@
 			var fieldHeight 	=  field.height();
 			var promptHeight = promptElmt.height();
 
-
 			// is the form contained in an overflown container?
 			promptTopPosition = promptleftPosition = 0;
 			// compensation for the arrow
 			marginTopSize = -promptHeight;
-
 
 			//prompt positioning adjustment support
 			//now you can adjust prompt position
@@ -1905,7 +1897,6 @@
 
 				};
 			};
-
 
 			switch (positionType) {
 				default:
@@ -1946,8 +1937,6 @@
 					promptTopPosition = 0;
 					marginTopSize = 0;
 			};
-
-
 
 			//apply adjusments if any
 			promptleftPosition += shiftX;
@@ -2067,8 +2056,6 @@
 			 $.error('Method ' + method + ' does not exist in jQuery.validationEngine');
 		 }
 	};
-
-
 
 	// LEAK GLOBAL OPTIONS
 	$.validationEngine= {fieldIdCounter: 0,defaults:{

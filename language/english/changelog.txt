@@ -1,3 +1,13 @@
+TadTools 3.54 (Released 2023-03-24)
+====================================
+1. Automatically add links to URLs and open to new windows instead
+2. Update SyntaxHighlighter to v3.0.90
+3.CKEditor add the function of auto upload when paste the image directly
+4. Utility added generateThumbnail() method to generate thumbnail.
+5.Modify font size to relative size
+6.Customize interface_menu submenu to support icon
+7.CKEditor removes the "Paste" button that no longer works
+
 TadTools 3.53 (Released on 2023-01-29)
 ====================================
 1. toolbar_bootstrap() automatically detects external links and opens a new window

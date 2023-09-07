@@ -1671,10 +1671,9 @@ class TadUpFiles
         }
 
         $sql = "select * from `{$this->TadUpFilesTblName}` $where";
-        // die($sql);
-        // if ($this->col_name == "sign_id") {
-        //     die($sql);
-        // }
+        if ($_GET['test'] == 'test') {
+            Utility::dd($sql);
+        }
 
         $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $i = 0;
@@ -2131,7 +2130,9 @@ class TadUpFiles
             }
         }
         $file = $this->get_one_file($files_sn);
-
+        if ($_GET['test'] == 'file') {
+            Utility::dd($file);
+        }
         $this->set_dir('subdir', $file['sub_dir']);
         if ($hash) {
             $this->set_hash($hash);

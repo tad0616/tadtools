@@ -1,3 +1,13 @@
+TadTools 3.54 (2023-03-24 釋出)
+====================================
+1.網址自動加連結，改為開到新視窗
+2.更新 SyntaxHighlighter 為 v3.0.90
+3.CKEditor 加入直接貼上圖片便自動上傳功能
+4.Utility 加入 generateThumbnail() 產生縮圖方法
+5.修改字型大小為相對大小
+6.自訂 interface_menu 子選單支援 icon
+7.CKEditor 移除已無作用的「貼上」按鈕
+
 TadTools 3.53 (2023-01-29 釋出)
 ====================================
 1.toolbar_bootstrap() 自動偵測外部連結時會開到新視窗

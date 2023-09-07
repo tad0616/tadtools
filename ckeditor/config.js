@@ -10,7 +10,7 @@ CKEDITOR.editorConfig = function (config) {
         [
             { name: 'bar1', items: ['Source'] },
             { name: 'bar2', items: ['Cut', 'Copy', 'Undo', 'Redo'] },
-            { name: 'bar3', items: ['Image','EmbedSemantic', 'EqnEditor', 'Table', 'HorizontalRule', 'Smiley', 'Link', 'Unlink'] },
+            { name: 'bar3', items: ['Image', 'EqnEditor', 'Table', 'HorizontalRule', 'Smiley', 'Link', 'Unlink'] },
             { name: 'bar4', items: ['NumberedList', 'BulletedList', 'RemoveFormat', 'Syntaxhighlight', 'CodeSnippet'] },
             { name: 'bar5', items: ['Blockquote', 'CreateDiv'] },
             { name: 'bar6', items: ['PageBreak', 'WidgetTemplateMenu', 'Uploadcare'] },

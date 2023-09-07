@@ -471,7 +471,7 @@ class TadDataCenter
     {
         global $xoopsDB;
         $myts = \MyTextSanitizer::getInstance();
-        $sort = 0;
+        $sort = $old_data_sort = 0;
         foreach ($data_arr as $name => $value) {
             $name = $myts->addSlashes($name);
 

@@ -140,11 +140,14 @@
     background: <{$navbar_hover}>;
     color: <{$navbar_color_hover}>;
   }
+
   .sm-mint a.highlighted {
     background: <{$nav_sub_bg_color}>;
-    color: <{$navbar_color}>;
+    color: <{$nav_sub_font_color}>;
     box-shadow: 0 4px 3px rgba(0, 0, 0, 0.25);
   }
+
+
   .sm-mint a.disabled {
     background: transparent;
     color: #cccccc;
@@ -190,8 +193,13 @@
   .sm-mint ul ul {
     border-radius: 4px;
   }
+
   .sm-mint ul a, .sm-mint ul a:hover, .sm-mint ul a:focus, .sm-mint ul a:active, .sm-mint ul a.highlighted {
+    <{if $nav_sub_y_padding > 0}>
+    padding: <{$nav_sub_y_padding}>px 20px;
+    <{else}>
     padding: 12px 20px;
+    <{/if}>
     border-radius: 0;
     <{if $nav_line=='1'}>
     border-bottom: 1px solid #00000011;
@@ -202,7 +210,11 @@
 
   .sm-mint ul li:last-child a{
     border-bottom: none;
-    padding: 12px 20px 6px;
+    <{if $nav_sub_y_padding > 0}>
+      padding: <{$nav_sub_y_padding}>px 20px <{$nav_sub_y_padding/2}>px;
+    <{else}>
+      padding: 12px 20px 6px;
+    <{/if}>
   }
 
   .sm-mint ul a:hover, .sm-mint ul a:focus, .sm-mint ul a:active, .sm-mint ul a.highlighted {

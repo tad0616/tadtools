@@ -40,6 +40,23 @@ class Utility
         self::get_bootstrap();
     }
 
+    public static function test($var, $v = 1, $mode = 'dd')
+    {
+        if ($_GET['test'] == $v) {
+            if ($mode == 'die') {
+                die($var);
+            } elseif ($mode == 'echo') {
+                echo "<div>$var</div>";
+            } elseif ($mode == 'var_dump') {
+                echo "<pre>" . var_dump($var) . "</pre>";
+            } elseif ($mode == 'var_export') {
+                echo "<pre>" . var_export($var) . "</pre>";
+            } else {
+                self::dd($var);
+            }
+        }
+    }
+
     // 在中文和英文之間自動加入空格
     public static function insert_spacing($str)
     {
@@ -132,7 +149,7 @@ class Utility
     }
 
     //版本判斷
-    public static function get_version($type = 'xoops', $ver = '')
+    public static function get_version($type = 'xoops', $ver = '', $dirname = '')
     {
         global $xoopsDB;
         if (empty($ver) and empty($type)) {
@@ -150,31 +167,132 @@ class Utility
                 if (empty($ver)) {
                     $ver = PHP_VERSION;
                 }
+                $version = explode('.', $ver);
+                break;
 
+            case 'theme':
+                if (empty($ver)) {
+                    $ver = self::get_theme_version($dirname);
+                }
+                $version = explode('.', $ver);
+                break;
+
+            case 'adm_tpl':
+                if (empty($ver)) {
+                    $ver = file_get_contents(XOOPS_ROOT_PATH . "/modules/system/themes/{$dirname}/version.txt");
+                }
                 $version = explode('.', $ver);
                 break;
 
             default:
                 if (empty($ver)) {
-                    $sql = "select version from `" . $xoopsDB->prefix("modules") . "` where dirname='{$type}'";
+                    $sql = "select version from `" . $xoopsDB->prefix("modules") . "` where dirname='{$dirname}'";
                     $result = $xoopsDB->query($sql) or self::web_error($sql, __FILE__, __LINE__);
                     list($ver) = $xoopsDB->fetchRow($result);
-                    for ($i = 0; $i < strlen($ver); $i++) {
-                        $version[] = substr($ver, $i, 1);
+                    if (strpos($ver, '-') === false) {
+                        if (strpos($ver, '.') !== false) {
+                            for ($i = 0; $i < strlen($ver); $i++) {
+                                $version[] = substr($ver, $i, 1);
+                            }
+                        } else {
+
+                            for ($i = 0; $i < strlen($ver); $i++) {
+                                $version[] = substr($ver, $i, 1);
+                            }
+                        }
+                    } else {
+                        list($version, $version_status) = explode('-', $ver);
+                        $version = explode('.', $version);
                     }
                 } else {
-                    $v = explode('.', $ver);
-                    $version[] = $v[0];
-                    for ($i = 0; $i < strlen($v[1]); $i++) {
-                        $version[] = substr($v[1], $i, 1);
+                    if (strpos($ver, '-') === false) {
+                        if (strpos($ver, '.') !== false) {
+                            $v = explode('.', $ver);
+                            $version[] = $v[0];
+                            for ($i = 0; $i < strlen($v[1]); $i++) {
+                                $version[] = substr($v[1], $i, 1);
+                            }
+                        } else {
+
+                            for ($i = 0; $i < strlen($ver); $i++) {
+                                $version[] = substr($ver, $i, 1);
+                            }
+                        }
+                    } else {
+                        list($version, $version_status) = explode('-', $ver);
+                        $version = explode('.', $version);
                     }
 
                 }
                 break;
         }
 
-        $Version = (int) $version[0] * 10000 + (int) $version[1] * 100 + (int) $version[2];
-        return $Version;
+        $int_version = (int) $version[0] * 10000 + (int) $version[1] * 100 + (int) $version[2];
+        return $int_version;
+
+    }
+
+    public static function get_theme_version($dirname)
+    {
+        $handle = @fopen(XOOPS_ROOT_PATH . "/themes/{$dirname}/theme.ini", "r");
+        $version = '';
+        if ($handle) {
+            while (($buffer = fgets($handle, 4096)) !== false) {
+                $ini = explode("=", $buffer);
+                if (trim($ini[0]) == "Version") {
+                    $version = str_replace("\"", "", trim($ini[1]));
+                    break;
+                }
+            }
+            fclose($handle);
+        }
+
+        // 2.4
+        return $version;
+
+    }
+
+    // 格式化版本
+    public static function version_format($type = 'xoops', $ver, $my_xoops_version = '')
+    {
+        if (empty($ver) and empty($type)) {
+            return;
+        }
+
+        if (empty($my_xoops_version)) {
+            $my_xoops_version = self::get_version('xoops');
+        }
+
+        switch ($type) {
+            case 'xoops':
+                if (empty($ver)) {
+                    $ver = XOOPS_VERSION;
+                }
+                $version = explode('.', str_replace('XOOPS ', '', $ver));
+                break;
+
+            case 'php':
+                if (empty($ver)) {
+                    $ver = PHP_VERSION;
+                }
+
+                $version = explode('.', $ver);
+                break;
+
+            default:
+                $v[0] = (int) substr($ver, 0, -4);
+                $v[1] = (int) substr($ver, -4, -2);
+                $v[2] = (int) substr($ver, -2);
+
+                if ($my_xoops_version <= 20510) {
+                    $version = $v[0] . '.' . $v[1] . $v[2];
+                } else {
+                    $version = implode('.', $v);
+                }
+
+        }
+
+        return $version;
 
     }
 
@@ -1130,7 +1248,7 @@ class Utility
         }
 
         $width = $width ? $width : (int) $xoopsModuleConfig['image_max_width'];
-        $height = $height ? $height : (int) $xoopsModuleConfig['image_max_height'];
+        $height = $height ? $height : $width;
 
         // 獲取圖片信息，包括類型、尺寸等
         $imageInfo = getimagesize($imagePath);
@@ -1191,6 +1309,48 @@ class Utility
             imagedestroy($newImage);
         }
         return true;
+    }
+
+    //儲存權限
+    public static function save_perm($groups, $itemid, $perm_name)
+    {
+        global $xoopsModule;
+        $module_id = $xoopsModule->mid();
+        $gpermHandler = xoops_getHandler('groupperm');
+
+        // First, if the permissions are already there, delete them
+        $gpermHandler->deleteByModule($module_id, $perm_name, $itemid);
+
+        // Save the new permissions
+        if (count($groups) > 0) {
+            foreach ($groups as $group_id) {
+                $gpermHandler->addRight($perm_name, $itemid, $group_id, $module_id);
+            }
+        }
+    }
+
+    //取回權限的函數
+    public static function get_perm($itemid, $gperm_name)
+    {
+        global $xoopsModule, $xoopsDB;
+        $module_id = $xoopsModule->mid();
+        $sql = ' SELECT gperm_groupid FROM ' . $xoopsDB->prefix('group_permission') . " where gperm_modid='$module_id' and gperm_itemid ='$itemid' and gperm_name='$gperm_name' ";
+        //echo $sql ;
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        while (false !== ($row = $xoopsDB->fetchArray($result))) {
+            $data[] = $row['gperm_groupid'];
+        }
+
+        return $data;
+    }
+
+    //刪除權限的函數
+    public static function del_perm($itemid, $gperm_name)
+    {
+        global $xoopsModule, $xoopsDB;
+        $module_id = $xoopsModule->mid();
+        $sql = ' DELETE FROM ' . $xoopsDB->prefix('group_permission') . " where gperm_modid='$module_id' and gperm_itemid ='$itemid' and gperm_name='$gperm_name' ";
+        $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 
     public static function mobile_device_detect($iphone = true, $ipad = true, $android = true, $opera = true, $blackberry = true, $palm = true, $windows = true, $mobileredirect = false, $desktopredirect = false)
