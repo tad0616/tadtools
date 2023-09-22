@@ -12,7 +12,7 @@ class Tmt
     }
 
     //產生語法 $type=error,warning,info,success
-    public function render($id, $from_arr = [], $to_arr = [], $hidden_arr = ['op' => 'save_tmt'], $only_value = false, $submit = true, $size = '15rem', $from_name = 'repository', $to_name = 'destination', $sep = ',')
+    public function render($id, $from_arr = [], $to_arr = [], $hidden_arr = ['op' => 'save_tmt'], $only_value = false, $submit = true, $size = '15rem', $from_name = 'repository', $to_name = 'destination', $sep = ',', $keyman_file = '', $keyman_var = [])
     {
         global $xoTheme;
 
@@ -40,6 +40,11 @@ class Tmt
             $hidden .= "<input type='hidden' name='{$key}' id='{$key}' value='{$value}'>";
         }
 
+        $key_man_var = '';
+        foreach ($keyman_var as $key => $value) {
+            $key_man_var = ",{$key}: {$value}";
+        }
+
         $jquery = Utility::get_jquery();
 
         if ($xoTheme) {
@@ -48,10 +53,17 @@ class Tmt
             $xoTheme->addScript('modules/tadtools/tmt/tmt_spry_linkedselect.js');
 
             $xoTheme->addScript('', null, "
-            function getOptions(destination, val_col)
+            $(document).ready(function() {
+                $('#keyman').change(function(event) {
+                    $.post('{$keyman_file}', {op: 'keyman' , keyman: $('#keyman').val(){$key_man_var}}, function(theResponse){
+                        $('#{$from_name}').html(theResponse);
+                    });
+                });
+            });
+            function getOptions({$to_name}, val_col)
             {
                 var values = [];
-                var sel = document.getElementById(destination);
+                var sel = document.getElementById({$to_name});
                 for (var i=0, n=sel.options.length;i<n;i++) {
                     if (sel.options[i].value) values.push(sel.options[i].value);
                 }
@@ -65,10 +77,18 @@ class Tmt
             <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/tmt/tmt_spry_linkedselect.js'></script>
 
             <script type='text/javascript'>
-                function getOptions(destination,val_col)
+                $(document).ready(function() {
+                    $('#keyman').change(function(event) {
+                        $.post('{$keyman_file}', {op: 'keyman' , keyman: $('#keyman').val(){$key_man_var}}, function(theResponse){
+                            $('#{$from_name}').html(theResponse);
+                        });
+                    });
+                });
+
+                function getOptions({$to_name},val_col)
                 {
                     var values = [];
-                    var sel = document.getElementById(destination);
+                    var sel = document.getElementById({$to_name});
                     for (var i=0, n=sel.options.length;i<n;i++) {
                         if (sel.options[i].value) values.push(sel.options[i].value);
                     }
@@ -79,9 +99,16 @@ class Tmt
         }
 
         $submit_btn = $submit ? "<button type='submit' class='btn btn-primary'>" . _TAD_SAVE . "</button>" : "";
-
+        $key_man_col = $keyman_file ? "
+        <div class='input-group'>
+            <input type='text' name='keyman' id='keyman' placeholder='輸入關鍵字以篩選' class='form-control'>
+            <div class='input-group-append input-group-btn'>
+                <button type='button' class='btn btn-success'>篩選</button>
+            </div>
+        </div>" : '';
         $main .= "<div class='row'>
             <div class='col-md-5'>
+                $key_man_col
                 <select name='{$from_name}' id='{$from_name}' style='height: $size' multiple='multiple' tmt:linkedselect='true' class='form-control'>
                     {$from_options}
                 </select>

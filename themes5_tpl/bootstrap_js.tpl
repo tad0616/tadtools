@@ -1,6 +1,5 @@
 
         <!--Bootstrap js-->
-        <script src="<{xoAppUrl modules/tadtools/bootstrap4/js/popper.min.js}>" crossorigin="anonymous"></script>
         <script src="<{xoAppUrl modules/tadtools/bootstrap5/js/bootstrap.bundle.js}>"></script>
 
         <!-- SmartMenus jQuery plugin -->
