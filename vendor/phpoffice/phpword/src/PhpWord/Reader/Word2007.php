@@ -10,15 +10,15 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
 namespace PhpOffice\PhpWord\Reader;
 
-use PhpOffice\Common\XMLReader;
 use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\Shared\XMLReader;
 use PhpOffice\PhpWord\Shared\ZipArchive;
 
 /**
@@ -41,26 +41,30 @@ class Word2007 extends AbstractReader implements ReaderInterface
         $phpWord = new PhpWord();
         $relationships = $this->readRelationships($docFile);
 
-        $steps = [
-            ['stepPart' => 'document', 'stepItems' => [
-                'styles' => 'Styles',
+        $steps = array(
+            array('stepPart' => 'document', 'stepItems' => array(
+                'styles'    => 'Styles',
                 'numbering' => 'Numbering',
-            ]],
-            ['stepPart' => 'main', 'stepItems' => [
-                'officeDocument' => 'Document',
-                'core-properties' => 'DocPropsCore',
+            )),
+            array('stepPart' => 'main', 'stepItems' => array(
+                'officeDocument'      => 'Document',
+                'core-properties'     => 'DocPropsCore',
                 'extended-properties' => 'DocPropsApp',
-                'custom-properties' => 'DocPropsCustom',
-            ]],
-            ['stepPart' => 'document', 'stepItems' => [
-                'endnotes' => 'Endnotes',
+                'custom-properties'   => 'DocPropsCustom',
+            )),
+            array('stepPart' => 'document', 'stepItems' => array(
+                'endnotes'  => 'Endnotes',
                 'footnotes' => 'Footnotes',
-            ]],
-        ];
+                'settings'  => 'Settings',
+            )),
+        );
 
         foreach ($steps as $step) {
             $stepPart = $step['stepPart'];
             $stepItems = $step['stepItems'];
+            if (!isset($relationships[$stepPart])) {
+                continue;
+            }
             foreach ($relationships[$stepPart] as $relItem) {
                 $relType = $relItem['type'];
                 if (isset($stepItems[$relType])) {
@@ -77,11 +81,11 @@ class Word2007 extends AbstractReader implements ReaderInterface
     /**
      * Read document part.
      *
+     * @param \PhpOffice\PhpWord\PhpWord $phpWord
      * @param array $relationships
      * @param string $partName
      * @param string $docFile
      * @param string $xmlFile
-     * @return void
      */
     private function readPart(PhpWord $phpWord, $relationships, $partName, $docFile, $xmlFile)
     {
@@ -102,7 +106,7 @@ class Word2007 extends AbstractReader implements ReaderInterface
      */
     private function readRelationships($docFile)
     {
-        $relationships = [];
+        $relationships = array();
 
         // _rels/.rels
         $relationships['main'] = $this->getRels($docFile, '_rels/.rels');
@@ -110,10 +114,10 @@ class Word2007 extends AbstractReader implements ReaderInterface
         // word/_rels/*.xml.rels
         $wordRelsPath = 'word/_rels/';
         $zip = new ZipArchive();
-        if (true === $zip->open($docFile)) {
+        if ($zip->open($docFile) === true) {
             for ($i = 0; $i < $zip->numFiles; $i++) {
                 $xmlFile = $zip->getNameIndex($i);
-                if ((mb_substr($xmlFile, 0, mb_strlen($wordRelsPath))) == $wordRelsPath && '/' != (mb_substr($xmlFile, -1))) {
+                if ((substr($xmlFile, 0, strlen($wordRelsPath))) == $wordRelsPath && (substr($xmlFile, -1)) != '/') {
                     $docPart = str_replace('.xml.rels', '', str_replace($wordRelsPath, '', $xmlFile));
                     $relationships[$docPart] = $this->getRels($docFile, $xmlFile, 'word/');
                 }
@@ -137,7 +141,7 @@ class Word2007 extends AbstractReader implements ReaderInterface
         $metaPrefix = 'http://schemas.openxmlformats.org/package/2006/relationships/metadata/';
         $officePrefix = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/';
 
-        $rels = [];
+        $rels = array();
 
         $xmlReader = new XMLReader();
         $xmlReader->getDomFromZip($docFile, $xmlFile);
@@ -146,6 +150,7 @@ class Word2007 extends AbstractReader implements ReaderInterface
             $rId = $xmlReader->getAttribute('Id', $node);
             $type = $xmlReader->getAttribute('Type', $node);
             $target = $xmlReader->getAttribute('Target', $node);
+            $mode = $xmlReader->getAttribute('TargetMode', $node);
 
             // Remove URL prefixes from $type to make it easier to read
             $type = str_replace($metaPrefix, '', $type);
@@ -153,12 +158,12 @@ class Word2007 extends AbstractReader implements ReaderInterface
             $docPart = str_replace('.xml', '', $target);
 
             // Do not add prefix to link source
-            if (!in_array($type, ['hyperlink'], true)) {
+            if ($type != 'hyperlink' && $mode != 'External') {
                 $target = $targetPrefix . $target;
             }
 
             // Push to return array
-            $rels[$rId] = ['type' => $type, 'target' => $target, 'docPart' => $docPart];
+            $rels[$rId] = array('type' => $type, 'target' => $target, 'docPart' => $docPart, 'targetMode' => $mode);
         }
         ksort($rels);
 

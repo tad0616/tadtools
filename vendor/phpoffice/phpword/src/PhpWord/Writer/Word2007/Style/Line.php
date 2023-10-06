@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -26,8 +26,6 @@ class Line extends Frame
 {
     /**
      * Write Line stroke.
-     *
-     * @return void
      * @todo Merge with `Stroke` style
      */
     public function writeStroke()
@@ -39,28 +37,28 @@ class Line extends Frame
         }
 
         $dash = $style->getDash();
-        $dashStyles = [
-            LineStyle::DASH_STYLE_DASH => 'dash',
-            LineStyle::DASH_STYLE_ROUND_DOT => '1 1',
-            LineStyle::DASH_STYLE_SQUARE_DOT => '1 1',
-            LineStyle::DASH_STYLE_DASH_DOT => 'dashDot',
-            LineStyle::DASH_STYLE_LONG_DASH => 'longDash',
-            LineStyle::DASH_STYLE_LONG_DASH_DOT => 'longDashDot',
+        $dashStyles = array(
+            LineStyle::DASH_STYLE_DASH              => 'dash',
+            LineStyle::DASH_STYLE_ROUND_DOT         => '1 1',
+            LineStyle::DASH_STYLE_SQUARE_DOT        => '1 1',
+            LineStyle::DASH_STYLE_DASH_DOT          => 'dashDot',
+            LineStyle::DASH_STYLE_LONG_DASH         => 'longDash',
+            LineStyle::DASH_STYLE_LONG_DASH_DOT     => 'longDashDot',
             LineStyle::DASH_STYLE_LONG_DASH_DOT_DOT => 'longDashDotDot',
-        ];
+        );
 
         $xmlWriter->startElement('v:stroke');
 
-        $xmlWriter->writeAttributeIf(null !== $style->getWeight(), 'weight', $style->getWeight() . 'pt');
-        $xmlWriter->writeAttributeIf(null !== $style->getColor(), 'color', $style->getColor());
-        $xmlWriter->writeAttributeIf(null !== $style->getBeginArrow(), 'startarrow', $style->getBeginArrow());
-        $xmlWriter->writeAttributeIf(null !== $style->getEndArrow(), 'endarrow', $style->getEndArrow());
+        $xmlWriter->writeAttributeIf($style->getWeight() !== null, 'weight', $style->getWeight() . 'pt');
+        $xmlWriter->writeAttributeIf($style->getColor() !== null, 'color', $style->getColor());
+        $xmlWriter->writeAttributeIf($style->getBeginArrow() !== null, 'startarrow', $style->getBeginArrow());
+        $xmlWriter->writeAttributeIf($style->getEndArrow() !== null, 'endarrow', $style->getEndArrow());
 
-        if (null !== $dash) {
+        if ($dash !== null) {
             if (isset($dashStyles[$dash])) {
                 $xmlWriter->writeAttribute('dashstyle', $dashStyles[$dash]);
             }
-            if (LineStyle::DASH_STYLE_ROUND_DOT == $dash) {
+            if ($dash == LineStyle::DASH_STYLE_ROUND_DOT) {
                 $xmlWriter->writeAttribute('endcap', 'round');
             }
         }

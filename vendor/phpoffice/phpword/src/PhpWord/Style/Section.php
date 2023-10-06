@@ -10,12 +10,15 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
 namespace PhpOffice\PhpWord\Style;
+
+use PhpOffice\PhpWord\Settings;
+use PhpOffice\PhpWord\SimpleType\VerticalJc;
 
 /**
  * Section settings
@@ -35,20 +38,20 @@ class Section extends Border
      *
      * @const int|float
      */
-    const DEFAULT_WIDTH = 11870;        // In twips.
-    const DEFAULT_HEIGHT = 16787;       // In twips.
-    const DEFAULT_MARGIN = 1440;        // In twips.
-    const DEFAULT_GUTTER = 0;           // In twips.
-    const DEFAULT_HEADER_HEIGHT = 720;  // In twips.
-    const DEFAULT_FOOTER_HEIGHT = 720;  // In twips.
+    const DEFAULT_WIDTH = 11905.511811024; // In twips.
+    const DEFAULT_HEIGHT = 16837.79527559; // In twips.
+    const DEFAULT_MARGIN = 1440;           // In twips.
+    const DEFAULT_GUTTER = 0;              // In twips.
+    const DEFAULT_HEADER_HEIGHT = 720;     // In twips.
+    const DEFAULT_FOOTER_HEIGHT = 720;     // In twips.
     const DEFAULT_COLUMN_COUNT = 1;
-    const DEFAULT_COLUMN_SPACING = 720; // In twips.
+    const DEFAULT_COLUMN_SPACING = 720;    // In twips.
 
     /**
      * Page Orientation
      *
      * @var string
-     * @link http://www.schemacentral.com/sc/ooxml/a-w_orient-1.html
+     * @see  http://www.schemacentral.com/sc/ooxml/a-w_orient-1.html
      */
     private $orientation = self::ORIENTATION_PORTRAIT;
 
@@ -105,7 +108,7 @@ class Section extends Border
      * Page gutter spacing
      *
      * @var int|float
-     * @link http://www.schemacentral.com/sc/ooxml/e-w_pgMar-1.html
+     * @see  http://www.schemacentral.com/sc/ooxml/e-w_pgMar-1.html
      */
     private $gutter = self::DEFAULT_GUTTER;
 
@@ -162,9 +165,17 @@ class Section extends Border
      * Line numbering
      *
      * @var \PhpOffice\PhpWord\Style\LineNumbering
-     * @link http://www.schemacentral.com/sc/ooxml/e-w_lnNumType-1.html
+     * @see  http://www.schemacentral.com/sc/ooxml/e-w_lnNumType-1.html
      */
     private $lineNumbering;
+
+    /**
+     * Vertical Text Alignment on Page
+     * One of \PhpOffice\PhpWord\SimpleType\VerticalJc
+     *
+     * @var string
+     */
+    private $vAlign;
 
     /**
      * Create new instance
@@ -190,9 +201,12 @@ class Section extends Border
      * @param string $value
      * @return self
      */
-    public function setPaperSize($value = 'A4')
+    public function setPaperSize($value = '')
     {
-        if (null === $this->paper) {
+        if (!$value) {
+            $value = Settings::getDefaultPaper();
+        }
+        if ($this->paper === null) {
             $this->paper = new Paper();
         }
         $this->paper->setSize($value);
@@ -222,7 +236,7 @@ class Section extends Border
      */
     public function setOrientation($value = null)
     {
-        $enum = [self::ORIENTATION_PORTRAIT, self::ORIENTATION_LANDSCAPE];
+        $enum = array(self::ORIENTATION_PORTRAIT, self::ORIENTATION_LANDSCAPE);
         $this->orientation = $this->setEnumVal($value, $enum, $this->orientation);
 
         /** @var int|float $longSide Type hint */
@@ -231,7 +245,7 @@ class Section extends Border
         /** @var int|float $shortSide Type hint */
         $shortSide = $this->pageSizeW < $this->pageSizeH ? $this->pageSizeW : $this->pageSizeH;
 
-        if (self::ORIENTATION_PORTRAIT == $this->orientation) {
+        if ($this->orientation == self::ORIENTATION_PORTRAIT) {
             $this->pageSizeW = $shortSide;
             $this->pageSizeH = $longSide;
         } else {
@@ -596,6 +610,30 @@ class Section extends Border
     public function setLineNumbering($value = null)
     {
         $this->setObjectVal($value, 'LineNumbering', $this->lineNumbering);
+
+        return $this;
+    }
+
+    /**
+     * Get vertical alignment
+     *
+     * @return string
+     */
+    public function getVAlign()
+    {
+        return $this->vAlign;
+    }
+
+    /**
+     * Set vertical alignment
+     *
+     * @param string $value
+     * @return self
+     */
+    public function setVAlign($value = null)
+    {
+        VerticalJc::validate($value);
+        $this->vAlign = $value;
 
         return $this;
     }

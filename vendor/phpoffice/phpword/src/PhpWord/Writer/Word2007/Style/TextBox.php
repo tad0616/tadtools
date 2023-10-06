@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -28,8 +28,6 @@ class TextBox extends Frame
 {
     /**
      * Writer inner margin.
-     *
-     * @return void
      */
     public function writeInnerMargin()
     {
@@ -46,8 +44,6 @@ class TextBox extends Frame
 
     /**
      * Writer border.
-     *
-     * @return void
      */
     public function writeBorder()
     {
@@ -58,8 +54,8 @@ class TextBox extends Frame
         $xmlWriter = $this->getXmlWriter();
 
         $xmlWriter->startElement('v:stroke');
-        $xmlWriter->writeAttributeIf(null !== $style->getBorderSize(), 'weight', $style->getBorderSize() . 'pt');
-        $xmlWriter->writeAttributeIf(null !== $style->getBorderColor(), 'color', $style->getBorderColor());
+        $xmlWriter->writeAttributeIf($style->getBorderSize() !== null, 'weight', $style->getBorderSize() . 'pt');
+        $xmlWriter->writeAttributeIf($style->getBorderColor() !== null, 'color', $style->getBorderColor());
         $xmlWriter->endElement(); // v:stroke
     }
 }

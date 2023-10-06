@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -172,11 +172,47 @@ class Frame extends AbstractStyle
     private $wrap;
 
     /**
+     * Top wrap distance
+     *
+     * @var float
+     */
+    private $wrapDistanceTop;
+
+    /**
+     * Bottom wrap distance
+     *
+     * @var float
+     */
+    private $wrapDistanceBottom;
+
+    /**
+     * Left wrap distance
+     *
+     * @var float
+     */
+    private $wrapDistanceLeft;
+
+    /**
+     * Right wrap distance
+     *
+     * @var float
+     */
+    private $wrapDistanceRight;
+
+    /**
+     * Vertically raised or lowered text
+     *
+     * @var int
+     * @see http://www.datypic.com/sc/ooxml/e-w_position-1.html
+     */
+    private $position;
+
+    /**
      * Create a new instance
      *
      * @param array $style
      */
-    public function __construct($style = [])
+    public function __construct($style = array())
     {
         $this->setStyleByArray($style);
     }
@@ -200,7 +236,7 @@ class Frame extends AbstractStyle
      */
     public function setAlignment($value)
     {
-        if (Jc::getValidator()->isValid($value)) {
+        if (Jc::isValid($value)) {
             $this->alignment = $value;
         }
 
@@ -366,10 +402,10 @@ class Frame extends AbstractStyle
      */
     public function setPos($value)
     {
-        $enum = [
+        $enum = array(
             self::POS_ABSOLUTE,
             self::POS_RELATIVE,
-        ];
+        );
         $this->pos = $this->setEnumVal($value, $enum, $this->pos);
 
         return $this;
@@ -395,14 +431,14 @@ class Frame extends AbstractStyle
      */
     public function setHPos($value)
     {
-        $enum = [
+        $enum = array(
             self::POS_ABSOLUTE,
             self::POS_LEFT,
             self::POS_CENTER,
             self::POS_RIGHT,
             self::POS_INSIDE,
             self::POS_OUTSIDE,
-        ];
+        );
         $this->hPos = $this->setEnumVal($value, $enum, $this->hPos);
 
         return $this;
@@ -428,14 +464,14 @@ class Frame extends AbstractStyle
      */
     public function setVPos($value)
     {
-        $enum = [
+        $enum = array(
             self::POS_ABSOLUTE,
             self::POS_TOP,
             self::POS_CENTER,
             self::POS_BOTTOM,
             self::POS_INSIDE,
             self::POS_OUTSIDE,
-        ];
+        );
         $this->vPos = $this->setEnumVal($value, $enum, $this->vPos);
 
         return $this;
@@ -459,7 +495,7 @@ class Frame extends AbstractStyle
      */
     public function setHPosRelTo($value)
     {
-        $enum = [
+        $enum = array(
             self::POS_RELTO_MARGIN,
             self::POS_RELTO_PAGE,
             self::POS_RELTO_COLUMN,
@@ -468,7 +504,7 @@ class Frame extends AbstractStyle
             self::POS_RELTO_RMARGIN,
             self::POS_RELTO_IMARGIN,
             self::POS_RELTO_OMARGIN,
-        ];
+        );
         $this->hPosRelTo = $this->setEnumVal($value, $enum, $this->hPosRelTo);
 
         return $this;
@@ -492,7 +528,7 @@ class Frame extends AbstractStyle
      */
     public function setVPosRelTo($value)
     {
-        $enum = [
+        $enum = array(
             self::POS_RELTO_MARGIN,
             self::POS_RELTO_PAGE,
             self::POS_RELTO_TEXT,
@@ -501,7 +537,7 @@ class Frame extends AbstractStyle
             self::POS_RELTO_BMARGIN,
             self::POS_RELTO_IMARGIN,
             self::POS_RELTO_OMARGIN,
-        ];
+        );
         $this->vPosRelTo = $this->setEnumVal($value, $enum, $this->vPosRelTo);
 
         return $this;
@@ -525,7 +561,7 @@ class Frame extends AbstractStyle
      */
     public function setWrap($value)
     {
-        $enum = [
+        $enum = array(
             self::WRAP_INLINE,
             self::WRAP_SQUARE,
             self::WRAP_TIGHT,
@@ -533,8 +569,123 @@ class Frame extends AbstractStyle
             self::WRAP_TOPBOTTOM,
             self::WRAP_BEHIND,
             self::WRAP_INFRONT,
-        ];
+        );
         $this->wrap = $this->setEnumVal($value, $enum, $this->wrap);
+
+        return $this;
+    }
+
+    /**
+     * Get top distance from text wrap
+     *
+     * @return float
+     */
+    public function getWrapDistanceTop()
+    {
+        return $this->wrapDistanceTop;
+    }
+
+    /**
+     * Set top distance from text wrap
+     *
+     * @param int $value
+     * @return self
+     */
+    public function setWrapDistanceTop($value = null)
+    {
+        $this->wrapDistanceTop = $this->setFloatVal($value, null);
+
+        return $this;
+    }
+
+    /**
+     * Get bottom distance from text wrap
+     *
+     * @return float
+     */
+    public function getWrapDistanceBottom()
+    {
+        return $this->wrapDistanceBottom;
+    }
+
+    /**
+     * Set bottom distance from text wrap
+     *
+     * @param float $value
+     * @return self
+     */
+    public function setWrapDistanceBottom($value = null)
+    {
+        $this->wrapDistanceBottom = $this->setFloatVal($value, null);
+
+        return $this;
+    }
+
+    /**
+     * Get left distance from text wrap
+     *
+     * @return float
+     */
+    public function getWrapDistanceLeft()
+    {
+        return $this->wrapDistanceLeft;
+    }
+
+    /**
+     * Set left distance from text wrap
+     *
+     * @param float $value
+     * @return self
+     */
+    public function setWrapDistanceLeft($value = null)
+    {
+        $this->wrapDistanceLeft = $this->setFloatVal($value, null);
+
+        return $this;
+    }
+
+    /**
+     * Get right distance from text wrap
+     *
+     * @return float
+     */
+    public function getWrapDistanceRight()
+    {
+        return $this->wrapDistanceRight;
+    }
+
+    /**
+     * Set right distance from text wrap
+     *
+     * @param float $value
+     * @return self
+     */
+    public function setWrapDistanceRight($value = null)
+    {
+        $this->wrapDistanceRight = $this->setFloatVal($value, null);
+
+        return $this;
+    }
+
+    /**
+     * Get position
+     *
+     * @return int
+     */
+    public function getPosition()
+    {
+        return $this->position;
+    }
+
+    /**
+     * Set position
+     *
+     * @param int $value
+     * @return self
+     */
+    public function setPosition($value = null)
+    {
+        $this->position = $this->setIntVal($value, null);
 
         return $this;
     }

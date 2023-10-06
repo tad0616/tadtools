@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -40,18 +40,18 @@ class Head extends AbstractPart
     public function write()
     {
         $docProps = $this->getParentWriter()->getPhpWord()->getDocInfo();
-        $propertiesMapping = [
-            'creator' => 'author',
-            'title' => '',
+        $propertiesMapping = array(
+            'creator'     => 'author',
+            'title'       => '',
             'description' => '',
-            'subject' => '',
-            'keywords' => '',
-            'category' => '',
-            'company' => '',
-            'manager' => '',
-        ];
+            'subject'     => '',
+            'keywords'    => '',
+            'category'    => '',
+            'company'     => '',
+            'manager'     => '',
+        );
         $title = $docProps->getTitle();
-        $title = ('' != $title) ? $title : 'PHPWord';
+        $title = ($title != '') ? $title : 'PHPWord';
 
         $content = '';
 
@@ -59,9 +59,9 @@ class Head extends AbstractPart
         $content .= '<meta charset="UTF-8" />' . PHP_EOL;
         $content .= '<title>' . $title . '</title>' . PHP_EOL;
         foreach ($propertiesMapping as $key => $value) {
-            $value = ('' == $value) ? $key : $value;
+            $value = ($value == '') ? $key : $value;
             $method = 'get' . $key;
-            if ('' != $docProps->$method()) {
+            if ($docProps->$method() != '') {
                 $content .= '<meta name="' . $value . '"'
                           . ' content="' . (Settings::isOutputEscapingEnabled() ? $this->escaper->escapeHtmlAttr($docProps->$method()) : $docProps->$method()) . '"'
                           . ' />' . PHP_EOL;
@@ -83,30 +83,30 @@ class Head extends AbstractPart
         $css = '<style>' . PHP_EOL;
 
         // Default styles
-        $defaultStyles = [
-            '*' => [
+        $defaultStyles = array(
+            '*' => array(
                 'font-family' => Settings::getDefaultFontName(),
-                'font-size' => Settings::getDefaultFontSize() . 'pt',
-            ],
-            'a.NoteRef' => [
+                'font-size'   => Settings::getDefaultFontSize() . 'pt',
+            ),
+            'a.NoteRef' => array(
                 'text-decoration' => 'none',
-            ],
-            'hr' => [
-                'height' => '1px',
-                'padding' => '0',
-                'margin' => '1em 0',
-                'border' => '0',
+            ),
+            'hr' => array(
+                'height'     => '1px',
+                'padding'    => '0',
+                'margin'     => '1em 0',
+                'border'     => '0',
                 'border-top' => '1px solid #CCC',
-            ],
-            'table' => [
-                'border' => '1px solid black',
+            ),
+            'table' => array(
+                'border'         => '1px solid black',
                 'border-spacing' => '0px',
-                'width' => '100%',
-            ],
-            'td' => [
+                'width '         => '100%',
+            ),
+            'td' => array(
                 'border' => '1px solid black',
-            ],
-        ];
+            ),
+        );
         foreach ($defaultStyles as $selector => $style) {
             $styleWriter = new GenericStyleWriter($style);
             $css .= $selector . ' {' . $styleWriter->write() . '}' . PHP_EOL;
@@ -118,7 +118,7 @@ class Head extends AbstractPart
             foreach ($customStyles as $name => $style) {
                 if ($style instanceof Font) {
                     $styleWriter = new FontStyleWriter($style);
-                    if ('title' == $style->getStyleType()) {
+                    if ($style->getStyleType() == 'title') {
                         $name = str_replace('Heading_', 'h', $name);
                     } else {
                         $name = '.' . $name;

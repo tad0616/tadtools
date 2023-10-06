@@ -10,17 +10,17 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
 namespace PhpOffice\PhpWord\Writer\Word2007\Element;
 
-use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpWord\Element\AbstractContainer as ContainerElement;
 use PhpOffice\PhpWord\Element\AbstractElement as Element;
 use PhpOffice\PhpWord\Element\TextBreak as TextBreakElement;
+use PhpOffice\PhpWord\Shared\XMLWriter;
 
 /**
  * Container element writer (section, textrun, header, footnote, cell, etc.)
@@ -38,8 +38,6 @@ class Container extends AbstractElement
 
     /**
      * Write element.
-     *
-     * @return void
      */
     public function write()
     {
@@ -47,8 +45,8 @@ class Container extends AbstractElement
         if (!$container instanceof ContainerElement) {
             return;
         }
-        $containerClass = mb_substr(get_class($container), mb_strrpos(get_class($container), '\\') + 1);
-        $withoutP = in_array($containerClass, ['TextRun', 'Footnote', 'Endnote', 'ListItemRun'], true) ? true : false;
+        $containerClass = substr(get_class($container), strrpos(get_class($container), '\\') + 1);
+        $withoutP = in_array($containerClass, array('TextRun', 'Footnote', 'Endnote', 'ListItemRun'));
         $xmlWriter = $this->getXmlWriter();
 
         // Loop through elements
@@ -61,7 +59,7 @@ class Container extends AbstractElement
         // Special case for Cell: They have to contain a w:p element at the end.
         // The $elementClass contains the last element name. If it's empty string
         // or Table, the last element is not w:p
-        $writeLastTextBreak = ('Cell' == $containerClass) && ('' == $elementClass || 'Table' == $elementClass);
+        $writeLastTextBreak = ($containerClass == 'Cell') && ($elementClass == '' || $elementClass == 'Table');
         if ($writeLastTextBreak) {
             $writerClass = $this->namespace . '\\TextBreak';
             /** @var \PhpOffice\PhpWord\Writer\Word2007\Element\AbstractElement $writer Type hint */
@@ -73,12 +71,14 @@ class Container extends AbstractElement
     /**
      * Write individual element
      *
+     * @param \PhpOffice\PhpWord\Shared\XMLWriter $xmlWriter
+     * @param \PhpOffice\PhpWord\Element\AbstractElement $element
      * @param bool $withoutP
      * @return string
      */
     private function writeElement(XMLWriter $xmlWriter, Element $element, $withoutP)
     {
-        $elementClass = mb_substr(get_class($element), mb_strrpos(get_class($element), '\\') + 1);
+        $elementClass = substr(get_class($element), strrpos(get_class($element), '\\') + 1);
         $writerClass = $this->namespace . '\\' . $elementClass;
 
         if (class_exists($writerClass)) {

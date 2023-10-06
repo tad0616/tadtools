@@ -10,17 +10,17 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
 namespace PhpOffice\PhpWord\Writer\RTF\Element;
 
-use PhpOffice\Common\Text as CommonText;
 use PhpOffice\PhpWord\Element\AbstractElement as Element;
 use PhpOffice\PhpWord\Escaper\Rtf;
 use PhpOffice\PhpWord\Settings;
+use PhpOffice\PhpWord\Shared\Text as SharedText;
 use PhpOffice\PhpWord\Style;
 use PhpOffice\PhpWord\Style\Font as FontStyle;
 use PhpOffice\PhpWord\Style\Paragraph as ParagraphStyle;
@@ -41,14 +41,14 @@ abstract class AbstractElement extends HTMLAbstractElement
      *
      * @var \PhpOffice\PhpWord\Style\Font
      */
-    private $fontStyle;
+    protected $fontStyle;
 
     /**
      * Paragraph style
      *
      * @var \PhpOffice\PhpWord\Style\Paragraph
      */
-    private $paragraphStyle;
+    protected $paragraphStyle;
 
     public function __construct(AbstractWriter $parentWriter, Element $element, $withoutP = false)
     {
@@ -59,8 +59,6 @@ abstract class AbstractElement extends HTMLAbstractElement
 
     /**
      * Get font and paragraph styles.
-     *
-     * @return void
      */
     protected function getStyles()
     {
@@ -85,7 +83,7 @@ abstract class AbstractElement extends HTMLAbstractElement
                 $this->paragraphStyle = Style::getStyle($this->paragraphStyle);
             }
 
-            if (null !== $this->paragraphStyle && !$this->withoutP) {
+            if ($this->paragraphStyle !== null && !$this->withoutP) {
                 if ($parentWriter->getLastParagraphStyle() != $element->getParagraphStyle()) {
                     $parentWriter->setLastParagraphStyle($element->getParagraphStyle());
                 } else {
@@ -128,7 +126,7 @@ abstract class AbstractElement extends HTMLAbstractElement
             return $this->escaper->escape($text);
         }
 
-        return CommonText::toUnicode($text); // todo: replace with `return $text;` later.
+        return SharedText::toUnicode($text); // todo: replace with `return $text;` later.
     }
 
     /**
@@ -161,15 +159,15 @@ abstract class AbstractElement extends HTMLAbstractElement
 
         // Create style writer and set color/name index
         $styleWriter = new FontStyleWriter($this->fontStyle);
-        if (null != $this->fontStyle->getColor()) {
-            $colorIndex = array_search($this->fontStyle->getColor(), $parentWriter->getColorTable(), true);
-            if (false !== $colorIndex) {
+        if ($this->fontStyle->getColor() != null) {
+            $colorIndex = array_search($this->fontStyle->getColor(), $parentWriter->getColorTable());
+            if ($colorIndex !== false) {
                 $styleWriter->setColorIndex($colorIndex + 1);
             }
         }
-        if (null != $this->fontStyle->getName()) {
-            $fontIndex = array_search($this->fontStyle->getName(), $parentWriter->getFontTable(), true);
-            if (false !== $fontIndex) {
+        if ($this->fontStyle->getName() != null) {
+            $fontIndex = array_search($this->fontStyle->getName(), $parentWriter->getFontTable());
+            if ($fontIndex !== false) {
                 $styleWriter->setNameIndex($fontIndex);
             }
         }

@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -70,6 +70,7 @@ class Settings
     const DEFAULT_FONT_SIZE = 10;
     const DEFAULT_FONT_COLOR = '000000';
     const DEFAULT_FONT_CONTENT_TYPE = 'default'; // default|eastAsia|cs
+    const DEFAULT_PAPER = 'A4';
 
     /**
      * Compatibility option for XMLWriter
@@ -120,6 +121,12 @@ class Settings
     private static $defaultFontSize = self::DEFAULT_FONT_SIZE;
 
     /**
+     * Default paper
+     * @var string
+     */
+    private static $defaultPaper = self::DEFAULT_PAPER;
+
+    /**
      * The user defined temporary directory.
      *
      * @var string
@@ -154,7 +161,7 @@ class Settings
      */
     public static function setCompatibility($compatibility)
     {
-        $compatibility = (bool)$compatibility;
+        $compatibility = (bool) $compatibility;
         self::$xmlWriterCompatibility = $compatibility;
 
         return true;
@@ -178,7 +185,7 @@ class Settings
      */
     public static function setZipClass($zipClass)
     {
-        if (in_array($zipClass, [self::PCLZIP, self::ZIPARCHIVE, self::OLD_LIB], true)) {
+        if (in_array($zipClass, array(self::PCLZIP, self::ZIPARCHIVE, self::OLD_LIB))) {
             self::$zipClass = $zipClass;
 
             return true;
@@ -221,8 +228,8 @@ class Settings
      */
     public static function setPdfRendererName($libraryName)
     {
-        $pdfRenderers = [self::PDF_RENDERER_DOMPDF, self::PDF_RENDERER_TCPDF, self::PDF_RENDERER_MPDF];
-        if (!in_array($libraryName, $pdfRenderers, true)) {
+        $pdfRenderers = array(self::PDF_RENDERER_DOMPDF, self::PDF_RENDERER_TCPDF, self::PDF_RENDERER_MPDF);
+        if (!in_array($libraryName, $pdfRenderers)) {
             return false;
         }
         self::$pdfRendererName = $libraryName;
@@ -274,9 +281,9 @@ class Settings
      */
     public static function setMeasurementUnit($value)
     {
-        $units = [self::UNIT_TWIP, self::UNIT_CM, self::UNIT_MM, self::UNIT_INCH,
-            self::UNIT_POINT, self::UNIT_PICA, ];
-        if (!in_array($value, $units, true)) {
+        $units = array(self::UNIT_TWIP, self::UNIT_CM, self::UNIT_MM, self::UNIT_INCH,
+            self::UNIT_POINT, self::UNIT_PICA, );
+        if (!in_array($value, $units)) {
             return false;
         }
         self::$measurementUnit = $value;
@@ -289,9 +296,7 @@ class Settings
      *
      * @since 0.12.0
      *
-     * @param string $tempDir The user defined path to temporary directory.
-     *
-     * @return void
+     * @param string $tempDir The user defined path to temporary directory
      */
     public static function setTempDir($tempDir)
     {
@@ -307,10 +312,10 @@ class Settings
      */
     public static function getTempDir()
     {
-        $tempDir = sys_get_temp_dir();
-
         if (!empty(self::$tempDir)) {
             $tempDir = self::$tempDir;
+        } else {
+            $tempDir = sys_get_temp_dir();
         }
 
         return $tempDir;
@@ -318,10 +323,8 @@ class Settings
 
     /**
      * @since 0.13.0
-     * 
-     * @return boolean
      *
-     * @codeCoverageIgnore
+     * @return bool
      */
     public static function isOutputEscapingEnabled()
     {
@@ -330,10 +333,8 @@ class Settings
 
     /**
      * @since 0.13.0
-     * 
-     * @param bool $outputEscapingEnabled
      *
-     * @codeCoverageIgnore
+     * @param bool $outputEscapingEnabled
      */
     public static function setOutputEscapingEnabled($outputEscapingEnabled)
     {
@@ -358,7 +359,7 @@ class Settings
      */
     public static function setDefaultFontName($value)
     {
-        if (is_string($value) && '' !== trim($value)) {
+        if (is_string($value) && trim($value) !== '') {
             self::$defaultFontName = $value;
 
             return true;
@@ -370,7 +371,7 @@ class Settings
     /**
      * Get default font size
      *
-     * @return integer
+     * @return int
      */
     public static function getDefaultFontSize()
     {
@@ -385,7 +386,7 @@ class Settings
      */
     public static function setDefaultFontSize($value)
     {
-        $value = intval($value);
+        $value = (int) $value;
         if ($value > 0) {
             self::$defaultFontSize = $value;
 
@@ -406,10 +407,10 @@ class Settings
         // Get config file
         $configFile = null;
         $configPath = __DIR__ . '/../../';
-        if (null !== $filename) {
-            $files = [$filename];
+        if ($filename !== null) {
+            $files = array($filename);
         } else {
-            $files = ["{$configPath}phpword.ini", "{$configPath}phpword.ini.dist"];
+            $files = array("{$configPath}phpword.ini", "{$configPath}phpword.ini.dist");
         }
         foreach ($files as $file) {
             if (file_exists($file)) {
@@ -419,10 +420,10 @@ class Settings
         }
 
         // Parse config file
-        $config = [];
-        if (null !== $configFile) {
+        $config = array();
+        if ($configFile !== null) {
             $config = @parse_ini_file($configFile);
-            if (false === $config) {
+            if ($config === false) {
                 return $config;
             }
         }
@@ -436,6 +437,33 @@ class Settings
         }
 
         return $config;
+    }
+
+    /**
+     * Get default paper
+     *
+     * @return string
+     */
+    public static function getDefaultPaper()
+    {
+        return self::$defaultPaper;
+    }
+
+    /**
+     * Set default paper
+     *
+     * @param string $value
+     * @return bool
+     */
+    public static function setDefaultPaper($value)
+    {
+        if (is_string($value) && trim($value) !== '') {
+            self::$defaultPaper = $value;
+
+            return true;
+        }
+
+        return false;
     }
 
     /**

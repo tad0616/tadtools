@@ -10,15 +10,15 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
 namespace PhpOffice\PhpWord\Writer\ODText\Part;
 
-use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpWord\Settings;
+use PhpOffice\PhpWord\Shared\XMLWriter;
 use PhpOffice\PhpWord\Style;
 use PhpOffice\PhpWord\Style\Font;
 use PhpOffice\PhpWord\Writer\Word2007\Part\AbstractPart as Word2007AbstractPart;
@@ -36,7 +36,7 @@ abstract class AbstractPart extends Word2007AbstractPart
     /**
      * Write common root attributes.
      *
-     * @return void
+     * @param \PhpOffice\PhpWord\Shared\XMLWriter $xmlWriter
      */
     protected function writeCommonRootAttributes(XMLWriter $xmlWriter)
     {
@@ -72,12 +72,12 @@ abstract class AbstractPart extends Word2007AbstractPart
     /**
      * Write font faces declaration.
      *
-     * @return void
+     * @param \PhpOffice\PhpWord\Shared\XMLWriter $xmlWriter
      */
     protected function writeFontFaces(XMLWriter $xmlWriter)
     {
         $xmlWriter->startElement('office:font-face-decls');
-        $fontTable = [];
+        $fontTable = array();
         $styles = Style::getStyles();
         $numFonts = 0;
         if (count($styles) > 0) {
@@ -86,7 +86,7 @@ abstract class AbstractPart extends Word2007AbstractPart
                 if ($style instanceof Font) {
                     $numFonts++;
                     $name = $style->getName();
-                    if (!in_array($name, $fontTable, true)) {
+                    if (!in_array($name, $fontTable)) {
                         $fontTable[] = $name;
 
                         // style:font-face
@@ -98,7 +98,7 @@ abstract class AbstractPart extends Word2007AbstractPart
                 }
             }
         }
-        if (!in_array(Settings::getDefaultFontName(), $fontTable, true)) {
+        if (!in_array(Settings::getDefaultFontName(), $fontTable)) {
             $xmlWriter->startElement('style:font-face');
             $xmlWriter->writeAttribute('style:name', Settings::getDefaultFontName());
             $xmlWriter->writeAttribute('svg:font-family', Settings::getDefaultFontName());

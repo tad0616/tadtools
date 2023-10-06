@@ -10,16 +10,17 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
 namespace PhpOffice\PhpWord\Reader;
 
-use PhpOffice\Common\Drawing;
 use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\Shared\Drawing;
 use PhpOffice\PhpWord\Shared\OLERead;
+use PhpOffice\PhpWord\Style;
 
 /**
  * Reader for Word97
@@ -62,23 +63,23 @@ class MsDoc extends AbstractReader implements ReaderInterface
     /**
      * @var \stdClass[]
      */
-    private $arrayCharacters = [];
+    private $arrayCharacters = array();
     /**
      * @var array
      */
-    private $arrayFib = [];
+    private $arrayFib = array();
     /**
      * @var string[]
      */
-    private $arrayFonts = [];
+    private $arrayFonts = array();
     /**
      * @var string[]
      */
-    private $arrayParagraphs = [];
+    private $arrayParagraphs = array();
     /**
      * @var \stdClass[]
      */
-    private $arraySections = [];
+    private $arraySections = array();
 
     const VERSION_97 = '97';
     const VERSION_2000 = '2000';
@@ -158,7 +159,7 @@ class MsDoc extends AbstractReader implements ReaderInterface
 
     private function getArrayCP($data, $posMem, $iNum)
     {
-        $arrayCP = [];
+        $arrayCP = array();
         for ($inc = 0; $inc < $iNum; $inc++) {
             $arrayCP[$inc] = self::getInt4d($data, $posMem);
             $posMem += 4;
@@ -168,9 +169,9 @@ class MsDoc extends AbstractReader implements ReaderInterface
     }
 
     /**
-     * @link http://msdn.microsoft.com/en-us/library/dd949344%28v=office.12%29.aspx
-     * @link https://igor.io/2012/09/24/binary-parsing.html
-     * @param mixed $data
+     * @see  http://msdn.microsoft.com/en-us/library/dd949344%28v=office.12%29.aspx
+     * @see  https://igor.io/2012/09/24/binary-parsing.html
+     * @param string $data
      */
     private function readFib($data)
     {
@@ -344,7 +345,7 @@ class MsDoc extends AbstractReader implements ReaderInterface
         $this->arrayFib['cswNew'] = self::getInt2d($data, $pos);
         $pos += 2;
 
-        if (0 != $this->arrayFib['cswNew']) {
+        if ($this->arrayFib['cswNew'] != 0) {
             //@todo : fibRgCswNew
         }
 
@@ -353,7 +354,7 @@ class MsDoc extends AbstractReader implements ReaderInterface
 
     private function readBlockFibRgFcLcb($data, $pos, $version)
     {
-        if (self::VERSION_97 == $version) {
+        if ($version == self::VERSION_97) {
             $this->arrayFib['fcStshfOrig'] = self::getInt4d($data, $pos);
             $pos += 4;
             $this->arrayFib['lcbStshfOrig'] = self::getInt4d($data, $pos);
@@ -727,7 +728,7 @@ class MsDoc extends AbstractReader implements ReaderInterface
             $this->arrayFib['lcbSttbfUssr'] = self::getInt4d($data, $pos);
             $pos += 4;
         }
-        if (self::VERSION_2000 == $version) {
+        if ($version == self::VERSION_2000) {
             $this->arrayFib['fcPlcfTch'] = self::getInt4d($data, $pos);
             $pos += 4;
             $this->arrayFib['lcbPlcfTch'] = self::getInt4d($data, $pos);
@@ -789,7 +790,7 @@ class MsDoc extends AbstractReader implements ReaderInterface
             $this->arrayFib['lcbBkdEdnOld'] = self::getInt4d($data, $pos);
             $pos += 4;
         }
-        if (self::VERSION_2002 == $version) {
+        if ($version == self::VERSION_2002) {
             $this->arrayFib['fcUnused1'] = self::getInt4d($data, $pos);
             $pos += 4;
             $this->arrayFib['lcbUnused1'] = self::getInt4d($data, $pos);
@@ -903,7 +904,7 @@ class MsDoc extends AbstractReader implements ReaderInterface
             $this->arrayFib['lcbPlcflvcMixedXP'] = self::getInt4d($data, $pos);
             $pos += 4;
         }
-        if (self::VERSION_2003 == $version) {
+        if ($version == self::VERSION_2003) {
             $this->arrayFib['fcHplxsdr'] = self::getInt4d($data, $pos);
             $pos += 4;
             $this->arrayFib['lcbHplxsdr'] = self::getInt4d($data, $pos);
@@ -1017,7 +1018,7 @@ class MsDoc extends AbstractReader implements ReaderInterface
             $this->arrayFib['lcbAfd'] = self::getInt4d($data, $pos);
             $pos += 4;
         }
-        if (self::VERSION_2007 == $version) {
+        if ($version == self::VERSION_2007) {
             $this->arrayFib['fcPlcfmthd'] = self::getInt4d($data, $pos);
             $pos += 4;
             $this->arrayFib['lcbPlcfmthd'] = self::getInt4d($data, $pos);
@@ -1108,11 +1109,11 @@ class MsDoc extends AbstractReader implements ReaderInterface
         $this->readRecordPlcfSed();
 
         // reading paragraphs
-        //@link https://github.com/notmasteryet/CompoundFile/blob/ec118f354efebdee9102e41b5b7084fce81125b0/WordFileReader/WordDocument.cs#L86
+        //@see  https://github.com/notmasteryet/CompoundFile/blob/ec118f354efebdee9102e41b5b7084fce81125b0/WordFileReader/WordDocument.cs#L86
         $this->readRecordPlcfBtePapx();
 
         // reading character formattings
-        //@link https://github.com/notmasteryet/CompoundFile/blob/ec118f354efebdee9102e41b5b7084fce81125b0/WordFileReader/WordDocument.cs#L94
+        //@see  https://github.com/notmasteryet/CompoundFile/blob/ec118f354efebdee9102e41b5b7084fce81125b0/WordFileReader/WordDocument.cs#L94
         $this->readRecordPlcfBteChpx();
 
         $this->generatePhpWord();
@@ -1120,24 +1121,24 @@ class MsDoc extends AbstractReader implements ReaderInterface
 
     /**
      * Section and information about them
-     * @link : http://msdn.microsoft.com/en-us/library/dd924458%28v=office.12%29.aspx
+     * @see  : http://msdn.microsoft.com/en-us/library/dd924458%28v=office.12%29.aspx
      */
     private function readRecordPlcfSed()
     {
         $posMem = $this->arrayFib['fcPlcfSed'];
         // PlcfSed
         // PlcfSed : aCP
-        $aCP = [];
+        $aCP = array();
         $aCP[0] = self::getInt4d($this->data1Table, $posMem);
         $posMem += 4;
         $aCP[1] = self::getInt4d($this->data1Table, $posMem);
         $posMem += 4;
 
         // PlcfSed : aSed
-        //@link : http://msdn.microsoft.com/en-us/library/dd950194%28v=office.12%29.aspx
+        //@see  : http://msdn.microsoft.com/en-us/library/dd950194%28v=office.12%29.aspx
         $numSed = $this->getNumInLcb($this->arrayFib['lcbPlcfSed'], 12);
 
-        $aSed = [];
+        $aSed = array();
         for ($iInc = 0; $iInc < $numSed; ++$iInc) {
             // Sed : http://msdn.microsoft.com/en-us/library/dd950982%28v=office.12%29.aspx
             // fn
@@ -1165,7 +1166,7 @@ class MsDoc extends AbstractReader implements ReaderInterface
 
     /**
      * Specifies the fonts that are used in the document
-     * @link : http://msdn.microsoft.com/en-us/library/dd943880%28v=office.12%29.aspx
+     * @see  : http://msdn.microsoft.com/en-us/library/dd943880%28v=office.12%29.aspx
      */
     private function readRecordSttbfFfn()
     {
@@ -1176,7 +1177,7 @@ class MsDoc extends AbstractReader implements ReaderInterface
         $cbExtra = self::getInt2d($this->data1Table, $posMem);
         $posMem += 2;
 
-        if ($cData < 0x7FF0 && 0 == $cbExtra) {
+        if ($cData < 0x7FF0 && $cbExtra == 0) {
             for ($inc = 0; $inc < $cData; $inc++) {
                 // len
                 $posMem += 1;
@@ -1201,30 +1202,30 @@ class MsDoc extends AbstractReader implements ReaderInterface
                     if ($char > 0) {
                         $xszFfn .= chr($char);
                     }
-                } while (0 != $char);
+                } while ($char != 0);
                 // xszAlt
                 $xszAlt = '';
                 if ($ixchSzAlt > 0) {
                     do {
                         $char = self::getInt2d($this->data1Table, $posMem);
                         $posMem += 2;
-                        if (0 == $char) {
+                        if ($char == 0) {
                             break;
                         }
                         $xszAlt .= chr($char);
-                    } while (0 != $char);
+                    } while ($char != 0);
                 }
-                $this->arrayFonts[] = [
+                $this->arrayFonts[] = array(
                     'main' => $xszFfn,
-                    'alt' => $xszAlt,
-                ];
+                    'alt'  => $xszAlt,
+                );
             }
         }
     }
 
     /**
      * Paragraph and information about them
-     * @link http://msdn.microsoft.com/en-us/library/dd908569%28v=office.12%29.aspx
+     * @see  http://msdn.microsoft.com/en-us/library/dd908569%28v=office.12%29.aspx
      */
     private function readRecordPlcfBtePapx()
     {
@@ -1241,14 +1242,14 @@ class MsDoc extends AbstractReader implements ReaderInterface
             $string = '';
 
             $numRun = self::getInt1d($this->dataWorkDocument, $offset + 511);
-            $arrayRGFC = [];
+            $arrayRGFC = array();
             for ($inc = 0; $inc <= $numRun; $inc++) {
                 $arrayRGFC[$inc] = self::getInt4d($this->dataWorkDocument, $offset);
                 $offset += 4;
             }
-            $arrayRGB = [];
+            $arrayRGB = array();
             for ($inc = 1; $inc <= $numRun; $inc++) {
-                // @link http://msdn.microsoft.com/en-us/library/dd925804(v=office.12).aspx
+                // @see  http://msdn.microsoft.com/en-us/library/dd925804(v=office.12).aspx
                 $arrayRGB[$inc] = self::getInt1d($this->dataWorkDocument, $offset);
                 $offset += 1;
                 // reserved
@@ -1304,7 +1305,7 @@ class MsDoc extends AbstractReader implements ReaderInterface
                         print_r('$sprm.ispmd : 0x'.dechex($sprm_IsPmd).PHP_EOL);
                         print_r('$sprm.f : 0x'.dechex($sprm_F).PHP_EOL);
                         print_r('$sprm.sgc : 0x'.dechex($sprm_Sgc));
-                        switch(dechex($sprm_Sgc)) {
+                        switch (dechex($sprm_Sgc)) {
                             case 0x01:
                                 print_r(' (Paragraph property)');
                                 break;
@@ -1323,12 +1324,12 @@ class MsDoc extends AbstractReader implements ReaderInterface
                         }
                         print_r(PHP_EOL);
                         print_r('$sprm.spra : 0x'.dechex($sprm_Spra).PHP_EOL);
-                        switch(dechex($sprm_Spra)) {
+                        switch (dechex($sprm_Spra)) {
                             case 0x0:
                                 $operand = self::getInt1d($this->dataWorkDocument, $offset);
                                 $offset += 1;
                                 $cb -= 1;
-                                switch(dechex($operand)) {
+                                switch (dechex($operand)) {
                                     case 0x00:
                                         $operand = 'OFF';
                                         break;
@@ -1377,9 +1378,9 @@ class MsDoc extends AbstractReader implements ReaderInterface
                         }
 
                         //
-                        switch(dechex($sprm_Sgc)) {
+                        switch (dechex($sprm_Sgc)) {
                             case 0x01: // Sprm is modifying a paragraph property.
-                                switch($sprm_IsPmd) {
+                                switch ($sprm_IsPmd) {
                                     case 0x0A: // sprmPIlvl
                                         print_r('sprmPIlvl : '.$operand.PHP_EOL.PHP_EOL);
                                         break;
@@ -1392,28 +1393,28 @@ class MsDoc extends AbstractReader implements ReaderInterface
                                 }
                                 break;
                             case 0x02: // Sprm is modifying a character property.
-                                switch($sprm_IsPmd) {
+                                switch ($sprm_IsPmd) {
                                     default:
                                         print_r('$sprm_IsPmd(2) : '.$sprm_IsPmd.PHP_EOL.PHP_EOL);
                                         break;
                                 }
                                 break;
                             case 0x03: // Sprm is modifying a picture property.
-                                switch($sprm_IsPmd) {
+                                switch ($sprm_IsPmd) {
                                     default:
                                         print_r('$sprm_IsPmd(3) : '.$sprm_IsPmd.PHP_EOL.PHP_EOL);
                                         break;
                                 }
                                 break;
                             case 0x04: // Sprm is modifying a section property.
-                                switch($sprm_IsPmd) {
+                                switch ($sprm_IsPmd) {
                                     default:
                                         print_r('$sprm_IsPmd(4) : '.$sprm_IsPmd.PHP_EOL.PHP_EOL);
                                         break;
                                 }
                                 break;
                             case 0x05: // Sprm is modifying a table property.
-                                switch($sprm_IsPmd) {
+                                switch ($sprm_IsPmd) {
                                     default:
                                         print_r('$sprm_IsPmd(4) : '.$sprm_IsPmd.PHP_EOL.PHP_EOL);
                                         break;
@@ -1427,7 +1428,7 @@ class MsDoc extends AbstractReader implements ReaderInterface
                 } else {
                     if ($istd > 0) {
                         // @todo : Determining Properties of a Paragraph Style
-                        # @link http://msdn.microsoft.com/en-us/library/dd948631%28v=office.12%29.aspx
+                        # @see  http://msdn.microsoft.com/en-us/library/dd948631%28v=office.12%29.aspx
                     }
                 }
             }*/
@@ -1436,13 +1437,13 @@ class MsDoc extends AbstractReader implements ReaderInterface
 
     /**
      * Character formatting properties to text in a document
-     * @link http://msdn.microsoft.com/en-us/library/dd907108%28v=office.12%29.aspx
+     * @see  http://msdn.microsoft.com/en-us/library/dd907108%28v=office.12%29.aspx
      */
     private function readRecordPlcfBteChpx()
     {
         $posMem = $this->arrayFib['fcPlcfBteChpx'];
         $num = $this->getNumInLcb($this->arrayFib['lcbPlcfBteChpx'], 4);
-        $aPnBteChpx = [];
+        $aPnBteChpx = array();
         for ($inc = 0; $inc <= $num; $inc++) {
             $aPnBteChpx[$inc] = self::getInt4d($this->data1Table, $posMem);
             $posMem += 4;
@@ -1454,15 +1455,15 @@ class MsDoc extends AbstractReader implements ReaderInterface
         $offset = $offsetBase;
 
         // ChpxFkp
-        // @link : http://msdn.microsoft.com/en-us/library/dd910989%28v=office.12%29.aspx
+        // @see  : http://msdn.microsoft.com/en-us/library/dd910989%28v=office.12%29.aspx
         $numRGFC = self::getInt1d($this->dataWorkDocument, $offset + 511);
-        $arrayRGFC = [];
+        $arrayRGFC = array();
         for ($inc = 0; $inc <= $numRGFC; $inc++) {
             $arrayRGFC[$inc] = self::getInt4d($this->dataWorkDocument, $offset);
             $offset += 4;
         }
 
-        $arrayRGB = [];
+        $arrayRGB = array();
         for ($inc = 1; $inc <= $numRGFC; $inc++) {
             $arrayRGB[$inc] = self::getInt1d($this->dataWorkDocument, $offset);
             $offset += 1;
@@ -1472,12 +1473,12 @@ class MsDoc extends AbstractReader implements ReaderInterface
         foreach ($arrayRGB as $keyRGB => $rgb) {
             $oStyle = new \stdClass();
             $oStyle->pos_start = $start;
-            $oStyle->pos_len = (int)ceil((($arrayRGFC[$keyRGB] - 1) - $arrayRGFC[$keyRGB - 1]) / 2);
+            $oStyle->pos_len = (int) ceil((($arrayRGFC[$keyRGB] - 1) - $arrayRGFC[$keyRGB - 1]) / 2);
             $start += $oStyle->pos_len;
 
             if ($rgb > 0) {
                 // Chp Structure
-                // @link : http://msdn.microsoft.com/en-us/library/dd772849%28v=office.12%29.aspx
+                // @see  : http://msdn.microsoft.com/en-us/library/dd772849%28v=office.12%29.aspx
                 $posRGB = $offsetBase + $rgb * 2;
 
                 $cb = self::getInt1d($this->dataWorkDocument, $posRGB);
@@ -1546,7 +1547,7 @@ class MsDoc extends AbstractReader implements ReaderInterface
                 $length = 2;
                 break;
             case 0x3:
-                if (0x70 != $oSprm->isPmd) {
+                if ($oSprm->isPmd != 0x70) {
                     $operand = self::getInt4d($data, $pos);
                     $length = 4;
                 }
@@ -1559,18 +1560,18 @@ class MsDoc extends AbstractReader implements ReaderInterface
                 // print_r('YO YO YO : '.PHP_EOL);
         }
 
-        return [
-            'length' => $length,
+        return array(
+            'length'  => $length,
             'operand' => $operand,
-        ];
+        );
     }
 
     /**
-     * @param $data integer
-     * @param $pos integer
-     * @param mixed $cbNum
+     * @param $data int
+     * @param $pos int
+     * @param $cbNum int
      * @return \stdClass
-     * @link http://msdn.microsoft.com/en-us/library/dd772849%28v=office.12%29.aspx
+     * @see  http://msdn.microsoft.com/en-us/library/dd772849%28v=office.12%29.aspx
      */
     private function readPrl($data, $pos, $cbNum)
     {
@@ -1580,7 +1581,7 @@ class MsDoc extends AbstractReader implements ReaderInterface
         // Variables
         $sprmCPicLocation = null;
         $sprmCFData = null;
-        $sprmCFSpec = null;
+        //$sprmCFSpec = null;
 
         do {
             // Variables
@@ -1603,7 +1604,7 @@ class MsDoc extends AbstractReader implements ReaderInterface
                 // Character property
                 case 0x02:
                     if (!isset($oStylePrl->styleFont)) {
-                        $oStylePrl->styleFont = [];
+                        $oStylePrl->styleFont = array();
                     }
                     switch ($oSprm->isPmd) {
                         // sprmCFRMarkIns
@@ -1618,7 +1619,7 @@ class MsDoc extends AbstractReader implements ReaderInterface
                             break;
                         // sprmCFData
                         case 0x06:
-                            $sprmCFData = 0x00 == dechex($operand) ? false : true;
+                            $sprmCFData = dechex($operand) != 0x00;
                             break;
                         // sprmCFItalic
                         case 0x36:
@@ -1697,7 +1698,7 @@ class MsDoc extends AbstractReader implements ReaderInterface
                                     $oStylePrl->styleFont['underline'] = Style\Font::UNDERLINE_DASH;
                                     break;
                                 case 0x09:
-                                    $oStylePrl->styleFont['underline'] = Style\Font::UNDERLINE_DOTHASH;
+                                    $oStylePrl->styleFont['underline'] = Style\Font::UNDERLINE_DOTDASH;
                                     break;
                                 case 0x0A:
                                     $oStylePrl->styleFont['underline'] = Style\Font::UNDERLINE_DOTDOTDASH;
@@ -1712,7 +1713,7 @@ class MsDoc extends AbstractReader implements ReaderInterface
                                     $oStylePrl->styleFont['underline'] = Style\Font::UNDERLINE_DASHHEAVY;
                                     break;
                                 case 0x19:
-                                    $oStylePrl->styleFont['underline'] = Style\Font::UNDERLINE_DOTHASHHEAVY;
+                                    $oStylePrl->styleFont['underline'] = Style\Font::UNDERLINE_DOTDASHHEAVY;
                                     break;
                                 case 0x1A:
                                     $oStylePrl->styleFont['underline'] = Style\Font::UNDERLINE_DOTDOTDASHHEAVY;
@@ -1735,7 +1736,7 @@ class MsDoc extends AbstractReader implements ReaderInterface
                             }
                             break;
                         // sprmCIco
-                        //@link http://msdn.microsoft.com/en-us/library/dd773060%28v=office.12%29.aspx
+                        //@see  http://msdn.microsoft.com/en-us/library/dd773060%28v=office.12%29.aspx
                         case 0x42:
                             switch (dechex($operand)) {
                                 case 0x00:
@@ -1829,7 +1830,7 @@ class MsDoc extends AbstractReader implements ReaderInterface
                             break;
                         // sprmCFSpec
                         case 0x55:
-                            $sprmCFSpec = $operand;
+                            //$sprmCFSpec = $operand;
                             break;
                         // sprmCFtcBi
                         case 0x5E:
@@ -1841,7 +1842,7 @@ class MsDoc extends AbstractReader implements ReaderInterface
                         case 0x61:
                             break;
                         // sprmCShd80
-                        //@link http://msdn.microsoft.com/en-us/library/dd923447%28v=office.12%29.aspx
+                        //@see  http://msdn.microsoft.com/en-us/library/dd923447%28v=office.12%29.aspx
                         case 0x66:
                             // $operand = self::getInt2d($data, $pos);
                             $pos += 2;
@@ -1851,7 +1852,7 @@ class MsDoc extends AbstractReader implements ReaderInterface
                             // $icoFore = ($operand >> 11) && bindec('11111');
                             break;
                         // sprmCCv
-                        //@link : http://msdn.microsoft.com/en-us/library/dd952824%28v=office.12%29.aspx
+                        //@see  : http://msdn.microsoft.com/en-us/library/dd952824%28v=office.12%29.aspx
                         case 0x70:
                             $red = str_pad(dechex(self::getInt1d($this->dataWorkDocument, $pos)), 2, '0', STR_PAD_LEFT);
                             $pos += 1;
@@ -1874,7 +1875,7 @@ class MsDoc extends AbstractReader implements ReaderInterface
                 // Section property
                 case 0x04:
                     if (!isset($oStylePrl->styleSection)) {
-                        $oStylePrl->styleSection = [];
+                        $oStylePrl->styleSection = array();
                     }
                     switch ($oSprm->isPmd) {
                         // sprmSNfcPgn
@@ -1936,8 +1937,8 @@ class MsDoc extends AbstractReader implements ReaderInterface
             }
         } while ($cbNum > 0);
 
-        if (null !== $sprmCPicLocation) {
-            if (null !== $sprmCFData && 0x01 == $sprmCFData) {
+        if (!is_null($sprmCPicLocation)) {
+            if (!is_null($sprmCFData) && $sprmCFData == 0x01) {
                 // NilPICFAndBinData
                 //@todo Read Hyperlink structure
                 /*$lcb = self::getInt4d($this->dataData, $sprmCPicLocation);
@@ -1953,7 +1954,7 @@ class MsDoc extends AbstractReader implements ReaderInterface
                 // HFD > clsid
                 $sprmCPicLocation += 16;
                 // HFD > hyperlink
-                //@link : http://msdn.microsoft.com/en-us/library/dd909835%28v=office.12%29.aspx
+                //@see  : http://msdn.microsoft.com/en-us/library/dd909835%28v=office.12%29.aspx
                 $streamVersion = self::getInt4d($this->dataData, $sprmCPicLocation);
                 $sprmCPicLocation += 4;
                 $data = self::getInt4d($this->dataData, $sprmCPicLocation);
@@ -2021,8 +2022,8 @@ class MsDoc extends AbstractReader implements ReaderInterface
                 }*/
             } else {
                 // Pictures
-                //@link : http://msdn.microsoft.com/en-us/library/dd925458%28v=office.12%29.aspx
-                //@link : http://msdn.microsoft.com/en-us/library/dd926136%28v=office.12%29.aspx
+                //@see  : http://msdn.microsoft.com/en-us/library/dd925458%28v=office.12%29.aspx
+                //@see  : http://msdn.microsoft.com/en-us/library/dd926136%28v=office.12%29.aspx
                 // PICF : lcb
                 $sprmCPicLocation += 4;
                 // PICF : cbHeader
@@ -2087,17 +2088,17 @@ class MsDoc extends AbstractReader implements ReaderInterface
                 // PICF : cProps
                 $sprmCPicLocation += 2;
 
-                if (0x0066 == $mfpfMm) {
+                if ($mfpfMm == 0x0066) {
                     // cchPicName
                     $cchPicName = self::getInt1d($this->dataData, $sprmCPicLocation);
                     $sprmCPicLocation += 1;
 
                     // stPicName
-                    $stPicName = '';
+                    //$stPicName = '';
                     for ($inc = 0; $inc <= $cchPicName; $inc++) {
-                        $chr = self::getInt1d($this->dataData, $sprmCPicLocation);
+                        //$chr = self::getInt1d($this->dataData, $sprmCPicLocation);
                         $sprmCPicLocation += 1;
-                        $stPicName .= chr($chr);
+                        //$stPicName .= chr($chr);
                     }
                 }
 
@@ -2105,17 +2106,17 @@ class MsDoc extends AbstractReader implements ReaderInterface
                 // picture : shape
                 $shapeRH = $this->loadRecordHeader($this->dataData, $sprmCPicLocation);
                 $sprmCPicLocation += 8;
-                if (0xF == $shapeRH['recVer'] && 0x000 == $shapeRH['recInstance'] && 0xF004 == $shapeRH['recType']) {
+                if ($shapeRH['recVer'] == 0xF && $shapeRH['recInstance'] == 0x000 && $shapeRH['recType'] == 0xF004) {
                     $sprmCPicLocation += $shapeRH['recLen'];
                 }
                 // picture : rgfb
-                //@link : http://msdn.microsoft.com/en-us/library/dd950560%28v=office.12%29.aspx
+                //@see  : http://msdn.microsoft.com/en-us/library/dd950560%28v=office.12%29.aspx
                 $fileBlockRH = $this->loadRecordHeader($this->dataData, $sprmCPicLocation);
-                while (0xF007 == $fileBlockRH['recType'] || ($fileBlockRH['recType'] >= 0xF018 && $fileBlockRH['recType'] <= 0xF117)) {
+                while ($fileBlockRH['recType'] == 0xF007 || ($fileBlockRH['recType'] >= 0xF018 && $fileBlockRH['recType'] <= 0xF117)) {
                     $sprmCPicLocation += 8;
                     switch ($fileBlockRH['recType']) {
                         // OfficeArtFBSE
-                        //@link : http://msdn.microsoft.com/en-us/library/dd944923%28v=office.12%29.aspx
+                        //@see  : http://msdn.microsoft.com/en-us/library/dd944923%28v=office.12%29.aspx
                         case 0xF007:
                             // btWin32
                             $sprmCPicLocation += 1;
@@ -2142,33 +2143,33 @@ class MsDoc extends AbstractReader implements ReaderInterface
                             $sprmCPicLocation += 1;
                             // nameData
                             if ($cbName > 0) {
-                                $nameData = '';
+                                //$nameData = '';
                                 for ($inc = 0; $inc <= ($cbName / 2); $inc++) {
-                                    $chr = self::getInt2d($this->dataData, $sprmCPicLocation);
+                                    //$chr = self::getInt2d($this->dataData, $sprmCPicLocation);
                                     $sprmCPicLocation += 2;
-                                    $nameData .= chr($chr);
+                                    //$nameData .= chr($chr);
                                 }
                             }
                             // embeddedBlip
-                            //@link : http://msdn.microsoft.com/en-us/library/dd910081%28v=office.12%29.aspx
+                            //@see  : http://msdn.microsoft.com/en-us/library/dd910081%28v=office.12%29.aspx
                             $embeddedBlipRH = $this->loadRecordHeader($this->dataData, $sprmCPicLocation);
                             switch ($embeddedBlipRH['recType']) {
                                 case self::OFFICEARTBLIPJPG:
                                 case self::OFFICEARTBLIPJPEG:
                                     if (!isset($oStylePrl->image)) {
-                                        $oStylePrl->image = [];
+                                        $oStylePrl->image = array();
                                     }
                                     $sprmCPicLocation += 8;
                                     // embeddedBlip : rgbUid1
                                     $sprmCPicLocation += 16;
-                                    if (0x6E1 == $embeddedBlipRH['recInstance']) {
+                                    if ($embeddedBlipRH['recInstance'] == 0x6E1) {
                                         // rgbUid2
                                         $sprmCPicLocation += 16;
                                     }
                                     // embeddedBlip : tag
                                     $sprmCPicLocation += 1;
                                     // embeddedBlip : BLIPFileData
-                                    $oStylePrl->image['data'] = mb_substr($this->dataData, $sprmCPicLocation, $embeddedBlipRH['recLen']);
+                                    $oStylePrl->image['data'] = substr($this->dataData, $sprmCPicLocation, $embeddedBlipRH['recLen']);
                                     $oStylePrl->image['format'] = 'jpg';
                                     // Image Size
                                     $iCropWidth = $picmidDxaGoal - ($picmidDxaCropLeft + $picmidDxaCropRight);
@@ -2183,6 +2184,8 @@ class MsDoc extends AbstractReader implements ReaderInterface
                                     $oStylePrl->image['height'] = Drawing::twipsToPixels($iCropHeight * $picmidMy / 1000);
 
                                     $sprmCPicLocation += $embeddedBlipRH['recLen'];
+                                    break;
+                                case self::OFFICEARTBLIPPNG:
                                     break;
                                 default:
                                     // print_r(dechex($embeddedBlipRH['recType']));
@@ -2211,36 +2214,36 @@ class MsDoc extends AbstractReader implements ReaderInterface
         $recType = self::getInt2d($stream, $pos + 2);
         $recLen = self::getInt4d($stream, $pos + 4);
 
-        return [
-            'recVer' => ($rec >> 0) & bindec('1111'),
+        return array(
+            'recVer'      => ($rec >> 0) & bindec('1111'),
             'recInstance' => ($rec >> 4) & bindec('111111111111'),
-            'recType' => $recType,
-            'recLen' => $recLen,
-        ];
+            'recType'     => $recType,
+            'recLen'      => $recLen,
+        );
     }
 
     private function generatePhpWord()
     {
         foreach ($this->arraySections as $itmSection) {
             $oSection = $this->phpWord->addSection();
-            $oSection->setSettings($itmSection->styleSection);
+            $oSection->setStyle($itmSection->styleSection);
 
             $sHYPERLINK = '';
             foreach ($this->arrayParagraphs as $itmParagraph) {
                 $textPara = $itmParagraph;
                 foreach ($this->arrayCharacters as $oCharacters) {
-                    $subText = mb_substr($textPara, $oCharacters->pos_start, $oCharacters->pos_len);
+                    $subText = substr($textPara, $oCharacters->pos_start, $oCharacters->pos_len);
                     $subText = str_replace(chr(13), PHP_EOL, $subText);
                     $arrayText = explode(PHP_EOL, $subText);
-                    if ('' == end($arrayText)) {
+                    if (end($arrayText) == '') {
                         array_pop($arrayText);
                     }
-                    if ('' == reset($arrayText)) {
+                    if (reset($arrayText) == '') {
                         array_shift($arrayText);
                     }
 
                     // Style Character
-                    $styleFont = [];
+                    $styleFont = array();
                     if (isset($oCharacters->style)) {
                         if (isset($oCharacters->style->styleFont)) {
                             $styleFont = $oCharacters->style->styleFont;
@@ -2269,18 +2272,18 @@ class MsDoc extends AbstractReader implements ReaderInterface
                             }
                             if (empty($sHYPERLINK)) {
                                 if (ord($sText[0]) > 20) {
-                                    if (0 === mb_strpos(trim($sText), 'HYPERLINK "')) {
+                                    if (strpos(trim($sText), 'HYPERLINK "') === 0) {
                                         $sHYPERLINK = $sText;
                                     } else {
                                         $oSection->addText($sText, $styleFont);
                                         // print_r('>addText<'.$sText.'>'.ord($sText[0]).EOL);
                                     }
                                 }
-                                if (1 == ord($sText[0])) {
+                                if (ord($sText[0]) == 1) {
                                     if (isset($oCharacters->style->image)) {
                                         $fileImage = tempnam(sys_get_temp_dir(), 'PHPWord_MsDoc') . '.' . $oCharacters->style->image['format'];
                                         file_put_contents($fileImage, $oCharacters->style->image['data']);
-                                        $oSection->addImage($fileImage, ['width' => $oCharacters->style->image['width'], 'height' => $oCharacters->style->image['height']]);
+                                        $oSection->addImage($fileImage, array('width' => $oCharacters->style->image['width'], 'height' => $oCharacters->style->image['height']));
                                         // print_r('>addImage<'.$fileImage.'>'.EOL);
                                     }
                                 }

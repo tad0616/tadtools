@@ -39,6 +39,9 @@ class CodeMirror
             $xoTheme->addScript(XOOPS_URL . '/modules/tadtools/CodeMirror/addon/selection/active-line.js');
             $xoTheme->addScript(XOOPS_URL . '/modules/tadtools/CodeMirror/addon/edit/matchbrackets.js');
             $xoTheme->addScript(XOOPS_URL . '/modules/tadtools/CodeMirror/addon/display/fullscreen.js');
+            $xoTheme->addScript(XOOPS_URL . '/modules/tadtools/CodeMirror/addon/hint/show-hint.js');
+            $xoTheme->addScript(XOOPS_URL . '/modules/tadtools/CodeMirror/addon/hint/css-hint.js');
+            $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/CodeMirror/addon/hint/show-hint.css');
 
             $xoTheme->addScript('', null, "
             \$(document).ready(function(){
@@ -50,19 +53,23 @@ class CodeMirror
                     mode: '{$this->mode}',
                     lineWrapping: true,
                     theme: '{$this->theme}',
-                });
-                editor.setOption('extraKeys', {
-                    Tab: function(cm) {
-                        var spaces = Array(cm.getOption('indentUnit') + 1).join(' ');
-                        cm.replaceSelection(spaces);
+                    extraKeys: {
+                        Tab: function(cm) {
+                            var spaces = Array(cm.getOption('indentUnit') + 1).join(' ');
+                            cm.replaceSelection(spaces);
+                        },
+                        'F11': function(cm) {
+                            cm.setOption('fullScreen', !cm.getOption('fullScreen'));
+                        },
+                        'Esc': function(cm) {
+                            if (cm.getOption('fullScreen')) cm.setOption('fullScreen', false);
+                        },
+                        'Ctrl-Space': 'autocomplete'
                     },
-                    'F11': function(cm) {
-                        cm.setOption('fullScreen', !cm.getOption('fullScreen'));
-                    },
-                    'Esc': function(cm) {
-                        if (cm.getOption('fullScreen')) cm.setOption('fullScreen', false);
-                    }
+                    hintOptions: { hint: 'cssHint' }
                 });
+                // 啟用 CSS Autocompletion
+                // CodeMirror.registerHelper('hint', 'css', CodeMirror.hint.css);
             });");
         } else {
             $CodeMirror = '
@@ -77,6 +84,9 @@ class CodeMirror
             <script type="text/javascript" src="' . XOOPS_URL . '/modules/tadtools/CodeMirror/addon/selection/active-line.js"></script>
             <script type="text/javascript" src="' . XOOPS_URL . '/modules/tadtools/CodeMirror/addon/edit/matchbrackets.js"></script>
             <script type="text/javascript" src="' . XOOPS_URL . '/modules/tadtools/CodeMirror/addon/display/fullscreen.js"></script>
+            <script src="' . XOOPS_URL . '/modules/tadtools/CodeMirror/addon/hint/show-hint.js" type="text/javascript"></script>
+            <script src="' . XOOPS_URL . '/modules/tadtools/CodeMirror/addon/hint/css-hint.js" type="text/javascript"></script>
+            <link rel="stylesheet" href="' . XOOPS_URL . '/modules/tadtools/CodeMirror/addon/hint/show-hint.css">
 
             <script>
             $(document).ready(function(){
@@ -88,19 +98,23 @@ class CodeMirror
                     mode: "' . $this->mode . '",
                     lineWrapping: true,
                     theme: "' . $this->theme . '",
-                });
-                editor.setOption("extraKeys", {
-                    Tab: function(cm) {
-                        var spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
-                        cm.replaceSelection(spaces);
+                    extraKeys: {
+                        Tab: function(cm) {
+                            var spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
+                            cm.replaceSelection(spaces);
+                        },
+                        "F11": function(cm) {
+                            cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                        },
+                        "Esc": function(cm) {
+                            if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+                        },
+                        "Ctrl-Space": "autocomplete"
                     },
-                    "F11": function(cm) {
-                        cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                    },
-                    "Esc": function(cm) {
-                        if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
-                    }
+                    hintOptions: { hint: "cssHint" }
                 });
+                // 啟用 CSS Autocompletion
+                // CodeMirror.registerHelper("hint", "css", CodeMirror.hint.css);
             });
             </script>';
         }

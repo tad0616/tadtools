@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PhpWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PhpWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -38,6 +38,7 @@ class PDF
     /**
      * Instantiate a new renderer of the configured type within this container class
      *
+     * @param \PhpOffice\PhpWord\PhpWord $phpWord
      *
      * @throws \PhpOffice\PhpWord\Exception\Exception
      */
@@ -45,13 +46,13 @@ class PDF
     {
         $pdfLibraryName = Settings::getPdfRendererName();
         $pdfLibraryPath = Settings::getPdfRendererPath();
-        if (null === $pdfLibraryName || null === $pdfLibraryPath) {
+        if (is_null($pdfLibraryName) || is_null($pdfLibraryPath)) {
             throw new Exception('PDF rendering library or library path has not been defined.');
         }
 
         $includePath = str_replace('\\', '/', get_include_path());
         $rendererPath = str_replace('\\', '/', $pdfLibraryPath);
-        if (false === mb_strpos($rendererPath, $includePath)) {
+        if (strpos($rendererPath, $includePath) === false) {
             set_include_path(get_include_path() . PATH_SEPARATOR . $pdfLibraryPath);
         }
 
@@ -73,6 +74,6 @@ class PDF
         //     throw new Exception("PDF Rendering library has not been defined.");
         // }
 
-        return call_user_func_array([$this->renderer, $name], $arguments);
+        return call_user_func_array(array($this->renderer, $name), $arguments);
     }
 }

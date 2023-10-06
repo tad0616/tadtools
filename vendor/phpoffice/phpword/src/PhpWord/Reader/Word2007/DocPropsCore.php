@@ -10,15 +10,15 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
 namespace PhpOffice\PhpWord\Reader\Word2007;
 
-use PhpOffice\Common\XMLReader;
 use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\Shared\XMLReader;
 
 /**
  * Core properties reader
@@ -32,29 +32,29 @@ class DocPropsCore extends AbstractPart
      *
      * @var array
      */
-    protected $mapping = [
-        'dc:creator' => 'setCreator',
-        'dc:title' => 'setTitle',
-        'dc:description' => 'setDescription',
-        'dc:subject' => 'setSubject',
-        'cp:keywords' => 'setKeywords',
-        'cp:category' => 'setCategory',
+    protected $mapping = array(
+        'dc:creator'        => 'setCreator',
+        'dc:title'          => 'setTitle',
+        'dc:description'    => 'setDescription',
+        'dc:subject'        => 'setSubject',
+        'cp:keywords'       => 'setKeywords',
+        'cp:category'       => 'setCategory',
         'cp:lastModifiedBy' => 'setLastModifiedBy',
-        'dcterms:created' => 'setCreated',
-        'dcterms:modified' => 'setModified',
-    ];
+        'dcterms:created'   => 'setCreated',
+        'dcterms:modified'  => 'setModified',
+    );
 
     /**
      * Callback functions
      *
      * @var array
      */
-    protected $callbacks = ['dcterms:created' => 'strtotime', 'dcterms:modified' => 'strtotime'];
+    protected $callbacks = array('dcterms:created' => 'strtotime', 'dcterms:modified' => 'strtotime');
 
     /**
      * Read core/extended document properties.
      *
-     * @return void
+     * @param \PhpOffice\PhpWord\PhpWord $phpWord
      */
     public function read(PhpWord $phpWord)
     {
@@ -70,7 +70,7 @@ class DocPropsCore extends AbstractPart
                     continue;
                 }
                 $method = $this->mapping[$node->nodeName];
-                $value = '' == $node->nodeValue ? null : $node->nodeValue;
+                $value = $node->nodeValue == '' ? null : $node->nodeValue;
                 if (isset($this->callbacks[$node->nodeName])) {
                     $value = $this->callbacks[$node->nodeName]($value);
                 }

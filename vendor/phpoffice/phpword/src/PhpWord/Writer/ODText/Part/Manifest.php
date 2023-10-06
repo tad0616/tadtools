@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -31,7 +31,7 @@ class Manifest extends AbstractPart
      */
     public function write()
     {
-        $parts = ['content.xml', 'meta.xml', 'styles.xml'];
+        $parts = array('content.xml', 'meta.xml', 'styles.xml');
         $xmlWriter = $this->getXmlWriter();
 
         $xmlWriter->startDocument('1.0', 'UTF-8');
@@ -56,7 +56,7 @@ class Manifest extends AbstractPart
         // Media files
         $media = Media::getElements('section');
         foreach ($media as $medium) {
-            if ('image' == $medium['type']) {
+            if ($medium['type'] == 'image') {
                 $xmlWriter->startElement('manifest:file-entry');
                 $xmlWriter->writeAttribute('manifest:media-type', $medium['imageType']);
                 $xmlWriter->writeAttribute('manifest:full-path', 'Pictures/' . $medium['target']);

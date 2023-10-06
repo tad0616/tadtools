@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -48,8 +48,6 @@ abstract class AbstractPart
 
     /**
      * @param \PhpOffice\PhpWord\Writer\AbstractWriter $writer
-     * 
-     * @return void
      */
     public function setParentWriter(AbstractWriter $writer = null)
     {
@@ -62,7 +60,7 @@ abstract class AbstractPart
      */
     public function getParentWriter()
     {
-        if (null !== $this->parentWriter) {
+        if ($this->parentWriter !== null) {
             return $this->parentWriter;
         }
         throw new Exception('No parent WriterInterface assigned.');

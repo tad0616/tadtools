@@ -10,16 +10,16 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
 namespace PhpOffice\PhpWord\Writer\Word2007\Part;
 
-use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpWord\Exception\Exception;
 use PhpOffice\PhpWord\Settings;
+use PhpOffice\PhpWord\Shared\XMLWriter;
 use PhpOffice\PhpWord\Writer\AbstractWriter;
 
 /**
@@ -50,7 +50,6 @@ abstract class AbstractPart
      * Set parent writer.
      *
      * @param \PhpOffice\PhpWord\Writer\AbstractWriter $writer
-     * @return void
      */
     public function setParentWriter(AbstractWriter $writer = null)
     {
@@ -65,7 +64,7 @@ abstract class AbstractPart
      */
     public function getParentWriter()
     {
-        if (null !== $this->parentWriter) {
+        if (!is_null($this->parentWriter)) {
             return $this->parentWriter;
         }
         throw new Exception('No parent WriterInterface assigned.');
@@ -74,12 +73,12 @@ abstract class AbstractPart
     /**
      * Get XML Writer
      *
-     * @return \PhpOffice\Common\XMLWriter
+     * @return \PhpOffice\PhpWord\Shared\XMLWriter
      */
     protected function getXmlWriter()
     {
         $useDiskCaching = false;
-        if (null !== $this->parentWriter) {
+        if (!is_null($this->parentWriter)) {
             if ($this->parentWriter->isUseDiskCaching()) {
                 $useDiskCaching = true;
             }
@@ -89,5 +88,20 @@ abstract class AbstractPart
         }
 
         return new XMLWriter(XMLWriter::STORAGE_MEMORY, './', Settings::hasCompatibility());
+    }
+
+    /**
+     * Write an XML text, this will call text() or writeRaw() depending on the value of Settings::isOutputEscapingEnabled()
+     *
+     * @param string $content The text string to write
+     * @return bool Returns true on success or false on failure
+     */
+    protected function writeText($content)
+    {
+        if (Settings::isOutputEscapingEnabled()) {
+            return $this->getXmlWriter()->text($content);
+        }
+
+        return $this->getXmlWriter()->writeRaw($content);
     }
 }

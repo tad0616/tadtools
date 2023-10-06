@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -73,20 +73,20 @@ class Tab extends AbstractStyle
      * must conform to the values put forth in the schema. If they do not
      * they will be changed to default values.
      *
-     * @param string $type Defaults to 'clear' if value is not possible.
-     * @param int $position Must be numeric; otherwise defaults to 0.
-     * @param string $leader Defaults to null if value is not possible.
+     * @param string $type Defaults to 'clear' if value is not possible
+     * @param int $position Must be numeric; otherwise defaults to 0
+     * @param string $leader Defaults to null if value is not possible
      */
     public function __construct($type = null, $position = 0, $leader = null)
     {
-        $stopTypes = [
+        $stopTypes = array(
             self::TAB_STOP_CLEAR, self::TAB_STOP_LEFT, self::TAB_STOP_CENTER,
             self::TAB_STOP_RIGHT, self::TAB_STOP_DECIMAL, self::TAB_STOP_BAR, self::TAB_STOP_NUM,
-        ];
-        $leaderTypes = [
+        );
+        $leaderTypes = array(
             self::TAB_LEADER_NONE, self::TAB_LEADER_DOT, self::TAB_LEADER_HYPHEN,
             self::TAB_LEADER_UNDERSCORE, self::TAB_LEADER_HEAVY, self::TAB_LEADER_MIDDLEDOT,
-        ];
+        );
 
         $this->type = $this->setEnumVal($type, $stopTypes, $this->type);
         $this->position = $this->setNumericVal($position, $this->position);
@@ -111,11 +111,11 @@ class Tab extends AbstractStyle
      */
     public function setType($value)
     {
-        $enum = [
+        $enum = array(
             self::TAB_STOP_CLEAR, self::TAB_STOP_LEFT, self::TAB_STOP_CENTER,
             self::TAB_STOP_RIGHT, self::TAB_STOP_DECIMAL, self::TAB_STOP_BAR,
             self::TAB_STOP_NUM,
-        ];
+        );
         $this->type = $this->setEnumVal($value, $enum, $this->type);
 
         return $this;
@@ -139,10 +139,10 @@ class Tab extends AbstractStyle
      */
     public function setLeader($value)
     {
-        $enum = [
+        $enum = array(
             self::TAB_LEADER_NONE, self::TAB_LEADER_DOT, self::TAB_LEADER_HYPHEN,
             self::TAB_LEADER_UNDERSCORE, self::TAB_LEADER_HEAVY, self::TAB_LEADER_MIDDLEDOT,
-        ];
+        );
         $this->leader = $this->setEnumVal($value, $enum, $this->leader);
 
         return $this;

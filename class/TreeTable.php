@@ -35,7 +35,7 @@ class TreeTable
     }
 
     //產生路徑工具
-    public function render()
+    public function render($tag = "tr")
     {
         global $xoTheme;
 
@@ -81,10 +81,10 @@ class TreeTable
 
             // Configure droppable rows
             $('{$this->tbl_id} {$this->folder_class}').each(function() {
-                $(this).parents('{$this->tbl_id} tr').droppable({
+                $(this).parents('{$this->tbl_id} {$tag}').droppable({
                 accept: '{$this->folder_class}',
                 drop: function(e, ui) {
-                    var droppedEl = ui.draggable.parents('tr');
+                    var droppedEl = ui.draggable.parents('{$tag}');
                     $('{$this->tbl_id}').treetable('move', droppedEl.data('ttId'), $(this).data('ttId'));
                     //alert(droppedEl.data('ttId'));
 
@@ -100,7 +100,7 @@ class TreeTable
                 },
                 hoverClass: 'accept',
                 over: function(e, ui) {
-                    var droppedEl = ui.draggable.parents('tr');
+                    var droppedEl = ui.draggable.parents('{$tag}');
                     if(this != droppedEl[0] && !$(this).is('.expanded')) {
                     $('{$this->tbl_id}').treetable('expandNode', $(this).data('ttId'));
                     }
@@ -119,7 +119,7 @@ class TreeTable
                 \$(document).ready(function(){
                     \$('{$this->tbl_id}').treetable({ expandable: true $expanded });
                     $sort_code
-                    \$('table{$this->tbl_id} tbody').on('mousedown', 'tr', function() {
+                    \$('table{$this->tbl_id} tbody').on('mousedown', '{$tag}', function() {
                     \$('.selected').not(this).removeClass('selected');
                     \$(this).toggleClass('selected');
                     });
@@ -138,7 +138,7 @@ class TreeTable
             $(document).ready(function()  {
                 $('{$this->tbl_id}').treetable({ expandable: true $expanded });
                 $sort_code
-                $('table{$this->tbl_id} tbody').on('mousedown', 'tr', function() {
+                $('table{$this->tbl_id} tbody').on('mousedown', '{$tag}', function() {
                 $('.selected').not(this).removeClass('selected');
                 $(this).toggleClass('selected');
                 });

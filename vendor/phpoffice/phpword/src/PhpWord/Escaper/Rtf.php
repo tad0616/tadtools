@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -19,15 +19,21 @@ namespace PhpOffice\PhpWord\Escaper;
 
 /**
  * @since 0.13.0
- * 
+ *
  * @codeCoverageIgnore
  */
 class Rtf extends AbstractEscaper
 {
     protected function escapeAsciiCharacter($code)
     {
-        if ($code < 20 || $code >= 80) {
-            return '{\u' . $code . '}';
+        if ($code == 9) {
+            return '{\\tab}';
+        }
+        if (0x20 > $code || $code >= 0x80) {
+            return '{\\u' . $code . '}';
+        }
+        if ($code == 123 || $code == 125 || $code == 92) { // open or close brace or backslash
+            return '\\' . chr($code);
         }
 
         return chr($code);
@@ -35,20 +41,20 @@ class Rtf extends AbstractEscaper
 
     protected function escapeMultibyteCharacter($code)
     {
-        return '\uc0{\u' . $code . '}';
+        return '\\uc0{\\u' . $code . '}';
     }
 
     /**
      * @see http://www.randomchaos.com/documents/?source=php_and_unicode
-     * @param mixed $input
+     * @param string $input
      */
     protected function escapeSingleValue($input)
     {
         $escapedValue = '';
 
         $numberOfBytes = 1;
-        $bytes = [];
-        for ($i = 0; $i < mb_strlen($input); ++$i) {
+        $bytes = array();
+        for ($i = 0; $i < strlen($input); ++$i) {
             $character = $input[$i];
             $asciiCode = ord($character);
 
@@ -81,7 +87,7 @@ class Rtf extends AbstractEscaper
                     }
 
                     $numberOfBytes = 1;
-                    $bytes = [];
+                    $bytes = array();
                 }
             }
         }

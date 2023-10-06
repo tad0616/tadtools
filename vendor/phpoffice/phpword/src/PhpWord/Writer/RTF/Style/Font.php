@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -49,15 +49,16 @@ class Font extends AbstractStyle
         }
 
         $content = '';
+        $content .= $this->getValueIf($style->isRTL(), '\rtlch');
         $content .= '\cf' . $this->colorIndex;
         $content .= '\f' . $this->nameIndex;
 
         $size = $style->getSize();
-        $content .= $this->getValueIf(is_numeric($size), '\fs' . ($size * 2));
+        $content .= $this->getValueIf(is_numeric($size), '\fs' . round($size * 2));
 
         $content .= $this->getValueIf($style->isBold(), '\b');
         $content .= $this->getValueIf($style->isItalic(), '\i');
-        $content .= $this->getValueIf(FontStyle::UNDERLINE_NONE != $style->getUnderline(), '\ul');
+        $content .= $this->getValueIf($style->getUnderline() != FontStyle::UNDERLINE_NONE, '\ul');
         $content .= $this->getValueIf($style->isStrikethrough(), '\strike');
         $content .= $this->getValueIf($style->isSuperScript(), '\super');
         $content .= $this->getValueIf($style->isSubScript(), '\sub');
@@ -70,7 +71,6 @@ class Font extends AbstractStyle
      *
      *
      * @param int $value
-     * @return void
      */
     public function setNameIndex($value = 0)
     {
@@ -81,7 +81,6 @@ class Font extends AbstractStyle
      * Set font color index.
      *
      * @param int $value
-     * @return void
      */
     public function setColorIndex($value = 0)
     {

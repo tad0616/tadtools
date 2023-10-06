@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -38,32 +38,31 @@ class ODText extends AbstractWriter implements WriterInterface
         $this->setPhpWord($phpWord);
 
         // Create parts
-        $this->parts = [
-            'Mimetype' => 'mimetype',
-            'Content' => 'content.xml',
-            'Meta' => 'meta.xml',
-            'Styles' => 'styles.xml',
-            'Manifest' => 'META-INF/manifest.xml',
-        ];
+        $this->parts = array(
+            'Mimetype'  => 'mimetype',
+            'Content'   => 'content.xml',
+            'Meta'      => 'meta.xml',
+            'Styles'    => 'styles.xml',
+            'Manifest'  => 'META-INF/manifest.xml',
+        );
         foreach (array_keys($this->parts) as $partName) {
             $partClass = get_class($this) . '\\Part\\' . $partName;
             if (class_exists($partClass)) {
-                /** @var \PhpOffice\PhpWord\Writer\ODText\Part\AbstractPart $partObject Type hint */
+                /** @var $partObject \PhpOffice\PhpWord\Writer\ODText\Part\AbstractPart Type hint */
                 $partObject = new $partClass();
                 $partObject->setParentWriter($this);
-                $this->writerParts[mb_strtolower($partName)] = $partObject;
+                $this->writerParts[strtolower($partName)] = $partObject;
             }
         }
 
         // Set package paths
-        $this->mediaPaths = ['image' => 'Pictures/'];
+        $this->mediaPaths = array('image' => 'Pictures/');
     }
 
     /**
      * Save PhpWord to file.
      *
      * @param string $filename
-     * @return void
      */
     public function save($filename = null)
     {
@@ -78,7 +77,7 @@ class ODText extends AbstractWriter implements WriterInterface
 
         // Write parts
         foreach ($this->parts as $partName => $fileName) {
-            if ('' != $fileName) {
+            if ($fileName != '') {
                 $zip->addFromString($fileName, $this->getWriterPart($partName)->write());
             }
         }

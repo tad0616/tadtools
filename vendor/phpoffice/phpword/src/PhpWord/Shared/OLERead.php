@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -81,7 +81,7 @@ class OLERead
         $this->data = file_get_contents($sFileName, false, null, 0, 8);
 
         // Check OLE identifier
-        if (self::IDENTIFIER_OLE != $this->data) {
+        if ($this->data != self::IDENTIFIER_OLE) {
             throw new Exception('The filename ' . $sFileName . ' is not recognised as an OLE file');
         }
 
@@ -103,20 +103,23 @@ class OLERead
         // Total number of sectors used by MSAT
         $this->numExtensionBlocks = self::getInt4d($this->data, self::NUM_EXTENSION_BLOCK_POS);
 
-        $bigBlockDepotBlocks = [];
+        $bigBlockDepotBlocks = array();
         $pos = self::BIG_BLOCK_DEPOT_BLOCKS_POS;
 
         $bbdBlocks = $this->numBigBlockDepotBlocks;
 
-        if (0 != $this->numExtensionBlocks) {
+        // @codeCoverageIgnoreStart
+        if ($this->numExtensionBlocks != 0) {
             $bbdBlocks = (self::BIG_BLOCK_SIZE - self::BIG_BLOCK_DEPOT_BLOCKS_POS) / 4;
         }
+        // @codeCoverageIgnoreEnd
 
         for ($i = 0; $i < $bbdBlocks; ++$i) {
             $bigBlockDepotBlocks[$i] = self::getInt4d($this->data, $pos);
             $pos += 4;
         }
 
+        // @codeCoverageIgnoreStart
         for ($j = 0; $j < $this->numExtensionBlocks; ++$j) {
             $pos = ($this->extensionBlock + 1) * self::BIG_BLOCK_SIZE;
             $blocksToRead = min($this->numBigBlockDepotBlocks - $bbdBlocks, self::BIG_BLOCK_SIZE / 4 - 1);
@@ -131,6 +134,7 @@ class OLERead
                 $this->extensionBlock = self::getInt4d($this->data, $pos);
             }
         }
+        // @codeCoverageIgnoreEnd
 
         $pos = 0;
         $this->bigBlockChain = '';
@@ -138,17 +142,17 @@ class OLERead
         for ($i = 0; $i < $this->numBigBlockDepotBlocks; ++$i) {
             $pos = ($bigBlockDepotBlocks[$i] + 1) * self::BIG_BLOCK_SIZE;
 
-            $this->bigBlockChain .= mb_substr($this->data, $pos, 4 * $bbs);
+            $this->bigBlockChain .= substr($this->data, $pos, 4 * $bbs);
             $pos += 4 * $bbs;
         }
 
         $pos = 0;
         $sbdBlock = $this->sbdStartBlock;
         $this->smallBlockChain = '';
-        while (-2 != $sbdBlock) {
+        while ($sbdBlock != -2) {
             $pos = ($sbdBlock + 1) * self::BIG_BLOCK_SIZE;
 
-            $this->smallBlockChain .= mb_substr($this->data, $pos, 4 * $bbs);
+            $this->smallBlockChain .= substr($this->data, $pos, 4 * $bbs);
             $pos += 4 * $bbs;
 
             $sbdBlock = self::getInt4d($this->bigBlockChain, $sbdBlock * 4);
@@ -169,7 +173,7 @@ class OLERead
      */
     public function getStream($stream)
     {
-        if (null === $stream) {
+        if ($stream === null) {
             return null;
         }
 
@@ -180,29 +184,30 @@ class OLERead
 
             $block = $this->props[$stream]['startBlock'];
 
-            while (-2 != $block) {
+            while ($block != -2) {
                 $pos = $block * self::SMALL_BLOCK_SIZE;
-                $streamData .= mb_substr($rootdata, $pos, self::SMALL_BLOCK_SIZE);
+                $streamData .= substr($rootdata, $pos, self::SMALL_BLOCK_SIZE);
 
                 $block = self::getInt4d($this->smallBlockChain, $block * 4);
             }
 
             return $streamData;
         }
+
         $numBlocks = $this->props[$stream]['size'] / self::BIG_BLOCK_SIZE;
-        if (0 != $this->props[$stream]['size'] % self::BIG_BLOCK_SIZE) {
+        if ($this->props[$stream]['size'] % self::BIG_BLOCK_SIZE != 0) {
             ++$numBlocks;
         }
 
-        if (0 == $numBlocks) {
-            return '';
+        if ($numBlocks == 0) {
+            return ''; // @codeCoverageIgnore
         }
 
         $block = $this->props[$stream]['startBlock'];
 
-        while (-2 != $block) {
+        while ($block != -2) {
             $pos = ($block + 1) * self::BIG_BLOCK_SIZE;
-            $streamData .= mb_substr($this->data, $pos, self::BIG_BLOCK_SIZE);
+            $streamData .= substr($this->data, $pos, self::BIG_BLOCK_SIZE);
             $block = self::getInt4d($this->bigBlockChain, $block * 4);
         }
 
@@ -220,9 +225,9 @@ class OLERead
         $block = $blSectorId;
         $data = '';
 
-        while (-2 != $block) {
+        while ($block != -2) {
             $pos = ($block + 1) * self::BIG_BLOCK_SIZE;
-            $data .= mb_substr($this->data, $pos, self::BIG_BLOCK_SIZE);
+            $data .= substr($this->data, $pos, self::BIG_BLOCK_SIZE);
             $block = self::getInt4d($this->bigBlockChain, $block * 4);
         }
 
@@ -237,10 +242,10 @@ class OLERead
         $offset = 0;
 
         // loop through entires, each entry is 128 bytes
-        $entryLen = mb_strlen($this->entry);
+        $entryLen = strlen($this->entry);
         while ($offset < $entryLen) {
             // entry data (128 bytes)
-            $data = mb_substr($this->entry, $offset, self::PROPERTY_STORAGE_BLOCK_SIZE);
+            $data = substr($this->entry, $offset, self::PROPERTY_STORAGE_BLOCK_SIZE);
 
             // size in bytes of name
             $nameSize = ord($data[self::SIZE_OF_NAME_POS]) | (ord($data[self::SIZE_OF_NAME_POS + 1]) << 8);
@@ -254,28 +259,28 @@ class OLERead
 
             $size = self::getInt4d($data, self::SIZE_POS);
 
-            $name = str_replace("\x00", '', mb_substr($data, 0, $nameSize));
+            $name = str_replace("\x00", '', substr($data, 0, $nameSize));
 
-            $this->props[] = [
-                'name' => $name,
-                'type' => $type,
+            $this->props[] = array(
+                'name'       => $name,
+                'type'       => $type,
                 'startBlock' => $startBlock,
-                'size' => $size, ];
+                'size'       => $size, );
 
             // tmp helper to simplify checks
-            $upName = mb_strtoupper($name);
+            $upName = strtoupper($name);
 
             // Workbook directory entry (BIFF5 uses Book, BIFF8 uses Workbook)
             // print_r($upName.PHP_EOL);
-            if (('WORDDOCUMENT' === $upName)) {
+            if (($upName === 'WORDDOCUMENT')) {
                 $this->wrkdocument = count($this->props) - 1;
-            } elseif ('1TABLE' === $upName) {
+            } elseif ($upName === '1TABLE') {
                 $this->wrk1Table = count($this->props) - 1;
-            } elseif ('DATA' === $upName) {
+            } elseif ($upName === 'DATA') {
                 $this->wrkData = count($this->props) - 1;
-            } elseif ('OBJECTPOOL' === $upName) {
+            } elseif ($upName === 'OBJECTPOOL') {
                 $this->wrkObjectPoolelseif = count($this->props) - 1;
-            } elseif ('ROOT ENTRY' === $upName || 'R' === $upName) {
+            } elseif ($upName === 'ROOT ENTRY' || $upName === 'R') {
                 $this->rootentry = count($this->props) - 1;
             }
 

@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PhpWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PhpWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -69,9 +69,9 @@ abstract class AbstractRenderer extends HTML
      *
      * @var array
      */
-    protected static $paperSizes = [
+    protected static $paperSizes = array(
         9 => 'A4', // (210 mm by 297 mm)
-    ];
+    );
 
     /**
      * Create new instance
@@ -83,15 +83,17 @@ abstract class AbstractRenderer extends HTML
     public function __construct(PhpWord $phpWord)
     {
         parent::__construct($phpWord);
-        $includeFile = Settings::getPdfRendererPath() . '/' . $this->includeFile;
-        if (file_exists($includeFile)) {
-            /** @noinspection PhpIncludeInspection Dynamic includes */
-            require_once $includeFile;
-        } else {
-            // @codeCoverageIgnoreStart
-            // Can't find any test case. Uncomment when found.
-            throw new Exception('Unable to load PDF Rendering library');
-            // @codeCoverageIgnoreEnd
+        if ($this->includeFile != null) {
+            $includeFile = Settings::getPdfRendererPath() . '/' . $this->includeFile;
+            if (file_exists($includeFile)) {
+                /** @noinspection PhpIncludeInspection Dynamic includes */
+                require_once $includeFile;
+            } else {
+                // @codeCoverageIgnoreStart
+                // Can't find any test case. Uncomment when found.
+                throw new Exception('Unable to load PDF Rendering library');
+                // @codeCoverageIgnoreEnd
+            }
         }
     }
 
@@ -178,10 +180,10 @@ abstract class AbstractRenderer extends HTML
      */
     protected function prepareForSave($filename = null)
     {
-        $fileHandle = fopen($filename, 'wb');
+        $fileHandle = fopen($filename, 'w');
         // @codeCoverageIgnoreStart
         // Can't find any test case. Uncomment when found.
-        if (false === $fileHandle) {
+        if ($fileHandle === false) {
             throw new Exception("Could not open file $filename for writing.");
         }
         // @codeCoverageIgnoreEnd
@@ -196,7 +198,6 @@ abstract class AbstractRenderer extends HTML
      * @param resource $fileHandle
      *
      * @throws Exception
-     * @return void
      */
     protected function restoreStateAfterSave($fileHandle)
     {

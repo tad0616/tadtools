@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -28,8 +28,6 @@ class Chart extends AbstractElement
 {
     /**
      * Write element.
-     *
-     * @return void
      */
     public function write()
     {
@@ -45,14 +43,15 @@ class Chart extends AbstractElement
         if (!$this->withoutP) {
             $xmlWriter->startElement('w:p');
         }
+        $this->writeCommentRangeStart();
 
         $xmlWriter->startElement('w:r');
         $xmlWriter->startElement('w:drawing');
         $xmlWriter->startElement('wp:inline');
 
         // EMU
-        $xmlWriter->writeElementBlock('wp:extent', ['cx' => $style->getWidth(), 'cy' => $style->getHeight()]);
-        $xmlWriter->writeElementBlock('wp:docPr', ['id' => $rId, 'name' => "Chart{$rId}"]);
+        $xmlWriter->writeElementBlock('wp:extent', array('cx' => $style->getWidth(), 'cy' => $style->getHeight()));
+        $xmlWriter->writeElementBlock('wp:docPr', array('id' => $rId, 'name' => "Chart{$rId}"));
 
         $xmlWriter->startElement('a:graphic');
         $xmlWriter->writeAttribute('xmlns:a', 'http://schemas.openxmlformats.org/drawingml/2006/main');

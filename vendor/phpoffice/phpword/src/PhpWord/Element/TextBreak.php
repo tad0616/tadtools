@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -47,10 +47,10 @@ class TextBreak extends AbstractElement
      */
     public function __construct($fontStyle = null, $paragraphStyle = null)
     {
-        if (null !== $paragraphStyle) {
+        if (!is_null($paragraphStyle)) {
             $paragraphStyle = $this->setParagraphStyle($paragraphStyle);
         }
-        if (null !== $fontStyle) {
+        if (!is_null($fontStyle)) {
             $this->setFontStyle($fontStyle, $paragraphStyle);
         }
     }
@@ -125,6 +125,6 @@ class TextBreak extends AbstractElement
      */
     public function hasStyle()
     {
-        return null !== $this->fontStyle || null !== $this->paragraphStyle;
+        return !is_null($this->fontStyle) || !is_null($this->paragraphStyle);
     }
 }

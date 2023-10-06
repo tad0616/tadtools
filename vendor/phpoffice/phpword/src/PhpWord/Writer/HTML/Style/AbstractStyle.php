@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -59,7 +59,6 @@ abstract class AbstractStyle
      * Set parent writer.
      *
      * @param \PhpOffice\PhpWord\Writer\AbstractWriter $writer
-     * @return void
      */
     public function setParentWriter($writer)
     {
@@ -98,10 +97,10 @@ abstract class AbstractStyle
      */
     protected function assembleCss($css)
     {
-        $pairs = [];
+        $pairs = array();
         $string = '';
         foreach ($css as $key => $value) {
-            if ('' != $value) {
+            if ($value != '') {
                 $pairs[] = $key . ': ' . $value;
             }
         }
@@ -121,6 +120,6 @@ abstract class AbstractStyle
      */
     protected function getValueIf($condition, $value)
     {
-        return true == $condition ? $value : '';
+        return $condition == true ? $value : '';
     }
 }

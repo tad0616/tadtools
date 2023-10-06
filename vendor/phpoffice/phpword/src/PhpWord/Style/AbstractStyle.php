@@ -10,14 +10,14 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
 namespace PhpOffice\PhpWord\Style;
 
-use PhpOffice\Common\Text;
+use PhpOffice\PhpWord\Shared\Text;
 
 /**
  * Abstract style class
@@ -47,7 +47,7 @@ abstract class AbstractStyle
      *
      * @var array
      */
-    protected $aliases = [];
+    protected $aliases = array();
 
     /**
      * Is this an automatic style? (Used primarily in OpenDocument driver)
@@ -136,7 +136,7 @@ abstract class AbstractStyle
      */
     public function getChildStyleValue($substyleObject, $substyleProperty)
     {
-        if (null !== $substyleObject) {
+        if ($substyleObject !== null) {
             $method = "get{$substyleProperty}";
 
             return $substyleObject->$method();
@@ -176,7 +176,7 @@ abstract class AbstractStyle
      * @param array $values
      * @return self
      */
-    public function setStyleByArray($values = [])
+    public function setStyleByArray($values = array())
     {
         foreach ($values as $key => $value) {
             $this->setStyleValue($key, $value);
@@ -194,7 +194,7 @@ abstract class AbstractStyle
      */
     protected function setNonEmptyVal($value, $default)
     {
-        if (null === $value || '' == $value) {
+        if ($value === null || $value == '') {
             $value = $default;
         }
 
@@ -242,13 +242,13 @@ abstract class AbstractStyle
      */
     protected function setIntVal($value, $default = null)
     {
-        if (is_string($value) && (0 == preg_match('/[^\d]/', $value))) {
-            $value = intval($value);
+        if (is_string($value) && (preg_match('/[^\d]/', $value) == 0)) {
+            $value = (int) $value;
         }
         if (!is_numeric($value)) {
             $value = $default;
         } else {
-            $value = intval($value);
+            $value = (int) $value;
         }
 
         return $value;
@@ -263,8 +263,8 @@ abstract class AbstractStyle
      */
     protected function setFloatVal($value, $default = null)
     {
-        if (is_string($value) && (0 == preg_match('/[^\d\.\,]/', $value))) {
-            $value = floatval($value);
+        if (is_string($value) && (preg_match('/[^\d\.\,]/', $value) == 0)) {
+            $value = (float) $value;
         }
         if (!is_numeric($value)) {
             $value = $default;
@@ -283,11 +283,11 @@ abstract class AbstractStyle
      * @throws \InvalidArgumentException
      * @return mixed
      */
-    protected function setEnumVal($value = null, $enum = [], $default = null)
+    protected function setEnumVal($value = null, $enum = array(), $default = null)
     {
-        if (null != $value && '' != trim($value) && !empty($enum) && !in_array($value, $enum, true)) {
+        if ($value != null && trim($value) != '' && !empty($enum) && !in_array($value, $enum)) {
             throw new \InvalidArgumentException("Invalid style value: {$value} Options:" . implode(',', $enum));
-        } elseif (null === $value || '' == trim($value)) {
+        } elseif ($value === null || trim($value) == '') {
             $value = $default;
         }
 
@@ -304,7 +304,7 @@ abstract class AbstractStyle
      */
     protected function setObjectVal($value, $styleName, &$style)
     {
-        $styleClass = mb_substr(get_class($this), 0, mb_strrpos(get_class($this), '\\')) . '\\' . $styleName;
+        $styleClass = substr(get_class($this), 0, strrpos(get_class($this), '\\')) . '\\' . $styleName;
         if (is_array($value)) {
             /** @var \PhpOffice\PhpWord\Style\AbstractStyle $style Type hint */
             if (!$style instanceof $styleClass) {
@@ -329,7 +329,7 @@ abstract class AbstractStyle
     protected function setPairedVal(&$property, &$pairProperty, $value)
     {
         $property = $this->setBoolVal($value, $property);
-        if (true == $value) {
+        if ($value === true) {
             $pairProperty = false;
         }
 
@@ -341,12 +341,13 @@ abstract class AbstractStyle
      *
      * @deprecated 0.11.0
      *
+     * @param array $style
      *
      * @return self
      *
      * @codeCoverageIgnore
      */
-    public function setArrayStyle(array $style = [])
+    public function setArrayStyle(array $style = array())
     {
         return $this->setStyleByArray($style);
     }

@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -113,14 +113,14 @@ class Document
      *
      * @var array
      */
-    private $groups = [];
+    private $groups = array();
 
     /**
      * Parser flags; not used
      *
      * @var array
      */
-    private $flags = [];
+    private $flags = array();
 
     /**
      * Parse RTF content
@@ -130,23 +130,23 @@ class Document
      * - Builds control words and control symbols
      * - Pushes every other character into the text queue
      *
-     * @return void
+     * @param \PhpOffice\PhpWord\PhpWord $phpWord
      * @todo Use `fread` stream for scalability
      */
     public function read(PhpWord $phpWord)
     {
-        $markers = [
+        $markers = array(
             123 => 'markOpening',   // {
             125 => 'markClosing',   // }
-            92 => 'markBackslash', // \
-            10 => 'markNewline',   // LF
-            13 => 'markNewline',   // CR
-        ];
+            92  => 'markBackslash', // \
+            10  => 'markNewline',   // LF
+            13  => 'markNewline',   // CR
+        );
 
         $this->phpWord = $phpWord;
         $this->section = $phpWord->addSection();
         $this->textrun = $this->section->addTextRun();
-        $this->length = mb_strlen($this->rtf);
+        $this->length = strlen($this->rtf);
 
         $this->flags['paragraph'] = true; // Set paragraph flag from the beginning
 
@@ -183,8 +183,6 @@ class Document
 
     /**
      * Mark opening braket `{` character.
-     *
-     * @return void
      */
     private function markOpening()
     {
@@ -194,8 +192,6 @@ class Document
 
     /**
      * Mark closing braket `}` character.
-     *
-     * @return void
      */
     private function markClosing()
     {
@@ -205,8 +201,6 @@ class Document
 
     /**
      * Mark backslash `\` character.
-     *
-     * @return void
      */
     private function markBackslash()
     {
@@ -222,8 +216,6 @@ class Document
 
     /**
      * Mark newline character: Flush control word because it's not possible to span multiline.
-     *
-     * @return void
      */
     private function markNewline()
     {
@@ -236,7 +228,6 @@ class Document
      * Flush control word or text.
      *
      * @param bool $isControl
-     * @return void
      */
     private function flush($isControl = false)
     {
@@ -251,7 +242,6 @@ class Document
      * Flush control word.
      *
      * @param bool $isControl
-     * @return void
      */
     private function flushControl($isControl = false)
     {
@@ -267,12 +257,10 @@ class Document
 
     /**
      * Flush text in queue.
-     *
-     * @return void
      */
     private function flushText()
     {
-        if ('' != $this->text) {
+        if ($this->text != '') {
             if (isset($this->flags['property'])) { // Set property
                 $this->flags['value'] = $this->text;
             } else { // Set text
@@ -295,7 +283,6 @@ class Document
      * Reset control word and first char state.
      *
      * @param bool $value
-     * @return void
      */
     private function setControl($value)
     {
@@ -307,7 +294,6 @@ class Document
      * Push text into queue.
      *
      * @param string $char
-     * @return void
      */
     private function pushText($char)
     {
@@ -325,31 +311,30 @@ class Document
      *
      * @param string $control
      * @param string $parameter
-     * @return void
      */
     private function parseControl($control, $parameter)
     {
-        $controls = [
-            'par' => [self::PARA,    'paragraph',    true],
-            'b' => [self::STYL,    'font',         'bold',         true],
-            'i' => [self::STYL,    'font',         'italic',       true],
-            'u' => [self::STYL,    'font',         'underline',    true],
-            'strike' => [self::STYL,    'font',         'strikethrough', true],
-            'fs' => [self::STYL,    'font',         'size',         $parameter],
-            'qc' => [self::STYL,    'paragraph',    'alignment',    Jc::CENTER],
-            'sa' => [self::STYL,    'paragraph',    'spaceAfter',   $parameter],
-            'fonttbl' => [self::SKIP,    'fonttbl',      null],
-            'colortbl' => [self::SKIP,    'colortbl',     null],
-            'info' => [self::SKIP,    'info',         null],
-            'generator' => [self::SKIP,    'generator',    null],
-            'title' => [self::SKIP,    'title',        null],
-            'subject' => [self::SKIP,    'subject',      null],
-            'category' => [self::SKIP,    'category',     null],
-            'keywords' => [self::SKIP,    'keywords',     null],
-            'comment' => [self::SKIP,    'comment',      null],
-            'shppict' => [self::SKIP,    'pic',          null],
-            'fldinst' => [self::SKIP,    'link',         null],
-        ];
+        $controls = array(
+            'par'       => array(self::PARA,    'paragraph',    true),
+            'b'         => array(self::STYL,    'font',         'bold',          true),
+            'i'         => array(self::STYL,    'font',         'italic',        true),
+            'u'         => array(self::STYL,    'font',         'underline',     true),
+            'strike'    => array(self::STYL,    'font',         'strikethrough', true),
+            'fs'        => array(self::STYL,    'font',         'size',          $parameter),
+            'qc'        => array(self::STYL,    'paragraph',    'alignment',     Jc::CENTER),
+            'sa'        => array(self::STYL,    'paragraph',    'spaceAfter',    $parameter),
+            'fonttbl'   => array(self::SKIP,    'fonttbl',      null),
+            'colortbl'  => array(self::SKIP,    'colortbl',     null),
+            'info'      => array(self::SKIP,    'info',         null),
+            'generator' => array(self::SKIP,    'generator',    null),
+            'title'     => array(self::SKIP,    'title',        null),
+            'subject'   => array(self::SKIP,    'subject',      null),
+            'category'  => array(self::SKIP,    'category',     null),
+            'keywords'  => array(self::SKIP,    'keywords',     null),
+            'comment'   => array(self::SKIP,    'comment',      null),
+            'shppict'   => array(self::SKIP,    'pic',          null),
+            'fldinst'   => array(self::SKIP,    'link',         null),
+        );
 
         if (isset($controls[$control])) {
             list($function) = $controls[$control];
@@ -365,7 +350,6 @@ class Document
      * Read paragraph.
      *
      * @param array $directives
-     * @return void
      */
     private function readParagraph($directives)
     {
@@ -378,7 +362,6 @@ class Document
      * Read style.
      *
      * @param array $directives
-     * @return void
      */
     private function readStyle($directives)
     {
@@ -390,7 +373,6 @@ class Document
      * Read skip.
      *
      * @param array $directives
-     * @return void
      */
     private function readSkip($directives)
     {
@@ -401,8 +383,6 @@ class Document
 
     /**
      * Read text.
-     *
-     * @return void
      */
     private function readText()
     {

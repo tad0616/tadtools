@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -33,7 +33,7 @@ use PhpOffice\PhpWord\Style\Font;
  * - List table (not supported yet)
  *
  * @since 0.11.0
- * @link http://www.biblioscape.com/rtf15_spec.htm#Heading6
+ * @see  http://www.biblioscape.com/rtf15_spec.htm#Heading6
  */
 class Header extends AbstractPart
 {
@@ -42,14 +42,14 @@ class Header extends AbstractPart
      *
      * @var array
      */
-    private $fontTable = [];
+    private $fontTable = array();
 
     /**
      * Color table
      *
      * @var array
      */
-    private $colorTable = [];
+    private $colorTable = array();
 
     /**
      * Get font table.
@@ -181,8 +181,6 @@ class Header extends AbstractPart
 
     /**
      * Register all fonts and colors in both named and inline styles to appropriate header table.
-     *
-     * @return void
      */
     private function registerFont()
     {
@@ -213,13 +211,12 @@ class Header extends AbstractPart
      * Register border colors.
      *
      * @param \PhpOffice\PhpWord\Style\Border $style
-     * @return void
      */
     private function registerBorderColor($style)
     {
         $colors = $style->getBorderColor();
         foreach ($colors as $color) {
-            if (null !== $color) {
+            if ($color !== null) {
                 $this->registerTableItem($this->colorTable, $color);
             }
         }
@@ -229,7 +226,6 @@ class Header extends AbstractPart
      * Register fonts and colors.
      *
      * @param \PhpOffice\PhpWord\Style\AbstractStyle $style
-     * @return void
      */
     private function registerFontItems($style)
     {
@@ -249,11 +245,10 @@ class Header extends AbstractPart
      * @param array &$table
      * @param string $value
      * @param string $default
-     * @return void
      */
     private function registerTableItem(&$table, $value, $default = null)
     {
-        if (false === in_array($value, $table, true) && null !== $value && $value != $default) {
+        if (in_array($value, $table) === false && $value !== null && $value != $default) {
             $table[] = $value;
         }
     }

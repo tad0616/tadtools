@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -72,19 +72,20 @@ abstract class AbstractReader implements ReaderInterface
      * @param string $filename
      *
      * @throws \PhpOffice\PhpWord\Exception\Exception
+     *
      * @return resource
      */
     protected function openFile($filename)
     {
         // Check if file exists
         if (!file_exists($filename) || !is_readable($filename)) {
-            throw new Exception('Could not open ' . $filename . ' for reading! File does not exist.');
+            throw new Exception("Could not open $filename for reading! File does not exist.");
         }
 
         // Open file
-        $this->fileHandle = fopen($filename, 'rb');
-        if (false === $this->fileHandle) {
-            throw new Exception('Could not open file ' . $filename . ' for reading.');
+        $this->fileHandle = fopen($filename, 'r');
+        if ($this->fileHandle === false) {
+            throw new Exception("Could not open file $filename for reading.");
         }
     }
 

@@ -10,13 +10,14 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
 namespace PhpOffice\PhpWord\Element;
 
+use PhpOffice\PhpWord\ComplexType\FootnoteProperties;
 use PhpOffice\PhpWord\Style\Section as SectionStyle;
 
 class Section extends AbstractContainer
@@ -38,38 +39,46 @@ class Section extends AbstractContainer
      *
      * @var Header[]
      */
-    private $headers = [];
+    private $headers = array();
 
     /**
      * Section footers, indexed from 1, not zero
      *
      * @var Footer[]
      */
-    private $footers = [];
+    private $footers = array();
+
+    /**
+     * The properties for the footnote of this section
+     *
+     * @var FootnoteProperties
+     */
+    private $footnoteProperties;
 
     /**
      * Create new instance
      *
      * @param int $sectionCount
-     * @param array $style
+     * @param null|array|\PhpOffice\PhpWord\Style $style
      */
     public function __construct($sectionCount, $style = null)
     {
         $this->sectionId = $sectionCount;
         $this->setDocPart($this->container, $this->sectionId);
-        $this->style = new SectionStyle();
-        $this->setStyle($style);
+        if (null === $style) {
+            $style = new SectionStyle();
+        }
+        $this->style = $this->setNewStyle(new SectionStyle(), $style);
     }
 
     /**
      * Set section style.
      *
      * @param array $style
-     * @return void
      */
     public function setStyle($style = null)
     {
-        if (null !== $style && is_array($style)) {
+        if (!is_null($style) && is_array($style)) {
             $this->style->setStyleByArray($style);
         }
     }
@@ -78,8 +87,6 @@ class Section extends AbstractContainer
      * Get section style
      *
      * @return \PhpOffice\PhpWord\Style\Section
-     *
-     * @codeCoverageIgnore
      */
     public function getStyle()
     {
@@ -118,8 +125,6 @@ class Section extends AbstractContainer
      * Get header elements
      *
      * @return Header[]
-     *
-     * @codeCoverageIgnore
      */
     public function getHeaders()
     {
@@ -130,12 +135,44 @@ class Section extends AbstractContainer
      * Get footer elements
      *
      * @return Footer[]
-     *
-     * @codeCoverageIgnore
      */
     public function getFooters()
     {
         return $this->footers;
+    }
+
+    /**
+     * Get the footnote properties
+     *
+     * @return FootnoteProperties
+     */
+    public function getFootnoteProperties()
+    {
+        return $this->footnoteProperties;
+    }
+
+    /**
+     * Get the footnote properties
+     *
+     * @deprecated Use the `getFootnoteProperties` method instead
+     *
+     * @return FootnoteProperties
+     *
+     * @codeCoverageIgnore
+     */
+    public function getFootnotePropoperties()
+    {
+        return $this->footnoteProperties;
+    }
+
+    /**
+     * Set the footnote properties
+     *
+     * @param FootnoteProperties $footnoteProperties
+     */
+    public function setFootnoteProperties(FootnoteProperties $footnoteProperties = null)
+    {
+        $this->footnoteProperties = $footnoteProperties;
     }
 
     /**
@@ -144,12 +181,17 @@ class Section extends AbstractContainer
      * If any of the Header instances have a type of Header::FIRST then this method returns true.
      * False otherwise.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasDifferentFirstPage()
     {
         foreach ($this->headers as $header) {
-            if (Header::FIRST == $header->getType()) {
+            if ($header->getType() == Header::FIRST) {
+                return true;
+            }
+        }
+        foreach ($this->footers as $footer) {
+            if ($footer->getType() == Header::FIRST) {
                 return true;
             }
         }
@@ -166,16 +208,17 @@ class Section extends AbstractContainer
      * @param bool $header
      *
      * @throws \Exception
+     *
      * @return Header|Footer
      */
     private function addHeaderFooter($type = Header::AUTO, $header = true)
     {
-        $containerClass = mb_substr(get_class($this), 0, mb_strrpos(get_class($this), '\\')) . '\\' .
+        $containerClass = substr(get_class($this), 0, strrpos(get_class($this), '\\')) . '\\' .
             ($header ? 'Header' : 'Footer');
         $collectionArray = $header ? 'headers' : 'footers';
         $collection = &$this->$collectionArray;
 
-        if (in_array($type, [Header::AUTO, Header::FIRST, Header::EVEN], true)) {
+        if (in_array($type, array(Header::AUTO, Header::FIRST, Header::EVEN))) {
             $index = count($collection);
             /** @var \PhpOffice\PhpWord\Element\AbstractContainer $container Type hint */
             $container = new $containerClass($this->sectionId, ++$index, $type);

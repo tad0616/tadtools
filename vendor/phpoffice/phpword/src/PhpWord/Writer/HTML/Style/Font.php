@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -37,27 +37,33 @@ class Font extends AbstractStyle
         if (!$style instanceof FontStyle) {
             return '';
         }
-        $css = [];
+        $css = array();
 
         $font = $style->getName();
         $size = $style->getSize();
         $color = $style->getColor();
         $fgColor = $style->getFgColor();
-        $underline = FontStyle::UNDERLINE_NONE != $style->getUnderline();
+        $underline = $style->getUnderline() != FontStyle::UNDERLINE_NONE;
         $lineThrough = $style->isStrikethrough() || $style->isDoubleStrikethrough();
 
-        $css['font-family'] = $this->getValueIf(null !== $font, "'{$font}'");
-        $css['font-size'] = $this->getValueIf(null !== $size, "{$size}pt");
-        $css['color'] = $this->getValueIf(null !== $color, "#{$color}");
-        $css['background'] = $this->getValueIf('' != $fgColor, $fgColor);
+        $css['font-family'] = $this->getValueIf($font !== null, "'{$font}'");
+        $css['font-size'] = $this->getValueIf($size !== null, "{$size}pt");
+        $css['color'] = $this->getValueIf($color !== null, "#{$color}");
+        $css['background'] = $this->getValueIf($fgColor != '', $fgColor);
         $css['font-weight'] = $this->getValueIf($style->isBold(), 'bold');
         $css['font-style'] = $this->getValueIf($style->isItalic(), 'italic');
-        $css['vertical-align'] = $this->getValueIf($style->isSuperScript(), 'italic');
-        $css['vertical-align'] = $this->getValueIf($style->isSuperScript(), 'super');
-        $css['vertical-align'] = $this->getValueIf($style->isSubScript(), 'sub');
+        $css['vertical-align'] = '';
+        $css['vertical-align'] .= $this->getValueIf($style->isSuperScript(), 'super');
+        $css['vertical-align'] .= $this->getValueIf($style->isSubScript(), 'sub');
         $css['text-decoration'] = '';
         $css['text-decoration'] .= $this->getValueIf($underline, 'underline ');
         $css['text-decoration'] .= $this->getValueIf($lineThrough, 'line-through ');
+        $css['text-transform'] = $this->getValueIf($style->isAllCaps(), 'uppercase');
+        $css['font-variant'] = $this->getValueIf($style->isSmallCaps(), 'small-caps');
+        $css['display'] = $this->getValueIf($style->isHidden(), 'none');
+
+        $spacing = $style->getSpacing();
+        $css['letter-spacing'] = $this->getValueIf(!is_null($spacing), ($spacing / 20) . 'pt');
 
         return $this->assembleCss($css);
     }

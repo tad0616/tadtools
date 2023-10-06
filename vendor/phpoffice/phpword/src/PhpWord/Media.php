@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -30,7 +30,7 @@ class Media
      *
      * @var array
      */
-    private static $elements = [];
+    private static $elements = array();
 
     /**
      * Add new media element
@@ -44,14 +44,15 @@ class Media
      * @param \PhpOffice\PhpWord\Element\Image $image
      *
      * @throws \PhpOffice\PhpWord\Exception\Exception
-     * @return integer
+     *
+     * @return int
      */
     public static function addElement($container, $mediaType, $source, Image $image = null)
     {
         // Assign unique media Id and initiate media container if none exists
         $mediaId = md5($container . $source);
         if (!isset(self::$elements[$container])) {
-            self::$elements[$container] = [];
+            self::$elements[$container] = array();
         }
 
         // Add media if not exists or point to existing media
@@ -61,12 +62,12 @@ class Media
             $mediaTypeCount++;
             $rId = ++$mediaCount;
             $target = null;
-            $mediaData = ['mediaIndex' => $mediaTypeCount];
+            $mediaData = array('mediaIndex' => $mediaTypeCount);
 
             switch ($mediaType) {
                 // Images
                 case 'image':
-                    if (null === $image) {
+                    if (is_null($image)) {
                         throw new Exception('Image object not assigned.');
                     }
                     $isMemImage = $image->isMemImage();
@@ -100,8 +101,9 @@ class Media
 
             return $rId;
         }
+
         $mediaData = self::$elements[$container][$mediaId];
-        if (null !== $image) {
+        if (!is_null($image)) {
             $image->setTarget($mediaData['target']);
             $image->setMediaIndex($mediaData['mediaIndex']);
         }
@@ -114,7 +116,7 @@ class Media
      *
      * @param string $container section|headerx|footerx|footnote|endnote
      * @param string $mediaType image|object|link
-     * @return integer
+     * @return int
      * @since 0.10.0
      */
     public static function countElements($container, $mediaType = null)
@@ -123,7 +125,7 @@ class Media
 
         if (isset(self::$elements[$container])) {
             foreach (self::$elements[$container] as $mediaData) {
-                if (null !== $mediaType) {
+                if (!is_null($mediaType)) {
                     if ($mediaType == $mediaData['type']) {
                         $mediaCount++;
                     }
@@ -146,18 +148,19 @@ class Media
      */
     public static function getElements($container, $type = null)
     {
-        $elements = [];
+        $elements = array();
 
         // If header/footer, search for headerx and footerx where x is number
-        if ('header' == $container || 'footer' == $container) {
+        if ($container == 'header' || $container == 'footer') {
             foreach (self::$elements as $key => $val) {
-                if (mb_substr($key, 0, 6) == $container) {
+                if (substr($key, 0, 6) == $container) {
                     $elements[$key] = $val;
                 }
             }
 
             return $elements;
         }
+
         if (!isset(self::$elements[$container])) {
             return $elements;
         }
@@ -175,10 +178,10 @@ class Media
      */
     private static function getElementsByType($container, $type = null)
     {
-        $elements = [];
+        $elements = array();
 
         foreach (self::$elements[$container] as $key => $data) {
-            if (null !== $type) {
+            if ($type !== null) {
                 if ($type == $data['type']) {
                     $elements[$key] = $data;
                 }
@@ -195,7 +198,7 @@ class Media
      */
     public static function resetElements()
     {
-        self::$elements = [];
+        self::$elements = array();
     }
 
     /**
@@ -207,7 +210,7 @@ class Media
      * @param  string $type
      * @param  \PhpOffice\PhpWord\Element\Image $image
      *
-     * @return integer
+     * @return int
      *
      * @codeCoverageIgnore
      */
@@ -223,7 +226,7 @@ class Media
      *
      * @param string $linkSrc
      *
-     * @return integer
+     * @return int
      *
      * @codeCoverageIgnore
      */
@@ -255,7 +258,7 @@ class Media
      *
      * @param string $key
      *
-     * @return integer
+     * @return int
      *
      * @codeCoverageIgnore
      */
@@ -273,7 +276,7 @@ class Media
      * @param  string $src
      * @param  \PhpOffice\PhpWord\Element\Image $image
      *
-     * @return integer
+     * @return int
      *
      * @codeCoverageIgnore
      */
@@ -289,7 +292,7 @@ class Media
      *
      * @param string $key
      *
-     * @return integer
+     * @return int
      *
      * @codeCoverageIgnore
      */
@@ -321,7 +324,7 @@ class Media
      * @param  string $src
      * @param  \PhpOffice\PhpWord\Element\Image $image
      *
-     * @return integer
+     * @return int
      *
      * @codeCoverageIgnore
      */
@@ -337,7 +340,7 @@ class Media
      *
      * @param string $key
      *
-     * @return integer
+     * @return int
      *
      * @codeCoverageIgnore
      */

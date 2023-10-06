@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -29,7 +29,7 @@ class RelsPart extends Rels
      *
      * @var array
      */
-    private $media = [];
+    private $media = array();
 
     /**
      * Write part
@@ -39,7 +39,7 @@ class RelsPart extends Rels
     public function write()
     {
         $xmlWriter = $this->getXmlWriter();
-        $this->writeRels($xmlWriter, [], $this->media);
+        $this->writeRels($xmlWriter, array(), $this->media);
 
         return $xmlWriter->getData();
     }

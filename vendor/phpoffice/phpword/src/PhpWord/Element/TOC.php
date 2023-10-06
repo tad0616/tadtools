@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -36,7 +36,7 @@ class TOC extends AbstractElement
     /**
      * Font style
      *
-     * @var \PhpOffice\PhpWord\Style\Font|array|string
+     * @var \PhpOffice\PhpWord\Style\Font|string
      */
     private $fontStyle;
 
@@ -66,11 +66,11 @@ class TOC extends AbstractElement
     {
         $this->TOCStyle = new TOCStyle();
 
-        if (null !== $tocStyle && is_array($tocStyle)) {
+        if (!is_null($tocStyle) && is_array($tocStyle)) {
             $this->TOCStyle->setStyleByArray($tocStyle);
         }
 
-        if (null !== $fontStyle && is_array($fontStyle)) {
+        if (!is_null($fontStyle) && is_array($fontStyle)) {
             $this->fontStyle = new Font();
             $this->fontStyle->setStyleByArray($fontStyle);
         } else {
@@ -89,7 +89,7 @@ class TOC extends AbstractElement
     public function getTitles()
     {
         if (!$this->phpWord instanceof PhpWord) {
-            return [];
+            return array();
         }
 
         $titles = $this->phpWord->getTitles()->getItems();
@@ -99,7 +99,7 @@ class TOC extends AbstractElement
             if ($this->minDepth > $depth) {
                 unset($titles[$i]);
             }
-            if ((0 != $this->maxDepth) && ($this->maxDepth < $depth)) {
+            if (($this->maxDepth != 0) && ($this->maxDepth < $depth)) {
                 unset($titles[$i]);
             }
         }
@@ -120,7 +120,7 @@ class TOC extends AbstractElement
     /**
      * Get Font Style
      *
-     * @return \PhpOffice\PhpWord\Style\Font
+     * @return \PhpOffice\PhpWord\Style\Font|string
      */
     public function getStyleFont()
     {
@@ -131,7 +131,6 @@ class TOC extends AbstractElement
      * Set max depth.
      *
      * @param int $value
-     * @return void
      */
     public function setMaxDepth($value)
     {
@@ -152,7 +151,6 @@ class TOC extends AbstractElement
      * Set min depth.
      *
      * @param int $value
-     * @return void
      */
     public function setMinDepth($value)
     {

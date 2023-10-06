@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -26,8 +26,6 @@ class Spacing extends AbstractStyle
 {
     /**
      * Write style.
-     *
-     * @return void
      */
     public function write()
     {
@@ -40,15 +38,19 @@ class Spacing extends AbstractStyle
         $xmlWriter->startElement('w:spacing');
 
         $before = $style->getBefore();
-        $xmlWriter->writeAttributeIf(null !== $before, 'w:before', $this->convertTwip($before));
+        $xmlWriter->writeAttributeIf(!is_null($before), 'w:before', $this->convertTwip($before));
 
         $after = $style->getAfter();
-        $xmlWriter->writeAttributeIf(null !== $after, 'w:after', $this->convertTwip($after));
+        $xmlWriter->writeAttributeIf(!is_null($after), 'w:after', $this->convertTwip($after));
 
         $line = $style->getLine();
-        $xmlWriter->writeAttributeIf(null !== $line, 'w:line', $line);
+        //if linerule is auto, the spacing is supposed to include the height of the line itself, which is 240 twips
+        if (null !== $line && 'auto' === $style->getLineRule()) {
+            $line += \PhpOffice\PhpWord\Style\Paragraph::LINE_HEIGHT;
+        }
+        $xmlWriter->writeAttributeIf(!is_null($line), 'w:line', $line);
 
-        $xmlWriter->writeAttributeIf(null !== $line, 'w:lineRule', $style->getRule());
+        $xmlWriter->writeAttributeIf(!is_null($line), 'w:lineRule', $style->getLineRule());
 
         $xmlWriter->endElement();
     }

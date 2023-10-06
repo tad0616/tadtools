@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -44,8 +44,8 @@ class Container extends AbstractElement
         if (!$container instanceof ContainerElement) {
             return '';
         }
-        $containerClass = mb_substr(get_class($container), mb_strrpos(get_class($container), '\\') + 1);
-        $withoutP = in_array($containerClass, ['TextRun', 'Footnote', 'Endnote'], true) ? true : false;
+        $containerClass = substr(get_class($container), strrpos(get_class($container), '\\') + 1);
+        $withoutP = in_array($containerClass, array('TextRun', 'Footnote', 'Endnote')) ? true : false;
         $content = '';
 
         $elements = $container->getElements();

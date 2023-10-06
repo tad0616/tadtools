@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -20,8 +20,8 @@ namespace PhpOffice\PhpWord\Style;
 /**
  * Outline defines the line/border of the object
  *
- * @link http://www.schemacentral.com/sc/ooxml/t-v_CT_Stroke.html
- * @link http://www.w3.org/TR/1998/NOTE-VML-19980513#_Toc416858395
+ * @see  http://www.schemacentral.com/sc/ooxml/t-v_CT_Stroke.html
+ * @see  http://www.w3.org/TR/1998/NOTE-VML-19980513#_Toc416858395
  * @since 0.12.0
  */
 class Outline extends AbstractStyle
@@ -29,7 +29,7 @@ class Outline extends AbstractStyle
     /**
      * Line style constants
      *
-     * @link http://www.schemacentral.com/sc/ooxml/t-v_ST_StrokeLineStyle.html
+     * @see  http://www.schemacentral.com/sc/ooxml/t-v_ST_StrokeLineStyle.html
      * @const string
      */
     const LINE_SINGLE = 'single';
@@ -41,7 +41,7 @@ class Outline extends AbstractStyle
     /**
      * Line style constants
      *
-     * @link http://www.schemacentral.com/sc/ooxml/t-v_ST_StrokeEndCap.html
+     * @see  http://www.schemacentral.com/sc/ooxml/t-v_ST_StrokeEndCap.html
      * @const string
      */
     const ENDCAP_FLAT = 'flat';
@@ -51,7 +51,7 @@ class Outline extends AbstractStyle
     /**
      * Arrowhead type constants
      *
-     * @link http://www.schemacentral.com/sc/ooxml/t-v_ST_StrokeArrowType.html
+     * @see  http://www.schemacentral.com/sc/ooxml/t-v_ST_StrokeArrowType.html
      * @const string
      */
     const ARROW_NONE = 'none';
@@ -100,7 +100,7 @@ class Outline extends AbstractStyle
      * End cap
      *
      * @var string
-     * @link http://www.schemacentral.com/sc/ooxml/t-v_ST_StrokeEndCap.html
+     * @see  http://www.schemacentral.com/sc/ooxml/t-v_ST_StrokeEndCap.html
      */
     private $endCap;
 
@@ -123,7 +123,7 @@ class Outline extends AbstractStyle
      *
      * @param array $style
      */
-    public function __construct($style = [])
+    public function __construct($style = array())
     {
         $this->setStyleByArray($style);
     }
@@ -225,8 +225,8 @@ class Outline extends AbstractStyle
      */
     public function setLine($value = null)
     {
-        $enum = [self::LINE_SINGLE, self::LINE_THIN_THIN, self::LINE_THIN_THICK,
-            self::LINE_THICK_THIN, self::LINE_THICK_BETWEEN_THIN, ];
+        $enum = array(self::LINE_SINGLE, self::LINE_THIN_THIN, self::LINE_THIN_THICK,
+            self::LINE_THICK_THIN, self::LINE_THICK_BETWEEN_THIN, );
         $this->line = $this->setEnumVal($value, $enum, null);
 
         return $this;
@@ -250,7 +250,7 @@ class Outline extends AbstractStyle
      */
     public function setEndCap($value = null)
     {
-        $enum = [self::ENDCAP_FLAT, self::ENDCAP_SQUARE, self::ENDCAP_ROUND];
+        $enum = array(self::ENDCAP_FLAT, self::ENDCAP_SQUARE, self::ENDCAP_ROUND);
         $this->endCap = $this->setEnumVal($value, $enum, null);
 
         return $this;
@@ -274,8 +274,8 @@ class Outline extends AbstractStyle
      */
     public function setStartArrow($value = null)
     {
-        $enum = [self::ARROW_NONE, self::ARROW_BLOCK, self::ARROW_CLASSIC,
-            self::ARROW_OVAL, self::ARROW_DIAMOND, self::ARROW_OPEN, ];
+        $enum = array(self::ARROW_NONE, self::ARROW_BLOCK, self::ARROW_CLASSIC,
+            self::ARROW_OVAL, self::ARROW_DIAMOND, self::ARROW_OPEN, );
         $this->startArrow = $this->setEnumVal($value, $enum, null);
 
         return $this;
@@ -299,8 +299,8 @@ class Outline extends AbstractStyle
      */
     public function setEndArrow($value = null)
     {
-        $enum = [self::ARROW_NONE, self::ARROW_BLOCK, self::ARROW_CLASSIC,
-            self::ARROW_OVAL, self::ARROW_DIAMOND, self::ARROW_OPEN, ];
+        $enum = array(self::ARROW_NONE, self::ARROW_BLOCK, self::ARROW_CLASSIC,
+            self::ARROW_OVAL, self::ARROW_DIAMOND, self::ARROW_OPEN, );
         $this->endArrow = $this->setEnumVal($value, $enum, null);
 
         return $this;

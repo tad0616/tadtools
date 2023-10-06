@@ -10,15 +10,15 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
 namespace PhpOffice\PhpWord\Reader\ODText;
 
-use PhpOffice\Common\XMLReader;
 use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\Shared\XMLReader;
 
 /**
  * Meta reader
@@ -30,7 +30,7 @@ class Meta extends AbstractPart
     /**
      * Read meta.xml.
      *
-     * @return void
+     * @param \PhpOffice\PhpWord\PhpWord $phpWord
      * @todo Process property type
      */
     public function read(PhpWord $phpWord)
@@ -42,20 +42,20 @@ class Meta extends AbstractPart
         $metaNode = $xmlReader->getElement('office:meta');
 
         // Standard properties
-        $properties = [
-            'title' => 'dc:title',
-            'subject' => 'dc:subject',
-            'description' => 'dc:description',
-            'keywords' => 'meta:keyword',
-            'creator' => 'meta:initial-creator',
+        $properties = array(
+            'title'          => 'dc:title',
+            'subject'        => 'dc:subject',
+            'description'    => 'dc:description',
+            'keywords'       => 'meta:keyword',
+            'creator'        => 'meta:initial-creator',
             'lastModifiedBy' => 'dc:creator',
             // 'created'        => 'meta:creation-date',
             // 'modified'       => 'dc:date',
-        ];
+        );
         foreach ($properties as $property => $path) {
             $method = "set{$property}";
             $propertyNode = $xmlReader->getElement($path, $metaNode);
-            if (null !== $propertyNode && method_exists($docProps, $method)) {
+            if ($propertyNode !== null && method_exists($docProps, $method)) {
                 $docProps->$method($propertyNode->nodeValue);
             }
         }
@@ -66,12 +66,11 @@ class Meta extends AbstractPart
             $property = $xmlReader->getAttribute('meta:name', $propertyNode);
 
             // Set category, company, and manager property
-            if (in_array($property, ['Category', 'Company', 'Manager'], true)) {
+            if (in_array($property, array('Category', 'Company', 'Manager'))) {
                 $method = "set{$property}";
                 $docProps->$method($propertyNode->nodeValue);
-
-            // Set other custom properties
             } else {
+                // Set other custom properties
                 $docProps->setCustomProperty($property, $propertyNode->nodeValue);
             }
         }

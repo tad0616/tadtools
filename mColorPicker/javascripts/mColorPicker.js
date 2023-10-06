@@ -147,6 +147,10 @@
         $('#' + id).after(
           '<div class="input-group-append input-group-addon"><span style="cursor:pointer;" id="icp_' + id + '" class="mColorPickerTrigger input-group-text"><img src="' + $o.imageFolder + 'color.png" style="margin: 4px 0px;"></span></div>'
         )
+      }else if($o.showPicker == 'bootstrap-sm'){
+        $('#' + id).after(
+          '<div class="input-group-append input-group-addon"><span style="cursor:pointer;" id="icp_' + id + '" class="mColorPickerTrigger input-group-text"><img src="' + $o.imageFolder + 'color.png" style="margin: 0px;"></span></div>'
+        )
       }
 
     }

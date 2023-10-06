@@ -4,6 +4,8 @@ TadTools 3.55 (尚未釋出)
 2.調整佈景樣板檔
 3.BootStrap5 移除不必要的 popper.min.js
 4.升級 My97DatePicker 為 4.8.5
+5.新增 FullCalendar 6.1.9
+6.升級 phpoffice/phpword 為 0.18.3
 
 TadTools 3.54 (2023-03-24 釋出)
 ====================================

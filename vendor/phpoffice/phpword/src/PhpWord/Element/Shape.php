@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -70,7 +70,7 @@ class Shape extends AbstractElement
      */
     public function setType($value = null)
     {
-        $enum = ['arc', 'curve', 'line', 'polyline', 'rect', 'oval'];
+        $enum = array('arc', 'curve', 'line', 'polyline', 'rect', 'oval');
         $this->type = $this->setEnumVal($value, $enum, null);
 
         return $this;

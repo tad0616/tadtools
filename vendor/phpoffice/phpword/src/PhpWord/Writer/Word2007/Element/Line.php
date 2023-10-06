@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -27,8 +27,6 @@ class Line extends AbstractElement
 {
     /**
      * Write element.
-     *
-     * @return void
      */
     public function write()
     {
@@ -47,12 +45,13 @@ class Line extends AbstractElement
             $xmlWriter->startElement('w:p');
             $styleWriter->writeAlignment();
         }
+        $this->writeCommentRangeStart();
 
         $xmlWriter->startElement('w:r');
         $xmlWriter->startElement('w:pict');
 
         // Shapetype could be defined for each line separately, but then a unique id would be necessary
-        if (1 == $elementId) {
+        if ($elementId == 1) {
             $xmlWriter->startElement('v:shapetype');
             $xmlWriter->writeAttribute('id', '_x0000_t32');
             $xmlWriter->writeAttribute('coordsize', '21600,21600');

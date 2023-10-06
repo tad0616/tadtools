@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -112,7 +112,7 @@ class DocInfo
      *
      * @var array
      */
-    private $customProperties = [];
+    private $customProperties = array();
 
     /**
      * Create new instance
@@ -399,7 +399,7 @@ class DocInfo
      * Check if a Custom Property is defined
      *
      * @param string $propertyName
-     * @return boolean
+     * @return bool
      */
     public function isCustomPropertySet($propertyName)
     {
@@ -410,7 +410,7 @@ class DocInfo
      * Get a Custom Property Value
      *
      * @param string $propertyName
-     * @return string
+     * @return mixed
      */
     public function getCustomPropertyValue($propertyName)
     {
@@ -451,15 +451,15 @@ class DocInfo
      */
     public function setCustomProperty($propertyName, $propertyValue = '', $propertyType = null)
     {
-        $propertyTypes = [
+        $propertyTypes = array(
             self::PROPERTY_TYPE_INTEGER,
             self::PROPERTY_TYPE_FLOAT,
             self::PROPERTY_TYPE_STRING,
             self::PROPERTY_TYPE_DATE,
             self::PROPERTY_TYPE_BOOLEAN,
-        ];
-        if ((null === $propertyType) || (!in_array($propertyType, $propertyTypes, true))) {
-            if (null === $propertyValue) {
+        );
+        if (($propertyType === null) || (!in_array($propertyType, $propertyTypes))) {
+            if ($propertyValue === null) {
                 $propertyType = self::PROPERTY_TYPE_STRING;
             } elseif (is_float($propertyValue)) {
                 $propertyType = self::PROPERTY_TYPE_FLOAT;
@@ -467,15 +467,17 @@ class DocInfo
                 $propertyType = self::PROPERTY_TYPE_INTEGER;
             } elseif (is_bool($propertyValue)) {
                 $propertyType = self::PROPERTY_TYPE_BOOLEAN;
+            } elseif ($propertyValue instanceof \DateTime) {
+                $propertyType = self::PROPERTY_TYPE_DATE;
             } else {
                 $propertyType = self::PROPERTY_TYPE_STRING;
             }
         }
 
-        $this->customProperties[$propertyName] = [
+        $this->customProperties[$propertyName] = array(
             'value' => $propertyValue,
-            'type' => $propertyType,
-        ];
+            'type'  => $propertyType,
+        );
 
         return $this;
     }
@@ -505,7 +507,7 @@ class DocInfo
             case 'date': // Date
                 return strtotime($propertyValue);
             case 'bool': // Boolean
-                return ('true' == $propertyValue) ? true : false;
+                return $propertyValue == 'true';
         }
 
         return $propertyValue;
@@ -519,15 +521,15 @@ class DocInfo
      */
     public static function convertPropertyType($propertyType)
     {
-        $typeGroups = [
-            self::PROPERTY_TYPE_INTEGER => ['i1', 'i2', 'i4', 'i8', 'int', 'ui1', 'ui2', 'ui4', 'ui8', 'uint'],
-            self::PROPERTY_TYPE_FLOAT => ['r4', 'r8', 'decimal'],
-            self::PROPERTY_TYPE_STRING => ['empty', 'null', 'lpstr', 'lpwstr', 'bstr'],
-            self::PROPERTY_TYPE_DATE => ['date', 'filetime'],
-            self::PROPERTY_TYPE_BOOLEAN => ['bool'],
-        ];
+        $typeGroups = array(
+            self::PROPERTY_TYPE_INTEGER => array('i1', 'i2', 'i4', 'i8', 'int', 'ui1', 'ui2', 'ui4', 'ui8', 'uint'),
+            self::PROPERTY_TYPE_FLOAT   => array('r4', 'r8', 'decimal'),
+            self::PROPERTY_TYPE_STRING  => array('empty', 'null', 'lpstr', 'lpwstr', 'bstr'),
+            self::PROPERTY_TYPE_DATE    => array('date', 'filetime'),
+            self::PROPERTY_TYPE_BOOLEAN => array('bool'),
+        );
         foreach ($typeGroups as $groupId => $groupMembers) {
-            if (in_array($propertyType, $groupMembers, true)) {
+            if (in_array($propertyType, $groupMembers)) {
                 return $groupId;
             }
         }
@@ -544,7 +546,7 @@ class DocInfo
      */
     private function setValue($value, $default)
     {
-        if (null === $value || '' == $value) {
+        if ($value === null || $value == '') {
             $value = $default;
         }
 
@@ -559,17 +561,17 @@ class DocInfo
      */
     private static function getConversion($propertyType)
     {
-        $conversions = [
-            'empty' => ['empty'],
-            'null' => ['null'],
-            'int' => ['i1', 'i2', 'i4', 'i8', 'int'],
-            'uint' => ['ui1', 'ui2', 'ui4', 'ui8', 'uint'],
-            'float' => ['r4', 'r8', 'decimal'],
-            'bool' => ['bool'],
-            'date' => ['date', 'filetime'],
-        ];
+        $conversions = array(
+            'empty' => array('empty'),
+            'null'  => array('null'),
+            'int'   => array('i1', 'i2', 'i4', 'i8', 'int'),
+            'uint'  => array('ui1', 'ui2', 'ui4', 'ui8', 'uint'),
+            'float' => array('r4', 'r8', 'decimal'),
+            'bool'  => array('bool'),
+            'date'  => array('date', 'filetime'),
+        );
         foreach ($conversions as $conversion => $types) {
-            if (in_array($propertyType, $types, true)) {
+            if (in_array($propertyType, $types)) {
                 return $conversion;
             }
         }

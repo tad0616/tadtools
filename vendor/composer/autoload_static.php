@@ -6,46 +6,40 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit3a174a201981f08cadb422e14df65907
 {
-    public static $prefixLengthsPsr4 = array(
-        'Z' => array(
-            'Zend\\Validator\\' => 15,
-            'Zend\\Stdlib\\' => 12,
-            'Zend\\Escaper\\' => 13,
-        ),
-        'P' => array(
+    public static $prefixLengthsPsr4 = array (
+        'P' => 
+        array (
             'PhpOffice\\PhpWord\\' => 18,
-            'PhpOffice\\Common\\' => 17,
+        ),
+        'L' => 
+        array (
+            'Laminas\\Escaper\\' => 16,
         ),
     );
 
-    public static $prefixDirsPsr4 = array(
-        'Zend\\Validator\\' => array(
-            0 => __DIR__ . '/..' . '/zendframework/zend-validator/src',
-        ),
-        'Zend\\Stdlib\\' => array(
-            0 => __DIR__ . '/..' . '/zendframework/zend-stdlib/src',
-        ),
-        'Zend\\Escaper\\' => array(
-            0 => __DIR__ . '/..' . '/zendframework/zend-escaper/src',
-        ),
-        'PhpOffice\\PhpWord\\' => array(
+    public static $prefixDirsPsr4 = array (
+        'PhpOffice\\PhpWord\\' => 
+        array (
             0 => __DIR__ . '/..' . '/phpoffice/phpword/src/PhpWord',
         ),
-        'PhpOffice\\Common\\' => array(
-            0 => __DIR__ . '/..' . '/phpoffice/common/src/Common',
+        'Laminas\\Escaper\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laminas/laminas-escaper/src',
         ),
     );
 
-    public static $prefixesPsr0 = array(
-        'P' => array(
-            'PHPExcel' => array(
+    public static $prefixesPsr0 = array (
+        'P' => 
+        array (
+            'PHPExcel' => 
+            array (
                 0 => __DIR__ . '/..' . '/phpoffice/phpexcel/Classes',
             ),
         ),
     );
 
-    public static $classMap = array(
-        'PclZip' => __DIR__ . '/..' . '/pclzip/pclzip/pclzip.lib.php',
+    public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

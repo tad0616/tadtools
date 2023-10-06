@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -42,14 +42,14 @@ class RTF extends AbstractWriter implements WriterInterface
     {
         $this->setPhpWord($phpWord);
 
-        $this->parts = ['Header', 'Document'];
+        $this->parts = array('Header', 'Document');
         foreach ($this->parts as $partName) {
             $partClass = get_class($this) . '\\Part\\' . $partName;
             if (class_exists($partClass)) {
                 /** @var \PhpOffice\PhpWord\Writer\RTF\Part\AbstractPart $part Type hint */
                 $part = new $partClass();
                 $part->setParentWriter($this);
-                $this->writerParts[mb_strtolower($partName)] = $part;
+                $this->writerParts[strtolower($partName)] = $part;
             }
         }
     }
@@ -58,9 +58,7 @@ class RTF extends AbstractWriter implements WriterInterface
      * Save content to file.
      *
      * @param string $filename
-     *
      * @throws \PhpOffice\PhpWord\Exception\Exception
-     * @return void
      */
     public function save($filename = null)
     {
@@ -120,7 +118,6 @@ class RTF extends AbstractWriter implements WriterInterface
      * Set last paragraph style.
      *
      * @param mixed $value
-     * @return void
      */
     public function setLastParagraphStyle($value = '')
     {

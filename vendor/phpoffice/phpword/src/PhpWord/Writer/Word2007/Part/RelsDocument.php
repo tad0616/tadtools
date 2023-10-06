@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -31,14 +31,14 @@ class RelsDocument extends Rels
      */
     public function write()
     {
-        $xmlRels = [
-            'styles.xml' => 'officeDocument/2006/relationships/styles',
-            'numbering.xml' => 'officeDocument/2006/relationships/numbering',
-            'settings.xml' => 'officeDocument/2006/relationships/settings',
+        $xmlRels = array(
+            'styles.xml'       => 'officeDocument/2006/relationships/styles',
+            'numbering.xml'    => 'officeDocument/2006/relationships/numbering',
+            'settings.xml'     => 'officeDocument/2006/relationships/settings',
             'theme/theme1.xml' => 'officeDocument/2006/relationships/theme',
-            'webSettings.xml' => 'officeDocument/2006/relationships/webSettings',
-            'fontTable.xml' => 'officeDocument/2006/relationships/fontTable',
-        ];
+            'webSettings.xml'  => 'officeDocument/2006/relationships/webSettings',
+            'fontTable.xml'    => 'officeDocument/2006/relationships/fontTable',
+        );
         $xmlWriter = $this->getXmlWriter();
 
         /** @var \PhpOffice\PhpWord\Writer\Word2007 $parentWriter Type hint */

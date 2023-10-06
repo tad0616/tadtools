@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -26,8 +26,6 @@ class Extrusion extends AbstractStyle
 {
     /**
      * Write style.
-     *
-     * @return void
      */
     public function write()
     {
@@ -39,8 +37,8 @@ class Extrusion extends AbstractStyle
 
         $xmlWriter->startElement('o:extrusion');
         $xmlWriter->writeAttribute('on', 't');
-        $xmlWriter->writeAttributeIf(null !== $style->getType(), 'type', $style->getType());
-        $xmlWriter->writeAttributeIf(null !== $style->getColor(), 'color', $style->getColor());
+        $xmlWriter->writeAttributeIf($style->getType() !== null, 'type', $style->getType());
+        $xmlWriter->writeAttributeIf($style->getColor() !== null, 'color', $style->getColor());
         $xmlWriter->endElement();
     }
 }

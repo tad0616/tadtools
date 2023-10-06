@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -69,7 +69,7 @@ class Body extends AbstractPart
             $content .= '<hr />' . PHP_EOL;
             foreach ($notes as $noteId => $noteMark) {
                 list($noteType, $noteTypeId) = explode('-', $noteMark);
-                $method = 'get' . ('endnote' == $noteType ? 'Endnotes' : 'Footnotes');
+                $method = 'get' . ($noteType == 'endnote' ? 'Endnotes' : 'Footnotes');
                 $collection = $phpWord->$method()->getItems();
 
                 if (isset($collection[$noteTypeId])) {

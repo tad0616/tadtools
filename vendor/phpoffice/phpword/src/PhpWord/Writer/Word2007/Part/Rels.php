@@ -10,15 +10,15 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
 namespace PhpOffice\PhpWord\Writer\Word2007\Part;
 
-use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpWord\Exception\Exception;
+use PhpOffice\PhpWord\Shared\XMLWriter;
 
 /**
  * Word2007 main relationship writer: _rels/.rels
@@ -34,12 +34,12 @@ class Rels extends AbstractPart
      */
     public function write()
     {
-        $xmlRels = [
-            'docProps/core.xml' => 'package/2006/relationships/metadata/core-properties',
-            'docProps/app.xml' => 'officeDocument/2006/relationships/extended-properties',
+        $xmlRels = array(
+            'docProps/core.xml'   => 'package/2006/relationships/metadata/core-properties',
+            'docProps/app.xml'    => 'officeDocument/2006/relationships/extended-properties',
             'docProps/custom.xml' => 'officeDocument/2006/relationships/custom-properties',
-            'word/document.xml' => 'officeDocument/2006/relationships/officeDocument',
-        ];
+            'word/document.xml'   => 'officeDocument/2006/relationships/officeDocument',
+        );
         $xmlWriter = $this->getXmlWriter();
         $this->writeRels($xmlWriter, $xmlRels);
 
@@ -49,12 +49,12 @@ class Rels extends AbstractPart
     /**
      * Write relationships.
      *
+     * @param \PhpOffice\PhpWord\Shared\XMLWriter $xmlWriter
      * @param array $xmlRels
      * @param array $mediaRels
      * @param int $relId
-     * @return void
      */
-    protected function writeRels(XMLWriter $xmlWriter, $xmlRels = [], $mediaRels = [], $relId = 1)
+    protected function writeRels(XMLWriter $xmlWriter, $xmlRels = array(), $mediaRels = array(), $relId = 1)
     {
         $xmlWriter->startDocument('1.0', 'UTF-8', 'yes');
         $xmlWriter->startElement('Relationships');
@@ -76,21 +76,21 @@ class Rels extends AbstractPart
     /**
      * Write media relationships.
      *
+     * @param \PhpOffice\PhpWord\Shared\XMLWriter $xmlWriter
      * @param int $relId
      * @param array $mediaRel
-     * @return void
      */
     private function writeMediaRel(XMLWriter $xmlWriter, $relId, $mediaRel)
     {
         $typePrefix = 'officeDocument/2006/relationships/';
-        $typeMapping = ['image' => 'image', 'object' => 'oleObject', 'link' => 'hyperlink'];
-        $targetMapping = ['image' => 'media/', 'object' => 'embeddings/'];
+        $typeMapping = array('image' => 'image', 'object' => 'oleObject', 'link' => 'hyperlink');
+        $targetMapping = array('image' => 'media/', 'object' => 'embeddings/');
 
         $mediaType = $mediaRel['type'];
         $type = isset($typeMapping[$mediaType]) ? $typeMapping[$mediaType] : $mediaType;
         $targetPrefix = isset($targetMapping[$mediaType]) ? $targetMapping[$mediaType] : '';
         $target = $mediaRel['target'];
-        $targetMode = ('hyperlink' == $type) ? 'External' : '';
+        $targetMode = ($type == 'hyperlink') ? 'External' : '';
 
         $this->writeRel($xmlWriter, $relId, $typePrefix . $type, $targetPrefix . $target, $targetMode);
     }
@@ -101,25 +101,25 @@ class Rels extends AbstractPart
      * Format:
      * <Relationship Id="rId..." Type="http://..." Target="....xml" TargetMode="..." />
      *
+     * @param \PhpOffice\PhpWord\Shared\XMLWriter $xmlWriter
      * @param int $relId Relationship ID
      * @param string $type Relationship type
      * @param string $target Relationship target
      * @param string $targetMode Relationship target mode
      *
      * @throws \PhpOffice\PhpWord\Exception\Exception
-     * @return void
      */
     private function writeRel(XMLWriter $xmlWriter, $relId, $type, $target, $targetMode = '')
     {
-        if ('' != $type && '' != $target) {
-            if (false === mb_strpos($relId, 'rId')) {
+        if ($type != '' && $target != '') {
+            if (strpos($relId, 'rId') === false) {
                 $relId = 'rId' . $relId;
             }
             $xmlWriter->startElement('Relationship');
             $xmlWriter->writeAttribute('Id', $relId);
             $xmlWriter->writeAttribute('Type', 'http://schemas.openxmlformats.org/' . $type);
             $xmlWriter->writeAttribute('Target', $target);
-            if ('' != $targetMode) {
+            if ($targetMode != '') {
                 $xmlWriter->writeAttribute('TargetMode', $targetMode);
             }
             $xmlWriter->endElement();

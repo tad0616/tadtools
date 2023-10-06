@@ -20,14 +20,21 @@ class SweetAlert
         global $xoTheme;
         $jquery = $this->show_jquery ? Utility::get_jquery() : '';
         if (is_array($var)) {
-            $href = "'{$url}&";
-            foreach ($var as $value) {
-                $href .= "{$value}=' + $value + '&";
+            $parm_var = [];
+            $href = [];
+            foreach ($var as $key => $value) {
+                if (is_string($key)) {
+                    $href[] = "{$key}={$value}";
+                } else {
+                    $href[] = "{$value}=' + $value + '";
+                    $parm_var[] = $value;
+                }
             }
-            $href = substr($href, 0, -5);
-            $var = implode(', ', $var);
+            $href = "'{$url}" . implode('&', $href) . "'";
+            $parm_var = implode(', ', $parm_var);
         } else {
             $href = empty($var) ? "'$url'" : "'$url' + $var";
+            $parm_var = $var;
         }
 
         if ($xoTheme) {
@@ -35,7 +42,7 @@ class SweetAlert
             $xoTheme->addScript('modules/tadtools/sweet-alert/sweet-alert.js');
 
             $xoTheme->addScript('', null, "
-            function {$func_name}($var){
+            function {$func_name}($parm_var){
                 swal({
                     title: '$title',
                     text: '$text',

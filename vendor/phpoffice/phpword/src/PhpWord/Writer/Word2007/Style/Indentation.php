@@ -10,8 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPWord
- * @copyright   2010-2016 PHPWord contributors
+ * @see         https://github.com/PHPOffice/PHPWord
+ * @copyright   2010-2018 PHPWord contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -26,8 +26,6 @@ class Indentation extends AbstractStyle
 {
     /**
      * Write style.
-     *
-     * @return void
      */
     public function write()
     {
@@ -43,10 +41,10 @@ class Indentation extends AbstractStyle
         $xmlWriter->writeAttribute('w:right', $this->convertTwip($style->getRight()));
 
         $firstLine = $style->getFirstLine();
-        $xmlWriter->writeAttributeIf(null !== $firstLine, 'w:firstLine', $this->convertTwip($firstLine));
+        $xmlWriter->writeAttributeIf(!is_null($firstLine), 'w:firstLine', $this->convertTwip($firstLine));
 
         $hanging = $style->getHanging();
-        $xmlWriter->writeAttributeIf(null !== $hanging, 'w:hanging', $this->convertTwip($hanging));
+        $xmlWriter->writeAttributeIf(!is_null($hanging), 'w:hanging', $this->convertTwip($hanging));
 
         $xmlWriter->endElement();
     }
