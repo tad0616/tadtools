@@ -97,6 +97,7 @@ class CkEditor
         $this->setStyle('清單「壹、貳」', 'ol', ['class' => 'big-tw'], []);
         $this->setStyle('清單「一、二」', 'ol', ['class' => 'small-tw'], []);
         $this->setStyle('清單「(一)、(二)」', 'ol', ['class' => 'brackets-tw'], []);
+        $this->setStyle('清單「1.、2.」', 'ol', ['class' => 'dot-num'], []);
         $this->setStyle('清單「(1)、(2)」', 'ol', ['class' => 'brackets-num'], []);
 
         $this->setStyle('Secondary 徽章', 'span', ['class' => 'label label-default badge badge-secondary bg-secondary']);

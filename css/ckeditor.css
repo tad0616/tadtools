@@ -1,6 +1,17 @@
 ol.big-tw {
+  counter-reset: big-tw-list;
   list-style-type: trad-chinese-formal;
   margin-left: 2rem;
+}
+ol.big-tw li {
+  list-style-type: none;
+  position: relative;
+}
+ol.big-tw li::before {
+  counter-increment: big-tw-list;
+  content: counter(big-tw-list, trad-chinese-formal) "、";
+  position: absolute;
+  left: -2.5rem;
 }
 
 ol.small-tw {
@@ -32,6 +43,21 @@ ol.brackets-tw li:before {
   content: "(" counter(brackets-tw-list, cjk-ideographic) ") ";
   position: absolute;
   left: -2.5rem;
+}
+
+ol.dot-num {
+  counter-reset: dot-num-list;
+  /* margin-left: 2rem; */
+}
+ol.dot-num li {
+  list-style-type: none;
+  position: relative;
+}
+ol.dot-num li:before {
+  counter-increment: dot-num-list;
+  content: counter(dot-num-list, decimal) ". ";
+  position: absolute;
+  left: -30px;
 }
 
 ol.brackets-num {

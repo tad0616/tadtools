@@ -440,7 +440,11 @@ class TadUpFiles
     //列出可刪除檔案，$show_edit=true(full),false(thumb),'list','none'
     public function list_del_file($show_edit = false, $thumb = true, $files_sn_arr = [], $show_filename = true, $show_tip = null)
     {
-        global $xoopsDB, $xoopsUser, $xoTheme;
+        global $xoopsDB, $xoTheme;
+
+        if ($show_edit === 'none') {
+            return;
+        }
 
         if ($show_tip !== null) {
             $this->show_tip = $show_tip;

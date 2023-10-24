@@ -1,3 +1,13 @@
+TadTools 3.55 (released 2023-10-17)
+====================================
+1. Update bootstrap-table to version 1.22.
+2. Adjust the layout template file
+3.BootStrap5 remove unnecessary popper.min.js
+4. Upgrade My97DatePicker to 4.8.5.
+5. Added FullCalendar 6.1.9.
+6. Upgraded phpoffice/phpword to 0.18.3
+7.Utility added various system permission related functions.
+
 TadTools 3.54 (Released 2023-03-24)
 ====================================
 1. Automatically add links to URLs and open to new windows instead
