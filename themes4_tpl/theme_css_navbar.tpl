@@ -1,5 +1,5 @@
 <{if $navbar_pos=='fixed-top' or $navbar_pos=='fixed-bottom'}>
-<{assign var=nav_display_type value='not_full'}>
+<{assign var="nav_display_type" value='not_full'}>
     nav.navbar {
         box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.5);
         -webkit-box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.5);
@@ -9,12 +9,12 @@
 <{/if}>
 
 <{if $navbar_pos=='fixed-top'}>
-    <{assign var=margin_top value=50}>
+    <{assign var="margin_top" value=50}>
 <{/if}>
 
 
 <{if $navbar_pos=='fixed-bottom'}>
-    <{assign var=margin_bottom value=50}>
+    <{assign var="margin_bottom" value=50}>
 <{/if}>
 
 
@@ -43,7 +43,7 @@
 .navbar-custom .nav-item:focus .nav-link,
 .navbar-custom .nav-item:hover .nav-link {
     <{if $navbar_font_size}>
-    font-size: <{$navbar_font_size}>;
+    font-size: <{$navbar_font_size}>rem;
     <{/if}>
     color: <{$navbar_color}>;
     padding: <{$navbar_py}>px <{$navbar_px}>px;

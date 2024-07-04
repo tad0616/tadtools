@@ -2,26 +2,26 @@
 <html lang="<{$xoops_langcode}>">
   <head>
     <meta http-equiv="Refresh" content="<{$time}>; url=<{$url}>"/>
-    <!--目前$_SESSION['bootstrap']="<{php}>echo $_SESSION['bootstrap'];<{/php}>"; -->
+    <!--目前$_SESSION['bootstrap']="<{$smarty.session.bootstrap}>"; -->
     <!--將目前的資料夾名稱，設定為樣板標籤變數 theme_name-->
-    <{assign var=theme_name value=$xoTheme->folderName}>
+    <{assign var="theme_name" value=$xoTheme->folderName}>
 
     <!--載入由使用者設定的各項佈景變數-->
-    <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/get_var.tpl"}>
+    <{include file="$xoops_rootpath/modules/tadtools/themes_common/get_var.tpl"}>
 
-    <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/meta.tpl"}>
+    <{include file="$xoops_rootpath/modules/tadtools/themes_common/meta.tpl"}>
     <!-- 網站的標題及標語 -->
     <title><{$xoops_sitename}> - <{$xoops_pagetitle}></title>
 
-    <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/link_css.tpl"}>
+    <{include file="$xoops_rootpath/modules/tadtools/themes3_tpl/link_css.tpl"}>
 
 
     <!-- 給模組套用的樣板標籤 -->
     <{$xoops_module_header}>
-    <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/xoops_module_header.tpl"}>
+    <{include file="$xoops_rootpath/modules/tadtools/themes3_tpl/xoops_module_header.tpl"}>
 
     <!-- 局部套用的樣式，如果有載入完整樣式 theme_css.html 那就不需要這一部份 -->
-    <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/theme_css.tpl"}>
+    <{include file="$xoops_rootpath/modules/tadtools/themes3_tpl/theme_css.tpl"}>
 
     <style type="text/css">
         body{
@@ -58,4 +58,3 @@
 
   </body>
 </html>
-

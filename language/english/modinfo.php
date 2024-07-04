@@ -50,3 +50,6 @@ define('_MI_TADTOOLS_LINKIFY', 'Convert URL to link');
 define('_MI_TADTOOLS_LINKIFY_DESC', 'Automatically convert URLs from internal text to links');
 define('_MI_TADTOOLS_PDF_FORCE_DL', 'Does PDF file force download?');
 define('_MI_TADTOOLS_PDF_FORCE_DL_DESC', "To comply with Accessibility 2.1, please select 'Yes', if you want to preview directly online please select 'No'");
+
+define('_MI_TADTOOLS_TEST_MODE', 'Is the development test mode open to administrators only?');
+define('_MI_TADTOOLS_TEST_MODE_DESC', 'It is recommended to select "Yes", this option is not used by normal users, only developers will use it.');

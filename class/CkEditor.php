@@ -7,6 +7,7 @@ class CkEditor
 {
     public $xoopsDirName;
     public $ColName;
+    public $ColID;
     public $CustomConfigurationsPath;
     public $ToolbarSet = 'my';
     public $Width = '100%';
@@ -17,6 +18,7 @@ class CkEditor
     public $subDir = '';
     public $Style = [];
     public $Modal_ID = '';
+    public $placeholder = '';
 
     //建構函數
     public function __construct($xoopsDirName = '', $ColName = '', $Value = '', $subDir = '')
@@ -24,6 +26,7 @@ class CkEditor
         $TadToolsModuleConfig = Utility::TadToolsXoopsModuleConfig();
         $this->xoopsDirName = $xoopsDirName;
         $this->ColName = $ColName;
+        $this->ColID = "editor_{$ColName}";
         $this->Value = $Value;
         $this->subDir = $subDir;
         if (!empty($TadToolsModuleConfig['uploadcare_publickey'])) {
@@ -37,7 +40,7 @@ class CkEditor
         $this->CustomConfigurationsPath = $path;
     }
 
-    //設定自定義工具列（$ToolbarSet 預設為 my，可選：myBasic、mySimple、tadSimple）
+    //設定自定義工具列（$ToolbarSet 預設為 my，可選：myBasic、tadBasic、mySimple、tadSimple）
     public function setToolbarSet($ToolbarSet = '')
     {
         $this->ToolbarSet = $ToolbarSet;
@@ -125,7 +128,7 @@ class CkEditor
 
         Utility::get_jquery();
         $_SESSION['xoops_mod_name'] = $this->xoopsDirName;
-
+        $placeholder = $this->placeholder ? "editorplaceholder: '{$this->placeholder}'," : "";
         $stylesSet = $this->getStyle();
         // die($stylesSet);
         // before being fed to the textarea of CKEditor
@@ -161,7 +164,7 @@ class CkEditor
         $bs = $_SESSION['bootstrap'] ? $_SESSION['bootstrap'] : 4;
 
         $editor_setup = "{$demopublickey_js}
-        CKEDITOR.replace('editor_{$this->ColName}' , {
+        CKEDITOR.replace('{$this->ColID}' , {
         skin : 'moono' ,
         width : '{$this->Width}' ,
         height : '{$this->Height}' ,
@@ -169,15 +172,14 @@ class CkEditor
         toolbar : '{$this->ToolbarSet}' ,
         $stylesSet
         contentsCss : ['" . XOOPS_URL . "/modules/tadtools/bootstrap{$bs}/css/bootstrap.css', '" . XOOPS_URL . "/modules/tadtools/css/fonts.css', '" . XOOPS_URL . "/modules/tadtools/css/ckeditor.css', '" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css'{$other_css}],
-        extraPlugins: 'pasteUploadImage,sourcearea,font,syntaxhighlight,dialog,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak,fontawesome,prism,codesnippet,undo,autoembed,autolink,clipboard,toolbar,button,dialogui,notification,textmatch,embed,embedbase,widgetselection,notificationaggregator,embedsemantic,panel,floatpanel,menu{$codemirror}{$extra_uploadcare}',
+        extraPlugins: 'editorplaceholder,pasteUploadImage,sourcearea,font,syntaxhighlight,dialog,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak,fontawesome,prism,codesnippet,undo,autoembed,autolink,clipboard,toolbar,button,dialogui,notification,textmatch,embed,embedbase,widgetselection,notificationaggregator,embedsemantic,panel,floatpanel,menu{$codemirror}{$extra_uploadcare}',
         {$uploadcare_setup}
         filebrowserBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=file&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',
         filebrowserImageBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=image&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',
 
         pasteUploadFileApi: '" . XOOPS_URL . '/modules/tadtools/upload.php?type=image&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',
         pasteUploadImageUrlApi: '" . XOOPS_URL . '/modules/tadtools/upload.php?type=image&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',
-
-
+        $placeholder
         qtRows: 10, // Count of rows
         qtColumns: 10, // Count of columns
         qtBorder: '1', // Border of inserted table
@@ -200,24 +202,8 @@ class CkEditor
             ";
         }
 
-// <script>
-        // $.fn.modal.Constructor.prototype.enforceFocus = function () {
-        //     var $modalElement = this.$element;
-        //     $(document).on('focusin.modal',
-        //         function (e) {
-        //             var $parent = $(e.target.parentNode);
-        //             if ($modalElement[0] !== e.target &&
-        //                 !$modalElement.has(e.target).length &&
-        //                 !$parent.hasClass('cke_dialog_ui_input_select') &&
-        //                 !$parent.hasClass('cke_dialog_ui_input_text')) {
-        //                 $modalElement.focus();
-        //             }
-        //         });
-        // };
-        // </script>
-
         $editor .= "
-        <textarea name='{$this->ColName}' id='editor_{$this->ColName}' class='ckeditor_css'>{$content}</textarea>
+        <textarea name='{$this->ColName}' id='{$this->ColID}' class='ckeditor_css'>{$content}</textarea>
         <script type='text/javascript'>
         $editor_setup
         </script>

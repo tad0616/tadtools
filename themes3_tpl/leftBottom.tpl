@@ -1,16 +1,16 @@
-<{if $xoBlocks.canvas_left}>
+<{if $xoBlocks.canvas_left|default:null}>
   <{assign var="i" value=0}>
   <{assign var="total" value=1}>
 
   <div class="leftBlock" style="<{if $leftBlocks2}><{$leftBlocks2}>;<{/if}>width:100%;">
-    <{foreach item=block from=$xoBlocks.canvas_left}>
+    <{foreach item=block from=$xoBlocks.canvas_left|default:null}>
       <{if $i==0}>
         <div class="row">
       <{/if}>
 
       <{if $block.content}>
         <div class="col-sm-3">
-          <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/blockTitle.tpl"}>
+          <{include file="$xoops_rootpath/modules/tadtools/themes_common/blockTitle.tpl"}>
           <div class="blockContent" style="clear:both;">
             <{$block.content}>
           </div>

@@ -10,8 +10,10 @@
         <!-- 44-1 <{$theme_color}> -->
 <{if $theme_color and $theme_color!="bootstrap4"}>
         <link href="<{$xoops_url}>/modules/tadtools/bootstrap4/css/bootstrap.css" rel="stylesheet" media="all">
+        <{if $theme_color}>
         <!-- 44-2 <{$theme_color}> -->
         <link href="<{$xoops_url}>/modules/tadtools/<{$theme_color}>/bootstrap.min.css" rel="stylesheet" media="all">
+        <{/if}>
 <{else}>
         <link href="<{$xoops_url}>/modules/tadtools/bootstrap4/css/bootstrap.css" rel="stylesheet" media="all">
 <{/if}>

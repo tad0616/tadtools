@@ -1,5 +1,5 @@
-<script src="<{xoAppUrl modules/tadtools/themes_common/slider/sliderengine/amazingslider.js}>"></script>
-<script src="<{xoAppUrl modules/tadtools/themes_common/slider/sliderengine/initslider-1.js}>"></script>
+<script src="<{$xoops_url}>/modules/tadtools/themes_common/slider/sliderengine/amazingslider.js"></script>
+<script src="<{$xoops_url}>/modules/tadtools/themes_common/slider/sliderengine/initslider-1.js"></script>
 
 <!-- Insert to your webpage where you want to display the slider -->
 <div id="amazingslider-1" style="display:block;position:relative;">

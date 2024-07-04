@@ -38,7 +38,7 @@ if (isset($_FILES['upload'])) {
         $filename = date('YmdHis_') . Utility::randStr(4);
         $path_parts = pathinfo($_FILES['upload']['name']);
         $foo->file_new_name_body = $filename;
-        $foo->image_resize = true;
+        $foo->image_resize = false;
         $foo->image_ratio = true;
         $foo->image_x = $image_max_width;
         $foo->image_y = $image_max_height;

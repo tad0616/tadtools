@@ -1,22 +1,12 @@
-<{if $xoops_isadmin}>
-    <{php}>
-        if(file_exists(XOOPS_VAR_PATH."/data/install_chk.php")){
-            global $xoopsConfig;
-            require_once XOOPS_ROOT_PATH."/modules/tadtools/language/{$xoopsConfig['language']}/main.php";
-            echo "
-            <div class='alert alert-danger'>
-            "._TAD_DEL_INSTALL_CHK."
-            </div>
-            ";
-            unlink(XOOPS_VAR_PATH."/data/install_chk.php");
-        }
-    <{/php}>
+<{if $install_chk}>
+    <div class='alert alert-danger'>
+        <{$smarty.const._TAD_DEL_INSTALL_CHK}>
+    </div>
 <{/if}>
 
-
-<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{xoAppUrl modules/tadtools/colorbox/colorbox.css}>">
-<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{xoAppUrl modules/tadtools/css/xoops.css}>">
-<script type="text/javascript" src="<{xoAppUrl modules/tadtools/colorbox/jquery.colorbox.js}>"></script>
+<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{$xoops_url}>/modules/tadtools/colorbox/colorbox.css">
+<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{$xoops_url}>/modules/tadtools/css/xoops.css">
+<script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/colorbox/jquery.colorbox.js"></script>
 <script>
     function tad_themes_popup(URL) {
         $.colorbox({iframe:true, width:"80%", height:"90%",href : URL});
@@ -60,16 +50,16 @@
             <{if $show_sitename==0 or $show_sitename==''}>
                 <li><a href="<{$xoops_url}>/index.php">&#xf015; <{$smarty.const._TAD_HOME}></a></li>
             <{/if}>
-            <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_main.tpl"}>
+            <{include file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_main.tpl"}>
             <{if "$xoops_rootpath/uploads/docs_top_menu_b3.tpl"|file_exists}>
-                <{includeq file="$xoops_rootpath/uploads/docs_top_menu_b3.tpl"}>
+                <{include file="$xoops_rootpath/uploads/docs_top_menu_b3.tpl"}>
             <{/if}>
-            <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_my.tpl"}>
+            <{include file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_my.tpl"}>
             </ul>
 
             <ul class="nav navbar-nav navbar-right" id="main-menu-right">
             <{if $xoops_isuser}>
-            <{if $xoops_isadmin}>
+            <{if $xoops_isadmin|default:false}>
 
             <li><a rel="tooltip" href="<{$xoops_url}>/modules/tad_themes/admin/dropdown.php" title="<{$smarty.const._TAD_MENU_CONFIG}>"><i class="fa fa-plus-circle"></i></a></li>
 
@@ -85,7 +75,7 @@
                 <{$smarty.const.TF_USER_WELCOME}><{$xoops_name}> <span class="caret"></span>
                 </a>
 
-                <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_user.tpl"}>
+                <{include file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_user.tpl"}>
 
             </li>
             <{elseif $openid_login!="3"}>
@@ -93,7 +83,7 @@
                 <a class="dropdown-toggle" data-toggle="dropdown">
                 <{$smarty.const.TF_USER_ENTER}> <span class="caret"></span>
                 </a>
-                <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_login.tpl"}>
+                <{include file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_login.tpl"}>
             </li>
             <{/if}>
             </ul>
@@ -103,7 +93,7 @@
 
 
     <{if $use_pin=="1"}>
-        <script type="text/javascript" src="<{xoAppUrl modules/tadtools/jquery.sticky/jquery.sticky.js}>"></script>
+        <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/jquery.sticky/jquery.sticky.js"></script>
         <script type="text/javascript">
         $(document).ready(function(){
             $("#nav-container").sticky({topSpacing:0 , zIndex: 100});

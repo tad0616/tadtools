@@ -43,13 +43,13 @@
             <{if $allow_register=='1'}>
               <div class="form-group">
                 <div class="col-sm-5">
-                  <a href="<{$xoops_url}>/register.php" class="btn btn-xs btn-link" style="background: transparent; width: auto; color: #303030; font-size: 0.75em;">
+                  <a href="<{$xoops_url}>/register.php" class="btn btn-xs btn-link">
                     <span class="fa fa-pencil"></span>
                     <{$smarty.const.TF_USER_REGIST}>
                   </a>
                 </div>
                 <div class="col-sm-7">
-                  <a href="<{$xoops_url}>/user.php#lost" class="btn btn-xs btn-link" style="background: transparent; width: auto; color: #303030; font-size: 0.75em;">
+                  <a href="<{$xoops_url}>/user.php#lost" class="btn btn-xs btn-link">
                     <span class="fa fa-search"></span>
                     <{$smarty.const.TF_USER_FORGET_PASS}>
                   </a>
@@ -62,73 +62,6 @@
       </li>
 
     <{/if}>
-
-    <{if $openid_login=="1" or $openid_login=="2"}>
-      <{php}>
-
-        global $xoopsConfig,$xoopsTpl,$oidc_array,$oidc_array2,$all_oidc,$all_oidc2;
-
-
-      $moduleHandler = xoops_getHandler('module');
-      $configHandler =xoops_gethandler('config');
-
-      $TadLoginXoopsModule = $moduleHandler->getByDirname("tad_login");
-
-      if($TadLoginXoopsModule){
-        require_once XOOPS_ROOT_PATH."/modules/tad_login/function.php";
-        require_once XOOPS_ROOT_PATH."/modules/tad_login/oidc.php";
-        require_once XOOPS_ROOT_PATH."/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
-
-        $configHandler =xoops_gethandler('config');
-        $modConfig= &$configHandler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
-
-        if (in_array('facebook', $modConfig['auth_method'])) {
-            $tad_login['facebook'] = facebook_login('return');
-        } else {
-            $tad_login['facebook'] = '';
-        }
-
-        if (in_array('google', $modConfig['auth_method'])) {
-            $tad_login['google'] = google_login('return');
-        } else {
-            $tad_login['google'] = '';
-        }
-
-        $auth_method=$modConfig['auth_method'];
-        $i=0;
-
-        foreach($auth_method as $method){
-          $method_const="_".strtoupper($method);
-
-          if($method=="facebook"){
-            $tlogin[$i]['link']=$tad_login['facebook'];
-                    $tlogin[$i]['text']=sprintf(_TAD_LOGIN_BY,constant($method_const));
-          }elseif($method=="google"){
-            $tlogin[$i]['link']=$tad_login['google'];
-                    $tlogin[$i]['text']=sprintf(_TAD_LOGIN_BY,constant($method_const));
-          }else{
-            $tlogin[$i]['link']=XOOPS_URL."/modules/tad_login/index.php?login&op={$method}";
-                    $tlogin[$i]['text']=sprintf(_TAD_LOGIN_BY,constant($method_const));
-          }
-
-                if(in_array($method, $oidc_array)){
-                    $tlogin[$i]['img']=XOOPS_URL."/modules/tad_login/images/oidc/{$all_oidc[$method]['tail']}.png";
-                    $tlogin[$i]['text']=sprintf(_TAD_LOGIN_BY, constant('_'.strtoupper($all_oidc[$method]['tail']))._TADLOGIN_OIDC);
-
-                }elseif(in_array($method, $oidc_array2)){
-                    $tlogin[$i]['img']=XOOPS_URL."/modules/tad_login/images/{$method}.png";
-                    $tlogin[$i]['text']=sprintf(_TAD_LOGIN_BY, constant('_'.strtoupper($all_oidc2[$method]['tail']))._TADLOGIN_LDAP);
-
-                }else{
-          $tlogin[$i]['img']=XOOPS_URL."/modules/tad_login/images/{$method}.png";
-                    $tlogin[$i]['text']=sprintf(_TAD_LOGIN_BY,constant($method_const).' OpenID ');
-                }
-
-          $i++;
-        }
-        $xoopsTpl->assign('tlogin',$tlogin);
-      }
-      <{/php}>
 
 
       <{assign var="i" value=0}>

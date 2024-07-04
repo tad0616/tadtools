@@ -1,5 +1,5 @@
-<link rel="stylesheet" type="text/css" href="<{xoAppUrl modules/tadtools/themes_common/menu/cssmenu/styles.css}>" />
-<script src="<{xoAppUrl modules/tadtools/themes_common/menu/cssmenu/menu_jquery.js}>"></script>
+<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tadtools/themes_common/menu/cssmenu/styles.css" />
+<script src="<{$xoops_url}>/modules/tadtools/themes_common/menu/cssmenu/menu_jquery.js"></script>
 <style type="text/css">
   #cssmenu{
     background: <{$navbar_bg_top}>;
@@ -41,7 +41,7 @@
             </a>
             <{if $menu.submenu}>
             <{if $menu.submenu=='1'}>
-                <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/menu/cssmenu/login3.tpl"}>
+                <{include file="$xoops_rootpath/modules/tadtools/themes_common/menu/cssmenu/login3.tpl"}>
             <{else}>
                 <ul>
                 <{foreach from=$menu.submenu item=menu2}>
@@ -78,10 +78,12 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <{$smarty.const._TAD_TF_USER_LOGIN}> <span class="caret"></span>
             </a>
-            <{if $bootstrap==4}>
-                <{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/menu_login.tpl"}>
+            <{if $smarty.session.bootstrap==5}>
+              <{include file="$xoops_rootpath/modules/tadtools/themes5_tpl/menu_my.tpl"}>
+            <{elseif $smarty.session.bootstrap==4}>
+              <{include file="$xoops_rootpath/modules/tadtools/themes4_tpl/menu_login.tpl"}>
             <{else}>
-                <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_login.tpl"}>
+              <{include file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_login.tpl"}>
             <{/if}>
         </li>
         <{/if}>

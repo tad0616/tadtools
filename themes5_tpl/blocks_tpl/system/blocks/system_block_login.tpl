@@ -1,5 +1,5 @@
 <div class="loginform">
-  <form action="<{xoAppUrl user.php}>" method="post" role="form">
+  <form action="<{$xoops_url}>/user.php" method="post" role="form">
     <div class="form-group row mb-3">
       <label class="col-md-4 col-form-label text-sm-end" for="uname">
         <{$smarty.const.TF_USER_S_ID}>

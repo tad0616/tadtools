@@ -1,5 +1,5 @@
-<link rel="stylesheet" type="text/css" href="<{xoAppUrl modules/tadtools/themes_common/menu/cssmenu/styles.css}>" />
-<script src="<{xoAppUrl modules/tadtools/themes_common/menu/cssmenu/menu_jquery.js}>"></script>
+<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tadtools/themes_common/menu/cssmenu/styles.css" />
+<script src="<{$xoops_url}>/modules/tadtools/themes_common/menu/cssmenu/menu_jquery.js"></script>
 <style type="text/css">
   #cssmenu{
     background: <{$navbar_bg_top}>;

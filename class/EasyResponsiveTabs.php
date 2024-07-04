@@ -7,6 +7,7 @@ use XoopsModules\Tadtools\Utility;
 class EasyResponsiveTabs
 {
     public $name;
+    public $my_function = '';
     public $type = 'default';
     public $activetab_bg = '#FFFFFF';
     public $inactive_bg = '#E0D9D9';
@@ -21,6 +22,11 @@ class EasyResponsiveTabs
         $this->inactive_bg = $inactive_bg;
         $this->active_border_color = $active_border_color;
         $this->active_content_border_color = $active_content_border_color;
+    }
+
+    public function setVar($var = '', $val = '')
+    {
+        $this->$var = $val;
     }
 
     public function rander($tabidentify = 'vert', $function = '')
@@ -41,7 +47,17 @@ class EasyResponsiveTabs
                         width: 'auto',
                         fit: true,
                         closed: false,
+
                         activate: function(e) {
+                            let tabURL = e.currentTarget.baseURI; // 獲取當前籤頁籤的網址
+                            let hashIndex = tabURL.indexOf('#'); // 尋找 hash 符號的索引位置
+                            if (hashIndex !== -1) { // 如果找到了 hash 符號
+                                let tabHash = tabURL.substring(hashIndex + 1); // 提取 hash 值
+                                console.log('當前籤頁籤的 hash 值為：' + tabHash);
+                                Cookies.remove('tabHash');
+                                Cookies.set('tabHash', tabHash);
+                                {$this->my_function}
+                            }
                             Cookies.remove('{$cookie_name}');
                             Cookies.set('{$cookie_name}', e.currentTarget.baseURI);
                         },
@@ -59,6 +75,7 @@ class EasyResponsiveTabs
                 <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='" . XOOPS_URL . "/modules/tadtools/Easy-Responsive-Tabs/css/easy-responsive-tabs.css' >
                 ";
 
+            $cookie_name = mb_substr($this->name, 1) . '_baseURI';
             $responsive_tabs .= "
             <script>
                 $(document).ready(function(){
@@ -68,7 +85,20 @@ class EasyResponsiveTabs
                         width: 'auto',
                         fit: true,
                         closed: false,
-                        activate: function() {},
+
+                        activate: function(e) {
+                            let tabURL = e.currentTarget.baseURI; // 獲取當前籤頁籤的網址
+                            let hashIndex = tabURL.indexOf('#'); // 尋找 hash 符號的索引位置
+                            if (hashIndex !== -1) { // 如果找到了 hash 符號
+                                let tabHash = tabURL.substring(hashIndex + 1); // 提取 hash 值
+                                console.log('當前籤頁籤的 hash 值為：' + tabHash);
+                                Cookies.remove('tabHash');
+                                Cookies.set('tabHash', tabHash);
+                                {$this->my_function}
+                            }
+                            Cookies.remove('{$cookie_name}');
+                            Cookies.set('{$cookie_name}', e.currentTarget.baseURI);
+                        },
                         activetab_bg: '{$this->activetab_bg}',
                         inactive_bg: '{$this->inactive_bg}',
                         active_border_color: '{$this->active_border_color}',
@@ -100,6 +130,15 @@ class EasyResponsiveTabs
                         fit: true,
                         closed: false,
                         activate: function(e) {
+                            let tabURL = e.currentTarget.baseURI; // 獲取當前籤頁籤的網址
+                            let hashIndex = tabURL.indexOf('#'); // 尋找 hash 符號的索引位置
+                            if (hashIndex !== -1) { // 如果找到了 hash 符號
+                                let tabHash = tabURL.substring(hashIndex + 1); // 提取 hash 值
+                                console.log('當前籤頁籤的 hash 值為：' + tabHash);
+                                Cookies.remove('tabHash');
+                                Cookies.set('tabHash', tabHash);
+                                {$this->my_function}
+                            }
                             Cookies.remove('{$cookie_name}');
                             Cookies.set('{$cookie_name}', e.currentTarget.baseURI);
                         },
@@ -117,6 +156,7 @@ class EasyResponsiveTabs
                 <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='" . XOOPS_URL . "/modules/tadtools/Easy-Responsive-Tabs/css/easy-responsive-tabs.css' >
                 ";
 
+            $cookie_name = mb_substr($this->name, 1) . '_baseURI';
             $responsive_tabs .= "
             <script>
                 $(document).ready(function(){
@@ -126,7 +166,20 @@ class EasyResponsiveTabs
                         width: 'auto',
                         fit: true,
                         closed: false,
-                        activate: function() {},
+
+                        activate: function(e) {
+                            let tabURL = e.currentTarget.baseURI; // 獲取當前籤頁籤的網址
+                            let hashIndex = tabURL.indexOf('#'); // 尋找 hash 符號的索引位置
+                            if (hashIndex !== -1) { // 如果找到了 hash 符號
+                                let tabHash = tabURL.substring(hashIndex + 1); // 提取 hash 值
+                                console.log('當前籤頁籤的 hash 值為：' + tabHash);
+                                Cookies.remove('tabHash');
+                                Cookies.set('tabHash', tabHash);
+                                {$this->my_function}
+                            }
+                            Cookies.remove('{$cookie_name}');
+                            Cookies.set('{$cookie_name}', e.currentTarget.baseURI);
+                        },
                         activetab_bg: '{$this->activetab_bg}',
                         inactive_bg: '{$this->inactive_bg}',
                         active_border_color: '{$this->active_border_color}',

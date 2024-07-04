@@ -4,7 +4,6 @@ namespace XoopsModules\Tadtools;
 
 class Wcag
 {
-
     private static $check_items = [];
     private static $check_title = [];
     private static $regular = [];
@@ -43,13 +42,13 @@ class Wcag
         self::$check_title['th'] = TADTOOLS_CHK_TH;
         self::$regular['th'] = ['th' => "/<th(\s|>)(.*)>/Ui"];
 
-        self::$check_items['a_blank'] = ['<a '];
-        self::$check_title['a_blank'] = TADTOOLS_CHK_A_BLANK;
-        self::$regular['a_blank'] = ['a_blank' => "/<a(.*)>(.*)<\/a>/Usi", 'same_alt' => "/<a.*>(.*)<\/a>/Usi"];
+        self::$check_items['a_empty'] = ['<a '];
+        self::$check_title['a_empty'] = TADTOOLS_CHK_A_EMPTY;
+        self::$regular['a_empty'] = ['a_empty' => "/<a(.*)>(.*)<\/a>/Usi", 'same_alt' => "/<a.*>(.*)<\/a>/Usi"];
 
-        self::$check_items['head_blank'] = ['<h'];
-        self::$check_title['head_blank'] = TADTOOLS_CHK_HEAD_BLANK;
-        self::$regular['head_blank'] = ['head_blank' => "/<h[1-6].*>(.*)<\/h[1-6]>/Ui"];
+        self::$check_items['head_empty'] = ['<h'];
+        self::$check_title['head_empty'] = TADTOOLS_CHK_HEAD_EMPTY;
+        self::$regular['head_empty'] = ['head_empty' => "/<h[1-6].*>(.*)<\/h[1-6]>/Ui"];
 
         self::$check_items['lang_zh_tw'] = ['zh-TW'];
         self::$check_title['lang_zh_tw'] = TADTOOLS_CHK_LANG_ZH_TW;
@@ -306,13 +305,13 @@ class Wcag
         return $v;
     }
 
-    public static function a_blank($v, $matches)
+    public static function a_empty($v, $matches)
     {
         $fix = false;
         foreach ($matches[2] as $key => $content_in_tag) {
             if (stripos($content_in_tag, '<{$') === false and stripos($matches[1][$key], 'href') !== false and empty(trim(strip_tags($content_in_tag)))) {
                 $old = $matches[0][$key];
-                $linkto = str_ireplace(['href=', '"', "'", 'target=', '_blank', '_self'], '', $matches[1][$key]);
+                $linkto = str_ireplace(['href=', '"', "'", 'target=', '_empty', '_self'], '', $matches[1][$key]);
                 $new = str_ireplace('</a>', "<span class=sr-only>link to $linkto</span></a>", $old);
                 $v = str_ireplace($old, $new, $v);
             }
@@ -336,7 +335,7 @@ class Wcag
         return $v;
     }
 
-    public static function head_blank($v, $matches)
+    public static function head_empty($v, $matches)
     {
         foreach ($matches[1] as $key => $content_in_tag) {
             if (stripos($content_in_tag, '<{$') === false and empty(trim(strip_tags($content_in_tag)))) {

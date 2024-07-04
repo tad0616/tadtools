@@ -1,6 +1,6 @@
-<link rel="stylesheet" type="text/css" href="<{xoAppUrl modules/tadtools/themes_common/menu/superfish/css/superfish.css}>" />
+<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tadtools/themes_common/menu/superfish/css/superfish.css" />
 <{if $vertical}>
-<link rel="stylesheet" type="text/css" href="<{xoAppUrl modules/tadtools/themes_common/menu/superfish/css/superfish-vertical.css}>" />
+<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tadtools/themes_common/menu/superfish/css/superfish-vertical.css" />
 <{/if}>
 
 <style type="text/css">
@@ -21,8 +21,8 @@
     color: <{$navbar_color_hover}>;
   }
 </style>
-<script type="text/javascript" src="<{xoAppUrl modules/tadtools/themes_common/menu/superfish/js/hoverIntent.js}>"></script>
-<script type="text/javascript" src="<{xoAppUrl modules/tadtools/themes_common/menu/superfish/js/superfish.js}>"></script>
+<script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/themes_common/menu/superfish/js/hoverIntent.js"></script>
+<script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/themes_common/menu/superfish/js/superfish.js"></script>
 <script type="text/javascript">
 
 $(document).ready(function(){

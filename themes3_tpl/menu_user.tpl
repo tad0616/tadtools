@@ -1,5 +1,5 @@
 <ul class="dropdown-menu">
-    <{if $xoops_isadmin}>
+    <{if $xoops_isadmin|default:false}>
         <{foreach from=$admin_menu_var item=admin_menu}>
             <li>
                 <a href="<{$admin_menu.url}>" target="<{$admin_menu.target}>">

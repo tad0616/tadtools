@@ -1,20 +1,12 @@
-<{if $xoops_isadmin}>
-  <{php}>
-  if(file_exists(XOOPS_VAR_PATH."/data/install_chk.php")){
-    global $xoopsConfig;
-    include_once XOOPS_ROOT_PATH."/modules/tadtools/language/{$xoopsConfig['language']}/main.php";
-    echo "
+<{if $xoops_isadmin|default:false}>
+  <{if $install_chk}>
     <div class='alert alert-danger'>
-      "._TAD_DEL_INSTALL_CHK."
+      <{$smarty.const._TAD_DEL_INSTALL_CHK}>
     </div>
-    ";
-    unlink(XOOPS_VAR_PATH."/data/install_chk.php");
-  }
-  <{/php}>
 <{/if}>
 
-<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{xoAppUrl modules/tadtools/colorbox/colorbox.css}>" />
-<script type="text/javascript" src="<{xoAppUrl modules/tadtools/colorbox/jquery.colorbox.js}>"></script>
+<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{$xoops_url}>/modules/tadtools/colorbox/colorbox.css" />
+<script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/colorbox/jquery.colorbox.js"></script>
 <script>
   function tad_themes_popup(URL) {
     $.colorbox({iframe:true, width:"80%", height:"90%",href : URL});
@@ -73,17 +65,19 @@
         <{if $show_sitename==0 or $show_sitename==''}>
           <li role="presentation"><a href="<{$xoops_url}>/index.php" style="color:<{$navbar_color}>"><{$smarty.const._TAD_HOME}></a></li>
         <{/if}>
-        <{if $bootstrap==4}>
-          <{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/menu_my.tpl"}>
+        <{if $smarty.session.bootstrap==5}>
+          <{include file="$xoops_rootpath/modules/tadtools/themes5_tpl/menu_my.tpl"}>
+        <{elseif $smarty.session.bootstrap==4}>
+          <{include file="$xoops_rootpath/modules/tadtools/themes4_tpl/menu_my.tpl"}>
         <{else}>
-          <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_my.tpl"}>
+          <{include file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_my.tpl"}>
         <{/if}>
         <{if !$xoops_isuser}>
           <li>
             <a class="dropdown-toggle" data-toggle="dropdown">
               <{$smarty.const._TAD_TF_USER_LOGIN}> <span class="caret"></span>
             </a>
-            <{includeq file="$xoops_rootpath/modules/tadtools/themes`$smarty.config.bootstrap`_tpl/menu_login.tpl"}>
+            <{include file="$xoops_rootpath/modules/tadtools/themes`$smarty.session.bootstrap`_tpl/menu_login.tpl"}>
           </li>
         <{/if}>
       </ul>

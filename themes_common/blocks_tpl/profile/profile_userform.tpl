@@ -1,3 +1,4 @@
-<{assign var=this_file value=$smarty.template|basename|replace:'db:':''}>
-<{config_load file="$xoops_rootpath/uploads/bootstrap.conf"}>
-<{includeq file="$xoops_rootpath/modules/tadtools/themes`$smarty.config.bootstrap`_tpl/blocks_tpl/profile/`$this_file`"}>
+<{assign var="this_file" value=$smarty.template|basename|replace:'db:':''}>
+<{assign var="bootstrap" value=$smarty.session.bootstrap}>
+<{assign var="themes_tpl" value="themes`$bootstrap`_tpl"}>
+<{include file="$xoops_rootpath/modules/tadtools/$themes_tpl/blocks_tpl/profile/`$this_file`"}>

@@ -1,5 +1,5 @@
 <div class="xoops-theme-select">
-    <form role="form" action="<{xoAppUrl index.php}>" method="post">
+    <form role="form" action="<{$xoops_url}>/index.php" method="post">
         <{$block.theme_select}>
     </form>
 </div>

@@ -116,11 +116,12 @@ class LofSliderNews
                 <a href='{$item_content['url']}'><img src='" . XOOPS_URL . "/modules/tadtools/lofslidernews/images/blank.gif' title='{$item_content['title']}' alt='{$item_content['title']}' style='width:{$this->width}px; height:{$this->height}px;'></a>
                 </div>
                 <div class='slider-description'>
-                <div class='slider-meta'><a target='_parent' title='{$item_content['title']}' href='{$item_content['url']}'>{$title}</a></div>
-                <div class='slider-content'>$content
-                <a class='readmore' href='{$item_content['url']}'>more...</a>
+                    <div class='slider-meta'><a target='_parent' title='{$item_content['title']}' href='{$item_content['url']}'>{$title}</a></div>
+                    <div class='slider-content'>
+                    $content
+                    <a class='readmore' href='{$item_content['url']}'>more...</a>
+                    </div>
                 </div>
-            </div>
             </li>
         ";
 
@@ -130,26 +131,22 @@ class LofSliderNews
 
         $main .= "
         <div id='jslidernews_{$randStr}' class='lof-slidecontent' style='width:{$this->width}px; height:{$this->height}px;'>
-        <div class='preload'><div></div></div>
-        <div  class='button-previous'>Previous</div>
-        <div  class='button-next'>Next</div>
-        <!-- MAIN CONTENT -->
-            <div class='main-slider-content' style='width:{$this->width}px; height:{$this->height}px;'>
-            <ul class='sliders-wrap-inner'>
-            $all
-            </ul>
-            </div>
-        <!-- END MAIN CONTENT -->
-        <!-- NAVIGATOR -->
-            <div class='navigator-content'>
-            <div class='button-control'><span></span></div>
-            <div class='navigator-wrapper'>
-                <ul class='navigator-wrap-inner'>
-                $nav
-                </ul>
-            </div>
-            </div>
-        <!----------------- END OF NAVIGATOR --------------------->
+            <div class='preload'><div></div></div>
+            <div class='button-previous'>Previous</div>
+            <div class='button-next'>Next</div>
+                <div class='main-slider-content' style='width:{$this->width}px; height:{$this->height}px;'>
+                    <ul class='sliders-wrap-inner'>
+                    $all
+                    </ul>
+                </div>
+                <div class='navigator-content'>
+                    <div class='button-control'><span></span></div>
+                    <div class='navigator-wrapper'>
+                        <ul class='navigator-wrap-inner'>
+                        $nav
+                        </ul>
+                    </div>
+                </div>
         </div>
         ";
 

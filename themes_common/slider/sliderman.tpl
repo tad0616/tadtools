@@ -1,5 +1,5 @@
-<script src="<{xoAppUrl modules/tadtools/themes_common/slider/sliderman/js/sliderman.1.3.8.js}>"></script>
-<link rel="stylesheet" type="text/css" href="<{xoAppUrl modules/tadtools/themes_common/slider/sliderman/css/sliderman.css}>" />
+<script src="<{$xoops_url}>/modules/tadtools/themes_common/slider/sliderman/js/sliderman.1.3.8.js"></script>
+<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tadtools/themes_common/slider/sliderman/css/sliderman.css" />
 
 <div style="padding:0px;margin:0px;">
     <div id="SliderName_3" class="SliderName_3" style="padding:0px;margin:0px; width: 100%;">

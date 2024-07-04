@@ -198,6 +198,8 @@ class TadUpFiles
     public $require = '';
     public $max_size = '';
     public $pdf_force_dl = false;
+    public $reload = false;
+    public $show_path = false;
 
     public function __construct($dir = '', $subdir = '', $file = '/file', $image = '/image', $thumbs = '/image/.thumbs')
     {
@@ -405,9 +407,9 @@ class TadUpFiles
 
         $require = '';
         if ($this->require && $this->max_size) {
-            $require = 'validate[required,custom[checkSize[' . $this->max_size . ']]]';
+            $require = $list_del_file ? 'validate[custom[checkSize[' . $this->max_size . ']]]' : 'validate[required,custom[checkSize[' . $this->max_size . ']]]';
         } elseif ($this->require) {
-            $require = 'validate[required]';
+            $require = $list_del_file ? '' : 'validate[required]';
         } elseif ($this->max_size) {
             $require = 'validate[custom[checkSize[' . $this->max_size . ']]]';
         }
@@ -438,13 +440,14 @@ class TadUpFiles
     }
 
     //列出可刪除檔案，$show_edit=true(full),false(thumb),'list','none'
-    public function list_del_file($show_edit = false, $thumb = true, $files_sn_arr = [], $show_filename = true, $show_tip = null)
+    public function list_del_file($show_edit = false, $thumb = true, $files_sn_arr = [], $show_filename = true, $show_tip = null, $filename_col = 'original_filename')
     {
         global $xoopsDB, $xoTheme;
 
         if ($show_edit === 'none') {
             return;
         }
+        $permission = '';
 
         if ($show_tip !== null) {
             $this->show_tip = $show_tip;
@@ -482,6 +485,7 @@ class TadUpFiles
             foreach ($all as $k => $v) {
                 $$k = $v;
             }
+            $show_file_name = $$filename_col;
 
             //以uid取得使用者名稱
             $uid_name = \XoopsUser::getUnameFromId($uid, 1);
@@ -491,6 +495,7 @@ class TadUpFiles
 
             // $fileidname = str_replace('.', '', $file_name);
             $file_name = $this->hash ? $hash_filename : $file_name;
+
             if ($thumb) {
                 if ($kind === 'file') {
                     $fext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
@@ -575,7 +580,7 @@ class TadUpFiles
                 if ($show_filename) {
                     $filename_label = "
                     <label class='checkbox' style='margin:5px 0px;'>
-                    {$original_filename}
+                    {$show_file_name}
                     </label>
                    ";
                 }
@@ -598,7 +603,7 @@ class TadUpFiles
                 $all_file .= "
                 <li id='fdtr_{$files_sn}' name='{$files_sn}'>
                     <i class='fa fa-times-circle' aria-hidden='true' onClick=\"remove_file('{$files_sn}');\" style='color: red;position: relative; float:right; z-index:10;' data-toggle=\"tooltip\" title=\"" . sprintf(_TM_FILE_DEL_BY, $uid_name, $uid_name) . "\"></i>
-                    <a $file_href style='position: relative;z-index:9;'>{$original_filename}</a>
+                    <a $file_href style='position: relative;z-index:9;'>{$show_file_name}</a>
                 </li>
                 ";
             } else {
@@ -608,7 +613,7 @@ class TadUpFiles
                     $filename_label = "
                     <label class='checkbox-inline' style='width:{$this->thumb_width}; height: 100px;font-size: 0.8em;word-wrap: break-word;'>
                     <!--input type='checkbox' name='del_file[]' value='{$files_sn}'-->
-                    {$original_filename}
+                    {$show_file_name}
                     </label>
                     ";
                 }
@@ -631,6 +636,8 @@ class TadUpFiles
         $fancybox = new FancyBox('.fancybox_demo', '1200', '800');
         $fancybox->render(false, null, false);
 
+        $reload = $this->reload ? "location.reload();" : '';
+
         $files = "
         <script type='text/javascript'>
             $(document).ready(function(){
@@ -651,6 +658,7 @@ class TadUpFiles
                         if(data=='1'){
                             $('#fdtr_' + files_sn).html('<li>已刪除</li>');
                             $('#fdtr_' + files_sn).remove();
+                            {$reload}
                         }else{
                             $('#fdtr_' + files_sn).html('<li>刪除失敗：'+data+'</li>');
                         }
@@ -738,14 +746,19 @@ class TadUpFiles
         }
 
         //新增限制不允許檔案類型
+        $deny_arr = [];
         if (!empty($deny)) {
             $denys = explode(';', $deny);
-            $deny_arr = [];
             foreach ($denys as $ext) {
                 $mime_arr = $this->ext2mime($ext);
                 foreach ($mime_arr as $mimetype) {
                     $deny_arr[] = $mimetype;
                 }
+            }
+        } else {
+            $mime_arr = $this->ext2mime('php');
+            foreach ($mime_arr as $mimetype) {
+                $deny_arr[] = $mimetype;
             }
         }
 
@@ -805,9 +818,9 @@ class TadUpFiles
         }
 
         // die(var_dump($files));
-        $all_files_sn = [];
+        $all_files_sn = $all_original_filename = [];
         foreach ($files as $file) {
-            if (function_exists('exif_read_data')) {
+            if (function_exists('exif_read_data') && isset($file['tmp_name']) && !empty($file['tmp_name'])) {
                 $exif = exif_read_data($file['tmp_name'], null, true);
                 $creat_date = $exif['IFD0']['DateTime'];
                 $Model360 = ['LG-R105', 'RICOH THETA S'];
@@ -845,7 +858,8 @@ class TadUpFiles
                 }
 
                 $file_handle->file_safe_name = false;
-                $file_handle->mime_check = (empty($allow) and empty($deny)) ? false : true;
+                // $file_handle->mime_check = (empty($allow) and empty($deny)) ? false : true;
+                $file_handle->mime_check = true;
                 $file_handle->file_overwrite = true;
                 $file_handle->no_script = false;
                 $file_handle->file_new_name_ext = $ext;
@@ -901,7 +915,8 @@ class TadUpFiles
                 //若是圖片才製作小縮圖
                 if ($kind === 'img') {
                     $file_handle->file_safe_name = false;
-                    $file_handle->mime_check = (empty($allow) and empty($deny)) ? false : true;
+                    // $file_handle->mime_check = (empty($allow) and empty($deny)) ? false : true;
+                    $file_handle->mime_check = true;
                     $file_handle->file_overwrite = true;
                     $file_handle->file_new_name_ext = $ext;
                     $file_handle->file_new_name_body = $new_filename;
@@ -981,6 +996,7 @@ class TadUpFiles
                     }
 
                     $all_files_sn[] = $insert_files_sn;
+                    $all_original_filename[$insert_files_sn] = $file['name'];
                 } else {
                     redirect_header($_SERVER["HTTP_REFERER"], 3, 'Error:' . $file_handle->error);
                 }
@@ -990,6 +1006,8 @@ class TadUpFiles
 
         if ($return_col === 'files_sn') {
             return $all_files_sn;
+        } elseif ($return_col === 'original_filename') {
+            return $all_original_filename;
         }
 
         return $file_name;
@@ -1348,14 +1366,19 @@ class TadUpFiles
         }
 
         //新增限制不允許檔案類型
+        $deny_arr = [];
         if (!empty($deny)) {
             $denys = explode(';', $deny);
-            $deny_arr = [];
             foreach ($denys as $ext) {
                 $mime_arr = $this->ext2mime($ext);
                 foreach ($mime_arr as $mimetype) {
                     $deny_arr[] = $mimetype;
                 }
+            }
+        } else {
+            $mime_arr = $this->ext2mime('php');
+            foreach ($mime_arr as $mimetype) {
+                $deny_arr[] = $mimetype;
             }
         }
 
@@ -1381,7 +1404,8 @@ class TadUpFiles
             $randStr = Utility::randStr(3);
 
             $file_handle->file_safe_name = false;
-            $file_handle->mime_check = (empty($allow) and empty($deny)) ? false : true;
+            // $file_handle->mime_check = (empty($allow) and empty($deny)) ? false : true;
+            $file_handle->mime_check = true;
             $file_handle->file_overwrite = true;
             $file_handle->file_new_name_ext = $ext;
             if ($this->hash) {
@@ -1420,7 +1444,8 @@ class TadUpFiles
             //若是圖片才製作小縮圖
             if ($kind === 'img') {
                 $file_handle->file_safe_name = false;
-                $file_handle->mime_check = (empty($allow) and empty($deny)) ? false : true;
+                // $file_handle->mime_check = (empty($allow) and empty($deny)) ? false : true;
+                $file_handle->mime_check = true;
                 $file_handle->file_overwrite = true;
                 $file_handle->file_new_name_ext = $ext;
                 if ($this->hash) {
@@ -1647,7 +1672,7 @@ class TadUpFiles
     //取得檔案
     public function get_file($files_sn = '', $limit = null, $path = null, $hash = false, $desc_as_name = false, $keyword = '', $only_keyword = false, $target = '_self', $my_where = '', $file_sn_key = true)
     {
-        global $xoopsDB, $xoopsUser;
+        global $xoopsDB;
         $files = [];
         $os_charset = (PATH_SEPARATOR === ':') ? 'UTF-8' : 'Big5';
 
@@ -1755,13 +1780,16 @@ class TadUpFiles
                     $rel = "rel='f{$this->col_name}'";
                 }
 
-                $files[$key]['link'] = "<a href='{$dl_url}' title='{$description}' {$rel} class='{$fancyboxset}'><img src='{$pic_name}' alt='{$description}' title='{$description}'></a>";
-                $files[$key]['path'] = $pic_name;
-                $files[$key]['url'] = "<a href='{$pic_name}' title='{$description}' {$rel} class='{$fancyboxset}'>{$show_file_name}</a>";
+                $show_dl_url = $this->show_path ? "($dl_url)" : '';
+                $show_pic_name = $this->show_path ? "($pic_name)" : '';
 
-                $files[$key]['tb_link'] = "<a href='{$dl_url}' title='{$description}' {$rel} class='{$fancyboxset}'><img src='$thumb_pic' alt='{$description}' title='{$description}'></a>";
+                $files[$key]['link'] = "<a href='{$dl_url}' title='{$description}{$show_dl_url}' {$rel} class='{$fancyboxset}'><img src='{$pic_name}' alt='{$description}' title='{$description}'></a>";
+                $files[$key]['path'] = $pic_name;
+                $files[$key]['url'] = "<a href='{$pic_name}' title='{$description}{$show_pic_name}' {$rel} class='{$fancyboxset}'>{$show_file_name}</a>";
+
+                $files[$key]['tb_link'] = "<a href='{$dl_url}' title='{$description}{$show_dl_url}' {$rel} class='{$fancyboxset}'><img src='$thumb_pic' alt='{$description}' title='{$description}'></a>";
                 $files[$key]['tb_path'] = $thumb_pic;
-                $files[$key]['tb_url'] = "<a href='{$dl_url}' title='{$description}' {$rel} class='{$fancyboxset}'>{$description}</a>";
+                $files[$key]['tb_url'] = "<a href='{$dl_url}' title='{$description}{$show_dl_url}' {$rel} class='{$fancyboxset}'>{$description}</a>";
                 $files[$key]['original_file_path'] = $this->TadUpFilesImgUrl . "/{$file_name}";
                 $files[$key]['physical_file_path'] = $this->TadUpFilesImgDir . "/{$file_name}";
 
@@ -1769,12 +1797,15 @@ class TadUpFiles
                 $thumb_pic_ext = mb_strtolower(mb_substr($thumb_pic, -3));
                 $files[$key]['thumb_pic'] = mb_substr($thumb_pic, 0, -3) . $thumb_pic_ext;
             } else {
+                $fancyboxset = $fext == 'pdf' ? "fancybox_{$this->col_name}" : '';
+                $rel = $fext == 'pdf' ? "rel='f{$this->col_name}'" : '';
                 $fext = strtolower(pathinfo($original_filename, PATHINFO_EXTENSION));
                 $files[$key]['thumb_pic'] = XOOPS_URL . "/modules/tadtools/images/mimetype/{$fext}.png";
                 $file_name = $this->hash ? $hash_filename : $file_name;
 
                 $files[$key]['link'] = "<a href='{$dl_url}#{$original_filename}' target='{$target}'>{$show_file_name}</a>";
                 $files[$key]['path'] = "{$dl_url}#{$original_filename}";
+                $files[$key]['url'] = "<a href='{$dl_url}' title='{$description}' {$rel} class='{$fancyboxset}' data-fancybox-type='iframe'>{$show_file_name}</a>";
                 $files[$key]['dl_url'] = $dl_url;
                 $files[$key]['original_file_path'] = $this->TadUpFilesUrl . "/{$file_name}";
                 $files[$key]['physical_file_path'] = $this->TadUpFilesDir . "/{$file_name}";
@@ -1993,7 +2024,7 @@ class TadUpFiles
                             $linkto = XOOPS_URL . "/modules/tadtools/360.php?photo={$file_info['path']}";
                             $all_files .= "<li> <a href='{$linkto}' class='fancybox_{$this->col_name}' data-fancybox-type='iframe'>{$file_info['original_filename']}</a> </li>";
                         } else {
-                            $all_files .= "<li> {$file_info['url']} </li>";
+                            $all_files .= "<li> {$file_info['url']}</li>";
                         }
                     }
                 } elseif ($show_mode === 'app') {
@@ -2267,10 +2298,10 @@ class TadUpFiles
     //取得單一檔案資料
     public function get_one_file($files_sn = '')
     {
-        global $xoopsDB, $xoopsUser;
+        global $xoopsDB;
 
         $sql = "select * from `{$this->TadUpFilesTblName}`  where `files_sn`='{$files_sn}'";
-
+        Utility::test($sql, 'file_sql', 'die');
         $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $all = $xoopsDB->fetchArray($result);
         // die(var_export($all));

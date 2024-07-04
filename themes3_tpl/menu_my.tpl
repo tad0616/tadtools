@@ -5,11 +5,11 @@
         </a>
         <{if $m.submenu}>
             <{if $m.submenu=='1'}>
-                <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_login.tpl"}>
+                <{include file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_login.tpl"}>
             <{else}>
                 <{if $m.submenu}>
-                    <{assign var=submenu value=$m.submenu}>
-                    <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_sub.tpl"}>
+                    <{assign var="submenu" value=$m.submenu}>
+                    <{include file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_sub.tpl"}>
                 <{/if}>
             <{/if}>
         <{/if}>

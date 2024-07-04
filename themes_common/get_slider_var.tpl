@@ -1,8 +1,6 @@
+<{*
 <{php}>
 global $xoopsDB, $xoopsTpl, $xoopsConfig;
-
-$slider_var = get_theme_slide_items();
-$xoopsTpl->assign('slider_var', $slider_var);
 
 function get_theme_slide_items()
 {
@@ -20,7 +18,7 @@ function get_theme_slide_items()
             //`files_sn`, `col_name`, `col_sn`, `sort`, `kind`, `file_name`, `file_type`, `file_size`, `description`, `counter`, `original_filename`, `hash_filename`, `sub_dir`
 
             preg_match_all("/\](.*)\[/", $description, $matches);
-            $url = $matches[1][0];
+            $url = isset($matches[1][0])?$matches[1][0]:'';
             if (empty($url)) {
                 $url = XOOPS_URL;
             }
@@ -50,4 +48,8 @@ function get_theme_slide_items()
     return $slider_var;
 
 }
+$slider_var = get_theme_slide_items();
+$xoopsTpl->assign('slider_var', $slider_var);
+
 <{/php}>
+*}>

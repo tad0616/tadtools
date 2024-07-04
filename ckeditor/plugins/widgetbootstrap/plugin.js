@@ -35,7 +35,7 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
 
             template:
                 '<div class="row two-col-left">' +
-                    '<div class="col-sm-4 span4 col-sidebar img-box-1-5"><img src="https://fakeimg.pl/300x250/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /></div>' +
+                    '<div class="col-sm-4 span4 col-sidebar"><img src="https://fakeimg.pl/300x250/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /></div>' +
                     '<div class="col-sm-8 span8 col-main"><p>輸入內容</p></div>' +
                 '</div>',
 
@@ -65,7 +65,7 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
             template:
                 '<div class="row two-col-right">' +
                     '<div class="col-sm-8 span8 col-main"><p>輸入內容</p></div>' +
-                    '<div class="col-sm-4 span4 col-sidebar img-box-1-5"><img src="https://fakeimg.pl/300x250/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /></div>' +
+                    '<div class="col-sm-4 span4 col-sidebar"><img src="https://fakeimg.pl/300x250/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /></div>' +
                 '</div>',
 
             editables: {
@@ -91,8 +91,8 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
             button: showButtons ? '新增 2 欄' : undefined,
             template:
                 '<div class="row two-col">' +
-                    '<div class="col-sm-6 span6 coln-1 img-box-1-5"><img src="https://fakeimg.pl/500x280/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入內容</p></div>' +
-                    '<div class="col-sm-6 span6 coln-2 img-box-1-5"><img src="https://fakeimg.pl/500x280/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入內容</p></div>' +
+                    '<div class="col-sm-6 span6 coln-1"><img src="https://fakeimg.pl/500x280/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入內容</p></div>' +
+                    '<div class="col-sm-6 span6 coln-2"><img src="https://fakeimg.pl/500x280/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入內容</p></div>' +
                 '</div>',
             editables: {
                 col1: {
@@ -116,9 +116,9 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
 
             template:
                 '<div class="row three-col">' +
-                    '<div class="col-sm-4 span4 coln-1 img-box-2"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
-                    '<div class="col-sm-4 span4 coln-2 img-box-2"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
-                    '<div class="col-sm-4 span4 coln-3 img-box-2"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-4 span4 coln-1"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-4 span4 coln-2"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-4 span4 coln-3"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
                 '</div>',
 
             editables: {
@@ -150,10 +150,10 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
 
             template:
                 '<div class="row four-col">' +
-                    '<div class="col-sm-3 span3 coln-1 img-box-3"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
-                    '<div class="col-sm-3 span3 coln-2 img-box-3"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
-                    '<div class="col-sm-3 span3 coln-3 img-box-3"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
-                    '<div class="col-sm-3 span3 coln-4 img-box-3"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-3 span3 coln-1"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-3 span3 coln-2"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-3 span3 coln-3"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-3 span3 coln-4"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
                 '</div>',
 
             editables: {
@@ -189,12 +189,12 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
 
             template:
                 '<div class="row six-col">' +
-                    '<div class="col-sm-2 span2 coln-1 img-box-4"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
-                    '<div class="col-sm-2 span2 coln-2 img-box-4"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
-                    '<div class="col-sm-2 span2 coln-3 img-box-4"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
-                    '<div class="col-sm-2 span2 coln-4 img-box-4"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
-                    '<div class="col-sm-2 span2 coln-5 img-box-4"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
-                    '<div class="col-sm-2 span2 coln-6 img-box-4"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-2 span2 coln-1"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-2 span2 coln-2"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-2 span2 coln-3"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-2 span2 coln-4"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-2 span2 coln-5"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
+                    '<div class="col-sm-2 span2 coln-6"><img src="https://fakeimg.pl/400x225/?retina=1&font=noto&text=%E6%94%BE%E7%BD%AE%E5%9C%96%E7%89%87" class="img-responsive img-fluid" /><p>輸入文字</p></div>' +
                 '</div>',
 
             editables: {
@@ -231,198 +231,6 @@ CKEDITOR.plugins.add( 'widgetbootstrap', {
             }
 
         } );
-
-        // editor.widgets.add( 'widgetbootstrapPdfP', {
-        //     button: showButtons ? '嵌入直式PDF' : undefined,
-        //     template:
-        //     '<div class="pdf-col">' +
-        //         '<div class="embed-responsive embed-responsive-210by297 ratio ratio-210by297 coln-pdf">' +
-        //             '<link href="https://campus-xoops.tn.edu.tw/modules/tad_blocks/type/pdf/embed-responsive.css" rel="stylesheet">' +
-        //             '<iframe title="嵌入直式PDF" class="embed-responsive-item" src="https://campus-xoops.tn.edu.tw/uploads/tadtools/pdf-p.pdf" allowfullscreen scrolling="no"></iframe>' +
-        //         '</div>' +
-        //     '</div>',
-        //     editables: {
-        //         col1: {
-        //             selector: '.coln-pdf',
-        //             allowedContent: allowedWidget
-        //         }
-        //     },
-        //     allowedContent: allowedFull,
-
-        //     upcast: function( element ) {
-        //         return element.name == 'div' && element.hasClass( 'pdf-col' );
-        //     }
-        // } );
-
-        // editor.widgets.add( 'widgetbootstrapPdfL', {
-        //     button: showButtons ? '嵌入橫式PDF' : undefined,
-        //     template:
-        //     '<div class="pdf-col">' +
-        //         '<div class="embed-responsive embed-responsive-297by210 ratio ratio-297by210 coln-pdf">' +
-        //             '<link href="https://campus-xoops.tn.edu.tw/modules/tad_blocks/type/pdf/embed-responsive.css" rel="stylesheet">' +
-        //             '<iframe title="嵌入橫式PDF" class="embed-responsive-item" src="https://campus-xoops.tn.edu.tw/uploads/tadtools/pdf-l.pdf" allowfullscreen scrolling="no"></iframe>' +
-        //         '</div>' +
-        //     '</div>',
-        //     editables: {
-        //         col1: {
-        //             selector: '.coln-pdf',
-        //             allowedContent: allowedWidget
-        //         }
-        //     },
-        //     allowedContent: allowedFull,
-
-        //     upcast: function( element ) {
-        //         return element.name == 'div' && element.hasClass( 'pdf-col' );
-        //     }
-        // } );
-
-        // editor.addCommand( 'openwidgetbootstrapAlert', new CKEDITOR.dialogCommand( 'widgetbootstrapAlert' ) );
-
-        // Add foundation alert button
-        // Textare decodes html entities
-        //var textarea = new CKEDITOR.dom.element( 'textarea' );
-
-        // editor.widgets.add( 'widgetbootstrapAlert', {
-
-        //     button: showButtons ? 'Add alert box' : undefined,
-        //     dialog: 'widgetbootstrapAlert',
-
-        //     template: '<div class="alert alert-box"><div class="alert-text">Some Text</span></div>',
-
-        //     editables: {
-        //         alertBox: {
-        //             selector: '.alert-text',
-        //             allowedContent: allowedWidget
-        //         },
-        //     },
-
-        //     allowedContent: allowedFull,
-
-        //     data: function() {
-        //         var newData = this.data,
-        //             oldData = this.oldData;
-
-        //         /*if( newData.alertText ) {
-        //             this.element.getChild( 0 ).setHtml( CKEDITOR.tools.htmlEncode( newData.alertText ) );
-        //         }*/
-
-        //         if ( oldData && newData.type != oldData.type )
-        //             this.element.removeClass(oldData.type);
-
-        //         if ( newData.type )
-        //             this.element.addClass(newData.type);
-
-        //         // Save oldData.
-        //         this.oldData = CKEDITOR.tools.copy( newData );
-        //     },
-
-        //     upcast: function( el, data ) {
-        //         if (el.name != 'div' || !el.hasClass( 'alert-box' ))
-        //             return;
-
-        //         var childrenArray = el.children,
-        //             alertText;
-
-        //         if ( childrenArray.length !== 1 || !( alertText = childrenArray[ 0 ] ).hasClass('alert-text'))
-        //             return;
-
-        //         // Acceptable alert types
-        //         var alertTypes = CKEDITOR.config.widgetbootstrapAlert_alertTypes;
-        //         // Check alert types
-        //         for(var i = 0; i < el.attributes.length; i++) {
-        //             if(el.attributes[i] != 'alert-box') {
-        //                 for ( alertName in alertTypes ) {
-        //                     if(el.attributes[i] == alertName) {
-        //                         data.type = alertName;
-        //                     }
-        //                 }
-        //             }
-        //         }
-
-        //         // Use textarea to decode HTML entities (#11926).
-        //         //textarea.setHtml( alertText.getHtml() );
-        //         //data.alertText = textarea.getValue();
-
-        //         return el;
-        //     },
-
-        //     downcast: function( el ) {
-        //         return el;
-        //     }
-
-        // } );
-        // Alert dialog
-        // CKEDITOR.dialog.add( 'widgetbootstrapAlert', this.path + 'dialogs/widgetbootstrapAlert.js' );
-
-        /*CKEDITOR.dialog.add( 'widgetbootstrapAccordion', this.path + 'dialogs/widgetbootstrapAccordion.js' );
-        editor.widgets.add( 'widgetbootstrapAccordion', {
-
-            button: showButtons ? 'Add accordion box' : undefined,
-
-            template:
-                '<dl class="accordion" data-accordion><div class="col-1"></div></dl>',
-
-            allowedContent: allowedFull,
-
-            dialog: 'widgetbootstrapAccordion',
-
-            upcast: function( element ) {
-                return element.name == 'div' && element.hasClass( 'accordion' );
-            },
-
-            /*init: function() {
-                var width = this.element.getStyle( 'width' );
-                if ( width )
-                    this.setData( 'width', width );
-                if ( this.element.hasClass( 'align-left' ) )
-                    this.setData( 'align', 'left' );
-                if ( this.element.hasClass( 'align-right' ) )
-                    this.setData( 'align', 'right' );
-                if ( this.element.hasClass( 'align-center' ) )
-                    this.setData( 'align', 'center' );
-            },
-
-            data: function() {
-
-                var name = this.data.name != undefined ? this.data.name : 'accordion';
-                var count = this.data.count != undefined ? this.data.count : 0;
-                //@todo: var prevCount = this.data.prevCount != undefined ? this.data.prevCount :
-
-                // Add rows
-                if (this.data.prevCount == undefined || this.data.prevCount < count) {
-                    for (var i=this.data.prevCount != undefined ? this.data.prevCount : 1; i<=count; i++) {
-                        var active = this.data.activePanel == i ? ' active' : '';
-                        var template =
-                            '<dd class="accordion-navigation">' +
-                                '<a href="#'+ name+i +'"><div class="accordion-header-'+i+'">Heading '+i+'</div></a>' +
-                                '<div id="panel'+ name+i +'" class="content content-'+i+active+'">' +
-                                  '' +
-                                '</div>'
-                            '</dd>'
-                        var newPanel = CKEDITOR.dom.element.createFromHtml( template );
-                        this.element.append(newPanel);
-                    }
-
-                    // For some reason, the initEditable call needs to come in a separate for loop
-                    // the html code added wasn't in the DOM yet
-                    for (var i=this.data.prevCount != undefined ? this.data.prevCount : 1; i<=count; i++) {
-                        this.initEditable( 'heading'+i, {
-                            selector: '.accordion-header-'+i
-                        } );
-                        this.initEditable( 'content'+i, {
-                            selector: '.content-'+i
-                        } );
-                    }
-                }
-
-                // Remove rows
-                if (this.data.prevCount != undefined && this.data.prevCount > count) {
-                    // @todo
-                }
-
-                this.data.prevCount = i;
-            }
-        } );*/
 
         // Append the widget's styles when in the CKEditor edit page,
         // added for better user experience.

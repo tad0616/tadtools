@@ -1,7 +1,7 @@
 <link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{$xoops_url}>/modules/tadtools/css/vertical_menu.css">
 <ul class="vertical_menu">
     <li <{if !$block.nothome}>class="selected"<{/if}>>
-        <a href="<{xoAppUrl }>">
+        <a href="<{$xoops_url}>/">
         &#xf015;
         <{$block.lang_home}>
         </a>

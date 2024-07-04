@@ -9,7 +9,7 @@
   padding-right: 58px;
   color: <{$navbar_color}>;
   font-family: FontAwesome<{if $font_family}>, <{$font_family}><{/if}>;
-  font-size: <{$navbar_font_size}>;
+  font-size: <{$navbar_font_size}>rem;
   font-weight: normal;
   line-height: 17px;
   text-decoration: none;
@@ -53,7 +53,7 @@
 }
 .sm-mint ul a, .sm-mint ul a:hover, .sm-mint ul a:focus, .sm-mint ul a:active {
   color: <{$nav_sub_font_color}>;
-  font-size: <{$navbar_font_size}>;
+  font-size: <{$navbar_font_size}>rem;
   border-left: 8px solid transparent;
 }
 
@@ -408,7 +408,7 @@
   <{/if}>
   color: <{$navbar_color}>;
   <{if $navbar_font_size}>
-    font-size: <{$navbar_font_size}>;
+    font-size: <{$navbar_font_size}>rem;
   <{/if}>
   font-weight: normal;
   text-decoration: none;

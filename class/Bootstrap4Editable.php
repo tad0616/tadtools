@@ -32,18 +32,28 @@ class Bootstrap4Editable
         //     }
         // } else {
         $main = "
-            {$jquery}
-            <link href='" . XOOPS_URL . "/modules/tadtools/bootstrap4-editable/css/bootstrap-editable.css' rel='stylesheet'>
-            <script src='" . XOOPS_URL . "/modules/tadtools/bootstrap4-editable/js/bootstrap-editable.js'></script>
-            ";
+        {$jquery}
+        <link href='" . XOOPS_URL . "/modules/tadtools/bootstrap4-editable/css/bootstrap-editable.css' rel='stylesheet'>
+        <script src='" . XOOPS_URL . "/modules/tadtools/bootstrap4-editable/js/bootstrap-editable.js'></script>
+        ";
+
+        if (is_array($name)) {
+            $editable = '';
+            foreach ($name as $name_item) {
+                $editable .= "$('{$name_item}').editable({url: '$url'});\n";
+            }
+        } else {
+            $editable = "$('{$name}').editable({url: '$url'});";
+        }
+
         if ($url) {
             $main .= "
-                <script type='text/javascript'>
-                    $(document).ready(function(){
-                        $('{$name}').editable({url: '$url'});
-                    });
-                </script>
-                ";
+            <script type='text/javascript'>
+                $(document).ready(function(){
+                    {$editable}
+                });
+            </script>
+            ";
         }
 
         return $main;

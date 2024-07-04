@@ -49,3 +49,6 @@ define('_MI_TADTOOLS_LINKIFY', '將網址轉為連結');
 define('_MI_TADTOOLS_LINKIFY_DESC', '自動將內文的網址轉換成連結');
 define('_MI_TADTOOLS_PDF_FORCE_DL', 'PDF 檔是否強制下載？');
 define('_MI_TADTOOLS_PDF_FORCE_DL_DESC', '若要符合無障礙 2.1，請選「是」，若想直接線上預覽請選「否」');
+
+define('_MI_TADTOOLS_TEST_MODE', '開發測試模式是否僅開放給管理者');
+define('_MI_TADTOOLS_TEST_MODE_DESC', '建議選「是」，此選項一般使用者用不到，僅開發者會使用');

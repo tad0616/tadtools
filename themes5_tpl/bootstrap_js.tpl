@@ -1,9 +1,9 @@
 
         <!--Bootstrap js-->
-        <script src="<{xoAppUrl modules/tadtools/bootstrap5/js/bootstrap.bundle.js}>"></script>
+        <script src="<{$xoops_url}>/modules/tadtools/bootstrap5/js/bootstrap.bundle.js"></script>
 
         <!-- SmartMenus jQuery plugin -->
-        <script type="text/javascript" src="<{xoAppUrl modules/tadtools/smartmenus/jquery.smartmenus.js}>"></script>
+        <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/smartmenus/jquery.smartmenus.js"></script>
 
 
         <script type="text/javascript">

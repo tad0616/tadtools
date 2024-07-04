@@ -74,7 +74,7 @@ ol.brackets-num li:before {
   position: absolute;
   left: -30px;
 }
-
+/*
 .img-box-1-5 img,
 .img-box-2 img,
 .img-box-3 img,
@@ -98,6 +98,8 @@ ol.brackets-num li:before {
   -webkit-transform: scale(24);
   transform: scale(4);
 }
+ */
+
 /* .cke_dialog {
   z-index: 10055 !important;
 }

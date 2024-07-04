@@ -1,10 +1,11 @@
 <?php
+
 global $xoopsConfig;
 
 $modversion = [];
 $modversion['name'] = _MI_TADTOOLS_NAME;
-// $modversion['version'] = strpos(XOOPS_VERSION, '2.5.11-Stable') !== false ? '3.5.2-Stable' : '3.53';
-$modversion['version'] = '3.55';
+$modversion['version'] = $_SESSION['xoops_version'] >= 20511 ? '4.0.0-Stable' : '4.0';
+// $modversion['version'] = '3.55';
 $modversion['description'] = _MI_TADTOOLS_DESC;
 $modversion['author'] = 'Tad (tad0616@gmail.com)';
 $modversion['credits'] = '';
@@ -145,6 +146,14 @@ $modversion['config'][$i]['description'] = '_MI_TADTOOLS__MI_TADTOOLS_PDF_FORCE_
 $modversion['config'][$i]['formtype'] = 'yesno';
 $modversion['config'][$i]['valuetype'] = 'int';
 $modversion['config'][$i]['default'] = '0';
+
+$i++;
+$modversion['config'][$i]['name'] = 'test_mode';
+$modversion['config'][$i]['title'] = '_MI_TADTOOLS_TEST_MODE';
+$modversion['config'][$i]['description'] = '_MI_TADTOOLS_TEST_MODE_DESC';
+$modversion['config'][$i]['formtype'] = 'yesno';
+$modversion['config'][$i]['valuetype'] = 'int';
+$modversion['config'][$i]['default'] = '1';
 
 $i = 0;
 $modversion['blocks'][$i]['file'] = 'tadtools_qrcode.php';

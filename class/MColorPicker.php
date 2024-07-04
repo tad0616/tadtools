@@ -7,6 +7,7 @@ use XoopsModules\Tadtools\Utility;
 class MColorPicker
 {
     public $name;
+    public $show_jquery;
 
     public function __construct($name = '.color', $show_jquery = true)
     {

@@ -121,9 +121,15 @@ class Utility
         self::get_bootstrap();
     }
 
-    public static function test($var, $v = 1, $mode = 'dd')
+    public static function test($var, $v = 1, $mode = 'dd', $key = 'test')
     {
-        if ($_GET['test'] == $v) {
+        global $xoopsUser, $xoopsModuleConfig;
+
+        if (isset($xoopsModuleConfig['test_mode']) && $xoopsModuleConfig['test_mode'] && $xoopsUser && !$xoopsUser->isAdmin()) {
+            return;
+        }
+
+        if (isset($_GET[$key]) && $_GET[$key] == $v) {
             if ($mode == 'die') {
                 die($var);
             } elseif ($mode == 'echo') {
@@ -174,10 +180,12 @@ class Utility
         foreach ((array) $protocols as $protocol) {
             switch ($protocol) {
                 case 'http':
-                case 'https':$value = preg_replace_callback('~(?:(https?)://([^\s<]+)|(www\.[^\s<]+?\.[^\s<]+))(?<![\.,:])~i', function ($match) use ($protocol, &$links, $attr) {if ($match[1]) {
-                        $protocol = $match[1];
-                    }
-                        $link = $match[2] ?: $match[3];return '<' . array_push($links, "<a $attr href=\"$protocol://$link\" target=\"_blank\">$protocol://$link</a>") . '>';}, $value);
+                case 'https':$value = preg_replace_callback('~(?:(https?)://([^\s<]+)|(www\.[^\s<]+?\.[^\s<]+))(?<![\.,:])~i', function ($match) use ($protocol, &$links, $attr) {
+                        if ($match[1]) {
+                            $protocol = $match[1];
+                        }
+                        $link = $match[2] ?: $match[3];return '<' . array_push($links, "<a $attr href=\"$protocol://$link\" target=\"_blank\">$protocol://$link</a>") . '>';
+                    }, $value);
                     break;
                 // case 'mail':$value = preg_replace_callback('~([^\s<]+?@[^\s<]+?\.[^\s<]+)(?<![\.,:])~', function ($match) use (&$links, $attr) {return '<' . array_push($links, "<a $attr href=\"mailto:{$match[1]}\">{$match[1]}</a>") . '>';}, $value);
                 //     break;
@@ -212,22 +220,22 @@ class Utility
 
     public static function add_migrate($mode = "")
     {
-        global $xoTheme;
-        self::get_jquery();
-        $ver = self::get_version('xoops');
-        if ($mode == "return") {
-            if ($ver >= 20509) {
-                return "<script src='" . XOOPS_URL . "/modules/tadtools/jquery/jquery-migrate-3.0.0.min.js'></script>";
-            } else {
-                return "<script src='" . XOOPS_URL . "/modules/tadtools/jquery/jquery-migrate-1.4.1.min.js'></script>";
-            }
-        } else {
-            if ($ver >= 20509) {
-                $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
-            } else {
-                $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-1.4.1.min.js');
-            }
-        }
+        // global $xoTheme;
+        // self::get_jquery();
+        // // $ver = self::get_version('xoops');
+        // if ($mode == "return") {
+        //     if ($_SESSION['xoops_version'] < 20509) {
+        //         return "<script src='" . XOOPS_URL . "/modules/tadtools/jquery/jquery-migrate-1.4.1.min.js'></script>";
+        //     } else {
+        //         return "<script src='" . XOOPS_URL . "/modules/tadtools/jquery/jquery-migrate-3.0.0.min.js'></script>";
+        //     }
+        // } else {
+        //     if ($_SESSION['xoops_version'] < 20509) {
+        //         $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-1.4.1.min.js');
+        //     } else {
+        //         $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
+        //     }
+        // }
     }
 
     //版本判斷
@@ -335,7 +343,7 @@ class Utility
     }
 
     // 格式化版本
-    public static function version_format($type = 'xoops', $ver, $my_xoops_version = '')
+    public static function version_format($type = 'xoops', $ver = '', $my_xoops_version = '')
     {
         if (empty($ver) and empty($type)) {
             return;
@@ -385,8 +393,12 @@ class Utility
         if (empty($dir)) {
             return;
         }
+        $source_dir = $dir;
+
+        $dir = \str_replace([XOOPS_ROOT_PATH, XOOPS_VAR_PATH], '', $dir);
         $dir_path = explode('/', $dir);
-        $mk_dir = '';
+        $mk_dir = strpos($source_dir, XOOPS_VAR_PATH) !== false ? XOOPS_VAR_PATH : XOOPS_ROOT_PATH;
+
         foreach ($dir_path as $i => $sub_dir) {
             $mk_dir .= $i > 0 ? "/{$sub_dir}" : $sub_dir;
 
@@ -399,7 +411,7 @@ class Utility
                 }
             }
         }
-        return $dir;
+        return $source_dir;
     }
 
     //刪除目錄
@@ -428,31 +440,61 @@ class Utility
     }
 
     //拷貝目錄
-    public static function full_copy($source = '', $target = '')
+    public static function full_copy($source = '', $dest = '', $overwrite = true)
     {
-        if (is_dir($source)) {
-            if (!self::mk_dir($target) && !is_dir($target)) {
-                throw new \RuntimeException(sprintf('Directory "%s" was not created', $target));
-            }
-            $d = dir($source);
-            while (false !== ($entry = $d->read())) {
-                if ('.' === $entry || '..' === $entry) {
-                    continue;
-                }
 
-                $Entry = $source . '/' . $entry;
-                if (is_dir($Entry)) {
-                    self::full_copy($Entry, $target . '/' . $entry);
-                    continue;
+        // 檢查來源資料夾是否存在
+        if (!is_dir($source)) {
+            return false;
+        }
+
+        // 確保目標資料夾存在,否則創建它
+        if (!is_dir($dest)) {
+            mkdir($dest, 0755, true);
+        }
+
+        // 遍歷來源資料夾中的所有檔案和資料夾
+        $files = array_diff(scandir($source), array('.', '..'));
+        foreach ($files as $file) {
+            $sourceFile = $source . DIRECTORY_SEPARATOR . $file;
+            $destFile = $dest . DIRECTORY_SEPARATOR . $file;
+
+            // 如果是資料夾,則遞歸複製
+            if (is_dir($sourceFile)) {
+                self::full_copy($sourceFile, $destFile, $overwrite);
+            } else {
+                // 如果是檔案,則複製檔案
+                if ($overwrite || !file_exists($destFile)) {
+                    copy($sourceFile, $destFile);
                 }
-                copy($Entry, $target . '/' . $entry);
-            }
-            $d->close();
-        } else {
-            if (\file_exists($source)) {
-                copy($source, $target);
             }
         }
+
+        return true;
+
+        // if (is_dir($source)) {
+        //     if (!self::mk_dir($target) && !is_dir($target)) {
+        //         throw new \RuntimeException(sprintf('Directory "%s" was not created', $target));
+        //     }
+        //     $d = dir($source);
+        //     while (false !== ($entry = $d->read())) {
+        //         if ('.' === $entry || '..' === $entry) {
+        //             continue;
+        //         }
+
+        //         $Entry = $source . '/' . $entry;
+        //         if (is_dir($Entry)) {
+        //             self::full_copy($Entry, $target . '/' . $entry);
+        //             continue;
+        //         }
+        //         copy($Entry, $target . '/' . $entry);
+        //     }
+        //     $d->close();
+        // } else {
+        //     if (\file_exists($source)) {
+        //         copy($source, $target);
+        //     }
+        // }
     }
 
     public static function rename_win($oldfile, $newfile)
@@ -604,10 +646,7 @@ class Utility
         $_SESSION['theme_kind'] = $tt_theme_kind;
         $_SESSION[$theme_set]['bootstrap_version'] = $tt_theme_kind;
 
-        if (file_exists(XOOPS_ROOT_PATH . "/uploads/bootstrap.conf")) {
-            $bootstrap = substr(file_get_contents(XOOPS_ROOT_PATH . "/uploads/bootstrap.conf"), -1);
-            $_SESSION['bootstrap'] = $bootstrap ? $bootstrap : 4;
-        } elseif (strpos($tt_theme_kind, 'bootstrap') !== false) {
+        if (strpos($tt_theme_kind, 'bootstrap') !== false) {
             $_SESSION['bootstrap'] = substr($tt_theme_kind, -1);
         } else {
             $_SESSION['bootstrap'] = '4';
@@ -884,11 +923,13 @@ class Utility
     }
 
     //細部權限判斷
-    public static function power_chk($perm_name = '', $perm_itemid = '', $module_id = '', $trueifadmin = true)
+    public static function power_chk($perm_name = '', $perm_itemid = '', $module_id = '', $trueifadmin = true, $mod_name = '')
     {
         global $xoopsUser, $xoopsModule;
+
         if (!$xoopsModule) {
-            return;
+            $modhandler = &xoops_gethandler('module');
+            $xoopsModule = &$modhandler->getByDirname($mod_name);
         }
 
         //取得目前使用者的群組編號
@@ -1244,30 +1285,16 @@ class Utility
                 <script src='" . XOOPS_URL . "/modules/tadtools/jquery/ui/jquery-ui.js'></script>
                 <script src='" . XOOPS_URL . "/modules/tadtools/jquery/jquery.ui.touch-punch.min.js'></script>";
             }
-            $ver = self::get_version('xoops');
-            if ($ver >= 20509) {
-                $jquery_path = "
+            // $ver = self::get_version('xoops');
+            // Utility::dd($ver);
+            $jquery_path = "
                 <script type='text/javascript'>
                 if(typeof jQuery == 'undefined') {
                 document.write(\"<script type='text/javascript' src='" . XOOPS_URL . "/browse.php?Frameworks/jquery/jquery.js'><\/script>\");
-                // document.write(\"<script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/jquery/jquery-migrate-3.0.0.min.js'><\/script>\");
-                // document.write(\"<script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/jquery/jquery.jgrowl.js'><\/script>\");
                 }
                 </script>
                 $jqueryui_path
                 ";
-            } else {
-                $jquery_path = "
-                <script type='text/javascript'>
-                if(typeof jQuery == 'undefined') {
-                document.write(\"<script type='text/javascript' src='" . XOOPS_URL . "/browse.php?Frameworks/jquery/jquery.js'><\/script>\");
-                // document.write(\"<script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/jquery/jquery-migrate-1.4.1.min.js'><\/script>\");
-                // document.write(\"<script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/jquery/jquery.jgrowl.js'><\/script>\");
-                }
-                </script>
-                $jqueryui_path
-                ";
-            }
 
             return $jquery_path;
         } else {
@@ -1432,7 +1459,7 @@ class Utility
         global $xoopsModule, $xoopsDB;
         $module_id = $xoopsModule->mid();
         $sql = ' DELETE FROM ' . $xoopsDB->prefix('group_permission') . " where gperm_modid='$module_id' and gperm_itemid ='$itemid' and gperm_name='$gperm_name' ";
-        $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 
     public static function mobile_device_detect($iphone = true, $ipad = true, $android = true, $opera = true, $blackberry = true, $palm = true, $windows = true, $mobileredirect = false, $desktopredirect = false)

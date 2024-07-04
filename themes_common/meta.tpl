@@ -21,15 +21,7 @@
         <meta property="og:title" content="<{$xoops_sitename}><{if $xoops_pagetitle}> - <{$xoops_pagetitle}><{/if}>">
 <{/if}>
         <meta property="og:type" content="website">
-<{php}>
-global $xoopsTpl;
-$http = 'http://';
-if (!empty($_SERVER['HTTPS'])) {
-    $http = ($_SERVER['HTTPS'] === 'on') ? 'https://' : 'http://';
-}
-$url=$http.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-$xoopsTpl->assign('now_url',$url);
-<{/php}>
+
 <{if $now_url}>
         <meta property="og:url" content="<{$now_url}>">
 <{/if}>

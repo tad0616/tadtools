@@ -29,7 +29,7 @@
 </style>
 
 <h2>所有可用佈景變數</h2>
-<{if $xoops_isadmin}>
+<{if $xoops_isadmin|default:false}>
     <div class="row" style="margin-bottom:200px;">
         <div id="showVarTab">
             <ul class="resp-tabs-list vert">
@@ -47,7 +47,7 @@
                     <table class="table table-striped table-bordered table-hover" style="background:white;">
                         <tr><th colspan=3><h2>基本設定</h2></th></tr>
                         <tr><th>佈景種類</th><th>$theme_kind</th><td><{$theme_kind}></td></tr>
-                        <tr><th>BootStrap版本</th><th>$bootstrap</th><td><{$bootstrap}></td></tr>
+                        <tr><th>BootStrap版本</th><th>$bootstrap</th><td><{$smarty.session.bootstrap}></td></tr>
                         <tr><th>佈景編號</th><th>$theme_id</th><td><{$theme_id}></td></tr>
                         <tr><th>佈景名稱</th><th>$theme_name</th><td><{$theme_name}></td></tr>
                         <tr><th>bootstrap顏色</th><th>$theme_color</th><td><{$theme_color}></td></tr>
@@ -350,7 +350,30 @@
                 <!-- 額外設定變數值 -->
                 <div>
                     <table class="table table-striped table-bordered table-hover" style="background:white;">
-                    <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/show_var_php.tpl"}>
+                    <{*<{include file="$xoops_rootpath/modules/tadtools/themes_common/show_var_php.tpl"}>*}>
+                    <{foreach from=$config2_files item=config2_file}>
+                        <tr><th colspan=3><h2>佈景額外<{$config2_file}>設定</h2></th></tr>
+                        <{foreach from=$config2.$config2_file key=k item=config}>
+                            <tr><th><{$config.text}></th><th>$<{$config.name}></th><td><{if $config.type=='selectpicker' || $config.type=='custom_zone' || $config.type=='checkbox'}><{$config.value|@json_encode:256}><{else}><{$config.value}><{/if}></td></tr>
+                            <{if $config.type=='bg_file'}>
+                                <tr><th><{$config.text}> repeat</th><th>$<{$config.name}>_repeat</th><td><{$config.repeat}></td></tr>
+                                <tr><th><{$config.text}> position</th><th>$<{$config.name}>_position</th><td><{$config.position}></td></tr>
+                                <tr><th><{$config.text}> size</th><th>$<{$config.name}>_size</th><td><{$config.size}></td></tr>
+                            <{elseif $config.type=='custom_zone'}>
+                                <tr><th><{$config.text}> bid</th><th>$<{$config.name}>_bid</th><td><{$config.bid}></td></tr>
+                                <tr><th><{$config.text}> content</th><th>$<{$config.name}>_content</th><td><{$config.content}></td></tr>
+                                <tr><th><{$config.text}> html_content</th><th>$<{$config.name}>_html_content</th><td><{$config.html_content}></td></tr>
+                                <tr><th><{$config.text}> html_content_desc</th><th>$<{$config.name}>_html_content_desc</th><td><{$config.html_content_desc}></td></tr>
+                                <tr><th><{$config.text}> fa_content</th><th>$<{$config.name}>_fa_content</th><td><{$config.fa_content}></td></tr>
+                                <tr><th><{$config.text}> fa_content_desc</th><th>$<{$config.name}>_fa_content_desc</th><td><{$config.fa_content_desc}></td></tr>
+                                <tr><th><{$config.text}> menu_content</th><th>$<{$config.name}>_menu_content</th><td><{$config.menu_content}></td></tr>
+                                <tr><th><{$config.text}> menu_content_desc</th><th>$<{$config.name}>_menu_content_desc</th><td><{$config.menu_content_desc}></td></tr>
+                            <{elseif $config.type=='padding_margin'}>
+                                <tr><th><{$config.text}> margin-top</th><th>$<{$config.name}>_mt</th><td><{$config.mt}></td></tr>
+                                <tr><th><{$config.text}> margin-bottom</th><th>$<{$config.name}>_mb</th><td><{$config.mb}></td></tr>
+                            <{/if}>
+                        <{/foreach}>
+                    <{/foreach}>
                     </table>
                 </div>
             </div>

@@ -1,3 +1,4 @@
+<{*
 <{php}>
 global $xoopsDB, $xoopsConfig, $aggreg;
 
@@ -7,8 +8,8 @@ $right_count = $aggreg ? count($aggreg->blocks['canvas_right']) : 0;
 $xoops_showlblock = empty($left_count) ? false : true;
 $xoops_showrblock = empty($right_count) ? false : true;
 
-$this->assign('left_count', $left_count);
-$this->assign('right_count', $right_count);
+$_smarty_tpl->assign('left_count', $left_count);
+$_smarty_tpl->assign('right_count', $right_count);
 
 /**** 取得 Tad Themes 偏好設定****/
 $moduleHandler = xoops_getHandler('module');
@@ -16,10 +17,10 @@ $TadThemesModule = $moduleHandler->getByDirname("tad_themes");
 $TadThemesMid = ($TadThemesModule) ? $TadThemesModule->getVar('mid') : 0;
 $configHandler = xoops_getHandler('config');
 $TadThemesConfig = $configHandler->getConfigsByCat(0, $TadThemesMid);
-$this->assign('TadThemesMid', $TadThemesMid);
-$this->assign('use_pin', $TadThemesConfig['use_pin']);
-$this->assign('login_text', $TadThemesConfig['login_text']);
-$this->assign('login_description', $TadThemesConfig['login_description']);
+$_smarty_tpl->assign('TadThemesMid', $TadThemesMid);
+$_smarty_tpl->assign('use_pin', $TadThemesConfig['use_pin']);
+$_smarty_tpl->assign('login_text', $TadThemesConfig['login_text']);
+$_smarty_tpl->assign('login_description', $TadThemesConfig['login_description']);
 $use_default_config = false;
 
 /**** 取得佈景設定的各個預設值 ****/
@@ -27,10 +28,10 @@ $theme_name = $xoopsConfig['theme_set'];
 require_once XOOPS_ROOT_PATH . "/themes/{$theme_name}/config.php";
 require_once XOOPS_ROOT_PATH . "/modules/tadtools/language/{$xoopsConfig['language']}/main.php";
 
-$this->assign('config_tabs', $config_tabs);
+$_smarty_tpl->assign('config_tabs', $config_tabs);
 foreach ($config_enable as $k => $v) {
     $$k = $v['default'];
-    $this->assign($k, $v['default']);
+    $_smarty_tpl->assign($k, $v['default']);
 }
 
 /**** 模擬偏好設定預設值（避免沒裝 tad_theme 無法取得資料庫資料） ****/
@@ -60,7 +61,7 @@ $default['bt_bg_img'] = !empty($bt_bg_img) ? XOOPS_URL . "/themes/{$theme_name}/
 
 foreach ($default as $k => $v) {
     $$k = $v;
-    $this->assign($k, $$k);
+    $_smarty_tpl->assign($k, $v);
 }
 
 /**** 產生 Smarty 的設定檔（以取得 bootstrap 版本） ****/
@@ -82,10 +83,10 @@ if ($TadThemesMid) {
         $TadThemesModuleConfig['openid_logo'] = $default['openid_logo'];
     }
 
-    $this->assign('auto_mainmenu', $TadThemesModuleConfig['auto_mainmenu']);
-    $this->assign('show_sitename', $TadThemesModuleConfig['show_sitename']);
-    $this->assign('openid_login', $TadThemesModuleConfig['openid_login']);
-    $this->assign('openid_logo', $TadThemesModuleConfig['openid_logo']);
+    $_smarty_tpl->assign('auto_mainmenu', $TadThemesModuleConfig['auto_mainmenu']);
+    $_smarty_tpl->assign('show_sitename', $TadThemesModuleConfig['show_sitename']);
+    $_smarty_tpl->assign('openid_login', $TadThemesModuleConfig['openid_login']);
+    $_smarty_tpl->assign('openid_logo', $TadThemesModuleConfig['openid_logo']);
 
     /**** Tad Themes 的設定值****/
     if (file_exists(XOOPS_ROOT_PATH . "/modules/tad_themes/xoops_version.php")) {
@@ -101,11 +102,11 @@ if ($TadThemesMid) {
                 if (in_array($k, $file_cols) and $v != '') {
                     $v = XOOPS_URL . "/uploads/tad_themes/{$theme_name}/{$file_col[$k]}/{$v}";
                 }
-                $this->assign($k, $v);
+                $_smarty_tpl->assign($k, $v);
             }
 
             $use_slide = $slide_width > 0 ? 1 : 0;
-            $this->assign('use_slide', $use_slide);
+            $_smarty_tpl->assign('use_slide', $use_slide);
         } elseif (file_exists(XOOPS_ROOT_PATH . "/modules/tad_themes/auto_import_theme.php")) {
             require_once XOOPS_ROOT_PATH . "/modules/tad_themes/auto_import_theme.php";
             auto_import_theme();
@@ -126,15 +127,14 @@ if ($TadThemesMid) {
 }
 
 /****設定各個區域的底色****/
-$left_block = $left_block2 = "";
 $center_block = "background-color: {$cb_color};";
-$right_block = $right_block2 = "";
 
 /****設定各個區域的寬度****/
 
 if ($theme_kind == 'mix') {
     $theme_width = 12;
 }
+$center_block_content= $left_block= $left_block2= $right_block= $right_block2= '';
 
 //TYPE1:二欄式（左右區域皆在左邊）
 if ($theme_type == 'theme_type_1') {
@@ -318,19 +318,19 @@ if ($theme_type == 'theme_type_1') {
     }
 }
 
-$this->assign('base_color', $base_color);
-$this->assign('content_zone', "background-color:{$base_color};");
-$this->assign('leftBlocks', $left_block);
-$this->assign('centerBlocks', $center_block);
-$this->assign('centerBlocksContent', $center_block_content);
-$this->assign('rightBlocks', $right_block);
-$this->assign('leftBlocks2', $left_block2);
-$this->assign('rightBlocks2', $right_block2);
+$_smarty_tpl->assign('base_color', $base_color);
+$_smarty_tpl->assign('content_zone', "background-color:{$base_color};");
+$_smarty_tpl->assign('leftBlocks', $left_block);
+$_smarty_tpl->assign('centerBlocks', $center_block);
+$_smarty_tpl->assign('centerBlocksContent', $center_block_content);
+$_smarty_tpl->assign('rightBlocks', $right_block);
+$_smarty_tpl->assign('leftBlocks2', $left_block2);
+$_smarty_tpl->assign('rightBlocks2', $right_block2);
 
-$this->assign('lb_width', $lb_width);
-$this->assign('cb_width', $cb_width);
-$this->assign('rb_width', $rb_width);
-$this->assign('center_width', $center_width);
+$_smarty_tpl->assign('lb_width', $lb_width);
+$_smarty_tpl->assign('cb_width', $cb_width);
+$_smarty_tpl->assign('rb_width', $rb_width);
+$_smarty_tpl->assign('center_width', $center_width);
 
 /****設定Logo圖位置****/
 $logo_place = "";
@@ -353,7 +353,7 @@ if ($logo_center == '1') {
     }
 
 }
-$this->assign('logo_place', $logo_place);
+$_smarty_tpl->assign('logo_place', $logo_place);
 
 /****檢查除錯模式****/
 $sql = "select conf_value from " . $xoopsDB->prefix("config") . " where conf_title ='_MD_AM_DEBUGMODE'";
@@ -364,25 +364,25 @@ if ($debug == 0) {
 } else {
     $debug = 0;
 }
-$this->assign('debug', $debug);
+$_smarty_tpl->assign('debug', $debug);
 
 /****是否使用搜尋****/
-$this->assign('use_search', 1);
+$_smarty_tpl->assign('use_search', 1);
 
 /****導覽工具列、區塊標題CSS設定****/
-$this->assign('navbar_pos', $navbar_pos);
-$this->assign('navbar_bg_top', $navbar_bg_top);
-$this->assign('navbar_bg_bottom', $navbar_bg_bottom);
-$this->assign('navbar_hover', $navbar_hover);
+$_smarty_tpl->assign('navbar_pos', $navbar_pos);
+$_smarty_tpl->assign('navbar_bg_top', $navbar_bg_top);
+$_smarty_tpl->assign('navbar_bg_bottom', $navbar_bg_bottom);
+$_smarty_tpl->assign('navbar_hover', $navbar_hover);
 
 list($navbar_bg_top_rgb['r'], $navbar_bg_top_rgb['g'], $navbar_bg_top_rgb['b']) = sscanf($navbar_bg_top, "#%02x%02x%02x");
-$this->assign('navbar_bg_top_rgb', $navbar_bg_top_rgb);
+$_smarty_tpl->assign('navbar_bg_top_rgb', $navbar_bg_top_rgb);
 list($navbar_bg_bottom_rgb['r'], $navbar_bg_bottom_rgb['g'], $navbar_bg_bottom_rgb['b']) = sscanf($navbar_bg_bottom, "#%02x%02x%02x");
-$this->assign('navbar_bg_bottom_rgb', $navbar_bg_bottom_rgb);
+$_smarty_tpl->assign('navbar_bg_bottom_rgb', $navbar_bg_bottom_rgb);
 
 /****若有logo.png或logo.gif時導覽工具列以圖替代網站標題文字****/
 //if ($navlogo_img) {
-//    $this->assign('navbar_logo_img', $navlogo_img);
+//    $_smarty_tpl->assign('navbar_logo_img', $navlogo_img);
 //}
 
 /****區塊標題設定****/
@@ -399,7 +399,7 @@ if ($TadThemesMid) {
 }
 
 $block_position = array("leftBlock", "rightBlock", "centerBlock", "centerLeftBlock", "centerRightBlock", "centerBottomBlock", "centerBottomLeftBlock", "centerBottomRightBlock", "footerCenterBlock", "footerLeftBlock", "footerRightBlock");
-$this->assign('block_position', $block_position);
+$_smarty_tpl->assign('block_position', $block_position);
 $i = 0;
 $positions = array();
 foreach ($block_position as $position) {
@@ -416,15 +416,16 @@ foreach ($block_position as $position) {
     $positions[$i]['block_title_style'] = $use_default_config ? $block_title_style : $db[$position]['block_title_style'];
     $positions[$i]['block_content_style'] = $use_default_config ? $block_content_style : $db[$position]['block_content_style'];
 
-    $this->assign($position, $positions[$i]);
+    $_smarty_tpl->assign($position, $positions[$i]);
     $i++;
 }
-$this->assign('positions', $positions);
+$_smarty_tpl->assign('positions', $positions);
 
 /**** 佈景額外設定 ****/
 
 //額外佈景設定
 $config2 = [];
+
 $config2_files = ['config2_base', 'config2_bg', 'config2_top', 'config2_logo', 'config2_nav', 'config2_slide', 'config2_middle', 'config2_content', 'config2_block', 'config2_footer', 'config2_bottom', 'config2'];
 
 if ($TadThemesMid) {
@@ -449,10 +450,13 @@ if ($TadThemesMid) {
 /**** $config2 是來自 tad_themes_config2_xxx.json （或資料庫中） 中的設定 ****/
 
 $bids = [];
+
 foreach ($config2_files as $config2_file) {
     $theme_config = [];
     if (file_exists(XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php")) {
         require XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php";
+
+        $config2['top_left_content']= $config2['top_center_content']= $config2['top_right_content']= $config2['logo_right_zone_content']= $config2['middle_left_content']= $config2['middle_center_content']= $config2['middle_right_content']= $config2['bottom_left_content']= $config2['bottom_center_content']= $config2['bottom_right_content']='';
 
         foreach ($theme_config as $k => $config) {
             $name = $config['name'];
@@ -466,23 +470,27 @@ foreach ($config2_files as $config2_file) {
             } elseif ($config['type'] == "file" or $config['type'] == "bg_file") {
                 $value = !empty($value) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/config2/{$value}" : '';
             }
-            $this->assign($name, $value);
+            $_smarty_tpl->assign($name, $value);
 
             if ($config['type'] == "bg_file") {
                 $value_repeat = is_null($config2[$name . '_repeat']) ? $config[$k]['repeat'] : $config2[$name . '_repeat'];
-                $this->assign($name . '_repeat', $value_repeat);
+                $_smarty_tpl->assign($name . '_repeat', $value_repeat);
 
                 $value_position = is_null($config2[$name . '_position']) ? $config[$k]['position'] : $config2[$name . '_position'];
-                $this->assign($name . '_position', $value_position);
+                $_smarty_tpl->assign($name . '_position', $value_position);
 
                 $value_size = is_null($config2[$name . '_size']) ? $config[$k]['size'] : $config2[$name . '_size'];
-                $this->assign($name . '_size', $value_size);
+                $_smarty_tpl->assign($name . '_size', $value_size);
 
             } elseif ($config['type'] == 'custom_zone') {
+
                 $block_json = is_null($config2[$name . '_block']) ? $config[$k]['block'] : $config2[$name . '_block'];
-                $b = json_decode(str_replace(["\r", "\n"], "", $block_json), true);
-                $this->assign($name . '_block', $b);
-                $this->assign($name . '_bid', $b['bid']);
+                //$b = json_decode(str_replace(["\r", "\n"], "", $block_json), true);
+                $b = $block_json? json_decode($block_json, true):[];
+                if($block_json){
+                    $_smarty_tpl->assign($name . '_block', $b);
+                    $_smarty_tpl->assign($name . '_bid', $b['bid']);
+                }
 
                 // 舊版相容性設定
                 $old_content = $config2[$name . '_content'];
@@ -495,7 +503,7 @@ foreach ($config2_files as $config2_file) {
                         $value_html_content = !empty($old_content) ? $old_content : '';
                     }
                 }
-                $this->assign($name . '_html_content', $value_html_content);
+                $_smarty_tpl->assign($name . '_html_content', $value_html_content);
 
                 if (in_array('fa-icon', $value)) {
                     if (!empty($config2[$name . '_fa_content'])) {
@@ -504,7 +512,7 @@ foreach ($config2_files as $config2_file) {
                         $value_fa_content = !empty($old_content) ? $old_content : '';
                     }
                 }
-                $this->assign($name . '_fa_content', $value_fa_content);
+                $_smarty_tpl->assign($name . '_fa_content', $value_fa_content);
 
                 if (in_array('menu', $value)) {
                     if (!empty($config2[$name . '_menu_content'])) {
@@ -513,20 +521,21 @@ foreach ($config2_files as $config2_file) {
                         $value_menu_content = !empty($old_content) ? $old_content : '';
                     }
                 }
-                $this->assign($name . '_menu_content', $value_menu_content);
+                $_smarty_tpl->assign($name . '_menu_content', $value_menu_content);
 
             } elseif ($config['type'] == "padding_margin") {
                 $value_mt = is_null($config2[$name . '_mt']) ? $config[$k]['mt'] : $config2[$name . '_mt'];
-                $this->assign($name . '_mt', $value_mt);
+                $_smarty_tpl->assign($name . '_mt', $value_mt);
 
                 $value_mb = is_null($config2[$name . '_mb']) ? $config[$k]['mb'] : $config2[$name . '_mb'];
-                $this->assign($name . '_mb', $value_mb);
+                $_smarty_tpl->assign($name . '_mb', $value_mb);
             }
+
         }
     }
 }
 
-$this->assign('bids', $bids);
+$_smarty_tpl->assign('bids', $bids);
 
 /****佈景 TadDataCenter 設定****/
 if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/TadDataCenter.php")) {
@@ -539,7 +548,7 @@ if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/TadDataCenter.php")) {
             $var_val[0] = round($var_val[0] / 100, 2);
         }
 
-        $this->assign($var_name, $var_val[0]);
+        $_smarty_tpl->assign($var_name, $var_val[0]);
     }
 }
 
@@ -547,18 +556,22 @@ if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/TadDataCenter.php")) {
 $sql = "select conf_value from " . $xoopsDB->prefix("config") . " where conf_name ='allow_register'";
 $result = $xoopsDB->query($sql);
 list($allow_register) = $xoopsDB->fetchRow($result);
-$this->assign('allow_register', $allow_register);
+$_smarty_tpl->assign('allow_register', $allow_register);
 
 
 /****檢查是否有廣播檔（會放到左區塊最上方）****/
 if(file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/broadcast.php")){
     $all_broadcast=file_get_contents(XOOPS_URL . "/modules/tadtools/broadcast.php");
-    $this->assign('all_broadcast', json_decode($all_broadcast,true));
+    $_smarty_tpl->assign('all_broadcast', json_decode($all_broadcast,true));
 }
 
+$_smarty_tpl->assign('tttttt', 'success');
+
 <{/php}>
-<{includeq file="$xoops_rootpath/modules/tadtools/themes_common/get_main_var.tpl"}>
-<{includeq file="$xoops_rootpath/modules/tadtools/themes_common/get_menu_var.tpl"}>
-<{includeq file="$xoops_rootpath/modules/tadtools/themes_common/get_slider_var.tpl"}>
-<{config_load file="$xoops_rootpath/uploads/bootstrap.conf"}>
-<{assign var="bootstrap" value=$smarty.config.bootstrap}>
+
+
+<{include file="$xoops_rootpath/modules/tadtools/themes_common/get_main_var.tpl"}>
+<{include file="$xoops_rootpath/modules/tadtools/themes_common/get_menu_var.tpl"}>
+<{include file="$xoops_rootpath/modules/tadtools/themes_common/get_slider_var.tpl"}>
+
+*}>

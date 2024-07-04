@@ -40,7 +40,7 @@ class FullCalendar6
         $js_parameter = '';
         if (!empty($this->js_parameter)) {
             foreach ($this->js_parameter as $key => $value) {
-                $js_parameter .= $this->quotation[$key] ? "{$key}: '{$value}'," : "{$key}: {$value},";
+                $js_parameter .= $this->quotation[$key] ? "\n{$key}: '{$value}'," : "\n{$key}: {$value},";
             }
         }
 
@@ -51,34 +51,34 @@ class FullCalendar6
 
             if (!empty($this->json_parameter)) {
                 foreach ($this->json_parameter as $key => $value) {
-                    $json_parameter_arr[] = "{$key}: '{$value}'";
+                    $json_parameter_arr[] = "\n{$key}: '{$value}'";
                 }
                 $json_parameter .= implode(',', $json_parameter_arr);
             }
+
+            $events_data = $json_parameter ? "\ndata: {
+                {$json_parameter}
+            }," : '';
+
             $get_event = "
                 events: {
                     url: '$json_file',
-                    type: 'POST',
-                    data: {
-                        {$json_parameter}
-                    },
+                    type: 'POST',{$events_data}
                     error: function() {
-                        alert('there was an error while fetching events!');
+                        alert('在擷取事件資料時發生錯誤，若有開除錯，請關閉之後再試一次。')
                     }
                 },
-
             ";
         }
 
         $fullcalendar .= "<script type='text/javascript'>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('{$selector}');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-            {$js_parameter}
-            {$get_event}
-            locale: 'zh-tw',
-            buttonText:{today: '今天'},
-            initialView: 'dayGridMonth'
+            var headerToolbar;
+            var calendar = new FullCalendar.Calendar(calendarEl, {{$js_parameter}{$get_event}
+                locale: 'zh-tw',
+                buttonText:{today: '今天'},
+                initialView: 'dayGridMonth'
             });
             calendar.render();
         });

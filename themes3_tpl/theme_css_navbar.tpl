@@ -14,7 +14,7 @@
   color: <{$navbar_color}>;
   padding: <{$navbar_py}>px <{$navbar_px}>px;
   <{if $navbar_font_size}>
-  font-size: <{$navbar_font_size}>;
+  font-size: <{$navbar_font_size}>rem;
   <{/if}>
 }
 .navbar-default .navbar-nav > li > a:focus,
@@ -45,12 +45,12 @@
 
 .dropdown-menu > li > a{
   <{if $navbar_font_size}>
-    font-size: <{$navbar_font_size}>;
+    font-size: <{$navbar_font_size}>rem;
   <{/if}>
 }
 
 <{if $navbar_pos=='navbar-fixed-top'}>
-  <{assign var=margin_top value=50}>
+  <{assign var="margin_top" value=50}>
   nav.navbar {
     box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.5);
     -webkit-box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.5);
@@ -61,7 +61,7 @@
 
 
 <{if $navbar_pos=='navbar-fixed-bottom'}>
-  <{assign var=margin_bottom value=50}>
+  <{assign var="margin_bottom" value=50}>
   nav.navbar {
     box-shadow: 0px -3px 10px 1px rgba(0, 0, 0, 0.5);
     -webkit-box-shadow: 0px -3px 10px 1px rgba(0, 0, 0, 0.5);

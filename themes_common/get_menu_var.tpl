@@ -1,35 +1,6 @@
-<{php}>
-use XoopsModules\Tadtools\Utility;
+<{*
+    <{php}>
 global $xoopsDB, $xoopsTpl, $xoopsModule, $xoTheme;
-
-$GLOBALS['xoTheme']->addScript('browse.php?Frameworks/jquery/jquery.js');
-
-$ver = intval(str_replace('.', '', substr(XOOPS_VERSION, 6, 5)));
-
-if ($ver >= 259) {
-    $GLOBALS['xoTheme']->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
-} else {
-    $GLOBALS['xoTheme']->addScript('modules/tadtools/jquery/jquery-migrate-1.4.1.min.js');
-}
-
-$GLOBALS['xoTheme']->addStylesheet("modules/tadtools/jquery/themes/base/jquery.ui.all.css");
-$GLOBALS['xoTheme']->addScript('modules/tadtools/jquery/ui/jquery-ui.js');
-$GLOBALS['xoTheme']->addStylesheet('modules/tadtools/css/xoops.css');
-
-
-$my_menu  = get_theme_menu_items(0);
-$i        = sizeof($my_menu);
-$mod_menu = get_module_menu_item($i);
-if (!empty($mod_menu)) {
-    if (empty($my_menu)) {
-        $my_menu = array();
-    }
-
-    $my_menu = array_merge($my_menu, $mod_menu);
-}
-//die(var_dump($mod_menu));
-
-$xoopsTpl->assign('menu_var', $my_menu);
 
 //取得選單選項
 function get_theme_menu_items($id = "", $other_menu = true)
@@ -116,7 +87,7 @@ function get_custom_menu_items($link_cate_name, $link_cate_sn)
 
         case "tadnews_page_cate":
             $sql      = "select nsn, news_title from " . $xoopsDB->prefix("tad_news") . " where ncsn='{$link_cate_sn}' order by `page_sort`";
-            $result   = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+            $result   = $xoopsDB->queryF($sql);
             $ncsn_arr = "";
             while (list($nsn, $news_title) = $xoopsDB->fetchRow($result)) {
                 $sub_menu[$link_cate_name . $i]['id']      = $i;
@@ -349,4 +320,31 @@ function get_user_submenu_item()
 
     return $my_menu;
 }
+
+$GLOBALS['xoTheme']->addScript('browse.php?Frameworks/jquery/jquery.js');
+
+$ver = intval(str_replace('.', '', substr(XOOPS_VERSION, 6, 5)));
+
+
+
+$GLOBALS['xoTheme']->addStylesheet("modules/tadtools/jquery/themes/base/jquery.ui.all.css");
+$GLOBALS['xoTheme']->addScript('modules/tadtools/jquery/ui/jquery-ui.js');
+$GLOBALS['xoTheme']->addStylesheet('modules/tadtools/css/xoops.css');
+
+
+$my_menu  = get_theme_menu_items(0);
+$i        = sizeof($my_menu);
+$mod_menu = get_module_menu_item($i);
+if (!empty($mod_menu)) {
+    if (empty($my_menu)) {
+        $my_menu = array();
+    }
+
+    $my_menu = array_merge($my_menu, $mod_menu);
+}
+
+$xoopsTpl->assign('menu_var', $my_menu);
+
 <{/php}>
+
+*}>

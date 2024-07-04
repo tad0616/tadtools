@@ -1,4 +1,4 @@
-<{php}>
+<{*php*}>
 /****佈景額外設定****/
 global $xoopsConfig, $xoopsDB;
 $theme_name = $xoopsConfig['theme_set'];
