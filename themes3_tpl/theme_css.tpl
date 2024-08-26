@@ -14,7 +14,7 @@
 
   a{
     color:<{$link_color}>;
-    font-family: FontAwesome<{if $font_family}>, <{$font_family}><{/if}>;
+    font-family: <{if $font_family}><{$font_family}>, <{/if}>FontAwesome;
   }
 
   a:hover{

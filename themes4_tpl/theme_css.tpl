@@ -9,12 +9,12 @@
         background-attachment: <{$bg_attachment}>;
         background-size: <{$bg_size}>;
         font-size: <{$font_size}>;
-        font-family: <{$font_family}>;
+        <{if $font_family}>font-family: <{$font_family}>;<{/if}>
     }
 
     a {
         color:<{$link_color}>;
-        font-family: FontAwesome<{if $font_family}>, <{$font_family}><{/if}>;
+        font-family: <{if $font_family}><{$font_family}>, <{/if}>FontAwesome;
     }
 
     a:hover {

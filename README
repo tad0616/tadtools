@@ -7,8 +7,12 @@ TadTools 4.0 (尚未釋出)
 5.TadUpFiles 若已有檔案時，則取消必填檢查
 6.支援SweetAlert2
 7.移除flexslider套件
-8.支援PHP8
+8.支援PHP8.3
 9.支援XOOPS 2.5.11
+10.優化社群分享按鈕
+11.升級 BootStrap3.3.7 為 3.4.1
+12.升級 BootStrap4.5.2 為 4.6.2
+13.升級 BootStrap5.1.3 為 5.3.3
 
 TadTools 3.55 (2023-10-17 釋出)
 ====================================

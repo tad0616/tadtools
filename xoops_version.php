@@ -155,6 +155,14 @@ $modversion['config'][$i]['formtype'] = 'yesno';
 $modversion['config'][$i]['valuetype'] = 'int';
 $modversion['config'][$i]['default'] = '1';
 
+$i++;
+$modversion['config'][$i]['name'] = 'facebook_app_id';
+$modversion['config'][$i]['title'] = '_MI_TADTOOLS_FACEBOOK_APP_ID';
+$modversion['config'][$i]['description'] = '_MI_TADTOOLS_FACEBOOK_APP_ID_DESC';
+$modversion['config'][$i]['formtype'] = 'textbox';
+$modversion['config'][$i]['valuetype'] = 'text';
+$modversion['config'][$i]['default'] = '';
+
 $i = 0;
 $modversion['blocks'][$i]['file'] = 'tadtools_qrcode.php';
 $modversion['blocks'][$i]['name'] = _MI_TADTOOLS_QRCODE_BLOCK_NAME;

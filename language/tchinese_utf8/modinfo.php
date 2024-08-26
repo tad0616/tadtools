@@ -52,3 +52,6 @@ define('_MI_TADTOOLS_PDF_FORCE_DL_DESC', '若要符合無障礙 2.1，請選「�
 
 define('_MI_TADTOOLS_TEST_MODE', '開發測試模式是否僅開放給管理者');
 define('_MI_TADTOOLS_TEST_MODE_DESC', '建議選「是」，此選項一般使用者用不到，僅開發者會使用');
+
+define('_MI_TADTOOLS_FACEBOOK_APP_ID', 'FaceBook 的 App ID（推文工具會用到）');
+define('_MI_TADTOOLS_FACEBOOK_APP_ID_DESC', '可至 https://developers.facebook.com/apps 申請並取得 App ID');

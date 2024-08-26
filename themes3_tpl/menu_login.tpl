@@ -63,7 +63,7 @@
 
     <{/if}>
 
-
+<{*
       <{assign var="i" value=0}>
       <{assign var="total" value=1}>
       <{foreach from=$tlogin item=login}>
@@ -85,7 +85,7 @@
         <{/if}>
       <{/foreach}>
     <{/if}>
-
+*}>
 
   </ul>
 <{/if}>

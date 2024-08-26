@@ -398,7 +398,7 @@ if ($TadThemesMid) {
 
 }
 
-$block_position = array("leftBlock", "rightBlock", "centerBlock", "centerLeftBlock", "centerRightBlock", "centerBottomBlock", "centerBottomLeftBlock", "centerBottomRightBlock", "footerCenterBlock", "footerLeftBlock", "footerRightBlock");
+$block_position = ['leftBlock', 'rightBlock', 'centerBlock', 'centerLeftBlock', 'centerRightBlock', 'centerBottomBlock', 'centerBottomLeftBlock', 'centerBottomRightBlock', 'footerCenterBlock', 'footerLeftBlock', 'footerRightBlock'];
 $_smarty_tpl->assign('block_position', $block_position);
 $i = 0;
 $positions = array();
