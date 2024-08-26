@@ -251,6 +251,9 @@ class Utility
                     $ver = XOOPS_VERSION;
                 }
                 $version = explode('.', str_replace('XOOPS ', '', $ver));
+                if (strpos($version[2], 'Beta') !== false) {
+                    $version[2] = intval($version[2]) - 1;
+                }
                 break;
 
             case 'php':
@@ -649,7 +652,7 @@ class Utility
         if (strpos($tt_theme_kind, 'bootstrap') !== false) {
             $_SESSION['bootstrap'] = substr($tt_theme_kind, -1);
         } else {
-            $_SESSION['bootstrap'] = '4';
+            $_SESSION['bootstrap'] = '5';
         }
 
         if ($_COOKIE['bootstrap'] != $_SESSION['bootstrap']) {
@@ -780,38 +783,26 @@ class Utility
     }
 
     //推文工具
-    public static function push_url($enable = 1, $css = 'width:auto;margin:10px;float:right;')
+    public static function push_url($enable = 1)
     {
-        global $xoopsConfig;
-        if (!$enable) {
-            return;
+        global $xoopsModuleConfig;
+        if ($enable) {
+            $facebookAppId = $xoopsModuleConfig['facebook_app_id'] ? $xoopsModuleConfig['facebook_app_id'] : '';
+
+            $main = "
+            <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css\">
+            <link rel='stylesheet' href='" . XOOPS_URL . "/modules/tadtools/social-likes/social-likes.css'>
+            <div class=\"share-buttons\">
+                <button onclick=\"share('facebook')\" class=\"facebook\"><i class=\"fa-brands fa-facebook-f\"></i></button>
+                <button onclick=\"share('x')\" class=\"x\"><i class=\"fa-brands fa-x-twitter\"></i></button>
+                <button onclick=\"share('messenger', '$facebookAppId')\" class=\"messenger\"><i class=\"fa-brands fa-facebook-messenger\"></i></button>
+                <button onclick=\"share('pinterest')\" class=\"pinterest\"><i class=\"fa-brands fa-pinterest-p\"></i></button>
+                <button onclick=\"share('line')\" class=\"line\"><i class=\"fa-brands fa-line\"></i></button>
+            </div>
+            <script src='" . XOOPS_URL . "/modules/tadtools/social-likes/social-likes.min.js'></script>
+            ";
+            return $main;
         }
-        $jquery = self::get_jquery();
-        $protocol = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
-
-        $main = "
-        <link rel='stylesheet' href='" . XOOPS_URL . "/modules/tadtools/social-likes/social-likes_birman.css'>
-        $jquery
-        <script src='" . XOOPS_URL . "/modules/tadtools/social-likes/social-likes.min.js'></script>
-        <script type='text/javascript'>
-        $().ready(function() {
-            $('.social-likes').socialLikes({
-                url: '{$protocol}{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}',
-                title: '{$xoopsConfig['sitename']}',
-                counters: true,
-                singleTitle: 'Share it!'
-            });
-        });
-        </script>
-        <ul class='social-likes'>
-            <li class='facebook' title='Share link on Facebook'>Facebook</li>
-            <li class='twitter' title='Share link on Twitter'>Twitter</li>
-            <li class='plusone' title='Share link on Google+'>Google+</li>
-            <div class='pinterest' title='Share image on Pinterest' data-media=''>Pinterest</div>
-        </ul>
-        ";
-
-        return $main;
     }
 
     //facebook的留言

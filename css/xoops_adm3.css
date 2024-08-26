@@ -15,8 +15,8 @@ a.tooltip, img.tooltip {
 
 .table-striped tbody>tr:nth-child(2n+1)>th,
 th {
-    background-color: rgb(46, 50, 59);
-    color: white;
+    background-color: rgb(57, 81, 85) !important;
+    color: white !important;
 }
 
 li {

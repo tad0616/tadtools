@@ -10,7 +10,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
     {
         global $xoopsConfig, $xoopsTpl, $xoopsDB, $xoTheme, $xoopsUser;
 
-        $theme_name = $xoopsConfig['theme_set'];
+        $theme_name = isset($_SESSION['xoopsUserTheme']) ? $_SESSION['xoopsUserTheme'] : $xoopsConfig['theme_set'];
         $use_default_config = false;
 
         $moduleHandler = xoops_getHandler('module');
@@ -31,7 +31,8 @@ class TadtoolsCorePreload extends XoopsPreloadItem
                 $xoopsTpl->assign($k, $v);
             }
         }
-
+        // $_SESSION['bootstrap'] = strpos($theme_kind, 'bootstrap') !== false ? substr($theme_kind, -1) : 5;
+        // Utility::dd($_SESSION['bootstrap']);
         /****設定各個區域的底色****/
         $left_block = $left_block2 = $center_block_content = $right_block = $right_block2 = "";
         $center_block = "background-color: {$cb_color};";
@@ -304,23 +305,23 @@ class TadtoolsCorePreload extends XoopsPreloadItem
 
         }
 
-        $block_position = array("leftBlock", "rightBlock", "centerBlock", "centerLeftBlock", "centerRightBlock", "centerBottomBlock", "centerBottomLeftBlock", "centerBottomRightBlock", "footerCenterBlock", "footerLeftBlock", "footerRightBlock");
+        $block_position = ['leftBlock', 'rightBlock', 'centerBlock', 'centerLeftBlock', 'centerRightBlock', 'centerBottomBlock', 'centerBottomLeftBlock', 'centerBottomRightBlock', 'footerCenterBlock', 'footerLeftBlock', 'footerRightBlock'];
         $xoopsTpl->assign('block_position', $block_position);
         $i = 0;
         $positions = array();
         foreach ($block_position as $position) {
             $positions[$i]['block_position'] = $position;
-            $positions[$i]['block_config'] = $use_default_config ? $block_config : $db[$position]['block_config'];
-            $positions[$i]['bt_text'] = $use_default_config ? $bt_text : $db[$position]['bt_text'];
-            $positions[$i]['bt_text_padding'] = $use_default_config ? $bt_text_padding : $db[$position]['bt_text_padding'];
-            $positions[$i]['bt_text_size'] = $use_default_config ? $bt_text_size : $db[$position]['bt_text_size'];
-            $positions[$i]['bt_bg_color'] = $use_default_config ? $bt_bg_color : $db[$position]['bt_bg_color'];
-            $positions[$i]['bt_bg_img'] = $use_default_config ? $bt_bg_img : $db[$position]['bt_bg_img'];
-            $positions[$i]['bt_bg_repeat'] = $use_default_config ? $bt_bg_repeat : $db[$position]['bt_bg_repeat'];
-            $positions[$i]['bt_radius'] = $use_default_config ? $bt_radius : $db[$position]['bt_radius'];
-            $positions[$i]['block_style'] = $use_default_config ? $block_style : $db[$position]['block_style'];
-            $positions[$i]['block_title_style'] = $use_default_config ? $block_title_style : $db[$position]['block_title_style'];
-            $positions[$i]['block_content_style'] = $use_default_config ? $block_content_style : $db[$position]['block_content_style'];
+            $positions[$i]['block_config'] = $use_default_config ? $block_config[$position] : $db[$position]['block_config'];
+            $positions[$i]['bt_text'] = $use_default_config ? $bt_text[$position] : $db[$position]['bt_text'];
+            $positions[$i]['bt_text_padding'] = $use_default_config ? $bt_text_padding[$position] : $db[$position]['bt_text_padding'];
+            $positions[$i]['bt_text_size'] = $use_default_config ? $bt_text_size[$position] : $db[$position]['bt_text_size'];
+            $positions[$i]['bt_bg_color'] = $use_default_config ? $bt_bg_color[$position] : $db[$position]['bt_bg_color'];
+            $positions[$i]['bt_bg_img'] = $use_default_config ? $bt_bg_img[$position] : $db[$position]['bt_bg_img'];
+            $positions[$i]['bt_bg_repeat'] = $use_default_config ? $bt_bg_repeat[$position] : $db[$position]['bt_bg_repeat'];
+            $positions[$i]['bt_radius'] = $use_default_config ? $bt_radius[$position] : $db[$position]['bt_radius'];
+            $positions[$i]['block_style'] = $use_default_config ? $block_style[$position] : $db[$position]['block_style'];
+            $positions[$i]['block_title_style'] = $use_default_config ? $block_title_style[$position] : $db[$position]['block_title_style'];
+            $positions[$i]['block_content_style'] = $use_default_config ? $block_content_style[$position] : $db[$position]['block_content_style'];
 
             $xoopsTpl->assign($position, $positions[$i]);
             $i++;
@@ -372,6 +373,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
                         $theme_config[$k]['size'] = ${$config2_name . '_size'};
 
                     } elseif ($config['type'] == 'custom_zone') {
+                        $theme_config[$k]['deault'] = isset(${$config2_name}) ? ${$config2_name} : '';
                         $theme_config[$k]['bid'] = isset(${$config2_name . '_bid'}) ? ${$config2_name . '_bid'} : '';
                         $theme_config[$k]['content'] = isset(${$config2_name . '_content'}) ? ${$config2_name . '_content'} : '';
                         $theme_config[$k]['html_content'] = isset(${$config2_name . '_html_content'}) ? ${$config2_name . '_html_content'} : '';
@@ -422,6 +424,8 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         }
 
         if ($xoTheme) {
+
+            $xoopsTpl->assign('xoops_version', $_SESSION['xoops_version']);
             $xoTheme->addScript('browse.php?Frameworks/jquery/jquery.js');
 
             // $ver = intval(str_replace('.', '', substr(XOOPS_VERSION, 6, 5)));
@@ -624,17 +628,16 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         $xoopsTpl->assign('mobile_device', "var mobile_device='$mobile_device';");
     }
 
-    public static function eventCoreBehaviorSessionStart($args)
+    public static function eventCoreIncludeCommonAuthSuccess()
     {
         global $xoopsConfig;
-
         $_SESSION['xoops_version'] = Utility::get_version('xoops');
 
-        $theme_name = $xoopsConfig['theme_set'];
+        $theme_name = isset($_SESSION['xoopsUserTheme']) ? $_SESSION['xoopsUserTheme'] : $xoopsConfig['theme_set'];
         $json_file = XOOPS_VAR_PATH . "/data/theme_{$theme_name}.json";
         if (file_exists($json_file)) {
             $theme_config = json_decode(file_get_contents($json_file), true);
-            $_SESSION['bootstrap'] = strpos($theme_config['theme_kind'], 'bootstrap') ? substr($theme_config['theme_kind'], -1) : 5;
+            $_SESSION['bootstrap'] = strpos($theme_config['theme_kind'], 'bootstrap') !== false ? substr($theme_config['theme_kind'], -1) : 5;
         } else {
             $_SESSION['bootstrap'] = 5;
         }
@@ -647,8 +650,8 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         $xoTheme->addScript('browse.php?Frameworks/jquery/jquery.js');
         $xoTheme->addStylesheet('modules/tadtools/jquery/themes/base/jquery.ui.all.css');
         $xoTheme->addScript('browse.php?Frameworks/jquery/plugins/jquery.ui.js');
-        $theme_set = $xoopsConfig['theme_set'];
-        $_SESSION['now_theme_set'] = $theme_set;
+
+        $theme_set = isset($_SESSION['xoopsUserTheme']) ? $_SESSION['xoopsUserTheme'] : $xoopsConfig['theme_set'];
 
         if (!isset($xoTheme)) {
             $xoTheme = &$GLOBALS['xoTheme'];
