@@ -542,76 +542,77 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         $xoopsTpl->assign('now_url', $url);
 
         // menu_login.tpl 會用到
-        if ($def_config['openid_login'] == '1' || $def_config['openid_login'] == '1') {
+        if (!$xoopsUser) {
+            if ($def_config['openid_login'] == '1' || $def_config['openid_login'] == '2') {
+                $configHandler = xoops_gethandler('config');
 
-            $configHandler = xoops_gethandler('config');
+                $TadLoginXoopsModule = $moduleHandler->getByDirname("tad_login");
+                $TnLoginXoopsModule = $moduleHandler->getByDirname("tn_login");
 
-            $TadLoginXoopsModule = $moduleHandler->getByDirname("tad_login");
-            $TnLoginXoopsModule = $moduleHandler->getByDirname("tn_login");
+                if ($TadLoginXoopsModule) {
+                    require_once XOOPS_ROOT_PATH . "/modules/tad_login/function.php";
+                    require_once XOOPS_ROOT_PATH . "/modules/tad_login/oidc.php";
+                    require_once XOOPS_ROOT_PATH . "/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
 
-            if ($TadLoginXoopsModule) {
-                require_once XOOPS_ROOT_PATH . "/modules/tad_login/function.php";
-                require_once XOOPS_ROOT_PATH . "/modules/tad_login/oidc.php";
-                require_once XOOPS_ROOT_PATH . "/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
+                    $modConfig = $configHandler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
 
-                $modConfig = &$configHandler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
-
-                if (in_array('facebook', $modConfig['auth_method'])) {
-                    $tad_login['facebook'] = facebook_login('return');
-                } else {
-                    $tad_login['facebook'] = '';
-                }
-
-                if (in_array('google', $modConfig['auth_method'])) {
-                    $tad_login['google'] = google_login('return');
-                } else {
-                    $tad_login['google'] = '';
-                }
-
-                $auth_method = $modConfig['auth_method'];
-                $i = 0;
-
-                foreach ($auth_method as $method) {
-                    $method_const = "_" . strtoupper($method);
-
-                    if ($method == "facebook") {
-                        $tlogin[$i]['link'] = $tad_login['facebook'];
-                        $tlogin[$i]['text'] = sprintf(_TAD_LOGIN_BY, constant($method_const));
-                    } elseif ($method == "google") {
-                        $tlogin[$i]['link'] = $tad_login['google'];
-                        $tlogin[$i]['text'] = sprintf(_TAD_LOGIN_BY, constant($method_const));
-                    } elseif ($method == "line") {
-                        $tlogin[$i]['link'] = $tad_login['line'];
-                        $tlogin[$i]['text'] = sprintf(_TAD_LOGIN_BY, constant($method_const));
+                    if (in_array('facebook', $modConfig['auth_method'])) {
+                        $tad_login['facebook'] = facebook_login('return');
                     } else {
-                        $tlogin[$i]['link'] = XOOPS_URL . "/modules/tad_login/index.php?login&op={$method}";
-                        $tlogin[$i]['text'] = sprintf(_TAD_LOGIN_BY, constant($method_const));
+                        $tad_login['facebook'] = '';
                     }
 
-                    if (isset($oidc_array) && is_array($oidc_array) && in_array($method, $oidc_array)) {
-                        $tlogin[$i]['img'] = XOOPS_URL . "/modules/tad_login/images/oidc/{$all_oidc[$method]['tail']}.png";
-                        $tlogin[$i]['text'] = sprintf(_TAD_LOGIN_BY, constant('_' . strtoupper($all_oidc[$method]['tail'])) . _TADLOGIN_OIDC);
-
-                    } elseif (isset($oidc_array2) && is_array($oidc_array2) && in_array($method, $oidc_array2)) {
-                        $tlogin[$i]['img'] = XOOPS_URL . "/modules/tad_login/images/{$method}.png";
-                        $tlogin[$i]['text'] = sprintf(_TAD_LOGIN_BY, constant('_' . strtoupper($all_oidc2[$method]['tail'])) . _TADLOGIN_LDAP);
-
+                    if (in_array('google', $modConfig['auth_method'])) {
+                        $tad_login['google'] = google_login('return');
                     } else {
-                        $tlogin[$i]['img'] = XOOPS_URL . "/modules/tad_login/images/{$method}.png";
-                        $tlogin[$i]['text'] = sprintf(_TAD_LOGIN_BY, constant($method_const) . ' OpenID ');
+                        $tad_login['google'] = '';
                     }
 
-                    $i++;
-                }
-                $xoopsTpl->assign('tlogin', $tlogin);
-            } elseif ($TnLoginXoopsModule) {
-                require_once XOOPS_ROOT_PATH . "/modules/tn_login/function.php";
-                $tlogin[0]['link'] = XOOPS_URL . "/modules/tn_login/index.php";
-                $tlogin[0]['img'] = XOOPS_URL . "/modules/tn_login/images/login_logo.png";
-                $tlogin[0]['text'] = '由南資 OpenID 認證登入';
-                $tlogin[0]['tn_login'] = true;
+                    $auth_method = $modConfig['auth_method'];
+                    $i = 0;
 
-                $xoopsTpl->assign('tlogin', $tlogin);
+                    foreach ($auth_method as $method) {
+                        $method_const = "_" . strtoupper($method);
+
+                        if ($method == "facebook") {
+                            $tlogin[$i]['link'] = $tad_login['facebook'];
+                            $tlogin[$i]['text'] = sprintf(_TAD_LOGIN_BY, constant($method_const));
+                        } elseif ($method == "google") {
+                            $tlogin[$i]['link'] = $tad_login['google'];
+                            $tlogin[$i]['text'] = sprintf(_TAD_LOGIN_BY, constant($method_const));
+                        } elseif ($method == "line") {
+                            $tlogin[$i]['link'] = $tad_login['line'];
+                            $tlogin[$i]['text'] = sprintf(_TAD_LOGIN_BY, constant($method_const));
+                        } else {
+                            $tlogin[$i]['link'] = XOOPS_URL . "/modules/tad_login/index.php?login&op={$method}";
+                            $tlogin[$i]['text'] = sprintf(_TAD_LOGIN_BY, constant($method_const));
+                        }
+
+                        if (isset($oidc_array) && is_array($oidc_array) && in_array($method, $oidc_array)) {
+                            $tlogin[$i]['img'] = XOOPS_URL . "/modules/tad_login/images/oidc/{$all_oidc[$method]['tail']}.png";
+                            $tlogin[$i]['text'] = sprintf(_TAD_LOGIN_BY, constant('_' . strtoupper($all_oidc[$method]['tail'])) . _TADLOGIN_OIDC);
+
+                        } elseif (isset($oidc_array2) && is_array($oidc_array2) && in_array($method, $oidc_array2)) {
+                            $tlogin[$i]['img'] = XOOPS_URL . "/modules/tad_login/images/{$method}.png";
+                            $tlogin[$i]['text'] = sprintf(_TAD_LOGIN_BY, constant('_' . strtoupper($all_oidc2[$method]['tail'])) . _TADLOGIN_LDAP);
+
+                        } else {
+                            $tlogin[$i]['img'] = XOOPS_URL . "/modules/tad_login/images/{$method}.png";
+                            $tlogin[$i]['text'] = sprintf(_TAD_LOGIN_BY, constant($method_const) . ' OpenID ');
+                        }
+
+                        $i++;
+                    }
+                    $xoopsTpl->assign('tlogin', $tlogin);
+                } elseif ($TnLoginXoopsModule) {
+                    require_once XOOPS_ROOT_PATH . "/modules/tn_login/function.php";
+                    $tlogin[0]['link'] = XOOPS_URL . "/modules/tn_login/index.php";
+                    $tlogin[0]['img'] = XOOPS_URL . "/modules/tn_login/images/login_logo.png";
+                    $tlogin[0]['text'] = '由南資 OpenID 認證登入';
+                    $tlogin[0]['tn_login'] = true;
+
+                    $xoopsTpl->assign('tlogin', $tlogin);
+                }
             }
         }
 

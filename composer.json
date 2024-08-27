@@ -1,6 +1,7 @@
 {
     "require": {
         "phpoffice/phpword": "0.18.3",
-        "phpoffice/phpexcel": "^1.8"
+        "phpoffice/phpexcel": "^1.8",
+        "phpseclib/phpseclib": "~3.0"
     }
 }

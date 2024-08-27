@@ -1,9 +1,8 @@
 <?php
-
 /**
- * PHPExcel_Writer_OpenDocument_Settings
+ * PHPExcel
  *
- * Copyright (c) 2006 - 2015 PHPExcel
+ * Copyright (c) 2006 - 2014 PHPExcel
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,9 +20,19 @@
  *
  * @category   PHPExcel
  * @package    PHPExcel_Writer_OpenDocument
- * @copyright  Copyright (c) 2006 - 2015 PHPExcel (http://www.codeplex.com/PHPExcel)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
+ * @copyright  Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
  * @version    ##VERSION##, ##DATE##
+ */
+
+
+/**
+ * PHPExcel_Writer_OpenDocument_Settings
+ *
+ * @category   PHPExcel
+ * @package    PHPExcel_Writer_OpenDocument
+ * @copyright  Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
+ * @author     Alexander Pervakov <frost-nzcr4@jagmort.com>
  */
 class PHPExcel_Writer_OpenDocument_Settings extends PHPExcel_Writer_OpenDocument_WriterPart
 {
@@ -31,8 +40,8 @@ class PHPExcel_Writer_OpenDocument_Settings extends PHPExcel_Writer_OpenDocument
      * Write settings.xml to XML format
      *
      * @param   PHPExcel                   $pPHPExcel
-     * @throws  PHPExcel_Writer_Exception
      * @return  string                     XML Output
+     * @throws  PHPExcel_Writer_Exception
      */
     public function write(PHPExcel $pPHPExcel = null)
     {
@@ -52,23 +61,23 @@ class PHPExcel_Writer_OpenDocument_Settings extends PHPExcel_Writer_OpenDocument
 
         // Settings
         $objWriter->startElement('office:document-settings');
-        $objWriter->writeAttribute('xmlns:office', 'urn:oasis:names:tc:opendocument:xmlns:office:1.0');
-        $objWriter->writeAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
-        $objWriter->writeAttribute('xmlns:config', 'urn:oasis:names:tc:opendocument:xmlns:config:1.0');
-        $objWriter->writeAttribute('xmlns:ooo', 'http://openoffice.org/2004/office');
-        $objWriter->writeAttribute('office:version', '1.2');
+            $objWriter->writeAttribute('xmlns:office', 'urn:oasis:names:tc:opendocument:xmlns:office:1.0');
+            $objWriter->writeAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+            $objWriter->writeAttribute('xmlns:config', 'urn:oasis:names:tc:opendocument:xmlns:config:1.0');
+            $objWriter->writeAttribute('xmlns:ooo', 'http://openoffice.org/2004/office');
+            $objWriter->writeAttribute('office:version', '1.2');
 
-        $objWriter->startElement('office:settings');
-        $objWriter->startElement('config:config-item-set');
-        $objWriter->writeAttribute('config:name', 'ooo:view-settings');
-        $objWriter->startElement('config:config-item-map-indexed');
-        $objWriter->writeAttribute('config:name', 'Views');
-        $objWriter->endElement();
-        $objWriter->endElement();
-        $objWriter->startElement('config:config-item-set');
-        $objWriter->writeAttribute('config:name', 'ooo:configuration-settings');
-        $objWriter->endElement();
-        $objWriter->endElement();
+            $objWriter->startElement('office:settings');
+                $objWriter->startElement('config:config-item-set');
+                    $objWriter->writeAttribute('config:name', 'ooo:view-settings');
+                    $objWriter->startElement('config:config-item-map-indexed');
+                        $objWriter->writeAttribute('config:name', 'Views');
+                    $objWriter->endElement();
+                $objWriter->endElement();
+                $objWriter->startElement('config:config-item-set');
+                    $objWriter->writeAttribute('config:name', 'ooo:configuration-settings');
+                $objWriter->endElement();
+            $objWriter->endElement();
         $objWriter->endElement();
 
         return $objWriter->getData();
