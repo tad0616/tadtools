@@ -31,6 +31,8 @@ class TadtoolsCorePreload extends XoopsPreloadItem
                 $xoopsTpl->assign($k, $v);
             }
         }
+
+        // Utility::dd($theme_config);
         // $_SESSION['bootstrap'] = strpos($theme_kind, 'bootstrap') !== false ? substr($theme_kind, -1) : 5;
         // Utility::dd($_SESSION['bootstrap']);
         /****設定各個區域的底色****/

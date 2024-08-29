@@ -176,6 +176,7 @@ class Tools
             }
 
             if (!empty($theme_config)) {
+                // Utility::dd($theme_config);
                 foreach ($theme_config as $k => $config) {
                     if (!isset($json_theme_config_arr[$config['name']])) {
                         $json_theme_config_arr[$config['name']] = $config['default'];
@@ -237,6 +238,8 @@ class Tools
                     $$k = $v;
                     if (in_array($k, $file_cols) and $v != '') {
                         $theme_config[$k] = XOOPS_URL . "/uploads/tad_themes/{$theme_name}/{$file_col[$k]}/{$v}";
+                    } elseif (!is_array($v) && substr($v, 0, 1) == '{' && substr($v, -1) == '}') {
+                        $theme_config[$k . '_arr'] = json_decode($v, true);
                     }
                 }
             }

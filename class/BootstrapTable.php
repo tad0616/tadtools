@@ -73,12 +73,15 @@ use XoopsModules\Tadtools\BootstrapTable;
 
 $BootstrapTable=BootstrapTable::render();
 
-<table> 可加入 data-toggle="table" data-pagination="true" data-search="true"  data-url="資料來源.json" data-mobile-responsive="true"
+<table> 可加入 data-toggle="table" data-pagination="true" data-search="true" data-mobile-responsive="true" data-url="資料來源.json"
 data-url="../ajax.php?op=get_all_school&county=<{$county}>" (資料來源)
 點擊編輯會用到：
 data-id-field="SchoolCode"
 data-editable-url="../ajax.php"
 data-editable-params="{op:'update_school'}"
+凍結欄位
+data-fixed-columns="true"
+data-fixed-number="2"
 <tr> 可加入  data-sortable="true"  data-field="欄位名稱"
 要有<thead>，不要有<tbody>
 資料來源.json

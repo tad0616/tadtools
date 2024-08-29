@@ -6,19 +6,10 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit3a174a201981f08cadb422e14df65907
 {
-    public static $files = array (
-        'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
-    );
-
     public static $prefixLengthsPsr4 = array (
-        'p' => 
-        array (
-            'phpseclib3\\' => 11,
-        ),
         'P' => 
         array (
             'PhpOffice\\PhpWord\\' => 18,
-            'ParagonIE\\ConstantTime\\' => 23,
         ),
         'L' => 
         array (
@@ -27,17 +18,9 @@ class ComposerStaticInit3a174a201981f08cadb422e14df65907
     );
 
     public static $prefixDirsPsr4 = array (
-        'phpseclib3\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib',
-        ),
         'PhpOffice\\PhpWord\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpoffice/phpword/src/PhpWord',
-        ),
-        'ParagonIE\\ConstantTime\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/paragonie/constant_time_encoding/src',
         ),
         'Laminas\\Escaper\\' => 
         array (
