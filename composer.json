@@ -1,9 +1,4 @@
 {
-    "config": {
-        "platform": {
-            "php": "8.1.0"
-        }
-    },
     "require": {
         "phpoffice/phpword": "0.18.3",
         "phpoffice/phpexcel": "^1.8"

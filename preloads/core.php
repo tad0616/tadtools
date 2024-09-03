@@ -9,7 +9,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
     public static function eventCoreHeaderAddmeta($args)
     {
         global $xoopsConfig, $xoopsTpl, $xoopsDB, $xoTheme, $xoopsUser;
-
+        $theme_id = 0;
         $theme_name = isset($_SESSION['xoopsUserTheme']) ? $_SESSION['xoopsUserTheme'] : $xoopsConfig['theme_set'];
         $use_default_config = false;
 
