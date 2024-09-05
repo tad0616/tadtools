@@ -2,7 +2,7 @@
   <{foreach item=block from=$xoBlocks.page_bottomleft}>
     <{if $block.content}>
       <div class="centerBottomLeftBlock">
-        <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/blockTitle.tpl"}>
+        <{include file="$xoops_rootpath/modules/tadtools/themes_common/blockTitle.tpl"}>
 
         <div class="blockContent" style="clear:both;">
           <{$block.content}>

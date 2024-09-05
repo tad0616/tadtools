@@ -557,8 +557,8 @@ if(file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/broadcast.php")){
 }
 
 <{/php}>
-<{includeq file="$xoops_rootpath/modules/tadtools/themes_common/get_main_var.tpl"}>
-<{includeq file="$xoops_rootpath/modules/tadtools/themes_common/get_menu_var.tpl"}>
-<{includeq file="$xoops_rootpath/modules/tadtools/themes_common/get_slider_var.tpl"}>
+<{include file="$xoops_rootpath/modules/tadtools/themes_common/get_main_var.tpl"}>
+<{include file="$xoops_rootpath/modules/tadtools/themes_common/get_menu_var.tpl"}>
+<{include file="$xoops_rootpath/modules/tadtools/themes_common/get_slider_var.tpl"}>
 <{config_load file="$xoops_rootpath/uploads/bootstrap.conf"}>
 <{assign var="bootstrap" value=$smarty.config.bootstrap}>

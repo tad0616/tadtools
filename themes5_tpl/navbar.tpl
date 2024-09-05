@@ -13,11 +13,11 @@
     <{/php}>
 <{/if}>
 
-<script type="title/javascript" src="<{xoAppUrl modules/tadtools/smartmenus/jquery.smartmenus.min.js}>"></script>
+<script type="title/javascript" src="<{xoAppUrl 'modules/tadtools/smartmenus/jquery.smartmenus.min.js'}>"></script>
 
-<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{xoAppUrl modules/tadtools/colorbox/colorbox.css}>">
-<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{xoAppUrl modules/tadtools/css/xoops.css}>">
-<script type="text/javascript" src="<{xoAppUrl modules/tadtools/colorbox/jquery.colorbox.js}>"></script>
+<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{xoAppUrl 'modules/tadtools/colorbox/colorbox.css'}>">
+<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{xoAppUrl 'modules/tadtools/css/xoops.css'}>">
+<script type="text/javascript" src="<{xoAppUrl 'modules/tadtools/colorbox/jquery.colorbox.js'}>"></script>
 
 <script>
     function tad_themes_popup(URL) {
@@ -54,12 +54,12 @@
                 <a href="<{$xoops_url}>/index.php">&#xf015; <{$smarty.const._TAD_HOME}></a>
             </li>
         <{/if}>
-        <{includeq file="$xoops_rootpath/modules/tadtools/themes5_tpl/menu_main.tpl"}>
+        <{include file="$xoops_rootpath/modules/tadtools/themes5_tpl/menu_main.tpl"}>
         <{if "$xoops_rootpath/uploads/docs_top_menu_b4.tpl"|file_exists}>
-            <{includeq file="$xoops_rootpath/uploads/docs_top_menu_b4.tpl"}>
+            <{include file="$xoops_rootpath/uploads/docs_top_menu_b4.tpl"}>
         <{/if}>
 
-        <{includeq file="$xoops_rootpath/modules/tadtools/themes5_tpl/menu_my.tpl"}>
+        <{include file="$xoops_rootpath/modules/tadtools/themes5_tpl/menu_my.tpl"}>
         <li class="flex-grow-1 hide-in-phone">
             <a accesskey="U" href="#xoops_theme_nav_key" title="<{$smarty.const._TAD_ZAV_ZONE}>" id="xoops_theme_nav_key" style="color: transparent; font-size: 0.625rem;" class="disabled">:::</a>
         </li>
@@ -84,7 +84,7 @@
                 <a title="<{$smarty.const.TF_USER_WELCOME}>">
                     <{$smarty.const.TF_USER_WELCOME}><{$xoops_name}>
                 </a>
-                <{includeq file="$xoops_rootpath/modules/tadtools/themes5_tpl/menu_user.tpl"}>
+                <{include file="$xoops_rootpath/modules/tadtools/themes5_tpl/menu_user.tpl"}>
             </li>
         <{elseif $openid_login!="3"}>
             <li>
@@ -92,7 +92,7 @@
                 <{if $login_text}><{$login_text}><{else}>
                 <{$smarty.const.TF_USER_ENTER}><{/if}>
                 </a>
-                <{includeq file="$xoops_rootpath/modules/tadtools/themes5_tpl/menu_login.tpl"}>
+                <{include file="$xoops_rootpath/modules/tadtools/themes5_tpl/menu_login.tpl"}>
             </li>
         <{/if}>
     </ul>

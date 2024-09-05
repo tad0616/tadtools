@@ -11,6 +11,8 @@ class FancyBox
     public $height;
     public $autoSize;
     public $type;
+    public $show_jquery;
+    public $show_js;
 
     //建構函數
     public function __construct($name = '', $width = '90%', $height = null, $show_jquery = true, $show_js = true)

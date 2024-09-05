@@ -15,14 +15,14 @@
 
 <{if $navbar_pos!="not-use"}>
     <!-- SmartMenus jQuery Bootstrap 4 Addon CSS -->
-    <link href="<{xoAppUrl modules/tadtools/smartmenus/addons/bootstrap-4/jquery.smartmenus.bootstrap-4.css}>" rel="stylesheet">
+    <link href="<{xoAppUrl 'modules/tadtools/smartmenus/addons/bootstrap-4/jquery.smartmenus.bootstrap-4.css'}>" rel="stylesheet">
 
-    <script type="title/javascript" src="<{xoAppUrl modules/tadtools/smartmenus/jquery.smartmenus.min.js}>"></script>
-    <script type="title/javascript" src="<{xoAppUrl modules/tadtools/smartmenus/addons/bootstrap-4/jquery.smartmenus.bootstrap-4.min.js}>"></script>
+    <script type="title/javascript" src="<{xoAppUrl 'modules/tadtools/smartmenus/jquery.smartmenus.min.js'}>"></script>
+    <script type="title/javascript" src="<{xoAppUrl 'modules/tadtools/smartmenus/addons/bootstrap-4/jquery.smartmenus.bootstrap-4.min.js'}>"></script>
 
-    <link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{xoAppUrl modules/tadtools/colorbox/colorbox.css}>">
-    <link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{xoAppUrl modules/tadtools/css/xoops.css}>">
-    <script type="text/javascript" src="<{xoAppUrl modules/tadtools/colorbox/jquery.colorbox.js}>"></script>
+    <link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{xoAppUrl 'modules/tadtools/colorbox/colorbox.css'}>">
+    <link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{xoAppUrl 'modules/tadtools/css/xoops.css'}>">
+    <script type="text/javascript" src="<{xoAppUrl 'modules/tadtools/colorbox/jquery.colorbox.js'}>"></script>
 
     <script>
         function tad_themes_popup(URL) {
@@ -53,11 +53,11 @@
                 <{if $show_sitename==0 or $show_sitename==''}>
                     <li><a class="nav-link" href="<{$xoops_url}>/index.php">&#xf015; <{$smarty.const._TAD_HOME}></a></li>
                 <{/if}>
-                <{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/menu_main.tpl"}>
+                <{include file="$xoops_rootpath/modules/tadtools/themes4_tpl/menu_main.tpl"}>
                 <{if "$xoops_rootpath/uploads/docs_top_menu_b4.tpl"|file_exists}>
-                    <{includeq file="$xoops_rootpath/uploads/docs_top_menu_b4.tpl"}>
+                    <{include file="$xoops_rootpath/uploads/docs_top_menu_b4.tpl"}>
                 <{/if}>
-                <{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/menu_my.tpl"}>
+                <{include file="$xoops_rootpath/modules/tadtools/themes4_tpl/menu_my.tpl"}>
             </ul>
 
             <!-- Right nav -->
@@ -82,7 +82,7 @@
                         <a class="nav-link dropdown-toggle" title="<{$smarty.const.TF_USER_WELCOME}>">
                             <{$smarty.const.TF_USER_WELCOME}><{$xoops_name}>
                         </a>
-                        <{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/menu_user.tpl"}>
+                        <{include file="$xoops_rootpath/modules/tadtools/themes4_tpl/menu_user.tpl"}>
                     </li>
                 <{elseif $openid_login!="3"}>
                     <li class="nav-item dropdown">
@@ -90,7 +90,7 @@
                         <{if $login_text}><{$login_text}><{else}>
                         <{$smarty.const.TF_USER_ENTER}><{/if}>
                         </a>
-                        <{includeq file="$xoops_rootpath/modules/tadtools/themes4_tpl/menu_login.tpl"}>
+                        <{include file="$xoops_rootpath/modules/tadtools/themes4_tpl/menu_login.tpl"}>
                     </li>
                 <{/if}>
             </ul>
@@ -98,7 +98,7 @@
     </nav>
 
     <{if $use_pin=="1"}>
-        <script type="text/javascript" src="<{xoAppUrl modules/tadtools/jquery.sticky/jquery.sticky.js}>"></script>
+        <script type="text/javascript" src="<{xoAppUrl 'modules/tadtools/jquery.sticky/jquery.sticky.js'}>"></script>
         <script type="text/javascript">
         $(document).ready(function(){
             $("#nav-container").sticky({topSpacing:0 , zIndex: 100});

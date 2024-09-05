@@ -350,7 +350,7 @@
                 <!-- 額外設定變數值 -->
                 <div>
                     <table class="table table-striped table-bordered table-hover" style="background:white;">
-                    <{includeq file="$xoops_rootpath/modules/tadtools/themes_common/show_var_php.tpl"}>
+                    <{include file="$xoops_rootpath/modules/tadtools/themes_common/show_var_php.tpl"}>
                     </table>
                 </div>
             </div>

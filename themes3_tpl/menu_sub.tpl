@@ -8,7 +8,7 @@
                 </a>
                 <{if $sub.submenu}>
                     <{assign var=submenu value=$sub.submenu}>
-                    <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_sub.tpl"}>
+                    <{include file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_sub.tpl"}>
                 <{/if}>
             </li>
         <{/foreach}>

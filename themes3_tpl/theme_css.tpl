@@ -22,9 +22,9 @@
   }
 
 
-  <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/theme_css_blocks.tpl"}>
+  <{include file="$xoops_rootpath/modules/tadtools/themes3_tpl/theme_css_blocks.tpl"}>
 
-  <{includeq file="$xoops_rootpath/modules/tadtools/themes3_tpl/theme_css_navbar.tpl"}>
+  <{include file="$xoops_rootpath/modules/tadtools/themes3_tpl/theme_css_navbar.tpl"}>
 
   <{if $theme_kind!="html"}>
     .row-sm-eq {

@@ -7,7 +7,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         if (file_exists(XOOPS_ROOT_PATH . "/uploads/bootstrap.conf")) {
             $bootstrap = substr(file_get_contents(XOOPS_ROOT_PATH . "/uploads/bootstrap.conf"), -1);
             $_SESSION['bootstrap'] = $bootstrap ? $bootstrap : 4;
-        } elseif (strpos($tt_theme_kind, 'bootstrap') !== false) {
+        } elseif (strpos((string) isset($tt_theme_kind)?:'', 'bootstrap') !== false) {
             $_SESSION['bootstrap'] = substr($tt_theme_kind, -1);
         } else {
             $_SESSION['bootstrap'] = '4';
