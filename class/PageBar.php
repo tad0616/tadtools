@@ -64,11 +64,12 @@ class PageBar
     public $url_other;
     //在limit前額外加入排序
     public $order_sql;
+    public $glue;
+    public $buttons;
 
     public function __construct($total, $limit = '20', $page_limit = '10', $order_sql = '')
     {
         $limit = (int) $limit;
-        $mydirname = basename(__DIR__);
         $this->prev = "<img src='" . XOOPS_URL . "/modules/tadtools/images/1leftarrow.png' alt='" . _TAD_BACK_PAGE . "' align='absmiddle' hspace=3>";
         $this->next = "<img src='" . XOOPS_URL . "/modules/tadtools/images/1rightarrow.png' alt='" . _TAD_NEXT_PAGE . "' align='absmiddle' hspace=3>";
         $this->first = "<img src='" . XOOPS_URL . "/modules/tadtools/images/2leftarrow.png' alt='" . _TAD_FIRST_PAGE . "' align='absmiddle' hspace=3>";

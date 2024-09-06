@@ -9,21 +9,22 @@ class ColorBox
     public $name;
     public $width;
     public $height;
+    public $show_jquery;
 
     //$width='auto' ,,$height='auto'
     public function __construct($name = '.iframe', $width = '80%', $height = '90%', $show_jquery = true)
     {
-        $this->name        = $name;
-        $this->width       = $width;
-        $this->height      = $height;
+        $this->name = $name;
+        $this->width = $width;
+        $this->height = $height;
         $this->show_jquery = $show_jquery;
     }
 
     public function render($ready_config = true)
     {
         global $xoTheme;
-        $jquery       = Utility::get_jquery();
-        $width_setup  = ('auto' === $this->width) ? '' : ", width:'" . $this->width . "'";
+        $jquery = Utility::get_jquery();
+        $width_setup = ('auto' === $this->width) ? '' : ", width:'" . $this->width . "'";
         $height_setup = ('auto' === $this->height) ? '' : ", height:'" . $this->height . "'";
 
         if ($xoTheme) {

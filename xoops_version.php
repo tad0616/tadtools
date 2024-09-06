@@ -113,7 +113,7 @@ $modversion['config'][$i]['title'] = '_MI_TADTOOLS_IMAGE_MAX_WIDTH';
 $modversion['config'][$i]['description'] = '_MI_TADTOOLS_IMAGE_MAX_WIDTH_DESC';
 $modversion['config'][$i]['formtype'] = 'textbox';
 $modversion['config'][$i]['valuetype'] = 'int';
-$modversion['config'][$i]['default'] = '1280';
+$modversion['config'][$i]['default'] = '1920';
 
 $i++;
 $modversion['config'][$i]['name'] = 'image_max_height';
@@ -121,7 +121,7 @@ $modversion['config'][$i]['title'] = '_MI_TADTOOLS_IMAGE_MAX_HEIGHT';
 $modversion['config'][$i]['description'] = '_MI_TADTOOLS_IMAGE_MAX_HEIGHT_DESC';
 $modversion['config'][$i]['formtype'] = 'textbox';
 $modversion['config'][$i]['valuetype'] = 'int';
-$modversion['config'][$i]['default'] = '1280';
+$modversion['config'][$i]['default'] = '1920';
 
 $i++;
 $modversion['config'][$i]['name'] = 'insert_spacing';

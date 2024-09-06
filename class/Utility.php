@@ -649,7 +649,7 @@ class Utility
         $_SESSION['theme_kind'] = $tt_theme_kind;
         $_SESSION[$theme_set]['bootstrap_version'] = $tt_theme_kind;
 
-        if (strpos($tt_theme_kind, 'bootstrap') !== false) {
+        if (strpos((string) isset($tt_theme_kind) ?: '', 'bootstrap') !== false) {
             $_SESSION['bootstrap'] = substr($tt_theme_kind, -1);
         } else {
             $_SESSION['bootstrap'] = '5';
@@ -1422,9 +1422,11 @@ class Utility
         $gpermHandler->deleteByModule($module_id, $perm_name, $itemid);
 
         // Save the new permissions
-        if (count($groups) > 0) {
-            foreach ($groups as $group_id) {
-                $gpermHandler->addRight($perm_name, $itemid, $group_id, $module_id);
+        if ($groups && \is_array($groups)) {
+            if (count($groups) > 0) {
+                foreach ($groups as $group_id) {
+                    $gpermHandler->addRight($perm_name, $itemid, $group_id, $module_id);
+                }
             }
         }
     }

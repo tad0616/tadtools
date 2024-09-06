@@ -65,7 +65,7 @@
         <li>
             <div class="row">
                 <{foreach from=$tlogin item=login}>
-                    <{if $tlogin|@count < 4}>
+                    <{if $tlogin && $tlogin|@count < 4}>
                         <div class="col-12">
                             <a href="<{$login.link}>" class="btn me-2" style="display: block; margin: 4px; border: none; ">
                                 <img src="<{$login.img}>" alt="<{$login.text}>" title="<{$login.text}>" style="width: 32px;height: 32px;object-fit: contain;">
