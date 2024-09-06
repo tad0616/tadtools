@@ -6,8 +6,6 @@
     <!--將目前的資料夾名稱，設定為樣板標籤變數 theme_name-->
     <{assign var="theme_name" value=$xoTheme->folderName}>
 
-    <!--載入由使用者設定的各項佈景變數-->
-    <{include file="$xoops_rootpath/modules/tadtools/themes_common/get_var.tpl"}>
 
     <{include file="$xoops_rootpath/modules/tadtools/themes_common/meta.tpl"}>
     <!-- 網站的標題及標語 -->
