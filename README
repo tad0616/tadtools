@@ -18,6 +18,7 @@ TadTools 4.0 (尚未釋出)
 16.升級 jGrowl 為 1.4.5
 17.移除 grunt.js、chk_jquery.js
 15.升級 jQuery ui 為 1.14.0
+16.不使用 jGrowl 動態轉向時，以SweetAlert2取代之
 
 TadTools 3.55 (2023-10-17 釋出)
 ====================================
