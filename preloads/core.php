@@ -536,7 +536,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         }
 
         // themes_common/meta.tpl 會用到
-        $http = 'http://';
+        $http = 'https://';
         if (!empty($_SERVER['HTTPS'])) {
             $http = ($_SERVER['HTTPS'] === 'on') ? 'https://' : 'http://';
         }
@@ -619,16 +619,16 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         }
 
         // my_js.tpl 會用到
-        $mobile_device = '';
-        if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/mobile_device_detect.php")) {
-            require_once XOOPS_ROOT_PATH . "/modules/tadtools/mobile_device_detect.php";
-            $device = mobile_device_detect(true, false, true, true, true, true, true);
-            if (isset($device[0])) {
-                $mobile_device = $device[0];
-            }
+        // $mobile_device = '';
+        // if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/mobile_device_detect.php")) {
+        //     require_once XOOPS_ROOT_PATH . "/modules/tadtools/mobile_device_detect.php";
+        //     $device = mobile_device_detect(true, false, true, true, true, true, true);
+        //     if (isset($device[0])) {
+        //         $mobile_device = $device[0];
+        //     }
 
-        }
-        $xoopsTpl->assign('mobile_device', "var mobile_device='$mobile_device';");
+        // }
+        // $xoopsTpl->assign('mobile_device', "var mobile_device='$mobile_device';");
     }
 
     public static function eventCoreIncludeCommonAuthSuccess()

@@ -25,16 +25,16 @@ class FullCalendar6
     }
 
     //產生月曆
-    public function render($selector = '#calendar', $json_file = '', $mode = '')
+    public function render($selector = 'calendar', $json_file = '', $mode = '')
     {
         global $xoTheme;
 
         if ($xoTheme and $mode == '') {
-            $xoTheme->addScript('modules/tadtools/fullcalendar6/index.global.min.js');
+            $xoTheme->addScript('modules/tadtools/fullcalendar6/index.global.js');
             $fullcalendar = '';
         } else {
             $fullcalendar = "
-            <script src='" . XOOPS_URL . "/modules/tadtools/fullcalendar6/index.global.min.js' type='text/javascript'></script>";
+            <script src='" . XOOPS_URL . "/modules/tadtools/fullcalendar6/index.global.js' type='text/javascript'></script>\n";
         }
 
         $js_parameter = '';
@@ -71,14 +71,22 @@ class FullCalendar6
             ";
         }
 
-        $fullcalendar .= "<script type='text/javascript'>
+        $fullcalendar .= "
+        <script type='text/javascript'>
         document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('{$selector}');
-            var headerToolbar;
-            var calendar = new FullCalendar.Calendar(calendarEl, {{$js_parameter}{$get_event}
+            var calendar = new FullCalendar.Calendar(calendarEl, {
                 locale: 'zh-tw',
                 buttonText:{today: '今天'},
-                initialView: 'dayGridMonth'
+                {$js_parameter}
+                {$get_event}
+                headerToolbar: {
+                    left: 'prev,today,next',
+                    center: 'title',
+                    right: ''
+                },
+                initialView: 'dayGridMonth',
+                eventDisplay: 'block'
             });
             calendar.render();
         });
