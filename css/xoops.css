@@ -35,3 +35,57 @@ a.block_config:hover,
 a.tad_block_config:hover {
   background-image: url(../images/block_config_hover.png);
 }
+
+/* jGrowl Box style */
+div.center div.jGrowl-notification, div.center div.jGrowl-closer {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
+  background-color: #ffffff;
+  color: #3b2001;
+  width: 100%;
+  padding: 0.7rem;
+  margin-top: 10rem;
+  margin-bottom: 1rem;
+  font-family: "Noto Sans TC", Tahoma, Geneva, sans-serif;
+  font-size: 1.4rem;
+  text-align: center;
+  border: 4px solid #e98c4d;
+  display: none;
+  border-radius: 5px;
+  box-shadow: 5px 5px 10px #9e9e9e;
+}
+
+div.jGrowl div.jGrowl-notification {
+  min-height: 70px;
+}
+
+div.jGrowl div.jGrowl-notification div.jGrowl-header {
+  font-weight: bold;
+  font-size: 0.825rem;
+}
+
+/* jGrowl Close button */
+div.jGrowl div.jGrowl-notification button.jGrowl-close {
+  float: right;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  background-color: #ceda8f;
+  border: 3px solid #729932;
+  width: 40px; /* 設定寬度 */
+  height: 40px; /* 設定高度 */
+  border-radius: 50%; /* 設定圓角為50%使其成為圓形 */
+}
+
+div.jGrowl div.jGrowl-closer {
+  height: 15px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  cursor: pointer;
+  font-size: 0.925rem;
+  font-weight: bold;
+  text-align: center;
+}
