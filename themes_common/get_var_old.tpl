@@ -568,7 +568,8 @@ $_smarty_tpl->assign('tttttt', 'success');
 
 <{/php}>
 
-
-<{include file="$xoops_rootpath/modules/tadtools/themes_common/get_main_var.tpl"}>
-<{include file="$xoops_rootpath/modules/tadtools/themes_common/get_menu_var.tpl"}>
-<{include file="$xoops_rootpath/modules/tadtools/themes_common/get_slider_var.tpl"}>
+<{if $xoops_version < 20511}>
+    <{include file="$xoops_rootpath/modules/tadtools/themes_common/get_main_var.tpl"}>
+    <{include file="$xoops_rootpath/modules/tadtools/themes_common/get_menu_var.tpl"}>
+    <{include file="$xoops_rootpath/modules/tadtools/themes_common/get_slider_var.tpl"}>
+<{/if}>

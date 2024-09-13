@@ -1,5 +1,5 @@
-<{*
-    <{php}>
+<{if $xoops_version < 20511}>
+<{php}>
     global $xoopsDB, $xoopsTpl, $xoopsModule, $xoTheme;
 
     if ($xoTheme) {
@@ -110,6 +110,6 @@
     $xoopsTpl->assign('admin_menu_var', get_theme_admin_menu_items());
     $xoopsTpl->assign('user_menu_var', get_theme_user_menu_items());
 
-    <{/php}>
+<{/php}>
 
-*}>
+<{/if}>

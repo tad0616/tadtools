@@ -437,9 +437,14 @@ class TadtoolsCorePreload extends XoopsPreloadItem
             // } else {
             $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
             // }
+            $xoTheme->addStylesheet('modules/tadtools/jquery/themes/base/jquery.ui.all.css');
+            // $xoTheme->addScript('modules/tadtools/jquery/ui/jquery-ui.js');
+            $xoTheme->addScript('browse.php?Frameworks/jquery/plugins/jquery.ui.js');
 
-            $xoTheme->addStylesheet("modules/tadtools/jquery/themes/base/jquery.ui.all.css");
-            $xoTheme->addScript('modules/tadtools/jquery/ui/jquery-ui.js');
+            $xoTheme->addStylesheet('modules/tadtools/colorbox/colorbox.css');
+            $xoTheme->addStylesheet('modules/tadtools/css/xoops.css');
+            $xoTheme->addScript('modules/tadtools/colorbox/jquery.colorbox.js');
+
         }
 
         //製作主選單
@@ -648,17 +653,20 @@ class TadtoolsCorePreload extends XoopsPreloadItem
 
     public static function eventCoreFooterStart($args)
     {
-        global $xoopsConfig, $xoopsDB, $xoTheme, $xoopsTpl, $xoTheme;
-
-        $xoTheme->addScript('browse.php?Frameworks/jquery/jquery.js');
-        $xoTheme->addStylesheet('modules/tadtools/jquery/themes/base/jquery.ui.all.css');
-        $xoTheme->addScript('browse.php?Frameworks/jquery/plugins/jquery.ui.js');
-
-        $theme_set = isset($_SESSION['xoopsUserTheme']) ? $_SESSION['xoopsUserTheme'] : $xoopsConfig['theme_set'];
+        global $xoopsConfig, $xoopsDB, $xoTheme, $xoopsTpl;
 
         if (!isset($xoTheme)) {
             $xoTheme = &$GLOBALS['xoTheme'];
         }
+
+        // $xoTheme->addScript('browse.php?Frameworks/jquery/jquery.js');
+        // $xoTheme->addStylesheet('modules/tadtools/jquery/themes/base/jquery.ui.all.css');
+        // $xoTheme->addScript('browse.php?Frameworks/jquery/plugins/jquery.ui.js');
+        // $xoTheme->addStylesheet('modules/tadtools/colorbox/colorbox.css');
+        // $xoTheme->addStylesheet('modules/tadtools/css/xoops.css');
+        // $xoTheme->addScript('modules/tadtools/colorbox/jquery.colorbox.js');
+
+        $theme_set = isset($_SESSION['xoopsUserTheme']) ? $_SESSION['xoopsUserTheme'] : $xoopsConfig['theme_set'];
 
         if (!isset($_SESSION['old_theme_set'])) {
             $_SESSION['old_theme_set'] = $theme_set;

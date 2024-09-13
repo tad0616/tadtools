@@ -1,5 +1,5 @@
-<{*
-    <{php}>
+<{if $xoops_version < 20511}>
+<{php}>
 global $xoopsDB, $xoopsTpl, $xoopsModule, $xoTheme;
 
 //取得選單選項
@@ -347,4 +347,4 @@ $xoopsTpl->assign('menu_var', $my_menu);
 
 <{/php}>
 
-*}>
+<{/if}>

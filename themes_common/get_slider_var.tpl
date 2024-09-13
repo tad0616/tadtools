@@ -1,4 +1,4 @@
-<{*
+<{if $xoops_version < 20511}>
 <{php}>
 global $xoopsDB, $xoopsTpl, $xoopsConfig;
 
@@ -52,4 +52,4 @@ $slider_var = get_theme_slide_items();
 $xoopsTpl->assign('slider_var', $slider_var);
 
 <{/php}>
-*}>
+<{/if}>
