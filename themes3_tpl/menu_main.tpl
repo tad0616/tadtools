@@ -1,7 +1,7 @@
-<{if $auto_mainmenu}>
+<{if $auto_mainmenu|default:false}>
     <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="index.php">
-            <{if $auto_mainmenu_icon}><span class="fa <{$auto_mainmenu_icon}>"></span><{/if}>
+            <{if $auto_mainmenu_icon|default:false}><span class="fa <{$auto_mainmenu_icon}>"></span><{/if}>
             <{$smarty.const.THEME_MODULE0}>
             <span class="caret"></span>
         </a>

@@ -10,7 +10,7 @@
         <!-- 33-1 <{$theme_color}> -->
 <{if $theme_color and $theme_color!="bootstrap3"}>
         <link href="<{$xoops_url}>/modules/tadtools/bootstrap3/css/bootstrap.css" rel="stylesheet" media="all">
-        <{if $theme_color}>
+        <{if $theme_color|default:false}>
         <!-- 33-2 <{$theme_color}> -->
         <link href="<{$xoops_url}>/modules/tadtools/<{$theme_color}>/bootstrap.min.css" rel="stylesheet" media="all">
         <{/if}>
@@ -27,7 +27,7 @@
         <![endif]-->
         <!-- font-awesome -->
         <link href="<{$xoops_url}>/modules/tadtools/css/font-awesome/css/font-awesome.css" rel="stylesheet" media="all">
-<{if $xoops_themecss}>
+<{if $xoops_themecss|default:false}>
         <!-- Theme Sheet Css -->
         <link rel="stylesheet" type="text/css" media="all" href="<{$xoops_themecss}>">
 <{/if}>

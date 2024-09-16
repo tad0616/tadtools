@@ -259,7 +259,7 @@
                             <tr><th>&lt;{$menu_var.<{$k}>.target}&gt;</th><td><{$m.target}></td></tr>
                             <tr><th>&lt;{$menu_var.<{$k}>.icon}&gt;</th><td><{$m.icon}></td></tr>
                             <tr><th>&lt;{$menu_var.<{$k}>.img}&gt;</th><td><{$m.img}></td></tr>
-                            <{if $m.submenu}>
+                            <{if $m.submenu|default:false}>
                                 <tr><td colspan=2 style="background-color: rgb(248, 248, 219);">
                                     <p><b>&lt;{$menu_var.<{$k}>.submenu}&gt;</b></p>
                                     <table class="table table-striped table-bordered table-hover table-condensed table-sm">
@@ -273,15 +273,15 @@
                                         </tr>
                                         <{foreach from=$m.submenu item=m2}>
                                             <tr>
-                                                <th <{if $m2.submenu}>rowspan=2<{/if}>><{$m2.id}></th>
-                                                <th <{if $m2.submenu}>rowspan=2<{/if}>><{$m2.title}></th>
+                                                <th <{if $m2.submenu|default:false}>rowspan=2<{/if}>><{$m2.id}></th>
+                                                <th <{if $m2.submenu|default:false}>rowspan=2<{/if}>><{$m2.title}></th>
                                                 <td><{$m2.url}></td>
                                                 <td><{$m2.target}></td>
                                                 <td><{$m2.icon}></td>
-                                                <td><{if $m2.submenu}>子選項如下<{/if}></td>
+                                                <td><{if $m2.submenu|default:false}>子選項如下<{/if}></td>
                                             </tr>
 
-                                            <{if $m2.submenu}>
+                                            <{if $m2.submenu|default:false}>
                                                 <tr>
                                                     <td colspan=4 style="background-color: rgb(220, 248, 219);">
                                                         <table class="table table-striped table-bordered table-hover table-condensed table-sm">
@@ -300,7 +300,7 @@
                                                                     <td><{$m3.url}></td>
                                                                     <td><{$m3.target}></td>
                                                                     <td><{$m3.icon}></td>
-                                                                    <td><{if $m3.submenu}>子選項如下<{/if}></td>
+                                                                    <td><{if $m3.submenu|default:false}>子選項如下<{/if}></td>
                                                                 </tr>
                                                             <{/foreach}>
                                                         </table>

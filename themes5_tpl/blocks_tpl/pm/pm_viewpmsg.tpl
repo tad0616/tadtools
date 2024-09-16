@@ -1,5 +1,5 @@
 <h4 class="txtcenter"><{$smarty.const._PM_PRIVATEMESSAGE}></h4>
-<{if $op}>
+<{if $op|default:false}>
     <br>
     <div class="floatright txtright" style="width: 18%;">
         <{if $op == "out"}>
@@ -23,14 +23,14 @@
     </div>
     <br>
     <br>
-    <{if $msg}>
+    <{if $msg|default:false}>
         <div class="confirmMsg"><{$msg}></div>
     <{/if}>
-    <{if $errormsg}>
+    <{if $errormsg|default:false}>
         <div class="errorMsg"><{$errormsg}></div>
     <{/if}>
 
-    <{if $pagenav}>
+    <{if $pagenav|default:false}>
         <div class="floatright txtright pad5">
             <{$pagenav}>
         </div>
@@ -92,7 +92,7 @@
             <tr class='bg2 txtleft'>
                 <td class='txtleft' colspan='6'>
                     <{$pmform.elements.send.body}>
-                    <{if $display}>
+                    <{if $display|default:false}>
                         &nbsp;<{$pmform.elements.move_messages.body}>
                         &nbsp;<{$pmform.elements.delete_messages.body}>
                         &nbsp;<{$pmform.elements.empty_messages.body}>
@@ -106,7 +106,7 @@
             </tr>
         </table>
     </form>
-    <{if $pagenav}>
+    <{if $pagenav|default:false}>
         <div class="floatright txtright pad5">
             <{$pagenav}>
         </div>

@@ -48,21 +48,21 @@
     <{/if}>
 </div><!-- .message-current-tab -->
 
-<{if $msg}>
+<{if $msg|default:false}>
     <div class="alert alert-info alert-dismissable">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <strong><{$msg}></strong>
     </div>
 <{/if}>
 
-<{if $errormsg}>
+<{if $errormsg|default:false}>
    <div class="alert alert-danger alert-dismissable">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 		<strong><{$errormsg}></strong>
 	</div>
 <{/if}>
 
-<{if $pagenav}>
+<{if $pagenav|default:false}>
     <{$pagenav}>
 <{/if}>
 
@@ -141,7 +141,7 @@
 <{/foreach}>
 
 <{$pmform.elements.send.body}>
-<{if $display}>
+<{if $display|default:false}>
     <{$pmform.elements.move_messages.body}>
     <{$pmform.elements.delete_messages.body}>
     <{$pmform.elements.empty_messages.body}>
@@ -154,6 +154,6 @@
 <{/foreach}>
 </form>
 
-<{if $pagenav}>
+<{if $pagenav|default:false}>
 	<{$pagenav}>
 <{/if}>

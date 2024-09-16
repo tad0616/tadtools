@@ -22,7 +22,7 @@
       <label class="col-sm-4 control-label checkbox" for="rememberme">
         <{if isset($block.lang_rememberme)}>
             <input type="checkbox" name="rememberme" id="rememberme" value="On" class="formButton">
-            <{$block.lang_rememberme}>
+            <{$block.lang_rememberme|default:''}>
         <{/if}>
       </label>
       <div class="col-sm-8">
@@ -30,12 +30,12 @@
         <input type="hidden" name="rememberme" value="On" />
         <input type="hidden" name="op" value="login" />
         <input type="hidden" name="xoops_login" value="1"/>
-        <{$block.sslloginlink}>
+        <{$block.sslloginlink|default:''}>
         <button type="submit" class="btn btn-primary btn-block"><{$smarty.const.TF_USER_ENTER}></button>
       </div>
     </div>
 
-    <{if $allow_register=='1'}>
+    <{if $allow_register|default:false}>
       <div class="form-group">
         <div class="col-sm-5">
           <a href="<{$xoops_url}>/register.php" class="btn btn-xs btn-link">

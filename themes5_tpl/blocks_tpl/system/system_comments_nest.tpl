@@ -22,7 +22,7 @@
         </div>
     <{/foreach}>
     <{/section}>
-    <{if $commentform}>
+    <{if $commentform|default:false}>
     <div class="aligncenter">
         <button class="btn-comment btn btn-primary btn-md" data-bs-toggle="modal" data-bs-target="#comments-form">
             <span class="glyphicon glyphicon-comment"></span> Add Comment

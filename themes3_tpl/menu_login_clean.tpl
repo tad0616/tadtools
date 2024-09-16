@@ -6,10 +6,10 @@
         <form action="<{$xoops_url}>/user.php" method="post" class="form-horizontal" role="form">
           <fieldset style="min-width: 200px; margin: 10px;">
             <legend>
-            <{if $login_text}><{$login_text}><{else}>
+            <{if $login_text|default:false}><{$login_text}><{else}>
             <{$smarty.const.TF_USER_ENTER}><{/if}>
             </legend>
-            <{if $login_description}><div class="alert alert-warning" style="font-size: 0.825rem;"><{$login_description}></div><{/if}>
+            <{if $login_description|default:false}><div class="alert alert-warning" style="font-size: 0.825rem;"><{$login_description}></div><{/if}>
             <div class="form-group">
               <label class="col-sm-4 control-label" for="uname">
                 <{$smarty.const.TF_USER_S_ID}>
@@ -40,7 +40,7 @@
               </div>
             </div>
 
-            <{if $allow_register=='1'}>
+            <{if $allow_register|default:false}>
               <div class="form-group">
                 <div class="col-sm-5">
                   <a href="<{$xoops_url}>/register.php" class="btn btn-xs btn-link">

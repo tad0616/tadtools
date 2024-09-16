@@ -1032,13 +1032,11 @@ class Utility
         return $new_str;
     }
 
-    //亂數字串
+    // 亂數字串生成
     public static function randStr($len = 6, $format = 'ALL')
     {
+        // 根據格式選擇字符集
         switch ($format) {
-            case 'ALL':
-                $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-                break;
             case 'CHAR':
                 $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
                 break;
@@ -1049,13 +1047,13 @@ class Utility
                 $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
                 break;
         }
-        list($usec, $sec) = explode(' ', microtime());
-        $seed = (float) $sec + ((float) $usec * 100000);
-        // die('seed=' . $seed);
-        mt_srand($seed);
+
+        // 從字符集中隨機選擇字符生成字串
         $password = '';
-        while (mb_strlen($password) < $len) {
-            $password .= mb_substr($chars, (mt_rand() % mb_strlen($chars)), 1);
+        $charsLen = mb_strlen($chars);
+
+        for ($i = 0; $i < $len; $i++) {
+            $password .= mb_substr($chars, random_int(0, $charsLen - 1), 1);
         }
 
         return $password;

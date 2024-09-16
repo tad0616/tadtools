@@ -10,7 +10,7 @@
         <!-- 55-1 <{$theme_color}> -->
 <{if $theme_color and $theme_color!="bootstrap5"}>
         <link href="<{$xoops_url}>/modules/tadtools/bootstrap5/css/bootstrap.css" rel="stylesheet" media="all">
-        <{if $theme_color}>
+        <{if $theme_color|default:false}>
         <!-- 55-2 <{$theme_color}> -->
         <link href="<{$xoops_url}>/modules/tadtools/<{$theme_color}>/bootstrap.min.css" rel="stylesheet" media="all">
         <{/if}>

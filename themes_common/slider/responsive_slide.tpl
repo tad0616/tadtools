@@ -1,5 +1,5 @@
 
-<{if $slider_var}>
+<{if $slider_var|default:false}>
 <link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tadtools/ResponsiveSlides/reset.css" >
 <link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tadtools/ResponsiveSlides/responsiveslides.css" >
 <script language="javascript" type="text/javascript" src="<{$xoops_url}>/modules/tadtools/ResponsiveSlides/responsiveslides.js"></script>
@@ -15,7 +15,7 @@
             <{else}>
             nav: false,
             <{/if}>
-            timeout: <{if $slide_timeout}><{$slide_timeout}><{else}>5000<{/if}>,
+            timeout: <{if $slide_timeout|default:false}><{$slide_timeout}><{else}>5000<{/if}>,
             pause: true,
             pauseControls: true,
             namespace: 'callbacks'
@@ -28,12 +28,12 @@
     <ul class="rslides" id="ThemeResponsiveSlides" style="margin-top: 0px;">
         <{foreach from=$slider_var item=slide}>
         <li>
-            <{if $slide.slide_url}>
+            <{if $slide.slide_url|default:false}>
             <a href="<{$slide.slide_url}>" <{$slide.slide_target}>><img src="<{$slide.file_url}>" alt="<{$slide.description}>"></a>
             <{else}>
                 <img src="<{$slide.file_url}>" alt="Slider" title="<{$slide.description}>">
             <{/if}>
-            <{if $slide.description}>
+            <{if $slide.description|default:false}>
                 <div class="caption">
                     <a href="<{$slide.slide_url}>" <{$slide.slide_target}>>
                         <div class="caption">

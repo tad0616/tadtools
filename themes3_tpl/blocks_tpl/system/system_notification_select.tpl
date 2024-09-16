@@ -1,4 +1,4 @@
-<{if $xoops_notification.show}>
+<{if $xoops_notification.show|default:false}>
     <form name="notification_select" action="<{$xoops_notification.target_page}>" method="post">
         <h4 class="txtcenter"><{$lang_activenotifications}></h4>
         <input type="hidden" name="not_redirect" value="<{$xoops_notification.redirect_script}>"/>
@@ -16,13 +16,13 @@
             <{foreach name=outer item=category from=$xoops_notification.categories}>
                 <{foreach name=inner item=event from=$category.events}>
                     <tr>
-                        <{if $smarty.foreach.inner.first}>
+                        <{if $smarty.foreach.inner.first|default:false}>
                             <td class="even" rowspan="<{$smarty.foreach.inner.total}>"><{$category.title}></td>
                         <{/if}>
                         <td class="odd">
                             <{counter assign=index}>
                             <input type="hidden" name="not_list[<{$index}>][params]" value="<{$category.name}>,<{$category.itemid}>,<{$event.name}>"/>
-                            <input type="checkbox" id="not_list[]" name="not_list[<{$index}>][status]" value="1" <{if $event.subscribed}>checked<{/if}>
+                            <input type="checkbox" id="not_list[]" name="not_list[<{$index}>][status]" value="1" <{if $event.subscribed|default:false}>checked<{/if}>
                             />
                         </td>
                         <td class="odd"><{$event.caption}></td>

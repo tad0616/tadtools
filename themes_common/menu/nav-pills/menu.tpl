@@ -1,5 +1,5 @@
 <{if $xoops_isadmin|default:false}>
-  <{if $install_chk}>
+  <{if $install_chk|default:false}>
     <div class='alert alert-danger'>
       <{$smarty.const._TAD_DEL_INSTALL_CHK}>
     </div>
@@ -52,7 +52,7 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav nav-pills">
         <{if $show_sitename !='2' }>
-          <{if $navlogo_img}>
+          <{if $navlogo_img|default:false}>
             <<li role="presentation"><a href="<{$xoops_url}>/index.php" style="color:<{$navbar_color}>"><img src="<{$navlogo_img}>" alt="<{$xoops_sitename}>"></<li></li>
           <{elseif $show_sitename=='0' or $show_sitename==''}>
             <li role="presentation"><a href="<{$xoops_url}>/index.php" style="color:<{$navbar_color}>"><{$smarty.const._TAD_HOME}></a></li>

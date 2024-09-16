@@ -35,11 +35,11 @@
 <div id="cssmenu">
     <ul>
         <{foreach from=$menu_var item=menu}>
-        <li <{if $menu.submenu}>class='has-sub'<{/if}>>
+        <li <{if $menu.submenu|default:false}>class='has-sub'<{/if}>>
             <a href='<{$menu.url}>' target="<{$menu.target}>">
             <span><span class="fa <{$menu.icon}>" <{$navbar_icon}>></span> <{$menu.title}></span>
             </a>
-            <{if $menu.submenu}>
+            <{if $menu.submenu|default:false}>
             <{if $menu.submenu=='1'}>
                 <{include file="$xoops_rootpath/modules/tadtools/themes_common/menu/cssmenu/login3.tpl"}>
             <{else}>
@@ -48,11 +48,11 @@
                     <{if $menu2.title == 'separator'}>
                     <li role="separator" class="divider"></li>
                     <{else}>
-                    <li <{if $menu2.submenu}>class='has-sub'<{/if}>>
+                    <li <{if $menu2.submenu|default:false}>class='has-sub'<{/if}>>
                         <a href='<{$menu2.url}>' target="<{$menu2.target}>">
                         <span><span class="fa <{$menu2.icon}>"></span> <{$menu2.title}></span>
                         </a>
-                        <{if $menu2.submenu}>
+                        <{if $menu2.submenu|default:false}>
                         <ul>
                             <{foreach from=$menu2.submenu item=menu3}>
                             <li>

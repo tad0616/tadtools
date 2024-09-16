@@ -88,13 +88,13 @@
 
 
               <!-- 頁尾 -->
-              <{if $xoops_footer}>
+              <{if $xoops_footer|default:false}>
                 <style>
                 #xoops_theme_footer a,#xoops_theme_footer a:hover,#xoops_theme_footer a:active ,#xoops_theme_footer a:visited {
                   color:<{$footer_color}>;
                 }
                 </style>
-                <div id="xoops_theme_footer" <{if $theme_kind|substr:0:9=="bootstrap"}>class="row"<{/if}> style="clear:both;margin-bottom:<{$margin_bottom}>px;height:<{$footer_height}>;background:<{$footer_bgcolor}> <{if $footer_img}>url(<{$footer_img}>)<{/if}>;<{$foot_bg_css}>">
+                <div id="xoops_theme_footer" <{if $theme_kind|substr:0:9=="bootstrap"}>class="row"<{/if}> style="clear:both;margin-bottom:<{$margin_bottom}>px;height:<{$footer_height}>;background:<{$footer_bgcolor}> <{if $footer_img|default:false}>url(<{$footer_img}>)<{/if}>;<{$foot_bg_css}>">
                   <{if $xoops_isadmin|default:false}>
                     <a href="<{$xoops_url}>/modules/system/admin.php?fct=preferences&op=show&confcat_id=3" class="block_config"></a>
                   <{/if}>

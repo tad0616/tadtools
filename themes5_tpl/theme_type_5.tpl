@@ -28,7 +28,7 @@
         <{elseif $lb_width!="auto"}>
             <{assign var="center_width" value=12-$lb_width}>
         <{else}>
-            <{assign var="center_width" value=$cb_width}>
+            <{assign var="center_width" value=$cb_width|default:''}>
         <{/if}>
 
         <div id="xoops_theme_center_zone" class="col-xl-<{$center_width}> order-lg-2" style="<{$centerBlocks}>">
@@ -50,7 +50,7 @@
         <{elseif $rb_width!="auto"}>
             <{assign var="center_width" value=12-$rb_width}>
         <{else}>
-            <{assign var="center_width" value=$cb_width}>
+            <{assign var="center_width" value=$cb_width|default:''}>
         <{/if}>
         <div id="xoops_theme_center_zone" class="col-xl-<{$center_width}> order-lg-1" style="<{$centerBlocks}>">
             <{include file="$xoops_rootpath/modules/tadtools/themes5_tpl/centerZone.tpl"}>

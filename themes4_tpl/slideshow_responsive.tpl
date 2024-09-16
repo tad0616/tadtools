@@ -1,4 +1,4 @@
-<{if $use_slide}>
+<{if $use_slide|default:false}>
     <{if $logo_img and $logo_position=="slide"}>
         <div style="position:relative; width:100%;">
             <{include file="$xoops_rootpath/modules/tadtools/themes4_tpl/logo.tpl"}>

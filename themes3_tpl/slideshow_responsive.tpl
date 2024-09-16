@@ -1,4 +1,4 @@
-<{if $use_slide}>
+<{if $use_slide|default:false}>
   <div <{if $theme_kind|substr:0:9=="bootstrap"}>class="row"<{/if}>>
     <div <{if $theme_kind|substr:0:9=="bootstrap"}>class="col-sm-12"<{/if}> style="position:relative;<{if $theme_kind=="html"}>width:100%px;<{/if}> ">
 

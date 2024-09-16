@@ -1,7 +1,7 @@
-<{if $auto_mainmenu}>
+<{if $auto_mainmenu|default:false}>
     <li>
         <a href="#">
-            <{if $auto_mainmenu_icon}><span class="fa <{$auto_mainmenu_icon}>"></span><{/if}>
+            <{if $auto_mainmenu_icon|default:false}><span class="fa <{$auto_mainmenu_icon}>"></span><{/if}>
             <{$smarty.const.THEME_MODULE0}>
         </a>
         <ul>

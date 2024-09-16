@@ -6,7 +6,7 @@
 $(function(){
     $('#nivoSlider').nivoSlider({
         pauseTime: <{$slide_timeout}>,
-        <{if $slide_nav}>
+        <{if $slide_nav|default:false}>
         directionNav: true,
         controlNav: true,
         <{else}>
@@ -18,13 +18,13 @@ $(function(){
 });
 </script>
 
-<{if $slider_var}>
+<{if $slider_var|default:false}>
     <!-- 滑動圖片 -->
     <div id="templatemo_slider">
         <div id="slider-wrapper">
             <div id="nivoSlider" class="nivoSlider">
                 <{foreach from=$slider_var item=slide}>
-                    <{if $slide.slide_url}>
+                    <{if $slide.slide_url|default:false}>
                         <a href="<{$slide.slide_url}>" <{$slide.slide_target}>>
                             <img src="<{$slide.file_url}>" alt="Slider" title="<{$slide.description}>">
                         </a>

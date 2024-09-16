@@ -8,7 +8,7 @@
   /* make room for the toggle button (sub indicator) */
   padding-right: 58px;
   color: <{$navbar_color}>;
-  font-family: <{if $font_family}><{$font_family}>, <{/if}>FontAwesome;
+  font-family: <{if $font_family|default:false}><{$font_family}>, <{/if}>FontAwesome;
   font-size: <{$navbar_font_size}>rem;
   font-weight: normal;
   line-height: 17px;
@@ -368,7 +368,7 @@
     position: relative;
     min-height: 50px;
     <{* <{if $nav_display_type=='not_full'}>
-        <{if $navbar_img}>
+        <{if $navbar_img|default:false}>
             background-color: tranparent;
             background-image: url(<{$navbar_img}>);
             /* background-size: cover; */
@@ -407,7 +407,7 @@
   padding: 11px 11px 11px 20px;
   <{/if}>
   color: <{$navbar_color}>;
-  <{if $navbar_font_size}>
+  <{if $navbar_font_size|default:false}>
     font-size: <{$navbar_font_size}>rem;
   <{/if}>
   font-weight: normal;

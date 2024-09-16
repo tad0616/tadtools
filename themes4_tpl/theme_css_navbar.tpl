@@ -22,7 +22,7 @@
     border: none;
     padding: 0rem 1rem;
     <{if $nav_display_type=='not_full'}>
-        <{if $navbar_img}>
+        <{if $navbar_img|default:false}>
             background-color: tranparent;
             background-image: url(<{$navbar_img}>);
             background-size: cover;
@@ -42,7 +42,7 @@
 .navbar-custom .nav-item.active .nav-link,
 .navbar-custom .nav-item:focus .nav-link,
 .navbar-custom .nav-item:hover .nav-link {
-    <{if $navbar_font_size}>
+    <{if $navbar_font_size|default:false}>
     font-size: <{$navbar_font_size}>rem;
     <{/if}>
     color: <{$navbar_color}>;

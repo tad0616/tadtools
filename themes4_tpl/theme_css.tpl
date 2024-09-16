@@ -3,18 +3,18 @@
     body {
         color: <{$font_color}>;
         background-color: <{$bg_color}>;
-        <{if $bg_img}>background-image: url('<{$bg_img}>');<{/if}>
+        <{if $bg_img|default:false}>background-image: url('<{$bg_img}>');<{/if}>
         background-position: <{$bg_position}>;
         background-repeat: <{$bg_repeat}>;
         background-attachment: <{$bg_attachment}>;
         background-size: <{$bg_size}>;
         font-size: <{$font_size}>;
-        <{if $font_family}>font-family: <{$font_family}>;<{/if}>
+        <{if $font_family|default:false}>font-family: <{$font_family}>;<{/if}>
     }
 
     a {
         color:<{$link_color}>;
-        font-family: <{if $font_family}><{$font_family}>, <{/if}>FontAwesome;
+        font-family: <{if $font_family|default:false}><{$font_family}>, <{/if}>FontAwesome;
     }
 
     a:hover {
@@ -61,7 +61,7 @@
         <{if $nav_display_type=='not_full'}>
             background-color:tranparent;
         <{else}>
-            <{if $navbar_img}>
+            <{if $navbar_img|default:false}>
                 background-color:tranparent;
                 background-image: url(<{$navbar_img}>);
                 background-size: cover;
@@ -75,7 +75,7 @@
 
     #nav-container-display{
         <{if $nav_display_type=='not_full'}>
-            <{if $navbar_img}>
+            <{if $navbar_img|default:false}>
                 background-color: tranparent;
                 background-image: url(<{$navbar_img}>);
                 background-size: cover;
@@ -114,7 +114,7 @@
             background-color: <{$footer_bgcolor}>;
             margin-bottom:<{$margin_bottom}>px;
             min-height:<{$footer_height}>;
-            background:<{$footer_bgcolor}> <{if $footer_img}>url(<{$footer_img}>)<{/if}>;
+            background:<{$footer_bgcolor}> <{if $footer_img|default:false}>url(<{$footer_img}>)<{/if}>;
             <{$foot_bg_css}>
         <{/if}>
     }
@@ -127,7 +127,7 @@
             background-color: <{$footer_bgcolor}>;
             margin-bottom:<{$margin_bottom}>px;
             min-height:<{$footer_height}>;
-            background:<{$footer_bgcolor}> <{if $footer_img}>url(<{$footer_img}>)<{/if}>;
+            background:<{$footer_bgcolor}> <{if $footer_img|default:false}>url(<{$footer_img}>)<{/if}>;
             <{$foot_bg_css}>
         <{else}>
             background-color:tranparent;

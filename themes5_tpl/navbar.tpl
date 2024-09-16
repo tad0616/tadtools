@@ -1,4 +1,4 @@
-<{if $install_chk}>
+<{if $install_chk|default:false}>
     <div class='alert alert-danger'>
         <{$smarty.const._TAD_DEL_INSTALL_CHK}>
     </div>
@@ -30,7 +30,7 @@
 
 
     <{if $show_sitename !='2' }>
-        <{if $navlogo_img}>
+        <{if $navlogo_img|default:false}>
             <h2 class="nav-brand">
                 <a href="<{$xoops_url}>/index.php"><img src="<{$navlogo_img}>" alt="<{$xoops_sitename}>" class="img-fluid"></a>
             </h2>
@@ -73,7 +73,7 @@
             <{/if}>
         <{/if}>
 
-        <{if $xoops_isuser}>
+        <{if $xoops_isuser|default:false}>
             <li>
                 <a title="<{$smarty.const.TF_USER_WELCOME}>">
                     <{$smarty.const.TF_USER_WELCOME}><{$xoops_name}>
@@ -83,7 +83,7 @@
         <{elseif $openid_login!="3"}>
             <li>
                 <a href="#">
-                <{if $login_text}><{$login_text}><{else}>
+                <{if $login_text|default:false}><{$login_text}><{else}>
                 <{$smarty.const.TF_USER_ENTER}><{/if}>
                 </a>
                 <{include file="$xoops_rootpath/modules/tadtools/themes5_tpl/menu_login.tpl"}>

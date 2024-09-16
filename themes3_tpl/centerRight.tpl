@@ -1,6 +1,6 @@
-<{if $xoBlocks.page_topright}>
+<{if $xoBlocks.page_topright|default:false}>
   <{foreach item=block from=$xoBlocks.page_topright}>
-     <{if $block.content}>
+     <{if $block.content|default:false}>
       <div class="centerRightBlock">
         <{include file="$xoops_rootpath/modules/tadtools/themes_common/blockTitle.tpl"}>
 

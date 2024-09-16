@@ -10,7 +10,7 @@
             // SmartMenus init
             $(function() {
                 $('#main-menu').smartmenus({
-                    <{if $noMouseOver}>
+                    <{if $noMouseOver|default:false}>
                     noMouseOver: true,
                     <{/if}>
                     <{if $navbar_pos=='fixed-bottom'}>

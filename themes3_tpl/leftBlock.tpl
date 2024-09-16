@@ -1,6 +1,6 @@
-<{if $all_broadcast}>
+<{if $all_broadcast|default:false}>
   <{foreach from=$all_broadcast key=k item=block name=all_broadcast}>
-      <{if $block.content}>
+      <{if $block.content|default:false}>
         <div class="leftBlock">
           <{include file="$xoops_rootpath/modules/tadtools/themes_common/blockTitle.tpl"}>
           <div class="blockContent" style="clear:both;">
@@ -13,7 +13,7 @@
 
 <{if $xoBlocks.canvas_left|default:null}>
   <{foreach item=block from=$xoBlocks.canvas_left|default:null}>
-    <{if $block.content}>
+    <{if $block.content|default:false}>
       <div class="leftBlock">
         <{include file="$xoops_rootpath/modules/tadtools/themes_common/blockTitle.tpl"}>
         <div class="blockContent" style="clear:both;">

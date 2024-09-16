@@ -32,7 +32,7 @@
                 <td <{$theme.color}> class="col-sm-4">
                     <select name="tt_bootstrap_color[<{$theme.theme_name}>]" class="form-control">
                         <{foreach from=$theme.bootstrap_theme item=color}>
-                            <option value="<{$color.theme_path}>" <{if $theme.bootstrap_color==$color.theme}>selected<{/if}>><{$color.theme}> (<{if $color.kind}><{$color.kind}>-<{/if}><{$color.color}>)</option>
+                            <option value="<{$color.theme_path}>" <{if $theme.bootstrap_color==$color.theme}>selected<{/if}>><{$color.theme}> (<{if $color.kind|default:false}><{$color.kind}>-<{/if}><{$color.color}>)</option>
                         <{/foreach}>
                     </select>
                 </td>

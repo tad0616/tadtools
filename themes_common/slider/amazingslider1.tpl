@@ -6,7 +6,7 @@
     <ul class="amazingslider-slides" style="display:none;">
       <{foreach from=$slider_var item=slide key=i}>
 
-        <{if $slide.slide_url}>
+        <{if $slide.slide_url|default:false}>
           <li><a href="<{$slide.slide_url}>" <{$slide.slide_target}>><img src="<{$slide.file_url}>" alt="<{$slide.description}>" /></a></li>
         <{else}>
           <li><img src="<{$slide.file_url}>" alt="<{$slide.description}>" data-description="" /></li>

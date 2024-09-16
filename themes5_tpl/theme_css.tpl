@@ -3,7 +3,7 @@
     body {
         color: <{$font_color}>;
         background-color: <{$bg_color}>;
-        <{if $bg_img}>background-image: url('<{$bg_img}>');<{/if}>
+        <{if $bg_img|default:false}>background-image: url('<{$bg_img}>');<{/if}>
         background-position: <{$bg_position}>;
         background-repeat: <{$bg_repeat}>;
         background-attachment: <{$bg_attachment}>;
@@ -14,7 +14,7 @@
 
     a {
         color:<{$link_color}>;
-        font-family: <{if $font_family}><{$font_family}>, <{/if}>FontAwesome;
+        font-family: <{if $font_family|default:false}><{$font_family}>, <{/if}>FontAwesome;
     }
 
     a:hover {
@@ -34,7 +34,7 @@
         <{if $nav_display_type=='not_full'}>
             background-color:tranparent;
         <{else}>
-            <{if $navbar_img}>
+            <{if $navbar_img|default:false}>
                 background-color:tranparent;
                 background-image: url(<{$navbar_img}>);
                 /* background-size: cover; */
@@ -48,7 +48,7 @@
 
     #xoops_theme_nav {
         <{if $nav_display_type=='not_full'}>
-            <{if $navbar_img}>
+            <{if $navbar_img|default:false}>
                 background-color: tranparent;
                 background-image: url(<{$navbar_img}>);
                 /* background-size: cover; */

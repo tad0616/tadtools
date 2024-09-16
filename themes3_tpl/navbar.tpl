@@ -1,4 +1,4 @@
-<{if $install_chk}>
+<{if $install_chk|default:false}>
     <div class='alert alert-danger'>
         <{$smarty.const._TAD_DEL_INSTALL_CHK}>
     </div>
@@ -28,7 +28,7 @@
 
 <{if $navbar_pos!="not-use"}>
 
-    <nav id="main-nav" class="navbar navbar-default <{if $navbar_pos=="fixed-top"}>navbar-fixed-top<{elseif $navbar_pos=="fixed-bottom"}>navbar-fixed-bottom<{else}>sticky-top<{/if}>" role="navigation" style="background-color:<{$navbar_bg_top}>;<{if $navbar_img}>background-image: url(<{$navbar_img}>);<{/if}>">
+    <nav id="main-nav" class="navbar navbar-default <{if $navbar_pos=="fixed-top"}>navbar-fixed-top<{elseif $navbar_pos=="fixed-bottom"}>navbar-fixed-bottom<{else}>sticky-top<{/if}>" role="navigation" style="background-color:<{$navbar_bg_top}>;<{if $navbar_img|default:false}>background-image: url(<{$navbar_img}>);<{/if}>">
         <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -39,7 +39,7 @@
             <span class="icon-bar"></span>
             </button>
             <{if $show_sitename !='2' }>
-                <{if $navlogo_img}>
+                <{if $navlogo_img|default:false}>
                     <a class="navbar-brand" href="<{$xoops_url}>/index.php" style="padding: 4px 20px 4px;"><img src="<{$navlogo_img}>" alt="<{$xoops_sitename}>" class="img-responsive"></a>
                 <{elseif $show_sitename=='1'}>
                     <a class="navbar-brand" href="<{$xoops_url}>/index.php" style="color:<{$navbar_color}>"><{$xoops_sitename}></a>
@@ -62,7 +62,7 @@
             </ul>
 
             <ul class="nav navbar-nav navbar-right" id="main-menu-right">
-            <{if $xoops_isuser}>
+            <{if $xoops_isuser|default:false}>
             <{if $xoops_isadmin|default:false}>
 
             <li><a rel="tooltip" href="<{$xoops_url}>/modules/tad_themes/admin/dropdown.php" title="<{$smarty.const._TAD_MENU_CONFIG}>"><i class="fa fa-plus-circle"></i></a></li>

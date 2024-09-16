@@ -18,25 +18,25 @@
     onclick="location='<{$xoops_url}>/modules/system/admin.php?fct=users&amp;op=delUser&amp;uid=<{$user_uid}>'"><{$lang_deleteaccount}></button>
 <{/if}>
 
-<{if $user_avatarurl}>
+<{if $user_avatarurl|default:false}>
     <div class="text-center"><img src="<{$user_avatarurl}>" alt="Avatar" class="img-circle"></div>
 <{/if}>
 
-<{if $user_realname}>
+<{if $user_realname|default:false}>
     <h2 class="text-center"><{$user_realname}></h2>
 <{/if}>
 
 <h3><{$lang_allaboutuser}></h3>
 
 <div class="list-group">
-    <{if $user_websiteurl}>
+    <{if $user_websiteurl|default:false}>
       <div class="list-group-item">
         <h4 class="list-group-item-heading"><{$lang_website}></h4>
         <p class="list-group-item-text"><{$user_websiteurl}></p>
       </div>
     <{/if}>
 
-    <{if $user_email}>
+    <{if $user_email|default:false}>
       <div class="list-group-item">
         <h4 class="list-group-item-heading"><{$lang_email}></h4>
         <p class="list-group-item-text"><{$user_email}></p>
@@ -50,56 +50,56 @@
       </div>
     <{/if}>
 
-    <{if $user_icq}>
+    <{if $user_icq|default:false}>
       <div class="list-group-item">
         <h4 class="list-group-item-heading"><{$lang_icq}></h4>
         <p class="list-group-item-text"><{$user_icq}></p>
       </div>
     <{/if}>
 
-    <{if $user_aim}>
+    <{if $user_aim|default:false}>
       <div class="list-group-item">
         <h4 class="list-group-item-heading"><{$lang_aim}></h4>
         <p class="list-group-item-text"><{$user_aim}></p>
       </div>
     <{/if}>
 
-    <{if $user_yim}>
+    <{if $user_yim|default:false}>
       <div class="list-group-item">
         <h4 class="list-group-item-heading"><{$lang_yim}></h4>
         <p class="list-group-item-text"><{$user_yim}></p>
       </div>
     <{/if}>
 
-    <{if $user_msnm}>
+    <{if $user_msnm|default:false}>
       <div class="list-group-item">
         <h4 class="list-group-item-heading"><{$lang_msnm}></h4>
         <p class="list-group-item-text"><{$user_msnm}></p>
       </div>
     <{/if}>
 
-    <{if $user_location}>
+    <{if $user_location|default:false}>
       <div class="list-group-item">
         <h4 class="list-group-item-heading"><{$lang_location}></h4>
         <p class="list-group-item-text"><{$user_location}></p>
       </div>
     <{/if}>
 
-    <{if $user_occupation}>
+    <{if $user_occupation|default:false}>
       <div class="list-group-item">
         <h4 class="list-group-item-heading"><{$lang_occupation}></h4>
         <p class="list-group-item-text"><{$user_occupation}></p>
       </div>
     <{/if}>
 
-    <{if $user_interest}>
+    <{if $user_interest|default:false}>
       <div class="list-group-item">
         <h4 class="list-group-item-heading"><{$lang_interest}></h4>
         <p class="list-group-item-text"><{$user_interest}></p>
       </div>
     <{/if}>
 
-    <{if $user_extrainfo}>
+    <{if $user_extrainfo|default:false}>
       <div class="list-group-item">
         <h4 class="list-group-item-heading"><{$lang_extrainfo}></h4>
         <p class="list-group-item-text"><{$user_extrainfo}></p>
@@ -141,7 +141,7 @@
 </div>
 
 
-<{if $user_signature}>
+<{if $user_signature|default:false}>
     <h2><{$lang_signature}></h2>
     <div class="alert alert-info"><{$user_signature}></div>
 <{/if}>

@@ -13,7 +13,7 @@ $(function(){
 });
 </script>
 
-<{if $slider_var}>
+<{if $slider_var|default:false}>
     <!-- 滑動圖片 -->
     <div class="CarouSlide slider s1">
         <ul class="slider-holder">

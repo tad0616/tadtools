@@ -1,4 +1,4 @@
-<{if $logo_img}>
+<{if $logo_img|default:false}>
     <{if $logo_zindex <= $slide_zindex}>
         <{assign var="logo_zindex" value=$slide_zindex+1}>
     <{/if}>
