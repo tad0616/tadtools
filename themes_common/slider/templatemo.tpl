@@ -5,7 +5,7 @@
 <script type='text/javascript'>
 $(function(){
     $('#nivoSlider').nivoSlider({
-        pauseTime: <{$slide_timeout}>,
+        pauseTime: <{$slide_timeout|default:''}>,
         <{if $slide_nav|default:false}>
         directionNav: true,
         controlNav: true,

@@ -126,14 +126,6 @@ if (!function_exists('push_url')) {
     }
 }
 
-//facebook的留言
-if (!function_exists('facebook_comments')) {
-    function facebook_comments($facebook_comments_width = 600, $modules = '', $page = '', $col_name = '', $col_sn = '')
-    {
-        return Utility::facebook_comments($facebook_comments_width, $modules, $page, $col_name, $col_sn);
-    }
-}
-
 //產生QR Code
 if (!function_exists('mk_qrcode')) {
     function mk_qrcode($url)

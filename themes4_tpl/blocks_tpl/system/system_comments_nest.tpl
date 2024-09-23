@@ -1,8 +1,8 @@
 <div class="xoops-comment-body">
     <{section name=i loop=$comments}>
     <div class="row">
-        <div class="col-sm-2 col-lg-2"><strong><{$lang_poster}></strong></div>
-        <div class="col-sm-10 col-lg-10"><strong><{$lang_thread}></strong></div>
+        <div class="col-sm-2 col-lg-2"><strong><{$lang_poster|default:''}></strong></div>
+        <div class="col-sm-10 col-lg-10"><strong><{$lang_thread|default:''}></strong></div>
     </div>
     <{include file="db:system_comment.tpl" comment=$comments[i]}>
     <!-- start comment replies -->
@@ -16,7 +16,7 @@
         <{assign var="replyspace" value="`$fullcolwidth-$indent`"}>
 
         <div class="row">
-            <div class="offset--md<{$indent}> col-lg-<{$replyspace}>">
+            <div class="offset--md<{$indent|default:''}> col-lg-<{$replyspace|default:''}>">
             <{include file="db:system_comment.tpl" comment=$reply}>
             </div>
         </div>
@@ -34,7 +34,7 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="xoops-comment-form">
-                        <{$commentform}>
+                        <{$commentform|default:''}>
                     </div>
                 </div>
                 <div class="modal-footer">

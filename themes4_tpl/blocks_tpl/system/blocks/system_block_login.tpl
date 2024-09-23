@@ -26,7 +26,7 @@
         <{/if}>
       </label>
       <div class="col-md-8">
-        <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>">
+        <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi|default:''}>">
         <input type="hidden" name="rememberme" value="On">
         <input type="hidden" name="op" value="login">
         <input type="hidden" name="xoops_login" value="1"/>

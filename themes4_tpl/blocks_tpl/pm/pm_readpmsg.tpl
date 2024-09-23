@@ -39,7 +39,7 @@
 <{$smarty.const._PM_ONLINE}>
 <{/if}>
 <{else}>
-<{$anonymous}>
+<{$anonymous|default:''}>
 <{/if}>
 </div><!-- .sender-info -->
 
@@ -54,7 +54,7 @@
 
 <div class="aligncenter comments-nav">
     <{if ($previous >= 0 )}>
-    <a class="btn btn-primary btn-sm" href="readpmsg.php?start=<{$previous}>&amp;total_messages=<{$total_messages}>&amp;op=<{$op}>" title="<{$smarty.const._PM_PREVIOUS}>">
+    <a class="btn btn-primary btn-sm" href="readpmsg.php?start=<{$previous|default:''}>&amp;total_messages=<{$total_messages|default:''}>&amp;op=<{$op|default:''}>" title="<{$smarty.const._PM_PREVIOUS}>">
         <span class="glyphicon glyphicon-circle-arrow-left"></span>
     </a>
     <{else}>
@@ -63,7 +63,7 @@
     </button>
     <{/if}>
     <{if ( $next < $total_messages ) }>
-    <a class="btn btn-primary btn-sm" href="readpmsg.php?start=<{$next}>&amp;total_messages=<{$total_messages}>&amp;op=<{$op}>" title="<{$smarty.const._PM_NEXT}>">
+    <a class="btn btn-primary btn-sm" href="readpmsg.php?start=<{$next|default:''}>&amp;total_messages=<{$total_messages|default:''}>&amp;op=<{$op|default:''}>" title="<{$smarty.const._PM_NEXT}>">
 		<span class="glyphicon glyphicon-circle-arrow-right"></span>
     </a>
     <{else}>

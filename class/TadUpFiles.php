@@ -1700,10 +1700,6 @@ class TadUpFiles
         }
 
         $sql = "select * from `{$this->TadUpFilesTblName}` $where";
-        if ($_GET['test'] == 'test') {
-            Utility::dd($sql);
-        }
-
         $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $i = 0;
         while ($all = $xoopsDB->fetchArray($result)) {
@@ -1797,8 +1793,8 @@ class TadUpFiles
                 $thumb_pic_ext = mb_strtolower(mb_substr($thumb_pic, -3));
                 $files[$key]['thumb_pic'] = mb_substr($thumb_pic, 0, -3) . $thumb_pic_ext;
             } else {
-                $fancyboxset = $fext == 'pdf' ? "fancybox_{$this->col_name}" : '';
-                $rel = $fext == 'pdf' ? "rel='f{$this->col_name}'" : '';
+                $fancyboxset = (isset($fext) && $fext == 'pdf') ? "fancybox_{$this->col_name}" : '';
+                $rel = (isset($fext) && $fext == 'pdf') == 'pdf' ? "rel='f{$this->col_name}'" : '';
                 $fext = strtolower(pathinfo($original_filename, PATHINFO_EXTENSION));
                 $files[$key]['thumb_pic'] = XOOPS_URL . "/modules/tadtools/images/mimetype/{$fext}.png";
                 $file_name = $this->hash ? $hash_filename : $file_name;

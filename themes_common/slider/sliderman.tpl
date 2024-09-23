@@ -22,7 +22,7 @@
 
         var demoSlider_3 = Sliderman.slider({
             container: 'SliderName_3',
-            width: <{$theme_width}>,
+            width: <{$theme_width|default:''}>,
             height: 200,
             effects: effectsDemo3,
             display: {

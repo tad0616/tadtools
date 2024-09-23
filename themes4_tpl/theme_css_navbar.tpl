@@ -24,12 +24,12 @@
     <{if $nav_display_type=='not_full'}>
         <{if $navbar_img|default:false}>
             background-color: tranparent;
-            background-image: url(<{$navbar_img}>);
+            background-image: url(<{$navbar_img|default:''}>);
             background-size: cover;
         <{elseif $navbar_bg_top==$navbar_bg_bottom}>
-            background: <{$navbar_bg_top}>;
+            background: <{$navbar_bg_top|default:''}>;
         <{else}>
-            background: linear-gradient(<{$navbar_bg_top}>, <{$navbar_bg_bottom}>);
+            background: linear-gradient(<{$navbar_bg_top|default:''}>, <{$navbar_bg_bottom|default:''}>);
         <{/if}>
     <{/if}>
 }
@@ -43,17 +43,17 @@
 .navbar-custom .nav-item:focus .nav-link,
 .navbar-custom .nav-item:hover .nav-link {
     <{if $navbar_font_size|default:false}>
-    font-size: <{$navbar_font_size}>rem;
+    font-size: <{$navbar_font_size|default:''}>rem;
     <{/if}>
-    color: <{$navbar_color}>;
-    padding: <{$navbar_py}>px <{$navbar_px}>px;
+    color: <{$navbar_color|default:''}>;
+    padding: <{$navbar_py|default:''}>px <{$navbar_px|default:''}>px;
 }
 
 
 .navbar-custom .nav-item:hover .nav-link,
 .navbar-custom .navbar-brand:hover {
-    background: <{$navbar_hover}>;
-    color: <{$navbar_color_hover}>;
+    background: <{$navbar_hover|default:''}>;
+    color: <{$navbar_color_hover|default:''}>;
 }
 
 .navbar-custom .dropdown-menu {
@@ -71,12 +71,12 @@
 
 
 .custom-toggler.navbar-toggler {
-    border-color: <{$navbar_color}>;
+    border-color: <{$navbar_color|default:''}>;
 }
 
 .custom-toggler .navbar-toggler-icon {
     background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgb(255,255,255)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
 }
 .navbar-toggler-icon {
-    color: <{$navbar_color}>;
+    color: <{$navbar_color|default:''}>;
 }

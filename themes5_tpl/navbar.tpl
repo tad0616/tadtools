@@ -19,7 +19,7 @@
     }
 </script>
 
-<!-- <{$navbar_pos}> -->
+<!-- <{$navbar_pos|default:''}> -->
 <nav role="navigation" id="main-nav">
 
     <!-- Mobile menu toggle button (hamburger/x icon) -->
@@ -32,11 +32,11 @@
     <{if $show_sitename !='2' }>
         <{if $navlogo_img|default:false}>
             <h2 class="nav-brand">
-                <a href="<{$xoops_url}>/index.php"><img src="<{$navlogo_img}>" alt="<{$xoops_sitename}>" class="img-fluid"></a>
+                <a href="<{$xoops_url}>/index.php"><img src="<{$navlogo_img|default:''}>" alt="<{$xoops_sitename|default:''}>" class="img-fluid"></a>
             </h2>
         <{elseif $show_sitename=='1'}>
             <h2 class="nav-brand">
-                <a class="navbar-brand" href="<{$xoops_url}>/index.php" style="color:<{$navbar_color}>"><{$xoops_sitename}></a>
+                <a class="navbar-brand" href="<{$xoops_url}>/index.php" style="color:<{$navbar_color|default:''}>"><{$xoops_sitename|default:''}></a>
             </h2>
         <{/if}>
     <{/if}>
@@ -68,7 +68,7 @@
                 </li>
             <{else}>
                 <li>
-                    <a href="<{$xoops_url}>/modules/<{$xoops_dirname}>/admin/index.php" title="<{$smarty.const.TF_MODULE_CONFIG}>"><span class="fa fa-wrench"></span></a>
+                    <a href="<{$xoops_url}>/modules/<{$xoops_dirname|default:''}>/admin/index.php" title="<{$smarty.const.TF_MODULE_CONFIG}>"><span class="fa fa-wrench"></span></a>
                 </li>
             <{/if}>
         <{/if}>
@@ -76,14 +76,14 @@
         <{if $xoops_isuser|default:false}>
             <li>
                 <a title="<{$smarty.const.TF_USER_WELCOME}>">
-                    <{$smarty.const.TF_USER_WELCOME}><{$xoops_name}>
+                    <{$smarty.const.TF_USER_WELCOME}><{$xoops_name|default:''}>
                 </a>
                 <{include file="$xoops_rootpath/modules/tadtools/themes5_tpl/menu_user.tpl"}>
             </li>
         <{elseif $openid_login!="3"}>
             <li>
                 <a href="#">
-                <{if $login_text|default:false}><{$login_text}><{else}>
+                <{if $login_text|default:false}><{$login_text|default:''}><{else}>
                 <{$smarty.const.TF_USER_ENTER}><{/if}>
                 </a>
                 <{include file="$xoops_rootpath/modules/tadtools/themes5_tpl/menu_login.tpl"}>

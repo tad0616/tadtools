@@ -1,15 +1,15 @@
 .sm-mint {
-  border-top: 2px solid <{$nav_sub_bg_color}>;
-  border-bottom: 2px solid <{$nav_sub_bg_color}>;
+  border-top: 2px solid <{$nav_sub_bg_color|default:''}>;
+  border-bottom: 2px solid <{$nav_sub_bg_color|default:''}>;
   background: transparent;
 }
 .sm-mint a, .sm-mint a:hover, .sm-mint a:focus, .sm-mint a:active {
-  padding: <{$navbar_py}>px <{$navbar_px}>px;
+  padding: <{$navbar_py|default:''}>px <{$navbar_px|default:''}>px;
   /* make room for the toggle button (sub indicator) */
   padding-right: 58px;
-  color: <{$navbar_color}>;
-  font-family: <{if $font_family|default:false}><{$font_family}>, <{/if}>FontAwesome;
-  font-size: <{$navbar_font_size}>rem;
+  color: <{$navbar_color|default:''}>;
+  font-family: <{if $font_family|default:false}><{$font_family|default:''}>, <{/if}>FontAwesome;
+  font-size: <{$navbar_font_size|default:''}>rem;
   font-weight: normal;
   line-height: 17px;
   text-decoration: none;
@@ -32,8 +32,8 @@
   font: bold 0.875rem/2.125rem monospace !important;
   text-align: center;
   text-shadow: none;
-  background: <{$navbar_hover}>;
-  color:<{$navbar_color_hover}>;
+  background: <{$navbar_hover|default:''}>;
+  color:<{$navbar_color_hover|default:''}>;
   border-radius: 4px;
 }
 .sm-mint a .sub-arrow::before {
@@ -43,17 +43,17 @@
   content: '-';
 }
 .sm-mint li {
-  border-top: 1px solid <{$nav_sub_font_color}>22;
+  border-top: 1px solid <{$nav_sub_font_color|default:''}>22;
 }
 .sm-mint > li:first-child {
   border-top: 0;
 }
 .sm-mint ul {
-  background: <{$nav_sub_bg_color}>88;
+  background: <{$nav_sub_bg_color|default:''}>88;
 }
 .sm-mint ul a, .sm-mint ul a:hover, .sm-mint ul a:focus, .sm-mint ul a:active {
-  color: <{$nav_sub_font_color}>;
-  font-size: <{$navbar_font_size}>rem;
+  color: <{$nav_sub_font_color|default:''}>;
+  font-size: <{$navbar_font_size|default:''}>rem;
   border-left: 8px solid transparent;
 }
 
@@ -61,7 +61,7 @@
 .sm-mint ul ul a:hover,
 .sm-mint ul ul a:focus,
 .sm-mint ul ul a:active {
-  color: <{$nav_sub_font_color}>;
+  color: <{$nav_sub_font_color|default:''}>;
   border-left: 8px solid transparent;
 }
 
@@ -69,14 +69,14 @@
 .sm-mint ul ul ul a:hover,
 .sm-mint ul ul ul a:focus,
 .sm-mint ul ul ul a:active {
-  color: <{$nav_sub_font_color}>;
+  color: <{$nav_sub_font_color|default:''}>;
   border-left: 8px solid transparent;
 }
 .sm-mint ul ul ul ul a,
 .sm-mint ul ul ul ul a:hover,
 .sm-mint ul ul ul ul a:focus,
 .sm-mint ul ul ul ul a:active {
-  color: <{$nav_sub_font_color}>;
+  color: <{$nav_sub_font_color|default:''}>;
   border-left: 8px solid transparent;
 }
 
@@ -84,7 +84,7 @@
 .sm-mint ul ul ul ul ul a:hover,
 .sm-mint ul ul ul ul ul a:focus,
 .sm-mint ul ul ul ul ul a:active {
-  color: <{$nav_sub_font_color}>;
+  color: <{$nav_sub_font_color|default:''}>;
   border-left: 8px solid transparent;
 }
 
@@ -131,19 +131,19 @@
     background: transparent;
   }
   .sm-mint a, .sm-mint a:hover, .sm-mint a:focus, .sm-mint a:active, .sm-mint a.highlighted {
-    padding: <{$navbar_py}>px <{$navbar_px}>px;
-    color: <{$navbar_color}>;
+    padding: <{$navbar_py|default:''}>px <{$navbar_px|default:''}>px;
+    color: <{$navbar_color|default:''}>;
     border-radius: 4px 4px 0 0;
     border-radius: 0;
   }
   .sm-mint a:hover, .sm-mint a:focus, .sm-mint a:active {
-    background: <{$navbar_hover}>;
-    color: <{$navbar_color_hover}>;
+    background: <{$navbar_hover|default:''}>;
+    color: <{$navbar_color_hover|default:''}>;
   }
 
   .sm-mint a.highlighted {
-    background: <{$nav_sub_bg_color}>;
-    color: <{$nav_sub_font_color}>;
+    background: <{$nav_sub_bg_color|default:''}>;
+    color: <{$nav_sub_font_color|default:''}>;
     box-shadow: 0 4px 3px rgba(0, 0, 0, 0.25);
   }
 
@@ -164,18 +164,18 @@
     height: 0;
     border-width: 6px 4.02px 0 4.02px;
     border-style: solid dashed dashed dashed;
-    border-color: <{$navbar_color}> transparent transparent transparent;
+    border-color: <{$navbar_color|default:''}> transparent transparent transparent;
     background: transparent;
     border-radius: 0;
   }
   .sm-mint a:hover .sub-arrow, .sm-mint a:focus .sub-arrow, .sm-mint a:active .sub-arrow {
-    border-color: <{$navbar_color_hover}> transparent transparent transparent;
+    border-color: <{$navbar_color_hover|default:''}> transparent transparent transparent;
   }
   .sm-mint a.highlighted .sub-arrow {
-    border-color: <{$navbar_color}> transparent transparent transparent;
+    border-color: <{$navbar_color|default:''}> transparent transparent transparent;
   }
   .sm-mint a.disabled .sub-arrow {
-    border-color: <{$navbar_color}> transparent transparent transparent;
+    border-color: <{$navbar_color|default:''}> transparent transparent transparent;
   }
   .sm-mint a .sub-arrow::before {
     display: none;
@@ -186,7 +186,7 @@
   .sm-mint ul {
     border: 0;
     padding: 8px 0;
-    background: <{$nav_sub_bg_color}>;
+    background: <{$nav_sub_bg_color|default:''}>;
     border-radius: 0 4px 4px 4px;
     box-shadow: 0 4px 3px rgba(0, 0, 0, 0.25);
   }
@@ -196,7 +196,7 @@
 
   .sm-mint ul a, .sm-mint ul a:hover, .sm-mint ul a:focus, .sm-mint ul a:active, .sm-mint ul a.highlighted {
     <{if $nav_sub_y_padding > 0}>
-    padding: <{$nav_sub_y_padding}>px 20px;
+    padding: <{$nav_sub_y_padding|default:''}>px 20px;
     <{else}>
     padding: 12px 20px;
     <{/if}>
@@ -211,15 +211,15 @@
   .sm-mint ul li:last-child a{
     border-bottom: none;
     <{if $nav_sub_y_padding > 0}>
-      padding: <{$nav_sub_y_padding}>px 20px <{$nav_sub_y_padding/2}>px;
+      padding: <{$nav_sub_y_padding|default:''}>px 20px <{$nav_sub_y_padding/2}>px;
     <{else}>
       padding: 12px 20px 6px;
     <{/if}>
   }
 
   .sm-mint ul a:hover, .sm-mint ul a:focus, .sm-mint ul a:active, .sm-mint ul a.highlighted {
-    background: <{$navbar_hover}>;
-    color: <{$navbar_color_hover}>;
+    background: <{$navbar_hover|default:''}>;
+    color: <{$navbar_color_hover|default:''}>;
     box-shadow: none;
   }
   .sm-mint ul a.disabled {
@@ -235,13 +235,13 @@
     margin-top: -4.02px;
     border-width: 4.02px 0 4.02px 6px;
     border-style: dashed dashed dashed solid;
-    border-color: transparent transparent transparent <{$navbar_color}>;
+    border-color: transparent transparent transparent <{$navbar_color|default:''}>;
   }
   .sm-mint ul a:hover .sub-arrow, .sm-mint ul a:focus .sub-arrow, .sm-mint ul a:active .sub-arrow, .sm-mint ul a.highlighted .sub-arrow {
-    border-color: transparent transparent transparent <{$navbar_color_hover}>;
+    border-color: transparent transparent transparent <{$navbar_color_hover|default:''}>;
   }
   .sm-mint ul a.disabled .sub-arrow {
-    border-color: transparent transparent transparent <{$navbar_color}>;
+    border-color: transparent transparent transparent <{$navbar_color|default:''}>;
   }
   .sm-mint .scroll-up,
   .sm-mint .scroll-down {
@@ -249,7 +249,7 @@
     display: none;
     visibility: hidden;
     overflow: hidden;
-    background: <{$nav_sub_bg_color}>;
+    background: <{$nav_sub_bg_color|default:''}>;
     height: 20px;
   }
   .sm-mint .scroll-up-arrow,
@@ -263,12 +263,12 @@
     overflow: hidden;
     border-width: 0 6px 8px 6px;
     border-style: dashed dashed solid dashed;
-    border-color: transparent transparent <{$navbar_hover}> transparent;
+    border-color: transparent transparent <{$navbar_hover|default:''}> transparent;
   }
   .sm-mint .scroll-down-arrow {
     border-width: 8px 6px 0 6px;
     border-style: solid dashed dashed dashed;
-    border-color: <{$navbar_hover}> transparent transparent transparent;
+    border-color: <{$navbar_hover|default:''}> transparent transparent transparent;
   }
   .sm-mint.sm-rtl a.has-submenu {
     padding-right: 20px;
@@ -280,7 +280,7 @@
   }
   .sm-mint.sm-rtl.sm-vertical {
     border-right: 0;
-    border-left: 2px solid <{$navbar_hover}>;
+    border-left: 2px solid <{$navbar_hover|default:''}>;
   }
   .sm-mint.sm-rtl.sm-vertical a {
     border-radius: 0 4px 4px 0;
@@ -293,13 +293,13 @@
     left: 10px;
     border-width: 4.02px 6px 4.02px 0;
     border-style: dashed solid dashed dashed;
-    border-color: transparent <{$navbar_hover}> transparent transparent;
+    border-color: transparent <{$navbar_hover|default:''}> transparent transparent;
   }
   .sm-mint.sm-rtl.sm-vertical a:hover .sub-arrow, .sm-mint.sm-rtl.sm-vertical a:focus .sub-arrow, .sm-mint.sm-rtl.sm-vertical a:active .sub-arrow, .sm-mint.sm-rtl.sm-vertical a.highlighted .sub-arrow {
-    border-color: transparent <{$navbar_color_hover}> transparent transparent;
+    border-color: transparent <{$navbar_color_hover|default:''}> transparent transparent;
   }
   .sm-mint.sm-rtl.sm-vertical a.disabled .sub-arrow {
-    border-color: transparent <{$navbar_hover}> transparent transparent;
+    border-color: transparent <{$navbar_hover|default:''}> transparent transparent;
   }
   .sm-mint.sm-rtl ul {
     border-radius: 4px 0 4px 4px;
@@ -315,25 +315,25 @@
     left: 10px;
     border-width: 4.02px 6px 4.02px 0;
     border-style: dashed solid dashed dashed;
-    border-color: transparent <{$navbar_hover}> transparent transparent;
+    border-color: transparent <{$navbar_hover|default:''}> transparent transparent;
   }
   .sm-mint.sm-rtl ul a:hover .sub-arrow, .sm-mint.sm-rtl ul a:focus .sub-arrow, .sm-mint.sm-rtl ul a:active .sub-arrow, .sm-mint.sm-rtl ul a.highlighted .sub-arrow {
-    border-color: transparent <{$navbar_color_hover}> transparent transparent;
+    border-color: transparent <{$navbar_color_hover|default:''}> transparent transparent;
   }
   .sm-mint.sm-rtl ul a.disabled .sub-arrow {
-    border-color: transparent <{$navbar_hover}> transparent transparent;
+    border-color: transparent <{$navbar_hover|default:''}> transparent transparent;
   }
   .sm-mint.sm-vertical {
     border-bottom: 0;
-    border-right: 2px solid <{$navbar_hover}>;
+    border-right: 2px solid <{$navbar_hover|default:''}>;
   }
   .sm-mint.sm-vertical a {
     padding: 10px 20px;
     border-radius: 4px 0 0 4px;
   }
   .sm-mint.sm-vertical a:hover, .sm-mint.sm-vertical a:focus, .sm-mint.sm-vertical a:active, .sm-mint.sm-vertical a.highlighted {
-    background: <{$navbar_hover}>;
-    color: <{$navbar_color_hover}>;
+    background: <{$navbar_hover|default:''}>;
+    color: <{$navbar_color_hover|default:''}>;
     box-shadow: none;
   }
   .sm-mint.sm-vertical a.disabled {
@@ -345,13 +345,13 @@
     margin-top: -4.02px;
     border-width: 4.02px 0 4.02px 6px;
     border-style: dashed dashed dashed solid;
-    border-color: transparent transparent transparent <{$navbar_hover}>;
+    border-color: transparent transparent transparent <{$navbar_hover|default:''}>;
   }
   .sm-mint.sm-vertical a:hover .sub-arrow, .sm-mint.sm-vertical a:focus .sub-arrow, .sm-mint.sm-vertical a:active .sub-arrow, .sm-mint.sm-vertical a.highlighted .sub-arrow {
-    border-color: transparent transparent transparent <{$navbar_color}>;
+    border-color: transparent transparent transparent <{$navbar_color|default:''}>;
   }
   .sm-mint.sm-vertical a.disabled .sub-arrow {
-    border-color: transparent transparent transparent <{$navbar_hover}>;
+    border-color: transparent transparent transparent <{$navbar_hover|default:''}>;
   }
   .sm-mint.sm-vertical ul {
     border-radius: 4px !important;
@@ -370,12 +370,12 @@
     <{* <{if $nav_display_type=='not_full'}>
         <{if $navbar_img|default:false}>
             background-color: tranparent;
-            background-image: url(<{$navbar_img}>);
+            background-image: url(<{$navbar_img|default:''}>);
             /* background-size: cover; */
         <{elseif $navbar_bg_top==$navbar_bg_bottom}>
-            background: <{$navbar_bg_top}>;
+            background: <{$navbar_bg_top|default:''}>;
         <{else}>
-            background: linear-gradient(<{$navbar_bg_top}>, <{$navbar_bg_bottom}>);
+            background: linear-gradient(<{$navbar_bg_top|default:''}>, <{$navbar_bg_bottom|default:''}>);
         <{/if}>
     <{/if}> *}>
 }
@@ -406,9 +406,9 @@
   <{if !$navlogo_img}>
   padding: 11px 11px 11px 20px;
   <{/if}>
-  color: <{$navbar_color}>;
+  color: <{$navbar_color|default:''}>;
   <{if $navbar_font_size|default:false}>
-    font-size: <{$navbar_font_size}>rem;
+    font-size: <{$navbar_font_size|default:''}>rem;
   <{/if}>
   font-weight: normal;
   text-decoration: none;
@@ -451,7 +451,7 @@
   left: 2px;
   height: 2px;
   width: 24px;
-  background: <{$navbar_color}>;
+  background: <{$navbar_color|default:''}>;
   -webkit-transition: all 0.25s;
   transition: all 0.25s;
 }

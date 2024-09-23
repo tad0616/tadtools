@@ -34,7 +34,7 @@
 </style>
 
 
-<{$tad_themes_popup_code}>
+<{$tad_themes_popup_code|default:''}>
 <{if $navbar_pos!="not-use"}>
 <nav id="pills" class="navbar" role="navigation">
   <div class="container-fluid">
@@ -53,17 +53,17 @@
       <ul class="nav nav-pills">
         <{if $show_sitename !='2' }>
           <{if $navlogo_img|default:false}>
-            <<li role="presentation"><a href="<{$xoops_url}>/index.php" style="color:<{$navbar_color}>"><img src="<{$navlogo_img}>" alt="<{$xoops_sitename}>"></<li></li>
+            <<li role="presentation"><a href="<{$xoops_url}>/index.php" style="color:<{$navbar_color|default:''}>"><img src="<{$navlogo_img|default:''}>" alt="<{$xoops_sitename|default:''}>"></<li></li>
           <{elseif $show_sitename=='0' or $show_sitename==''}>
-            <li role="presentation"><a href="<{$xoops_url}>/index.php" style="color:<{$navbar_color}>"><{$smarty.const._TAD_HOME}></a></li>
+            <li role="presentation"><a href="<{$xoops_url}>/index.php" style="color:<{$navbar_color|default:''}>"><{$smarty.const._TAD_HOME}></a></li>
           <{else}>
-            <li role="presentation"><a href="<{$xoops_url}>/index.php" style="color:<{$navbar_color}>"><{$xoops_sitename}></a></li>
+            <li role="presentation"><a href="<{$xoops_url}>/index.php" style="color:<{$navbar_color|default:''}>"><{$xoops_sitename|default:''}></a></li>
           <{/if}>
         <{/if}>
 
 
         <{if $show_sitename==0 or $show_sitename==''}>
-          <li role="presentation"><a href="<{$xoops_url}>/index.php" style="color:<{$navbar_color}>"><{$smarty.const._TAD_HOME}></a></li>
+          <li role="presentation"><a href="<{$xoops_url}>/index.php" style="color:<{$navbar_color|default:''}>"><{$smarty.const._TAD_HOME}></a></li>
         <{/if}>
         <{if $smarty.session.bootstrap==5}>
           <{include file="$xoops_rootpath/modules/tadtools/themes5_tpl/menu_my.tpl"}>

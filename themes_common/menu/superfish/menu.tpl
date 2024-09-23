@@ -5,20 +5,20 @@
 
 <style type="text/css">
   .sf-menu a {
-    color: <{$navbar_color}>;
+    color: <{$navbar_color|default:''}>;
   }
   .sf-menu li {
-    background-color: <{$navbar_bg_top}>;
+    background-color: <{$navbar_bg_top|default:''}>;
   }
   .sf-menu ul li {
-    background-color: <{$navbar_bg_bottom}>;
+    background-color: <{$navbar_bg_bottom|default:''}>;
   }
   .sf-menu ul ul li {
-    background-color: <{$navbar_bg_bottom}>;
+    background-color: <{$navbar_bg_bottom|default:''}>;
   }
   .sf-menu li:hover,.sf-menu li.sfHover {
-    background-color: <{$navbar_hover}>;
-    color: <{$navbar_color_hover}>;
+    background-color: <{$navbar_hover|default:''}>;
+    color: <{$navbar_color_hover|default:''}>;
   }
 </style>
 <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/themes_common/menu/superfish/js/hoverIntent.js"></script>
@@ -42,7 +42,7 @@ $(document).ready(function(){
   <{foreach from=$menu_var item=menu}>
     <li>
       <a href='<{$menu.url}>' target="<{$menu.target}>">
-        <span><{if $menu.icon|default:false}><span class="fa <{$menu.icon}>" <{$navbar_icon}>></span> <{/if}><{$menu.title}></span>
+        <span><{if $menu.icon|default:false}><span class="fa <{$menu.icon}>" <{$navbar_icon|default:''}>></span> <{/if}><{$menu.title}></span>
       </a>
       <{if $menu.submenu|default:false}>
         <ul>

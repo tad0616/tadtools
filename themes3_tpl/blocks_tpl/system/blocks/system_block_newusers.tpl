@@ -5,7 +5,7 @@
         <{if $user.avatar != ""}>
           <img src="<{$user.avatar}>" alt="<{$user.name}>" class="img-responsive img-rounded">
         <{else}>
-          <img src="<{$xoops_imageurl}>images/blank.gif" alt="<{$user.name}>" class="img-circle">
+          <img src="<{$xoops_imageurl|default:''}>images/blank.gif" alt="<{$user.name}>" class="img-circle">
         <{/if}>
         <div class="caption">
           <h3><a href="<{$xoops_url}>/userinfo.php?uid=<{$user.id}>" title="<{$user.name}>"><{$user.name}></a>

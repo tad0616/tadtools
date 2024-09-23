@@ -2,33 +2,33 @@
 <script src="<{$xoops_url}>/modules/tadtools/themes_common/menu/cssmenu/menu_jquery.js"></script>
 <style type="text/css">
   #cssmenu{
-    background: <{$navbar_bg_top}>;
+    background: <{$navbar_bg_top|default:''}>;
     /* background: transparent; */
   }
   #cssmenu > ul{
-    background: <{$navbar_bg_top}>;
+    background: <{$navbar_bg_top|default:''}>;
     /* background: transparent; */
   }
   #cssmenu ul ul li a {
-    background: <{$navbar_bg_bottom}>;
-    color:<{$navbar_color}>;
+    background: <{$navbar_bg_bottom|default:''}>;
+    color:<{$navbar_color|default:''}>;
     /* color: #6e6265; */
     /* background: #fff; */
   }
   #cssmenu ul ul li:hover > a {
-    background: <{$navbar_hover}>;
-    color:<{$navbar_color_hover}>;
+    background: <{$navbar_hover|default:''}>;
+    color:<{$navbar_color_hover|default:''}>;
     /* color: #8c9195; */
     /* background: #f6f6f6; */
   }
 
   #cssmenu > ul > li > a {
-    color:<{$navbar_color}>;
+    color:<{$navbar_color|default:''}>;
     /* color: #ffffff; */
   }
 
   #cssmenu > ul > li:hover > a {
-    color:<{$navbar_color_hover}>;
+    color:<{$navbar_color_hover|default:''}>;
     /* color: #ffffff; */
   }
 </style>
@@ -37,7 +37,7 @@
         <{foreach from=$menu_var item=menu}>
         <li <{if $menu.submenu|default:false}>class='has-sub'<{/if}>>
             <a href='<{$menu.url}>' target="<{$menu.target}>">
-            <span><span class="fa <{$menu.icon}>" <{$navbar_icon}>></span> <{$menu.title}></span>
+            <span><span class="fa <{$menu.icon}>" <{$navbar_icon|default:''}>></span> <{$menu.title}></span>
             </a>
             <{if $menu.submenu|default:false}>
             <{if $menu.submenu=='1'}>

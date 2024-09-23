@@ -1,24 +1,24 @@
 <!--導覽工具列、區塊標題CSS設定開始-->
 <style type="text/css">
     body {
-        color: <{$font_color}>;
-        background-color: <{$bg_color}>;
-        <{if $bg_img|default:false}>background-image: url('<{$bg_img}>');<{/if}>
-        background-position: <{$bg_position}>;
-        background-repeat: <{$bg_repeat}>;
-        background-attachment: <{$bg_attachment}>;
-        background-size: <{$bg_size}>;
-        font-size: <{$font_size}>;
-        font-family: <{$font_family}>;
+        color: <{$font_color|default:''}>;
+        background-color: <{$bg_color|default:''}>;
+        <{if $bg_img|default:false}>background-image: url('<{$bg_img|default:''}>');<{/if}>
+        background-position: <{$bg_position|default:''}>;
+        background-repeat: <{$bg_repeat|default:''}>;
+        background-attachment: <{$bg_attachment|default:''}>;
+        background-size: <{$bg_size|default:''}>;
+        font-size: <{$font_size|default:''}>;
+        font-family: <{$font_family|default:''}>;
     }
 
     a {
-        color:<{$link_color}>;
-        font-family: <{if $font_family|default:false}><{$font_family}>, <{/if}>FontAwesome;
+        color:<{$link_color|default:''}>;
+        font-family: <{if $font_family|default:false}><{$font_family|default:''}>, <{/if}>FontAwesome;
     }
 
     a:hover {
-        color:<{$hover_color}>;
+        color:<{$hover_color|default:''}>;
     }
 
 
@@ -36,12 +36,12 @@
         <{else}>
             <{if $navbar_img|default:false}>
                 background-color:tranparent;
-                background-image: url(<{$navbar_img}>);
+                background-image: url(<{$navbar_img|default:''}>);
                 /* background-size: cover; */
             <{elseif $navbar_bg_top==$navbar_bg_bottom}>
-                background: <{$navbar_bg_top}>;
+                background: <{$navbar_bg_top|default:''}>;
             <{else}>
-                background: linear-gradient(<{$navbar_bg_top}>, <{$navbar_bg_bottom}>);
+                background: linear-gradient(<{$navbar_bg_top|default:''}>, <{$navbar_bg_bottom|default:''}>);
             <{/if}>
         <{/if}>
     }
@@ -50,12 +50,12 @@
         <{if $nav_display_type=='not_full'}>
             <{if $navbar_img|default:false}>
                 background-color: tranparent;
-                background-image: url(<{$navbar_img}>);
+                background-image: url(<{$navbar_img|default:''}>);
                 /* background-size: cover; */
             <{elseif $navbar_bg_top==$navbar_bg_bottom}>
-                background: <{$navbar_bg_top}>;
+                background: <{$navbar_bg_top|default:''}>;
             <{else}>
-                background: linear-gradient(<{$navbar_bg_top}>, <{$navbar_bg_bottom}>);
+                background: linear-gradient(<{$navbar_bg_top|default:''}>, <{$navbar_bg_bottom|default:''}>);
             <{/if}>
         <{else}>
             background-color: tranparent;

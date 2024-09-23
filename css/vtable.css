@@ -216,7 +216,7 @@ $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/vtable.css');
 <ul>
 <li class="w2 vtitle">到園日期</li>
 <li class="w8">
-<{$order_start}>～<{$order_end}>
+<{$order_start|default:''}>～<{$order_end|default:''}>
 </li>
 </ul>
 </div>

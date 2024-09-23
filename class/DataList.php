@@ -52,7 +52,7 @@ DataList::render();
 
 <datalist id="theme_config_list">
 <{foreach from=$theme_config_list key=k item=title}>
-<option value="<{$title}>">
+<option value="<{$title|default:''}>">
 <{/foreach}>
 </datalist>
  */

@@ -58,7 +58,7 @@ class Tools
         $def_config['theme_kind_arr'] = explode(',', $theme_kind_arr);
         $def_config['menu_var_kind'] = $_SESSION['menu_var_kind'] = $menu_var_kind;
         $def_config['theme_color'] = $theme_color;
-        $def_config['theme_set_allowed'] = $theme_set_allowed;
+        $def_config['theme_set_allowed'] = $xoopsConfig['theme_set_allowed'];
 
         /**** 產生 Smarty 的設定檔（以取得 bootstrap 版本） ****/
         $bootstrap = (strpos($theme_kind, 'bootstrap') !== false) ? substr($theme_kind, -1) : '4';
@@ -523,7 +523,7 @@ class Tools
             $i++;
         }
 
-        $pmcount = $_SESSION['xoops_inbox_count'];
+        $pmcount = isset($_SESSION['xoops_inbox_count']) ? $_SESSION['xoops_inbox_count'] : 0;
         $my_menu[$i]['id'] = $i;
         $my_menu[$i]['title'] = !empty($pmcount) ? sprintf(_TAD_TF_USER_NEWMSG, $pmcount) : _TAD_TF_USER_MSG;
         $my_menu[$i]['url'] = XOOPS_URL . "/viewpmsg.php";

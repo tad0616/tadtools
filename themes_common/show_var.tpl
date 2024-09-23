@@ -46,38 +46,38 @@
                 <div>
                     <table class="table table-striped table-bordered table-hover" style="background:white;">
                         <tr><th colspan=3><h2>基本設定</h2></th></tr>
-                        <tr><th>佈景種類</th><th>$theme_kind</th><td><{$theme_kind}></td></tr>
+                        <tr><th>佈景種類</th><th>$theme_kind</th><td><{$theme_kind|default:''}></td></tr>
                         <tr><th>BootStrap版本</th><th>$bootstrap</th><td><{$smarty.session.bootstrap}></td></tr>
-                        <tr><th>佈景編號</th><th>$theme_id</th><td><{$theme_id}></td></tr>
-                        <tr><th>佈景名稱</th><th>$theme_name</th><td><{$theme_name}></td></tr>
-                        <tr><th>bootstrap顏色</th><th>$theme_color</th><td><{$theme_color}></td></tr>
-                        <tr><th>載入選單種類</th><th>$menu_var_kind</th><td><{$menu_var_kind}></td></tr>
-                        <tr><th>開除錯</th><th>$debug</th><td><{$debug}></td></tr>
-                        <tr><th>顯示搜尋工具</th><th>$use_search</th><td><{$use_search}></td></tr>
-                        <tr><th>內容區設定</th><th>$content_zone</th><td><{$content_zone}></td></tr>
-                        <tr><th>左區域設定</th><th>$leftBlocks</th><td><{$leftBlocks}></td></tr>
-                        <tr><th>中區域設定</th><th>$centerBlocks</th><td><{$centerBlocks}></td></tr>
-                        <tr><th>右區域設定</th><th>$rightBlocks</th><td><{$rightBlocks}></td></tr>
-                        <tr><th>第二左區域設定</th><th>$leftBlocks2</th><td><{$leftBlocks2}></td></tr>
-                        <tr><th>第二右區域設定</th><th>$rightBlocks2</th><td><{$rightBlocks2}></td></tr>
-                        <tr><th>樣板設定檔</th><th>$xoops_themecss</th><td><{$xoops_themecss}></td></tr>
+                        <tr><th>佈景編號</th><th>$theme_id</th><td><{$theme_id|default:''}></td></tr>
+                        <tr><th>佈景名稱</th><th>$theme_name</th><td><{$theme_name|default:''}></td></tr>
+                        <tr><th>bootstrap顏色</th><th>$theme_color</th><td><{$theme_color|default:''}></td></tr>
+                        <tr><th>載入選單種類</th><th>$menu_var_kind</th><td><{$menu_var_kind|default:''}></td></tr>
+                        <tr><th>開除錯</th><th>$debug</th><td><{$debug|default:''}></td></tr>
+                        <tr><th>顯示搜尋工具</th><th>$use_search</th><td><{$use_search|default:''}></td></tr>
+                        <tr><th>內容區設定</th><th>$content_zone</th><td><{$content_zone|default:''}></td></tr>
+                        <tr><th>左區域設定</th><th>$leftBlocks</th><td><{$leftBlocks|default:''}></td></tr>
+                        <tr><th>中區域設定</th><th>$centerBlocks</th><td><{$centerBlocks|default:''}></td></tr>
+                        <tr><th>右區域設定</th><th>$rightBlocks</th><td><{$rightBlocks|default:''}></td></tr>
+                        <tr><th>第二左區域設定</th><th>$leftBlocks2</th><td><{$leftBlocks2|default:''}></td></tr>
+                        <tr><th>第二右區域設定</th><th>$rightBlocks2</th><td><{$rightBlocks2|default:''}></td></tr>
+                        <tr><th>樣板設定檔</th><th>$xoops_themecss</th><td><{$xoops_themecss|default:''}></td></tr>
 
                         <tr><th colspan=3><h2>Tad Themes 偏好設定</h2></th></tr>
-                        <tr><th>顯示主選單下拉選單</th><th>$auto_mainmenu</th><td><{$auto_mainmenu}></td></tr>
-                        <tr><th>是否在工具列顯示網站標題文字</th><th>$show_sitename</th><td><{$show_sitename}></td></tr>
+                        <tr><th>顯示主選單下拉選單</th><th>$auto_mainmenu</th><td><{$auto_mainmenu|default:''}></td></tr>
+                        <tr><th>是否在工具列顯示網站標題文字</th><th>$show_sitename</th><td><{$show_sitename|default:''}></td></tr>
 
                         <tr><th colspan=3><h2>Tad Tools 偏好設定</h2></th></tr>
-                        <tr><th>導覽列的登入呈現方式</th><th>$openid_login</th><td><{$openid_login}></td></tr>
-                        <tr><th>登入選單一排要呈現幾個OpenID圖示</th><th>$openid_logo</th><td><{$openid_logo}></td></tr>
-                        <tr><th>是否釘選住導覽列？</th><th>$use_pin</th><td><{$use_pin}></td></tr>
-                        <tr><th>導覽列的登入文字</th><th>$login_text</th><td><{$login_text}></td></tr>
-                        <tr><th>登入說明</th><th>$login_description</th><td><{$login_description}></td></tr>
+                        <tr><th>導覽列的登入呈現方式</th><th>$openid_login</th><td><{$openid_login|default:''}></td></tr>
+                        <tr><th>登入選單一排要呈現幾個OpenID圖示</th><th>$openid_logo</th><td><{$openid_logo|default:''}></td></tr>
+                        <tr><th>是否釘選住導覽列？</th><th>$use_pin</th><td><{$use_pin|default:''}></td></tr>
+                        <tr><th>導覽列的登入文字</th><th>$login_text</th><td><{$login_text|default:''}></td></tr>
+                        <tr><th>登入說明</th><th>$login_description</th><td><{$login_description|default:''}></td></tr>
 
                         <tr><th colspan=3><h2>其他設定</h2></th></tr>
-                        <tr><th>左邊區塊數</th><th>$left_count</th><td><{$left_count}></td></tr>
-                        <tr><th>右邊區塊數</th><th>$right_count</th><td><{$right_count}></td></tr>
-                        <tr><th>選單是否有用到 popup 模式</th><th>$have_popup</th><td><{$have_popup}></td></tr>
-                        <tr><th>popup 語法</th><th>$tad_themes_popup_code</th><td><{$tad_themes_popup_code}></td></tr>
+                        <tr><th>左邊區塊數</th><th>$left_count</th><td><{$left_count|default:''}></td></tr>
+                        <tr><th>右邊區塊數</th><th>$right_count</th><td><{$right_count|default:''}></td></tr>
+                        <tr><th>選單是否有用到 popup 模式</th><th>$have_popup</th><td><{$have_popup|default:''}></td></tr>
+                        <tr><th>popup 語法</th><th>$tad_themes_popup_code</th><td><{$tad_themes_popup_code|default:''}></td></tr>
                     </table>
                 </div>
 
@@ -100,23 +100,23 @@
                                 <h2>網頁布局設定</h2>
                                 <table class="table table-striped table-bordered table-hover" style="background:white;">
                                     <tbody <{if !$config_tabs.1}>class="unable"<{/if}>>
-                                        <tr><th>版面類型</th><th>$theme_type</th><td><{$theme_type}></td></tr>
-                                        <tr><th>版面寬度</th><th>$theme_width</th><td><{$theme_width}></td></tr>
-                                        <tr><th>文字大小</th><th>$font_size</th><td><{$font_size}></td></tr>
-                                        <tr><th>內容區顏色</th><th>$base_color</th><td><{$base_color}></td></tr>
-                                        <tr><th>左區塊顏色</th><th>$lb_color</th><td><{$lb_color}></td></tr>
-                                        <tr><th>中區塊顏色</th><th>$cb_color</th><td><{$cb_color}></td></tr>
-                                        <tr><th>右區塊顏色</th><th>$rb_color</th><td><{$rb_color}></td></tr>
-                                        <tr><th>左區塊寬度</th><th>$lb_width</th><td><{$lb_width}></td></tr>
-                                        <tr><th>中區塊寬度</th><th>$center_width</th><td><{$center_width}></td></tr>
-                                        <tr><th>右區塊寬度</th><th>$rb_width</th><td><{$rb_width}></td></tr>
-                                        <tr><th>中左區塊寬度</th><th>$clb_width</th><td><{$clb_width}></td></tr>
-                                        <tr><th>中右區塊寬度</th><th>$crb_width</th><td><{$crb_width}></td></tr>
-                                        <tr><th>上方邊界</th><th>$margin_top</th><td><{$margin_top}></td></tr>
-                                        <tr><th>下方邊界</th><th>$margin_bottom</th><td><{$margin_bottom}></td></tr>
-                                        <tr><th>文字顏色</th><th>$font_color</th><td><{$font_color}></td></tr>
-                                        <tr><th>連結顏色</th><th>$link_color</th><td><{$link_color}></td></tr>
-                                        <tr><th>滑鼠移到連結顏色</th><th>$hover_color</th><td><{$hover_color}></td></tr>
+                                        <tr><th>版面類型</th><th>$theme_type</th><td><{$theme_type|default:''}></td></tr>
+                                        <tr><th>版面寬度</th><th>$theme_width</th><td><{$theme_width|default:''}></td></tr>
+                                        <tr><th>文字大小</th><th>$font_size</th><td><{$font_size|default:''}></td></tr>
+                                        <tr><th>內容區顏色</th><th>$base_color</th><td><{$base_color|default:''}></td></tr>
+                                        <tr><th>左區塊顏色</th><th>$lb_color</th><td><{$lb_color|default:''}></td></tr>
+                                        <tr><th>中區塊顏色</th><th>$cb_color</th><td><{$cb_color|default:''}></td></tr>
+                                        <tr><th>右區塊顏色</th><th>$rb_color</th><td><{$rb_color|default:''}></td></tr>
+                                        <tr><th>左區塊寬度</th><th>$lb_width</th><td><{$lb_width|default:''}></td></tr>
+                                        <tr><th>中區塊寬度</th><th>$center_width</th><td><{$center_width|default:''}></td></tr>
+                                        <tr><th>右區塊寬度</th><th>$rb_width</th><td><{$rb_width|default:''}></td></tr>
+                                        <tr><th>中左區塊寬度</th><th>$clb_width</th><td><{$clb_width|default:''}></td></tr>
+                                        <tr><th>中右區塊寬度</th><th>$crb_width</th><td><{$crb_width|default:''}></td></tr>
+                                        <tr><th>上方邊界</th><th>$margin_top</th><td><{$margin_top|default:''}></td></tr>
+                                        <tr><th>下方邊界</th><th>$margin_bottom</th><td><{$margin_bottom|default:''}></td></tr>
+                                        <tr><th>文字顏色</th><th>$font_color</th><td><{$font_color|default:''}></td></tr>
+                                        <tr><th>連結顏色</th><th>$link_color</th><td><{$link_color|default:''}></td></tr>
+                                        <tr><th>滑鼠移到連結顏色</th><th>$hover_color</th><td><{$hover_color|default:''}></td></tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -126,11 +126,11 @@
                                 <h2>背景圖設定</h2>
                                 <table class="table table-striped table-bordered table-hover" style="background:white;">
                                     <tbody <{if !$config_tabs.2}>class="unable"<{/if}>>
-                                        <tr><th>預設背景圖</th><th>$bg_img</th><td><{$bg_img}></td></tr>
-                                        <tr><th>背景顏色</th><th>$bg_color</th><td><{$bg_color}></td></tr>
-                                        <tr><th>背景重複</th><th>$bg_repeat</th><td><{$bg_repeat}></td></tr>
-                                        <tr><th>背景模式</th><th>$bg_attachment</th><td><{$bg_attachment}></td></tr>
-                                        <tr><th>背景位置</th><th>$bg_position</th><td><{$bg_position}></td></tr>
+                                        <tr><th>預設背景圖</th><th>$bg_img</th><td><{$bg_img|default:''}></td></tr>
+                                        <tr><th>背景顏色</th><th>$bg_color</th><td><{$bg_color|default:''}></td></tr>
+                                        <tr><th>背景重複</th><th>$bg_repeat</th><td><{$bg_repeat|default:''}></td></tr>
+                                        <tr><th>背景模式</th><th>$bg_attachment</th><td><{$bg_attachment|default:''}></td></tr>
+                                        <tr><th>背景位置</th><th>$bg_position</th><td><{$bg_position|default:''}></td></tr>
 
                                     </tbody>
                                 </table>
@@ -141,7 +141,7 @@
                                 <h2>滑動圖片設定</h2>
                                 <table class="table table-striped table-bordered table-hover" style="background:white;">
                                     <tbody <{if !$config_tabs.3}>class="unable"<{/if}>>
-                                        <tr><th>是否可上傳滑動圖片</th><th>$use_slide</th><td><{$use_slide}></td></tr>
+                                        <tr><th>是否可上傳滑動圖片</th><th>$use_slide</th><td><{$use_slide|default:''}></td></tr>
 
                                     </tbody>
                                 </table>
@@ -152,14 +152,14 @@
                                 <h2>logo 圖設定</h2>
                                 <table class="table table-striped table-bordered table-hover" style="background:white;">
                                     <tbody <{if !$config_tabs.4}>class="unable"<{/if}>>
-                                        <tr><th>logo 圖</th><th>$logo_img</th><td><{$logo_img}></td></tr>
-                                        <tr><th>logo 圖位置</th><th>$logo_position</th><td><{$logo_position}></td></tr>
-                                        <tr><th>logo 圖上方位置</th><th>$logo_top</th><td><{$logo_top}>%</td></tr>
-                                        <tr><th>logo 圖右方位置</th><th>$logo_right</th><td><{$auto_mainlogo_rightmenu}>%</td></tr>
-                                        <tr><th>logo 圖下方位置</th><th>$logo_bottom</th><td><{$logo_bottom}>%</td></tr>
-                                        <tr><th>logo 圖左方位置</th><th>$logo_left</th><td><{$logo_left}>%</td></tr>
-                                        <tr><th>logo 圖置中</th><th>$logo_center</th><td><{$logo_center}></td></tr>
-                                        <tr><th>Logo 圖位置</th><th>$logo_place</th><td><{$logo_place}></td></tr>
+                                        <tr><th>logo 圖</th><th>$logo_img</th><td><{$logo_img|default:''}></td></tr>
+                                        <tr><th>logo 圖位置</th><th>$logo_position</th><td><{$logo_position|default:''}></td></tr>
+                                        <tr><th>logo 圖上方位置</th><th>$logo_top</th><td><{$logo_top|default:''}>%</td></tr>
+                                        <tr><th>logo 圖右方位置</th><th>$logo_right</th><td><{$auto_mainlogo_rightmenu|default:''}>%</td></tr>
+                                        <tr><th>logo 圖下方位置</th><th>$logo_bottom</th><td><{$logo_bottom|default:''}>%</td></tr>
+                                        <tr><th>logo 圖左方位置</th><th>$logo_left</th><td><{$logo_left|default:''}>%</td></tr>
+                                        <tr><th>logo 圖置中</th><th>$logo_center</th><td><{$logo_center|default:''}></td></tr>
+                                        <tr><th>Logo 圖位置</th><th>$logo_place</th><td><{$logo_place|default:''}></td></tr>
 
                                     </tbody>
                                 </table>
@@ -193,21 +193,21 @@
                                 <h2>導覽列設定</h2>
                                 <table class="table table-striped table-bordered table-hover" style="background:white;">
                                     <tbody <{if !$config_tabs.6}>class="unable"<{/if}>>
-                                        <tr><th>導覽列位置</th><th>$navbar_pos</th><td><{$navbar_pos}></td></tr>
-                                        <tr><th>導覽列漸層顏色(top)</th><th>$navbar_bg_top</th><td><{$navbar_bg_top}></td></tr>
-                                        <tr><th>導覽列漸層顏色(bottom)</th><th>$navbar_bg_bottom</th><td><{$navbar_bg_bottom}></td></tr>
-                                        <tr><th>導覽列連結區塊底色</th><th>$navbar_hover</th><td><{$navbar_hover}></td></tr>
-                                        <tr><th>導覽列文字顏色</th><th>$navbar_color</th><td><{$navbar_color}></td></tr>
-                                        <tr><th>導覽列文字移過顏色</th><th>$navbar_color_hover</th><td><{$navbar_color_hover}></td></tr>
-                                        <tr><th>導覽列圖示顏色</th><th>$navbar_icon</th><td><{$navbar_icon}></td></tr>
-                                        <tr><th>導覽選項上下距離</th><th>$navbar_py</th><td><{$navbar_py}></td></tr>
-                                        <tr><th>導覽選項左右距離</th><th>$navbar_px</th><td><{$navbar_px}></td></tr>
-                                        <tr><th>導覽列背景圖</th><th>$navbar_img</th><td><{$navbar_img}></td></tr>
-                                        <tr><th>選項文字大小</th><th>$navbar_font_size</th><td><{$navbar_font_size}></td></tr>
+                                        <tr><th>導覽列位置</th><th>$navbar_pos</th><td><{$navbar_pos|default:''}></td></tr>
+                                        <tr><th>導覽列漸層顏色(top)</th><th>$navbar_bg_top</th><td><{$navbar_bg_top|default:''}></td></tr>
+                                        <tr><th>導覽列漸層顏色(bottom)</th><th>$navbar_bg_bottom</th><td><{$navbar_bg_bottom|default:''}></td></tr>
+                                        <tr><th>導覽列連結區塊底色</th><th>$navbar_hover</th><td><{$navbar_hover|default:''}></td></tr>
+                                        <tr><th>導覽列文字顏色</th><th>$navbar_color</th><td><{$navbar_color|default:''}></td></tr>
+                                        <tr><th>導覽列文字移過顏色</th><th>$navbar_color_hover</th><td><{$navbar_color_hover|default:''}></td></tr>
+                                        <tr><th>導覽列圖示顏色</th><th>$navbar_icon</th><td><{$navbar_icon|default:''}></td></tr>
+                                        <tr><th>導覽選項上下距離</th><th>$navbar_py</th><td><{$navbar_py|default:''}></td></tr>
+                                        <tr><th>導覽選項左右距離</th><th>$navbar_px</th><td><{$navbar_px|default:''}></td></tr>
+                                        <tr><th>導覽列背景圖</th><th>$navbar_img</th><td><{$navbar_img|default:''}></td></tr>
+                                        <tr><th>選項文字大小</th><th>$navbar_font_size</th><td><{$navbar_font_size|default:''}></td></tr>
 
                                         <tr><th colspan=3><h2>導覽列 logo 圖設定</h2></th></tr>
-                                        <tr><th>導覽列圖示(舊)</th><th>$navlogo_img</th><td><{$navlogo_img}></td></tr>
-                                        <tr><th>導覽列 logo 圖</th><th>$logo_img</th><td><{$logo_img}></td></tr>
+                                        <tr><th>導覽列圖示(舊)</th><th>$navlogo_img</th><td><{$navlogo_img|default:''}></td></tr>
+                                        <tr><th>導覽列 logo 圖</th><th>$logo_img</th><td><{$logo_img|default:''}></td></tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -224,18 +224,18 @@
                         <{foreach from=$main_menu_var key=k item=m}>
                             <tr>
                                 <th rowspan=7>
-                                    <{$m.title}><br>&lt;{$main_menu_var.<{$k}>}&gt;
+                                    <{$m.title}><br>&lt;{$main_menu_var.<{$k|default:''}>}&gt;
                                 </th>
-                                <th>&lt;{$main_menu_var.<{$k}>.id}&gt;</th><td><{$m.id}></td>
+                                <th>&lt;{$main_menu_var.<{$k|default:''}>.id}&gt;</th><td><{$m.id}></td>
                             </tr>
-                            <tr><th>&lt;{$main_menu_var.<{$k}>.title}&gt;</th><td><{$m.title}></td></tr>
-                            <tr><th>&lt;{$main_menu_var.<{$k}>.url}&gt;</th><td><{$m.url}></td></tr>
-                            <tr><th>&lt;{$main_menu_var.<{$k}>.target}&gt;</th><td><{$m.target}></td></tr>
-                            <tr><th>&lt;{$main_menu_var.<{$k}>.icon}&gt;</th><td><{$m.icon}></td></tr>
-                            <tr><th>&lt;{$main_menu_var.<{$k}>.img}&gt;</th><td><{$m.img}></td></tr>
-                            <tr><th>&lt;{$main_menu_var.<{$k}>.read_group}&gt;</th><td>
+                            <tr><th>&lt;{$main_menu_var.<{$k|default:''}>.title}&gt;</th><td><{$m.title}></td></tr>
+                            <tr><th>&lt;{$main_menu_var.<{$k|default:''}>.url}&gt;</th><td><{$m.url}></td></tr>
+                            <tr><th>&lt;{$main_menu_var.<{$k|default:''}>.target}&gt;</th><td><{$m.target}></td></tr>
+                            <tr><th>&lt;{$main_menu_var.<{$k|default:''}>.icon}&gt;</th><td><{$m.icon}></td></tr>
+                            <tr><th>&lt;{$main_menu_var.<{$k|default:''}>.img}&gt;</th><td><{$m.img}></td></tr>
+                            <tr><th>&lt;{$main_menu_var.<{$k|default:''}>.read_group}&gt;</th><td>
                                 <{foreach from=$m.read_group item=read_group}>
-                                    <span><{$read_group}></span>
+                                    <span><{$read_group|default:''}></span>
                                 <{/foreach}>
                             </td></tr>
                         <{/foreach}>
@@ -250,18 +250,18 @@
                         <{foreach from=$menu_var key=k item=m}>
                             <tr>
                                 <th rowspan=7>
-                                    <{$m.title}><br>&lt;{$menu_var.<{$k}>}&gt;
+                                    <{$m.title}><br>&lt;{$menu_var.<{$k|default:''}>}&gt;
                                 </th>
-                                <th>&lt;{$menu_var.<{$k}>.id}&gt;</th><td><{$m.id}></td>
+                                <th>&lt;{$menu_var.<{$k|default:''}>.id}&gt;</th><td><{$m.id}></td>
                             </tr>
-                            <tr><th>&lt;{$menu_var.<{$k}>.title}&gt;</th><td><{$m.title}></td></tr>
-                            <tr><th>&lt;{$menu_var.<{$k}>.url}&gt;</th><td><{$m.url}></td></tr>
-                            <tr><th>&lt;{$menu_var.<{$k}>.target}&gt;</th><td><{$m.target}></td></tr>
-                            <tr><th>&lt;{$menu_var.<{$k}>.icon}&gt;</th><td><{$m.icon}></td></tr>
-                            <tr><th>&lt;{$menu_var.<{$k}>.img}&gt;</th><td><{$m.img}></td></tr>
+                            <tr><th>&lt;{$menu_var.<{$k|default:''}>.title}&gt;</th><td><{$m.title}></td></tr>
+                            <tr><th>&lt;{$menu_var.<{$k|default:''}>.url}&gt;</th><td><{$m.url}></td></tr>
+                            <tr><th>&lt;{$menu_var.<{$k|default:''}>.target}&gt;</th><td><{$m.target}></td></tr>
+                            <tr><th>&lt;{$menu_var.<{$k|default:''}>.icon}&gt;</th><td><{$m.icon}></td></tr>
+                            <tr><th>&lt;{$menu_var.<{$k|default:''}>.img}&gt;</th><td><{$m.img}></td></tr>
                             <{if $m.submenu|default:false}>
                                 <tr><td colspan=2 style="background-color: rgb(248, 248, 219);">
-                                    <p><b>&lt;{$menu_var.<{$k}>.submenu}&gt;</b></p>
+                                    <p><b>&lt;{$menu_var.<{$k|default:''}>.submenu}&gt;</b></p>
                                     <table class="table table-striped table-bordered table-hover table-condensed table-sm">
                                         <tr>
                                             <th>id</th>
@@ -313,7 +313,7 @@
                                     </td>
                                 </tr>
                             <{else}>
-                                <tr><th>&lt;{$menu_var.<{$k}>.submenu}&gt;</th><td></td></tr>
+                                <tr><th>&lt;{$menu_var.<{$k|default:''}>.submenu}&gt;</th><td></td></tr>
                             <{/if}>
 
                         <{/foreach}>
@@ -352,7 +352,7 @@
                     <table class="table table-striped table-bordered table-hover" style="background:white;">
                     <{*<{include file="$xoops_rootpath/modules/tadtools/themes_common/show_var_php.tpl"}>*}>
                     <{foreach from=$config2_files item=config2_file}>
-                        <tr><th colspan=3><h2>佈景額外<{$config2_file}>設定</h2></th></tr>
+                        <tr><th colspan=3><h2>佈景額外<{$config2_file|default:''}>設定</h2></th></tr>
                         <{foreach from=$config2.$config2_file key=k item=config}>
                             <tr><th><{$config.text}></th><th>$<{$config.name}></th><td><{if $config.type=='selectpicker' || $config.type=='custom_zone' || $config.type=='checkbox'}><{$config.value|@json_encode:256}><{else}><{$config.value}><{/if}></td></tr>
                             <{if $config.type=='bg_file'}>

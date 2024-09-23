@@ -7,7 +7,7 @@
     <{/if}>
 
     <div class="col-xl-12" id="xoops_theme_center_zone">
-        <div style="<{$centerBlocks}>">
+        <div style="<{$centerBlocks|default:''}>">
             <{include file="$xoops_rootpath/modules/tadtools/themes5_tpl/centerZone.tpl"}>
         </div>
     </div>

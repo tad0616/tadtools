@@ -6,13 +6,13 @@
         <!-- Sheet Css -->
         <link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{$xoops_url}>/xoops.css">
         <!-- XOOPS theme Sheet Css -->
-        <link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{$xoops_url}>/themes/<{$theme_name}>/css/xoops.css">
-        <!-- 55-1 <{$theme_color}> -->
+        <link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{$xoops_url}>/themes/<{$theme_name|default:''}>/css/xoops.css">
+        <!-- 55-1 <{$theme_color|default:''}> -->
 <{if $theme_color and $theme_color!="bootstrap5"}>
         <link href="<{$xoops_url}>/modules/tadtools/bootstrap5/css/bootstrap.css" rel="stylesheet" media="all">
         <{if $theme_color|default:false}>
-        <!-- 55-2 <{$theme_color}> -->
-        <link href="<{$xoops_url}>/modules/tadtools/<{$theme_color}>/bootstrap.min.css" rel="stylesheet" media="all">
+        <!-- 55-2 <{$theme_color|default:''}> -->
+        <link href="<{$xoops_url}>/modules/tadtools/<{$theme_color|default:''}>/bootstrap.min.css" rel="stylesheet" media="all">
         <{/if}>
 <{else}>
         <link href="<{$xoops_url}>/modules/tadtools/bootstrap5/css/bootstrap.css" rel="stylesheet" media="all">
@@ -26,5 +26,5 @@
         <link href="<{$xoops_url}>/modules/tadtools/css/font-awesome/css/font-awesome.css" rel="stylesheet" media="all">
 <{if $xoops_themecss!=''}>
         <!-- Theme Sheet Css -->
-        <link rel="stylesheet" type="text/css" media="all" href="<{$xoops_themecss}>">
+        <link rel="stylesheet" type="text/css" media="all" href="<{$xoops_themecss|default:''}>">
 <{/if}>

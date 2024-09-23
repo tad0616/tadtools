@@ -4,7 +4,7 @@
 <link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tadtools/ResponsiveSlides/responsiveslides.css" >
 <script language="javascript" type="text/javascript" src="<{$xoops_url}>/modules/tadtools/ResponsiveSlides/responsiveslides.js"></script>
 
-<!-- $slide_nav=<{$slide_nav}> -->
+<!-- $slide_nav=<{$slide_nav|default:''}> -->
 <script type="text/javascript">
     $(document).ready( function(){
         jQuery("#ThemeResponsiveSlides").responsiveSlides({
@@ -15,7 +15,7 @@
             <{else}>
             nav: false,
             <{/if}>
-            timeout: <{if $slide_timeout|default:false}><{$slide_timeout}><{else}>5000<{/if}>,
+            timeout: <{if $slide_timeout|default:false}><{$slide_timeout|default:''}><{else}>5000<{/if}>,
             pause: true,
             pauseControls: true,
             namespace: 'callbacks'

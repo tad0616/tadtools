@@ -1,34 +1,34 @@
 <div class="xoops-comment-body">
     <{section name=i loop=$comments}>
         <div class="row">
-            <div class="col-xs-2 col-md-2"><strong><{$lang_poster}></strong></div>
-            <div class="col-xs-10 col-md-10"><strong><{$lang_thread}></strong></div>
+            <div class="col-xs-2 col-md-2"><strong><{$lang_poster|default:''}></strong></div>
+            <div class="col-xs-10 col-md-10"><strong><{$lang_thread|default:''}></strong></div>
         </div>
         <{include file="db:system_comment.tpl" comment=$comments[i]}>
 
         <{if $show_threadnav == true}>
-            <a href="<{$comment_url}>" title="<{$lang_top}>"><{$lang_top}></a>
-            <a href="<{$comment_url}>&amp;com_id=<{$comments[i].pid}>&amp;com_rootid=<{$comments[i].rootid}>#newscomment<{$comments[i].pid}>"><{$lang_parent}></a>
+            <a href="<{$comment_url|default:''}>" title="<{$lang_top|default:''}>"><{$lang_top|default:''}></a>
+            <a href="<{$comment_url|default:''}>&amp;com_id=<{$comments[i].pid}>&amp;com_rootid=<{$comments[i].rootid}>#newscomment<{$comments[i].pid}>"><{$lang_parent|default:''}></a>
         <{/if}>
 
         <{if $comments[i].show_replies == true}>
             <!-- start comment tree -->
             <div class="row">
                 <div class="col-md-4">
-                    <strong><{$lang_subject}></strong>
+                    <strong><{$lang_subject|default:''}></strong>
                 </div>
 
                 <div class="col-md-4">
-                    <strong><{$lang_poster}></strong>
+                    <strong><{$lang_poster|default:''}></strong>
                 </div>
                 <div class="col-md-4">
-                    <strong><{$lang_posted}></strong>
+                    <strong><{$lang_posted|default:''}></strong>
                 </div>
             </div>
             <{foreach item=reply from=$comments[i].replies}>
                 <div class="row">
                     <div class="col-md-4">
-                        <{$reply.prefix}> <a href="<{$comment_url}>&amp;com_id=<{$reply.id}>&amp;com_rootid=<{$reply.root_id}>" title=""><{$reply.title}></a>
+                        <{$reply.prefix}> <a href="<{$comment_url|default:''}>&amp;com_id=<{$reply.id}>&amp;com_rootid=<{$reply.root_id}>" title=""><{$reply.title}></a>
                     </div>
 
                     <div class="col-md-4">
@@ -56,7 +56,7 @@
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="xoops-comment-form">
-                            <{$commentform}>
+                            <{$commentform|default:''}>
                         </div>
                     </div>
                     <div class="modal-footer">

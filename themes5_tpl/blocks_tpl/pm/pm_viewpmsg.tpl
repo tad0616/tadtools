@@ -24,15 +24,15 @@
     <br>
     <br>
     <{if $msg|default:false}>
-        <div class="confirmMsg"><{$msg}></div>
+        <div class="confirmMsg"><{$msg|default:''}></div>
     <{/if}>
     <{if $errormsg|default:false}>
-        <div class="errorMsg"><{$errormsg}></div>
+        <div class="errorMsg"><{$errormsg|default:''}></div>
     <{/if}>
 
     <{if $pagenav|default:false}>
         <div class="floatright txtright pad5">
-            <{$pagenav}>
+            <{$pagenav|default:''}>
         </div>
         <br class="clear"/>
     <{/if}>
@@ -76,11 +76,11 @@
                         <{if $message.postername != ""}>
                             <a href='<{$xoops_url}>/userinfo.php?uid=<{$message.posteruid}>' title=''><{$message.postername}></a>
                         <{else}>
-                            <{$anonymous}>
+                            <{$anonymous|default:''}>
                         <{/if}>
                     </td>
                     <td class='alignmiddle'>
-                        <a href='readpmsg.php?msg_id=<{$message.msg_id}>&amp;start=<{$message.msg_no}>&amp;total_messages=<{$total_messages}>&amp;op=<{$op}>'title=''>
+                        <a href='readpmsg.php?msg_id=<{$message.msg_id}>&amp;start=<{$message.msg_no}>&amp;total_messages=<{$total_messages|default:''}>&amp;op=<{$op|default:''}>'title=''>
                             <{$message.subject}>
                         </a>
                     </td>
@@ -108,7 +108,7 @@
     </form>
     <{if $pagenav|default:false}>
         <div class="floatright txtright pad5">
-            <{$pagenav}>
+            <{$pagenav|default:''}>
         </div>
     <{/if}>
 <{/if}>

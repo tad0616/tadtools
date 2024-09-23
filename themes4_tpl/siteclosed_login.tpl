@@ -1,4 +1,4 @@
-<h1 class="text-center"><{$lang_siteclosemsg}></h1>
+<h1 class="text-center"><{$lang_siteclosemsg|default:''}></h1>
 <div class="jumbotron">
     <form action="<{$xoops_url}>/user.php" method="post" role="form">
         <div class="form-group row row">
@@ -16,7 +16,7 @@
             </div>
 
             <div class="col-md-2">
-                <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>">
+                <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi|default:''}>">
                 <input type="hidden" name="rememberme" value="On">
                 <input type="hidden" name="op" value="login">
                 <input type="hidden" name="xoops_login" value="1">

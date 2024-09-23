@@ -1,5 +1,5 @@
 <{if $xoBlocks.canvas_left|default:null}>
-    <div class="leftBlock" style="<{if $leftBlocks2|default:false}><{$leftBlocks2}>;<{/if}>width:100%;">
+    <div class="leftBlock" style="<{if $leftBlocks2|default:false}><{$leftBlocks2|default:''}>;<{/if}>width:100%;">
         <div class="row">
         <{foreach item=block from=$xoBlocks.canvas_left|default:null}>
             <{if $block.content|default:false}>

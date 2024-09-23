@@ -123,11 +123,14 @@ class Utility
 
     public static function test($var, $v = 1, $mode = 'dd', $key = 'test')
     {
-        global $xoopsUser, $xoopsModuleConfig;
+        global $xoopsUser, $xoopsModuleConfig, $xoopsLogger;
 
         if (isset($xoopsModuleConfig['test_mode']) && $xoopsModuleConfig['test_mode'] && $xoopsUser && !$xoopsUser->isAdmin()) {
             return;
         }
+
+        // error_reporting(0);
+        // $xoopsLogger->activated = false;
 
         if (isset($_GET[$key]) && $_GET[$key] == $v) {
             if ($mode == 'die') {
@@ -213,6 +216,9 @@ class Utility
     //除錯工具
     public static function dd($array = [])
     {
+        global $xoopsLogger;
+        error_reporting(0);
+        $xoopsLogger->activated = false;
         header('HTTP/1.1 200 OK');
         header("Content-Type: application/json; charset=utf-8");
         die(json_encode($array, 256));
@@ -785,13 +791,20 @@ class Utility
     //推文工具
     public static function push_url($enable = 1)
     {
-        global $xoopsModuleConfig;
+        global $xoopsModuleConfig, $xoTheme;
         if ($enable) {
-            $facebookAppId = $xoopsModuleConfig['facebook_app_id'] ? $xoopsModuleConfig['facebook_app_id'] : '';
+            if (!isset($xoopsModuleConfig['facebook_app_id'])) {
+                $xoopsTadtoolsConfig = self::TadToolsXoopsModuleConfig();
+                $facebookAppId = $xoopsTadtoolsConfig['facebook_app_id'];
+            } else {
+                $facebookAppId = $xoopsModuleConfig['facebook_app_id'];
+            }
+
+            // $xoTheme->addStylesheet('modules/tadtools/css/font-awesome/css/font-awesome652.all.min.css');
+            $xoTheme->addStylesheet('modules/tadtools/social-likes/social-likes.css');
 
             $main = "
             <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css\">
-            <link rel='stylesheet' href='" . XOOPS_URL . "/modules/tadtools/social-likes/social-likes.css'>
             <div class=\"share-buttons\">
                 <button onclick=\"share('facebook')\" class=\"facebook\"><i class=\"fa-brands fa-facebook-f\"></i></button>
                 <button onclick=\"share('x')\" class=\"x\"><i class=\"fa-brands fa-x-twitter\"></i></button>
@@ -803,33 +816,6 @@ class Utility
             ";
             return $main;
         }
-    }
-
-    //facebook的留言
-    public static function facebook_comments($facebook_comments_width = 600, $modules = '', $page = '', $col_name = '', $col_sn = '')
-    {
-        if (empty($facebook_comments_width)) {
-            return;
-        }
-
-        $protocol = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
-        $url = (empty($page) and empty($col_name) and empty($col_sn)) ? "{$protocol}{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}" : XOOPS_URL . "/modules/{$modules}/{$page}?{$col_name}={$col_sn}";
-
-        $main = "
-        <div id=\"fb-root\"></div>
-        <script>(function(d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s); js.id = id;
-            js.src = \"//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.9&appId=1825513194361728\";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));</script>
-
-        <div class='fb-comments' data-href='{$url}' data-width='100%' data-numposts='10' data-colorscheme='light' data-order-by='reverse_time'></div>
-
-    ";
-
-        return $main;
     }
 
     //產生QR Code
@@ -919,8 +905,8 @@ class Utility
         global $xoopsUser, $xoopsModule;
 
         if (!$xoopsModule) {
-            $modhandler = &xoops_gethandler('module');
-            $xoopsModule = &$modhandler->getByDirname($mod_name);
+            $modhandler = xoops_gethandler('module');
+            $xoopsModule = $modhandler->getByDirname($mod_name);
         }
 
         //取得目前使用者的群組編號
@@ -958,7 +944,7 @@ class Utility
             $gs = explode(',', $groupid_txt);
             $g_txt = [];
             foreach ($gs as $gid) {
-                $g_txt[] = $groups_array[$gid];
+                $g_txt[] = isset($groups_array[$gid]) ? $groups_array[$gid] : '';
             }
             $g_txt_all = implode($syb, $g_txt);
         }

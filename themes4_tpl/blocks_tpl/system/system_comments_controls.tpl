@@ -1,4 +1,4 @@
-<form method="get" action="<{$pageName}>"  role="form">
+<form method="get" action="<{$pageName|default:''}>"  role="form">
   <div class="form-group row row" style="background: #fcfcfc; padding : 4px;">
     <div class="col-md-4"><{$commentModeSelect->render()}></div>
     <div class="col-md-4"><{$commentOrderSelect->render()}></div>
@@ -7,7 +7,7 @@
       <{if ($commentPostButton|default:false) }>
       <{$commentPostButton->render()}>
       <{/if}>
-      <{$commentPostHidden}>
+      <{$commentPostHidden|default:''}>
     </div>
   </div>
 </form>

@@ -41,7 +41,7 @@
                             <br>
                         <{/if}>
                     <{else}>
-                        <{$anonymous}>
+                        <{$anonymous|default:''}>
                     <{/if}>
                 </td>
                 <td>
@@ -66,7 +66,7 @@
             <tr>
                 <td class='txtright' colspan='2'>
                     <{if ( $previous >= 0 ) }>
-                        <a href='readpmsg.php?start=<{$previous}>&amp;total_messages=<{$total_messages}>&amp;op=<{$op}>'
+                        <a href='readpmsg.php?start=<{$previous|default:''}>&amp;total_messages=<{$total_messages|default:''}>&amp;op=<{$op|default:''}>'
                            title='<{$smarty.const._PM_PREVIOUS}>'>
                             <{$smarty.const._PM_PREVIOUS}>
                         </a>
@@ -75,7 +75,7 @@
                         <{$smarty.const._PM_PREVIOUS}>&nbsp;|&nbsp;
                     <{/if}>
                     <{if ( $next < $total_messages ) }>
-                        <a href='readpmsg.php?start=<{$next}>&amp;total_messages=<{$total_messages}>&amp;op=<{$op}>'
+                        <a href='readpmsg.php?start=<{$next|default:''}>&amp;total_messages=<{$total_messages|default:''}>&amp;op=<{$op|default:''}>'
                            title='<{$smarty.const._PM_NEXT}>'>
                             <{$smarty.const._PM_NEXT}>
                         </a>

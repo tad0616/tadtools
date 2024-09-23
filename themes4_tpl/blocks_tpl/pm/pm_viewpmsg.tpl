@@ -51,19 +51,19 @@
 <{if $msg|default:false}>
     <div class="alert alert-info alert-dismissable">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        <strong><{$msg}></strong>
+        <strong><{$msg|default:''}></strong>
     </div>
 <{/if}>
 
 <{if $errormsg|default:false}>
    <div class="alert alert-danger alert-dismissable">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-		<strong><{$errormsg}></strong>
+		<strong><{$errormsg|default:''}></strong>
 	</div>
 <{/if}>
 
 <{if $pagenav|default:false}>
-    <{$pagenav}>
+    <{$pagenav|default:''}>
 <{/if}>
 
 <form name="<{$pmform.name}>" id="<{$pmform.name}>" action="<{$pmform.action}>" method="<{$pmform.method}>" <{$pmform.extra}>>
@@ -124,12 +124,12 @@
     </div>
 <{else}>
 	<div class="col-sm-2 col-md-2">
-		<{$anonymous}>
+		<{$anonymous|default:''}>
 	</div>
 <{/if}>
 
 <div class="col-sm-4 col-md-4">
-    <a href="readpmsg.php?msg_id=<{$message.msg_id}>&amp;start=<{$message.msg_no}>&amp;total_messages=<{$total_messages}>&amp;op=<{$op}>" title="">
+    <a href="readpmsg.php?msg_id=<{$message.msg_id}>&amp;start=<{$message.msg_no}>&amp;total_messages=<{$total_messages|default:''}>&amp;op=<{$op|default:''}>" title="">
         <{$message.subject}>
     </a>
 </div>
@@ -155,5 +155,5 @@
 </form>
 
 <{if $pagenav|default:false}>
-	<{$pagenav}>
+	<{$pagenav|default:''}>
 <{/if}>

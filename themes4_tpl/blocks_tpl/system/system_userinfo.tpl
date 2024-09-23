@@ -1,133 +1,133 @@
 <{if $user_ownpage == true}>
 
-    <button type="button" class="btn btn-primary" onclick="location='edituser.php'"><{$lang_editprofile}></button>
-    <button type="button" class="btn btn-success" onclick="location='edituser.php?op=avatarform'"><{$lang_avatar}></button>
-    <button type="button" class="btn btn-info" onclick="location='viewpmsg.php'"><{$lang_inbox}></button>
+    <button type="button" class="btn btn-primary" onclick="location='edituser.php'"><{$lang_editprofile|default:''}></button>
+    <button type="button" class="btn btn-success" onclick="location='edituser.php?op=avatarform'"><{$lang_avatar|default:''}></button>
+    <button type="button" class="btn btn-info" onclick="location='viewpmsg.php'"><{$lang_inbox|default:''}></button>
 
     <{if $user_candelete == true}>
-        <button type="button" class="btn btn-warning" onclick="location='user.php?op=delete'"><{$lang_deleteaccount}></button>
+        <button type="button" class="btn btn-warning" onclick="location='user.php?op=delete'"><{$lang_deleteaccount|default:''}></button>
     <{/if}>
 
-    <button type="button" class="btn btn-danger" onclick="location='user.php?op=logout'"><{$lang_logout}></button>
+    <button type="button" class="btn btn-danger" onclick="location='user.php?op=logout'"><{$lang_logout|default:''}></button>
 
 
 <{elseif $xoops_isadmin != false}>
     <button type="button" class="btn btn-light"
-    onclick="location='<{$xoops_url}>/modules/system/admin.php?fct=users&amp;uid=<{$user_uid}>&amp;op=modifyUser'"><{$lang_editprofile}></button>
+    onclick="location='<{$xoops_url}>/modules/system/admin.php?fct=users&amp;uid=<{$user_uid|default:''}>&amp;op=modifyUser'"><{$lang_editprofile|default:''}></button>
     <button type="button" class="btn btn-light"
-    onclick="location='<{$xoops_url}>/modules/system/admin.php?fct=users&amp;op=delUser&amp;uid=<{$user_uid}>'"><{$lang_deleteaccount}></button>
+    onclick="location='<{$xoops_url}>/modules/system/admin.php?fct=users&amp;op=delUser&amp;uid=<{$user_uid|default:''}>'"><{$lang_deleteaccount|default:''}></button>
 <{/if}>
 
 <{if $user_avatarurl|default:false}>
-    <div class="text-center"><img src="<{$user_avatarurl}>" alt="Avatar" class="rounded-circle"></div>
+    <div class="text-center"><img src="<{$user_avatarurl|default:''}>" alt="Avatar" class="rounded-circle"></div>
 <{/if}>
 
 <{if $user_realname|default:false}>
-    <h2 class="text-center"><{$user_realname}></h2>
+    <h2 class="text-center"><{$user_realname|default:''}></h2>
 <{/if}>
 
-<h3><{$lang_allaboutuser}></h3>
+<h3><{$lang_allaboutuser|default:''}></h3>
 
 <div class="list-group">
     <{if $user_websiteurl|default:false}>
       <div class="list-group-item">
-        <h4 class="list-group-item-heading"><{$lang_website}></h4>
-        <p class="list-group-item-text"><{$user_websiteurl}></p>
+        <h4 class="list-group-item-heading"><{$lang_website|default:''}></h4>
+        <p class="list-group-item-text"><{$user_websiteurl|default:''}></p>
       </div>
     <{/if}>
 
     <{if $user_email|default:false}>
       <div class="list-group-item">
-        <h4 class="list-group-item-heading"><{$lang_email}></h4>
-        <p class="list-group-item-text"><{$user_email}></p>
+        <h4 class="list-group-item-heading"><{$lang_email|default:''}></h4>
+        <p class="list-group-item-text"><{$user_email|default:''}></p>
       </div>
     <{/if}>
 
     <{if !$user_ownpage == true}>
       <div class="list-group-item">
-        <h4 class="list-group-item-heading"><{$lang_privmsg}></h4>
-        <p class="list-group-item-text"><{$user_pmlink}></p>
+        <h4 class="list-group-item-heading"><{$lang_privmsg|default:''}></h4>
+        <p class="list-group-item-text"><{$user_pmlink|default:''}></p>
       </div>
     <{/if}>
 
     <{if $user_icq|default:false}>
       <div class="list-group-item">
-        <h4 class="list-group-item-heading"><{$lang_icq}></h4>
-        <p class="list-group-item-text"><{$user_icq}></p>
+        <h4 class="list-group-item-heading"><{$lang_icq|default:''}></h4>
+        <p class="list-group-item-text"><{$user_icq|default:''}></p>
       </div>
     <{/if}>
 
     <{if $user_aim|default:false}>
       <div class="list-group-item">
-        <h4 class="list-group-item-heading"><{$lang_aim}></h4>
-        <p class="list-group-item-text"><{$user_aim}></p>
+        <h4 class="list-group-item-heading"><{$lang_aim|default:''}></h4>
+        <p class="list-group-item-text"><{$user_aim|default:''}></p>
       </div>
     <{/if}>
 
     <{if $user_yim|default:false}>
       <div class="list-group-item">
-        <h4 class="list-group-item-heading"><{$lang_yim}></h4>
-        <p class="list-group-item-text"><{$user_yim}></p>
+        <h4 class="list-group-item-heading"><{$lang_yim|default:''}></h4>
+        <p class="list-group-item-text"><{$user_yim|default:''}></p>
       </div>
     <{/if}>
 
     <{if $user_msnm|default:false}>
       <div class="list-group-item">
-        <h4 class="list-group-item-heading"><{$lang_msnm}></h4>
-        <p class="list-group-item-text"><{$user_msnm}></p>
+        <h4 class="list-group-item-heading"><{$lang_msnm|default:''}></h4>
+        <p class="list-group-item-text"><{$user_msnm|default:''}></p>
       </div>
     <{/if}>
 
     <{if $user_location|default:false}>
       <div class="list-group-item">
-        <h4 class="list-group-item-heading"><{$lang_location}></h4>
-        <p class="list-group-item-text"><{$user_location}></p>
+        <h4 class="list-group-item-heading"><{$lang_location|default:''}></h4>
+        <p class="list-group-item-text"><{$user_location|default:''}></p>
       </div>
     <{/if}>
 
     <{if $user_occupation|default:false}>
       <div class="list-group-item">
-        <h4 class="list-group-item-heading"><{$lang_occupation}></h4>
-        <p class="list-group-item-text"><{$user_occupation}></p>
+        <h4 class="list-group-item-heading"><{$lang_occupation|default:''}></h4>
+        <p class="list-group-item-text"><{$user_occupation|default:''}></p>
       </div>
     <{/if}>
 
     <{if $user_interest|default:false}>
       <div class="list-group-item">
-        <h4 class="list-group-item-heading"><{$lang_interest}></h4>
-        <p class="list-group-item-text"><{$user_interest}></p>
+        <h4 class="list-group-item-heading"><{$lang_interest|default:''}></h4>
+        <p class="list-group-item-text"><{$user_interest|default:''}></p>
       </div>
     <{/if}>
 
     <{if $user_extrainfo|default:false}>
       <div class="list-group-item">
-        <h4 class="list-group-item-heading"><{$lang_extrainfo}></h4>
-        <p class="list-group-item-text"><{$user_extrainfo}></p>
+        <h4 class="list-group-item-heading"><{$lang_extrainfo|default:''}></h4>
+        <p class="list-group-item-text"><{$user_extrainfo|default:''}></p>
       </div>
     <{/if}>
 </div>
 
-<h2><{$lang_statistics}></h2>
+<h2><{$lang_statistics|default:''}></h2>
 
 <div class="list-group">
   <div class="list-group-item">
-    <h4 class="list-group-item-heading"><{$lang_membersince}></h4>
-    <p class="list-group-item-text"><{$user_joindate}></p>
+    <h4 class="list-group-item-heading"><{$lang_membersince|default:''}></h4>
+    <p class="list-group-item-text"><{$user_joindate|default:''}></p>
   </div>
 </div>
 
 <div class="list-group">
   <div class="list-group-item">
-    <h4 class="list-group-item-heading"><{$lang_rank}></h4>
-    <p class="list-group-item-text"><{$user_rankimage}> <{$user_ranktitle}></p>
+    <h4 class="list-group-item-heading"><{$lang_rank|default:''}></h4>
+    <p class="list-group-item-text"><{$user_rankimage|default:''}> <{$user_ranktitle|default:''}></p>
   </div>
 </div>
 
 
 <div class="list-group">
   <div class="list-group-item">
-    <h4 class="list-group-item-heading"><{$lang_posts}></h4>
-    <p class="list-group-item-text"><{$user_posts}></p>
+    <h4 class="list-group-item-heading"><{$lang_posts|default:''}></h4>
+    <p class="list-group-item-text"><{$user_posts|default:''}></p>
   </div>
 </div>
 
@@ -135,15 +135,15 @@
 
 <div class="list-group">
   <div class="list-group-item">
-    <h4 class="list-group-item-heading"><{$lang_lastlogin}></h4>
-    <p class="list-group-item-text"><{$user_lastlogin}></p>
+    <h4 class="list-group-item-heading"><{$lang_lastlogin|default:''}></h4>
+    <p class="list-group-item-text"><{$user_lastlogin|default:''}></p>
   </div>
 </div>
 
 
 <{if $user_signature|default:false}>
-    <h2><{$lang_signature}></h2>
-    <div class="alert alert-info"><{$user_signature}></div>
+    <h2><{$lang_signature|default:''}></h2>
+    <div class="alert alert-info"><{$user_signature|default:''}></div>
 <{/if}>
 
 

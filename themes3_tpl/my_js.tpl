@@ -5,6 +5,6 @@
     $("input[name='uname']").addClass("form-control");
     $("input[name='pass']").addClass("form-control");
     $('iframe:not([title])').attr('title','iframe content');
-    <{$mobile_device}>
+    <{$mobile_device|default:''}>
   });
 </script>

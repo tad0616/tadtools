@@ -6,10 +6,10 @@
         <form action="<{$xoops_url}>/user.php" method="post" class="form-horizontal" role="form">
           <fieldset style="min-width: 200px; margin: 10px;">
             <legend>
-            <{if $login_text|default:false}><{$login_text}><{else}>
+            <{if $login_text|default:false}><{$login_text|default:''}><{else}>
             <{$smarty.const.TF_USER_ENTER}><{/if}>
             </legend>
-            <{if $login_description|default:false}><div class="alert alert-warning" style="font-size: 0.825rem;"><{$login_description}></div><{/if}>
+            <{if $login_description|default:false}><div class="alert alert-warning" style="font-size: 0.825rem;"><{$login_description|default:''}></div><{/if}>
             <div class="form-group">
               <label class="col-sm-4 control-label" for="uname">
                 <{$smarty.const.TF_USER_S_ID}>
@@ -32,7 +32,7 @@
               <label class="col-sm-4 control-label">
               </label>
               <div class="col-sm-8">
-                <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi}>">
+                <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi|default:''}>">
                 <input type="hidden" name="rememberme" value="On">
                 <input type="hidden" name="op" value="login">
                 <input type="hidden" name="xoops_login" value="1">

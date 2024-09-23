@@ -2,7 +2,7 @@
   <{assign var="i" value=0}>
   <{assign var="total" value=1}>
 
-  <div class="leftBlock" style="<{if $leftBlocks2|default:false}><{$leftBlocks2}>;<{/if}>width:100%;">
+  <div class="leftBlock" style="<{if $leftBlocks2|default:false}><{$leftBlocks2|default:''}>;<{/if}>width:100%;">
     <{foreach item=block from=$xoBlocks.canvas_left|default:null}>
       <{if $i==0}>
         <div class="row">

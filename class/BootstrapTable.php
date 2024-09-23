@@ -74,7 +74,7 @@ use XoopsModules\Tadtools\BootstrapTable;
 $BootstrapTable=BootstrapTable::render();
 
 <table> 可加入 data-toggle="table" data-pagination="true" data-search="true" data-mobile-responsive="true" data-url="資料來源.json"
-data-url="../ajax.php?op=get_all_school&county=<{$county}>" (資料來源)
+data-url="../ajax.php?op=get_all_school&county=<{$county|default:''}>" (資料來源)
 點擊編輯會用到：
 data-id-field="SchoolCode"
 data-editable-url="../ajax.php"

@@ -60,9 +60,7 @@ class VideoJs
     {
         global $xoTheme;
 
-        if (!empty($this->vtt)) {
-            $vtt = '<track kind="captions" src="' . $this->vtt . '" srclang="zh-TW" label="正體中文" default>';
-        }
+        $vtt = !empty($this->vtt) ? '<track kind="captions" src="' . $this->vtt . '" srclang="zh-TW" label="正體中文" default>' : '';
 
         $poster = '';
         if (empty($this->start)) {

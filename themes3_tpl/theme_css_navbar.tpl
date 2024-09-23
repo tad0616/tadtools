@@ -1,51 +1,51 @@
 
 .navbar-default {
-  background-color: <{$navbar_bg_bottom}>;
-  background-image: -moz-linear-gradient(top, <{$navbar_bg_top}>, <{$navbar_bg_bottom}>);
-  background-image: -webkit-linear-gradient(top, <{$navbar_bg_top}>, <{$navbar_bg_bottom}>);
-  background-image: -o-linear-gradient(top, <{$navbar_bg_top}>, <{$navbar_bg_bottom}>);
-  background-image: linear-gradient(to bottom, <{$navbar_bg_top}>, <{$navbar_bg_bottom}>);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(<{$navbar_bg_top}>), to(<{$avbar_bg_bottom}>));
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=<{$navbar_bg_top}>, endColorstr=<{$navbar_bg_bottom}>, GradientType=0);
+  background-color: <{$navbar_bg_bottom|default:''}>;
+  background-image: -moz-linear-gradient(top, <{$navbar_bg_top|default:''}>, <{$navbar_bg_bottom|default:''}>);
+  background-image: -webkit-linear-gradient(top, <{$navbar_bg_top|default:''}>, <{$navbar_bg_bottom|default:''}>);
+  background-image: -o-linear-gradient(top, <{$navbar_bg_top|default:''}>, <{$navbar_bg_bottom|default:''}>);
+  background-image: linear-gradient(to bottom, <{$navbar_bg_top|default:''}>, <{$navbar_bg_bottom|default:''}>);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(<{$navbar_bg_top|default:''}>), to(<{$avbar_bg_bottom|default:''}>));
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=<{$navbar_bg_top|default:''}>, endColorstr=<{$navbar_bg_bottom|default:''}>, GradientType=0);
   min-height: inherit;
 }
 
 .navbar-default .navbar-nav > li > a {
-  color: <{$navbar_color}>;
-  padding: <{$navbar_py}>px <{$navbar_px}>px;
+  color: <{$navbar_color|default:''}>;
+  padding: <{$navbar_py|default:''}>px <{$navbar_px|default:''}>px;
   <{if $navbar_font_size|default:false}>
-  font-size: <{$navbar_font_size}>rem;
+  font-size: <{$navbar_font_size|default:''}>rem;
   <{/if}>
 }
 .navbar-default .navbar-nav > li > a:focus,
 .navbar-default .navbar-nav > li > a:hover {
-  color:<{$navbar_color_hover}>;
+  color:<{$navbar_color_hover|default:''}>;
 }
 .navbar-default .navbar-nav > li > a:hover {
-  background-color: <{$navbar_hover}>;
+  background-color: <{$navbar_hover|default:''}>;
 }
 
 
 .navbar-default .navbar-nav li.dropdown.open > .dropdown-toggle,
 .navbar-default .navbar-nav li.dropdown.active > .dropdown-toggle,
 .navbar-default .navbar-nav li.dropdown.open.active > .dropdown-toggle {
-  background-color: <{$navbar_hover}>;
+  background-color: <{$navbar_hover|default:''}>;
 }
 
 .navbar-default .navbar-navbar-btn {
-  background-color: <{$navbar_bg_bottom}>;
-  background-image: -moz-linear-gradient(top, <{$navbar_bg_top}>, <{$navbar_bg_bottom}>);
-  background-image: -webkit-linear-gradient(top, <{$navbar_bg_top}>, <{$navbar_bg_bottom}>);
-  background-image: -o-linear-gradient(top, <{$navbar_bg_top}>, <{$navbar_bg_bottom}>);
-  background-image: linear-gradient(to bottom, <{$navbar_bg_top}>, <{$navbar_bg_bottom}>);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(<{$navbar_bg_top}>), to(<{$avbar_bg_bottom}>));
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=<{$navbar_bg_top}>, endColorstr=<{$navbar_bg_bottom}>, GradientType=0);
+  background-color: <{$navbar_bg_bottom|default:''}>;
+  background-image: -moz-linear-gradient(top, <{$navbar_bg_top|default:''}>, <{$navbar_bg_bottom|default:''}>);
+  background-image: -webkit-linear-gradient(top, <{$navbar_bg_top|default:''}>, <{$navbar_bg_bottom|default:''}>);
+  background-image: -o-linear-gradient(top, <{$navbar_bg_top|default:''}>, <{$navbar_bg_bottom|default:''}>);
+  background-image: linear-gradient(to bottom, <{$navbar_bg_top|default:''}>, <{$navbar_bg_bottom|default:''}>);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(<{$navbar_bg_top|default:''}>), to(<{$avbar_bg_bottom|default:''}>));
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=<{$navbar_bg_top|default:''}>, endColorstr=<{$navbar_bg_bottom|default:''}>, GradientType=0);
 
 }
 
 .dropdown-menu > li > a{
   <{if $navbar_font_size|default:false}>
-    font-size: <{$navbar_font_size}>rem;
+    font-size: <{$navbar_font_size|default:''}>rem;
   <{/if}>
 }
 

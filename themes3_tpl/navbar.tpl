@@ -24,11 +24,11 @@
     }
 </style>
 
-<{$tad_themes_popup_code}>
+<{$tad_themes_popup_code|default:''}>
 
 <{if $navbar_pos!="not-use"}>
 
-    <nav id="main-nav" class="navbar navbar-default <{if $navbar_pos=="fixed-top"}>navbar-fixed-top<{elseif $navbar_pos=="fixed-bottom"}>navbar-fixed-bottom<{else}>sticky-top<{/if}>" role="navigation" style="background-color:<{$navbar_bg_top}>;<{if $navbar_img|default:false}>background-image: url(<{$navbar_img}>);<{/if}>">
+    <nav id="main-nav" class="navbar navbar-default <{if $navbar_pos=="fixed-top"}>navbar-fixed-top<{elseif $navbar_pos=="fixed-bottom"}>navbar-fixed-bottom<{else}>sticky-top<{/if}>" role="navigation" style="background-color:<{$navbar_bg_top|default:''}>;<{if $navbar_img|default:false}>background-image: url(<{$navbar_img|default:''}>);<{/if}>">
         <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -40,9 +40,9 @@
             </button>
             <{if $show_sitename !='2' }>
                 <{if $navlogo_img|default:false}>
-                    <a class="navbar-brand" href="<{$xoops_url}>/index.php" style="padding: 4px 20px 4px;"><img src="<{$navlogo_img}>" alt="<{$xoops_sitename}>" class="img-responsive"></a>
+                    <a class="navbar-brand" href="<{$xoops_url}>/index.php" style="padding: 4px 20px 4px;"><img src="<{$navlogo_img|default:''}>" alt="<{$xoops_sitename|default:''}>" class="img-responsive"></a>
                 <{elseif $show_sitename=='1'}>
-                    <a class="navbar-brand" href="<{$xoops_url}>/index.php" style="color:<{$navbar_color}>"><{$xoops_sitename}></a>
+                    <a class="navbar-brand" href="<{$xoops_url}>/index.php" style="color:<{$navbar_color|default:''}>"><{$xoops_sitename|default:''}></a>
                 <{/if}>
             <{/if}>
         </div>
@@ -70,13 +70,13 @@
                 <{if $xoops_dirname=="" || $xoops_dirname=="system"}>
                 <li><a rel="tooltip" href="<{$xoops_url}>/admin.php" title="<{$smarty.const.TF_MODULE_CONFIG}>"><span class="fa fa-wrench"></span></a></li>
                 <{else}>
-                <li><a rel="tooltip" href="<{$xoops_url}>/modules/<{$xoops_dirname}>/admin/index.php" title="<{$smarty.const.TF_MODULE_CONFIG}>"><span class="fa fa-wrench"></span></a></li>
+                <li><a rel="tooltip" href="<{$xoops_url}>/modules/<{$xoops_dirname|default:''}>/admin/index.php" title="<{$smarty.const.TF_MODULE_CONFIG}>"><span class="fa fa-wrench"></span></a></li>
                 <{/if}>
             <{/if}>
 
             <li id="preview-menu">
                 <a rel="tooltip" title="<{$smarty.const.TF_USER_WELCOME}>" class="dropdown-toggle" data-toggle="dropdown">
-                <{$smarty.const.TF_USER_WELCOME}><{$xoops_name}> <span class="caret"></span>
+                <{$smarty.const.TF_USER_WELCOME}><{$xoops_name|default:''}> <span class="caret"></span>
                 </a>
 
                 <{include file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_user.tpl"}>

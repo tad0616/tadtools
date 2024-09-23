@@ -49,7 +49,7 @@ class Title extends AbstractElement
             $text = $writer->write();
         }
 
-        $content = "<{$tag}>{$text}</{$tag}>" . PHP_EOL;
+        $content = "<{$tag|default:''}>{$text}</{$tag}>" . PHP_EOL;
 
         return $content;
     }

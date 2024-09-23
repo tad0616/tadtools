@@ -1,7 +1,7 @@
 <div class="xoops-comment-body">
     <div class="row">
-        <div class="col-xs-2 col-md-2"><strong><{$lang_poster}></strong></div>
-        <div class="col-xs-10 col-md-10"><strong><{$lang_thread}></strong></div>
+        <div class="col-xs-2 col-md-2"><strong><{$lang_poster|default:''}></strong></div>
+        <div class="col-xs-10 col-md-10"><strong><{$lang_thread|default:''}></strong></div>
     </div>
     <{foreach item=comment from=$comments}>
         <{include file="db:system_comment.tpl" comment=$comment}>
@@ -19,7 +19,7 @@
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="xoops-comment-form">
-                            <{$commentform}>
+                            <{$commentform|default:''}>
                         </div>
                     </div>
                     <div class="modal-footer">

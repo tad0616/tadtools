@@ -6,7 +6,7 @@ $(function(){
     $(".s1").CarouSlide({
         animType:"slide-vertical",
         autoAnim:true,
-        slideTime: <{$slide_timeout}>,
+        slideTime: <{$slide_timeout|default:''}>,
         animTime:1000,
         alwaysNext:true
     });

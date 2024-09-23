@@ -46,14 +46,14 @@ require_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
 $xoopsTpl->assign('CustomSetupForm', $TadDataCenter->getCustomSetupForm($action));
-<{$CustomSetupForm}>
+<{$CustomSetupForm|default:''}>
 
 //顯示問卷
 require_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;
 $TadDataCenter=new TadDataCenter($module_dirname);
 $TadDataCenter->set_col($col_name,$col_sn);
 $xoopsTpl->assign('CustomForm', $TadDataCenter->getCustomForm($use_form = true, $use_submit = false, $action = '', $lw = 3, $rw = 9));
-<{$CustomForm}>
+<{$CustomForm|default:''}>
 
 //後台自訂問卷設定儲存
 require_once XOOPS_ROOT_PATH."/modules/tadtools/TadDataCenter.php" ;

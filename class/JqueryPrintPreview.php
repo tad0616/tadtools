@@ -51,7 +51,7 @@ use XoopsModules\Tadtools\JqueryPrintPreview;
 $JqueryPrintPreview=new JqueryPrintPreview('a.print-preview');
 $JqueryPrintPreview->render();
 
-//布景樣板要有<{$module_css}>
+//布景樣板要有<{$module_css|default:''}>
 $xoopsTpl->assign("module_css", '<link rel="stylesheet" href="' . XOOPS_URL . '/modules/tad_web/plugins/news/print.css" type="text/css" media="print">');
 
 //print.css 內容

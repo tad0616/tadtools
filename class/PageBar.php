@@ -70,20 +70,20 @@ class PageBar
     public function __construct($total, $limit = '20', $page_limit = '10', $order_sql = '')
     {
         $limit = (int) $limit;
-        $this->prev = "<img src='" . XOOPS_URL . "/modules/tadtools/images/1leftarrow.png' alt='" . _TAD_BACK_PAGE . "' align='absmiddle' hspace=3>";
-        $this->next = "<img src='" . XOOPS_URL . "/modules/tadtools/images/1rightarrow.png' alt='" . _TAD_NEXT_PAGE . "' align='absmiddle' hspace=3>";
-        $this->first = "<img src='" . XOOPS_URL . "/modules/tadtools/images/2leftarrow.png' alt='" . _TAD_FIRST_PAGE . "' align='absmiddle' hspace=3>";
-        $this->last = "<img src='" . XOOPS_URL . "/modules/tadtools/images/2rightarrow.png' alt='" . _TAD_LAST_PAGE . "' align='absmiddle' hspace=3>";
-        $this->prev2 = "<img src='" . XOOPS_URL . "/modules/tadtools/images/1leftarrow_g.png' alt='" . _TAD_BACK_PAGE . "' align='absmiddle' hspace=3>";
-        $this->next2 = "<img src='" . XOOPS_URL . "/modules/tadtools/images/1rightarrow_g.png' alt='" . _TAD_NEXT_PAGE . "' align='absmiddle' hspace=3>";
-        $this->first2 = "<img src='" . XOOPS_URL . "/modules/tadtools/images/2leftarrow_g.png' alt='" . _TAD_FIRST_PAGE . "' align='absmiddle' hspace=3>";
-        $this->last2 = "<img src='" . XOOPS_URL . "/modules/tadtools/images/2rightarrow_g.png' alt='" . _TAD_LAST_PAGE . "' align='absmiddle' hspace=3>";
-        $this->to_page = $_SERVER['PHP_SELF'];
+        $page_limit = (int) $page_limit;
+        $this->prev = $this->sanitizeHTML("<img src='" . XOOPS_URL . "/modules/tadtools/images/1leftarrow.png' alt='" . _TAD_BACK_PAGE . "' align='absmiddle' hspace=3>");
+        $this->next = $this->sanitizeHTML("<img src='" . XOOPS_URL . "/modules/tadtools/images/1rightarrow.png' alt='" . _TAD_NEXT_PAGE . "' align='absmiddle' hspace=3>");
+        $this->first = $this->sanitizeHTML("<img src='" . XOOPS_URL . "/modules/tadtools/images/2leftarrow.png' alt='" . _TAD_FIRST_PAGE . "' align='absmiddle' hspace=3>");
+        $this->last = $this->sanitizeHTML("<img src='" . XOOPS_URL . "/modules/tadtools/images/2rightarrow.png' alt='" . _TAD_LAST_PAGE . "' align='absmiddle' hspace=3>");
+        $this->prev2 = $this->sanitizeHTML("<img src='" . XOOPS_URL . "/modules/tadtools/images/1leftarrow_g.png' alt='" . _TAD_BACK_PAGE . "' align='absmiddle' hspace=3>");
+        $this->next2 = $this->sanitizeHTML("<img src='" . XOOPS_URL . "/modules/tadtools/images/1rightarrow_g.png' alt='" . _TAD_NEXT_PAGE . "' align='absmiddle' hspace=3>");
+        $this->first2 = $this->sanitizeHTML("<img src='" . XOOPS_URL . "/modules/tadtools/images/2leftarrow_g.png' alt='" . _TAD_FIRST_PAGE . "' align='absmiddle' hspace=3>");
+        $this->last2 = $this->sanitizeHTML("<img src='" . XOOPS_URL . "/modules/tadtools/images/2rightarrow_g.png' alt='" . _TAD_LAST_PAGE . "' align='absmiddle' hspace=3>");
+        $this->to_page = $this->sanitizeURL($_SERVER['PHP_SELF']);
         $this->limit = $limit;
-        $this->total = $total;
+        $this->total = (int) $total;
         $this->pLimit = $page_limit;
-        $this->order_sql = $order_sql;
-
+        $this->order_sql = $this->sanitizeSQL($order_sql);
     }
 
     public function init()
@@ -101,83 +101,42 @@ class PageBar
         $this->pCurrent = ceil($this->current / $this->pLimit);
     }
 
-    //初始設定
-    public function set($active_color = 'none', $buttons = 'none')
-    {
-        if ('none' !== $active_color) {
-            $this->act_color = $active_color;
-        }
-
-        if ('none' !== $buttons) {
-            $this->buttons = $buttons;
-            $this->prev = $this->buttons['prev'];
-            $this->next = $this->buttons['next'];
-            $this->prev_layer = $this->buttons['prev_layer'];
-            $this->next_layer = $this->buttons['next_layer'];
-            $this->first = $this->buttons['first'];
-            $this->last = $this->buttons['last'];
-            $this->prev2 = $this->buttons['prev'];
-            $this->next2 = $this->buttons['next'];
-            $this->first2 = $this->buttons['first'];
-            $this->last2 = $this->buttons['last'];
-        }
-    }
-
-    // 處理 URL 的參數，過濾會使用到的變數名稱
     public function processQuery($used_query)
     {
-        // 將 URL 字串分離成二維陣列
-        // $QUERY_STRING = htmlspecialchars($_SERVER['QUERY_STRING']);
-        $QUERY_STRING = $_SERVER['QUERY_STRING'];
+        $QUERY_STRING = $this->sanitizeURL($_SERVER['QUERY_STRING']);
         $vars = explode('&', $QUERY_STRING);
-        //die(var_export($vars));
-        $len = \mb_strlen('amp;' . $this->url_page);
-        for ($i = 0; $i < count($vars); $i++) {
-            if ('amp;' . $this->url_page === mb_substr($vars[$i], 0, $len)) {
+        $len = mb_strlen('amp;' . $this->url_page);
+        $var = [];
+
+        foreach ($vars as $v) {
+            if ('amp;' . $this->url_page === mb_substr($v, 0, $len)) {
                 continue;
             }
-
-            //echo substr($vars[$i],0,7)."<br>";
-            $var[$i] = explode('=', $vars[$i]);
-        }
-        // Utility::dd($var);
-
-        // 過濾要使用的 URL 變數名稱
-        for ($i = 0; $i < count($var); $i++) {
-            for ($j = 0; $j < count($used_query); $j++) {
-                if (isset($var[$i][0]) && $var[$i][0] == $used_query[$j]) {
-                    $var[$i] = [];
-                }
-            }
+            $var[] = explode('=', $v);
         }
 
-        $vars = [];
-        // 合併變數名與變數值
-        for ($i = 0; $i < count($var); $i++) {
-            $vars[$i] = implode('=', $var[$i]);
-        }
+        $var = array_filter($var, function ($v) use ($used_query) {
+            return !in_array($v[0], $used_query);
+        });
 
-        // 合併為一完整的 URL 字串
         $processed_query = '';
-        for ($i = 0; $i < count($vars); $i++) {
-            $glue = ('' == $processed_query) ? '?' : '&';
-            // 開頭第一個是 '?' 其餘的才是 '&'
-            if ('' != $vars[$i]) {
-                $processed_query .= $glue . $vars[$i];
+        foreach ($var as $v) {
+            if (count($v) === 2) {
+                $glue = ('' == $processed_query) ? '?' : '&';
+                $processed_query .= $glue . $this->sanitizeURL($v[0]) . '=' . $this->sanitizeURL($v[1]);
             }
         }
 
         return $processed_query;
     }
 
-    // 製作 sql 的 query 字串 (LIMIT)
     public function sqlQuery()
     {
         $row_start = ($this->current * $this->limit) - $this->limit;
         if ($this->order_sql != '') {
-            $sql_query = " {$this->order_sql} LIMIT {$row_start}, {$this->limit}";
+            $sql_query = " {$this->order_sql} LIMIT " . (int) $row_start . ", " . (int) $this->limit;
         } else {
-            $sql_query = " LIMIT {$row_start}, {$this->limit}";
+            $sql_query = " LIMIT " . (int) $row_start . ", " . (int) $this->limit;
         }
 
         return $sql_query;
@@ -256,11 +215,11 @@ class PageBar
             $bar_r = " <a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='" . sprintf($this->pLimit, _TAD_GO_NEXT_PAGE) . "' style=''>{$this->next_layer}</a> ";
         }
 
-        $page_bar['center'] = $bar_center;
-        $page_bar['left'] = $bar_first . $bar_l . $bar_left;
-        $page_bar['right'] = $bar_right . $bar_r . $bar_last;
-        $page_bar['current'] = $this->current;
-        $page_bar['total'] = $this->pTotal;
+        $page_bar['center'] = $this->sanitizeHTML($bar_center);
+        $page_bar['left'] = $this->sanitizeHTML($bar_first . $bar_l . $bar_left);
+        $page_bar['right'] = $this->sanitizeHTML($bar_right . $bar_r . $bar_last);
+        $page_bar['current'] = (int) $this->current;
+        $page_bar['total'] = (int) $this->pTotal;
         $page_bar['sql'] = $this->sqlQuery();
 
         return $page_bar;
@@ -350,5 +309,21 @@ class PageBar
         $page_bar['sql'] = $this->sqlQuery();
 
         return $page_bar;
+    }
+
+    private function sanitizeHTML($input)
+    {
+        return htmlspecialchars($input, ENT_QUOTES, 'UTF-8');
+    }
+
+    private function sanitizeURL($input)
+    {
+        return filter_var($input, FILTER_SANITIZE_URL);
+    }
+
+    private function sanitizeSQL($input)
+    {
+        // This is a basic example. In a real-world scenario, you should use prepared statements.
+        return preg_replace('/[^a-zA-Z0-9\s]/', '', $input);
     }
 }
