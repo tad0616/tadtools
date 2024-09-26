@@ -44,6 +44,7 @@
   -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 }
+
 .my-input:focus {
   border-color: #66afe9;
   outline: 0;
@@ -62,6 +63,7 @@
   background-image: none;
   border: none;
 }
+
 .my-text:focus {
   border: none;
   outline: 0;

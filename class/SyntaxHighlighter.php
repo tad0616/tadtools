@@ -158,7 +158,10 @@ class SyntaxHighlighter
                   SyntaxHighlighter.all();
                 </script>";
             } else {
+
                 $syntaxhighlighter .= "
+                <link type='text/css' rel='stylesheet' href='" . XOOPS_URL . "/modules/tadtools/prism/prism.css'>
+                <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/prism/prism.js'></script>
                 <script type='text/javascript' src='{$dir}/scripts/shCore.js'></script>
                 <script type='text/javascript' src='{$dir}/scripts/shAutoloader.js'></script>
                 <style>

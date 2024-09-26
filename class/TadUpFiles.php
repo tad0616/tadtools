@@ -427,8 +427,9 @@ class TadUpFiles
     private function get_groups()
     {
         global $xoopsDB;
-        $sql = 'select groupid,name from `' . $xoopsDB->prefix('groups') . "` where group_type!='Anonymous' order by groupid";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
+        $sql = 'SELECT `groupid`, `name` FROM `' . $xoopsDB->prefix('groups') . "` WHERE `group_type` != 'Anonymous' ORDER BY `groupid`";
+        $result = Utility::query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $permission = _TUF_PERMISSION_NOTE;
         $groups = [];
@@ -471,13 +472,12 @@ class TadUpFiles
         $all_file = '';
         $and_tag = $this->tag ? "and `tag`='{$this->tag}'" : '';
         if (!empty($files_sn_arr)) {
-            $all_files_sn = implode("','", $files_sn_arr);
-            $sql = "select * from `{$this->TadUpFilesTblName}`  where `files_sn` in('$all_files_sn') order by sort";
+            $sql = 'SELECT * FROM `' . $this->TadUpFilesTblName . '` WHERE `files_sn` IN (' . implode(',', array_map('addslashes', $files_sn_arr)) . ') ORDER BY `sort`';
+            $result = Utility::query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         } else {
-            $sql = "select * from `{$this->TadUpFilesTblName}`  where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' $and_tag order by sort";
+            $sql = 'SELECT * FROM `' . $this->TadUpFilesTblName . '` WHERE `col_name` = ? AND `col_sn` = ?' . $and_tag . ' ORDER BY `sort`';
+            $result = Utility::query($sql, 'si', [$this->col_name, $this->col_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
         }
-        // die($sql);
-        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $i = 0;
 
         while ($all = $xoopsDB->fetchArray($result)) {
@@ -544,8 +544,6 @@ class TadUpFiles
 
                     $thumb_style2 = "<a class='thumbnail' id='thumb{$files_sn}' style='display:inline-block; width:{$this->thumb_width};height:{$this->thumb_height};overflow:hidden;background-color:{$this->thumb_bg_color};background-image:url({$thumb_pic});background-position:{$this->thumb_position};background-repeat:{$this->thumb_repeat};background-size:{$this->thumb_size}; margin-bottom: 4px;' title='{$description}'></a>";
                 }
-                $img_class = 'img-thumbnail';
-                // $img_class = ($this->bootstrap == '3') ? "img-thumbnail" : "img-polaroid";
 
                 $w = 'width:130px; word-break: break-word;';
                 $w2 = "width:{$this->thumb_width}; float:left; margin-right:10px;";
@@ -564,8 +562,9 @@ class TadUpFiles
             if ($show_edit === true or $show_edit === 'full') {
                 // 權限設定
                 if ($this->permission) {
-                    $sql = 'select gperm_groupid from `' . $xoopsDB->prefix('group_permission') . "` where gperm_name='dl_group' and gperm_itemid='{$files_sn}' order by gperm_groupid";
-                    $result2 = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                    $sql = 'SELECT `gperm_groupid` FROM `' . $xoopsDB->prefix('group_permission') . '` WHERE `gperm_name` = ? AND `gperm_itemid` = ? ORDER BY `gperm_groupid`';
+                    $result2 = Utility::query($sql, 'si', ['dl_group', $files_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
+
                     $gperm_groupid_arr = [];
                     while (list($gperm_groupid) = $xoopsDB->fetchRow($result2)) {
                         $gperm_groupid_arr[] = $gperm_groupid;
@@ -787,13 +786,13 @@ class TadUpFiles
                 $this->update_col_val($save_files_sn, 'description', $files_desc);
                 // 順便更新權限
                 if ($this->permission) {
-                    $sql = 'delete from `' . $xoopsDB->prefix('group_permission') . "` where `gperm_itemid`='{$save_files_sn}' and `gperm_name`='dl_group'";
-                    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                    $sql = 'DELETE FROM `' . $xoopsDB->prefix('group_permission') . '` WHERE `gperm_itemid` = ? AND `gperm_name` = ?';
+                    Utility::query($sql, 'is', [$save_files_sn, 'dl_group']) or Utility::web_error($sql, __FILE__, __LINE__);
 
                     foreach ($dl_group[$save_files_sn] as $groupid) {
                         $gperm_groupid = (int) $groupid;
-                        $sql = 'insert into `' . $xoopsDB->prefix('group_permission') . "`  (`gperm_groupid`,`gperm_itemid`,`gperm_modid`,`gperm_name`) values('{$gperm_groupid}', '{$save_files_sn}', '{$mod_id}', 'dl_group')";
-                        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                        $sql = 'INSERT INTO `' . $xoopsDB->prefix('group_permission') . '` (`gperm_groupid`, `gperm_itemid`, `gperm_modid`, `gperm_name`) VALUES (?, ?, ?, ?)';
+                        Utility::query($sql, 'iiis', [$gperm_groupid, $save_files_sn, $mod_id, 'dl_group']) or Utility::web_error($sql, __FILE__, __LINE__);
                     }
                 }
             }
@@ -972,11 +971,9 @@ class TadUpFiles
                     $save_description[$files_sn] = $myts->addSlashes($save_description[$files_sn]);
 
                     if (empty($files_sn)) {
-                        $sql = "replace into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`counter`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}',0,'{$file['name']}','{$this->subdir}','{$hash_name}','{$upload_date}','{$uid}','{$this->tag}')";
-                        // if ($this->col_sn == 12714) {
-                        //     die('a:' . $sql);
-                        // }
-                        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                        $sql = 'REPLACE INTO `' . $this->TadUpFilesTblName . '` (`col_name`, `col_sn`, `sort`, `kind`, `file_name`, `file_type`, `file_size`, `description`, `counter`, `original_filename`, `sub_dir`, `hash_filename`, `upload_date`, `uid`, `tag`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?)';
+                        Utility::query($sql, 'siisssisissssis', [$this->col_name, $this->col_sn, $this->sort, $kind, $file_name, $file['type'], $file['size'], $description, $this->subdir, $hash_name, $upload_date, $uid, $this->tag]) or Utility::web_error($sql, __FILE__, __LINE__);
+
                         //取得最後新增資料的流水編號
                         $insert_files_sn = $xoopsDB->getInsertId();
 
@@ -985,14 +982,15 @@ class TadUpFiles
                             $dl_group = Request::getArray('dl_group');
                             foreach ($dl_group['new'] as $groupid) {
                                 $gperm_groupid = (int) $groupid;
-                                $sql = 'insert into `' . $xoopsDB->prefix('group_permission') . "`  (`gperm_groupid`,`gperm_itemid`,`gperm_modid`,`gperm_name`) values('{$gperm_groupid}', '{$insert_files_sn}', '{$mod_id}', 'dl_group')";
-                                $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                                $sql = 'INSERT INTO `' . $xoopsDB->prefix('group_permission') . '` (`gperm_groupid`, `gperm_itemid`, `gperm_modid`, `gperm_name`) VALUES (?, ?, ?, ?)';
+                                Utility::query($sql, 'iiis', [$gperm_groupid, $insert_files_sn, $mod_id, 'dl_group']) or Utility::web_error($sql, __FILE__, __LINE__);
+
                             }
                         }
                     } else {
                         $description = !isset($save_description[$files_sn]) ? $save_description[$files_sn] : $description;
-                        $sql = "replace into `{$this->TadUpFilesTblName}` (`files_sn`,`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$files_sn}','{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}','{$file['name']}','{$this->subdir}','{$hash_name}','{$upload_date}','{$uid}','{$this->tag}')";
-                        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                        $sql = 'REPLACE INTO `' . $this->TadUpFilesTblName . '` (`files_sn`, `col_name`, `col_sn`, `sort`, `kind`, `file_name`, `file_type`, `file_size`, `description`, `original_filename`, `sub_dir`, `hash_filename`, `upload_date`, `uid`, `tag`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                        Utility::query($sql, 'isiisssisssssis', [$files_sn, $this->col_name, $this->col_sn, $this->sort, $kind, $file_name, $file['type'], $file['size'], $description, $file['name'], $this->subdir, $hash_name, $upload_date, $uid, $this->tag]) or Utility::web_error($sql, __FILE__, __LINE__);
                     }
 
                     $all_files_sn[] = $insert_files_sn;
@@ -1134,14 +1132,14 @@ class TadUpFiles
                 }
                 $this->col_sn = (int) $this->col_sn;
                 if (empty($files_sn)) {
-                    $sql = "replace into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`counter`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$new_filename}','{$type}','{$size}','{$description}',0 ,'{$filename}','{$this->subdir}','{$hash_name}.{$ext}','{$upload_date}','{$uid}','{$this->tag}')";
-                    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
+                    $sql = 'REPLACE INTO `' . $this->TadUpFilesTblName . '` (`col_name`, `col_sn`, `sort`, `kind`, `file_name`, `file_type`, `file_size`, `description`, `counter`, `original_filename`, `sub_dir`, `hash_filename`, `upload_date`, `uid`, `tag`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?)';
+                    Utility::query($sql, 'siisssisissssis', [$this->col_name, $this->col_sn, $this->sort, $kind, $new_filename, $type, $size, $description, $filename, $this->subdir, $hash_name . '.' . $ext, $upload_date, $uid, $this->tag]) or Utility::web_error($sql, __FILE__, __LINE__);
                     //取得最後新增資料的流水編號
                     $files_sn = $xoopsDB->getInsertId();
                 } else {
-                    $sql = "replace into `{$this->TadUpFilesTblName}` (`files_sn`,`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`counter`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$files_sn}','{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$new_filename}','{$type}','{$size}','{$description}',0,'{$filename}','{$this->subdir}','{$hash_name}.{$ext}','{$upload_date}','{$uid}','{$this->tag}')";
-                    // die("2-{$sql}");
-                    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                    $sql = 'REPLACE INTO `' . $this->TadUpFilesTblName . '` (`files_sn`, `col_name`, `col_sn`, `sort`, `kind`, `file_name`, `file_type`, `file_size`, `description`, `counter`, `original_filename`, `sub_dir`, `hash_filename`, `upload_date`, `uid`, `tag`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                    Utility::query($sql, 'isiisssisissssis', [$files_sn, $this->col_name, $this->col_sn, $this->sort, $kind, $new_filename, $type, $size, $description, 0, $filename, $this->subdir, $hash_name . '.' . $ext, $upload_date, $uid, $this->tag]) or Utility::web_error($sql, __FILE__, __LINE__);
                 }
                 $this->sort = '';
             }
@@ -1157,19 +1155,16 @@ class TadUpFiles
             }
             if ($copy_or_link or $only_import2db) {
                 $filename = Utility::auto_charset($filename);
-                // die($filename);
                 $description = (empty($files_sn) or empty($desc)) ? $filename : $desc;
 
                 if (empty($files_sn)) {
-                    $sql = "insert into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$new_filename}','{$type}','{$size}','{$description}','{$filename}','{$this->subdir}','{$hash_name}.{$ext}','{$upload_date}','{$uid}','{$this->tag}')";
-                    // die("3-{$sql}");
-                    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                    $sql = 'INSERT INTO `' . $this->TadUpFilesTblName . '` (`col_name`, `col_sn`, `sort`, `kind`, `file_name`, `file_type`, `file_size`, `description`, `original_filename`, `sub_dir`, `hash_filename`, `upload_date`, `uid`, `tag`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                    Utility::query($sql, 'siisssisssssis', [$this->col_name, $this->col_sn, $this->sort, $kind, $new_filename, $type, $size, $description, $filename, $this->subdir, $hash_name . '.' . $ext, $upload_date, $uid, $this->tag]) or Utility::web_error($sql, __FILE__, __LINE__);
                     //取得最後新增資料的流水編號
                     $files_sn = $xoopsDB->getInsertId();
                 } else {
-                    $sql = "replace into `{$this->TadUpFilesTblName}` (`files_sn`,`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$files_sn}','{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$$new_filename}','{$type}','{$size}','{$description}','{$filename}','{$this->subdir}','{$hash_name}.{$ext}','{$upload_date}','{$uid}','{$this->tag}')";
-                    // die("4-{$sql}");
-                    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                    $sql = 'REPLACE INTO `' . $this->TadUpFilesTblName . '` (`files_sn`, `col_name`, `col_sn`, `sort`, `kind`, `file_name`, `file_type`, `file_size`, `description`, `original_filename`, `sub_dir`, `hash_filename`, `upload_date`, `uid`, `tag`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                    Utility::query($sql, 'isiisssisssssis', [$files_sn, $this->col_name, $this->col_sn, $this->sort, $kind, $new_filename, $type, $size, $description, $filename, $this->subdir, $hash_name . '.' . $ext, $upload_date, $uid, $this->tag]) or Utility::web_error($sql, __FILE__, __LINE__);
                 }
 
                 $this->sort = '';
@@ -1506,17 +1501,16 @@ class TadUpFiles
                 }
                 if (empty($files_sn)) {
                     if ($this->col_name && $this->col_sn) {
-                        $sql = "insert into `{$this->TadUpFilesTblName}`  (`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}','{$file['name']}','{$this->subdir}','{$db_hash_name}','{$upload_date}','{$uid}','{$this->tag}')";
-                        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-                        //取得最後新增資料的流水編號
+                        $sql = 'INSERT INTO `' . $this->TadUpFilesTblName . '` (`col_name`, `col_sn`, `sort`, `kind`, `file_name`, `file_type`, `file_size`, `description`, `original_filename`, `sub_dir`, `hash_filename`, `upload_date`, `uid`, `tag`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                        Utility::query($sql, 'siisssisssssis', [$this->col_name, $this->col_sn, $this->sort, $kind, $file_name, $file['type'], $file['size'], $description, $file['name'], $this->subdir, $db_hash_name, $upload_date, $uid, $this->tag]) or Utility::web_error($sql, __FILE__, __LINE__);
                         $files_sn = $xoopsDB->getInsertId();
                     } else {
                         redirect_header($_SERVER['PHP_SELF'], 3, 'Error: empty $this->col_name(' . $this->col_name . ') || $this->col_sn(' . $this->col_sn . ')');
 
                     }
                 } else {
-                    $sql = "replace into `{$this->TadUpFilesTblName}` (`files_sn`,`col_name`,`col_sn`,`sort`,`kind`,`file_name`,`file_type`,`file_size`,`description`,`original_filename`,`sub_dir`,`hash_filename`,`upload_date`,`uid`,`tag`) values('{$files_sn}','{$this->col_name}','{$this->col_sn}','{$this->sort}','{$kind}','{$file_name}','{$file['type']}','{$file['size']}','{$description}','{$file['name']}','{$this->subdir}','{$db_hash_name}','{$upload_date}','{$uid}','{$this->tag}')";
-                    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                    $sql = 'REPLACE INTO `' . $this->TadUpFilesTblName . '` (`files_sn`, `col_name`, `col_sn`, `sort`, `kind`, `file_name`, `file_type`, `file_size`, `description`, `original_filename`, `sub_dir`, `hash_filename`, `upload_date`, `uid`, `tag`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                    Utility::query($sql, 'isiisssisssssis', [$files_sn, $this->col_name, $this->col_sn, $this->sort, $kind, $file_name, $file['type'], $file['size'], $description, $file['name'], $this->subdir, $db_hash_name, $upload_date, $uid, $this->tag]) or Utility::web_error($sql, __FILE__, __LINE__);
                 }
                 //die($sql);
             } else {
@@ -1535,11 +1529,10 @@ class TadUpFiles
     //自動編號
     public function auto_sort()
     {
-        global $xoopsDB, $xoopsUser;
+        global $xoopsDB;
+        $sql = 'SELECT MAX(sort) FROM `' . $this->TadUpFilesTblName . '` WHERE `col_name` = ? AND `col_sn` = ?';
+        $result = Utility::query($sql, 'si', [$this->col_name, $this->col_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
 
-        $sql = "select max(sort) from `{$this->TadUpFilesTblName}`  where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}'";
-
-        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($max) = $xoopsDB->fetchRow($result);
 
         return ++$max;
@@ -1548,14 +1541,13 @@ class TadUpFiles
     //更新某個欄位值
     public function update_col_val($files_sn = '', $col = '', $val = '')
     {
-        global $xoopsDB, $xoopsUser;
+        global $xoopsDB;
 
         $myts = \MyTextSanitizer::getInstance();
         $col = $myts->addSlashes($col);
-        $val = $myts->addSlashes($val);
 
-        $sql = "update `{$this->TadUpFilesTblName}`  set `$col`='{$val}' where `files_sn`='{$files_sn}'";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'UPDATE `' . $this->TadUpFilesTblName . '` SET `' . $col . '` = ? WHERE `files_sn` = ?';
+        Utility::query($sql, 'si', [$val, $files_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
         return true;
     }
 
@@ -1567,22 +1559,27 @@ class TadUpFiles
         $modhandler = xoops_getHandler('module');
         $theModule = $modhandler->getByDirname($this->dir);
         $mod_id = $theModule->mid();
-        $isAdmin = is_object($xoopsUser) ? $xoopsUser->isAdmin($mod_id) : false;
-        $my_uid = is_object($xoopsUser) ? $xoopsUser->uid() : 0;
+        $isAdmin = $xoopsUser ? $xoopsUser->isAdmin($mod_id) : false;
+        $my_uid = $xoopsUser ? $xoopsUser->uid() : 0;
 
         if (!empty($files_sn)) {
-            $del_what = "`files_sn`='{$files_sn}'";
-        } elseif (!empty($this->col_name) and !empty($this->col_sn)) {
-            $and_sort = (empty($this->sort)) ? '' : "and `sort`='{$this->sort}'";
-            $del_what = "`col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' $and_sort";
+            $del_what = '`files_sn`=?';
+        } elseif (!empty($this->col_name) && !empty($this->col_sn)) {
+            $and_sort = empty($this->sort) ? '' : ' AND `sort`=?';
+            $del_what = '`col_name`=? AND `col_sn`=?' . $and_sort;
         }
 
         if (empty($del_what)) {
             return false;
         }
 
-        $sql = "select * from `{$this->TadUpFilesTblName}`  where $del_what";
-        $result = $xoopsDB->query($sql) or die($sql);
+        $sql = 'SELECT * FROM `' . $this->TadUpFilesTblName . '` WHERE ' . $del_what;
+
+        $params = $files_sn ? [$files_sn] : [$this->col_name, $this->col_sn];
+        if (!empty($this->sort)) {
+            $params[] = $this->sort;
+        }
+        $result = Utility::query($sql, $files_sn ? 'i' : 'sii', $params) or die($sql);
 
         $del_amount = 0;
         while ($all = $xoopsDB->fetchArray($result)) {
@@ -1593,13 +1590,11 @@ class TadUpFiles
                 $this->set_col($col_name, $col_sn, $sort);
 
                 if (!empty($trash_can_table)) {
-                    $sql = "REPLACE INTO " . $xoopsDB->prefix($trash_can_table) . " SELECT *
-                    FROM `{$this->TadUpFilesTblName}` WHERE files_sn='{$files_sn}'";
-                    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                    $sql = 'REPLACE INTO `' . $xoopsDB->prefix($trash_can_table) . '` SELECT * FROM `' . $this->TadUpFilesTblName . '` WHERE `files_sn` = ?';
+                    Utility::query($sql, 'i', [$files_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
                 }
-
-                $del_sql = "delete  from `{$this->TadUpFilesTblName}`  where files_sn='{$files_sn}'";
-                $xoopsDB->queryF($del_sql) or Utility::web_error($del_sql, __FILE__, __LINE__);
+                $del_sql = 'DELETE FROM `' . $this->TadUpFilesTblName . '` WHERE `files_sn` = ?';
+                Utility::query($del_sql, 'i', [$files_sn]) or Utility::web_error($del_sql, __FILE__, __LINE__);
 
                 if ($kind === 'img') {
                     // die(XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$sub_dir}{$this->image_dir}/{$file_name}");
@@ -1701,6 +1696,7 @@ class TadUpFiles
 
         $sql = "select * from `{$this->TadUpFilesTblName}` $where";
         $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
         $i = 0;
         while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $files_sn, $col_name, $col_sn, $sort, $kind, $file_name, $file_type, $file_size, $description
@@ -1833,15 +1829,27 @@ class TadUpFiles
         if (empty($files_sn) and !empty($this->files_sn)) {
             $files_sn = $this->files_sn;
         }
+
+        // if (is_array($files_sn)) {
+        //     $where = "where `files_sn` in('" . implode("','", $files_sn) . "')";
+        // } else {
+        //     $where = ($files_sn) ? "where `files_sn`='{$files_sn}'" : "where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' $and_sort order by sort $andLimit";
+        // }
+
+        // $sql = "select * from `{$this->TadUpFilesTblName}` $where";
+        // $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
         if (is_array($files_sn)) {
-            $where = "where `files_sn` in('" . implode("','", $files_sn) . "')";
+            $where = 'WHERE `files_sn` IN (' . implode(',', array_fill(0, count($files_sn), '?')) . ')';
         } else {
-            $where = ($files_sn) ? "where `files_sn`='{$files_sn}'" : "where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' $and_sort order by sort $andLimit";
+            $where = ($files_sn) ? 'WHERE `files_sn`=?' : 'WHERE `col_name`=? AND `col_sn`=? ' . $and_sort . ' ORDER BY sort ' . $andLimit;
         }
 
-        $sql = "select * from `{$this->TadUpFilesTblName}` $where";
-        // echo "$sql<br>";
-        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'SELECT * FROM `' . $this->TadUpFilesTblName . '` ' . $where;
+
+        $params = is_array($files_sn) ? $files_sn : ($files_sn ? [$files_sn] : [$this->col_name, $this->col_sn]);
+        $result = Utility::query($sql, is_array($files_sn) ? str_repeat('s', count($files_sn)) : ($files_sn ? 'i' : 'si'), $params) or Utility::web_error($sql, __FILE__, __LINE__);
+
         $i = 0;
         $files = [];
         while ($all = $xoopsDB->fetchArray($result)) {
@@ -1856,8 +1864,9 @@ class TadUpFiles
             // 移除實體檔案不存在的紀錄
             $check_dir = ($kind === 'img') ? $this->TadUpFilesImgDir : $this->TadUpFilesDir;
             if ($remove_blank and !file_exists("{$check_dir}/{$file_name}")) {
-                $sql = "delete from `{$this->TadUpFilesTblName}` where files_sn='$files_sn'";
-                $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                $sql = 'DELETE FROM `' . $this->TadUpFilesTblName . '` WHERE `files_sn` = ?';
+                Utility::query($sql, 'i', [$files_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
+
                 continue;
             }
             $files[$i]['files_sn'] = $files_sn;
@@ -1907,7 +1916,7 @@ class TadUpFiles
     //取得單一圖片 $kind=images（大圖）,thumb（小圖）,file（檔案）$kind="url","dir"
     public function get_pic_file($showkind = 'images', $show_kind = 'url', $files_sn = '', $hash = false)
     {
-        global $xoopsDB, $xoopsUser;
+        global $xoopsDB;
         if ((empty($this->col_sn) or empty($this->col_name)) and empty($files_sn)) {
             return;
         }
@@ -1915,14 +1924,16 @@ class TadUpFiles
             $this->set_hash($hash);
         }
 
-        $and_sort = (!empty($this->sort)) ? " and `sort`='{$this->sort}'" : '';
-        $and_kind = ($showkind == 'file') ? " and `kind`='file'" : "and `kind`='img'";
+        $and_sort = !empty($this->sort) ? ' AND `sort`=?' : '';
+        $and_kind = $showkind == 'file' ? " AND `kind`='file'" : " AND `kind`='img'";
+        $where = $files_sn ? 'WHERE `files_sn`=?' : 'WHERE `col_name`=? AND `col_sn`=?' . $and_sort . $and_kind . ' ORDER BY sort LIMIT 0,1';
+        $sql = 'SELECT * FROM `' . $this->TadUpFilesTblName . '` ' . $where;
+        $params = $files_sn ? [$files_sn] : [$this->col_name, $this->col_sn];
+        if (!empty($this->sort)) {
+            $params[] = $this->sort;
+        }
+        $result = Utility::query($sql, $files_sn ? 'i' : 'sii', $params) or Utility::web_error($sql, __FILE__, __LINE__);
 
-        $where = $files_sn ? "where `files_sn`='{$files_sn}'" : "where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' $and_sort $and_kind order by sort limit 0,1";
-
-        $sql = "select * from `{$this->TadUpFilesTblName}` $where";
-
-        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $files = '';
         while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $files_sn, $col_name, $col_sn, $sort, $kind, $file_name, $file_type, $file_size, $description
@@ -1950,10 +1961,9 @@ class TadUpFiles
     public function get_file_amount()
     {
         global $xoopsDB;
+        $sql = 'SELECT COUNT(*) FROM `' . $this->TadUpFilesTblName . '` WHERE `col_name` = ? AND `col_sn` = ?';
+        $result = Utility::query($sql, 'si', [$this->col_name, $this->col_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
 
-        $sql = "select count(*) from `{$this->TadUpFilesTblName}`  where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}'";
-
-        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($amount) = $xoopsDB->fetchRow($result);
 
         return $amount;
@@ -2133,8 +2143,9 @@ class TadUpFiles
 
         // 權限設定
         if ($this->permission) {
-            $sql = 'select gperm_groupid from `' . $xoopsDB->prefix('group_permission') . "` where gperm_name='dl_group' and gperm_itemid='{$files_sn}' order by gperm_groupid";
-            $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+            $sql = 'SELECT `gperm_groupid` FROM `' . $xoopsDB->prefix('group_permission') . '` WHERE `gperm_name` = ? AND `gperm_itemid` = ? ORDER BY `gperm_groupid`';
+            $result = Utility::query($sql, 'si', ['dl_group', $files_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
+
             $gperm_groupid_arr = [];
             while (list($gperm_groupid) = $xoopsDB->fetchRow($result)) {
                 $gperm_groupid_arr[] = $gperm_groupid;
@@ -2174,8 +2185,8 @@ class TadUpFiles
         $real_filename = $file['original_filename'] ? $file['original_filename'] : $file['description'];
         $dl_name = ($this->hash) ? $file['hash_filename'] : str_replace(['/', '|', '\\', '?', '"', '*', ':', '<', '>'], '', $file['file_name']);
 
-        $sql = "update `{$this->TadUpFilesTblName}` set `counter`=`counter`+1 where `files_sn`='{$files_sn}'";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'UPDATE `' . $this->TadUpFilesTblName . '` SET `counter`=`counter`+1 WHERE `files_sn`=?';
+        Utility::query($sql, 'i', [$files_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         if ($file['kind'] === 'img') {
             $file_saved = "{$this->TadUpFilesImgUrl}/{$dl_name}";
@@ -2295,12 +2306,10 @@ class TadUpFiles
     public function get_one_file($files_sn = '')
     {
         global $xoopsDB;
-
-        $sql = "select * from `{$this->TadUpFilesTblName}`  where `files_sn`='{$files_sn}'";
+        $sql = 'SELECT * FROM `' . $this->TadUpFilesTblName . '` WHERE `files_sn`=?';
         Utility::test($sql, 'file_sql', 'die');
-        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $result = Utility::query($sql, 'i', [$files_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
         $all = $xoopsDB->fetchArray($result);
-        // die(var_export($all));
         return $all;
     }
 
@@ -3577,10 +3586,11 @@ class TadUpFiles
 
         if (!empty($where)) {
             $sql = "select count(*) from `{$this->TadUpFilesTblName}`  where $where";
+            $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         } else {
-            $sql = "select count(*) from `{$this->TadUpFilesTblName}`  where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}'";
+            $sql = 'SELECT COUNT(*) FROM `' . $this->TadUpFilesTblName . '` WHERE `col_name`=? AND `col_sn`=?';
+            $result = Utility::query($sql, 'si', [$this->col_name, $this->col_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
         }
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($count) = $xoopsDB->fetchRow($result);
 
         return $count;

@@ -230,8 +230,8 @@ class Ztree
 
 $path     = get_tad_link_cate_path($show_cate_sn);
 $path_arr = array_keys($path);
-$sql      = "select cate_sn,of_cate_sn,cate_title from " . $xoopsDB->prefix("tad_link_cate") . " order by cate_sort";
-$result   = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error());
+$sql      = "SELECT `cate_sn`, `of_cate_sn`, `cate_title` FROM `" . $xoopsDB->prefix("tad_link_cate") . "` ORDER BY `cate_sort`";
+$result   = Utility::query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error());
 
 $count  = tad_link_cate_count();
 $data[] = "{ id:0, pId:0, name:'All', url:'index.php', target:'_self', open:true}";

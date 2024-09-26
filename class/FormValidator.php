@@ -22,7 +22,7 @@ class FormValidator
     {
         global $xoTheme;
 
-        Utility::get_jquery();
+        $jquery = Utility::get_jquery();
 
         $LANGCODE = str_replace('-', '_', _LANGCODE);
 
@@ -32,24 +32,21 @@ class FormValidator
             $xoTheme->addScript('modules/tadtools/formValidator/js/jquery.validationEngine.js');
 
             $xoTheme->addScript('', null, "
-                (function(\$){
-                    \$(document).ready(function(){
-                        \$('{$this->id}').validationEngine({
-                            promptPosition: '$Position', //選項有：topLeft, topRight, bottomLeft,  centerRight, bottomRight
-                        });
+                \$(document).ready(function(){
+                    \$('{$this->id}').validationEngine({
+                        promptPosition: '$Position', //選項有：topLeft, topRight, bottomLeft,  centerRight, bottomRight
                     });
-                })(jQuery);
+                });
             ");
         } else {
             $main = "
             <link rel='stylesheet' href='" . XOOPS_URL . "/modules/tadtools/formValidator/css/validationEngine.jquery.css' type='text/css' media='screen' charset='utf-8' />
-
             $jquery
             <script src='" . XOOPS_URL . "/modules/tadtools/formValidator/js/languages/jquery.validationEngine-{$LANGCODE}.js' type='text/javascript'></script>
             <script src='" . XOOPS_URL . "/modules/tadtools/formValidator/js/jquery.validationEngine.js' type='text/javascript'></script>
             <script type='text/javascript'>
-            $().ready(function() {
-                $('{$this->id}').validationEngine({
+            \$(document).ready(function(){
+                \$('{$this->id}').validationEngine({
                     promptPosition: '$Position', //選項有：topLeft, topRight, bottomLeft,  centerRight, bottomRight
                 });
             });

@@ -7,6 +7,7 @@ header("Access-Control-Allow-Headers: Origin, Methods, Content-Type");
 use Xmf\Request;
 use XoopsModules\Tadtools\TadDataCenter;
 use XoopsModules\Tadtools\TadUpFiles;
+use XoopsModules\Tadtools\Utility;
 
 require_once __DIR__ . '/tadtools_header.php';
 
@@ -45,13 +46,13 @@ $data_name = Request::getString('data_name');
 switch ($dcq_op) {
     case 'save_dcq_sort':
         $col_ids = Request::getArray('col_ids');
-        $sql = 'update ' . $xoopsDB->prefix("{$dirname}_data_center") . " set `data_sort`=`data_sort`+1000 where `data_name`='dcq' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}'";
-        $xoopsDB->queryF($sql) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
+        $sql = 'UPDATE ' . $xoopsDB->prefix("{$dirname}_data_center") . " SET `data_sort`=`data_sort`+1000 WHERE `data_name`='dcq' AND `col_name`=? AND `col_sn`=?";
+        Utility::query($sql, 'si', [$col_name, $col_sn]) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
 
         $sort = 0;
         foreach ($col_ids as $col_id) {
-            $sql = 'update ' . $xoopsDB->prefix("{$dirname}_data_center") . " set `data_sort`='{$sort}' where col_id='{$col_id}' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}'";
-            $xoopsDB->queryF($sql) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
+            $sql = 'UPDATE ' . $xoopsDB->prefix("{$dirname}_data_center") . ' SET `data_sort`=? WHERE `col_id`=? and `col_name`=? and `col_sn`=?';
+            Utility::query($sql, 'issi', [$sort, $col_id, $col_name, $col_sn]) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
             $sort++;
         }
         echo _TAD_SORTED . '(' . date('Y-m-d H:i:s') . ')';
@@ -60,8 +61,8 @@ switch ($dcq_op) {
     case 'del_dcq_ans':
         $data_name_arr = explode('|', $data_name);
         foreach ($data_name_arr as $data_name) {
-            $sql = 'delete from ' . $xoopsDB->prefix("{$dirname}_data_center") . " where `data_name`='{$data_name}' and `col_name`='{$col_name}' and `col_sn`='{$col_sn}'";
-            $xoopsDB->queryF($sql) or die(' (' . date('Y-m-d H:i:s') . ')' . $sql);
+            $sql = 'DELETE FROM `' . $xoopsDB->prefix("{$dirname}_data_center") . "` WHERE `data_name`=? AND `col_name`=? AND `col_sn`=?";
+            Utility::query($sql, 'ssi', [$data_name, $col_name, $col_sn]) or die(' (' . date('Y-m-d H:i:s') . ')' . $sql);
         }
         header("location:{$_SERVER['HTTP_REFERER']}");
         exit;
@@ -69,10 +70,12 @@ switch ($dcq_op) {
     case 'del_dcq_col':
         $col_id = Request::getString('col_id');
 
-        $sql = 'delete from ' . $xoopsDB->prefix("{$dirname}_data_center") . " where `col_id`='{$col_id}'";
-        $xoopsDB->queryF($sql) or die(' (' . date('Y-m-d H:i:s') . ')' . $sql);
-        $sql = 'delete from ' . $xoopsDB->prefix("{$dirname}_data_center") . " where `data_name`='{$col_name}_{$col_sn}_dcq_{$col_id}'";
-        $xoopsDB->queryF($sql) or die(' (' . date('Y-m-d H:i:s') . ')' . $sql);
+        $sql = 'DELETE FROM `' . $xoopsDB->prefix("{$dirname}_data_center") . "` WHERE `col_id`=?";
+        Utility::query($sql, 's', [$col_id]) or die(' (' . date('Y-m-d H:i:s') . ')' . $sql);
+
+        $sql = 'DELETE FROM `' . $xoopsDB->prefix("{$dirname}_data_center") . "` WHERE `data_name`=?";
+        Utility::query($sql, 's', [$col_name . '_' . $col_sn . '_dcq_' . $col_id]) or die(' (' . date('Y-m-d H:i:s') . ')' . $sql);
+
         header("location:{$_SERVER['HTTP_REFERER']}");
         exit;
 
@@ -89,8 +92,8 @@ function save_sort($table, $sort_col, $primary_key, $sort_arr = [])
     global $xoopsDB;
     $sort = 1;
     foreach ($sort_arr as $sn) {
-        $sql = "update `" . $xoopsDB->prefix($table) . "` set `{$sort_col}`='{$sort}' where `{$primary_key}`='{$sn}'";
-        $xoopsDB->queryF($sql) or die(_TAD_SORT_FAIL . " (" . date("Y-m-d H:i:s") . ")" . $sql);
+        $sql = 'UPDATE `' . $xoopsDB->prefix($table) . '` SET `' . $sort_col . '`=? WHERE `' . $primary_key . '`=?';
+        Utility::query($sql, 'ii', [$sort, $sn]) or die(_TAD_SORT_FAIL . " (" . date("Y-m-d H:i:s") . ")" . $sql);
         $sort++;
     }
     echo _TAD_SORTED . "(" . date("Y-m-d H:i:s") . ")";

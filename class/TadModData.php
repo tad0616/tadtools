@@ -72,8 +72,9 @@ class TadModData
         }
         $this->table = $table;
 
-        $sql = "show full columns from `" . $xoopsDB->prefix($table) . "`";
-        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'SHOW FULL COLUMNS FROM `' . $xoopsDB->prefix($table) . '`';
+        $result = Utility::query($sql);
+
         // Field    Type    Null    Key    Default    Extra
         while ($all = $xoopsDB->fetchArray($result)) {
             foreach ($all as $k => $v) {
@@ -124,8 +125,9 @@ class TadModData
     public function get_arr($table, $key, $value)
     {
         global $xoopsDB, $xoopsTpl;
-        $sql = "select `$key`,`$value` from `" . $xoopsDB->prefix($table) . "` {$this->order}" . " order by $key";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'SELECT `' . $key . '`, `' . $value . '` FROM `' . $xoopsDB->prefix($table) . '` ' . $this->order . ' ORDER BY `' . $key . '`';
+        $result = Utility::query($sql);
+
         $arr = [];
         while (list($k, $v) = $xoopsDB->fetchRow($result)) {
             $arr[$k] = $v;
@@ -568,8 +570,8 @@ class TadModData
             }
         }
 
-        $sql = "update `" . $xoopsDB->prefix($this->table) . "` set " . implode(', ', $update_arr) . " where `{$this->primary}`='{$id}'";
-        $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'UPDATE `' . $xoopsDB->prefix($this->table) . '` SET ' . implode(', ', $update_arr) . ' WHERE `' . $this->primary . '`=?';
+        Utility::query($sql, 'i', [$id]);
 
         foreach ($this->use_file as $col_name) {
             $this->TadUpFiles->set_col($col_name, $id);
@@ -604,9 +606,9 @@ class TadModData
                 }
             }
         }
+        $sql = 'INSERT INTO `' . $xoopsDB->prefix($this->table) . '` (`' . implode('`, `', $col_name_arr) . '`) VALUES (' . rtrim(str_repeat('?, ', count($col_val_arr)), ', ') . ')';
+        Utility::query($sql, str_repeat('s', count($col_val_arr)), $col_val_arr) or Utility::web_error($sql, __FILE__, __LINE__);
 
-        $sql = "insert into `" . $xoopsDB->prefix($this->table) . "` (`" . implode('`, `', $col_name_arr) . "`) values('" . implode("', '", $col_val_arr) . "')";
-        $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $InsertId = $xoopsDB->getInsertId();
 
         foreach ($this->use_file as $col_name) {
@@ -624,8 +626,8 @@ class TadModData
 
         $this->chk_allow(__FUNCTION__);
 
-        $sql = "delete from `" . $xoopsDB->prefix($this->table) . "` where `{$this->primary}`='$id'";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'DELETE FROM `' . $xoopsDB->prefix($this->table) . '` WHERE `' . $this->primary . '`=?';
+        Utility::query($sql, 'i', [$id]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         foreach ($this->use_file as $col_name) {
             $this->TadUpFiles->set_col($col_name, $id);
@@ -909,6 +911,7 @@ class TadModData
     /*********** 資料操控 ************/
     // 取得資料
     // https://campus-xoops.tn.edu.tw/modules/tad_book3/page.php?tbsn=48&tbdsn=1612
+
     public function find($where_item = [])
     {
         global $xoopsDB, $xoopsUser;
@@ -917,18 +920,20 @@ class TadModData
             return;
         }
 
+        $where_sql = [];
+        $params = [];
         foreach ($where_item as $col => $val) {
-            if ($val == 'uid' and is_int($col)) {
+            if ($val == 'uid' && is_int($col)) {
                 $col = 'uid';
                 $val = $xoopsUser->uid();
             }
-            $where_sql[] = "`$col` = '{$val}'";
+            $where_sql[] = "`$col` = ?";
+            $params[] = $val;
         }
-        $where = "where " . implode(' and ', $where_sql);
+        $where = "WHERE " . implode(' AND ', $where_sql);
 
-        $myts = \MyTextSanitizer::getInstance();
-        $sql = "select * from `" . $xoopsDB->prefix($this->table) . "` $where";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'SELECT * FROM `' . $xoopsDB->prefix($this->table) . '` ' . $where;
+        $result = Utility::query($sql, str_repeat('s', count($params)), $params) or Utility::web_error($sql, __FILE__, __LINE__);
         $all = $xoopsDB->fetchArray($result);
         return $all;
     }
@@ -1257,8 +1262,8 @@ class TadModData
     private function get_max_sort()
     {
         global $xoopsDB;
-        $sql = "select max(`{$this->sort_col}`) from " . $xoopsDB->prefix($this->table) . "";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'SELECT MAX(`' . $this->sort_col . '`) FROM `' . $xoopsDB->prefix($this->table) . '`';
+        $result = Utility::query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($sort) = $xoopsDB->fetchRow($result);
 
         return ++$sort;
@@ -1348,7 +1353,8 @@ class TadModData
                 }
 
                 if (in_array('show', $where) and $disable) {
-                    $this->disable_show_col[] = $col;}
+                    $this->disable_show_col[] = $col;
+                }
 
                 if (in_array('create', $where) and $disable) {
                     $this->disable_create_col[] = $col;
@@ -1360,7 +1366,8 @@ class TadModData
             }
 
             if (in_array('show', $where) and $disable) {
-                $this->disable_show_col[] = $col_name;}
+                $this->disable_show_col[] = $col_name;
+            }
 
             if (in_array('create', $where) and $disable) {
                 $this->disable_create_col[] = $col_name;

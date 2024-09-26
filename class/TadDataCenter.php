@@ -160,8 +160,8 @@ class TadDataCenter
     {
         global $xoopsDB, $xoopsModule;
         if ('' != $this->module_dirname) {
-            $sql = 'select mid from ' . $xoopsDB->prefix('modules') . " where dirname='{$this->module_dirname}'";
-            $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+            $sql = 'SELECT `mid` FROM `' . $xoopsDB->prefix('modules') . '` WHERE `dirname` = ?';
+            $result = Utility::query($sql, 's', [$this->module_dirname]) or Utility::web_error($sql, __FILE__, __LINE__);
             list($this->mid) = $xoopsDB->fetchRow($result);
         } elseif ($xoopsModule) {
             $this->mid = $xoopsModule->mid();
@@ -435,10 +435,12 @@ class TadDataCenter
                 $val = $myts->addSlashes($val);
 
                 $col_id = $this->col_id ? $this->col_id : "{$this->mid}-{$this->col_name}-{$this->col_sn}-{$name}-{$data_sort}";
-                $sql = "replace into `{$this->TadDataCenterTblName}`
-                (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`, `col_id`, `sort`, `update_time`)
-                values('{$this->mid}' , '{$this->col_name}' , '{$this->col_sn}' , '{$name}' , '{$val}' , '{$data_sort}', '{$col_id}', '{$sort}', now())";
-                $xoopsDB->queryF($sql) or die($xoopsDB->error());
+
+                $sql = 'REPLACE INTO `' . $this->TadDataCenterTblName . '`
+                (`mid`, `col_name`, `col_sn`, `data_name`, `data_value`, `data_sort`, `col_id`, `sort`, `update_time`)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())';
+
+                Utility::query($sql, 'isisssisi', [$this->mid, $this->col_name, $this->col_sn, $name, $val, $data_sort, $col_id, $sort]) or die($xoopsDB->error());
             }
             $sort++;
         }
@@ -457,10 +459,12 @@ class TadDataCenter
                 $data_sort = 0;
                 $col_id = $this->col_id ? $this->col_id : "{$this->mid}-{$this->col_name}-{$this->col_sn}-{$name}-{$data_sort}";
 
-                $sql = "replace into `{$this->TadDataCenterTblName}`
-                (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`, `col_id`, `sort`, `update_time`)
-                values('{$this->mid}' , '{$this->col_name}' , '{$this->col_sn}' , '{$name}' , 'files=" . implode(',', $files_sn_arr) . "' , $data_sort, '{$col_id}', '{$sort}', now())";
-                $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__, true);
+                $sql = 'REPLACE INTO `' . $this->TadDataCenterTblName . '`
+                (`mid`, `col_name`, `col_sn`, `data_name`, `data_value`, `data_sort`, `col_id`, `sort`, `update_time`)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())';
+
+                Utility::query($sql, 'isissisis',
+                    [$this->mid, $this->col_name, $this->col_sn, $name, "files=" . implode(',', $files_sn_arr), $data_sort, $col_id, $sort]) or Utility::web_error($sql, __FILE__, __LINE__, true);
                 $sort++;
             }
         }
@@ -477,8 +481,10 @@ class TadDataCenter
 
             // 若為接續模式，取出目前最大 data_sort
             if ($mode == 'append') {
-                $sql = "select max(data_sort) from `{$this->TadDataCenterTblName}` where `mid`='{$this->mid}' and `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' and `data_name`='{$name}'";
-                $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                $sql = 'SELECT MAX(`data_sort`) FROM `' . $this->TadDataCenterTblName . '` WHERE `mid` = ? AND `col_name` = ? AND `col_sn` = ? AND `data_name` = ?';
+
+                $result = Utility::query($sql, 'isis', [$this->mid, $this->col_name, $this->col_sn, $name]) or Utility::web_error($sql, __FILE__, __LINE__);
+
                 list($old_data_sort) = $xoopsDB->fetchRow($result);
                 $old_data_sort++;
             }
@@ -498,11 +504,16 @@ class TadDataCenter
 
                 $this->delData($name, $data_sort, $this->col_name, $this->col_sn, __FILE__, __LINE__);
 
-                $col_id = $this->col_id ? $this->col_id : $v['col_id'];
-                $sql = "replace into `{$this->TadDataCenterTblName}`
-                (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`, `col_id`, `sort`, `update_time`)
-                values('{$this->mid}' , '{$this->col_name}' , '{$this->col_sn}' , '{$name}' , '{$val}' , '{$data_sort}', '{$col_id}' , '{$sort}', now())";
-                $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                $col_id = isset($v['col_id']) ? $v['col_id'] : '';
+                if (!empty($this->col_id)) {
+                    $col_id = $this->col_id;
+                }
+
+                $sql = 'REPLACE INTO `' . $this->TadDataCenterTblName . '`
+                (`mid`, `col_name`, `col_sn`, `data_name`, `data_value`, `data_sort`, `col_id`, `sort`, `update_time`)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())';
+                Utility::query($sql, 'isissisi', [$this->mid, $this->col_name, $this->col_sn, $name, $val, $data_sort, $col_id, $sort]) or Utility::web_error($sql, __FILE__, __LINE__);
+
             }
             $sort++;
         }
@@ -963,9 +974,9 @@ class TadDataCenter
     private function update_col_id($old_col_id, $new_col_id)
     {
         global $xoopsDB;
-        $sql = "update `{$this->TadDataCenterTblName}` set `data_name`='{$this->col_name}_{$this->col_sn}_dcq_{$new_col_id}' where `data_name`='{$this->col_name}_{$this->col_sn}_dcq_{$old_col_id}'";
-        // die($sql);
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'UPDATE `' . $this->TadDataCenterTblName . '` SET `data_name`=? WHERE `data_name`=?';
+        $params = [$this->col_name . '_' . $this->col_sn . '_dcq_' . $new_col_id, $this->col_name . '_' . $this->col_sn . '_dcq_' . $old_col_id];
+        Utility::query($sql, 'ss', $params) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 
     //取得自訂表單題目設定
@@ -1199,23 +1210,46 @@ class TadDataCenter
     public function getDcqDataArr($data_name = '')
     {
         global $xoopsDB;
-        $and_col_name = $this->ans_col_name ? "and `col_name`='{$this->ans_col_name}'" : '';
-        $and_col_sn = $this->ans_col_sn ? "and `col_sn`='{$this->ans_col_sn}'" : '';
+        $and_col_name = $this->ans_col_name ? "AND `col_name`=?" : '';
+        $and_col_sn = $this->ans_col_sn ? "AND `col_sn`=?" : '';
         $values = [];
+        $params = [];
+
         if (is_array($data_name)) {
             foreach ($data_name as $name) {
-                $sql = "select col_sn, data_sort ,data_value from `{$this->TadDataCenterTblName}`
-                    where `mid`= '{$this->mid}' and `data_name`='{$name}' $and_col_name $and_col_sn order by col_sn";
-                $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                $params[] = $this->mid;
+                $params[] = $name;
+                if ($this->ans_col_name) {
+                    $params[] = $this->ans_col_name;
+                }
+
+                if ($this->ans_col_sn) {
+                    $params[] = $this->ans_col_sn;
+                }
+
+                $sql = 'SELECT `col_sn`, `data_sort`, `data_value` FROM `' . $this->TadDataCenterTblName . '`
+                    WHERE `mid`= ? AND `data_name`=? ' . $and_col_name . ' ' . $and_col_sn . ' ORDER BY `col_sn`';
+                $result = Utility::query($sql, str_repeat('s', count($params)), $params) or Utility::web_error($sql, __FILE__, __LINE__);
 
                 while (list($col_sn, $data_sort, $data_value) = $xoopsDB->fetchRow($result)) {
                     $values[$col_sn][$name][$data_sort] = $data_value;
                 }
+                $params = []; // Reset params for the next iteration
             }
         } else {
-            $sql = "select col_sn, data_sort ,data_value from `{$this->TadDataCenterTblName}`
-            where `mid`= '{$this->mid}' and `data_name`='{$data_name}' $and_col_name $and_col_sn order by col_sn";
-            $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+            $params[] = $this->mid;
+            $params[] = $data_name;
+            if ($this->ans_col_name) {
+                $params[] = $this->ans_col_name;
+            }
+
+            if ($this->ans_col_sn) {
+                $params[] = $this->ans_col_sn;
+            }
+
+            $sql = 'SELECT `col_sn`, `data_sort`, `data_value` FROM `' . $this->TadDataCenterTblName . '`
+                WHERE `mid`= ? AND `data_name`=? ' . $and_col_name . ' ' . $and_col_sn . ' ORDER BY `col_sn`';
+            $result = Utility::query($sql, str_repeat('s', count($params)), $params) or Utility::web_error($sql, __FILE__, __LINE__);
 
             while (list($col_sn, $data_sort, $data_value) = $xoopsDB->fetchRow($result)) {
                 $values[$col_sn][$data_name][$data_sort] = $data_value;
@@ -1224,6 +1258,35 @@ class TadDataCenter
 
         return $values;
     }
+
+    // public function getDcqDataArr($data_name = '')
+    // {
+    //     global $xoopsDB;
+    //     $and_col_name = $this->ans_col_name ? "and `col_name`='{$this->ans_col_name}'" : '';
+    //     $and_col_sn = $this->ans_col_sn ? "and `col_sn`='{$this->ans_col_sn}'" : '';
+    //     $values = [];
+    //     if (is_array($data_name)) {
+    //         foreach ($data_name as $name) {
+    //             $sql = "select col_sn, data_sort ,data_value from `{$this->TadDataCenterTblName}`
+    //                 where `mid`= '{$this->mid}' and `data_name`='{$name}' $and_col_name $and_col_sn order by col_sn";
+    //             $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
+    //             while (list($col_sn, $data_sort, $data_value) = $xoopsDB->fetchRow($result)) {
+    //                 $values[$col_sn][$name][$data_sort] = $data_value;
+    //             }
+    //         }
+    //     } else {
+    //         $sql = "select col_sn, data_sort ,data_value from `{$this->TadDataCenterTblName}`
+    //         where `mid`= '{$this->mid}' and `data_name`='{$data_name}' $and_col_name $and_col_sn order by col_sn";
+    //         $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
+    //         while (list($col_sn, $data_sort, $data_value) = $xoopsDB->fetchRow($result)) {
+    //             $values[$col_sn][$data_name][$data_sort] = $data_value;
+    //         }
+    //     }
+
+    //     return $values;
+    // }
 
     // 文字轉表單
     public function strToForm($setup = '')

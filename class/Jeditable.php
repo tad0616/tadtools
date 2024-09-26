@@ -19,7 +19,7 @@ class Jeditable
     public function setTextCol($selector, $file, $width = '100%', $height = '12px', $submitdata = '', $tooltip = '')
     {
         $submitdata_set = (empty($submitdata)) ? '' : "submitdata:$submitdata,";
-        $this->cols[]   = "
+        $this->cols[] = "
         $('$selector').editable('$file', {
             type : 'text',
             indicator : 'Saving...',
@@ -37,7 +37,7 @@ class Jeditable
     public function setTextAreaCol($selector, $file, $width = '100%', $height = '50px', $submitdata = '', $tooltip = '')
     {
         $submitdata_set = (empty($submitdata)) ? '' : "submitdata:$submitdata,";
-        $this->cols[]   = "
+        $this->cols[] = "
         $('$selector').editable('$file', {
             type : 'textarea',
             indicator : 'Saving...',
@@ -55,7 +55,7 @@ class Jeditable
     public function setSelectCol($selector, $file, $data = '', $submitdata = '', $tooltip = '')
     {
         $submitdata_set = (empty($submitdata)) ? '' : "submitdata:$submitdata,";
-        $this->cols[]   = "
+        $this->cols[] = "
         $('$selector').editable('$file', {
             type : 'select',
             indicator : 'Saving...',
@@ -115,8 +115,8 @@ $jeditable->render();
 
 <?php
 include "header.php";
-$sql="update ".$xoopsDB->prefix("vote_candidate")." set `candidate_note`='{$_POST['value']}' where vote_sn='{$_POST['vote_sn']}' and candidate_id='{$_POST['candidate_id']}'";
-$xoopsDB->queryF($sql);
+$sql = 'UPDATE `' . $xoopsDB->prefix("vote_candidate") . '` SET `candidate_note` = ? WHERE `vote_sn` = ? AND `candidate_id` = ?';
+Utility::query($sql, 'sss', [$_POST['value'], $_POST['vote_sn'], $_POST['candidate_id']]);
 echo $_POST['value'];
 ?>
 

@@ -108,8 +108,9 @@ class Tools
         }
 
         // 若 tad_themes 有內容，則存入 $json_theme_config_arr
-        $sql = 'select * from ' . $xoopsDB->prefix('tad_themes') . " where `theme_name`='{$theme_name}'";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_themes') . '` WHERE `theme_name` = ?';
+        $result = Utility::query($sql, 's', [$theme_name]) or Utility::web_error($sql, __FILE__, __LINE__);
+
         $theme_arr = $xoopsDB->fetchArray($result);
         foreach ($theme_arr as $k => $v) {
             $json_theme_config_arr[$k] = $v;
@@ -123,15 +124,16 @@ class Tools
         }
 
         // 若 tad_themes_config2 有內容，則存入 $json_theme_config_arr
-        $sql = 'select * from ' . $xoopsDB->prefix('tad_themes_config2') . " where `theme_id`='{$theme_arr['theme_id']}'";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_themes_config2') . '` WHERE `theme_id`=?';
+        $result = Utility::query($sql, 'i', [$theme_arr['theme_id']]) or Utility::web_error($sql, __FILE__, __LINE__);
+
         while ($config2 = $xoopsDB->fetchArray($result)) {
             $json_theme_config_arr[$config2['name']] = in_array($config2['type'], $array_type)?\json_decode($config2['value'], true) : $config2['value'];
         }
 
         // 若 tad_themes_blocks 有內容，則存入 $json_theme_config_arr
-        $sql = 'select * from ' . $xoopsDB->prefix('tad_themes_blocks') . " where `theme_id`='{$theme_arr['theme_id']}'";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_themes_blocks') . '` WHERE `theme_id`=?';
+        $result = Utility::query($sql, 'i', [$theme_arr['theme_id']]) or Utility::web_error($sql, __FILE__, __LINE__);
         while ($block = $xoopsDB->fetchArray($result)) {
 
             foreach ($block_config as $item) {
@@ -274,8 +276,9 @@ class Tools
         $i = 0;
         if (strpos($_SESSION['menu_var_kind'], 'all') !== false or strpos($_SESSION['menu_var_kind'], 'my_menu') !== false) {
 
-            $sql = "select `menuid`, `itemname`, `itemurl`, `target`, `icon`, `link_cate_name`, `link_cate_sn`, `read_group` from " . $xoopsDB->prefix("tad_themes_menu") . " where of_level='{$id}' and status='1' order by position";
-            $result = $xoopsDB->query($sql) or die($sql);
+            $sql = 'SELECT `menuid`, `itemname`, `itemurl`, `target`, `icon`, `link_cate_name`, `link_cate_sn`, `read_group` FROM `' . $xoopsDB->prefix('tad_themes_menu') . '` WHERE `of_level` = ? AND `status` = ? ORDER BY `position`';
+            $result = Utility::query($sql, 'ii', [$id, 1]) or die($sql);
+
             $moduleHandler = xoops_getHandler('module');
             if ($result) {
                 while (list($menuid, $itemname, $itemurl, $target, $icon, $link_cate_name, $link_cate_sn, $read_group) = $xoopsDB->fetchRow($result)) {
@@ -338,14 +341,14 @@ class Tools
     {
         global $xoopsDB;
         $i = 0;
-        $sub_menu = array();
+        $sub_menu = [];
 
         switch ($link_cate_name) {
 
             case "tadnews_page_cate":
-                $sql = "select nsn, news_title from " . $xoopsDB->prefix("tad_news") . " where ncsn='{$link_cate_sn}' order by `page_sort`";
-                $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-                $ncsn_arr = "";
+                $sql = 'SELECT `nsn`, `news_title` FROM `' . $xoopsDB->prefix('tad_news') . '` WHERE `ncsn` = ? ORDER BY `page_sort`';
+                $result = Utility::query($sql, 'i', [$link_cate_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
+
                 while (list($nsn, $news_title) = $xoopsDB->fetchRow($result)) {
                     $sub_menu[$link_cate_name . $i]['id'] = $i;
                     $sub_menu[$link_cate_name . $i]['title'] = $news_title;
@@ -441,8 +444,9 @@ class Tools
         global $xoopsDB, $xoopsUser;
         $i = 0;
         if ($xoopsUser && $xoopsUser->isAdmin(1)) {
-            $sql = "select conf_value from " . $xoopsDB->prefix("config") . " where conf_title ='_MD_AM_DEBUGMODE'";
-            $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error());
+            $sql = 'SELECT `conf_value` FROM `' . $xoopsDB->prefix('config') . '` WHERE `conf_title` = ?';
+            $result = Utility::query($sql, 's', ['_MD_AM_DEBUGMODE']) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error());
+
             list($debug) = $xoopsDB->fetchRow($result);
             if ($debug == 0) {
                 $debug = 1;
@@ -570,9 +574,10 @@ class Tools
     public static function get_theme_slide_items($theme_name)
     {
         global $xoopsDB;
-        $sql = "select a.* from " . $xoopsDB->prefix("tad_themes_files_center") . " as a left join " . $xoopsDB->prefix("tad_themes") . " as b on a.col_sn=b.theme_id  where a.`col_name`='slide' and b.`theme_name`='{$theme_name}'";
-
-        $result = $xoopsDB->query($sql);
+        $sql = 'SELECT a.* FROM `' . $xoopsDB->prefix('tad_themes_files_center') . '` AS a
+        LEFT JOIN `' . $xoopsDB->prefix('tad_themes') . '` AS b ON a.`col_sn` = b.`theme_id`
+        WHERE a.`col_name` = ? AND b.`theme_name` = ?';
+        $result = Utility::query($sql, 'ss', ['slide', $theme_name]);
 
         if ($result) {
             $i = 0;

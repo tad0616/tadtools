@@ -1,6 +1,5 @@
 <?php
 use Xmf\Request;
-use XoopsModules\Tadtools\Utility;
 
 require_once __DIR__ . '/tadtools_header.php';
 
@@ -26,13 +25,15 @@ function web_info()
     $web['slogan'] = $xoopsConfig['slogan'];
     $web['adminmail'] = $xoopsConfig['adminmail'];
 
-    $sql = 'SELECT `conf_value` FROM ' . $xoopsDB->prefix('config') . " WHERE conf_name='meta_description'";
-    $result = $xoopsDB->query($sql);
+    $sql = 'SELECT `conf_value` FROM `' . $xoopsDB->prefix('config') . '` WHERE `conf_name`=?';
+    $result = Utility::query($sql, 's', ['meta_description']);
+
     list($meta_description) = $xoopsDB->fetchRow($result);
     $web['meta_description'] = $meta_description;
 
-    $sql = 'SELECT `file_name`, `sub_dir` FROM ' . $xoopsDB->prefix('tad_themes_files_center') . " WHERE `col_name` = 'slide' and `col_sn`!=0 and sub_dir like '/{$xoopsConfig['theme_set']}%' ORDER BY `sort`";
-    $result = $xoopsDB->query($sql);
+    $sql = 'SELECT `file_name`, `sub_dir` FROM `' . $xoopsDB->prefix('tad_themes_files_center') . '` WHERE `col_name` = ? AND `col_sn` != ? AND sub_dir LIKE ? ORDER BY `sort`';
+    $result = Utility::query($sql, 'sis', ['slide', 0, '/' . $xoopsConfig['theme_set'] . '%']);
+
     while (list($file_name, $sub_dir) = $xoopsDB->fetchRow($result)) {
         $web['slide'][] = XOOPS_URL . '/uploads/tad_themes' . $sub_dir . '/' . $file_name;
     }
@@ -45,8 +46,8 @@ function web_modules()
 {
     global $xoopsConfig, $xoopsDB;
 
-    $sql = 'SELECT `name`,`dirname` FROM ' . $xoopsDB->prefix('modules') . " WHERE `isactive`='1' order by `weight`";
-    $result = $xoopsDB->query($sql) or die($sql);
+    $sql = 'SELECT `name`, `dirname` FROM `' . $xoopsDB->prefix('modules') . '` WHERE `isactive` = ? ORDER BY `weight`';
+    $result = Utility::query($sql, 's', [1]) or die($sql);
     while ($mod = $xoopsDB->fetchArray($result)) {
         $modules[] = $mod;
     }

@@ -2,7 +2,7 @@
   <h1><{$lang_login|default:''}></h1>
 </div>
 <form action="user.php" method="post" role="form">
-    <div class="form-group row">
+    <div class="form-group row mb-3">
       <label class="col-sm-2 col-form-label text-sm-right" for="uname">
         <{$lang_username|default:''}>
       </label>
@@ -11,7 +11,7 @@
       </div>
     </div>
 
-    <div class="form-group row">
+    <div class="form-group row mb-3">
       <label class="col-sm-2 col-form-label text-sm-right" for="pass">
         <{$lang_password|default:''}>
       </label>
@@ -22,7 +22,7 @@
 
 
     <{if isset($lang_rememberme)}>
-        <div class="form-group row">
+        <div class="form-group row mb-3">
           <label class="col-sm-2 col-form-label text-sm-right sr-only" for="rememberme">
             <{$lang_rememberme|default:''}>
           </label>
@@ -36,7 +36,7 @@
     <{/if}>
 
 
-    <div class="form-group row">
+    <div class="form-group row mb-3">
       <label class="col-sm-2 col-form-label text-sm-right sr-only" for="submit">
       </label>
       <div class="col-sm-7 col-sm-offset-2">
@@ -58,7 +58,7 @@
 
 <div class="alert alert-info"><{$lang_noproblem|default:''}></div>
 <form action="lostpass.php" method="post" role="form">
-    <div class="form-group row">
+    <div class="form-group row mb-3">
       <label class="col-sm-2 col-form-label text-sm-right" for="email">
         <{$lang_youremail|default:''}>
       </label>

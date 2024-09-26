@@ -29,8 +29,8 @@ class StarRating
         global $xoopsUser;
         if ($xoopsUser and $this->mode != 'show') {
             $rate = $this->get_uid_rank($col_name, $col_sn);
-            $score = $rate['rank'];
-            $msg = sprintf(_TAD_STAR_RATING_DATE_SAVE, $rate['rank_date'], $score);
+            $score = isset($rate['rank']) ? $rate['rank'] : 0;
+            $msg = isset($rate['rank_date']) ? sprintf(_TAD_STAR_RATING_DATE_SAVE, $rate['rank_date'], $score) : '';
 
             $save_js =
                 "
@@ -83,9 +83,9 @@ class StarRating
         if (empty($uid)) {
             $uid = $xoopsUser->uid();
         }
+        $sql = 'SELECT `rank`, `rank_date` FROM `' . $xoopsDB->prefix("{$this->mod_name}_rank") . '` WHERE `col_name` = ? AND `col_sn` = ? AND `uid` = ?';
+        $result = Utility::query($sql, 'sii', [$col_name, $col_sn, $uid]) or Utility::web_error($sql);
 
-        $sql = 'select `rank`, `rank_date` from `' . $xoopsDB->prefix("{$this->mod_name}_rank") . "` where `col_name`='$col_name' and `col_sn`='$col_sn' and `uid`='$uid'";
-        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql);
         $main = $xoopsDB->fetchArray($result);
 
         return $main;
@@ -95,9 +95,9 @@ class StarRating
     public function get_avg_rank($col_name = '', $col_sn = '')
     {
         global $xoopsDB;
+        $sql = 'SELECT AVG(`rank`) FROM `' . $xoopsDB->prefix("{$this->mod_name}_rank") . '` WHERE `col_name` = ? AND `col_sn` = ?';
+        $result = Utility::query($sql, 'si', [$col_name, $col_sn]) or Utility::web_error($sql);
 
-        $sql = 'select AVG(`rank`) from ' . $xoopsDB->prefix("{$this->mod_name}_rank") . " where `col_name`='$col_name' and `col_sn`='$col_sn'";
-        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql);
         list($main) = $xoopsDB->fetchRow($result);
         $main = round($main, 0);
 
@@ -115,8 +115,8 @@ class StarRating
         }
 
         $uid = $uid ? $uid : $xoopsUser->uid();
-        $sql = 'replace into ' . $xoopsDB->prefix("{$mod_name}_rank") . " (`col_name`, `col_sn`, `rank`, `uid`, `rank_date`) values('{$col_name}' , '{$col_sn}' , '{$rank}', '{$uid}' , '{$now}')";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql);
+        $sql = 'REPLACE INTO `' . $xoopsDB->prefix("{$mod_name}_rank") . '` (`col_name`, `col_sn`, `rank`, `uid`, `rank_date`) VALUES (?, ?, ?, ?, ?)';
+        Utility::query($sql, 'sisis', [$col_name, $col_sn, $rank, $uid, $now]) or Utility::web_error($sql);
 
         if ($mode != 'return') {
             die(sprintf(_TAD_STAR_RATING_SAVE, $rank));
