@@ -42,7 +42,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         $TadThemesMid = ($TadThemesModule) ? $TadThemesModule->mid() : 0;
 
         // 取得佈景預設的設定值以及偏好設定
-        $def_config = Tools::def_config($TadThemesMid, $theme_name);
+        $def_config = Tools::def_config($theme_name, $TadThemesMid, );
         foreach ($def_config as $key => $value) {
             $xoopsTpl->assign($key, $value);
         }
@@ -691,7 +691,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
             } else {
                 $tt_theme_kind = 'html';
                 $tt_use_bootstrap = 1;
-                $tt_bootstrap_color = 'bootstrap3';
+                $tt_bootstrap_color = 'bootstrap5';
             }
         }
 
@@ -715,7 +715,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
                 $xoTheme->addStylesheet(XOOPS_URL . "/modules/tadtools/{$c[0]}/css/bootstrap.css");
                 $xoTheme->addStylesheet(XOOPS_URL . "/modules/tadtools/{$tt_bootstrap_color}/bootstrap.min.css");
             }
-            $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/fix-bootstrap.css');
+            // $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/fix-bootstrap.css');
         }
     }
 

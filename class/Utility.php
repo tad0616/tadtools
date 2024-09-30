@@ -673,14 +673,14 @@ class Utility
             if ($xoTheme) {
                 $xoTheme->addStylesheet(XOOPS_URL . "/modules/tadtools/bootstrap{$_SESSION['bootstrap']}/css/bootstrap.css");
                 $xoTheme->addStylesheet(XOOPS_URL . "/modules/tadtools/css/xoops_adm{$_SESSION['bootstrap']}.css");
-                $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/fix-bootstrap.css');
+                // $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/fix-bootstrap.css');
                 $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/font-awesome/css/font-awesome.css');
             }
         } elseif ('return' === $mode) {
             $main = "
             <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/bootstrap{$_SESSION['bootstrap']}/css/bootstrap.css'>
             <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/css/xoops_adm{$_SESSION['bootstrap']}.css'>
-            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/css/fix-bootstrap.css'>
+            // <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/css/fix-bootstrap.css'>
             <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css'>";
 
             return $main;

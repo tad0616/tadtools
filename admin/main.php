@@ -133,23 +133,19 @@ function mk_bootstrap_menu_options($theme_kind = '', $mode = 'light')
 function directory_list($directory_base_path = '')
 {
     $myts = \MyTextSanitizer::getInstance();
-
     $directory_base_path = $myts->addSlashes($directory_base_path);
-
     $directory_base_path = rtrim($directory_base_path, '/') . '/';
-
     $result_list = [];
-
     $allfile = glob($directory_base_path . '*');
-
     foreach ($allfile as $filename) {
         $filename = $myts->addSlashes($filename);
         $basefilename = str_replace($directory_base_path, '', $filename);
-
         if (is_dir($filename)) {
             $result_list[$basefilename] = directory_list($filename);
         } else {
-            $ext = mb_strtolower(array_pop(explode('.', $filename)));
+            // 先將 explode() 的結果存入變數
+            $file_parts = explode('.', $filename);
+            $ext = mb_strtolower(array_pop($file_parts));
             $len = mb_strlen($ext);
             if ($len > 0 and $len <= 4) {
                 $result_list[] = $basefilename;

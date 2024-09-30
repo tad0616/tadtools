@@ -14,8 +14,13 @@
                     <{$theme.theme_name}>
                 </td>
                 <td <{$theme.color}> class="col-sm-2">
+                    <{if $theme.tad_theme==1}>
                     <{$theme.theme_kind}>
-                    <input type="hidden" name="tt_theme_kind[<{$theme.theme_name}>]" value="<{$theme.theme_kind}>">
+                        <input type="hidden" name="tt_theme_kind[<{$theme.theme_name}>]" value="<{$theme.theme_kind}>">
+                    <{else}>
+                        xoops
+                        <input type="hidden" name="tt_theme_kind[<{$theme.theme_name}>]" value="xoops">
+                    <{/if}>
                 </td>
                 <td <{$theme.color}> class="col-sm-3">
                     <{if $theme.tad_theme==1}>
@@ -31,9 +36,14 @@
                 </td>
                 <td <{$theme.color}> class="col-sm-4">
                     <select name="tt_bootstrap_color[<{$theme.theme_name}>]" class="form-control">
-                        <{foreach from=$theme.bootstrap_theme item=color}>
-                            <option value="<{$color.theme_path}>" <{if $theme.bootstrap_color==$color.theme}>selected<{/if}>><{$color.theme}> (<{if $color.kind|default:false}><{$color.kind}>-<{/if}><{$color.color}>)</option>
-                        <{/foreach}>
+
+                        <{if $theme.tad_theme==1}>
+                            <{foreach from=$theme.bootstrap_theme item=color}>
+                                <option value="<{$color.theme_path}>" <{if $theme.bootstrap_color==$color.theme}>selected<{/if}>><{$color.theme}> (<{if $color.kind|default:false}><{$color.kind}>-<{/if}><{$color.color}>)</option>
+                            <{/foreach}>
+                        <{else}>
+                            <option value="xoops" <{if $theme.bootstrap_color=='xoops'}>selected<{/if}>>xoops</option>
+                        <{/if}>
                     </select>
                 </td>
             </tr>
