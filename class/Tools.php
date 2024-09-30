@@ -46,31 +46,34 @@ class Tools
         /**** 取得 Tad Themes 偏好設定****/
 
         /**** 取得佈景設定的各個預設值 ****/
-        require_once XOOPS_ROOT_PATH . "/themes/{$theme_name}/config.php";
-        require_once XOOPS_ROOT_PATH . "/modules/tadtools/language/{$xoopsConfig['language']}/main.php";
+        if (\file_exists(XOOPS_ROOT_PATH . "/themes/{$theme_name}/config.php")) {
+            require_once XOOPS_ROOT_PATH . "/themes/{$theme_name}/config.php";
+            require_once XOOPS_ROOT_PATH . "/modules/tadtools/language/{$xoopsConfig['language']}/main.php";
 
-        $xoopsTpl->assign('config_tabs', $config_tabs);
-        foreach ($config_enable as $k => $v) {
-            $def_config[$k] = $v['default'];
+            $xoopsTpl->assign('config_tabs', $config_tabs);
+            foreach ($config_enable as $k => $v) {
+                $def_config[$k] = $v['default'];
+            }
+            $def_config['theme_change'] = $theme_change;
+            $def_config['theme_kind'] = $theme_kind;
+            $def_config['theme_kind_arr'] = explode(',', $theme_kind_arr);
+            $def_config['menu_var_kind'] = $_SESSION['menu_var_kind'] = $menu_var_kind;
+            $def_config['theme_color'] = $theme_color;
+            $def_config['theme_set_allowed'] = $xoopsConfig['theme_set_allowed'];
+
+            /**** 產生 Smarty 的設定檔（以取得 bootstrap 版本） ****/
+            $bootstrap = (strpos($theme_kind, 'bootstrap') !== false) ? substr($theme_kind, -1) : '4';
+            $xoopsTpl->assign('bootstrap', $bootstrap);
+
+            /**** 模擬偏好設定預設值（避免沒裝 tad_theme 無法取得資料庫資料） ****/
+            $def_config['bg_img'] = !empty($def_config['bg_img']) ? XOOPS_URL . "/themes/{$theme_name}/images/bg/{$def_config['bg_img']}" : "";
+            $def_config['logo_img'] = !empty($def_config['logo_img']) ? XOOPS_URL . "/themes/{$theme_name}/images/logo/{$def_config['logo_img']}" : "";
+            $def_config['navlogo_img'] = !empty($def_config['navlogo_img']) ? XOOPS_URL . "/themes/{$theme_name}/images/navlogo/{$def_config['navlogo_img']}" : "";
+            $def_config['navbar_img'] = !empty($def_config['navbar_img']) ? XOOPS_URL . "/themes/{$theme_name}/images/nav_bg/{$def_config['navbar_img']}" : "";
+            $def_config['bt_bg_img'] = !empty($def_config['bt_bg_img']) ? XOOPS_URL . "/themes/{$theme_name}/images/bt_bg/{$def_config['bt_bg_img']}" : "";
+        } else {
+            $def_config['theme_kind'] = 'xoops';
         }
-        $def_config['theme_change'] = $theme_change;
-        $def_config['theme_kind'] = $theme_kind;
-        $def_config['theme_kind_arr'] = explode(',', $theme_kind_arr);
-        $def_config['menu_var_kind'] = $_SESSION['menu_var_kind'] = $menu_var_kind;
-        $def_config['theme_color'] = $theme_color;
-        $def_config['theme_set_allowed'] = $xoopsConfig['theme_set_allowed'];
-
-        /**** 產生 Smarty 的設定檔（以取得 bootstrap 版本） ****/
-        $bootstrap = (strpos($theme_kind, 'bootstrap') !== false) ? substr($theme_kind, -1) : '4';
-        $xoopsTpl->assign('bootstrap', $bootstrap);
-
-        /**** 模擬偏好設定預設值（避免沒裝 tad_theme 無法取得資料庫資料） ****/
-        $def_config['bg_img'] = !empty($def_config['bg_img']) ? XOOPS_URL . "/themes/{$theme_name}/images/bg/{$def_config['bg_img']}" : "";
-        $def_config['logo_img'] = !empty($def_config['logo_img']) ? XOOPS_URL . "/themes/{$theme_name}/images/logo/{$def_config['logo_img']}" : "";
-        $def_config['navlogo_img'] = !empty($def_config['navlogo_img']) ? XOOPS_URL . "/themes/{$theme_name}/images/navlogo/{$def_config['navlogo_img']}" : "";
-        $def_config['navbar_img'] = !empty($def_config['navbar_img']) ? XOOPS_URL . "/themes/{$theme_name}/images/nav_bg/{$def_config['navbar_img']}" : "";
-        $def_config['bt_bg_img'] = !empty($def_config['bt_bg_img']) ? XOOPS_URL . "/themes/{$theme_name}/images/bt_bg/{$def_config['bt_bg_img']}" : "";
-
         return $def_config;
     }
 
