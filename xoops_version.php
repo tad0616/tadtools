@@ -3,6 +3,7 @@
 global $xoopsConfig;
 
 $modversion = [];
+global $xoopsConfig;
 $modversion['name'] = _MI_TADTOOLS_NAME;
 $modversion['version'] = $_SESSION['xoops_version'] >= 20511 ? '4.0.0-Stable' : '4.0';
 // $modversion['version'] = '3.55';

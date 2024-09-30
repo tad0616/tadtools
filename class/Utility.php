@@ -1504,7 +1504,7 @@ class Utility
                 throw new \Exception("SQL execution failed: " . $stmt->error);
             }
 
-            if (stripos(trim($sql), 'SELECT') === 0) {
+            if (stripos(trim($sql), 'SELECT') === 0 || stripos(trim($sql), 'SHOW') === 0 || stripos(trim($sql), 'DESCRIBE') === 0 || stripos(trim($sql), 'EXPLAIN') === 0 || stripos(trim($sql), 'PRAGMA') === 0) {
                 $result = $stmt->get_result();
                 if ($result === false) {
                     throw new \Exception("Failed to get result: " . $stmt->error);

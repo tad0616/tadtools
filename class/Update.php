@@ -2,8 +2,6 @@
 
 namespace XoopsModules\Tadtools;
 
-use XoopsModules\Tadtools\Utility;
-
 /*
 Update Class Definition
 
@@ -44,26 +42,24 @@ class Update
         }
 
         //找出目前所有的樣板檔
-        $sql = 'SELECT `bid`, `name`, `visible`, `show_func`, `template` FROM `' . $xoopsDB->prefix('newblocks') . '`  WHERE `dirname` = "tadtools" ORDER BY `func_num`';
-        $result = Utility::query($sql) or die($sql);
+        $sql = 'SELECT bid,name,visible,show_func,template FROM `' . $xoopsDB->prefix('newblocks') . '`  WHERE `dirname` = "tadtools" ORDER BY `func_num`';
+        $result = $xoopsDB->query($sql);
         while (list($bid, $name, $visible, $show_func, $template) = $xoopsDB->fetchRow($result)) {
             //假如現有的區塊和樣板對不上就刪掉
             if ($template != $tpl_file_arr[$show_func]) {
-                $sql = 'DELETE FROM `' . $xoopsDB->prefix('newblocks') . '` WHERE bid=?';
-                Utility::query($sql, 'i', [$bid]) or die($sql);
+                $sql = 'delete from ' . $xoopsDB->prefix('newblocks') . " where bid='{$bid}'";
+                $xoopsDB->queryF($sql);
 
                 //連同樣板以及樣板實體檔案也要刪掉
-                $sql = 'DELETE FROM `' . $xoopsDB->prefix('tplfile') . '` AS a
-                LEFT JOIN `' . $xoopsDB->prefix('tplsource') . "` AS b ON a.tpl_id=b.tpl_id
-                WHERE a.tpl_refid=? AND a.tpl_module='tadtools' AND a.tpl_type='block'";
-                Utility::query($sql, 'i', [$bid]) or die($sql);
-
+                $sql = 'delete from ' . $xoopsDB->prefix('tplfile') . ' as a
+                left join ' . $xoopsDB->prefix('tplsource') . "  as b on a.tpl_id=b.tpl_id
+                where a.tpl_refid='$bid' and a.tpl_module='tadtools' and a.tpl_type='block'";
+                $xoopsDB->queryF($sql);
             } else {
-                $sql = 'UPDATE `' . $xoopsDB->prefix('tplfile') . '`
-                SET `tpl_file`=?, `tpl_desc`=?
-                WHERE `tpl_refid`=?';
-                Utility::query($sql, 'ssi', [$template, $tpl_desc_arr[$show_func], $bid]);
-
+                $sql = 'update ' . $xoopsDB->prefix('tplfile') . "
+                set tpl_file='{$template}' , tpl_desc='{$tpl_desc_arr[$show_func]}'
+                where tpl_refid='{$bid}'";
+                $xoopsDB->queryF($sql);
             }
         }
     }
@@ -71,8 +67,8 @@ class Update
     public static function chk_chk1()
     {
         global $xoopsDB;
-        $sql = 'SELECT COUNT(*) FROM `' . $xoopsDB->prefix('tadtools_setup') . '`';
-        $result = Utility::query($sql) or die($sql);
+        $sql = 'select count(*) from ' . $xoopsDB->prefix('tadtools_setup');
+        $result = $xoopsDB->queryF($sql);
         if (empty($result)) {
             return false;
         }
@@ -91,15 +87,15 @@ class Update
             UNIQUE KEY `tt_theme` (`tt_theme`)
             ) ENGINE = MYISAM";
 
-        Utility::queryF($sql) or die($sql);
+        $xoopsDB->queryF($sql);
     }
 
     //新增BootStrap顏色欄位
     public static function chk_chk2()
     {
         global $xoopsDB;
-        $sql = 'SELECT count(`tt_bootstrap_color`) FROM ' . $xoopsDB->prefix('tadtools_setup');
-        $result = Utility::query($sql) or die($sql);
+        $sql = 'select count(`tt_bootstrap_color`) from ' . $xoopsDB->prefix('tadtools_setup');
+        $result = $xoopsDB->query($sql);
         if (empty($result)) {
             return false;
         }
@@ -110,8 +106,8 @@ class Update
     public static function go_update2()
     {
         global $xoopsDB;
-        $sql = 'ALTER TABLE `' . $xoopsDB->prefix('tadtools_setup') . "` ADD `tt_bootstrap_color` varchar(255) NOT NULL  default ''";
-        Utility::queryF($sql) or redirect_header(XOOPS_URL . '/modules/system/admin.php?fct=modulesadmin', 30, $xoopsDB->error());
+        $sql = 'ALTER TABLE ' . $xoopsDB->prefix('tadtools_setup') . " ADD `tt_bootstrap_color` varchar(255) NOT NULL  default ''";
+        $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . '/modules/system/admin.php?fct=modulesadmin', 30, $xoopsDB->error());
 
         return true;
     }
@@ -125,8 +121,8 @@ class Update
         $mod_id = $TadToolsModule->getVar('mid');
 
         if ($mod_id) {
-            $sql = 'SELECT COUNT(*) FROM `' . $xoopsDB->prefix('group_permission') . "` WHERE `gperm_itemid`=? AND `gperm_modid`=1 AND gperm_name='module_read'";
-            $result = Utility::query($sql, 'i', [$mod_id]) or die($sql);
+            $sql = 'select count(*) from ' . $xoopsDB->prefix('group_permission') . " where gperm_itemid='$mod_id' and `gperm_modid`='1' gperm_name='module_read'";
+            $result = $xoopsDB->query($sql);
             list($count) = $xoopsDB->fetchRow($result);
             if (empty($count)) {
                 return true;
@@ -143,8 +139,9 @@ class Update
         $TadToolsModule = $modhandler->getByDirname('tadtools');
         $mod_id = $TadToolsModule->getVar('mid');
         if ($mod_id) {
-            $sql = 'INSERT INTO `' . $xoopsDB->prefix('group_permission') . "` (`gperm_groupid`, `gperm_itemid`, `gperm_modid`, `gperm_name`) VALUES (1, ?, 1, 'module_read'), (2, ?, 1, 'module_read'), (3, ?, 1, 'module_read')";
-            Utility::query($sql, 'iii', [$mod_id, $mod_id, $mod_id]) or redirect_header(XOOPS_URL . '/modules/system/admin.php?fct=modulesadmin', 30, $xoopsDB->error());
+            $sql = 'insert into ' . $xoopsDB->prefix('group_permission') . " (`gperm_groupid`, `gperm_itemid`, `gperm_modid`, `gperm_name`) values(1, '$mod_id' , 1 , 'module_read') , (2, '$mod_id' , 1 , 'module_read') ,(3, '$mod_id' , 1 , 'module_read')";
+            $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . '/modules/system/admin.php?fct=modulesadmin', 30, $xoopsDB->error());
+
             return true;
         }
 
@@ -155,36 +152,33 @@ class Update
     public static function chk_chk4()
     {
         global $xoopsDB;
+        $sql = 'select count(`tt_sn`) from ' . $xoopsDB->prefix('tadtools_setup');
+        $result = $xoopsDB->query($sql);
+        if (empty($result)) {
+            return false;
+        }
 
-        $sql = "SELECT COUNT(*) AS column_exists
-        FROM information_schema.COLUMNS
-        WHERE TABLE_SCHEMA = DATABASE()
-        AND TABLE_NAME = '" . $xoopsDB->prefix('tadtools_setup') . "'
-        AND COLUMN_NAME = 'tt_sn'";
-        Utility::query($sql) or die($sql);
-        list($have) = $xoopsDB->fetchRow($result);
-
-        return $have;
+        return true;
     }
 
     public static function go_update4()
     {
         global $xoopsDB;
 
-        $sql = 'ALTER TABLE `' . $xoopsDB->prefix('tadtools_setup') . '` DROP INDEX `tt_theme`';
-        Utility::query($sql) or die($sql);
-        $sql = 'ALTER TABLE `' . $xoopsDB->prefix('tadtools_setup') . '` DROP `tt_sn`';
-        Utility::query($sql) or die($sql);
-        $sql = 'ALTER TABLE `' . $xoopsDB->prefix('tadtools_setup') . '` ADD PRIMARY KEY ( `tt_theme` )';
-        Utility::query($sql) or die($sql);
+        $sql = 'ALTER TABLE ' . $xoopsDB->prefix('tadtools_setup') . ' DROP INDEX `tt_theme`';
+        $xoopsDB->queryF($sql);
+        $sql = 'ALTER TABLE ' . $xoopsDB->prefix('tadtools_setup') . ' DROP `tt_sn`';
+        $xoopsDB->queryF($sql);
+        $sql = 'ALTER TABLE ' . $xoopsDB->prefix('tadtools_setup') . ' ADD PRIMARY KEY ( `tt_theme` )';
+        $xoopsDB->queryF($sql);
     }
 
     //新增佈景種類
     public static function chk_chk5()
     {
         global $xoopsDB;
-        $sql = 'SELECT COUNT(`tt_theme_kind`) FROM `' . $xoopsDB->prefix('tadtools_setup') . '`';
-        $result = Utility::query($sql) or die($sql);
+        $sql = 'select count(`tt_theme_kind`) from ' . $xoopsDB->prefix('tadtools_setup');
+        $result = $xoopsDB->query($sql);
         if (!empty($result)) {
             return false;
         }
@@ -195,26 +189,26 @@ class Update
     public static function go_update5()
     {
         global $xoopsDB;
+        $sql = 'ALTER TABLE ' . $xoopsDB->prefix('tadtools_setup') . " ADD `tt_theme_kind` varchar(255) NOT NULL  default ''";
+        $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . '/modules/system/admin.php?fct=modulesadmin', 30, $xoopsDB->error());
 
-        $sql = 'ALTER TABLE `' . $xoopsDB->prefix('tadtools_setup') . "` ADD `tt_theme_kind` VARCHAR(255) NOT NULL  DEFAULT ''";
-        Utility::query($sql) or redirect_header(XOOPS_URL . '/modules/system/admin.php?fct=modulesadmin', 30, $xoopsDB->error());
         return true;
     }
 
     public static function go_update6()
     {
         global $xoopsDB;
+        $sql = 'update ' . $xoopsDB->prefix('tadtools_setup') . " set `tt_bootstrap_color`='bootstrap' where `tt_bootstrap_color`=''";
+        $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . '/modules/system/admin.php?fct=modulesadmin', 30, $xoopsDB->error());
 
-        $sql = 'UPDATE `' . $xoopsDB->prefix('tadtools_setup') . '` SET `tt_bootstrap_color`=? WHERE `tt_bootstrap_color`=?';
-        Utility::query($sql, 'ss', ['bootstrap', '']) or redirect_header(XOOPS_URL . '/modules/system/admin.php?fct=modulesadmin', 30, $xoopsDB->error());
         return true;
     }
 
     public static function chk_chk7()
     {
         global $xoopsDB;
-        $sql = 'SELECT COUNT(*) FROM `' . $xoopsDB->prefix('tadtools_setup') . '` WHERE `tt_theme_kind`=?';
-        $result = Utility::query($sql, 's', ['bootstrap']) or die($sql);
+        $sql = 'select count(*) from ' . $xoopsDB->prefix('tadtools_setup') . " where `tt_theme_kind`='bootstrap'";
+        $result = $xoopsDB->queryF($sql);
         if (empty($result)) {
             return false;
         }
@@ -225,8 +219,8 @@ class Update
     public static function go_update7()
     {
         global $xoopsDB;
-        $sql = 'UPDATE `' . $xoopsDB->prefix('tadtools_setup') . '` SET `tt_bootstrap_color`=? WHERE `tt_theme_kind`=?';
-        Utility::query($sql, 'ss', ['bootstrap3', 'bootstrap']) or redirect_header(XOOPS_URL . '/modules/system/admin.php?fct=modulesadmin', 30, $xoopsDB->error());
+        $sql = 'update ' . $xoopsDB->prefix('tadtools_setup') . " set `tt_bootstrap_color`='bootstrap3' where `tt_theme_kind`='bootstrap'";
+        $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . '/modules/system/admin.php?fct=modulesadmin', 30, $xoopsDB->error());
 
         return true;
     }
@@ -234,8 +228,8 @@ class Update
     public static function chk_chk8()
     {
         global $xoopsDB;
-        $sql = 'SELECT COUNT(*) FROM `' . $xoopsDB->prefix('tad_uploader_files_center') . '` WHERE `hash_filename` LIKE ?';
-        $result = Utility::query($sql, 's', ['%}.%']) or die($sql);
+        $sql = 'select count(*) from ' . $xoopsDB->prefix('tad_uploader_files_center') . " where `hash_filename` like '%}.%'";
+        $result = $xoopsDB->queryF($sql);
         if (empty($result)) {
             return false;
         }
@@ -246,8 +240,8 @@ class Update
     public static function go_update8()
     {
         global $xoopsDB;
-        $sql = 'UPDATE `' . $xoopsDB->prefix('tad_uploader_files_center') . "` SET `hash_filename`=replace(`hash_filename` , '}.' , '.') WHERE `hash_filename` like '%}.%'";
-        Utility::query($sql) or redirect_header(XOOPS_URL . '/modules/system/admin.php?fct=modulesadmin', 30, $xoopsDB->error());
+        $sql = 'update ' . $xoopsDB->prefix('tad_uploader_files_center') . " set `hash_filename`=replace(`hash_filename` , '}.' , '.') where `hash_filename` like '%}.%'";
+        $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . '/modules/system/admin.php?fct=modulesadmin', 30, $xoopsDB->error());
 
         return true;
     }
