@@ -75,24 +75,6 @@ $modversion['config'][$i]['valuetype'] = 'int';
 $modversion['config'][$i]['default'] = '1';
 
 $i++;
-$modversion['config'][$i]['name'] = 'syntaxhighlighter_themes';
-$modversion['config'][$i]['title'] = '_MI_TADTOOLS_TITLE6';
-$modversion['config'][$i]['description'] = '_MI_TADTOOLS_DESC6';
-$modversion['config'][$i]['formtype'] = 'select';
-$modversion['config'][$i]['valuetype'] = 'text';
-$modversion['config'][$i]['default'] = 'shThemeMonokai';
-$modversion['config'][$i]['options'] = ['shThemeDefault' => 'shThemeDefault', 'shThemeDjango' => 'shThemeDjango', 'shThemeEclipse' => 'shThemeEclipse', 'shThemeEmacs' => 'shThemeEmacs', 'shThemeFadeToGrey' => 'shThemeFadeToGrey', 'shThemeMDUltra' => 'shThemeMDUltra', 'shThemeMidnight' => 'shThemeMidnight', 'shThemeRDark' => 'shThemeRDark', 'shThemeMonokai' => 'shThemeMonokai'];
-
-$i++;
-$modversion['config'][$i]['name'] = 'syntaxhighlighter_version';
-$modversion['config'][$i]['title'] = '_MI_TADTOOLS_TITLE7';
-$modversion['config'][$i]['description'] = '_MI_TADTOOLS_DESC7';
-$modversion['config'][$i]['formtype'] = 'select';
-$modversion['config'][$i]['valuetype'] = 'text';
-$modversion['config'][$i]['default'] = 'syntaxhighlighter';
-$modversion['config'][$i]['options'] = ['syntaxhighlighter 2' => 'syntaxhighlighter_2', 'syntaxhighlighter 3' => 'syntaxhighlighter'];
-
-$i++;
 $modversion['config'][$i]['name'] = 'uploadcare_publickey';
 $modversion['config'][$i]['title'] = '_MI_TADTOOLS_TITLE8';
 $modversion['config'][$i]['description'] = '_MI_TADTOOLS_DESC8';
