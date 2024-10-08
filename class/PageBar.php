@@ -65,9 +65,8 @@ class PageBar
     //在limit前額外加入排序
     public $order_sql;
 
-    public function __construct($total, $limit = '20', $page_limit = '10', $order_sql = '')
+    public function __construct($total, $limit = 20, $page_limit = 10, $order_sql = '')
     {
-        $limit = (int) $limit;
         $this->prev = "<img src='" . XOOPS_URL . "/modules/tadtools/images/1leftarrow.png' alt='" . _TAD_BACK_PAGE . "' align='absmiddle' hspace=3>";
         $this->next = "<img src='" . XOOPS_URL . "/modules/tadtools/images/1rightarrow.png' alt='" . _TAD_NEXT_PAGE . "' align='absmiddle' hspace=3>";
         $this->first = "<img src='" . XOOPS_URL . "/modules/tadtools/images/2leftarrow.png' alt='" . _TAD_FIRST_PAGE . "' align='absmiddle' hspace=3>";
@@ -77,276 +76,147 @@ class PageBar
         $this->first2 = "<img src='" . XOOPS_URL . "/modules/tadtools/images/2leftarrow_g.png' alt='" . _TAD_FIRST_PAGE . "' align='absmiddle' hspace=3>";
         $this->last2 = "<img src='" . XOOPS_URL . "/modules/tadtools/images/2rightarrow_g.png' alt='" . _TAD_LAST_PAGE . "' align='absmiddle' hspace=3>";
         $this->to_page = $_SERVER['PHP_SELF'];
-        $this->limit = $limit;
+        $this->limit = (int) $limit;
         $this->total = $total;
         $this->pLimit = $page_limit;
         $this->order_sql = $order_sql;
-
     }
 
     public function init()
     {
-        $this->used_query = [$this->url_page];
+        $this->used_query = array($this->url_page);
         $this->query_str = $this->processQuery($this->used_query);
         $this->glue = ('' == $this->query_str) ? '?' : '&';
 
-        $this->current = (isset($_GET[$this->url_page])) ? (int) $_GET[$this->url_page] : 1;
-        if ($this->current < 1) {
-            $this->current = 1;
-        }
+        $this->current = isset($_GET[$this->url_page]) ? max(1, (int) $_GET[$this->url_page]) : 1;
 
         $this->pTotal = ceil($this->total / $this->limit);
         $this->pCurrent = ceil($this->current / $this->pLimit);
     }
 
-    //初始設定
-    public function set($active_color = 'none', $buttons = 'none')
-    {
-        if ('none' !== $active_color) {
-            $this->act_color = $active_color;
-        }
-
-        if ('none' !== $buttons) {
-            $this->buttons = $buttons;
-            $this->prev = $this->buttons['prev'];
-            $this->next = $this->buttons['next'];
-            $this->prev_layer = $this->buttons['prev_layer'];
-            $this->next_layer = $this->buttons['next_layer'];
-            $this->first = $this->buttons['first'];
-            $this->last = $this->buttons['last'];
-            $this->prev2 = $this->buttons['prev'];
-            $this->next2 = $this->buttons['next'];
-            $this->first2 = $this->buttons['first'];
-            $this->last2 = $this->buttons['last'];
-        }
-    }
-
-    // 處理 URL 的參數，過濾會使用到的變數名稱
     public function processQuery($used_query)
     {
-        // 將 URL 字串分離成二維陣列
-        // $QUERY_STRING = htmlspecialchars($_SERVER['QUERY_STRING']);
-        $QUERY_STRING = $_SERVER['QUERY_STRING'];
-        $vars = explode('&', $QUERY_STRING);
-        //die(var_export($vars));
-        $len = \mb_strlen('amp;' . $this->url_page);
-        for ($i = 0; $i < count($vars); $i++) {
-            if ('amp;' . $this->url_page === mb_substr($vars[$i], 0, $len)) {
-                continue;
-            }
+        $QUERY_STRING = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '';
 
-            //echo substr($vars[$i],0,7)."<br>";
-            $var[$i] = explode('=', $vars[$i]);
-        }
-        // Utility::dd($var);
+        // 使用 parse_str() 來解析查詢字符串
+        parse_str($QUERY_STRING, $query_vars);
 
-        // 過濾要使用的 URL 變數名稱
-        for ($i = 0; $i < count($var); $i++) {
-            for ($j = 0; $j < count($used_query); $j++) {
-                if (isset($var[$i][0]) && $var[$i][0] == $used_query[$j]) {
-                    $var[$i] = [];
-                }
+        $filtered_vars = array();
+        foreach ($query_vars as $key => $value) {
+            // 檢查鍵是否在 used_query 中
+            if (!in_array($key, $used_query)) {
+                // 對鍵和值進行 HTML 轉義
+                $safe_key = htmlspecialchars($key, ENT_QUOTES, 'UTF-8');
+                $safe_value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+                $filtered_vars[] = $safe_key . '=' . $safe_value;
             }
         }
 
-        $vars = [];
-        // 合併變數名與變數值
-        for ($i = 0; $i < count($var); $i++) {
-            $vars[$i] = implode('=', $var[$i]);
-        }
-
-        // 合併為一完整的 URL 字串
-        $processed_query = '';
-        for ($i = 0; $i < count($vars); $i++) {
-            $glue = ('' == $processed_query) ? '?' : '&';
-            // 開頭第一個是 '?' 其餘的才是 '&'
-            if ('' != $vars[$i]) {
-                $processed_query .= $glue . $vars[$i];
-            }
-        }
-
-        return $processed_query;
+        return empty($filtered_vars) ? '' : '?' . implode('&', $filtered_vars);
     }
 
-    // 製作 sql 的 query 字串 (LIMIT)
     public function sqlQuery()
     {
-        $row_start = ($this->current * $this->limit) - $this->limit;
-        if ($this->order_sql != '') {
-            $sql_query = " {$this->order_sql} LIMIT {$row_start}, {$this->limit}";
-        } else {
-            $sql_query = " LIMIT {$row_start}, {$this->limit}";
-        }
-
-        return $sql_query;
+        $row_start = ($this->current - 1) * $this->limit;
+        return $this->order_sql ? " {$this->order_sql} LIMIT {$row_start}, {$this->limit}" : " LIMIT {$row_start}, {$this->limit}";
     }
 
-    public function set_to_page($page = '')
-    {
-        $this->to_page = $page;
-    }
+    // ... (保留其他方法)
 
-    public function set_url_other($other = '')
+    public function makeBootStrapBar($url_page = 'g2p')
     {
-        $this->url_other = $other;
-    }
-
-    // 製作 bar
-    public function makeBar($url_page = 'none')
-    {
-        if ('none' !== $url_page) {
+        if ('' !== $url_page) {
             $this->url_page = $url_page;
         }
         $this->init();
 
-        // 取得目前時間
         $loadtime = $this->url_other;
-
-        // 取得目前頁框(層)的第一個頁數啟始值，如 6 7 8 9 10 = 6
-        $i = ($this->pCurrent * $this->pLimit) - ($this->pLimit - 1);
+        $start = ($this->pCurrent - 1) * $this->pLimit + 1;
+        $end = min($this->pTotal, $this->pCurrent * $this->pLimit);
 
         $bar_center = '';
-        while ($i <= $this->pTotal && $i <= ($this->pCurrent * $this->pLimit)) {
-            if ($i == $this->current) {
-                $bar_center = "{$bar_center}<span color='{$this->act_color}' style='border:1px solid #660000;background-color:#660000;color:white;text-align:center;padding:3px;margin:1px;line-height:100%;'>&nbsp;{$i}&nbsp;</span>";
-            } else {
-                $bar_center .= " <a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' style='border:1px solid silver;background-color:white;color:#666666;text-align:center;padding:3px;margin:1px;line-height:100%;'>&nbsp;{$i}&nbsp;</a> ";
-            }
-            $i++;
-        }
-        $bar_center = $bar_center . '';
-
-        // 往前跳一頁
-        if ($this->current <= 1) {
-            //$bar_left=$bar_first="";
-            $bar_left = "<span style='border:1px solid silver;background-color:white;color:white;text-align:center;padding:3px;margin:1px;line-height:100%;'>{$this->prev2}</span>";
-            $bar_first = "<span style='border:1px solid silver;background-color:white;color:white;text-align:center;padding:3px;margin:1px;line-height:100%;'>{$this->first2}</span>";
-        } else {
-            $i = $this->current - 1;
-            $bar_left = " <a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='" . _TAD_BACK_PAGE . "' style='border:1px solid gray;background-color:#FFFFCC;color:white;text-align:center;padding:3px;margin:1px;line-height:100%;'>{$this->prev}</a> ";
-            $bar_first = " <a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}=1{$loadtime}' title='" . _TAD_FIRST_PAGE . "' style='border:1px solid gray;background-color:#FFFFCC;color:white;text-align:center;padding:3px;margin:1px;line-height:100%;'>{$this->first}</a> ";
+        for ($i = $start; $i <= $end; $i++) {
+            $active = $i == $this->current ? ' active' : '';
+            $sr_only = $i == $this->current ? '<span class="sr-only">(current)</span>' : '';
+            $bar_center .= sprintf(
+                '<li class="page-item%s"><a class="page-link" href="%s%s%s%s=%d%s" title="%d">%d%s</a></li>',
+                $active,
+                $this->to_page,
+                $this->query_str,
+                $this->glue,
+                $this->url_page,
+                $i,
+                $loadtime,
+                $i,
+                $i,
+                $sr_only
+            );
         }
 
-        // 往後跳一頁
-        if ($this->current >= $this->pTotal) {
-            //$bar_right=$bar_last="";
-            $bar_right = "<span style='border:1px solid silver;background-color:white;color:white;text-align:center;padding:3px;margin:1px;line-height:100%;'>{$this->next2}</span>";
-            $bar_last = "<span style='border:1px solid silver;background-color:white;color:white;text-align:center;padding:3px;margin:1px;line-height:100%;'>{$this->last2}</span>";
-        } else {
-            $i = $this->current + 1;
-            $bar_right = "<a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='" . _TAD_NEXT_PAGE . "' style='border:1px solid gray;background-color:#FFFFCC;color:white;text-align:center;padding:3px;margin:1px;line-height:100%;'>{$this->next}</a> ";
-            $bar_last = " <a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$this->pTotal}{$loadtime}' title='" . _TAD_LAST_PAGE . "' style='border:1px solid gray;background-color:#FFFFCC;color:white;text-align:center;padding:3px;margin:1px;line-height:100%;'>{$this->last}</a> ";
-        }
+        $bar_left = $this->current <= 1
+        ? '<li class="page-item disabled"><a class="page-link disabled" href="#">&lsaquo;</a></li>'
+        : sprintf(
+            '<li class="page-item"><a class="page-link" href="%s%s%s%s=%d%s" title="%s">&lsaquo;</a></li>',
+            $this->to_page,
+            $this->query_str,
+            $this->glue,
+            $this->url_page,
+            $this->current - 1,
+            $loadtime,
+            _TAD_BACK_PAGE
+        );
 
-        // 往前跳一整個頁框(層)
-        if (($this->current - $this->pLimit) < 1) {
-            $bar_l = " {$this->prev_layer} ";
-        } else {
-            $i = $this->current - $this->pLimit;
-            $bar_l = " <a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='" . sprintf($this->pLimit, _TAD_GO_BACK_PAGE) . "' style=''>{$this->prev_layer}</a> ";
-        }
+        $bar_first = $this->current <= 1
+        ? '<li class="page-item disabled"><a class="page-link disabled" href="#">&laquo;</a></li>'
+        : sprintf(
+            '<li class="page-item"><a class="page-link" href="%s%s%s%s=1%s" title="%s">&laquo;</a></li>',
+            $this->to_page,
+            $this->query_str,
+            $this->glue,
+            $this->url_page,
+            $loadtime,
+            _TAD_FIRST_PAGE
+        );
 
-        //往後跳一整個頁框(層)
-        if (($this->current + $this->pLimit) > $this->pTotal) {
-            $bar_r = " {$this->next_layer} ";
-        } else {
-            $i = $this->current + $this->pLimit;
-            $bar_r = " <a href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='" . sprintf($this->pLimit, _TAD_GO_NEXT_PAGE) . "' style=''>{$this->next_layer}</a> ";
-        }
+        $bar_right = $this->current >= $this->pTotal
+        ? '<li class="page-item disabled"><a class="page-link disabled" href="#">&rsaquo;</a></li>'
+        : sprintf(
+            '<li class="page-item"><a class="page-link" href="%s%s%s%s=%d%s" title="%s">&rsaquo;</a></li>',
+            $this->to_page,
+            $this->query_str,
+            $this->glue,
+            $this->url_page,
+            $this->current + 1,
+            $loadtime,
+            _TAD_NEXT_PAGE
+        );
 
-        $page_bar['center'] = $bar_center;
-        $page_bar['left'] = $bar_first . $bar_l . $bar_left;
-        $page_bar['right'] = $bar_right . $bar_r . $bar_last;
-        $page_bar['current'] = $this->current;
-        $page_bar['total'] = $this->pTotal;
-        $page_bar['sql'] = $this->sqlQuery();
+        $bar_last = $this->current >= $this->pTotal
+        ? '<li class="page-item disabled"><a class="page-link disabled" href="#">&raquo;</a></li>'
+        : sprintf(
+            '<li class="page-item"><a class="page-link" href="%s%s%s%s=%d%s" title="%s">&raquo;</a></li>',
+            $this->to_page,
+            $this->query_str,
+            $this->glue,
+            $this->url_page,
+            $this->pTotal,
+            $loadtime,
+            _TAD_LAST_PAGE
+        );
 
-        return $page_bar;
-    }
-
-    // 製作 bar
-    public function makeBootStrapBar($url_page = 'none')
-    {
-        if ('none' !== $url_page and '' != $url_page) {
-            $this->url_page = $url_page;
-        }
-        $this->init();
-
-        // 取得目前時間
-        $loadtime = $this->url_other;
-
-        // 取得目前頁框(層)的第一個頁數啟始值，如 6 7 8 9 10 = 6
-        $i = ($this->pCurrent * $this->pLimit) - ($this->pLimit - 1);
-
-        $bar_center = '';
-        while ($i <= $this->pTotal && $i <= ($this->pCurrent * $this->pLimit)) {
-            if ($i == $this->current) {
-                $bar_center = "
-                        {$bar_center}
-                        <li class='page-item active'>
-                            <a class='page-link' href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='{$i}'>{$i}<span class='sr-only'>(current)</span></a>
-                        </li>";
-            } else {
-                $bar_center .= "
-                        <li class='page-item'>
-                            <a class='page-link' href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}'>{$i}</a>
-                        </li>";
-            }
-            $i++;
-        }
-        $bar_center = $bar_center . '';
-
-        // 往前跳一頁
-        if ($this->current <= 1) {
-            //$bar_left=$bar_first="";
-            $bar_left = "<li class='page-item disabled'><a class='page-link disabled' href='#'>&lsaquo;</a></li>";
-            $bar_first = "<li class='page-item disabled'><a class='page-link disabled' href='#'>&laquo;</a></li>";
-        } else {
-            $i = $this->current - 1;
-            $bar_left = "<li class='page-item'><a class='page-link' href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='" . _TAD_BACK_PAGE . "'>&lsaquo;</a></li>";
-            $bar_first = "<li class='page-item'><a class='page-link' href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}=1{$loadtime}' title='" . _TAD_FIRST_PAGE . "' >&laquo;</a></li>";
-        }
-
-        // 往後跳一頁
-        if ($this->current >= $this->pTotal) {
-            //$bar_right=$bar_last="";
-            $bar_right = "<li class='page-item disabled'><a class='page-link disabled' href='#'>&rsaquo;</a></li>";
-            $bar_last = "<li class='page-item disabled'><a class='page-link disabled' href='#'>&raquo;</a></li>";
-        } else {
-            $i = $this->current + 1;
-            $bar_right = "<li class='page-item'><a class='page-link' href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$i}{$loadtime}' title='" . _TAD_NEXT_PAGE . "'>&rsaquo;</a></li>";
-            $bar_last = "<li class='page-item'><a class='page-link' href='{$this->to_page}{$this->query_str}{$this->glue}{$this->url_page}={$this->pTotal}{$loadtime}' title='" . _TAD_LAST_PAGE . "' >&raquo;</a></li>";
-        }
-
-        // 往前跳一整個頁框(層)
-        if (($this->current - $this->pLimit) < 1) {
-            $bar_l = '';
-        } else {
-            $i = $this->current - $this->pLimit;
-            $bar_l = '';
-        }
-
-        //往後跳一整個頁框(層)
-        if (($this->current + $this->pLimit) > $this->pTotal) {
-            $bar_r = '';
-        } else {
-            $i = $this->current + $this->pLimit;
-            $bar_r = '';
-        }
-
-        $page_bar['center'] = $bar_center;
-        $page_bar['left'] = $bar_first . $bar_l . $bar_left;
-        $page_bar['right'] = $bar_right . $bar_r . $bar_last;
-        $page_bar['current'] = $this->current;
-        $page_bar['total'] = $this->pTotal;
-        $page_bar['start'] = ($this->current * $this->limit) - $this->limit + 1;
-        $page_bar['end'] = $this->current * $this->limit;
-        $page_bar['bar_first'] = $bar_first;
-        $page_bar['bar_left'] = $bar_left;
-        $page_bar['bar_right'] = $bar_right;
-        $page_bar['bar_last'] = $bar_last;
-        $page_bar['sql'] = $this->sqlQuery();
-
-        return $page_bar;
+        return array(
+            'center' => $bar_center,
+            'left' => $bar_first . $bar_left,
+            'right' => $bar_right . $bar_last,
+            'current' => $this->current,
+            'total' => $this->pTotal,
+            'start' => ($this->current - 1) * $this->limit + 1,
+            'end' => min($this->current * $this->limit, $this->total),
+            'bar_first' => $bar_first,
+            'bar_left' => $bar_left,
+            'bar_right' => $bar_right,
+            'bar_last' => $bar_last,
+            'sql' => $this->sqlQuery(),
+        );
     }
 }

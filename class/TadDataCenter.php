@@ -440,7 +440,7 @@ class TadDataCenter
                 (`mid`, `col_name`, `col_sn`, `data_name`, `data_value`, `data_sort`, `col_id`, `sort`, `update_time`)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())';
 
-                Utility::query($sql, 'isisssisi', [$this->mid, $this->col_name, $this->col_sn, $name, $val, $data_sort, $col_id, $sort]) or die($xoopsDB->error());
+                Utility::query($sql, 'isissisi', [$this->mid, $this->col_name, $this->col_sn, $name, $val, $data_sort, $col_id, $sort]) or die($xoopsDB->error());
             }
             $sort++;
         }

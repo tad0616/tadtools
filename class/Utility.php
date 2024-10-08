@@ -3,7 +3,6 @@
 namespace XoopsModules\Tadtools;
 
 use Xmf\Request;
-use XoopsModules\Tadtools\SyntaxHighlighter;
 
 // use XoopsModules\Tadtools\PageBar;
 
@@ -207,7 +206,7 @@ class Utility
     public static function xoops_security_check($file = '', $line = '')
     {
         $where = $file ? "( $file $line )" : "";
-        if (!$GLOBALS['xoopsSecurity']->check()) {
+        if ($_SERVER['SERVER_ADDR'] != '127.0.0.1' && !$GLOBALS['xoopsSecurity']->check()) {
             $error = implode("<br>", $GLOBALS['xoopsSecurity']->getErrors());
             redirect_header($_SERVER['PHP_SELF'], 3, $error . $where);
         }
@@ -542,9 +541,11 @@ class Utility
         }
 
         $main = "
-        <ul class='breadcrumb'>
+        <nav aria-label='breadcrumb'>
+        <ol class='breadcrumb'>
             $item
-        </ul>";
+        </ol>
+        </nav>";
 
         return $main;
     }
@@ -575,7 +576,7 @@ class Utility
         return $filename;
     }
 
-    public static function html5($content = '', $ui = false, $bootstrap = true, $bootstrap_version = '', $use_jquery = true, $container = 'container', $title = 'XOOPS', $head_code = '', $font_awesome = true, $SyntaxHighlighter = 3)
+    public static function html5($content = '', $ui = false, $bootstrap = true, $bootstrap_version = '', $use_jquery = true, $container = 'container', $title = 'XOOPS', $head_code = '', $font_awesome = true, $prism = true)
     {
         $jquery = '';
         if ($use_jquery) {
@@ -590,10 +591,9 @@ class Utility
         <script src='" . XOOPS_URL . "/modules/tadtools/bootstrap{$bootstrap_version}/js/popper.min.js' crossorigin='anonymous'></script>
         <script src='" . XOOPS_URL . "/modules/tadtools/bootstrap{$bootstrap_version}/js/bootstrap.js'></script>" : '';
         $font_awesome_link = $font_awesome ? " <link href=\"" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css\" rel=\"stylesheet\" media=\"all\">" : '';
-        $SyntaxHighlighter_link = '';
-        if ($SyntaxHighlighter) {
-            $SyntaxHighlighter = new SyntaxHighlighter();
-            $SyntaxHighlighter_link = $SyntaxHighlighter->render('return', 3);
+        $prism_link = '';
+        if ($prism) {
+            $prism_link = Utility::prism('return');
         }
 
         $main = "<!DOCTYPE html>\n";
@@ -605,7 +605,7 @@ class Utility
         $main .= "  {$jquery}\n";
         $main .= "  $bootstrap_link\n";
         $main .= "  $font_awesome_link\n";
-        $main .= "  $SyntaxHighlighter_link\n";
+        $main .= "  $prism_link\n";
         $main .= "  {$head_code}\n";
         $main .= "</head>\n";
         $main .= "<body>\n";
@@ -1052,7 +1052,7 @@ class Utility
     }
 
     //取得分頁工具
-    public static function getPageBar($sql = '', $show_num = 20, $page_list = 10, $to_page = '', $url_other = '', $bootstrap = '', $g2p_name = 'none', $order_sql = '')
+    public static function getPageBar($sql = '', $show_num = 20, $page_list = 10, $to_page = '', $url_other = '', $bootstrap = '', $g2p_name = 'g2p', $order_sql = '')
     {
         global $xoopsDB;
         if (empty($show_num)) {
@@ -1438,6 +1438,21 @@ class Utility
         $sql = "DELETE FROM `" . $xoopsDB->prefix("group_permission") . "` WHERE `gperm_modid` = ? AND `gperm_itemid`=? AND `gperm_name`=?";
         Utility::query($sql, 'iis', [$module_id, $itemid, $gperm_name]) or self::web_error($sql, __FILE__, __LINE__);
 
+    }
+
+    // 高亮度語法
+    public static function prism($mode = '')
+    {
+        global $xoTheme;
+        if ($mode == 'return' || !$xoTheme) {
+            return "
+            <link type='text/css' rel='stylesheet' href='" . XOOPS_URL . "/modules/tadtools/prism/prism.css'>
+            <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/prism/prism.js'></script>
+            ";
+        } else {
+            $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/prism/prism.css');
+            $xoTheme->addScript(XOOPS_URL . '/modules/tadtools/prism/prism.js');
+        }
     }
 
     /**

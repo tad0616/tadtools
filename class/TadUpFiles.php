@@ -159,7 +159,7 @@ class TadUpFiles
     public $col_name;
     public $col_sn;
     public $sort;
-    public $subdir;
+    public $subdir = '';
     public $dir;
     public $db_prefix;
     public $hash;
@@ -965,14 +965,9 @@ class TadUpFiles
 
                     $hash_name = ($this->hash) ? "{$hash_name}.{$ext}" : '';
 
-                    $file_name = $myts->addSlashes($file_name);
-                    $description = $myts->addSlashes($description);
-                    $file['name'] = $myts->addSlashes($file['name']);
-                    $save_description[$files_sn] = $myts->addSlashes($save_description[$files_sn]);
-
                     if (empty($files_sn)) {
                         $sql = 'REPLACE INTO `' . $this->TadUpFilesTblName . '` (`col_name`, `col_sn`, `sort`, `kind`, `file_name`, `file_type`, `file_size`, `description`, `counter`, `original_filename`, `sub_dir`, `hash_filename`, `upload_date`, `uid`, `tag`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?)';
-                        Utility::query($sql, 'siisssisissssis', [$this->col_name, $this->col_sn, $this->sort, $kind, $file_name, $file['type'], $file['size'], $description, $this->subdir, $hash_name, $upload_date, $uid, $this->tag]) or Utility::web_error($sql, __FILE__, __LINE__);
+                        Utility::query($sql, 'siisssisssssis', [$this->col_name, $this->col_sn, $this->sort, $kind, $file_name, $file['type'], $file['size'], $description, $file['name'], $this->subdir, $hash_name, $upload_date, $uid, $this->tag]) or Utility::web_error($sql, __FILE__, __LINE__);
 
                         //取得最後新增資料的流水編號
                         $insert_files_sn = $xoopsDB->getInsertId();
@@ -1926,13 +1921,24 @@ class TadUpFiles
 
         $and_sort = !empty($this->sort) ? ' AND `sort`=?' : '';
         $and_kind = $showkind == 'file' ? " AND `kind`='file'" : " AND `kind`='img'";
-        $where = $files_sn ? 'WHERE `files_sn`=?' : 'WHERE `col_name`=? AND `col_sn`=?' . $and_sort . $and_kind . ' ORDER BY sort LIMIT 0,1';
-        $sql = 'SELECT * FROM `' . $this->TadUpFilesTblName . '` ' . $where;
-        $params = $files_sn ? [$files_sn] : [$this->col_name, $this->col_sn];
-        if (!empty($this->sort)) {
-            $params[] = $this->sort;
+
+        if ($files_sn) {
+            $where = 'WHERE `files_sn`=?' . $and_kind . ' ORDER BY sort LIMIT 0,1';
+            $params = [$files_sn];
+            $types = 'i';
+        } else {
+            $where = 'WHERE `col_name`=? AND `col_sn`=?' . $and_sort . $and_kind . ' ORDER BY sort LIMIT 0,1';
+            $params = [$this->col_name, $this->col_sn];
+            $types = 'si';
+
+            if (!empty($this->sort)) {
+                $params[] = $this->sort;
+                $types .= 'i';
+            }
         }
-        $result = Utility::query($sql, $files_sn ? 'i' : 'sii', $params) or Utility::web_error($sql, __FILE__, __LINE__);
+
+        $sql = 'SELECT * FROM `' . $this->TadUpFilesTblName . '` ' . $where;
+        $result = Utility::query($sql, $types, $params) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $files = '';
         while ($all = $xoopsDB->fetchArray($result)) {

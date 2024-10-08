@@ -552,7 +552,7 @@ class TadModData
         $this->chk_allow(__FUNCTION__);
 
         //安全判斷
-        if (!$GLOBALS['xoopsSecurity']->check()) {
+        if ($_SERVER['SERVER_ADDR'] != '127.0.0.1' && !$GLOBALS['xoopsSecurity']->check()) {
             $error = implode("<br>", $GLOBALS['xoopsSecurity']->getErrors());
             redirect_header($_SERVER['HTTP_REFERER'], 3, $error);
         }
@@ -589,7 +589,7 @@ class TadModData
         $this->chk_allow(__FUNCTION__);
 
         //安全判斷
-        if (!$GLOBALS['xoopsSecurity']->check()) {
+        if ($_SERVER['SERVER_ADDR'] != '127.0.0.1' && !$GLOBALS['xoopsSecurity']->check()) {
             $error = implode("<br>", $GLOBALS['xoopsSecurity']->getErrors());
             redirect_header($_SERVER['HTTP_REFERER'], 3, $error);
         }

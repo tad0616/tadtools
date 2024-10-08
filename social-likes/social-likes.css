@@ -7,7 +7,7 @@
 .share-buttons button {
     border: none;
     color: white;
-    padding: 0px 2px 2px;
+    padding: 2px;
     cursor: pointer;
     border-radius: 50%;
     width: 32px;

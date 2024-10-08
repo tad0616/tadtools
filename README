@@ -23,6 +23,7 @@ TadTools 4.0 (尚未釋出)
 18.移除tad_function.php
 19.資料庫改用參數化查詢
 20.支援非tad_theme佈景使用
+21.移除SyntaxHighlighter
 
 TadTools 3.55 (2023-10-17 釋出)
 ====================================
