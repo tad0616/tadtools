@@ -34,11 +34,12 @@ $modversion['min_db'] = [
 ];
 
 //---paypal資訊---//
-$modversion['paypal'] = [];
-$modversion['paypal']['business'] = 'tad0616@gmail.com';
-$modversion['paypal']['item_name'] = 'Donation : ' . _MI_TADTOOLS_DESC;
-$modversion['paypal']['amount'] = 0;
-$modversion['paypal']['currency_code'] = 'TWD';
+$modversion['paypal'] = [
+    'business' => 'tad0616@gmail.com',
+    'item_name' => 'Donation : ' . _MI_TAD_WEB,
+    'amount' => 0,
+    'currency_code' => 'USD',
+];
 
 //---資料表架構---//
 $modversion['sqlfile']['mysql'] = 'sql/mysql.sql';

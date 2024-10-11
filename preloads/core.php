@@ -50,7 +50,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         // 僅支援 tad themes 佈景才需要的設定
         if (!empty($def_config['theme_kind']) and $def_config['theme_kind'] != 'xoops') {
             // 取得佈景管理的自訂設定值
-            $theme_config = Tools::theme_config($theme_name);
+            $theme_config = Tools::theme_config($theme_name, $def_config);
             if (!empty($theme_config) and !empty($theme_config['theme_width'])) {
                 foreach ($theme_config as $k => $v) {
                     $$k = $v;
@@ -715,7 +715,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
                 $xoTheme->addStylesheet(XOOPS_URL . "/modules/tadtools/{$c[0]}/css/bootstrap.css");
                 $xoTheme->addStylesheet(XOOPS_URL . "/modules/tadtools/{$tt_bootstrap_color}/bootstrap.min.css");
             }
-            // $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/fix-bootstrap.css');
+            // $xoTheme->addStylesheet('modules/tadtools/css/fix-bootstrap.css');
         }
     }
 

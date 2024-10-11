@@ -1,6 +1,5 @@
 <{if $openid_login!="3"}>
   <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-
     <{if $openid_login=="0" or $openid_login=="1"}>
       <li>
         <form action="<{$xoops_url}>/user.php" method="post" class="form-horizontal" role="form">
@@ -60,32 +59,6 @@
         </form>
 
       </li>
-
     <{/if}>
-
-<{*
-      <{assign var="i" value=0}>
-      <{assign var="total" value=1}>
-      <{foreach from=$tlogin item=login}>
-        <{if $i==0}>
-        <li style="white-space: nowrap">
-        <{/if}>
-
-        <a href="<{$login.link}>" class="btn" <{if $openid_logo!=1}>style="display:inline-block;width:32px;height:32px;padding:2px;margin:2px;background-color:transparent;"<{/if}>>
-          <img src="<{$login.img}>" alt="<{$login.text}>" title="<{$login.text}>" <{if $openid_logo!=1}>style="width:32px;height:32px;"<{/if}>>
-          <{if $openid_logo==1}><{$login.text}><{/if}>
-        </a>
-
-        <{assign var="i" value=$i+1}>
-        <{assign var="total" value=$total+1}>
-
-        <{if $i == $openid_logo || $total==$count}>
-          </li>
-          <{assign var="i" value=0}>
-        <{/if}>
-      <{/foreach}>
-    <{/if}>
-*}>
-
   </ul>
 <{/if}>

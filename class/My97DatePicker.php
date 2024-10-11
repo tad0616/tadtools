@@ -29,6 +29,9 @@ $My97DatePicker=new My97DatePicker();
 $My97DatePicker->render();
 or
 My97DatePicker::render();
+or
+
+$xoTheme->addScript('modules/tadtools/My97DatePicker/WdatePicker.js');
 
 onClick="WdatePicker({dateFmt:'yyyy-MM-dd', startDate:'%y-%M-%d'})"
  */

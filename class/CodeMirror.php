@@ -26,22 +26,22 @@ class CodeMirror
         // $TadToolsModuleConfig = Utility::TadToolsXoopsModuleConfig();
 
         if ($xoTheme) {
-            $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/CodeMirror/lib/codemirror.css');
-            $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/CodeMirror/theme/material.css');
-            $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/CodeMirror/addon/display/fullscreen.css');
+            $xoTheme->addStylesheet('modules/tadtools/CodeMirror/lib/codemirror.css');
+            $xoTheme->addStylesheet('modules/tadtools/CodeMirror/theme/material.css');
+            $xoTheme->addStylesheet('modules/tadtools/CodeMirror/addon/display/fullscreen.css');
 
-            $xoTheme->addScript(XOOPS_URL . '/modules/tadtools/CodeMirror/lib/codemirror.js');
-            $xoTheme->addScript(XOOPS_URL . '/modules/tadtools/CodeMirror/mode/javascript/javascript.js');
-            $xoTheme->addScript(XOOPS_URL . '/modules/tadtools/CodeMirror/mode/xml/xml.js');
-            $xoTheme->addScript(XOOPS_URL . '/modules/tadtools/CodeMirror/mode/css/css.js');
-            $xoTheme->addScript(XOOPS_URL . '/modules/tadtools/CodeMirror/mode/htmlmixed/htmlmixed.js');
-            $xoTheme->addScript(XOOPS_URL . '/modules/tadtools/CodeMirror/mode/php/php.js');
-            $xoTheme->addScript(XOOPS_URL . '/modules/tadtools/CodeMirror/addon/selection/active-line.js');
-            $xoTheme->addScript(XOOPS_URL . '/modules/tadtools/CodeMirror/addon/edit/matchbrackets.js');
-            $xoTheme->addScript(XOOPS_URL . '/modules/tadtools/CodeMirror/addon/display/fullscreen.js');
-            $xoTheme->addScript(XOOPS_URL . '/modules/tadtools/CodeMirror/addon/hint/show-hint.js');
-            $xoTheme->addScript(XOOPS_URL . '/modules/tadtools/CodeMirror/addon/hint/css-hint.js');
-            $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/CodeMirror/addon/hint/show-hint.css');
+            $xoTheme->addScript('modules/tadtools/CodeMirror/lib/codemirror.js');
+            $xoTheme->addScript('modules/tadtools/CodeMirror/mode/javascript/javascript.js');
+            $xoTheme->addScript('modules/tadtools/CodeMirror/mode/xml/xml.js');
+            $xoTheme->addScript('modules/tadtools/CodeMirror/mode/css/css.js');
+            $xoTheme->addScript('modules/tadtools/CodeMirror/mode/htmlmixed/htmlmixed.js');
+            $xoTheme->addScript('modules/tadtools/CodeMirror/mode/php/php.js');
+            $xoTheme->addScript('modules/tadtools/CodeMirror/addon/selection/active-line.js');
+            $xoTheme->addScript('modules/tadtools/CodeMirror/addon/edit/matchbrackets.js');
+            $xoTheme->addScript('modules/tadtools/CodeMirror/addon/display/fullscreen.js');
+            $xoTheme->addScript('modules/tadtools/CodeMirror/addon/hint/show-hint.js');
+            $xoTheme->addScript('modules/tadtools/CodeMirror/addon/hint/css-hint.js');
+            $xoTheme->addStylesheet('modules/tadtools/CodeMirror/addon/hint/show-hint.css');
 
             $xoTheme->addScript('', null, "
             \$(document).ready(function(){

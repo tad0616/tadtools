@@ -209,7 +209,7 @@ Mobile Responsiveness
   }
 }
 /*
-$xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/vtable.css');
+$xoTheme->addStylesheet('modules/tadtools/css/vtable.css');
 <link href="<{$xoops_url}>/modules/tadtools/css/vtable.css" media="all" rel="stylesheet">
 <!-- 左標右格 -->
 <div class="vtable">

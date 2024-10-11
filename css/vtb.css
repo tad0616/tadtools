@@ -297,7 +297,7 @@
 }
 
 /*
-  $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/vtb.css');
+  $xoTheme->addStylesheet('modules/tadtools/css/vtb.css');
   <link href="<{$xoops_url}>/modules/tadtools/css/vtb.css" media="all" rel="stylesheet">
   <!-- 左標右格 -->
   <div class="vtb">

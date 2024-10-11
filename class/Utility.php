@@ -526,7 +526,7 @@ class Utility
     {
         global $xoTheme;
         if (is_object($xoTheme)) {
-            $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops.css');
+            $xoTheme->addStylesheet('modules/tadtools/css/xoops.css');
         }
         $item = '';
         if (is_array($cate_path_array)) {
@@ -673,8 +673,8 @@ class Utility
             if ($xoTheme) {
                 $xoTheme->addStylesheet(XOOPS_URL . "/modules/tadtools/bootstrap{$_SESSION['bootstrap']}/css/bootstrap.css");
                 $xoTheme->addStylesheet(XOOPS_URL . "/modules/tadtools/css/xoops_adm{$_SESSION['bootstrap']}.css");
-                // $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/fix-bootstrap.css');
-                $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/font-awesome/css/font-awesome.css');
+                // $xoTheme->addStylesheet('modules/tadtools/css/fix-bootstrap.css');
+                $xoTheme->addStylesheet('modules/tadtools/css/font-awesome/css/font-awesome.css');
             }
         } elseif ('return' === $mode) {
             $main = "
@@ -888,7 +888,7 @@ class Utility
     }
 
     //複選回復原始資料函數
-    public static function chk2($default_array = '', $NEED_V = '', $default = 0)
+    public static function chk2($default_array = [], $NEED_V = '', $default = 0)
     {
         if (in_array($NEED_V, $default_array)) {
             return 'checked';
@@ -911,7 +911,7 @@ class Utility
 
         //取得目前使用者的群組編號
         if (!isset($_SESSION['groups']) or $_SESSION['groups'] === '') {
-            $_SESSION['groups'] = ($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+            $_SESSION['groups'] = $xoopsUser ? $xoopsUser->getGroups() : [XOOPS_GROUP_ANONYMOUS];
         }
 
         //取得模組編號
@@ -1120,7 +1120,7 @@ class Utility
         global $xoTheme, $xoopsUser, $xoopsModule;
 
         if (is_object($xoTheme)) {
-            $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/xoops.css');
+            $xoTheme->addStylesheet('modules/tadtools/css/xoops.css');
         }
         xoops_loadLanguage('main', 'tadtools');
         $op = Request::getString('op');
@@ -1188,37 +1188,6 @@ class Utility
         }
 
         $main = "
-        <style>
-            .toolbar_bootstrap_nav {
-                position: relative;
-                margin: 20px 0;
-            }
-            .toolbar_bootstrap_nav ul {
-                margin: 0;
-                padding: 0;
-            }
-            .toolbar_bootstrap_nav li {
-                margin: 0 5px 10px 0;
-                padding: 0;
-                list-style: none;
-                display: inline-block;
-            }
-            .toolbar_bootstrap_nav a {
-                padding: 3px 12px;
-                text-decoration: none;
-                color: #999;
-                line-height: 100%;
-            }
-            .toolbar_bootstrap_nav a:hover {
-                color: #000;
-            }
-            .toolbar_bootstrap_nav .current a {
-                background: #999;
-                color: #fff;
-                border-radius: 5px;
-            }
-        </style>
-
         <nav class='toolbar_bootstrap_nav'>
             <ul>
             $options
@@ -1441,18 +1410,23 @@ class Utility
     }
 
     // 高亮度語法
-    public static function prism($mode = '')
+    public static function prism($mode = '', $line_numbers = false)
     {
-        global $xoTheme;
+        global $xoTheme, $xoopsTpl;
         if ($mode == 'return' || !$xoTheme) {
             return "
             <link type='text/css' rel='stylesheet' href='" . XOOPS_URL . "/modules/tadtools/prism/prism.css'>
             <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/prism/prism.js'></script>
             ";
         } else {
-            $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/prism/prism.css');
-            $xoTheme->addScript(XOOPS_URL . '/modules/tadtools/prism/prism.js');
+            $xoTheme->addStylesheet('modules/tadtools/prism/prism.css');
+            $xoTheme->addScript('modules/tadtools/prism/prism.js');
         }
+
+        if ($line_numbers) {
+            $xoopsTpl->assign('prism_setup', 'class="line-numbers"');
+        }
+
     }
 
     /**

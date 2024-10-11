@@ -59,9 +59,7 @@
                 </fieldset>
             </form>
         </li>
-
     <{/if}>
-
         <li class="nav-item">
             <{foreach from=$tlogin item=login}>
                 <a href="<{$login.link}>" class="btn" <{if $openid_logo!=1}>style="display:inline-block; width:32px; height:32px;padding:3px; margin:3px; background-color:transparent;"<{/if}>>
@@ -70,6 +68,5 @@
                 </a>
             <{/foreach}>
         </li>
-    <{/if}>
     </ul>
 <{/if}>

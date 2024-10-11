@@ -26,6 +26,6 @@ if (!isset($xoopsTpl) || !is_object($xoopsTpl)) {
 xoops_cp_header();
 
 // Define Stylesheet and JScript
-$xoTheme->addStylesheet(XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . '/css/admin.css');
+$xoTheme->addStylesheet('modules/' . $xoopsModule->getVar('dirname') . '/css/admin.css');
 //$xoTheme->addScript("browse.php?Frameworks/jquery/jquery.js");
 //$xoTheme->addScript("browse.php?modules/" . $xoopsModule->getVar("dirname") . "/js/admin.js");

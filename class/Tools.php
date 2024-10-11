@@ -32,7 +32,6 @@ class Tools
     public static function def_config($theme_name, $TadThemesMid = 0)
     {
         global $aggreg, $xoopsConfig, $xoopsTpl;
-
         /**** 取得佈景設定的各個預設值 ****/
         if (\file_exists(XOOPS_ROOT_PATH . "/themes/{$theme_name}/config.php")) {
             $configHandler = xoops_getHandler('config');
@@ -46,7 +45,6 @@ class Tools
             $def_config['xoops_showlblock'] = empty($def_config['left_count']) ? false : true;
             $def_config['xoops_showrblock'] = empty($def_config['right_count']) ? false : true;
             /**** 取得 Tad Themes 偏好設定****/
-
             require_once XOOPS_ROOT_PATH . "/themes/{$theme_name}/config.php";
             require_once XOOPS_ROOT_PATH . "/modules/tadtools/language/{$xoopsConfig['language']}/main.php";
 
@@ -77,15 +75,18 @@ class Tools
         return $def_config;
     }
 
-    public static function import_theme_json($theme_name)
+    public static function import_theme_json($theme_name, $def_config = [])
     {
         global $xoopsDB;
 
-        $def_config = Tools::def_config($theme_name);
-        $json_file = XOOPS_VAR_PATH . "/data/theme_{$theme_name}.json";
-        if (file_exists($json_file)) {
-            \unlink($json_file);
+        if (empty($def_config)) {
+            $def_config = self::def_config($theme_name);
         }
+
+        $json_file = XOOPS_VAR_PATH . "/data/theme_{$theme_name}.json";
+        // if (file_exists($json_file)) {
+        //     \unlink($json_file);
+        // }
 
         // 僅支援 tad themes 佈景才需要的設定
         if (!empty($def_config['theme_kind']) and $def_config['theme_kind'] != 'xoops') {
@@ -230,11 +231,11 @@ class Tools
         Utility::full_copy($source, $target);
     }
 
-    public static function theme_config($theme_name)
+    public static function theme_config($theme_name, $def_config = [])
     {
         $json_file = XOOPS_VAR_PATH . "/data/theme_{$theme_name}.json";
         if (!file_exists($json_file)) {
-            self::import_theme_json($theme_name);
+            self::import_theme_json($theme_name, $def_config);
         }
 
         $theme_config = json_decode(file_get_contents($json_file), true);

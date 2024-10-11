@@ -89,3 +89,32 @@ div.jGrowl div.jGrowl-closer {
   font-weight: bold;
   text-align: center;
 }
+
+.toolbar_bootstrap_nav {
+  position: relative;
+  margin: 20px 0;
+}
+.toolbar_bootstrap_nav ul {
+  margin: 0;
+  padding: 0;
+}
+.toolbar_bootstrap_nav li {
+  margin: 0 5px 10px 0;
+  padding: 0;
+  list-style: none;
+  display: inline-block;
+}
+.toolbar_bootstrap_nav a {
+  padding: 3px 12px;
+  text-decoration: none;
+  color: #404a50;
+  line-height: 100%;
+}
+.toolbar_bootstrap_nav a:hover {
+  color: #1c55be;
+}
+.toolbar_bootstrap_nav .current a {
+  background: #404a50;
+  color: #fff;
+  border-radius: 5px;
+}
