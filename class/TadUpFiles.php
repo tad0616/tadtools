@@ -385,7 +385,6 @@ class TadUpFiles
     //上傳元件
     public function upform($show_edit = false, $upname = 'upfile', $maxlength = '', $show_list_del_file = true, $only_type = '', $thumb = true, $id = '', $show_filename = true)
     {
-        global $xoopsDB;
         $this->upname = $upname;
         $maxlength_code = empty($maxlength) ? '' : "maxlength='{$maxlength}'";
         $accept = ($only_type) ? "accept='{$only_type}'" : '';
@@ -416,7 +415,7 @@ class TadUpFiles
 
         $main = "
             $jquery
-            <input type='file' name='{$upname}[]' id='{$id}' $multiple $accept class='form-control $require' style='height: initial;'>
+            <input type='file' name='{$upname}[]' id='{$id}' $multiple $accept class='form-control $require' style='width: 100%;height: initial;'>
             $permission
             {$list_del_file}
             ";
@@ -1129,7 +1128,7 @@ class TadUpFiles
                 if (empty($files_sn)) {
 
                     $sql = 'REPLACE INTO `' . $this->TadUpFilesTblName . '` (`col_name`, `col_sn`, `sort`, `kind`, `file_name`, `file_type`, `file_size`, `description`, `counter`, `original_filename`, `sub_dir`, `hash_filename`, `upload_date`, `uid`, `tag`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?)';
-                    Utility::query($sql, 'siisssisissssis', [$this->col_name, $this->col_sn, $this->sort, $kind, $new_filename, $type, $size, $description, $filename, $this->subdir, $hash_name . '.' . $ext, $upload_date, $uid, $this->tag]) or Utility::web_error($sql, __FILE__, __LINE__);
+                    Utility::query($sql, 'siisssisssssis', [$this->col_name, $this->col_sn, $this->sort, $kind, $new_filename, $type, $size, $description, $filename, $this->subdir, $hash_name . '.' . $ext, $upload_date, $uid, $this->tag]) or Utility::web_error($sql, __FILE__, __LINE__);
                     //取得最後新增資料的流水編號
                     $files_sn = $xoopsDB->getInsertId();
                 } else {
@@ -1557,24 +1556,33 @@ class TadUpFiles
         $isAdmin = $xoopsUser ? $xoopsUser->isAdmin($mod_id) : false;
         $my_uid = $xoopsUser ? $xoopsUser->uid() : 0;
 
+        $del_what = '';
+        $params = [];
+        $types = '';
+
         if (!empty($files_sn)) {
             $del_what = '`files_sn`=?';
+            $params[] = $files_sn;
+            $types .= 'i';
         } elseif (!empty($this->col_name) && !empty($this->col_sn)) {
-            $and_sort = empty($this->sort) ? '' : ' AND `sort`=?';
-            $del_what = '`col_name`=? AND `col_sn`=?' . $and_sort;
+            $del_what = '`col_name`=? AND `col_sn`=?';
+            $params[] = $this->col_name;
+            $params[] = $this->col_sn;
+            $types .= 'si';
+
+            if (!empty($this->sort)) {
+                $del_what .= ' AND `sort`=?';
+                $params[] = $this->sort;
+                $types .= 'i';
+            }
         }
 
         if (empty($del_what)) {
             return false;
         }
 
-        $sql = 'SELECT * FROM `' . $this->TadUpFilesTblName . '` WHERE ' . $del_what;
-
-        $params = $files_sn ? [$files_sn] : [$this->col_name, $this->col_sn];
-        if (!empty($this->sort)) {
-            $params[] = $this->sort;
-        }
-        $result = Utility::query($sql, $files_sn ? 'i' : 'sii', $params) or die($sql);
+        $sql = "SELECT * FROM `{$this->TadUpFilesTblName}` WHERE {$del_what}";
+        $result = Utility::query($sql, $types, $params) or die($sql);
 
         $del_amount = 0;
         while ($all = $xoopsDB->fetchArray($result)) {
@@ -2159,11 +2167,7 @@ class TadUpFiles
 
             if (!empty($gperm_groupid_arr)) {
                 //取得目前使用者的群組編號
-                if ($xoopsUser) {
-                    $groups = $xoopsUser->getGroups();
-                } else {
-                    $groups = XOOPS_GROUP_ANONYMOUS;
-                }
+                $groups = $xoopsUser ? $xoopsUser->getGroups() : [XOOPS_GROUP_ANONYMOUS];
 
                 if (!array_intersect($groups, $gperm_groupid_arr)) {
                     redirect_header(XOOPS_URL, 3, _TAD_PERMISSION_DENIED);

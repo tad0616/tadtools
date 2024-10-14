@@ -1,4 +1,5 @@
 <?php
+use XoopsModules\Tadtools\Utility;
 include_once '../../../../mainfile.php';
 if (isAdmin()) {
     $v = (int) $_GET['v'];

@@ -19,12 +19,13 @@ TadTools 4.0 (尚未釋出)
 17.移除 grunt.js、chk_jquery.js
 15.升級 jQuery ui 為 1.14.0
 16.不使用 jGrowl 動態轉向時，以SweetAlert2取代之
-17.移除jquerychained 連動選單套件
-18.移除tad_function.php
+17.移除 jquerychained 連動選單套件
+18.移除 tad_function.php
 19.資料庫語法參數化
 20.支援非tad_theme佈景使用
-21.移除SyntaxHighlighter
-22.移除tinymap.php
+21.移除 SyntaxHighlighter
+22.移除 tinymap.php
+23.移除 framework7
 
 TadTools 3.55 (2023-10-17 釋出)
 ====================================

@@ -1091,7 +1091,7 @@ class Utility
                     </ul>
                 </nav>
                 ";
-        } elseif ('3' == $bootstrap or '4' == $bootstrap or '5' == $bootstrap) {
+        } else {
             $mybar = $navbar->makeBootStrapBar($g2p_name);
             $main['bar'] = "
                 <div class='text-center'>
@@ -1104,9 +1104,6 @@ class Utility
                     </nav>
                 </div>
                 ";
-        } else {
-            $mybar = $navbar->makeBar($g2p_name);
-            $main['bar'] = "<div style='text-align:center;margin:4px;'>{$mybar['left']}{$mybar['center']}{$mybar['right']}<div style='zoom:1;clear:both;'></div></div>";
         }
 
         $main['sql'] = $sql . $mybar['sql'];
