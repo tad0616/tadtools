@@ -1,61 +1,90 @@
+TadTools 4.0 (released on 2024-11-11)
+====================================
+1. Upgrade tcpdf to version 6.6.65
+2. Modify the navigation bar text size setting and force the unit rem to be added.
+3. Modify power_chk()
+4. Add the setting of whether the development test mode is only open to managers
+5. TadUpFiles If there are already files, cancel the required check
+6. Support SweetAlert2
+7. Remove flexslider kit
+8. Support PHP8.1.x
+9. Support XOOPS 2.5.11
+10. Optimize social sharing buttons
+11. Upgrade BootStrap3.3.7 to 3.4.1
+12. Upgrade BootStrap4.5.2 to 4.6.2
+13. Upgrade BootStrap5.1.3 to 5.3.3
+14. Modify PHPExcel to make it compatible with PHP8.3
+15. Upgrade jQuery to 3.7.1
+16. Upgrade jGrowl to 1.4.5
+17. Remove grunt.js, chk_jquery.js
+15. Upgrade jQuery ui to 1.14.0
+16. When jGrowl dynamic steering is not used, replace it with SweetAlert2
+17. Remove jquerychained, SyntaxHighlighter, framework7, spruto_player, smoothslides and other packages
+18. Remove tad_function.php
+19. Database syntax parameterization
+20. Support non-tad_theme background use
+21. Remove bubblepopup.php, ckcal.php, ck.php, dtree.php, elrte.php, fancybox.php, fck.php, flexslider2.php, FooTable.php, formValidator.php, jBreadCrumb.php, jeditable. php, jquery.php, jquery_pin.php, jwplayer.php, jwplayer_new.php, lofslidernews.php, star_rating.php, stickytableheaders.php, sweet_alert.php, syntaxhighlighter.php, treetable.php and other files.
+22. Upgrade BootStrap-Table to 1.23.5
+23. Support fontawesome for 6.6.0
+
 TadTools 3.55 (released 2023-10-17)
 ====================================
 1. Update bootstrap-table to version 1.22.
 2. Adjust the layout template file
-3.BootStrap5 remove unnecessary popper.min.js
+3. BootStrap5 remove unnecessary popper.min.js
 4. Upgrade My97DatePicker to 4.8.5.
 5. Added FullCalendar 6.1.9.
 6. Upgraded phpoffice/phpword to 0.18.3
-7.Utility added various system permission related functions.
+7. Utility added various system permission related functions.
 
 TadTools 3.54 (Released 2023-03-24)
 ====================================
 1. Automatically add links to URLs and open to new windows instead
 2. Update SyntaxHighlighter to v3.0.90
-3.CKEditor add the function of auto upload when paste the image directly
+3. CKEditor add the function of auto upload when paste the image directly
 4. Utility added generateThumbnail() method to generate thumbnail.
-5.Modify font size to relative size
-6.Customize interface_menu submenu to support icon
-7.CKEditor removes the "Paste" button that no longer works
+5. Modify font size to relative size
+6. Customize interface_menu submenu to support icon
+7. CKEditor removes the "Paste" button that no longer works
 
 TadTools 3.53 (Released on 2023-01-29)
 ====================================
 1. toolbar_bootstrap() automatically detects external links and opens a new window
-2.BootStrap Table add click to edit function
-3.CKEditor upgraded to version 4.20.1
-4.CKEditor added Auto Embed function
-5.CKEditor added various adaptive fields
-6.TadUpFiles add upload file limit check
+2. BootStrap Table add click to edit function
+3. CKEditor upgraded to version 4.20.1
+4. CKEditor added Auto Embed function
+5. CKEditor added various adaptive fields
+6. TadUpFiles add upload file limit check
 7.jquery.validationEngine.js add file size check
 8.modify toolbar_bootstrap() add icon support
 9.Edit button for adding advanced blocks to the block
 
 TadTools 3.52 (Released on 2022-11-01)
 ====================================
-1.CKEditor add custom style function
+1. CKEditor add custom style function
 2. Fix the problem that some custom blocks cannot be placed in the custom area
 3. Add additional sorting parameters to the paging tool
-4.Upgrade jQuery-UI to 1.13.2
-5.CKEditor add several kinds of Chinese list style
-6.TadDataCenter add several automatic fields.
+4. Upgrade jQuery-UI to 1.13.2
+5. CKEditor add several kinds of Chinese list style
+6. TadDataCenter add several automatic fields.
 7. Add 16 sets of phonetic fonts that support broken phonetic characters.
 8.Adjust the font list page and add a link to the broken character selection tool.
-9.BootStrap Table with filtering function.
+9. BootStrap Table with filtering function.
 
 TadTools 3.51 (Released on 2022-09-01)
 ====================================
 1. Support the integration of layout customization settings
-2.Fix the default value of Tmt double frame picker
+2. Fix the default value of Tmt double frame picker
 3. remove jquery.mobile, jquery-1.11.1.min.js, multiple-file-upload and other old packages
-4.CKEditor add font WYSIWYG
+4. CKEditor add font WYSIWYG
 5. CKEditor upload directory, support for mandatory upload to subdirectories (for developers)
 
 TadTools 3.5 (Released on 2022-08-13)
 ====================================
 1. Solve the problem that the navigation bar option cannot be changed to a new line
-2.Fix the problem that the paging tool is not displayed correctly under BootStrap5
+2. Fix the problem that the paging tool is not displayed correctly under BootStrap5
 3. Modify some icons
-4.TadUpFiles automatically filters special symbols in file names when downloading.
+4. TadUpFiles automatically filters special symbols in file names when downloading.
 5. Support changing the text and description of the "Login" option in the navigation bar (need to go to tad_themes preference to change)
 6. Modify SweetAlert to support multiple parameters
 7. Fixed the problem that some sliding images cannot be linked to a new window.
@@ -75,18 +104,18 @@ TadTools 3.49 (Released 2022-03-29)
 TadTools 3.48 (Released on 2022-01-11)
 ====================================
 1. Upgrade to BootStrap 5.1.3
-2.Fix common block template can not be imported for the first time
-3.Use better bootstrap version grabbing method
+2. Fix common block template can not be imported for the first time
+3. Use better bootstrap version grabbing method
 4. Support BootStrap5 new layout
 
 TadTools 3.47 (Released 2021-12-13)
 ====================================
-1.TadDataCenter added several eguide related methods
+1. TadDataCenter added several eguide related methods
 2. Enhance TadUpFiles.php file name filtering
-3.Modify TadUpFiles to edit forms with incorrect screen when the file is in list mode.
-4.Modify the CKEditor editor style to be compatible with all versions of BootStrap
-5.Modify BootStrap version determination mechanism
-6.Optimize mColorPicker.js
+3. Modify TadUpFiles to edit forms with incorrect screen when the file is in list mode.
+4. Modify the CKEditor editor style to be compatible with all versions of BootStrap
+5. Modify BootStrap version determination mechanism
+6. Optimize mColorPicker.js
 7. Support BootStrap5
 
 TadTools 3.46 (Released 2021-10-06)
@@ -98,19 +127,19 @@ TadTools 3.46 (Released 2021-10-06)
 
 TadTools 3.45 (Released 2021-08-22)
 ====================================
-1.Fix for 2021/07 new version of AA accessibility standard
-2.Video.js add flv support
-3.Add tmt double frame picker
-4.In order to comply with the new version of accessibility, TadUpFiles.php change pdf, mp3, mp4 to mandatory download
+1. Fix for 2021/07 new version of AA accessibility standard
+2. Video.js add flv support
+3. Add tmt double frame picker
+4. In order to comply with the new version of accessibility, TadUpFiles.php change pdf, mp3, mp4 to mandatory download
 5. Fix the problem that the right area does not appear if there is no left block in the single column layout.
 6. Add accessibility 2.1 AA auto-correct Wcga function object.
 
 TadTools 3.44 (released on 2021-08-01)
 ====================================
-1.TadDataCenter.php add text to form function (compatible with eguide syntax)
+1. TadDataCenter.php add text to form function (compatible with eguide syntax)
 2. Fix the problem that Dtree cannot display correctly if there are special symbols.
-3.Comply with 2021/07 new version of AA accessibility standard
-4.Video.js add subtitle support
+3. Comply with 2021/07 new version of AA accessibility standard
+4. Video.js add subtitle support
 
 TadTools 3.43 (released 2021-05-27)
 ====================================
@@ -138,45 +167,45 @@ TadTools 3.42 (Released 2021-03-25)
 TadTools 3.41 (Released 2020-10-30)
 ====================================
 1.Allow TadDataCenter.php to store HTML
-2.Upgrade elFinder to 2.1.57 to support jQuery 3.5.1
+2. Upgrade elFinder to 2.1.57 to support jQuery 3.5.1
 
 TadTools 3.4 (Released on 2020-10-24)
 ====================================
 1. Modify the presentation of show_var.tpl to make it easier to read.
-2.Add admin_menu_var Manage Menu Template Parameters
+2. Add admin_menu_var Manage Menu Template Parameters
 3. Add user_menu_var user menu template parameter.
 4. Simplify menu_user*.tpl with template parameters.
 5. Support unlimited multi-layers with the scenery menu.
-6.BootStrap upgrade to 4.5.2
-Upgraded jQuery to v3.5.1.
-8.Move the preference of whether to pin the navigation bar to tad_themes theme management
+6. BootStrap upgrade to 4.5.2
+7. Upgraded jQuery to v3.5.1.
+8. Move the preference of whether to pin the navigation bar to tad_themes theme management
 9. Use jquery.sticky instead of jquery.pin.
 
-Translated with www.DeepL.com/Translator (free version)
+Translated with www.DeepL. com/Translator (free version)
 
 TadTools 3.3.9 (Released on 2020-09-12)
 =============================================================
 1. Fix the bug in TadModData.php part, and add new function.
-2.TadUpFiles.php Add Required Settings
-3.Add main_menu_var Main Menu Template Parameters
+2. TadUpFiles.php Add Required Settings
+3. Add main_menu_var Main Menu Template Parameters
 
 TadTools 3.3.8 (Released on 2020-06-16)
 =============================================================
 1. Optimize backend list style
-2.New jQuery UI Touch Punch
+2. New jQuery UI Touch Punch
 3. Fix the error when importing files into TadUpFiles.php in strict mode.
 4. Fix the problem that BootStrap4 three-column layout will leave blank when the left block or right block is completely empty.
 5. Modify TadUpFiles.php to increase the flexibility of using barcode files.
 6. If the modified template is below, the block arrangement will not be normal.
 7. Added lazy person development framework $TadMod and $TadModData.
-8.Modify the deletion problem of TadUpFiles.php.
+8. Modify the deletion problem of TadUpFiles.php.
 9. Added Bootstrap4Editable, and Bootstrap3Editable is now auto-compatible with Bootstrap3 and Bootstrap4
 10.Adjust logo display method
 11. Use Xmf\Request filtering variables instead.
 
 TadTools 3.3.7 (released 2020-04-13)
 =============================================================================
-1.Remove CKEditor's upload tab and use "Browse and Upload" instead (thanks to geek01)
+1. Remove CKEditor's upload tab and use "Browse and Upload" instead (thanks to geek01)
 2. Fix the problem that the background full setting is invalid.
 3. Fix the problem of no title in html5()
 4. Add the ability to configure sub-files to disable uploads.
@@ -184,15 +213,15 @@ TadTools 3.3.7 (released 2020-04-13)
 TadTools 3.3.6 (released 2020-03-28)
 =============================================================================
 1. Fix the CSS error in BootStrap3
-2.Modify TadUpFiles.php thumbnail transparent background issue
+2. Modify TadUpFiles.php thumbnail transparent background issue
 3. Add the Advanced block option to the Welcome menu
 4. Support new bg_file type for additional set of themes
 
 TadTools 3.3.5 (released on 2020-03-21)
 ======================================
 1.Adjust the template for the theme
-2.Add the missing bootstrap-table.php
-3.Modify TadUpFiles.php cannot import thumbnail when importing files
+2. Add the missing bootstrap-table.php
+3. Modify TadUpFiles.php cannot import thumbnail when importing files
 
 TadTools 3.3.4 (released on 2020-03-14)
 ======================================
@@ -274,7 +303,7 @@ TadTools 3.2.5 (released from 2019-03-24)
 
 TadTools 3.2.4 (released from 2019-03-19)
 =============================================
-1.TadUpFiles.php new download permission setting mechanism
+1. TadUpFiles.php new download permission setting mechanism
 2. Modify non-administrator can not delete the attachment problem
 3. Add the bootstrap-table kit
 4. Put back bootstrap2
@@ -383,7 +412,7 @@ TadTools 3.1 (released on 2017-09-25)
 TadTools 3.09 (released on 2017-06-16)
 ====================================
 1. Added framework7
-2.Completion of accessibility 2.0 A-level detection
+2. Completion of accessibility 2.0 A-level detection
 3. Update ResponsiveSlides to 1.5.5
 
 TadTools 3.08 (released on 2017-05-05)
@@ -404,8 +433,8 @@ TadTools 3.07 (released on 2017-04-20)
 
 TadTools 3.06 (released on 2017-03-17)
 ====================================
-1.Fixed the problem of col-md-failure in BootStrap.
-2.Upgrade all BootStrap3 themes.
+1. Fixed the problem of col-md-failure in BootStrap.
+2. Upgrade all BootStrap3 themes.
 
 TadTools 3.05 (released on 2017-03-15)
 ====================================
@@ -473,62 +502,62 @@ TadTools 2.9.6 (released on 2016-06-18)
 
 TadTools 2.9.5 (released on 2016-06-16)
 ====================================
-1.Add modules common templates
-2.Add themes common languages
-3.Optimization profile user accounts layout
+1. Add modules common templates
+2. Add themes common languages
+3. Optimization profile user accounts layout
 
 TadTools 2.9.4 (released on 2016-06-15)
 ====================================
-1.Fix template file
-2.CKEditor added CodeMirror
-3.Upload support self-extracting archive
+1. Fix template file
+2. CKEditor added CodeMirror
+3. Upload support self-extracting archive
 
 TadTools 2.9.3（2016-06-05)
 ====================================
-1.Support XOOPS 2.5.8
-2.Change PageBar to BootStrap3
-3.The bug that the administrator can not sign in when the site is down has been fixed.
-4.exe file upload support
-5.CKEditor update to version 4.5.9, and the problems about can not be corrected using the paste function has been fixed.
+1. Support XOOPS 2.5.8
+2. Change PageBar to BootStrap3
+3. The bug that the administrator can not sign in when the site is down has been fixed.
+4. exe file upload support
+5. CKEditor update to version 4.5.9, and the problems about can not be corrected using the paste function has been fixed.
 
 TadTools 2.9.2 (released on 2016-05-26)
 ====================================
-1.Removed BootStrap2 code
+1. Removed BootStrap2 code
 
 TadTools 2.9.1 (released on 2016-05-20)
 ====================================
-1.Fixed some language
-2.Set min-height to video
-3.Upgrade JW Player to 7.4.2 nad add playlist
+1. Fixed some language
+2. Set min-height to video
+3. Upgrade JW Player to 7.4.2 nad add playlist
 
 TadTools 2.9 (released on 2016-05-17)
 ====================================
-1.Fixed some code for PHP7
-2.Modify BootStrap3 templates
+1. Fixed some code for PHP7
+2. Modify BootStrap3 templates
 3.Auto update database
 
 TadTools 2.8.9 (released on 2016-05-16)
 ====================================
-1.Add fontawesome plugin for CKeditor
-2.Removed all BootStrap2 configuation
-3.Modify BootStrap3 templates
-4.Fixed some code for PHP7
+1. Add fontawesome plugin for CKeditor
+2. Removed all BootStrap2 configuation
+3. Modify BootStrap3 templates
+4. Fixed some code for PHP7
 
 TadTools 2.8.8 (released on 2016-04-13)
 ====================================
-1.Fixed site can not automatically determine the bootstrap version sometimes
-2.upgrade font-awesome to 4.6.1
+1. Fixed site can not automatically determine the bootstrap version sometimes
+2. upgrade font-awesome to 4.6.1
 
 TadTools 2.8.7 (released on 2016-04-08)
 ====================================
-1.Fix $TadUpFiles can't update file information
-2.Upgrade bootstrap to 3.3.6
-3.Modify the slide text size
-4.Upgrade JWPlayer to 6.12
+1. Fix $TadUpFiles can't update file information
+2. Upgrade bootstrap to 3.3.6
+3. Modify the slide text size
+4. Upgrade JWPlayer to 6.12
 5.Delete jwplayer.php and mediaplayer folder
-6.Add SPRUTO Player
-7.Incorrect toolbar permissions
-8.CKeditor add some new function
+6. Add SPRUTO Player
+7. Incorrect toolbar permissions
+8. CKeditor add some new function
 
 TadTools 2.8.6 (released on 2016-01-21)
 ====================================
@@ -558,42 +587,42 @@ TadTools 2.8.2 (released on 2015-12-17)
 
 TadTools 2.8.1 (released on 2015-12-01)
 ====================================
-1.Upgrade font-awesome to 4.5.0
-2.Modify File display layout
-3.Add facebook meta
-4.Add picture rotation function
+1. Upgrade font-awesome to 4.5.0
+2. Modify File display layout
+3. Add facebook meta
+4. Add picture rotation function
 
 TadTools 2.8 (released on 2015-11-04)
 ====================================
- 1.Add tcpdf
- 2.Remove new jgrowl
+ 1. Add tcpdf
+ 2. Remove new jgrowl
 
  TadTools 2.7.9 (released on 2015-10-30)
 ====================================
- 1.Add mp3 online playback
+ 1. Add mp3 online playback
 
 TadTools 2.7.8 (released on 2015-10-26)
 ====================================
- 1.Fixed fck.php
- 2.Update summernote to 0.6.16
+ 1. Fixed fck.php
+ 2. Update summernote to 0.6.16
 
 TadTools 2.7.7 (released on 2015-10-23)
 ====================================
  1.tad_function.php add html5() and web_error() function.
- 2.CKEditor remove autogrow, mathedit and add quicktable.
- 3.Add fullcalendar.
- 4.Modify ResponsiveSlides.php
+ 2. CKEditor remove autogrow, mathedit and add quicktable.
+ 3. Add fullcalendar.
+ 4. Modify ResponsiveSlides.php
 
 TadTools 2.7.6 (released on 2015-10-21)
 ====================================
- 1.Fixed get_menu_var.html
- 2.Fixed footable.php
- 3.CKeditor upgrade to 4.5.4
- 4.Fixed video.php
+ 1. Fixed get_menu_var.html
+ 2. Fixed footable.php
+ 3. CKeditor upgrade to 4.5.4
+ 4. Fixed video.php
 
 TadTools 2.7.5 (released on 2015-10-16)
 ====================================
-  1.CK editor set new CSS features and new uploadcare element
+  1. CK editor set new CSS features and new uploadcare element
   2. Fixed jquery problem
   3. Add the new FooTable-Bootstrap
   4. New uploadcare public key preferences (there are set to use)
@@ -601,7 +630,7 @@ TadTools 2.7.5 (released on 2015-10-16)
 TadTools 2.7.4 (released on 2015-09-02)
 ====================================
  1.font-awesome update to 4.4.0
- 2.Modify menu template
+ 2. Modify menu template
 
 TadTools 2.7.3 (released on 2015-08-02)
 ====================================
@@ -610,34 +639,34 @@ TadTools 2.7.3 (released on 2015-08-02)
 
 TadTools 2.7.2 (released on 2015-08-02)
 ====================================
- 1.Fixed the bug about elFinder can't delete file.
- 2.Fixed the bug that boostrap3 navbar third layer option can't link.
- 3.Remove jquery.js rom common template avoid duplication
+ 1. Fixed the bug about elFinder can't delete file.
+ 2. Fixed the bug that boostrap3 navbar third layer option can't link.
+ 3. Remove jquery.js rom common template avoid duplication
  4.Solve the problem that the theme can not be automatically loaded bootstrap.
 
 TadTools 2.7.1 (released on 2015-07-19)
 ====================================
- 1.Fixed site is not working properly after the update module.
- 2.Removed margin css in tadtools/themes3_tpl/centerZone.html.
+ 1. Fixed site is not working properly after the update module.
+ 2. Removed margin css in tadtools/themes3_tpl/centerZone.html.
 
 TadTools 2.7 (released on 2015-07-13)
 ====================================
- 1.Fixed part of the common template layout in HTML mode will not correct situations occur
- 2.Fixed logo.html more than a > symbol problem.
- 3.Fixed when using bootstrap3, navigation bar will be more than an inverted triangle problem.
- 4.Fixed the English language
- 5.OpenID login move tad_login two preferences module preferences
- 6.cssmenu and nav-pills navigation bar to join Login Form
- 7.Fixed fancy_box js syntax
+ 1. Fixed part of the common template layout in HTML mode will not correct situations occur
+ 2. Fixed logo.html more than a > symbol problem.
+ 3. Fixed when using bootstrap3, navigation bar will be more than an inverted triangle problem.
+ 4. Fixed the English language
+ 5. OpenID login move tad_login two preferences module preferences
+ 6. cssmenu and nav-pills navigation bar to join Login Form
+ 7. Fixed fancy_box js syntax
 
 TadTools 2.69 (released on 2015-06-30)
 ====================================
- 1.Fixed some bug.
- 2.Fixed theme kind issue.
+ 1. Fixed some bug.
+ 2. Fixed theme kind issue.
  3.Adjust accesskey position.
- 4.Fixed PHP code style
- 5.Fixed ztree srag to sort issue
- 6.Added template_common folder.
+ 4. Fixed PHP code style
+ 5. Fixed ztree srag to sort issue
+ 6. Added template_common folder.
 
 TadTools 2.68 (released on 2015-05-26)
 ====================================
@@ -670,7 +699,7 @@ TadTools 2.65 (released on 2015-03-21)
  5. Remove TinyNav, jquery.form, jquery.qrcode, ztree and other useless packages
  6. New QR Code blocks can be used in all pages.
  7. New summernote editor (for mobile devices)
- 8.CKeditor now automatically determine whether the mobile device, and if so, then automatically switch to Summernote editor (CKeditor currently not available in mobile devices)
+ 8. CKeditor now automatically determine whether the mobile device, and if so, then automatically switch to Summernote editor (CKeditor currently not available in mobile devices)
  9. The background scenery setting interface, so that each can apply different sets BootStrap color
  10. Delete bsie Kit
  11.tadtools complete bootstrap3 interface
@@ -760,7 +789,7 @@ TadTools 2.4 (released on 2014-05-17)
  2. Re-optimized navigation bar syntax, the menu variable independently get_menu_var.html, making it more flexible and easier to manage applications.
  3. Slide the graphic variables independently get_slider_var.html, let slip to apply other graphic tools more convenient.
  The common model my_js.html Join Log box fields will be automatically resized to avoid breaking the version of the function
- 5.CKEditor Added a simple edit mode
+ 5. CKEditor Added a simple edit mode
  6. Fixed Windows under the file name to download is not the right questions
  Unable to write to 7. Fixed problem importing drawing Caption
  8. Sliding Picture caption 80% of opacity to 50% and support IE8 (thank Sheng-Min teacher available), and cancel the font size setting
@@ -818,7 +847,7 @@ TadTools 2.08 (released on 2014-02-17)
 ====================================
 1. trimming tree
 2. Unable to drag and zoom the problem corrected tree form
-3. Slide image correction responsiveslides.css canceled bottom margin gap.
+3. Slide image correction responsiveslides. css canceled bottom margin gap.
 4. New randStr (), please synchronized tadnews, tad_login, tad_uploader
 5. Fixes Fixed problem responsiveslides not display textual content
 
@@ -861,7 +890,7 @@ TadTools 2.02 (released on 2013-11-14)
 
 TadTools 2.01 (released on 2013-10-24)
 ====================================
-1. Fixed iconize.css, add more format support
+1. Fixed iconize. css, add more format support
 2. Modify JwPlayer players to make and support custom width.
 
 TadTools 2.0 (released on 2013-10-16)

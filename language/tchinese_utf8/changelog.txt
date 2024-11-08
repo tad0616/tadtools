@@ -1,3 +1,32 @@
+TadTools 4.0 (2024-11-11 釋出)
+====================================
+1.升級 tcpdf 為 6.6.65 版
+2.修改導覽列文字大小設定，強制加上單位 rem
+3.修改 power_chk()
+4.加入開發測試模式是否僅開放給管理者的設定
+5.TadUpFiles 若已有檔案時，則取消必填檢查
+6.支援SweetAlert2
+7.移除flexslider套件
+8.支援PHP8.1.x
+9.支援XOOPS 2.5.11
+10.優化社群分享按鈕
+11.升級 BootStrap3.3.7 為 3.4.1
+12.升級 BootStrap4.5.2 為 4.6.2
+13.升級 BootStrap5.1.3 為 5.3.3
+14.修改 PHPExcel使之相容PHP8.3
+15.升級 jQuery 為 3.7.1
+16.升級 jGrowl 為 1.4.5
+17.移除 grunt.js、chk_jquery.js
+15.升級 jQuery ui 為 1.14.0
+16.不使用 jGrowl 動態轉向時，以SweetAlert2取代之
+17.移除 jquerychained、SyntaxHighlighter、framework7、spruto_player、smoothslides等套件
+18.移除 tad_function.php
+19.資料庫語法參數化
+20.支援非tad_theme佈景使用
+21.移除  bubblepopup.php、ckcal.php、ck.php、dtree.php、elrte.php、fancybox.php、fck.php、flexslider2.php、FooTable.php、formValidator.php、jBreadCrumb.php、jeditable.php、jquery.php、jquery_pin.php、jwplayer.php、jwplayer_new.php、lofslidernews.php、star_rating.php、stickytableheaders.php、sweet_alert.php、syntaxhighlighter.php、treetable.php 等檔案。
+22.升級 BootStrap-Table 為 1.23.5
+23.支援 fontawesome 為 6.6.0
+
 TadTools 3.55 (2023-10-17 釋出)
 ====================================
 1.更新 bootstrap-table 為 1.22 版
