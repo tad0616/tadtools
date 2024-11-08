@@ -4,6 +4,7 @@ namespace XoopsModules\Tadtools;
 use Xmf\Request;
 use XoopsModules\Tadtools\CkEditor;
 use XoopsModules\Tadtools\FormValidator;
+use XoopsModules\Tadtools\My97DatePicker;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\TadUpFiles;
 use XoopsModules\Tadtools\Utility;
@@ -246,78 +247,6 @@ class TadDataCenter
 
         $arr = !is_null($sort) ? "[$sort]" : '';
         switch ($form_tag) {
-            case 'input':
-                if ('radio' === $type) {
-                    $form = '';
-                    $tmp_id = $this->rand_str();
-                    $idi = 0;
-                    foreach ($options as $k => $v) {
-                        $checked = $v == $value ? 'checked' : '';
-                        $form .= "<div class=\"form-check-inline radio-inline\">
-                            <label class=\"form-check-label\" for=\"{$tmp_id}{$idi}\" >
-                                <input {$attr_str} type=\"{$type}\" name=\"TDC[{$name}]{$arr}\" id=\"{$tmp_id}{$idi}\" value=\"{$v}\" {$checked}>
-                                {$k}
-                            </label>
-                        </div>\n";
-                        $idi++;
-                    }
-                } elseif ('checkbox' === $type) {
-                    $form = '';
-                    $tmp_id = $this->rand_str();
-                    $idi = 0;
-
-                    foreach ($options as $k => $v) {
-                        $checked = in_array($v, $value) ? 'checked' : '';
-                        $form .= "<div class=\"form-check-inline checkbox-inline\">
-                            <label class=\"form-check-label\" for=\"{$tmp_id}{$idi}\">
-                                <input {$attr_str} type=\"{$type}\" name=\"TDC[{$name}]{$arr}[]\" id=\"{$tmp_id}{$idi}\" value=\"{$v}\" {$checked}>
-                                {$k}
-                            </label>
-                        </div>\n";
-                        $idi++;
-                    }
-                } elseif ('checkbox-radio' === $type) {
-                    $form = '';
-                    $tmp_id = $this->rand_str();
-                    $idi = 0;
-                    foreach ($options as $k => $v) {
-                        $checked = in_array($v, $value) ? 'checked' : '';
-                        $form .= "<div class=\"form-check-inline checkbox-inline\">
-                            <label class=\"form-check-label\" for=\"{$tmp_id}{$idi}\">
-                                <input {$attr_str} type=\"checkbox\" name=\"TDC[{$name}]{$arr}\" id=\"{$tmp_id}{$idi}\" value=\"{$v}\" {$checked}>
-                                {$k}
-                            </label>
-                        </div>\n";
-                        $idi++;
-                    }
-                } elseif ('date' === $type) {
-                    include_once XOOPS_ROOT_PATH . '/modules/tadtools/cal.php';
-                    $cal = new My97DatePicker();
-                    $cal::render();
-                    $form = "<input type=\"text\" name=\"TDC[{$name}]{$arr}\" value=\"{$value}\" {$attr_str} onClick=\"WdatePicker({dateFmt:'yyyy-MM-dd', startDate:'%y-%M-%d'})\">";
-                } elseif ('file' === $type) {
-                    $file_name = $name;
-                    $TadUpFiles = new TadUpFiles($this->module_dirname, '/' . $file_name);
-                    if ($require) {
-                        $TadUpFiles->set_var('require', true);
-                    }
-                    //必填
-                    $TadUpFiles->set_var("show_tip", false); //不顯示提示
-                    $TadUpFiles->set_col($this->ans_col_name, $this->ans_col_sn);
-                    $form = $TadUpFiles->upform('list', $file_name, $maxlength, true, implode(',', $options), true, '', true);
-                    $form .= "<input type='hidden' name='uploads[{$name}]' value='{$file_name}'>
-                    <input type='hidden' name=\"TDC[{$name}][0]\" value=\"{$value}\">";
-                } elseif ('datetime' === $type) {
-                    include_once XOOPS_ROOT_PATH . '/modules/tadtools/cal.php';
-                    $cal = new My97DatePicker();
-                    $cal::render();
-                    $form = "<input type=\"text\" name=\"TDC[{$name}]{$arr}\" value=\"{$value}\" {$attr_str} onClick=\"WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss', startDate:'%y-%M-%d %H:%m:%s'})\">";
-                } elseif ('' == $type) {
-                    $form = "<input type=\"text\" name=\"TDC[{$name}]{$arr}\" value=\"{$value}\" {$attr_str}>";
-                } else {
-                    $form = "<input type=\"{$type}\" name=\"TDC[{$name}]{$arr}\" value=\"{$value}\" {$attr_str}>";
-                }
-                break;
             case 'select':
                 $options_str = '';
                 foreach ($options as $k => $v) {
@@ -389,11 +318,84 @@ class TadDataCenter
                     <input type=\"text\" name=\"TDC[{$name}]{$arr}\" readonly class=\"my-text\" value=\"{$value}\" {$attr_str}> ";
                 }
                 break;
+
+            case 'input':
+            default:
+                if ('radio' === $type) {
+                    $form = '';
+                    $tmp_id = $this->rand_str();
+                    $idi = 0;
+                    foreach ($options as $k => $v) {
+                        $checked = $v == $value ? 'checked' : '';
+                        $form .= "<div class=\"form-check-inline radio-inline\">
+                            <label class=\"form-check-label\" for=\"{$tmp_id}{$idi}\" >
+                                <input {$attr_str} type=\"{$type}\" name=\"TDC[{$name}]{$arr}\" id=\"{$tmp_id}{$idi}\" value=\"{$v}\" {$checked}>
+                                {$k}
+                            </label>
+                        </div>\n";
+                        $idi++;
+                    }
+                } elseif ('checkbox' === $type) {
+                    $form = '';
+                    $tmp_id = $this->rand_str();
+                    $idi = 0;
+
+                    foreach ($options as $k => $v) {
+                        $checked = is_array($value) && in_array($v, $value) ? 'checked' : '';
+                        $form .= "<div class=\"form-check-inline checkbox-inline\">
+                            <label class=\"form-check-label\" for=\"{$tmp_id}{$idi}\">
+                                <input {$attr_str} type=\"{$type}\" name=\"TDC[{$name}]{$arr}[]\" id=\"{$tmp_id}{$idi}\" value=\"{$v}\" {$checked}>
+                                {$k}
+                            </label>
+                        </div>\n";
+                        $idi++;
+                    }
+                } elseif ('checkbox-radio' === $type) {
+                    $form = '';
+                    $tmp_id = $this->rand_str();
+                    $idi = 0;
+                    foreach ($options as $k => $v) {
+                        $checked = in_array($v, $value) ? 'checked' : '';
+                        $form .= "<div class=\"form-check-inline checkbox-inline\">
+                            <label class=\"form-check-label\" for=\"{$tmp_id}{$idi}\">
+                                <input {$attr_str} type=\"checkbox\" name=\"TDC[{$name}]{$arr}\" id=\"{$tmp_id}{$idi}\" value=\"{$v}\" {$checked}>
+                                {$k}
+                            </label>
+                        </div>\n";
+                        $idi++;
+                    }
+                } elseif ('date' === $type) {
+                    $cal = new My97DatePicker();
+                    $cal::render();
+                    $form = "<input type=\"text\" name=\"TDC[{$name}]{$arr}\" value=\"{$value}\" {$attr_str} onClick=\"WdatePicker({dateFmt:'yyyy-MM-dd', startDate:'%y-%M-%d'})\">";
+                } elseif ('file' === $type) {
+                    $file_name = $name;
+                    $TadUpFiles = new TadUpFiles($this->module_dirname, '/' . $file_name);
+                    if ($require) {
+                        $TadUpFiles->set_var('require', true);
+                    }
+                    //必填
+                    $TadUpFiles->set_var("show_tip", false); //不顯示提示
+                    $TadUpFiles->set_col($this->ans_col_name, $this->ans_col_sn);
+                    $form = $TadUpFiles->upform('list', $file_name, $maxlength, true, implode(',', $options), true, '', true);
+                    $form .= "<input type='hidden' name='uploads[{$name}]' value='{$file_name}'>
+                    <input type='hidden' name=\"TDC[{$name}][0]\" value=\"{$value}\">";
+                } elseif ('datetime' === $type) {
+                    $cal = new My97DatePicker();
+                    $cal::render();
+                    $form = "<input type=\"text\" name=\"TDC[{$name}]{$arr}\" value=\"{$value}\" {$attr_str} onClick=\"WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss', startDate:'%y-%M-%d %H:%m:%s'})\">";
+                } elseif ('' == $type) {
+                    $form = "<input type=\"text\" name=\"TDC[{$name}]{$arr}\" value=\"{$value}\" {$attr_str}>";
+                } else {
+                    $form = "<input type=\"{$type}\" name=\"TDC[{$name}]{$arr}\" value=\"{$value}\" {$attr_str}>";
+                }
+                break;
+
         }
 
         if ($xoopsTpl and 'assign' === $mode) {
             $xoopsTpl->assign($name, $form);
-        } else {
+        } elseif (isset($form)) {
             return $form;
         }
     }
@@ -507,6 +509,10 @@ class TadDataCenter
                 $col_id = isset($v['col_id']) ? $v['col_id'] : '';
                 if (!empty($this->col_id)) {
                     $col_id = $this->col_id;
+                }
+
+                if (\is_null($val)) {
+                    $val = '';
                 }
 
                 $sql = 'REPLACE INTO `' . $this->TadDataCenterTblName . '`
@@ -1343,9 +1349,9 @@ class TadDataCenter
             $cols[1] = '';
         }
         $options = $attrs = [];
-        $type = $help = $other = '';
-        $require = '';
         unset($value);
+        $type = $help = $other = $form_tag = $value = $col_kind = $require = '';
+
         foreach ($cols as $i => $col) {
             if (\strpos($col, '#') !== false) {
                 $help = \str_replace('#', '', $col);
@@ -1428,8 +1434,7 @@ class TadDataCenter
         }
         list($usec, $sec) = explode(' ', microtime());
         $seed = (float) $sec + ((float) $usec * 100000);
-        // die('seed=' . $seed);
-        mt_srand($seed);
+        mt_srand(intval($seed));
         $password = '';
         while (mb_strlen($password) < $len) {
             $password .= mb_substr($chars, (mt_rand() % mb_strlen($chars)), 1);

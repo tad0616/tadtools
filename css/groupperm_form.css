@@ -1,0 +1,35 @@
+#groupperm_form>.outer {
+    width: auto;
+    border: 1px solid #5e7483;
+}
+
+#groupperm_form>.outer td.head {
+    background-color: #f5f5f8;
+    border: 1px solid #94a2ac;
+    vertical-align: middle;
+    padding: 2px 6px;
+}
+
+#groupperm_form>.outer td.even {
+    background-color: #ffffff;
+    border: 1px solid #94a2ac;
+}
+
+#groupperm_form>.outer table.outer {
+    border: none;
+}
+
+#groupperm_form>.outer table.outer td.odd,
+#groupperm_form>.outer table.outer td.even {
+    border: none;
+    background-color: #ffffff;
+    padding: 2px 6px;
+}
+
+#groupperm_form>.outer table.outer td.even {
+    color:brown;
+}
+
+#groupperm_form>.outer table.outer td.odd td {
+    padding: 0px 6px;
+}

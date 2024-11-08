@@ -64,6 +64,7 @@ class PageBar
     public $url_other;
     //在limit前額外加入排序
     public $order_sql;
+    public $glue;
 
     public function __construct($total, $limit = 20, $page_limit = 10, $order_sql = '')
     {
@@ -89,8 +90,14 @@ class PageBar
         $this->glue = ('' == $this->query_str) ? '?' : '&';
 
         $this->current = isset($_GET[$this->url_page]) ? max(1, (int) $_GET[$this->url_page]) : 1;
-
         $this->pTotal = ceil($this->total / $this->limit);
+
+        if ($this->current < 1) {
+            $this->current = 1;
+        } elseif ($this->current > $this->pTotal) {
+            $this->current = $this->pTotal;
+        }
+
         $this->pCurrent = ceil($this->current / $this->pLimit);
     }
 
@@ -118,6 +125,9 @@ class PageBar
     public function sqlQuery()
     {
         $row_start = ($this->current - 1) * $this->limit;
+        if ($row_start < 0) {
+            $row_start = 0;
+        }
         return $this->order_sql ? " {$this->order_sql} LIMIT {$row_start}, {$this->limit}" : " LIMIT {$row_start}, {$this->limit}";
     }
 

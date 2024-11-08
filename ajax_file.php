@@ -19,7 +19,9 @@ $primary_key = Request::getString('primary_key');
 $files_sn = Request::getInt('files_sn');
 $sort_arr = Request::getArray('sort_arr');
 $db_prefix = Request::getString('db_prefix');
-header('HTTP/1.1 200 OK');
+
+// 關閉除錯訊息
+$xoopsLogger->activated = false;
 
 switch ($op) {
     case 'remove_file':
@@ -85,16 +87,4 @@ switch ($dcq_op) {
         $TadDataCenter->saveData();
         // header("location:{$_SERVER['HTTP_REFERER']}");
         // exit;
-}
-
-function save_sort($table, $sort_col, $primary_key, $sort_arr = [])
-{
-    global $xoopsDB;
-    $sort = 1;
-    foreach ($sort_arr as $sn) {
-        $sql = 'UPDATE `' . $xoopsDB->prefix($table) . '` SET `' . $sort_col . '`=? WHERE `' . $primary_key . '`=?';
-        Utility::query($sql, 'ii', [$sort, $sn]) or die(_TAD_SORT_FAIL . " (" . date("Y-m-d H:i:s") . ")" . $sql);
-        $sort++;
-    }
-    echo _TAD_SORTED . "(" . date("Y-m-d H:i:s") . ")";
 }

@@ -7,15 +7,11 @@ $mdir = $_SESSION['xoops_mod_name'];
 if (empty($mdir)) {
     die('畫面靜止操作過久，已無法讀取檔案，請關閉視窗，並重新整理畫面再繼續操作。');
 }
-if (!$xoopsModuleConfig) {
-    $moduleHandler = xoops_getHandler('module');
-    $TadToolsModule = $moduleHandler->getByDirname('tadtools');
-    $configHandler = xoops_getHandler('config');
-    $xoopsModuleConfig = $configHandler->getConfigsByCat(0, $TadToolsModule->getVar('mid'));
-}
 
-$image_max_width = $xoopsModuleConfig['image_max_width'] ? (int) $xoopsModuleConfig['image_max_width'] : 640;
-$image_max_height = $xoopsModuleConfig['image_max_height'] ? (int) $xoopsModuleConfig['image_max_height'] : 640;
+$TadToolsModuleConfig = Utility::getXoopsModuleConfig('tadtools');
+
+$image_max_width = $TadToolsModuleConfig['image_max_width'] ? (int) $TadToolsModuleConfig['image_max_width'] : 640;
+$image_max_height = $TadToolsModuleConfig['image_max_height'] ? (int) $TadToolsModuleConfig['image_max_height'] : 640;
 
 $type = Request::getString('type');
 $subDir = Request::getString('subDir');
@@ -34,7 +30,6 @@ if (!empty($subDir)) {
     // }
 }
 
-header('HTTP/1.1 200 OK');
 error_reporting(0); // Set E_ALL for debuging
 
 // // Optional exec path settings (Default is called with command name only)
@@ -170,9 +165,9 @@ function access($attr, $path, $data, $volume, $isDir, $relpath)
 {
     $basename = basename($path);
     return $basename[0] === '.' // if file/folder begins with '.' (dot)
-     && strlen($relpath) !== 1// but with out volume root
-     ? !($attr == 'read' || $attr == 'write') // set read+write to false, other (locked+hidden) set to true
-     : null; // else elFinder decide it itself
+    && strlen($relpath) !== 1// but with out volume root
+    ? !($attr == 'read' || $attr == 'write') // set read+write to false, other (locked+hidden) set to true
+    : null; // else elFinder decide it itself
 }
 
 // Documentation for connector options:

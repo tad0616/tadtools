@@ -366,7 +366,7 @@
 #main-nav {
     border: none;
     position: relative;
-    min-height: 50px;
+    min-height: 1rem;
     <{* <{if $nav_display_type=='not_full'}>
         <{if $navbar_img|default:false}>
             background-color: tranparent;

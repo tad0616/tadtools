@@ -34,9 +34,7 @@ class Tools
         global $aggreg, $xoopsConfig, $xoopsTpl;
         /**** 取得佈景設定的各個預設值 ****/
         if (\file_exists(XOOPS_ROOT_PATH . "/themes/{$theme_name}/config.php")) {
-            $configHandler = xoops_getHandler('config');
-            $def_config = $configHandler->getConfigsByCat(0, $TadThemesMid);
-
+            $def_config = Utility::getXoopsModuleConfig('tad_themes');
             $def_config['TadThemesMid'] = $TadThemesMid;
 
             /**** 取得左右區塊數 ****/
@@ -48,7 +46,10 @@ class Tools
             require_once XOOPS_ROOT_PATH . "/themes/{$theme_name}/config.php";
             require_once XOOPS_ROOT_PATH . "/modules/tadtools/language/{$xoopsConfig['language']}/main.php";
 
-            $xoopsTpl->assign('config_tabs', $config_tabs);
+            if ($xoopsTpl) {
+                $xoopsTpl->assign('config_tabs', $config_tabs);
+            }
+
             foreach ($config_enable as $k => $v) {
                 $def_config[$k] = $v['default'];
             }
@@ -61,7 +62,9 @@ class Tools
 
             /**** 產生 Smarty 的設定檔（以取得 bootstrap 版本） ****/
             $bootstrap = (strpos($theme_kind, 'bootstrap') !== false) ? substr($theme_kind, -1) : '4';
-            $xoopsTpl->assign('bootstrap', $bootstrap);
+            if ($xoopsTpl) {
+                $xoopsTpl->assign('bootstrap', $bootstrap);
+            }
 
             /**** 模擬偏好設定預設值（避免沒裝 tad_theme 無法取得資料庫資料） ****/
             $def_config['bg_img'] = !empty($def_config['bg_img']) ? XOOPS_URL . "/themes/{$theme_name}/images/bg/{$def_config['bg_img']}" : "";
@@ -136,7 +139,7 @@ class Tools
             $result = Utility::query($sql, 'i', [$theme_arr['theme_id']]) or Utility::web_error($sql, __FILE__, __LINE__);
 
             while ($config2 = $xoopsDB->fetchArray($result)) {
-                $json_theme_config_arr[$config2['name']] = in_array($config2['type'], $array_type)?\json_decode($config2['value'], true) : $config2['value'];
+                $json_theme_config_arr[$config2['name']] = in_array($config2['type'], $array_type) ? \json_decode($config2['value'], true) : $config2['value'];
             }
 
             // 若 tad_themes_blocks 有內容，則存入 $json_theme_config_arr
@@ -198,7 +201,7 @@ class Tools
                             $json_theme_config_arr[$config['name'] . '_size'] = $config['size'];
 
                         } elseif ($config['type'] == 'custom_zone') {
-                            $json_theme_config_arr[$config['name']] = \json_decode($config['default'], true);
+                            $json_theme_config_arr[$config['name']] = is_array($config['default']) ? $config['default'] : \json_decode($config['default'], true);
                             $json_theme_config_arr[$config['name'] . '_bid'] = $config['bid'];
                             $json_theme_config_arr[$config['name'] . '_content'] = $config['content'];
                             $json_theme_config_arr[$config['name'] . '_html_content'] = $config['html_content'];
@@ -219,7 +222,10 @@ class Tools
             $json_theme_config_arr['theme_kind'] = 'xoops';
         }
         // Utility::dd($json_theme_config_arr);
-        file_put_contents($json_file, json_encode($json_theme_config_arr, 256));
+        if (!file_put_contents($json_file, json_encode($json_theme_config_arr, 256))) {
+            redirect_header($_SERVER['PHP_SELF'], 3, "{$json_file} 無法寫入");
+        }
+        return $def_config['theme_kind'];
     }
 
     // 匯入或套用設定檔
@@ -396,8 +402,8 @@ class Tools
                     $my_menu[$i]['id'] = $i;
                     $my_menu[$i]['title'] = $title;
                     $my_menu[$i]['target'] = "_self";
-                    $my_menu[$i]['icon'] = !empty($interface_icon[$title]['icon']) ? $interface_icon[$title]['icon'] : $interface_icon[$title];
-                    $my_menu[$i]['img'] = ($interface_menu_img[$title]) ? XOOPS_URL . "/modules/{$dir}/images/{$interface_menu_img[$title]}" : '';
+                    $my_menu[$i]['icon'] = isset($interface_icon) ? $interface_icon[$title] : '';
+                    $my_menu[$i]['img'] = isset($interface_menu_img) ? XOOPS_URL . "/modules/{$dir}/images/{$interface_menu_img[$title]}" : '';
 
                     if (is_array($url)) {
                         $my_menu[$i]['url'] = 'index.php';
@@ -411,7 +417,7 @@ class Tools
                             $sub_menu[$j]['title'] = $title2;
                             $sub_menu[$j]['url'] = strpos($url2, 'http') === false ? XOOPS_URL . "/modules/{$dir}/{$url2}" : $url2;
                             $sub_menu[$j]['target'] = "_self";
-                            $sub_menu[$j]['icon'] = $interface_icon[$title][$title2];
+                            $sub_menu[$j]['icon'] = isset($interface_icon) ? $interface_icon[$title][$title2] : '';
                             $sub_menu[$j]['submenu'] = '';
                             $j++;
                         }
@@ -588,7 +594,7 @@ class Tools
         LEFT JOIN `' . $xoopsDB->prefix('tad_themes') . '` AS b ON a.`col_sn` = b.`theme_id`
         WHERE a.`col_name` = ? AND b.`theme_name` = ?';
         $result = Utility::query($sql, 'ss', ['slide', $theme_name]);
-
+        $slider_var = [];
         if ($result) {
             $i = 0;
             while (false !== ($data = $xoopsDB->fetchArray($result))) {

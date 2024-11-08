@@ -12,9 +12,10 @@ class Tmt
     }
 
     //產生語法 $type=error,warning,info,success
-    public function render($id, $from_arr = [], $to_arr = [], $hidden_arr = ['op' => 'save_tmt'], $only_value = false, $submit = true, $size = '15rem', $from_name = 'repository', $to_name = 'destination', $sep = ',', $keyman_file = '', $keyman_var = [])
+    public static function render($id, $from_arr = [], $to_arr = [], $hidden_arr = ['op' => 'save_tmt'], $only_value = false, $submit = true, $size = '15rem', $from_name = 'repository', $to_name = 'destination', $sep = ',', $keyman_file = '', $keyman_var = [], $id_name = '', $from_title = '', $to_title = '')
     {
         global $xoTheme;
+        $id_name = empty($id_name) ? $id : $id_name;
 
         $id_value = implode($sep, array_keys($to_arr));
         $from_options = '';
@@ -47,19 +48,29 @@ class Tmt
 
         $jquery = Utility::get_jquery();
 
+        $keyman_js = "";
+        if ($keyman_file) {
+            $keyman_js = "$(document).ready(function() {
+                $('#keyman').change(function(event) {
+                    $.post('{$keyman_file}', {op: 'keyman' , keyman: $('#keyman').val(){$key_man_var}}, function(theResponse){
+                        $('#{$from_name}').html(theResponse);
+                    });
+                });
+            });";
+            $to_size = (int) $size + 2;
+            $to_size .= 'rem';
+            $from_size = $size;
+        } else {
+            $from_size = $to_size = $size;
+        }
+
         if ($xoTheme) {
             $main = '';
             $xoTheme->addScript('modules/tadtools/tmt/tmt_core.js');
             $xoTheme->addScript('modules/tadtools/tmt/tmt_spry_linkedselect.js');
 
             $xoTheme->addScript('', null, "
-            $(document).ready(function() {
-                $('#keyman').change(function(event) {
-                    $.post('{$keyman_file}', {op: 'keyman' , keyman: $('#keyman').val(){$key_man_var}}, function(theResponse){
-                        $('#{$from_name}').html(theResponse);
-                    });
-                });
-            });
+            $keyman_js
             function getOptions({$to_name}, val_col)
             {
                 var values = [];
@@ -77,13 +88,7 @@ class Tmt
             <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/tmt/tmt_spry_linkedselect.js'></script>
 
             <script type='text/javascript'>
-                $(document).ready(function() {
-                    $('#keyman').change(function(event) {
-                        $.post('{$keyman_file}', {op: 'keyman' , keyman: $('#keyman').val(){$key_man_var}}, function(theResponse){
-                            $('#{$from_name}').html(theResponse);
-                        });
-                    });
-                });
+                $keyman_js
 
                 function getOptions({$to_name},val_col)
                 {
@@ -98,7 +103,7 @@ class Tmt
             ";
         }
 
-        $submit_btn = $submit ? "<button type='submit' class='btn btn-primary'>" . _TAD_SAVE . "</button>" : "";
+        $submit_btn = $submit ? "<button type='submit' class='btn btn-primary'><i class=\"fa fa-floppy-o\" aria-hidden=\"true\"></i> " . _TAD_SAVE . "</button>" : "";
         $key_man_col = $keyman_file ? "
         <div class='input-group'>
             <input type='text' name='keyman' id='keyman' placeholder='輸入關鍵字以篩選' class='form-control'>
@@ -108,8 +113,9 @@ class Tmt
         </div>" : '';
         $main .= "<div class='row'>
             <div class='col-md-5'>
-                $key_man_col
-                <select name='{$from_name}' id='{$from_name}' style='height: $size' multiple='multiple' tmt:linkedselect='true' class='form-control'>
+                {$from_title}
+                {$key_man_col}
+                <select name='{$from_name}' id='{$from_name}' style='height: $from_size' multiple='multiple' tmt:linkedselect='true' class='form-select'>
                     {$from_options}
                 </select>
             </div>
@@ -120,13 +126,14 @@ class Tmt
                 <img src='" . XOOPS_URL . "/modules/tadtools/tmt/up.png' onclick=\"tmt.spry.linkedselect.util.moveOptionUp('{$to_name}');getOptions('{$to_name}','{$id}');\"><br>
                 <img src='" . XOOPS_URL . "/modules/tadtools/tmt/down.png' onclick=\"tmt.spry.linkedselect.util.moveOptionDown('{$to_name}');getOptions('{$to_name}','{$id}');\">
                 <div class='text-center' style='margin-top: 30px;'>
-                    <input type='hidden' name='{$id}' id='{$id}' value='{$id_value}'>
+                    <input type='hidden' name='{$id_name}' id='{$id}' value='{$id_value}'>
                     {$hidden}
                     {$submit_btn}
                 </div>
             </div>
             <div class='col-md-5'>
-                <select id='{$to_name}' style='height: $size' multiple='multiple' tmt:linkedselect='true' class='form-control'>
+                {$to_title}
+                <select id='{$to_name}' style='height: $to_size' multiple='multiple' tmt:linkedselect='true' class='form-select'>
                 {$to_options}
                 </select>
             </div>

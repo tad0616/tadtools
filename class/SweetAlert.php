@@ -105,4 +105,6 @@ use XoopsModules\Tadtools\SweetAlert;
 $SweetAlert=new SweetAlert();
 $SweetAlert->render("del_table","ajax_mk_tbl.php?op=del&modsn=$modsn&mssn=",'mssn');
 
+$SweetAlert=new SweetAlert();
+$SweetAlert->render("函數名稱","刪除連結",'參數');
  */

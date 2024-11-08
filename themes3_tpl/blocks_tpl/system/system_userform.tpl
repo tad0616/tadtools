@@ -43,7 +43,7 @@
         <span id="lost"></span>
         <{$lang_notregister|default:''}>
       </div>
-      <div class="col-sm-3 text-right">
+      <div class="col-sm-3 text-right text-end">
         <input type="hidden" name="op" value="login">
         <input type="hidden" name="xoops_redirect" value="<{$redirect_page|default:''}>">
         <button type="submit" id="submit" class="btn btn-primary"><{$lang_login|default:''}></button>

@@ -167,10 +167,10 @@
 
                             <!-- 區塊標題設定 -->
                             <div>
-                                <h2><{$bt.block_position}>區塊標題設定</h2>
+                                <h2><{$bt.block_position|default:false}>區塊標題設定</h2>
                                 <table class="table table-striped table-bordered table-hover" style="background:white;">
-                                    <tbody <{if !$config_tabs.5}>class="unable"<{/if}>>
-                                        <{foreach from=$positions item=bt}>
+                                    <tbody <{if !$config_tabs.5|default:false}>class="unable"<{/if}>>
+                                        <{foreach from=$positions|default:false item=bt}>
                                             <tr><th>區塊標題列背景重複</th><th>$<{$bt.block_position}>.bt_bg_repeat</th><td><{$bt.bt_bg_repeat}></td></tr>
                                             <tr><th>區塊標題列背景圖</th><th>$<{$bt.block_position}>.bt_bg_img</th><td><{$bt.bt_bg_img}></td></tr>
                                             <tr><th>區塊標題文字縮排</th><th>$<{$bt.block_position}>.bt_text_padding</th><td><{$bt.bt_text_padding}></td></tr>
@@ -234,7 +234,7 @@
                             <tr><th>&lt;{$main_menu_var.<{$k|default:''}>.icon}&gt;</th><td><{$m.icon}></td></tr>
                             <tr><th>&lt;{$main_menu_var.<{$k|default:''}>.img}&gt;</th><td><{$m.img}></td></tr>
                             <tr><th>&lt;{$main_menu_var.<{$k|default:''}>.read_group}&gt;</th><td>
-                                <{foreach from=$m.read_group item=read_group}>
+                                <{foreach from=$m.read_group|default:false item=read_group}>
                                     <span><{$read_group|default:''}></span>
                                 <{/foreach}>
                             </td></tr>
@@ -351,15 +351,15 @@
                 <div>
                     <table class="table table-striped table-bordered table-hover" style="background:white;">
                     <{*<{include file="$xoops_rootpath/modules/tadtools/themes_common/show_var_php.tpl"}>*}>
-                    <{foreach from=$config2_files item=config2_file}>
+                    <{foreach from=$config2_files|default:[] item=config2_file}>
                         <tr><th colspan=3><h2>佈景額外<{$config2_file|default:''}>設定</h2></th></tr>
-                        <{foreach from=$config2.$config2_file key=k item=config}>
+                        <{foreach from=$config2.$config2_file|default:[] key=k item=config}>
                             <tr><th><{$config.text}></th><th>$<{$config.name}></th><td><{if $config.type=='selectpicker' || $config.type=='custom_zone' || $config.type=='checkbox'}><{$config.value|@json_encode:256}><{else}><{$config.value}><{/if}></td></tr>
-                            <{if $config.type=='bg_file'}>
+                            <{if $config.type|default:false =='bg_file'}>
                                 <tr><th><{$config.text}> repeat</th><th>$<{$config.name}>_repeat</th><td><{$config.repeat}></td></tr>
                                 <tr><th><{$config.text}> position</th><th>$<{$config.name}>_position</th><td><{$config.position}></td></tr>
                                 <tr><th><{$config.text}> size</th><th>$<{$config.name}>_size</th><td><{$config.size}></td></tr>
-                            <{elseif $config.type=='custom_zone'}>
+                            <{elseif $config.type|default:false =='custom_zone'}>
                                 <tr><th><{$config.text}> bid</th><th>$<{$config.name}>_bid</th><td><{$config.bid}></td></tr>
                                 <tr><th><{$config.text}> content</th><th>$<{$config.name}>_content</th><td><{$config.content}></td></tr>
                                 <tr><th><{$config.text}> html_content</th><th>$<{$config.name}>_html_content</th><td><{$config.html_content}></td></tr>
@@ -368,7 +368,7 @@
                                 <tr><th><{$config.text}> fa_content_desc</th><th>$<{$config.name}>_fa_content_desc</th><td><{$config.fa_content_desc}></td></tr>
                                 <tr><th><{$config.text}> menu_content</th><th>$<{$config.name}>_menu_content</th><td><{$config.menu_content}></td></tr>
                                 <tr><th><{$config.text}> menu_content_desc</th><th>$<{$config.name}>_menu_content_desc</th><td><{$config.menu_content_desc}></td></tr>
-                            <{elseif $config.type=='padding_margin'}>
+                            <{elseif $config.type|default:false =='padding_margin'}>
                                 <tr><th><{$config.text}> margin-top</th><th>$<{$config.name}>_mt</th><td><{$config.mt}></td></tr>
                                 <tr><th><{$config.text}> margin-bottom</th><th>$<{$config.name}>_mb</th><td><{$config.mb}></td></tr>
                             <{/if}>

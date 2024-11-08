@@ -128,7 +128,7 @@ class Utility
             return;
         }
 
-        // error_reporting(0);
+        // 關閉除錯訊息
         // $xoopsLogger->activated = false;
 
         if (isset($_GET[$key]) && $_GET[$key] == $v) {
@@ -218,7 +218,7 @@ class Utility
         global $xoopsLogger;
         error_reporting(0);
         $xoopsLogger->activated = false;
-        header('HTTP/1.1 200 OK');
+
         header("Content-Type: application/json; charset=utf-8");
         die(json_encode($array, 256));
     }
@@ -250,13 +250,14 @@ class Utility
         if (empty($ver) and empty($type)) {
             return;
         }
+
         switch ($type) {
             case 'xoops':
                 if (empty($ver)) {
                     $ver = XOOPS_VERSION;
                 }
                 $version = explode('.', str_replace('XOOPS ', '', $ver));
-                if (strpos($version[2], 'Beta') !== false) {
+                if (!empty($version[2]) && strpos($version[2], 'Beta') !== false) {
                     $version[2] = intval($version[2]) - 1;
                 }
                 break;
@@ -288,7 +289,7 @@ class Utility
                     $result = Utility::query($sql, 's', [$dirname]) or self::web_error($sql, __FILE__, __LINE__);
 
                     list($ver) = $xoopsDB->fetchRow($result);
-                    if (strpos($ver, '-') === false) {
+                    if (!empty($ver) && strpos($ver, '-') === false) {
                         if (strpos($ver, '.') !== false) {
                             for ($i = 0; $i < strlen($ver); $i++) {
                                 $version[] = substr($ver, $i, 1);
@@ -300,8 +301,13 @@ class Utility
                             }
                         }
                     } else {
-                        list($version, $version_status) = explode('-', $ver);
-                        $version = explode('.', $version);
+                        if ($ver) {
+                            list($version, $version_status) = explode('-', $ver);
+                            $version = explode('.', $version);
+                        } else {
+                            $version = [];
+                        }
+
                     }
                 } else {
                     if (strpos($ver, '-') === false) {
@@ -326,6 +332,9 @@ class Utility
                 break;
         }
 
+        $version[0] = isset($version[0]) ? $version[0] : 0;
+        $version[1] = isset($version[1]) ? $version[1] : 0;
+        $version[2] = isset($version[2]) ? $version[2] : 0;
         $int_version = (int) $version[0] * 10000 + (int) $version[1] * 100 + (int) $version[2];
         return $int_version;
 
@@ -578,6 +587,9 @@ class Utility
 
     public static function html5($content = '', $ui = false, $bootstrap = true, $bootstrap_version = '', $use_jquery = true, $container = 'container', $title = 'XOOPS', $head_code = '', $font_awesome = true, $prism = true)
     {
+        global $xoopsLogger;
+        error_reporting(0);
+        $xoopsLogger->activated = false;
         $jquery = '';
         if ($use_jquery) {
             $jquery = self::get_jquery($ui, 'return');
@@ -590,7 +602,7 @@ class Utility
         $bootstrap_link = $bootstrap ? "<link rel='stylesheet' type='text/css' media='all' href='" . XOOPS_URL . "/modules/tadtools/bootstrap{$bootstrap_version}/css/bootstrap.css' />
         <script src='" . XOOPS_URL . "/modules/tadtools/bootstrap{$bootstrap_version}/js/popper.min.js' crossorigin='anonymous'></script>
         <script src='" . XOOPS_URL . "/modules/tadtools/bootstrap{$bootstrap_version}/js/bootstrap.js'></script>" : '';
-        $font_awesome_link = $font_awesome ? " <link href=\"" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css\" rel=\"stylesheet\" media=\"all\">" : '';
+        $font_awesome_link = $font_awesome ? " <link href=\"" . XOOPS_URL . "/media/font-awesome/css/font-awesome.min.css\" rel=\"stylesheet\" media=\"all\">" : '';
         $prism_link = '';
         if ($prism) {
             $prism_link = Utility::prism('return');
@@ -661,10 +673,6 @@ class Utility
             $_SESSION['bootstrap'] = '5';
         }
 
-        if ($_COOKIE['bootstrap'] != $_SESSION['bootstrap']) {
-            setcookie("bootstrap", $_SESSION['bootstrap']);
-        }
-
         if ($in_admin) {
             if ($xoopsTpl) {
                 $xoopsTpl->assign('bootstrap_version', $_SESSION['bootstrap']);
@@ -673,15 +681,11 @@ class Utility
             if ($xoTheme) {
                 $xoTheme->addStylesheet(XOOPS_URL . "/modules/tadtools/bootstrap{$_SESSION['bootstrap']}/css/bootstrap.css");
                 $xoTheme->addStylesheet(XOOPS_URL . "/modules/tadtools/css/xoops_adm{$_SESSION['bootstrap']}.css");
-                // $xoTheme->addStylesheet('modules/tadtools/css/fix-bootstrap.css');
-                $xoTheme->addStylesheet('modules/tadtools/css/font-awesome/css/font-awesome.css');
             }
         } elseif ('return' === $mode) {
             $main = "
             <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/bootstrap{$_SESSION['bootstrap']}/css/bootstrap.css'>
-            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/css/xoops_adm{$_SESSION['bootstrap']}.css'>
-            // <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/css/fix-bootstrap.css'>
-            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/css/font-awesome/css/font-awesome.css'>";
+            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/css/xoops_adm{$_SESSION['bootstrap']}.css'>";
 
             return $main;
         }
@@ -791,7 +795,7 @@ class Utility
     //推文工具
     public static function push_url($enable = 1)
     {
-        global $xoopsModuleConfig, $xoTheme;
+        global $xoopsModuleConfig;
         if ($enable) {
             if (!isset($xoopsModuleConfig['facebook_app_id'])) {
                 $xoopsTadtoolsConfig = self::TadToolsXoopsModuleConfig();
@@ -800,12 +804,11 @@ class Utility
                 $facebookAppId = $xoopsModuleConfig['facebook_app_id'];
             }
 
-            // $xoTheme->addStylesheet('modules/tadtools/css/font-awesome/css/font-awesome652.all.min.css');
-            $xoTheme->addStylesheet('modules/tadtools/social-likes/social-likes.css');
+            // $GLOBALS['xoTheme']->addStylesheet('modules/tadtools/css/fontawesome6/css/all.min.css');
+            $GLOBALS['xoTheme']->addStylesheet('modules/tadtools/social-likes/social-likes.css');
 
             $main = "
-            <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css\">
-            <div class=\"share-buttons\">
+            <div class='share-buttons'>
                 <button onclick=\"share('facebook')\" class=\"facebook\"><i class=\"fa-brands fa-facebook-f\"></i></button>
                 <button onclick=\"share('x')\" class=\"x\"><i class=\"fa-brands fa-x-twitter\"></i></button>
                 <button onclick=\"share('messenger', '$facebookAppId')\" class=\"messenger\"><i class=\"fa-brands fa-facebook-messenger\"></i></button>
@@ -1140,45 +1143,41 @@ class Utility
             return;
         }
 
-        // self::make_menu_json($interface_menu, $moduleName);
-
         self::get_jquery();
 
         $options = !in_array('index.php', $interface_menu) ? "<li><a href='index.php' title='" . _TAD_HOME . "'>&#xf015;" : '';
 
         if (is_array($interface_menu)) {
             $basename = basename($_SERVER['SCRIPT_NAME']);
-            if (1 == count($interface_menu) and 'index.php' === mb_substr($_SERVER['REQUEST_URI'], -9)) {
-                return;
-            }
+            // if (1 == count($interface_menu) and 'index.php' === mb_substr($_SERVER['REQUEST_URI'], -9)) {
+            //     return;
+            // }
 
             foreach ($interface_menu as $title => $url) {
                 $urlPath = (empty($moduleName) or 'http' === mb_substr($url, 0, 4)) ? $url : XOOPS_URL . "/modules/{$moduleName}/{$url}";
 
+                $current = '';
                 if (strpos($url, 'admin/index.php') !== false or strpos($url, 'admin/main.php') !== false) {
                     continue;
-                    // } elseif ($url == 'index.php') {
-                    //     $options = "<li class='current'><a href='{$urlPath}'>&#xf015; {$title}</a></li>";
                 } else {
                     $target = substr($url, 0, 4) == 'http' ? "target='_blank'" : '';
 
                     if (!empty($op) and false !== strpos($url, "?op=") and false !== strpos($url, "{$basename}?op={$op}")) {
-                        $active = "class='current' title='{$_SERVER['SCRIPT_NAME']}?op={$op}=={$url}'";
-                    } elseif (false !== strpos($_SERVER['SCRIPT_NAME'], $url)) {
-                        $active = "class='current' title='$title'";
-                    } else {
-                        $active = '';
+                        $current = "class='current' title='$title'";
+                    } elseif (false !== strpos($_SERVER['SCRIPT_NAME'], $url) && empty($op)) {
+                        $current = "class='current' title='$title'";
                     }
                     $icon = isset($interface_icon[$title]) ? "<i class='fa {$interface_icon[$title]}'></i> " : '';
-                    $options .= "<li {$active}><a href='{$urlPath}' $target>{$icon}{$title}</a></li>";
+
+                    $options .= "<li {$current}><a href='{$urlPath}' $target>{$icon}{$title}</a></li>";
                 }
             }
 
             if ($isAdmin and $module_id) {
-                $options .= "<li {$active}><a href='admin/index.php' title='" . sprintf(_TAD_ADMIN, $mod_name) . "'><i class='fa fa-wrench'></i></a></li>";
-                $options .= "<li {$active}><a href='" . XOOPS_URL . "/modules/system/admin.php?fct=preferences&op=showmod&mod={$module_id}' title='" . sprintf(_TAD_CONFIG, $mod_name) . "'><i class='fa fa-edit'></i></a></li>";
-                $options .= "<li {$active}><a href='" . XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin&op=update&module={$moduleName}' title='" . sprintf(_TAD_UPDATE, $mod_name) . "'><i class='fa fa-refresh'></i></a></li>";
-                $options .= "<li {$active}><a href='" . XOOPS_URL . "/modules/system/admin.php?fct=blocksadmin&op=list&filter=1&selgen={$module_id}&selmod=-2&selgrp=-1&selvis=-1' title='" . sprintf(_TAD_BLOCKS, $mod_name) . "'><i class='fa fa-th'></i></a></li>";
+                $options .= "<li><a href='admin/index.php' title='" . sprintf(_TAD_ADMIN, $mod_name) . "'><i class='fa fa-wrench'></i></a></li>";
+                $options .= "<li><a href='" . XOOPS_URL . "/modules/system/admin.php?fct=preferences&op=showmod&mod={$module_id}' title='" . sprintf(_TAD_CONFIG, $mod_name) . "'><i class='fa fa-edit'></i></a></li>";
+                $options .= "<li><a href='" . XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin&op=update&module={$moduleName}' title='" . sprintf(_TAD_UPDATE, $mod_name) . "'><i class='fa fa-refresh'></i></a></li>";
+                $options .= "<li><a href='" . XOOPS_URL . "/modules/system/admin.php?fct=blocksadmin&op=list&filter=1&selgen={$module_id}&selmod=-2&selgrp=-1&selvis=-1' title='" . sprintf(_TAD_BLOCKS, $mod_name) . "'><i class='fa fa-th'></i></a></li>";
             }
         } else {
             return;
@@ -1194,25 +1193,22 @@ class Utility
         return $main;
     }
 
-    public static function make_menu_json($interface_menu = [], $moduleName = '')
+    public static function getXoopsModuleConfig($module)
     {
-        $json = json_encode($interface_menu);
-        $filename = XOOPS_ROOT_PATH . "/uploads/menu_{$moduleName}.txt";
-        file_put_contents($filename, $json);
+        $modhandler = xoops_getHandler('module');
+        $Module = $modhandler->getByDirname($module);
+        if (is_object($Module)) {
+            $config_handler = xoops_getHandler('config');
+            $ModuleConfig = $config_handler->getConfigsByCat(0, $Module->getVar('mid'));
+            return $ModuleConfig;
+        }
+
+        return false;
     }
 
     public static function TadToolsXoopsModuleConfig()
     {
-        $modhandler = xoops_getHandler('module');
-        $TadToolsModule = $modhandler->getByDirname('tadtools');
-        if (is_object($TadToolsModule)) {
-            $config_handler = xoops_getHandler('config');
-            $TadToolsModuleConfig = $config_handler->getConfigsByCat(0, $TadToolsModule->getVar('mid'));
-
-            return $TadToolsModuleConfig;
-        }
-
-        return false;
+        return self::getXoopsModuleConfig('tadtools');
     }
 
     public static function get_jquery($ui = false, $mode = '', $theme = 'base')
@@ -1258,7 +1254,6 @@ class Utility
 
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
@@ -1266,6 +1261,10 @@ class Utility
             curl_close($ch);
         } elseif (function_exists('file_get_contents')) {
             $file_contents = file_get_contents($url, false, stream_context_create(['ssl' => ['verify_peer' => false, 'verify_peer_name' => false]]));
+        } else {
+            $handle = fopen($url, 'rb');
+            $file_contents = stream_get_contents($handle);
+            fclose($handle);
         }
 
         return $file_contents;
@@ -1288,7 +1287,7 @@ class Utility
     }
 
     // 產生縮圖
-    public static function generateThumbnail($imagePath, $imagethumbPath = '', $width = '', $height = '')
+    public static function generateThumbnail($imagePath, $imagethumbPath = '', $width = '', $height = '', $angle = 0)
     {
         global $xoopsModuleConfig;
 
@@ -1302,6 +1301,15 @@ class Utility
 
         // 獲取圖片信息，包括類型、尺寸等
         $imageInfo = getimagesize($imagePath);
+
+        if (0 != $angle) {
+            $h = $imageInfo[1];
+            $w = $imageInfo[0];
+
+            $imageInfo[0] = $h;
+            $imageInfo[1] = $w;
+        }
+
         if ($imageInfo[0] > $width || $imageInfo[1] > $height) {
 
             $imageType = $imageInfo[2];
@@ -1322,6 +1330,10 @@ class Utility
                     break;
                 default:
                     return "{$imageType} 不支援";
+            }
+
+            if (0 != $angle) {
+                $image = imagerotate($image, $angle, 0);
             }
 
             // 計算縮圖尺寸
@@ -1381,6 +1393,32 @@ class Utility
         }
     }
 
+    //判斷某人在哪些類別中有xxx的權利
+    public static function get_gperm_cate_arr($gperm_name = '')
+    {
+        global $xoopsDB, $xoopsUser, $xoopsModule;
+        $ok_cate_arr = [];
+        if (!empty($xoopsUser)) {
+            $module_id = $xoopsModule->getVar('mid');
+            if ($xoopsUser->isAdmin($module_id)) {
+                $ok_cate_arr[] = 0;
+            }
+            $user_array = $xoopsUser->getGroups();
+            $user_groupid = implode(',', $user_array);
+        } else {
+            $user_array = [3];
+            $user_groupid = 3;
+        }
+        $sql = 'SELECT `gperm_itemid` FROM `' . $xoopsDB->prefix('group_permission') . '` WHERE `gperm_modid`=? AND `gperm_name`=? AND `gperm_groupid` IN (?)';
+        $result = Utility::query($sql, 'iss', [$module_id, $gperm_name, $user_groupid]) or Utility::web_error($sql, __FILE__, __LINE__);
+
+        while (list($gperm_itemid) = $xoopsDB->fetchRow($result)) {
+            $ok_cate_arr[] = $gperm_itemid;
+        }
+
+        return $ok_cate_arr;
+    }
+
     //取回權限的函數
     public static function get_perm($itemid, $gperm_name)
     {
@@ -1420,9 +1458,8 @@ class Utility
             $xoTheme->addScript('modules/tadtools/prism/prism.js');
         }
 
-        if ($line_numbers) {
-            $xoopsTpl->assign('prism_setup', 'class="line-numbers"');
-        }
+        $prism_setup = ($line_numbers) ? 'class="line-numbers"' : '';
+        $xoopsTpl->assign('prism_setup', $prism_setup);
 
     }
 
@@ -1448,16 +1485,16 @@ class Utility
             // 驗證參數
             $placeholderCount = substr_count($sql, '?');
             if ($placeholderCount !== count($params)) {
-                throw new \Exception("Number of parameters (" . count($params) . ") doesn't match the number of placeholders ({$placeholderCount}) in SQL.");
+                throw new \Exception(sprintf(_NUMBER_PARAMETER_NOT_MATCH, count($params), $placeholderCount));
             }
 
             if (strlen($types) !== count($params)) {
-                throw new \Exception("Length of types string (" . strlen($types) . ") doesn't match the number of parameters (" . count($params) . ").");
+                throw new \Exception(sprintf(_TYPES_LENGTH_NOT_MATCH, strlen($types), count($params)));
             }
 
             $stmt = $xoopsDB->conn->prepare($sql);
             if ($stmt === false) {
-                throw new \Exception("SQL prepare failed: " . $xoopsDB->conn->error);
+                throw new \Exception(_SQL_PREPARE_FAILED . $xoopsDB->conn->error);
             }
 
             if (!empty($params)) {
@@ -1482,23 +1519,23 @@ class Utility
                 }
 
                 if (!call_user_func_array(array($stmt, 'bind_param'), $bindParams)) {
-                    throw new \Exception("Parameter binding failed: " . $stmt->error);
+                    throw new \Exception(_PARAMETER_BINDING_FAILED . $stmt->error);
                 }
             }
 
             if (!$stmt->execute()) {
-                throw new \Exception("SQL execution failed: " . $stmt->error);
+                throw new \Exception(_SQL_EXECUTION_FAILED . $stmt->error);
             }
 
             if (stripos(trim($sql), 'SELECT') === 0 || stripos(trim($sql), 'SHOW') === 0 || stripos(trim($sql), 'DESCRIBE') === 0 || stripos(trim($sql), 'EXPLAIN') === 0 || stripos(trim($sql), 'PRAGMA') === 0) {
                 $result = $stmt->get_result();
                 if ($result === false) {
-                    throw new \Exception("Failed to get result: " . $stmt->error);
+                    throw new \Exception(_FAILED_TO_GET_RESULT . $stmt->error);
                 }
                 return $result;
             }
-
             return true;
+
         } catch (\Exception $e) {
             if ($throwExceptions) {
                 throw new \Exception($e->getMessage() . " in $callerInfo");
@@ -1524,4 +1561,191 @@ class Utility
                 return '';
         }
     }
+
+    //製作logo圖
+    public static function mkTitlePic($save_path = '/uploads/', $filename = 'logo', $title = '', $size = 24, $border_size = 2, $color = '#00a3a8', $border_color = '#FFFFFF', $font_file_sn = 0, $shadow_color = '#000000', $shadow_x = 1, $shadow_y = 1, $shadow_size = 3, $margin_top = 0, $margin_bottom = 0, $echo = true, $pic_width = 0, $pic_height = 0)
+    {
+        $TadUpFontFiles = new TadUpFiles('tad_themes', '/fonts');
+        $TadUpFontFiles->set_col('logo_fonts', 0);
+        $font = $TadUpFontFiles->get_file($font_file_sn);
+
+        //找字數
+        if (function_exists('mb_strlen')) {
+            $n = mb_strlen($title);
+        } else {
+            $n = strlen($title) / 3;
+        }
+
+        if (empty($size)) {
+            return;
+        }
+
+        $width = $pic_width ? $pic_width : $size * 1.4 * $n;
+        $height = $pic_height ? $pic_height : $size * 2 + $margin_top + $margin_bottom;
+
+        $x = 2;
+        $y = $size * 1.5;
+        list($color_r, $color_g, $color_b) = sscanf($color, '#%02x%02x%02x');
+        list($border_color_r, $border_color_g, $border_color_b) = sscanf($border_color, '#%02x%02x%02x');
+        list($shadow_color_r, $shadow_color_g, $shadow_color_b) = sscanf($shadow_color, '#%02x%02x%02x');
+
+        header('Content-type: image/png');
+        $im = imagecreatetruecolor($width, $height);
+        imagesavealpha($im, true);
+
+        $trans_colour = imagecolorallocatealpha($im, 255, 255, 255, 127);
+        imagefill($im, 0, 0, $trans_colour);
+
+        $text_color = imagecolorallocate($im, $color_r, $color_g, $color_b);
+        $text_border_color = imagecolorallocatealpha($im, $border_color_r, $border_color_g, $border_color_b, 50);
+        $text_shadow_color = imagecolorallocatealpha($im, $shadow_color_r, $shadow_color_g, $shadow_color_b, 50);
+
+        $gd = gd_info();
+        if ($gd['JIS-mapped Japanese Font Support']) {
+            $title = iconv('UTF-8', 'shift_jis', $title);
+        }
+        // die('shadow_size='.$shadow_size);
+        // if ($shadow_size > 0) {
+        $sx = $shadow_x > 0 ? $shadow_x + $border_size : $shadow_x - $border_size;
+        $sy = $shadow_y > 0 ? $shadow_y + $border_size : $shadow_y - $border_size;
+
+        self::imagettftextblur($im, $size, 0, $x + $sx, $y + $sy + $margin_top, $text_shadow_color, $font[$font_file_sn]['physical_file_path'], $title, $shadow_size);
+        // }
+
+        imagettftext($im, $size, 0, $x, $y + $margin_top, $text_color, $font[$font_file_sn]['physical_file_path'], $title);
+
+        if ('transparent' !== $border_color) {
+            self::imagettftextoutline($im, $size, 0, $x, $y + $margin_top, $text_color, $text_border_color, $font[$font_file_sn]['physical_file_path'], $title, $border_size);
+        }
+
+        Utility::mk_dir(XOOPS_ROOT_PATH . $save_path);
+        imagepng($im, XOOPS_ROOT_PATH . "{$save_path}/{$filename}.png");
+        imagedestroy($im);
+
+        if ($echo) {
+            header("location: ajax.php?op=echo&val=" . XOOPS_URL . "{$save_path}/{$filename}.png?date=" . time());
+            return XOOPS_URL . "{$save_path}/{$filename}.png";
+        }
+        return $filename;
+    }
+
+    private static function imagettftextoutline(&$im, $size, $angle, $x, $y, &$col, &$outlinecol, $fontfile, $text, $width)
+    {
+        // For every X pixel to the left and the right
+        for ($xc = $x - abs($width); $xc <= $x + abs($width); $xc++) {
+            // For every Y pixel to the top and the bottom
+            for ($yc = $y - abs($width); $yc <= $y + abs($width); $yc++) {
+                // Draw the text in the outline color
+                $text1 = imagettftext($im, $size, $angle, $xc, $yc, $outlinecol, $fontfile, $text);
+            }
+        }
+        // Draw the main text
+        $text2 = imagettftext($im, $size, $angle, $x, $y, $col, $fontfile, $text);
+    }
+
+    private static function imagettftextblur(&$im, $size, $angle, $x, $y, $color, $fontfile, $text, $blur_intensity = 0, $blur_filter = IMG_FILTER_GAUSSIAN_BLUR)
+    {
+        $blur_intensity = (int) $blur_intensity;
+        // $blur_intensity needs to be an integer greater than zero; if it is not we
+        // treat this function call identically to imagettftext
+        if (is_int($blur_intensity) && $blur_intensity > 0) {
+            // $return_array will be returned once all calculations are complete
+            $return_array = [
+                imagesx($im), // lower left, x coordinate
+                -1, // lower left, y coordinate
+                -1, // lower right, x coordinate
+                -1, // lower right, y coordinate
+                -1, // upper right, x coordinate
+                imagesy($im), // upper right, y coordinate
+                imagesx($im), // upper left, x coordinate
+                imagesy($im), // upper left, y coordinate
+            ];
+            // $temporary_image is a GD image that is the same size as our
+            // original GD image
+            $temporary_image = imagecreatetruecolor(
+                imagesx($im),
+                imagesy($im)
+            );
+            // fill $temporary_image with a black background
+            imagefill(
+                $temporary_image,
+                0,
+                0,
+                imagecolorallocate($temporary_image, 0x00, 0x00, 0x00)
+            );
+            // add white text to $temporary_image with the function call's
+            // parameters
+            imagettftext(
+                $temporary_image,
+                $size,
+                $angle,
+                $x,
+                $y,
+                imagecolorallocate($temporary_image, 0xFF, 0xFF, 0xFF),
+                $fontfile,
+                $text
+            );
+            // execute the blur filters
+            for ($blur = 1; $blur <= $blur_intensity; $blur++) {
+                imagefilter($temporary_image, $blur_filter);
+            }
+            // set $color_opacity based on $color's transparency
+            $color_opacity = imagecolorsforindex($im, $color)['alpha'];
+            $color_opacity = (127 - $color_opacity) / 127;
+            // loop through each pixel in $temporary_image
+            for ($_x = 0; $_x < imagesx($temporary_image); $_x++) {
+                for ($_y = 0; $_y < imagesy($temporary_image); $_y++) {
+                    // $visibility is the grayscale of the current pixel multiplied
+                    // by $color_opacity
+                    $visibility = (imagecolorat(
+                        $temporary_image,
+                        $_x,
+                        $_y
+                    ) & 0xFF) / 255 * $color_opacity;
+                    // if the current pixel would not be invisible then add it to
+                    // $im
+                    if ($visibility > 0) {
+                        // we know we are on an affected pixel so ensure
+                        // $return_array is updated accordingly
+                        $return_array[0] = min($return_array[0], $_x);
+                        $return_array[1] = max($return_array[1], $_y);
+                        $return_array[2] = max($return_array[2], $_x);
+                        $return_array[3] = max($return_array[3], $_y);
+                        $return_array[4] = max($return_array[4], $_x);
+                        $return_array[5] = min($return_array[5], $_y);
+                        $return_array[6] = min($return_array[6], $_x);
+                        $return_array[7] = min($return_array[7], $_y);
+                        // set the current pixel in $im
+                        imagesetpixel(
+                            $im,
+                            $_x,
+                            $_y,
+                            imagecolorallocatealpha(
+                                $im,
+                                ($color >> 16) & 0xFF,
+                                ($color >> 8) & 0xFF,
+                                $color & 0xFF,
+                                (1 - $visibility) * 127
+                            )
+                        );
+                    }
+                }
+            }
+            // destroy our $temporary_image
+            imagedestroy($temporary_image);
+            return $return_array;
+        } else {
+            return imagettftext(
+                $im,
+                $size,
+                $angle,
+                $x,
+                $y,
+                $color,
+                $fontfile,
+                $text
+            );
+        }
+    }
+
 }

@@ -156,8 +156,8 @@ class TadUpFiles
     public $TadUpFilesImgUrl;
     public $TadUpFilesThumbDir;
     public $TadUpFilesThumbUrl;
-    public $col_name;
-    public $col_sn;
+    public $col_name = '';
+    public $col_sn = 0;
     public $sort;
     public $subdir = '';
     public $dir;
@@ -220,10 +220,7 @@ class TadUpFiles
         $this->set_dir('image', $image);
         $this->set_dir('thumbs', $thumbs);
 
-        $modhandler = xoops_getHandler('module');
-        $TadToolsModule = $modhandler->getByDirname('tadtools');
-        $config_handler = xoops_getHandler('config');
-        $TadToolsModuleConfig = $config_handler->getConfigsByCat(0, $TadToolsModule->mid());
+        $TadToolsModuleConfig = Utility::getXoopsModuleConfig('tadtools');
         $this->auto_charset = $TadToolsModuleConfig['auto_charset'];
         $this->pdf_force_dl = $TadToolsModuleConfig['pdf_force_dl'];
     }
@@ -456,10 +453,9 @@ class TadUpFiles
         if ($show_edit == 'list') {
             if ($xoTheme) {
                 $xoTheme->addStylesheet('modules/tadtools/css/rounded-list.css');
-                $xoTheme->addStylesheet('modules/tadtools/css/font-awesome/css/font-awesome.css');
+                // $xoTheme->addStylesheet('modules/tadtools/css/font-awesome/css/font-awesome.css');
             } else {
-                $files = '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/modules/tadtools/css/rounded-list.css">
-                <link href="' . XOOPS_URL . '/modules/tadtools/css/font-awesome/css/font-awesome.css" rel="stylesheet">';
+                $files = '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/modules/tadtools/css/rounded-list.css">';
             }
         }
 
@@ -641,7 +637,7 @@ class TadUpFiles
             $(document).ready(function(){
                 $('#list_del_file_sort_{$this->col_name}').sortable({ opacity: 0.6, cursor: 'move', update: function() {
                     var order = $(this).sortable('serialize');
-                    $.post('" . XOOPS_URL . "/modules/tadtools/save_sort.php',order+'&col_name={$this->col_name}&col_sn={$this->col_sn}&tbl_name=" . $this->TadUpFilesTblName . "', function(theResponse){
+                    $.post('" . XOOPS_URL . "/modules/tadtools/save_sort.php',order+'&col_name={$this->col_name}&col_sn={$this->col_sn}&db_prefix=" . $this->db_prefix . "', function(theResponse){
                         $('#df_save_msg').html(theResponse);
                     });
                     }
@@ -1099,7 +1095,6 @@ class TadUpFiles
 
             if (function_exists('exif_read_data')) {
                 $exif = exif_read_data($filename, null, true);
-                $creat_date = $exif['IFD0']['DateTime'];
                 $Model360 = ['LG-R105', 'RICOH THETA S'];
                 if (in_array($exif['IFD0']['Model'], $Model360)) {
                     $this->tag = '360';
@@ -1107,7 +1102,7 @@ class TadUpFiles
             }
 
             //複製檔案
-            $this->thumbnail($from, $new_thumb, $type, $thumb_width);
+            Utility::generateThumbnail($from, $new_thumb, $thumb_width);
 
             $copy_or_link = true;
             if (!$only_import2db) {
@@ -1241,66 +1236,6 @@ class TadUpFiles
         }
 
         return 'application/octet-stream';
-    }
-
-    //做縮圖
-    public function thumbnail($filename = '', $thumb_name = '', $type = 'image/jpeg', $width = '120')
-    {
-        // die("{$filename}, {$thumb_name}, {$filename}, {$filename}, ");
-
-        if (empty($type)) {
-            $type = $this->mime_content_type($filename);
-        }
-
-        // Get new sizes
-        list($old_width, $old_height) = getimagesize($filename);
-        if ($old_width > $width) {
-            $percent = ($old_width > $old_height) ? round($width / $old_width, 2) : round($width / $old_height, 2);
-
-            $newwidth = ($old_width > $old_height) ? $width : $old_width * $percent;
-            $newheight = ($old_width > $old_height) ? $old_height * $percent : $width;
-
-            // Load
-            $thumb = imagecreatetruecolor($newwidth, $newheight);
-            if ($type === 'image/jpeg' or $type === 'image/jpg' or $type === 'image/pjpg' or $type === 'image/pjpeg') {
-                $source = imagecreatefromjpeg($filename);
-                $type = 'image/jpeg';
-            } elseif ($type === 'image/png') {
-                $source = imagecreatefrompng($filename);
-                imagecolortransparent($thumb, imagecolorallocatealpha($thumb, 0, 0, 0, 127));
-                imagealphablending($thumb, false);
-                imagesavealpha($thumb, true);
-                $type = 'image/png';
-            } elseif ($type === 'image/gif') {
-                $source = imagecreatefromgif($filename);
-                imagecolortransparent($thumb, imagecolorallocatealpha($thumb, 0, 0, 0, 127));
-                imagealphablending($thumb, false);
-                imagesavealpha($thumb, true);
-                $type = 'image/gif';
-            }
-
-            // Resize
-            imagecopyresampled($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $old_width, $old_height);
-            //ob_start();
-            //header("Content-type: $type");
-            if ($type === 'image/jpeg') {
-                imagejpeg($thumb, $thumb_name);
-            } elseif ($type === 'image/png') {
-                imagepng($thumb, $thumb_name);
-            } elseif ($type === 'image/gif') {
-                imagegif($thumb, $thumb_name);
-            }
-            imagedestroy($thumb);
-
-            //ob_end_clean();
-            return;
-            exit;
-        } else {
-            copy($filename, $thumb_name);
-        }
-        return;
-        exit;
-
     }
 
     //上傳單一檔案，$this->col_name=對應欄位名稱,$col_sn=對應欄位編號,$種類：img,file,$sort=圖片排序,$files_sn="更新編號"
@@ -1748,10 +1683,7 @@ class TadUpFiles
             $mark = strpos($link_path, '?') !== false ? '&' : '?';
 
             $dl_url = empty($this->download_url) ? "{$link_path}{$mark}op=tufdl&files_sn=$files_sn" : $this->download_url . "&files_sn=$files_sn";
-            $http = 'http://';
-            if (!empty($_SERVER['HTTPS'])) {
-                $http = ($_SERVER['HTTPS'] === 'on') ? 'https://' : 'http://';
-            }
+
             $full_dl_url = empty($this->download_url) ? "{$link_path}{$mark}op=tufdl&files_sn=$files_sn" : $this->download_url . "&files_sn=$files_sn";
 
             if ($kind === 'img') {
@@ -1764,7 +1696,7 @@ class TadUpFiles
 
                 if (!file_exists($this->TadUpFilesThumbDir . "/{$file_name}")) {
                     Utility::mk_dir($this->TadUpFilesThumbDir);
-                    $this->thumbnail($this->TadUpFilesImgDir . "/{$file_name}", $this->TadUpFilesThumbDir . "/{$file_name}", '', $this->thumb_width);
+                    Utility::generateThumbnail($this->TadUpFilesImgDir . "/{$file_name}", $this->TadUpFilesThumbDir . "/{$file_name}", $this->thumb_width);
                 }
 
                 if ($tag == '360') {
@@ -1819,7 +1751,7 @@ class TadUpFiles
     //取得smarty用的檔案陣列
     public function get_file_for_smarty($files_sn = '', $limit = null, $path = null, $remove_blank = false)
     {
-        global $xoopsDB, $xoopsUser;
+        global $xoopsDB;
 
         $os_charset = (PATH_SEPARATOR === ':') ? 'UTF-8' : 'Big5';
 
@@ -1832,15 +1764,6 @@ class TadUpFiles
         if (empty($files_sn) and !empty($this->files_sn)) {
             $files_sn = $this->files_sn;
         }
-
-        // if (is_array($files_sn)) {
-        //     $where = "where `files_sn` in('" . implode("','", $files_sn) . "')";
-        // } else {
-        //     $where = ($files_sn) ? "where `files_sn`='{$files_sn}'" : "where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' $and_sort order by sort $andLimit";
-        // }
-
-        // $sql = "select * from `{$this->TadUpFilesTblName}` $where";
-        // $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         if (is_array($files_sn)) {
             $where = 'WHERE `files_sn` IN (' . implode(',', array_fill(0, count($files_sn), '?')) . ')';
@@ -2237,7 +2160,7 @@ class TadUpFiles
             }
 
             $file_display = str_replace(['/', '|', '\\', '?', '"', '*', ':', '<', '>'], '', $file_display);
-            header('HTTP/1.1 200 OK');
+
             header('Expires: 0');
             header('Content-Type: ' . $mimetype);
             //header('Content-Type: application/octet-stream');

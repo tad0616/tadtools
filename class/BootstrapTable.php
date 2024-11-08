@@ -24,6 +24,7 @@ class BootstrapTable
             $xoTheme->addScript('modules/tadtools/bootstrap-table/bootstrap-table.min.js');
             $xoTheme->addScript('modules/tadtools/bootstrap-table/locale/bootstrap-table-' . _LANGCODE . '.min.js');
             $xoTheme->addScript('modules/tadtools/bootstrap-table/extensions/mobile/bootstrap-table-mobile.min.js');
+            $xoTheme->addStylesheet('modules/tadtools/bootstrap-table/extensions/filter-control/bootstrap-table-filter-control.min.css');
             $xoTheme->addScript('modules/tadtools/bootstrap-table/extensions/filter-control/bootstrap-table-filter-control.min.js');
 
             if ($sticky) {

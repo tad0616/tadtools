@@ -112,6 +112,7 @@ div.jGrowl div.jGrowl-closer {
 }
 .toolbar_bootstrap_nav a:hover {
   color: #1c55be;
+  background: #f5f9fc;
 }
 .toolbar_bootstrap_nav .current a {
   background: #404a50;

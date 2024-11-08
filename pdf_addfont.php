@@ -1,6 +1,6 @@
 <?php
-use XoopsModules\Tadtools\Utility;
-include_once "../../mainfile.php";
+require_once dirname(dirname(__DIR__)) . '/mainfile.php';
+
 if (!$xoopsUser) {
     redirect_header("index.php", 3, "請先登入。");
 }

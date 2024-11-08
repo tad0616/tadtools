@@ -49,7 +49,6 @@ class LofSliderNews
         if ($xoTheme) {
             $xoTheme->addStylesheet('modules/tadtools/lofslidernews/css/reset.css');
             $xoTheme->addStylesheet('modules/tadtools/lofslidernews/css/style.css');
-            $xoTheme->addScript('modules/tadtools/lofslidernews/js/jquery.easing.js');
             $xoTheme->addScript('modules/tadtools/lofslidernews/js/script.js');
 
             $xoTheme->addScript('', null, "
@@ -78,7 +77,6 @@ class LofSliderNews
             <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/lofslidernews/css/reset.css' >
             <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/lofslidernews/css/style.css' >
             $jquery
-            <script language='javascript' type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/lofslidernews/js/jquery.easing.js'></script>
             <script language='javascript' type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/lofslidernews/js/script.js'></script>
 
             <script type='text/javascript'>

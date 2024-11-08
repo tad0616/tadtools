@@ -179,7 +179,7 @@ class Ztree
             }
           };
 
-          var zNodes =[{$this->json}];
+          var {$this->name}zNodes =[{$this->json}];
 
           function linkto(event, treeId, treeNode) {
             location.href = treeNode.url;
@@ -212,7 +212,7 @@ class Ztree
           {$drag_code}
 
           $(document).ready(function(){
-            $.fn.zTree.init($('#{$this->name}'), setting, zNodes);
+            $.fn.zTree.init($('#{$this->name}'), setting, {$this->name}zNodes);
           });
           //-->
         </SCRIPT>

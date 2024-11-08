@@ -30,9 +30,9 @@
 
 .my-input {
   padding: 2px 4px;
-  font-size: 0.9rem;
+  font-size: 0.975rem;
   height: unset;
-  color: #555;
+  color: #222224;
   background-color: #fff;
   background-image: none;
   border: 1px solid #ccc;
@@ -70,7 +70,7 @@
 }
 
 input[type="checkbox"].my-input {
-  height: 1em;
+  height: 1rem;
 }
 
 .my-100 {
@@ -81,7 +81,7 @@ textarea.my-input {
   line-height: 1.5;
   min-width: 80%;
   max-width: 100%;
-  min-height: 5em;
+  min-height: 5rem;
 }
 
 .my-help {

@@ -12,7 +12,6 @@ $type = Request::getString('type');
 $mod_dir = Request::getString('mod_dir');
 $subDir = Request::getString('subDir');
 
-header('HTTP/1.1 200 OK');
 ?>
 <!DOCTYPE html>
 <html>

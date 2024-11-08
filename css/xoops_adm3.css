@@ -5,6 +5,7 @@
 /* body ,div , a , li ,td ,th{
 } */
 @import url('my-input.css');
+@import url("groupperm_form.css");
 
 a.tooltip, img.tooltip {
     opacity: 100;

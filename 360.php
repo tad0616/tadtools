@@ -4,6 +4,8 @@ use Xmf\Request;
 require_once __DIR__ . '/tadtools_header.php';
 require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 
+// 關閉除錯訊息
+$xoopsLogger->activated = false;
 $photo = Request::getString('photo');
 $photo = filter_var($photo, FILTER_SANITIZE_SPECIAL_CHARS);
 ?>
