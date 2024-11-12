@@ -1,4 +1,4 @@
-TadTools 4.0 (released on 2024-11-11)
+TadTools 4.0 (released on 2024-11-18)
 ====================================
 1. Upgrade tcpdf to version 6.6.65
 2. Modify the navigation bar text size setting and force the unit rem to be added.

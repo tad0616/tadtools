@@ -2,6 +2,7 @@
 define('_TAD_HOME', 'Home');
 define('_TAD_NO_DIRNAME', 'No Directory Name');
 define('_TAD_MKDIR_ERROR', 'Can\'t create %s directory. Please create directory manually, and set network access permission(777)');
+define('_TAD_MKFILE_ERROR', ' Cannot create %s file, make sure the directory has write permission (777).');
 define('_TAD_TO_MOD', 'Go to module');
 define('_TAD_TO_ADMIN', 'Control panel');
 define('_TAD_BACK_PAGE', 'Previous');
@@ -46,8 +47,6 @@ define('_TAD_STAR_RATING_SAVE', 'Saved: %s');
 define('_TAD_STAR_RATING_DATE_SAVE', '%s: %s');
 
 define('_TAD_SELECT_TO_DEL', 'Select files to delete:');
-
-define('_TAD_DEL_INSTALL_CHK', '\'' . XOOPS_VAR_PATH . '/data/install_chk.php \' existed! Please reload this page to delete it.');
 
 define('_TAD_LOGIN_BY', 'Login by %s');
 define('_TAD_SORTED', 'Sorted!');

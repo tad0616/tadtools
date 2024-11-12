@@ -223,7 +223,7 @@ class Tools
         }
         // Utility::dd($json_theme_config_arr);
         if (!file_put_contents($json_file, json_encode($json_theme_config_arr, 256))) {
-            redirect_header($_SERVER['PHP_SELF'], 3, "{$json_file} 無法寫入");
+            throw new \Exception(sprintf(_TAD_MKFILE_ERROR, $json_file));
         }
         return $def_config['theme_kind'];
     }

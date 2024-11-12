@@ -21,7 +21,7 @@ $modversion['icons32'] = '../../Frameworks/moduleclasses/icons/32';
 
 //about
 $modversion['module_status'] = 'Final';
-$modversion['release_date'] = '2024-11-11';
+$modversion['release_date'] = '2024-11-18';
 $modversion['module_website_url'] = 'https://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=1';
 $modversion['module_website_name'] = 'XOOPS EZGO';
 $modversion['author_website_url'] = 'https://www.tad0616.net';

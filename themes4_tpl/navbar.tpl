@@ -1,24 +1,9 @@
-<{if $install_chk|default:false}>
-    <div class='alert alert-danger'>
-        <{$smarty.const._TAD_DEL_INSTALL_CHK}>
-    </div>
-<{/if}>
-
 <{if $navbar_pos!="not-use"}>
     <!-- SmartMenus jQuery Bootstrap 4 Addon CSS -->
     <link href="<{$xoops_url}>/modules/tadtools/smartmenus/addons/bootstrap-4/jquery.smartmenus.bootstrap-4.css" rel="stylesheet">
 
     <script type="title/javascript" src="<{$xoops_url}>/modules/tadtools/smartmenus/jquery.smartmenus.min.js"></script>
     <script type="title/javascript" src="<{$xoops_url}>/modules/tadtools/smartmenus/addons/bootstrap-4/jquery.smartmenus.bootstrap-4.min.js"></script>
-
-
-    <{*
-        <!-- 改從 core.php 引入 -->
-        <link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{$xoops_url}>/modules/tadtools/colorbox/colorbox.css">
-        <link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{$xoops_url}>/modules/tadtools/css/xoops.css">
-        <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/colorbox/jquery.colorbox.js"></script>
-    *}>
-
 
     <script>
         function tad_themes_popup(URL) {

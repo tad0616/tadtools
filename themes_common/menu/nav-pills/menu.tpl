@@ -1,12 +1,3 @@
-<{if $xoops_isadmin|default:false}>
-  <{if $install_chk|default:false}>
-    <div class='alert alert-danger'>
-      <{$smarty.const._TAD_DEL_INSTALL_CHK}>
-    </div>
-<{/if}>
-
-<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{$xoops_url}>/modules/tadtools/colorbox/colorbox.css" />
-<script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/colorbox/jquery.colorbox.js"></script>
 <script>
   function tad_themes_popup(URL) {
     $.colorbox({iframe:true, width:"80%", height:"90%",href : URL});
@@ -77,7 +68,7 @@
             <a class="dropdown-toggle" data-toggle="dropdown">
               <{$smarty.const._TAD_TF_USER_LOGIN}> <span class="caret"></span>
             </a>
-            <{include file="$xoops_rootpath/modules/tadtools/themes`$smarty.session.bootstrap`_tpl/menu_login.tpl"}>
+            <{include file="$xoops_rootpath/modules/tadtools/themes`$smarty.session.bootstrap|default:5`_tpl/menu_login.tpl"}>
           </li>
         <{/if}>
       </ul>

@@ -2,6 +2,7 @@
 define('_TAD_HOME', '回首頁');
 define('_TAD_NO_DIRNAME', '無目錄名稱');
 define('_TAD_MKDIR_ERROR', ' 無法建立 %s 目錄，請手動建立，並開啟匿名寫入權限（777）');
+define('_TAD_MKFILE_ERROR', ' 無法建立 %s 檔案，請確定目錄有寫入權限（777）');
 define('_TAD_TO_MOD', '回模組首頁');
 define('_TAD_TO_ADMIN', '管理介面');
 define('_TAD_BACK_PAGE', '上一頁');
@@ -46,8 +47,6 @@ define('_TAD_STAR_RATING_SAVE', '已評為 %s 分');
 define('_TAD_STAR_RATING_DATE_SAVE', '已於 %s 評為 %s 分');
 
 define('_TAD_SELECT_TO_DEL', '選擇欲刪除的檔案');
-
-define('_TAD_DEL_INSTALL_CHK', '安裝程式已將自動安裝檔「' . XOOPS_VAR_PATH . '/data/install_chk.php 」刪除。若仍持續出現此訊息，建議手動刪除之以策安全。（本訊息僅管理員看得見）');
 
 define('_TAD_LOGIN_BY', '使用 %s 快速登入');
 define('_TAD_SORTED', '排序完成！');

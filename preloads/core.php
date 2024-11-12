@@ -456,7 +456,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
                 $xoTheme->addStylesheet('modules/tadtools/colorbox/colorbox.css');
                 $xoTheme->addStylesheet('modules/tadtools/css/xoops.css');
                 $xoTheme->addScript('modules/tadtools/colorbox/jquery.colorbox.js');
-                $xoTheme->addStylesheet('modules/tadtools/css/fontawesome6/css/all.min.css');
+                // $xoTheme->addStylesheet('modules/tadtools/css/fontawesome6/css/all.min.css');
                 $xoTheme->addStylesheet('media/font-awesome/css/font-awesome.min.css');
 
             }
@@ -651,6 +651,12 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         } else {
             $theme_kind = Tools::import_theme_json($theme_name);
             $_SESSION['bootstrap'] = strpos($theme_kind, 'bootstrap') !== false ? substr($theme_kind, -1) : 5;
+            if (file_exists($json_file)) {
+                header('location:' . XOOPS_URL);
+                exit;
+            } else {
+                throw new \Exception(sprintf(_TAD_MKFILE_ERROR, $json_file));
+            }
         }
     }
 

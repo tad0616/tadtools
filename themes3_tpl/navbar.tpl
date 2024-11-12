@@ -1,16 +1,3 @@
-<{if $install_chk|default:false}>
-    <div class='alert alert-danger'>
-        <{$smarty.const._TAD_DEL_INSTALL_CHK}>
-    </div>
-<{/if}>
-
-<{*
-<!-- 改從 core.php 引入 -->
-<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{$xoops_url}>/modules/tadtools/colorbox/colorbox.css">
-<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{$xoops_url}>/modules/tadtools/css/xoops.css">
-<script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/colorbox/jquery.colorbox.js"></script>
-*}>
-
 <script>
     function tad_themes_popup(URL) {
         $.colorbox({iframe:true, width:"80%", height:"90%",href : URL});

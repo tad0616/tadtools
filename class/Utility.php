@@ -1302,7 +1302,7 @@ class Utility
         // 獲取圖片信息，包括類型、尺寸等
         $imageInfo = getimagesize($imagePath);
 
-        if (0 != $angle) {
+        if (0 !== $angle) {
             $h = $imageInfo[1];
             $w = $imageInfo[0];
 
@@ -1332,14 +1332,19 @@ class Utility
                     return "{$imageType} 不支援";
             }
 
-            if (0 != $angle) {
+            if (0 !== $angle) {
                 $image = imagerotate($image, $angle, 0);
             }
 
             // 計算縮圖尺寸
             $originalWidth = imagesx($image);
             $originalHeight = imagesy($image);
-            $scale = min($width / $originalWidth, $height / $originalHeight);
+            if ($originalWidth > $width && $originalHeight > $height) {
+                $scale = min($width / $originalWidth, $height / $originalHeight);
+            } else {
+                return;
+            }
+
             $newWidth = $originalWidth * $scale;
             $newHeight = $originalHeight * $scale;
 
