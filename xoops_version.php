@@ -1,9 +1,7 @@
 <?php
-
-global $xoopsConfig;
-
 $modversion = [];
 global $xoopsConfig;
+
 $modversion['name'] = _MI_TADTOOLS_NAME;
 $modversion['version'] = $_SESSION['xoops_version'] >= 20511 ? '4.0.0-Stable' : '4.0';
 // $modversion['version'] = '3.55';
@@ -78,7 +76,8 @@ $modversion['config'] = [
     ['name' => 'facebook_app_id', 'title' => '_MI_TADTOOLS_FACEBOOK_APP_ID', 'description' => '_MI_TADTOOLS_FACEBOOK_APP_ID_DESC', 'formtype' => 'textbox', 'valuetype' => 'text', 'default' => ''],
 ];
 
+//---區塊設定 (索引為固定值，若欲刪除區塊記得補上索引，避免區塊重複)---//
 $modversion['blocks'] = [
-    ['file' => 'tadtools_qrcode.php', 'name' => _MI_TADTOOLS_QRCODE_BLOCK_NAME, 'description' => _MI_TADTOOLS_QRCODE_BLOCK_DESC, 'show_func' => 'tadtools_qrcode', 'template' => 'tadtools_qrcode_block.tpl', 'edit_func' => 'tadtools_qrcode_edit', 'options' => '120'],
-    ['file' => 'tadtools_app.php', 'name' => _MI_TADTOOLS_APP_BLOCK_NAME, 'description' => _MI_TADTOOLS_APP_BLOCK_DESC, 'show_func' => 'tadtools_app', 'template' => 'tadtools_app_block.tpl', 'edit_func' => 'tadtools_app_edit', 'options' => '120|v'],
+    0 => ['file' => 'tadtools_qrcode.php', 'name' => _MI_TADTOOLS_QRCODE_BLOCK_NAME, 'description' => _MI_TADTOOLS_QRCODE_BLOCK_DESC, 'show_func' => 'tadtools_qrcode', 'template' => 'tadtools_qrcode_block.tpl', 'edit_func' => 'tadtools_qrcode_edit', 'options' => '120'],
+    1 => ['file' => 'tadtools_app.php', 'name' => _MI_TADTOOLS_APP_BLOCK_NAME, 'description' => _MI_TADTOOLS_APP_BLOCK_DESC, 'show_func' => 'tadtools_app', 'template' => 'tadtools_app_block.tpl', 'edit_func' => 'tadtools_app_edit', 'options' => '120|v'],
 ];

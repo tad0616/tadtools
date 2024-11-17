@@ -14,7 +14,6 @@
 <{$tad_themes_popup_code|default:''}>
 
 <{if $navbar_pos!="not-use"}>
-
     <nav id="main-nav" class="navbar navbar-default <{if $navbar_pos=="fixed-top"}>navbar-fixed-top<{elseif $navbar_pos=="fixed-bottom"}>navbar-fixed-bottom<{else}>sticky-top<{/if}>" role="navigation" style="background-color:<{$navbar_bg_top|default:''}>;<{if $navbar_img|default:false}>background-image: url(<{$navbar_img|default:''}>);<{/if}>">
         <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -82,7 +81,6 @@
         </div>
     </nav>
 
-
     <{if $use_pin=="1"}>
         <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/jquery.sticky/jquery.sticky.js"></script>
         <script type="text/javascript">
@@ -91,4 +89,5 @@
         });
         </script>
     <{/if}>
+
 <{/if}>

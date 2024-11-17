@@ -1,5 +1,5 @@
 /*!
- * SmartMenus jQuery Plugin - v1.1.0 - September 17, 2017
+ * SmartMenus jQuery Plugin - v1.2.1 - November 3, 2022
  * http://www.smartmenus.org/
  *
  * Copyright Vasil Dinkov, Vadikom Web Ltd.
@@ -43,7 +43,7 @@
 						if (lastMove) {
 							var deltaX = Math.abs(lastMove.x - thisMove.x),
 								deltaY = Math.abs(lastMove.y - thisMove.y);
-		 					if ((deltaX > 0 || deltaY > 0) && deltaX <= 2 && deltaY <= 2 && thisMove.timeStamp - lastMove.timeStamp <= 300) {
+		 					if ((deltaX > 0 || deltaY > 0) && deltaX <= 4 && deltaY <= 4 && thisMove.timeStamp - lastMove.timeStamp <= 300) {
 								mouse = true;
 								// if this is the first check after page load, check if we are not over some item by chance and call the mouseenter handler if yes
 								if (firstTime) {
@@ -199,7 +199,7 @@
 						reHash = /#.*/,
 						locHref = window.location.href.replace(reDefaultDoc, ''),
 						locHrefNoHash = locHref.replace(reHash, '');
-					this.$root.find('a').each(function() {
+					this.$root.find('a:not(.mega-menu a)').each(function() {
 						var href = this.href.replace(reDefaultDoc, ''),
 							$this = $(this);
 						if (href == locHref || href == locHrefNoHash) {
@@ -299,7 +299,7 @@
 						this.$disableOverlay = $('<div class="sm-jquery-disable-overlay"/>').css({
 							position: 'absolute',
 							top: pos.top,
-							right: pos.left,
+							left: pos.left,
 							width: this.$root.outerWidth(),
 							height: this.$root.outerHeight(),
 							zIndex: this.getStartZIndex(true),
@@ -485,38 +485,43 @@
 				if (this.$root.triggerHandler('click.smapi', $a[0]) === false) {
 					return false;
 				}
-				var subArrowClicked = $(e.target).is('.sub-arrow'),
-					$sub = $a.dataSM('sub'),
-					firstLevelSub = $sub ? $sub.dataSM('level') == 2 : false,
-					collapsible = this.isCollapsible(),
-					behaviorToggle = /toggle$/.test(this.opts.collapsibleBehavior),
-					behaviorLink = /link$/.test(this.opts.collapsibleBehavior),
-					behaviorAccordion = /^accordion/.test(this.opts.collapsibleBehavior);
-				// if the sub is hidden, try to show it
-				if ($sub && !$sub.is(':visible')) {
-					if (!behaviorLink || !collapsible || subArrowClicked) {
-						if (this.opts.showOnClick && firstLevelSub) {
-							this.clickActivated = true;
+				var $sub = $a.dataSM('sub'),
+					firstLevelSub = $sub ? $sub.dataSM('level') == 2 : false;
+				if ($sub) {
+					var subArrowClicked = $(e.target).is('.sub-arrow'),
+						collapsible = this.isCollapsible(),
+						behaviorToggle = /toggle$/.test(this.opts.collapsibleBehavior),
+						behaviorLink = /link$/.test(this.opts.collapsibleBehavior),
+						behaviorAccordion = /^accordion/.test(this.opts.collapsibleBehavior);
+					// if the sub is hidden, try to show it
+					if (!$sub.is(':visible')) {
+						if (!behaviorLink || !collapsible || subArrowClicked) {
+							if (!collapsible && this.opts.showOnClick && firstLevelSub) {
+								this.clickActivated = true;
+							}
+							// try to activate the item and show the sub
+							this.itemActivate($a, behaviorAccordion);
+							// if "itemActivate" showed the sub, prevent the click so that the link is not loaded
+							// if it couldn't show it, then the sub menus are disabled with an !important declaration (e.g. via mobile styles) so let the link get loaded
+							if ($sub.is(':visible')) {
+								this.focusActivated = true;
+								return false;
+							}
 						}
-						// try to activate the item and show the sub
-						this.itemActivate($a, behaviorAccordion);
-						// if "itemActivate" showed the sub, prevent the click so that the link is not loaded
-						// if it couldn't show it, then the sub menus are disabled with an !important declaration (e.g. via mobile styles) so let the link get loaded
-						if ($sub.is(':visible')) {
-							this.focusActivated = true;
-							return false;
-						}
-					}
-				// if the sub is visible and we are in collapsible mode
-				} else if (collapsible && (behaviorToggle || subArrowClicked)) {
-					this.itemActivate($a, behaviorAccordion);
-					this.menuHide($sub);
-					if (behaviorToggle) {
+					// if the sub is visible and showOnClick: true, hide the sub
+					} else if (!collapsible && this.opts.showOnClick && firstLevelSub) {
+						this.menuHide($sub);
+						this.clickActivated = false;
 						this.focusActivated = false;
+						return false;
+					// if the sub is visible and we are in collapsible mode
+					} else if (collapsible && (behaviorToggle || subArrowClicked)) {
+						this.itemActivate($a, behaviorAccordion);
+						this.menuHide($sub);
+						return false;
 					}
-					return false;
 				}
-				if (this.opts.showOnClick && firstLevelSub || $a.hasClass('disabled') || this.$root.triggerHandler('select.smapi', $a[0]) === false) {
+				if (!collapsible && this.opts.showOnClick && firstLevelSub || $a.hasClass('disabled') || this.$root.triggerHandler('select.smapi', $a[0]) === false) {
 					return false;
 				}
 			},
@@ -1114,7 +1119,7 @@
 				if (!('onorientationchange' in window) || e.type == 'orientationchange') {
 					var collapsible = this.isCollapsible();
 					// if it was collapsible before resize and still is, don't do it
-					if (!(this.wasCollapsible && collapsible)) {
+					if (!(this.wasCollapsible && collapsible)) { 
 						if (this.activatedItems.length) {
 							this.activatedItems[this.activatedItems.length - 1][0].blur();
 						}
@@ -1152,13 +1157,17 @@
 		return this.each(function() {
 			// [data-sm-options] attribute on the root UL
 			var dataOpts = $(this).data('sm-options') || null;
+			if (dataOpts && typeof dataOpts != 'object') {
+				dataOpts = null;
+				alert('ERROR\n\nSmartMenus jQuery init:\nThe value of the "data-sm-options" attribute must be valid JSON.');
+			}
+			// do not support function options
 			if (dataOpts) {
-				try {
-					dataOpts = eval('(' + dataOpts + ')');
-				} catch(e) {
-					dataOpts = null;
-					alert('ERROR\n\nSmartMenus jQuery init:\nInvalid "data-sm-options" attribute value syntax.');
-				};
+				$.each(['showFunction', 'hideFunction', 'collapsibleShowFunction', 'collapsibleHideFunction'], function() {
+					if (this in dataOpts) {
+						delete dataOpts[this];
+					}
+				});
 			}
 			new $.SmartMenus(this, $.extend({}, $.fn.smartmenus.defaults, options, dataOpts));
 		});

@@ -17,6 +17,8 @@
 <{else}>
         <link href="<{$xoops_url}>/modules/tadtools/bootstrap3/css/bootstrap.css" rel="stylesheet" media="all">
 <{/if}>
+        <!-- SmartMenus core CSS (required) -->
+        <link href="<{$xoops_url}>/modules/tadtools/smartmenus/css/sm-core-css.css" media="all" rel="stylesheet">
         <!-- SmartMenus jQuery Bootstrap Addon CSS -->
         <link href="<{$xoops_url}>/modules/tadtools/smartmenus/addons/bootstrap/jquery.smartmenus.bootstrap.css" media="all" rel="stylesheet">
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->

@@ -60,5 +60,27 @@
 
       </li>
     <{/if}>
+    <{if $tlogin && ($openid_login==1 || $openid_login==2)}>
+        <li>
+            <div class="row">
+                <{foreach from=$tlogin item=login}>
+                    <{if $tlogin && $tlogin|@count < 4}>
+                        <div class="col-12">
+                            <a href="<{$login.link}>" class="btn me-2" style="display: block; margin: 4px; border: none; ">
+                                <img src="<{$login.img}>" alt="<{$login.text}>" title="<{$login.text}>" style="width: 32px;height: 32px;object-fit: contain;">
+                                <{$login.text}>
+                            </a>
+                        </div>
+                    <{else}>
+                        <div class="col-12">
+                            <a href="<{$login.link}>" class="btn bg-white me-2" style="display: inline-flex;justify-content: center;align-items: center;width: 36px;height: 36px;padding: 0;margin: 3px;background-color: white;border: none;cursor: pointer;">
+                                <img src="<{$login.img}>" alt="<{$login.text}>" title="<{$login.text}>" style="width: 32px;height: 32px;object-fit: contain;">
+                            </a>
+                        </div>
+                    <{/if}>
+                <{/foreach}>
+            </div>
+        </li>
+    <{/if}>
   </ul>
 <{/if}>

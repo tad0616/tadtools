@@ -20,7 +20,7 @@
 
 #main-nav {
     border: none;
-    padding: 0rem 1rem;
+    padding: 0rem 3rem;
     <{if $nav_display_type=='not_full'}>
         <{if $navbar_img|default:false}>
             background-color: tranparent;

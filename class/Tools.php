@@ -3,6 +3,7 @@
 namespace XoopsModules\Tadtools;
 
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_login\Tools as TadLoginTools;
 
 /*
 Update Class Definition
@@ -28,6 +29,28 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 class Tools
 {
+    public static function tad_login($kind = '', $mode = '')
+    {
+        if (!isset($_SESSION['xoops_version'])) {
+            $_SESSION['xoops_version'] = Utility::get_version('xoops');
+        }
+
+        if ($_SESSION['xoops_version'] < 20511) {
+            require_once XOOPS_ROOT_PATH . "/modules/tad_login/function.php";
+            if ($kind == 'line') {
+                return line_login($mode);
+            } elseif ($kind == 'google') {
+                return google_login($mode);
+            }
+        } else {
+            if ($kind == 'line') {
+                return TadLoginTools::line_login($mode);
+            } elseif ($kind == 'google') {
+                return TadLoginTools::google_login($mode);
+            }
+        }
+    }
+
     // 取得佈景預設設定值
     public static function def_config($theme_name, $TadThemesMid = 0)
     {
@@ -81,15 +104,12 @@ class Tools
     public static function import_theme_json($theme_name, $def_config = [])
     {
         global $xoopsDB;
-
+        // return 'bootstrap4';
         if (empty($def_config)) {
             $def_config = self::def_config($theme_name);
         }
 
         $json_file = XOOPS_VAR_PATH . "/data/theme_{$theme_name}.json";
-        // if (file_exists($json_file)) {
-        //     \unlink($json_file);
-        // }
 
         // 僅支援 tad themes 佈景才需要的設定
         if (!empty($def_config['theme_kind']) and $def_config['theme_kind'] != 'xoops') {
@@ -118,13 +138,18 @@ class Tools
 
             $json_theme_config_arr = [];
 
+            $file_as_def = false;
             // 若 tad_themes 有內容，則存入 $json_theme_config_arr
-            $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_themes') . '` WHERE `theme_name` = ?';
-            $result = Utility::query($sql, 's', [$theme_name]) or Utility::web_error($sql, __FILE__, __LINE__);
+            $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_themes') . "` WHERE `theme_name` = '$theme_name'";
+            $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
             $theme_arr = $xoopsDB->fetchArray($result);
             foreach ($theme_arr as $k => $v) {
                 $json_theme_config_arr[$k] = $v;
+            }
+
+            if (empty($json_theme_config_arr['theme_id'])) {
+                $file_as_def = true;
             }
 
             // 若 TadDataCenter 有內容，則存入 $json_theme_config_arr
@@ -135,16 +160,16 @@ class Tools
             }
 
             // 若 tad_themes_config2 有內容，則存入 $json_theme_config_arr
-            $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_themes_config2') . '` WHERE `theme_id`=?';
-            $result = Utility::query($sql, 'i', [$theme_arr['theme_id']]) or Utility::web_error($sql, __FILE__, __LINE__);
+            $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_themes_config2') . '` WHERE `theme_id`=' . (int) $theme_arr['theme_id'];
+            $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
             while ($config2 = $xoopsDB->fetchArray($result)) {
                 $json_theme_config_arr[$config2['name']] = in_array($config2['type'], $array_type) ? \json_decode($config2['value'], true) : $config2['value'];
             }
 
             // 若 tad_themes_blocks 有內容，則存入 $json_theme_config_arr
-            $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_themes_blocks') . '` WHERE `theme_id`=?';
-            $result = Utility::query($sql, 'i', [$theme_arr['theme_id']]) or Utility::web_error($sql, __FILE__, __LINE__);
+            $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_themes_blocks') . '` WHERE `theme_id`=' . (int) $theme_arr['theme_id'];
+            $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
             while ($block = $xoopsDB->fetchArray($result)) {
 
                 foreach ($block_config as $item) {
@@ -154,66 +179,77 @@ class Tools
                 }
             }
 
-            // 若有儲存風格檔，則以風格檔的設定值為主，否則以主題檔的設定值為主
-            if (file_exists(XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}/config.php")) {
-                include XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}/config.php";
-            } elseif (file_exists(XOOPS_ROOT_PATH . "/themes/{$theme_name}/config.php")) {
-                include XOOPS_ROOT_PATH . "/themes/{$theme_name}/config.php";
-            }
+            if ($file_as_def) {
+                // 若有儲存風格檔，則以風格檔的設定值為主，否則以主題檔的設定值為主，否則以資料庫為主
+                if (file_exists(XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}/config.php")) {
+                    include XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}/config.php";
+                } elseif (file_exists(XOOPS_ROOT_PATH . "/themes/{$theme_name}/config.php")) {
+                    include XOOPS_ROOT_PATH . "/themes/{$theme_name}/config.php";
+                }
 
-            $json_theme_config_arr['theme_kind'] = $theme_kind;
+                $json_theme_config_arr['theme_kind'] = $theme_kind;
 
-            if (!empty($config_enable)) {
-                foreach ($config_enable as $config_item => $val_arr) {
-                    if (in_array($config_item, $block_config)) {
-                        foreach ($block_position as $position) {
-                            $json_theme_config_arr[$config_item][$position] = isset($config_enable[$config_item][$position]) ? $config_enable[$config_item][$position]['default'] : $val_arr['default'];
+                if (!empty($config_enable)) {
+                    foreach ($config_enable as $config_item => $val_arr) {
+                        if (in_array($config_item, $block_config)) {
+                            foreach ($block_position as $position) {
+                                if ($db_as_def) {
+                                    $json_theme_config_arr[$config_item][$position] = isset($json_theme_config_arr[$config_item][$position]) ? $json_theme_config_arr[$config_item][$position]['default'] : $val_arr['default'];
+                                } else {
+                                    $json_theme_config_arr[$config_item][$position] = isset($config_enable[$config_item][$position]) ? $config_enable[$config_item][$position]['default'] : $val_arr['default'];
+                                }
+                            }
+                        } else {
+                            $json_theme_config_arr[$config_item] = $db_as_def ? $json_theme_config_arr[$config_item] : $val_arr['default'];
                         }
-                    } else {
-                        $json_theme_config_arr[$config_item] = $val_arr['default'];
+
+                    }
+                }
+                // echo "2=>{$json_theme_config_arr['bg_color']}<br>";
+
+                // 額外設定部份，若有儲存風格檔，則以風格檔的設定值為主，否則以主題檔的設定值為主
+                $config2_files = ['config2_base', 'config2_bg', 'config2_top', 'config2_logo', 'config2_nav', 'config2_slide', 'config2_middle', 'config2_content', 'config2_block', 'config2_footer', 'config2_bottom', 'config2'];
+                foreach ($config2_files as $config2_file) {
+
+                    if (file_exists(XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}/{$config2_file}.php")) {
+                        $json_theme_config_arr['config2'][] = $config2_file;
+                        include XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}/{$config2_file}.php";
+                    } elseif (file_exists(XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php")) {
+                        $json_theme_config_arr['config2'][] = $config2_file;
+                        include XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php";
                     }
 
-                }
-            }
+                    if (!empty($theme_config)) {
+                        foreach ($theme_config as $k => $config) {
 
-            // 額外設定部份，若有儲存風格檔，則以風格檔的設定值為主，否則以主題檔的設定值為主
-            $config2_files = ['config2_base', 'config2_bg', 'config2_top', 'config2_logo', 'config2_nav', 'config2_slide', 'config2_middle', 'config2_content', 'config2_block', 'config2_footer', 'config2_bottom', 'config2'];
-            foreach ($config2_files as $config2_file) {
+                            if (in_array($config['name'], ['slide_mask', 'slide_def_mask'])) {
+                                continue;
+                            }
 
-                if (file_exists(XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}/{$config2_file}.php")) {
-                    $json_theme_config_arr['config2'][] = $config2_file;
-                    include XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}/{$config2_file}.php";
-                } elseif (file_exists(XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php")) {
-                    $json_theme_config_arr['config2'][] = $config2_file;
-                    include XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php";
-                }
+                            if (!isset($json_theme_config_arr[$config['name']])) {
+                                $json_theme_config_arr[$config['name']] = $config['default'];
+                            }
 
-                if (!empty($theme_config)) {
-                    // Utility::dd($theme_config);
-                    foreach ($theme_config as $k => $config) {
-                        if (!isset($json_theme_config_arr[$config['name']])) {
-                            $json_theme_config_arr[$config['name']] = $config['default'];
-                        }
+                            if ($config['type'] == "bg_file") {
+                                $json_theme_config_arr[$config['name'] . '_repeat'] = $config['repeat'];
+                                $json_theme_config_arr[$config['name'] . '_position'] = $config['position'];
+                                $json_theme_config_arr[$config['name'] . '_size'] = $config['size'];
 
-                        if ($config['type'] == "bg_file") {
-                            $json_theme_config_arr[$config['name'] . '_repeat'] = $config['repeat'];
-                            $json_theme_config_arr[$config['name'] . '_position'] = $config['position'];
-                            $json_theme_config_arr[$config['name'] . '_size'] = $config['size'];
+                            } elseif ($config['type'] == 'custom_zone') {
+                                $json_theme_config_arr[$config['name']] = is_array($config['default']) ? $config['default'] : \json_decode($config['default'], true);
+                                $json_theme_config_arr[$config['name'] . '_bid'] = $config['bid'];
+                                $json_theme_config_arr[$config['name'] . '_content'] = $config['content'];
+                                $json_theme_config_arr[$config['name'] . '_html_content'] = $config['html_content'];
+                                $json_theme_config_arr[$config['name'] . '_html_content_desc'] = isset($config['html_content_desc']) ? $config['html_content_desc'] : '';
+                                $json_theme_config_arr[$config['name'] . '_fa_content'] = $config['fa_content'];
+                                $json_theme_config_arr[$config['name'] . '_fa_content_desc'] = isset($config['fa_content_desc']) ? $config['fa_content_desc'] : '';
+                                $json_theme_config_arr[$config['name'] . '_menu_content'] = $config['menu_content'];
+                                $json_theme_config_arr[$config['name'] . '_menu_content_desc'] = isset($config['menu_content_desc']) ? $config['menu_content_desc'] : '';
 
-                        } elseif ($config['type'] == 'custom_zone') {
-                            $json_theme_config_arr[$config['name']] = is_array($config['default']) ? $config['default'] : \json_decode($config['default'], true);
-                            $json_theme_config_arr[$config['name'] . '_bid'] = $config['bid'];
-                            $json_theme_config_arr[$config['name'] . '_content'] = $config['content'];
-                            $json_theme_config_arr[$config['name'] . '_html_content'] = $config['html_content'];
-                            $json_theme_config_arr[$config['name'] . '_html_content_desc'] = isset($config['html_content_desc']) ? $config['html_content_desc'] : '';
-                            $json_theme_config_arr[$config['name'] . '_fa_content'] = $config['fa_content'];
-                            $json_theme_config_arr[$config['name'] . '_fa_content_desc'] = isset($config['fa_content_desc']) ? $config['fa_content_desc'] : '';
-                            $json_theme_config_arr[$config['name'] . '_menu_content'] = $config['menu_content'];
-                            $json_theme_config_arr[$config['name'] . '_menu_content_desc'] = isset($config['menu_content_desc']) ? $config['menu_content_desc'] : '';
-
-                        } elseif ($config['type'] == "padding_margin") {
-                            $json_theme_config_arr[$config['name'] . '_mt'] = $config['mt'];
-                            $json_theme_config_arr[$config['name'] . '_mb'] = $config['mb'];
+                            } elseif ($config['type'] == "padding_margin") {
+                                $json_theme_config_arr[$config['name'] . '_mt'] = $config['mt'];
+                                $json_theme_config_arr[$config['name'] . '_mb'] = $config['mb'];
+                            }
                         }
                     }
                 }
@@ -221,7 +257,9 @@ class Tools
         } else {
             $json_theme_config_arr['theme_kind'] = 'xoops';
         }
-        // Utility::dd($json_theme_config_arr);
+
+        // echo "3=>{$json_theme_config_arr['bg_color']}<br>";
+        // exit;
         if (!file_put_contents($json_file, json_encode($json_theme_config_arr, 256))) {
             throw new \Exception(sprintf(_TAD_MKFILE_ERROR, $json_file));
         }
@@ -292,8 +330,8 @@ class Tools
         $i = 0;
         if (strpos($_SESSION['menu_var_kind'], 'all') !== false or strpos($_SESSION['menu_var_kind'], 'my_menu') !== false) {
 
-            $sql = 'SELECT `menuid`, `itemname`, `itemurl`, `target`, `icon`, `link_cate_name`, `link_cate_sn`, `read_group` FROM `' . $xoopsDB->prefix('tad_themes_menu') . '` WHERE `of_level` = ? AND `status` = ? ORDER BY `position`';
-            $result = Utility::query($sql, 'ii', [$id, 1]) or die($sql);
+            $sql = 'SELECT `menuid`, `itemname`, `itemurl`, `target`, `icon`, `link_cate_name`, `link_cate_sn`, `read_group` FROM `' . $xoopsDB->prefix('tad_themes_menu') . "` WHERE `of_level` = '$id' AND `status` = '1' ORDER BY `position`";
+            $result = $xoopsDB->query($sql) or die($sql);
 
             $moduleHandler = xoops_getHandler('module');
             if ($result) {
@@ -362,8 +400,9 @@ class Tools
         switch ($link_cate_name) {
 
             case "tadnews_page_cate":
-                $sql = 'SELECT `nsn`, `news_title` FROM `' . $xoopsDB->prefix('tad_news') . '` WHERE `ncsn` = ? ORDER BY `page_sort`';
-                $result = Utility::query($sql, 'i', [$link_cate_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
+                $link_cate_sn = (int) $link_cate_sn;
+                $sql = 'SELECT `nsn`, `news_title` FROM `' . $xoopsDB->prefix('tad_news') . "` WHERE `ncsn` = '$link_cate_sn' ORDER BY `page_sort`";
+                $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
                 while (list($nsn, $news_title) = $xoopsDB->fetchRow($result)) {
                     $sub_menu[$link_cate_name . $i]['id'] = $i;
@@ -460,8 +499,8 @@ class Tools
         global $xoopsDB, $xoopsUser;
         $i = 0;
         if ($xoopsUser && $xoopsUser->isAdmin(1)) {
-            $sql = 'SELECT `conf_value` FROM `' . $xoopsDB->prefix('config') . '` WHERE `conf_title` = ?';
-            $result = Utility::query($sql, 's', ['_MD_AM_DEBUGMODE']) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error());
+            $sql = 'SELECT `conf_value` FROM `' . $xoopsDB->prefix('config') . "` WHERE `conf_title` = '_MD_AM_DEBUGMODE'";
+            $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error());
 
             list($debug) = $xoopsDB->fetchRow($result);
             if ($debug == 0) {
@@ -591,9 +630,9 @@ class Tools
     {
         global $xoopsDB;
         $sql = 'SELECT a.* FROM `' . $xoopsDB->prefix('tad_themes_files_center') . '` AS a
-        LEFT JOIN `' . $xoopsDB->prefix('tad_themes') . '` AS b ON a.`col_sn` = b.`theme_id`
-        WHERE a.`col_name` = ? AND b.`theme_name` = ?';
-        $result = Utility::query($sql, 'ss', ['slide', $theme_name]);
+        LEFT JOIN `' . $xoopsDB->prefix('tad_themes') . "` AS b ON a.`col_sn` = b.`theme_id`
+        WHERE a.`col_name` = 'slide' AND b.`theme_name` = '{$theme_name}'";
+        $result = $xoopsDB->query($sql);
         $slider_var = [];
         if ($result) {
             $i = 0;

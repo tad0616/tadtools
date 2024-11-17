@@ -2080,8 +2080,9 @@ class TadUpFiles
 
         // 權限設定
         if ($this->permission) {
-            $sql = 'SELECT `gperm_groupid` FROM `' . $xoopsDB->prefix('group_permission') . '` WHERE `gperm_name` = ? AND `gperm_itemid` = ? ORDER BY `gperm_groupid`';
-            $result = Utility::query($sql, 'si', ['dl_group', $files_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
+            $files_sn = (int) $files_sn;
+            $sql = 'SELECT `gperm_groupid` FROM `' . $xoopsDB->prefix('group_permission') . "` WHERE `gperm_name` = 'dl_group' AND `gperm_itemid` = $files_sn ORDER BY `gperm_groupid`";
+            $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
             $gperm_groupid_arr = [];
             while (list($gperm_groupid) = $xoopsDB->fetchRow($result)) {
@@ -2118,8 +2119,8 @@ class TadUpFiles
         $real_filename = $file['original_filename'] ? $file['original_filename'] : $file['description'];
         $dl_name = ($this->hash) ? $file['hash_filename'] : str_replace(['/', '|', '\\', '?', '"', '*', ':', '<', '>'], '', $file['file_name']);
 
-        $sql = 'UPDATE `' . $this->TadUpFilesTblName . '` SET `counter`=`counter`+1 WHERE `files_sn`=?';
-        Utility::query($sql, 'i', [$files_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'UPDATE `' . $this->TadUpFilesTblName . "` SET `counter`=`counter`+1 WHERE `files_sn`='{$files_sn}'";
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         if ($file['kind'] === 'img') {
             $file_saved = "{$this->TadUpFilesImgUrl}/{$dl_name}";
@@ -2239,9 +2240,8 @@ class TadUpFiles
     public function get_one_file($files_sn = '')
     {
         global $xoopsDB;
-        $sql = 'SELECT * FROM `' . $this->TadUpFilesTblName . '` WHERE `files_sn`=?';
-        Utility::test($sql, 'file_sql', 'die');
-        $result = Utility::query($sql, 'i', [$files_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'SELECT * FROM `' . $this->TadUpFilesTblName . '` WHERE `files_sn`=' . $files_sn;
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $all = $xoopsDB->fetchArray($result);
         return $all;
     }

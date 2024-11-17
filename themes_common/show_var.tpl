@@ -41,13 +41,14 @@
                 <li>額外設定變數值</li>
             </ul>
 
+            <{assign var=bootstrap value=$smarty.session.bootstrap|default:$session.bootstrap}>
             <div class="resp-tabs-container vert">
                 <!-- 佈景及各種偏好設定值 -->
                 <div>
                     <table class="table table-striped table-bordered table-hover" style="background:white;">
                         <tr><th colspan=3><h2>基本設定</h2></th></tr>
                         <tr><th>佈景種類</th><th>$theme_kind</th><td><{$theme_kind|default:''}></td></tr>
-                        <tr><th>BootStrap版本</th><th>$bootstrap</th><td><{$smarty.session.bootstrap}></td></tr>
+                        <tr><th>BootStrap版本</th><th>$bootstrap</th><td><{$bootstrap}></td></tr>
                         <tr><th>佈景編號</th><th>$theme_id</th><td><{$theme_id|default:''}></td></tr>
                         <tr><th>佈景名稱</th><th>$theme_name</th><td><{$theme_name|default:''}></td></tr>
                         <tr><th>bootstrap顏色</th><th>$theme_color</th><td><{$theme_color|default:''}></td></tr>
@@ -350,7 +351,6 @@
                 <!-- 額外設定變數值 -->
                 <div>
                     <table class="table table-striped table-bordered table-hover" style="background:white;">
-                    <{*<{include file="$xoops_rootpath/modules/tadtools/themes_common/show_var_php.tpl"}>*}>
                     <{foreach from=$config2_files|default:[] item=config2_file}>
                         <tr><th colspan=3><h2>佈景額外<{$config2_file|default:''}>設定</h2></th></tr>
                         <{foreach from=$config2.$config2_file|default:[] key=k item=config}>

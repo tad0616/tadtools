@@ -216,7 +216,6 @@ class Utility
     public static function dd($array = [])
     {
         global $xoopsLogger;
-        error_reporting(0);
         $xoopsLogger->activated = false;
 
         header("Content-Type: application/json; charset=utf-8");
@@ -285,8 +284,8 @@ class Utility
 
             default:
                 if (empty($ver)) {
-                    $sql = 'SELECT `version` FROM `' . $xoopsDB->prefix('modules') . '` WHERE `dirname` = ?';
-                    $result = Utility::query($sql, 's', [$dirname]) or self::web_error($sql, __FILE__, __LINE__);
+                    $sql = 'SELECT `version` FROM `' . $xoopsDB->prefix('modules') . "` WHERE `dirname` = '$dirname'";
+                    $result = $xoopsDB->query($sql) or self::web_error($sql, __FILE__, __LINE__);
 
                     list($ver) = $xoopsDB->fetchRow($result);
                     if (!empty($ver) && strpos($ver, '-') === false) {
@@ -659,8 +658,8 @@ class Utility
 
         $theme_set = $xoopsConfig['theme_set'];
 
-        $sql = 'SELECT `tt_theme_kind` FROM `' . $xoopsDB->prefix('tadtools_setup') . '` WHERE `tt_theme` = ?';
-        $result = Utility::query($sql, 's', [$theme_set]) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error() . '<br>' . __FILE__ . ':' . __LINE__);
+        $sql = 'SELECT `tt_theme_kind` FROM `' . $xoopsDB->prefix('tadtools_setup') . "` WHERE `tt_theme` = '$theme_set'";
+        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error() . '<br>' . __FILE__ . ':' . __LINE__);
 
         list($tt_theme_kind) = $xoopsDB->fetchRow($result);
 
@@ -960,7 +959,7 @@ class Utility
     {
         global $xoopsDB;
         $sql = 'SELECT `groupid`,`name` FROM `' . $xoopsDB->prefix('groups') . '`';
-        $result = Utility::query($sql);
+        $result = $xoopsDB->query($sql);
         while (list($groupid, $name) = $xoopsDB->fetchRow($result)) {
             $data[$groupid] = $name;
         }
@@ -1399,10 +1398,15 @@ class Utility
     }
 
     //判斷某人在哪些類別中有xxx的權利
-    public static function get_gperm_cate_arr($gperm_name = '')
+    public static function get_gperm_cate_arr($gperm_name = '', $dirname = '')
     {
         global $xoopsDB, $xoopsUser, $xoopsModule;
         $ok_cate_arr = [];
+        if (!$xoopsModule) {
+            $modhandler = xoops_gethandler('module');
+            $xoopsModule = $modhandler->getByDirname($dirname);
+        }
+
         if (!empty($xoopsUser)) {
             $module_id = $xoopsModule->getVar('mid');
             if ($xoopsUser->isAdmin($module_id)) {
@@ -1414,8 +1418,8 @@ class Utility
             $user_array = [3];
             $user_groupid = 3;
         }
-        $sql = 'SELECT `gperm_itemid` FROM `' . $xoopsDB->prefix('group_permission') . '` WHERE `gperm_modid`=? AND `gperm_name`=? AND `gperm_groupid` IN (?)';
-        $result = Utility::query($sql, 'iss', [$module_id, $gperm_name, $user_groupid]) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'SELECT `gperm_itemid` FROM `' . $xoopsDB->prefix('group_permission') . "` WHERE `gperm_modid`='$module_id' AND `gperm_name`='$gperm_name' AND `gperm_groupid` IN ($user_groupid)";
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         while (list($gperm_itemid) = $xoopsDB->fetchRow($result)) {
             $ok_cate_arr[] = $gperm_itemid;
@@ -1428,9 +1432,10 @@ class Utility
     public static function get_perm($itemid, $gperm_name)
     {
         global $xoopsModule, $xoopsDB;
+        $itemid = (int) $itemid;
         $module_id = $xoopsModule->mid();
-        $sql = "SELECT `gperm_groupid` FROM `" . $xoopsDB->prefix("group_permission") . "` WHERE `gperm_modid` = ? AND `gperm_itemid`=? AND `gperm_name`=?";
-        $result = Utility::query($sql, 'iis', [$module_id, $itemid, $gperm_name]) or self::web_error($sql, __FILE__, __LINE__);
+        $sql = "SELECT `gperm_groupid` FROM `" . $xoopsDB->prefix("group_permission") . "` WHERE `gperm_modid` = '$module_id' AND `gperm_itemid`='$itemid' AND `gperm_name`='$gperm_name'";
+        $result = $xoopsDB->query($sql) or self::web_error($sql, __FILE__, __LINE__);
 
         while (false !== ($row = $xoopsDB->fetchArray($result))) {
             $data[] = $row['gperm_groupid'];
@@ -1444,8 +1449,8 @@ class Utility
     {
         global $xoopsModule, $xoopsDB;
         $module_id = $xoopsModule->mid();
-        $sql = "DELETE FROM `" . $xoopsDB->prefix("group_permission") . "` WHERE `gperm_modid` = ? AND `gperm_itemid`=? AND `gperm_name`=?";
-        Utility::query($sql, 'iis', [$module_id, $itemid, $gperm_name]) or self::web_error($sql, __FILE__, __LINE__);
+        $sql = "DELETE FROM `" . $xoopsDB->prefix("group_permission") . "` WHERE `gperm_modid` = '$module_id' AND `gperm_itemid`='$itemid' AND `gperm_name`='$gperm_name'";
+        $xoopsDB->queryF($sql) or self::web_error($sql, __FILE__, __LINE__);
 
     }
 
@@ -1471,101 +1476,267 @@ class Utility
     /**
      * 參數化資料庫查詢
      *
-     * @param string $sql The SQL query to execute
-     * @param string $types The types of the parameters
-     * @param array $params The parameters to bind
-     * @param bool $throwExceptions Whether to throw exceptions or return false on error
-     * @param bool $debug Whether to enable debug mode
-     * @return mixed The query result or boolean indicating success/failure
+     * @param string $sql SQL查詢語句
+     * @param string $types 參數類型
+     * @param array $params 參數陣列
+     * @param bool $throwExceptions 是否拋出異常
+     * @param bool $debug 是否開啟調試模式
+     * @return mixed 查詢結果或布林值
      * @throws Exception
      */
-    public static function query($sql, $types = '', array $params = array(), $throwExceptions = true, $debug = true)
+    public static function query($sql, $types = '', array $params = array(), $throwExceptions = true, $debug = false)
     {
         global $xoopsDB;
 
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0];
-        $callerInfo = $backtrace['file'] . ' on line ' . $backtrace['line'];
+        // 僅在需要時獲取呼叫者信息
+        $callerInfo = '';
+        if ($debug || $throwExceptions) {
+            $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+            $callerInfo = isset($backtrace[0]) ? $backtrace[0]['file'] . ' on line ' . $backtrace[0]['line'] : '';
+        }
 
+        $stmt = null;
         try {
-            // 驗證參數
+            // 基本驗證
+            if (!is_string($sql) || empty($sql)) {
+                throw new \Exception('Invalid SQL query');
+            }
+
+            // 檢查參數數量
             $placeholderCount = substr_count($sql, '?');
             if ($placeholderCount !== count($params)) {
-                throw new \Exception(sprintf(_NUMBER_PARAMETER_NOT_MATCH, count($params), $placeholderCount));
+                throw new \Exception(sprintf(
+                    'Parameter count mismatch. Expected %d, got %d',
+                    $placeholderCount,
+                    count($params)
+                ));
             }
 
+            // 檢查類型字串長度
             if (strlen($types) !== count($params)) {
-                throw new \Exception(sprintf(_TYPES_LENGTH_NOT_MATCH, strlen($types), count($params)));
+                throw new \Exception(sprintf(
+                    'Types string length mismatch. Expected %d, got %d',
+                    count($params),
+                    strlen($types)
+                ));
             }
 
+            // 準備語句
             $stmt = $xoopsDB->conn->prepare($sql);
-            if ($stmt === false) {
-                throw new \Exception(_SQL_PREPARE_FAILED . $xoopsDB->conn->error);
+            if (!$stmt) {
+                throw new \Exception('Failed to prepare statement: ' . $xoopsDB->conn->error);
             }
 
+            // 綁定參數
             if (!empty($params)) {
-                $bindParams = array($types);
-                foreach ($params as $i => $param) {
-                    $bindParams[] = &$params[$i];
-                }
+                // 創建參數陣列
+                $bindParams = array_merge(array($types), self::createReferenceArray($params));
 
-                if ($debug) {
-                    error_log("Debug: SQL = " . $sql);
-                    error_log("Debug: Types = " . $types);
-                    error_log("Debug: Params = " . print_r($params, true));
-                    error_log("Debug: BindParams = " . print_r($bindParams, true));
-                }
-
-                // 使用 Reflection 來檢查 bind_param 方法
-                $method = new \ReflectionMethod('mysqli_stmt', 'bind_param');
-                $paramCount = $method->getNumberOfParameters();
-                if ($debug) {
-                    error_log("Debug: bind_param expects {$paramCount} parameters");
-                    error_log("Debug: We are providing " . count($bindParams) . " parameters");
-                }
-
+                // 綁定參數
                 if (!call_user_func_array(array($stmt, 'bind_param'), $bindParams)) {
-                    throw new \Exception(_PARAMETER_BINDING_FAILED . $stmt->error);
+                    throw new \Exception('Failed to bind parameters: ' . $stmt->error);
                 }
             }
 
-            if (!$stmt->execute()) {
-                throw new \Exception(_SQL_EXECUTION_FAILED . $stmt->error);
+            // Debug 日誌
+            if ($debug) {
+                self::logDebugInfo($sql, $types, $params, $callerInfo);
             }
 
-            if (stripos(trim($sql), 'SELECT') === 0 || stripos(trim($sql), 'SHOW') === 0 || stripos(trim($sql), 'DESCRIBE') === 0 || stripos(trim($sql), 'EXPLAIN') === 0 || stripos(trim($sql), 'PRAGMA') === 0) {
+            // 執行查詢
+            if (!$stmt->execute()) {
+                throw new \Exception('Failed to execute query: ' . $stmt->error);
+            }
+
+            // 處理查詢結果
+            $isSelect = self::isSelectQuery($sql);
+            if ($isSelect) {
                 $result = $stmt->get_result();
                 if ($result === false) {
-                    throw new \Exception(_FAILED_TO_GET_RESULT . $stmt->error);
+                    throw new \Exception('Failed to get result: ' . $stmt->error);
                 }
                 return $result;
             }
+
             return true;
 
         } catch (\Exception $e) {
-            if ($throwExceptions) {
-                throw new \Exception($e->getMessage() . " in $callerInfo");
+            if ($debug) {
+                error_log('Database Error: ' . $e->getMessage() . ($callerInfo ? " in $callerInfo" : ''));
             }
-            error_log("Database query error: " . $e->getMessage() . " in $callerInfo");
+
+            if ($throwExceptions) {
+                throw new \Exception($e->getMessage() . ($callerInfo ? " in $callerInfo" : ''));
+            }
+
             return false;
+
         } finally {
-            if (isset($stmt) && $stmt instanceof \mysqli_stmt) {
+            // 釋放資源
+            if ($stmt instanceof mysqli_stmt) {
                 $stmt->close();
             }
         }
     }
 
-    private static function getDefaultValue($type)
+    /**
+     * 建立參數引用陣列
+     *
+     * @param array $params
+     * @return array
+     */
+    private static function createReferenceArray(array $params)
     {
-        switch ($type) {
-            case 'i':
-                return 0;
-            case 'd':
-                return 0.0;
-            case 's':
-            default:
-                return '';
+        $references = array();
+        foreach ($params as $key => $value) {
+            $references[$key] = &$params[$key];
         }
+        return $references;
     }
+
+    /**
+     * 判斷是否為查詢語句
+     *
+     * @param string $sql
+     * @return bool
+     */
+    private static function isSelectQuery($sql)
+    {
+        $selectPatterns = array(
+            'SELECT',
+            'SHOW',
+            'DESCRIBE',
+            'EXPLAIN',
+            'PRAGMA',
+        );
+
+        $trimmedSql = trim($sql);
+        foreach ($selectPatterns as $pattern) {
+            if (stripos($trimmedSql, $pattern) === 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 記錄調試信息
+     *
+     * @param string $sql
+     * @param string $types
+     * @param array $params
+     * @param string $callerInfo
+     */
+    private static function logDebugInfo($sql, $types, $params, $callerInfo)
+    {
+        $logMessage = sprintf(
+            "SQL Debug Info:\nQuery: %s\nTypes: %s\nParams: %s\nCaller: %s",
+            $sql,
+            $types,
+            print_r($params, true),
+            $callerInfo
+        );
+        error_log($logMessage);
+    }
+
+    // /**
+    //  * 參數化資料庫查詢
+    //  *
+    //  * @param string $sql The SQL query to execute
+    //  * @param string $types The types of the parameters
+    //  * @param array $params The parameters to bind
+    //  * @param bool $throwExceptions Whether to throw exceptions or return false on error
+    //  * @param bool $debug Whether to enable debug mode
+    //  * @return mixed The query result or boolean indicating success/failure
+    //  * @throws Exception
+    //  */
+    // public static function query($sql, $types = '', array $params = array(), $throwExceptions = true, $debug = true)
+    // {
+    //     global $xoopsDB;
+
+    //     $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0];
+    //     $callerInfo = $backtrace['file'] . ' on line ' . $backtrace['line'];
+
+    //     try {
+    //         // 驗證參數
+    //         $placeholderCount = substr_count($sql, '?');
+    //         if ($placeholderCount !== count($params)) {
+    //             throw new \Exception(sprintf(_NUMBER_PARAMETER_NOT_MATCH, count($params), $placeholderCount));
+    //         }
+
+    //         if (strlen($types) !== count($params)) {
+    //             throw new \Exception(sprintf(_TYPES_LENGTH_NOT_MATCH, strlen($types), count($params)));
+    //         }
+
+    //         $stmt = $xoopsDB->conn->prepare($sql);
+    //         if ($stmt === false) {
+    //             throw new \Exception(_SQL_PREPARE_FAILED . $xoopsDB->conn->error);
+    //         }
+
+    //         if (!empty($params)) {
+    //             $bindParams = array($types);
+    //             foreach ($params as $i => $param) {
+    //                 $bindParams[] = &$params[$i];
+    //             }
+
+    //             if ($debug) {
+    //                 error_log("Debug: SQL = " . $sql);
+    //                 error_log("Debug: Types = " . $types);
+    //                 error_log("Debug: Params = " . print_r($params, true));
+    //                 error_log("Debug: BindParams = " . print_r($bindParams, true));
+    //             }
+
+    //             // 使用 Reflection 來檢查 bind_param 方法
+    //             $method = new \ReflectionMethod('mysqli_stmt', 'bind_param');
+    //             $paramCount = $method->getNumberOfParameters();
+    //             if ($debug) {
+    //                 error_log("Debug: bind_param expects {$paramCount} parameters");
+    //                 error_log("Debug: We are providing " . count($bindParams) . " parameters");
+    //             }
+
+    //             if (!call_user_func_array(array($stmt, 'bind_param'), $bindParams)) {
+    //                 throw new \Exception(_PARAMETER_BINDING_FAILED . $stmt->error);
+    //             }
+    //         }
+
+    //         if (!$stmt->execute()) {
+    //             throw new \Exception(_SQL_EXECUTION_FAILED . $stmt->error);
+    //         }
+
+    //         if (stripos(trim($sql), 'SELECT') === 0 || stripos(trim($sql), 'SHOW') === 0 || stripos(trim($sql), 'DESCRIBE') === 0 || stripos(trim($sql), 'EXPLAIN') === 0 || stripos(trim($sql), 'PRAGMA') === 0) {
+    //             $result = $stmt->get_result();
+    //             if ($result === false) {
+    //                 throw new \Exception(_FAILED_TO_GET_RESULT . $stmt->error);
+    //             }
+    //             return $result;
+    //         }
+    //         return true;
+
+    //     } catch (\Exception $e) {
+    //         if ($throwExceptions) {
+    //             throw new \Exception($e->getMessage() . " in $callerInfo");
+    //         }
+    //         error_log("Database query error: " . $e->getMessage() . " in $callerInfo");
+    //         return false;
+    //     } finally {
+    //         if (isset($stmt) && $stmt instanceof \mysqli_stmt) {
+    //             $stmt->close();
+    //         }
+    //     }
+    // }
+
+    // private static function getDefaultValue($type)
+    // {
+    //     switch ($type) {
+    //         case 'i':
+    //             return 0;
+    //         case 'd':
+    //             return 0.0;
+    //         case 's':
+    //         default:
+    //             return '';
+    //     }
+    // }
 
     //製作logo圖
     public static function mkTitlePic($save_path = '/uploads/', $filename = 'logo', $title = '', $size = 24, $border_size = 2, $color = '#00a3a8', $border_color = '#FFFFFF', $font_file_sn = 0, $shadow_color = '#000000', $shadow_x = 1, $shadow_y = 1, $shadow_size = 3, $margin_top = 0, $margin_bottom = 0, $echo = true, $pic_width = 0, $pic_height = 0)

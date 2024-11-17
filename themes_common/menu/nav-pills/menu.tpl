@@ -56,9 +56,10 @@
         <{if $show_sitename==0 or $show_sitename==''}>
           <li role="presentation"><a href="<{$xoops_url}>/index.php" style="color:<{$navbar_color|default:''}>"><{$smarty.const._TAD_HOME}></a></li>
         <{/if}>
-        <{if $smarty.session.bootstrap==5}>
+        <{assign var=bootstrap value=$smarty.session.bootstrap|default:$session.bootstrap}>
+        <{if $bootstrap==5}>
           <{include file="$xoops_rootpath/modules/tadtools/themes5_tpl/menu_my.tpl"}>
-        <{elseif $smarty.session.bootstrap==4}>
+        <{elseif $bootstrap==4}>
           <{include file="$xoops_rootpath/modules/tadtools/themes4_tpl/menu_my.tpl"}>
         <{else}>
           <{include file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_my.tpl"}>
@@ -68,7 +69,7 @@
             <a class="dropdown-toggle" data-toggle="dropdown">
               <{$smarty.const._TAD_TF_USER_LOGIN}> <span class="caret"></span>
             </a>
-            <{include file="$xoops_rootpath/modules/tadtools/themes`$smarty.session.bootstrap|default:5`_tpl/menu_login.tpl"}>
+            <{include file="$xoops_rootpath/modules/tadtools/themes`$bootstrap`_tpl/menu_login.tpl"}>
           </li>
         <{/if}>
       </ul>
