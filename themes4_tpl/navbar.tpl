@@ -1,9 +1,4 @@
 <{if $navbar_pos!="not-use"}>
-    <!-- SmartMenus jQuery Bootstrap 4 Addon CSS -->
-    <link href="<{$xoops_url}>/modules/tadtools/smartmenus/addons/bootstrap-4/jquery.smartmenus.bootstrap-4.css" rel="stylesheet">
-
-    <script type="title/javascript" src="<{$xoops_url}>/modules/tadtools/smartmenus/jquery.smartmenus.min.js"></script>
-    <script type="title/javascript" src="<{$xoops_url}>/modules/tadtools/smartmenus/addons/bootstrap-4/jquery.smartmenus.bootstrap-4.min.js"></script>
 
     <script>
         function tad_themes_popup(URL) {
@@ -32,12 +27,16 @@
             <ul id="main-menu" class="nav navbar-nav mr-auto">
 
                 <{if $show_sitename==0 or $show_sitename==''}>
-                    <li><a class="nav-link" href="<{$xoops_url}>/index.php">&#xf015; <{$smarty.const._TAD_HOME}></a></li>
+                    <li><a class="nav-link" href="<{$xoops_url}>/index.php"><i class="fa fa-home" aria-hidden="true"></i> <{$smarty.const._TAD_HOME}></a></li>
                 <{/if}>
                 <{include file="$xoops_rootpath/modules/tadtools/themes4_tpl/menu_main.tpl"}>
                 <{if "$xoops_rootpath/uploads/docs_top_menu_b4.tpl"|file_exists}>
                     <{include file="$xoops_rootpath/uploads/docs_top_menu_b4.tpl"}>
                 <{/if}>
+                <li class="nav-item">
+                    <a class="nav-link" href="<{$xoops_url}>/modules/tadtools/ajax_file.php?op=remove_json" title="重整畫面"><i class="fa fa-refresh" aria-hidden="true"></i>
+                    </a>
+                </li>
                 <{include file="$xoops_rootpath/modules/tadtools/themes4_tpl/menu_my.tpl"}>
             </ul>
 

@@ -32,13 +32,18 @@
     <ul id="main-menu" class="sm sm-mint d-md-flex flex-md-wrap">
         <{if $show_sitename==0 or $show_sitename==''}>
             <li>
-                <a href="<{$xoops_url}>/index.php">&#xf015; <{$smarty.const._TAD_HOME}></a>
+                <a href="<{$xoops_url}>/index.php"><i class="fa fa-home" aria-hidden="true"></i> <{$smarty.const._TAD_HOME}></a>
             </li>
         <{/if}>
         <{include file="$xoops_rootpath/modules/tadtools/themes5_tpl/menu_main.tpl"}>
         <{if "$xoops_rootpath/uploads/docs_top_menu_b4.tpl"|file_exists}>
             <{include file="$xoops_rootpath/uploads/docs_top_menu_b4.tpl"}>
         <{/if}>
+
+        <li>
+            <a href="<{$xoops_url}>/modules/tadtools/ajax_file.php?op=remove_json" title="重整畫面"><i class="fa fa-refresh" aria-hidden="true"></i>
+            </a>
+        </li>
 
         <{include file="$xoops_rootpath/modules/tadtools/themes5_tpl/menu_my.tpl"}>
         <li class="flex-grow-1 hide-in-phone">

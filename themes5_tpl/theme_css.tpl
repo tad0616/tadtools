@@ -9,12 +9,12 @@
         background-attachment: <{$bg_attachment|default:''}>;
         background-size: <{$bg_size|default:''}>;
         font-size: <{$font_size|default:''}>;
-        font-family: <{$font_family|default:''}>;
+        <{if $font_family|default:false}>font-family: <{$font_family|default:''}>;<{/if}>
     }
 
     a {
         color:<{$link_color|default:''}>;
-        font-family: <{if $font_family|default:false}><{$font_family|default:''}>, <{/if}>FontAwesome;
+        <{if $font_family|default:false}>font-family: <{$font_family|default:''}>;<{/if}>
     }
 
     a:hover {
@@ -23,7 +23,7 @@
 
 
 
-    #nav-container {
+    #nav-container, #nav-wrapper {
         <{if $navbar_pos=='fixed-bottom'}>
             position: fixed;
             bottom: 0px;

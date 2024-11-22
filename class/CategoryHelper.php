@@ -25,7 +25,6 @@ class CategoryHelper
         $arr = array(
             0 => array(
                 $this->idField => '',
-                // $this->nameField => "&#xf015;",
                 $this->nameField => "<i class='fa fa-home'></i>",
                 'sub' => $this->getSubCategories(0),
             ),

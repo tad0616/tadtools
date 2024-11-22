@@ -48,7 +48,7 @@ class Breadcrumb
         $out .= '<ul id="my-breadcrumb">';
         foreach ($this->_bread as $menu) {
             if ($menu['home']) {
-                $out .= '<li><a href="' . $menu['link'] . '" title="' . $menu['title'] . '">&#xf015; </a></li>';
+                $out .= '<li><a href="' . $menu['link'] . '" title="' . $menu['title'] . '"><i class="fa fa-home" aria-hidden="true"></i></a></li>';
             } else {
                 if ($menu['link'] != '') {
                     $out .= '<li><a href="' . $menu['link'] . '" title="' . $menu['title'] . '">' . $menu['title'] . '</a></li>';

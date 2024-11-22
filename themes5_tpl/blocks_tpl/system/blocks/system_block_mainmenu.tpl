@@ -2,8 +2,7 @@
 <ul class="vertical_menu">
     <li <{if $block.nothome|default:false}>class="selected"<{/if}>>
         <a href="<{$xoops_url}>/" title="<{$block.lang_home}>">
-        &#xf015;
-        <{$block.lang_home}>
+            <i class="fa fa-home" aria-hidden="true"></i> <{$block.lang_home}>
         </a>
     </li>
     <{if $block.modules|default:false}>

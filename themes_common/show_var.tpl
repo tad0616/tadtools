@@ -54,7 +54,6 @@
                         <tr><th>bootstrap顏色</th><th>$theme_color</th><td><{$theme_color|default:''}></td></tr>
                         <tr><th>載入選單種類</th><th>$menu_var_kind</th><td><{$menu_var_kind|default:''}></td></tr>
                         <tr><th>開除錯</th><th>$debug</th><td><{$debug|default:''}></td></tr>
-                        <tr><th>顯示搜尋工具</th><th>$use_search</th><td><{$use_search|default:''}></td></tr>
                         <tr><th>內容區設定</th><th>$content_zone</th><td><{$content_zone|default:''}></td></tr>
                         <tr><th>左區域設定</th><th>$leftBlocks</th><td><{$leftBlocks|default:''}></td></tr>
                         <tr><th>中區域設定</th><th>$centerBlocks</th><td><{$centerBlocks|default:''}></td></tr>

@@ -8,7 +8,7 @@
   /* make room for the toggle button (sub indicator) */
   padding-right: 58px;
   color: <{$navbar_color|default:''}>;
-  font-family: <{if $font_family|default:false}><{$font_family|default:''}>, <{/if}>FontAwesome;
+  font-family: <{if $font_family|default:false}><{$font_family|default:''}>, <{/if}>;
   font-size: <{$navbar_font_size|default:''}>rem;
   font-weight: normal;
   line-height: 17px;

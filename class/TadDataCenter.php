@@ -502,7 +502,7 @@ class TadDataCenter
                     $data_sort += $old_data_sort;
                 }
                 $v = json_decode($val, true);
-                $val = $myts->addSlashes($val);
+                // $val = $myts->addSlashes($val);
 
                 $this->delData($name, $data_sort, $this->col_name, $this->col_sn, __FILE__, __LINE__);
 

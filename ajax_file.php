@@ -8,6 +8,7 @@ use Xmf\Request;
 use XoopsModules\Tadtools\TadDataCenter;
 use XoopsModules\Tadtools\TadUpFiles;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_themes\Tools;
 
 require_once __DIR__ . '/tadtools_header.php';
 
@@ -24,6 +25,11 @@ $db_prefix = Request::getString('db_prefix');
 $xoopsLogger->activated = false;
 
 switch ($op) {
+    case 'remove_json':
+        Tools::del_theme_json();
+        header("location:" . XOOPS_URL);
+        exit;
+
     case 'remove_file':
         $TadUpFiles = new TadUpFiles($mod_name);
         $TadUpFiles->set_db_prefix($db_prefix);

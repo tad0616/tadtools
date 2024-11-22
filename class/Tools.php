@@ -35,7 +35,7 @@ class Tools
             $_SESSION['xoops_version'] = Utility::get_version('xoops');
         }
 
-        if ($_SESSION['xoops_version'] < 20511) {
+        if (!class_exists('XoopsModules\Tad_login\Tools')) {
             require_once XOOPS_ROOT_PATH . "/modules/tad_login/function.php";
             if ($kind == 'line') {
                 return line_login($mode);
@@ -79,7 +79,7 @@ class Tools
             $def_config['theme_change'] = $theme_change;
             $def_config['theme_kind'] = $theme_kind;
             $def_config['theme_kind_arr'] = explode(',', $theme_kind_arr);
-            $def_config['menu_var_kind'] = $_SESSION['menu_var_kind'] = $menu_var_kind;
+            $def_config['menu_var_kind'] = $menu_var_kind;
             $def_config['theme_color'] = $theme_color;
             $def_config['theme_set_allowed'] = $xoopsConfig['theme_set_allowed'];
 
@@ -104,15 +104,304 @@ class Tools
     public static function import_theme_json($theme_name, $def_config = [])
     {
         global $xoopsDB;
-        // return 'bootstrap4';
+
+        // $theme_json_file = XOOPS_VAR_PATH . "/data/theme_{$theme_name}.json";
+        $theme_json_file = XOOPS_VAR_PATH . "/data/{$theme_name}_setup.json";
+
+        $json_theme_config_arr = [];
         if (empty($def_config)) {
-            $def_config = self::def_config($theme_name);
+            $json_theme_config_arr = $def_config = self::def_config($theme_name);
         }
 
-        $json_file = XOOPS_VAR_PATH . "/data/theme_{$theme_name}.json";
+        $file_as_def = false;
+        // 若 tad_themes 有內容，則存入 $json_theme_config_arr
+        $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_themes') . "` WHERE `theme_name` = '$theme_name'";
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
+        $theme_arr = $xoopsDB->fetchArray($result);
+        foreach ($theme_arr as $k => $v) {
+            if ($k == 'bg_img') {
+                $v = !empty($v) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/bg/{$v}" : "";
+            } elseif ($k == 'logo_img') {
+                $v = !empty($v) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/logo/{$v}" : "";
+            } elseif ($k == 'navlogo_img') {
+                $v = !empty($v) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/navlogo/{$v}" : "";
+            } elseif ($k == 'navbar_img') {
+                $v = !empty($v) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/nav_bg/{$v}" : "";
+            } elseif ($k == 'slide_width') {
+                $json_theme_config_arr['use_slide'] = !empty($v) ? 1 : 0;
+            }
+
+            $json_theme_config_arr[$k] = $def_config[$k] = $v;
+        }
 
         // 僅支援 tad themes 佈景才需要的設定
         if (!empty($def_config['theme_kind']) and $def_config['theme_kind'] != 'xoops') {
+            // return 'bootstrap4';
+
+            /****設定各個區域的底色****/
+            $left_block = $left_block2 = $center_block_content = $right_block = $right_block2 = "";
+            $center_block = "background-color: {$def_config['cb_color']};";
+
+            /****設定各個區域的寬度****/
+            if ($def_config['theme_kind'] != 'html') {
+                $theme_width = 12;
+            }
+
+            //TYPE1:二欄式（左右區域皆在左邊）
+            if ($def_config['theme_type'] == 'theme_type_1') {
+                if ($def_config['theme_kind'] == "html") {
+                    if (!$def_config['xoops_showlblock'] and !$def_config['xoops_showrblock']) {
+                        $center_width = $theme_width;
+                    } else {
+                        $center_width = $theme_width - $def_config['lb_width'] - 50;
+                        $center_content_width = $center_width - 15;
+                    }
+
+                    $left_block .= "width:{$def_config['lb_width']}px;";
+                    $center_block .= "float:right; width:{$center_width}px;";
+                    $center_block_content = "width:{$center_content_width}px;";
+                    $right_block .= " width:{$def_config['rb_width']}px;";
+                } elseif ($def_config['theme_kind'] == "bootstrap4" || $def_config['theme_kind'] == "bootstrap5") {
+                    $center_width = $def_config['cb_width'];
+                    if ($def_config['lb_width'] == 'auto') {
+                        $def_config['lb_width'] = 12 - $def_config['cb_width'];
+                    }
+                } else {
+                    $center_width = $theme_width - $def_config['lb_width'];
+                }
+
+                //TYPE2:二欄式（左右區域皆在右邊）
+            } elseif ($def_config['theme_type'] == 'theme_type_2') {
+                if ($def_config['theme_kind'] == "html") {
+                    if (!$def_config['xoops_showlblock'] and !$def_config['xoops_showrblock']) {
+                        $center_width = $theme_width;
+                    } else {
+                        $center_width = $theme_width - $def_config['rb_width'] - 50;
+                    }
+
+                    $left_block .= "width:{$def_config['lb_width']}px;";
+                    $center_block .= "float:left;  width:{$center_width}px; padding-left: 15px;";
+                    $center_block_content = $center_block;
+                    $right_block .= "width:{$def_config['rb_width']}px;";
+                } elseif ($def_config['theme_kind'] == "bootstrap4" || $def_config['theme_kind'] == "bootstrap5") {
+                    $center_width = $def_config['cb_width'];
+                    if ($def_config['rb_width'] == 'auto') {
+                        $def_config['rb_width'] = 12 - $def_config['cb_width'];
+                    }
+                } else {
+                    $center_width = $theme_width - $def_config['rb_width'];
+                }
+
+                //TYPE3:二欄式（左區域在左邊，右區域在下方）
+            } elseif ($def_config['theme_type'] == 'theme_type_3') {
+                if ($def_config['theme_kind'] == "html") {
+                    if (!$def_config['xoops_showlblock']) {
+                        $center_width = $theme_width;
+                    } else {
+                        $center_width = $theme_width - $def_config['lb_width'] - 60;
+                        $center_content_width = $center_width - 15;
+                    }
+                    $left_block .= "float:left; width:{$def_config['lb_width']}px;";
+                    $center_block .= "float:right;  width:{$center_width}px;";
+                    $center_block_content = "width:{$center_content_width}px;";
+                    $right_block .= "float:none;  width:{$theme_width}px; clear:both;";
+                    $right_block2 .= "float:left; padding-left: 15px;";
+                } elseif ($def_config['theme_kind'] == "bootstrap4" || $def_config['theme_kind'] == "bootstrap5") {
+                    $center_width = $def_config['cb_width'];
+                    if ($def_config['lb_width'] == 'auto') {
+                        $def_config['lb_width'] = 12 - $def_config['cb_width'];
+                    }
+                    $def_config['rb_width'] = "12";
+                } else {
+                    $def_config['rb_width'] = "12";
+                    $center_width = $theme_width - $def_config['lb_width'];
+                }
+
+                //TYPE4:二欄式（左區域在右邊，右區域在下方）
+            } elseif ($def_config['theme_type'] == 'theme_type_4') {
+                if ($def_config['theme_kind'] == "html") {
+                    if (!$def_config['xoops_showrblock']) {
+                        $center_width = $theme_width;
+                    } else {
+                        $center_width = $theme_width - $def_config['lb_width'] - 60;
+                    }
+                    $left_block .= "float:right; width: {$def_config['lb_width']}px;";
+                    $center_block .= "float:left; width: {$center_width}px; padding-left: 10px;";
+                    $center_block_content = $center_block;
+                    $right_block .= "float:none; width:{$theme_width}px; clear:both;";
+                    $right_block2 .= "float:left; padding-left: 15px;";
+                } elseif ($def_config['theme_kind'] == "bootstrap4" || $def_config['theme_kind'] == "bootstrap5") {
+                    $center_width = $def_config['cb_width'];
+                    if ($def_config['lb_width'] == 'auto') {
+                        $def_config['lb_width'] = 12 - $def_config['cb_width'];
+                    }
+                    $def_config['rb_width'] = "12";
+                } else {
+                    $def_config['rb_width'] = "12";
+                    $center_width = $theme_width - $def_config['lb_width'];
+                }
+
+                //TYPE5:三欄式標準配置
+            } elseif ($def_config['theme_type'] == 'theme_type_5') {
+                if ($def_config['theme_kind'] == "html") {
+                    if (!$def_config['xoops_showlblock'] and !$def_config['xoops_showrblock']) {
+                        $center_width = $theme_width;
+                    } elseif (!$def_config['xoops_showlblock']) {
+                    } elseif (!$def_config['xoops_showrblock']) {
+                        $center_width = $theme_width - $def_config['lb_width'] - 20;
+                    } else {
+                        $center_width = $theme_width - $def_config['lb_width'] - $def_config['rb_width'] - 50;
+                    }
+
+                    $left_block .= "float:left;  width:{$def_config['lb_width']}px;";
+                    $center_block .= "float:left;  width:{$center_width}px;";
+                    $right_block .= "float:right;  width:{$def_config['rb_width']}px;";
+                } elseif ($def_config['theme_kind'] == "bootstrap4" || $def_config['theme_kind'] == "bootstrap5") {
+                    $center_width = $def_config['cb_width'];
+                } else {
+                    $center_width = $theme_width - $def_config['lb_width'] - $def_config['rb_width'];
+                }
+
+                //TYPE6:三欄式（左右區域皆在左邊）
+            } elseif ($def_config['theme_type'] == 'theme_type_6') {
+                if ($def_config['theme_kind'] == "html") {
+                    if (!$def_config['xoops_showlblock'] and !$def_config['xoops_showrblock']) {
+                        $center_width = $theme_width;
+                    } elseif (!$def_config['xoops_showlblock']) {
+                        $center_width = $theme_width - $def_config['rb_width'] - 20;
+                    } elseif (!$def_config['xoops_showrblock']) {
+                        $center_width = $theme_width - $def_config['lb_width'] - 20;
+                    } else {
+                        $center_width = $theme_width - $def_config['lb_width'] - $def_config['rb_width'] - 50;
+                    }
+                    $center_content_width = $center_width - 50;
+                    $left_block .= "float:left;  width:{$def_config['lb_width']}px;";
+                    $center_block .= "float:right;  width:{$center_width}px;";
+                    $center_block_content = "width:{$center_content_width}px;";
+                    $right_block .= "float:left;  width:{$def_config['rb_width']}px;";
+                } elseif ($def_config['theme_kind'] == "bootstrap4" || $def_config['theme_kind'] == "bootstrap5") {
+                    $center_width = $def_config['cb_width'];
+                } else {
+                    $center_width = $theme_width - $def_config['lb_width'] - $def_config['rb_width'];
+                }
+
+                //TYPE7:三欄式（左右區域皆在右邊）
+            } elseif ($def_config['theme_type'] == 'theme_type_7') {
+                if ($def_config['theme_kind'] == "html") {
+                    if (!$def_config['xoops_showlblock'] and !$def_config['xoops_showrblock']) {
+                        $center_width = $theme_width;
+                    } elseif (!$def_config['xoops_showlblock']) {
+                        $center_width = $theme_width - $def_config['rb_width'] - 20;
+                    } elseif (!$def_config['xoops_showrblock']) {
+                        $center_width = $theme_width - $def_config['lb_width'] - 20;
+                    } else {
+                        $center_width = $theme_width - $def_config['lb_width'] - $def_config['rb_width'] - 50;
+                    }
+                    $left_block .= "float:right;  width:{$def_config['lb_width']}px;";
+                    $center_block .= "float:left;  width:{$center_width}px; padding-left: 15px;";
+                    $right_block .= "float:right;  width:{$def_config['rb_width']}px;";
+                } elseif ($def_config['theme_kind'] == "bootstrap4" || $def_config['theme_kind'] == "bootstrap5") {
+                    $center_width = $def_config['cb_width'];
+                } else {
+                    $center_width = $theme_width - $def_config['lb_width'] - $def_config['rb_width'];
+                }
+
+                //TYPE8:單欄式（左區域在上方，右區域在下方）
+            } elseif ($def_config['theme_type'] == 'theme_type_8') {
+                if ($def_config['theme_kind'] == "html") {
+                    $center_width = $def_config['lb_width'] = $def_config['rb_width'] = $theme_width - 30;
+                    $left_block .= "float:none;  width:{$def_config['lb_width']}px; padding-left: 10px;";
+                    $center_block .= "float:none;  width:{$center_width}px; padding-left: 10px;";
+                    $right_block .= "float:none;  width:{$def_config['rb_width']}px; padding-left: 10px;";
+                    $center_block_content = "";
+                } elseif ($def_config['theme_kind'] == "bootstrap4" || $def_config['theme_kind'] == "bootstrap5") {
+                    $def_config['lb_width'] = $center_width = $def_config['rb_width'] = "12";
+                } else {
+                    $def_config['lb_width'] = $center_width = $def_config['rb_width'] = "12";
+                }
+            }
+
+            $json_theme_config_arr['content_zone'] = "background-color:{$def_config['base_color']};";
+            $json_theme_config_arr['left_block'] = $left_block;
+            $json_theme_config_arr['center_block'] = $center_block;
+            $json_theme_config_arr['center_block_content'] = $center_block_content;
+            $json_theme_config_arr['right_block'] = $right_block;
+            $json_theme_config_arr['left_block2'] = $left_block2;
+            $json_theme_config_arr['right_block2'] = $right_block2;
+
+            $json_theme_config_arr['lb_width'] = $def_config['lb_width'];
+            $json_theme_config_arr['cb_width'] = $def_config['cb_width'];
+            $json_theme_config_arr['rb_width'] = $def_config['rb_width'];
+            $json_theme_config_arr['center_width'] = $center_width;
+
+            /****設定Logo圖位置****/
+            $logo_place = "";
+            if (!empty($def_config['logo_top'])) {
+                $logo_place .= "top:{$def_config['logo_top']}%;";
+            }
+
+            if (!empty($def_config['logo_bottom'])) {
+                $logo_place .= "bottom:{$def_config['logo_bottom']}%;";
+            }
+
+            if ($def_config['logo_center'] == '1') {
+                $logo_place .= "margin-left: auto; margin-right: auto; left: 0; right: 0;";
+            } else {
+
+                if (!empty($def_config['logo_left'])) {
+                    $logo_place .= "left:{$def_config['logo_left']}%;";
+                } elseif (!empty($def_config['logo_right'])) {
+                    $logo_place .= "right:{$def_config['logo_right']}%;";
+                }
+
+            }
+            $json_theme_config_arr['logo_place'] = $logo_place;
+
+            list($navbar_bg_top_rgb['r'], $navbar_bg_top_rgb['g'], $navbar_bg_top_rgb['b']) = sscanf($def_config['navbar_bg_top'], "#%02x%02x%02x");
+            $json_theme_config_arr['navbar_bg_top_rgb'] = $navbar_bg_top_rgb;
+            list($navbar_bg_bottom_rgb['r'], $navbar_bg_bottom_rgb['g'], $navbar_bg_bottom_rgb['b']) = sscanf($def_config['navbar_bg_bottom'], "#%02x%02x%02x");
+            $json_theme_config_arr['navbar_bg_bottom_rgb'] = $navbar_bg_bottom_rgb;
+
+            /****若有logo.png或logo.gif時導覽工具列以圖替代網站標題文字****/
+            if ($def_config['navlogo_img']) {
+                $json_theme_config_arr['navbar_logo_img'] = $def_config['navlogo_img'];
+            }
+
+            /****區塊標題設定****/
+            $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_themes_blocks') . '` WHERE `theme_id` = ' . $json_theme_config_arr['theme_id'];
+            $result = $xoopsDB->query($sql);
+            //`theme_id`, `block_position`, `block_config`, `bt_text`, `bt_text_padding`, `bt_text_size`, `bt_bg_color`, `bt_bg_img`, `bt_bg_repeat`, `bt_radius`
+            while (false !== ($all = $xoopsDB->fetchArray($result))) {
+                $block_position = $all['block_position'];
+                $all['bt_bg_img'] = $all['bt_bg_img'] ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/bt_bg/{$all['bt_bg_img']}" : '';
+                $db[$block_position] = $all;
+            }
+
+            $block_position = ['leftBlock', 'rightBlock', 'centerBlock', 'centerLeftBlock', 'centerRightBlock', 'centerBottomBlock', 'centerBottomLeftBlock', 'centerBottomRightBlock', 'footerCenterBlock', 'footerLeftBlock', 'footerRightBlock'];
+            $json_theme_config_arr['block_position'] = $def_config['block_position'];
+            $use_default_config = $json_theme_config_arr['use_default_config'] = false;
+            $i = 0;
+            $positions = [];
+            foreach ($block_position as $position) {
+                $positions[$i]['block_position'] = $position;
+                $positions[$i]['block_config'] = $use_default_config ? $def_config['block_config'][$position] : $db[$position]['block_config'];
+                $positions[$i]['bt_text'] = $use_default_config ? $def_config['bt_text'][$position] : $db[$position]['bt_text'];
+                $positions[$i]['bt_text_padding'] = $use_default_config ? $def_config['bt_text_padding'][$position] : $db[$position]['bt_text_padding'];
+                $positions[$i]['bt_text_size'] = $use_default_config ? $def_config['bt_text_size'][$position] : $db[$position]['bt_text_size'];
+                $positions[$i]['bt_bg_color'] = $use_default_config ? $def_config['bt_bg_color'][$position] : $db[$position]['bt_bg_color'];
+                $positions[$i]['bt_bg_img'] = $use_default_config ? $def_config['bt_bg_img'][$position] : $db[$position]['bt_bg_img'];
+                $positions[$i]['bt_bg_repeat'] = $use_default_config ? $def_config['bt_bg_repeat'][$position] : $db[$position]['bt_bg_repeat'];
+                $positions[$i]['bt_radius'] = $use_default_config ? $def_config['bt_radius'][$position] : $db[$position]['bt_radius'];
+                $positions[$i]['block_style'] = $use_default_config ? $def_config['block_style'][$position] : $db[$position]['block_style'];
+                $positions[$i]['block_title_style'] = $use_default_config ? $def_config['block_title_style'][$position] : $db[$position]['block_title_style'];
+                $positions[$i]['block_content_style'] = $use_default_config ? $def_config['block_content_style'][$position] : $db[$position]['block_content_style'];
+
+                $json_theme_config_arr[$position] = $positions[$i];
+                $i++;
+            }
+            $json_theme_config_arr['positions'] = $positions;
+
             if (!file_exists(XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}")) {
                 Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}");
                 Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}/bg");
@@ -136,27 +425,19 @@ class Tools
 
             $TadDataCenter = new TadDataCenter('tad_themes');
 
-            $json_theme_config_arr = [];
-
-            $file_as_def = false;
-            // 若 tad_themes 有內容，則存入 $json_theme_config_arr
-            $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_themes') . "` WHERE `theme_name` = '$theme_name'";
-            $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-
-            $theme_arr = $xoopsDB->fetchArray($result);
-            foreach ($theme_arr as $k => $v) {
-                $json_theme_config_arr[$k] = $v;
-            }
-
             if (empty($json_theme_config_arr['theme_id'])) {
                 $file_as_def = true;
             }
 
             // 若 TadDataCenter 有內容，則存入 $json_theme_config_arr
             $TadDataCenter->set_col('theme_id', $theme_arr['theme_id']);
-            $tdc = $TadDataCenter->getData();
-            foreach ($tdc as $k => $v) {
-                $json_theme_config_arr['TDC'][$k] = $v[0];
+            $data = $TadDataCenter->getData();
+            foreach ($data as $var_name => $var_val) {
+                if ($var_name == 'navbar_font_size' and $var_val[0] > 10) {
+                    $var_val[0] = round($var_val[0] / 100, 2);
+                }
+
+                $json_theme_config_arr[$var_name] = $var_val[0];
             }
 
             // 若 tad_themes_config2 有內容，則存入 $json_theme_config_arr
@@ -164,18 +445,19 @@ class Tools
             $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
             while ($config2 = $xoopsDB->fetchArray($result)) {
-                $json_theme_config_arr[$config2['name']] = in_array($config2['type'], $array_type) ? \json_decode($config2['value'], true) : $config2['value'];
-            }
-
-            // 若 tad_themes_blocks 有內容，則存入 $json_theme_config_arr
-            $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_themes_blocks') . '` WHERE `theme_id`=' . (int) $theme_arr['theme_id'];
-            $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-            while ($block = $xoopsDB->fetchArray($result)) {
-
-                foreach ($block_config as $item) {
-                    foreach ($block_position as $position) {
-                        $json_theme_config_arr[$item][$position] = $block[$item];
+                if (in_array($config2['type'], $array_type)) {
+                    $json_theme_config_arr[$config2['name']] = \json_decode($config2['value'], true);
+                } elseif (preg_match('/^\s*({|\[).*?(}|\])\s*$/', $config2['value']) === 1) {
+                    $json_theme_config_arr[$config2['name']] = $config2['value'];
+                    $json_theme_config_arr[$config2['name'] . '_arr'] = \json_decode($config2['value'], true);
+                } elseif ($config2['type'] == "checkbox") {
+                    if (!empty($config2['value']) && !is_array($config2['value'])) {
+                        $json_theme_config_arr[$config2['name']] = json_decode($config2['value'], true);
                     }
+                } elseif ($config2['type'] == "file" or $config2['type'] == "bg_file") {
+                    $json_theme_config_arr[$config2['name']] = !empty($config2['value']) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/config2/{$config2['value']}" : '';
+                } else {
+                    $json_theme_config_arr[$config2['name']] = $config2['value'];
                 }
             }
 
@@ -187,7 +469,7 @@ class Tools
                     include XOOPS_ROOT_PATH . "/themes/{$theme_name}/config.php";
                 }
 
-                $json_theme_config_arr['theme_kind'] = $theme_kind;
+                // $json_theme_config_arr['theme_kind'] =  $def_config['theme_kind'];
 
                 if (!empty($config_enable)) {
                     foreach ($config_enable as $config_item => $val_arr) {
@@ -211,59 +493,109 @@ class Tools
                 $config2_files = ['config2_base', 'config2_bg', 'config2_top', 'config2_logo', 'config2_nav', 'config2_slide', 'config2_middle', 'config2_content', 'config2_block', 'config2_footer', 'config2_bottom', 'config2'];
                 foreach ($config2_files as $config2_file) {
 
-                    if (file_exists(XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}/{$config2_file}.php")) {
-                        $json_theme_config_arr['config2'][] = $config2_file;
-                        include XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}/{$config2_file}.php";
-                    } elseif (file_exists(XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php")) {
-                        $json_theme_config_arr['config2'][] = $config2_file;
-                        include XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php";
-                    }
+                    if (file_exists(XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php")) {
+                        $theme_config = [];
+                        require XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php";
 
-                    if (!empty($theme_config)) {
                         foreach ($theme_config as $k => $config) {
+                            $config2_name = $config['name'];
+                            $value = $$config2_name;
 
-                            if (in_array($config['name'], ['slide_mask', 'slide_def_mask'])) {
-                                continue;
+                            if ($config['type'] == "array") {
+                                $value = str_replace("{XOOPS_URL}", XOOPS_URL, $value);
+                                $value = json_decode($value, true);
+                            } elseif ($config['type'] == "checkbox") {
+                                if (!empty($value) && !is_array($value)) {
+                                    $value = json_decode($value, true);
+                                }
+                            } elseif ($config['type'] == "file" or $config['type'] == "bg_file") {
+                                $value = !empty($value) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/config2/{$value}" : '';
                             }
 
-                            if (!isset($json_theme_config_arr[$config['name']])) {
-                                $json_theme_config_arr[$config['name']] = $config['default'];
-                            }
+                            $json_theme_config_arr[$config2_name] = $value;
+
+                            $json_theme_config_arr[$k]['value'] = $json_theme_config_arr[$k]['default'] = $value;
 
                             if ($config['type'] == "bg_file") {
-                                $json_theme_config_arr[$config['name'] . '_repeat'] = $config['repeat'];
-                                $json_theme_config_arr[$config['name'] . '_position'] = $config['position'];
-                                $json_theme_config_arr[$config['name'] . '_size'] = $config['size'];
-
+                                $json_theme_config_arr[$k]['repeat'] = ${$config2_name . '_repeat'};
+                                $json_theme_config_arr[$k]['position'] = ${$config2_name . '_position'};
+                                $json_theme_config_arr[$k]['size'] = ${$config2_name . '_size'};
                             } elseif ($config['type'] == 'custom_zone') {
-                                $json_theme_config_arr[$config['name']] = is_array($config['default']) ? $config['default'] : \json_decode($config['default'], true);
-                                $json_theme_config_arr[$config['name'] . '_bid'] = $config['bid'];
-                                $json_theme_config_arr[$config['name'] . '_content'] = $config['content'];
-                                $json_theme_config_arr[$config['name'] . '_html_content'] = $config['html_content'];
-                                $json_theme_config_arr[$config['name'] . '_html_content_desc'] = isset($config['html_content_desc']) ? $config['html_content_desc'] : '';
-                                $json_theme_config_arr[$config['name'] . '_fa_content'] = $config['fa_content'];
-                                $json_theme_config_arr[$config['name'] . '_fa_content_desc'] = isset($config['fa_content_desc']) ? $config['fa_content_desc'] : '';
-                                $json_theme_config_arr[$config['name'] . '_menu_content'] = $config['menu_content'];
-                                $json_theme_config_arr[$config['name'] . '_menu_content_desc'] = isset($config['menu_content_desc']) ? $config['menu_content_desc'] : '';
+                                $json_theme_config_arr[$k]['deault'] = isset(${$config2_name}) ? ${$config2_name} : '';
+                                $json_theme_config_arr[$k]['block'] = isset(${$config2_name . '_block'}) ? ['hi' => 'tad'] : [];
+                                $json_theme_config_arr[$k]['content'] = isset(${$config2_name . '_content'}) ? ${$config2_name . '_content'} : '';
+                                $json_theme_config_arr[$k]['html_content'] = isset(${$config2_name . '_html_content'}) ? ${$config2_name . '_html_content'} : '';
+                                $json_theme_config_arr[$k]['html_content_desc'] = isset($config['html_content_desc']) ? $config['html_content_desc'] : '';
+                                $json_theme_config_arr[$k]['fa_content'] = isset(${$config2_name . '_fa_content'}) ? ${$config2_name . '_fa_content'} : '';
+                                $json_theme_config_arr[$k]['fa_content_desc'] = isset($config['fa_content_desc']) ? $config['fa_content_desc'] : '';
+                                $json_theme_config_arr[$k]['menu_content'] = isset(${$config2_name . '_menu_content'}) ? ${$config2_name . '_menu_content'} : '';
+                                $json_theme_config_arr[$k]['menu_content_desc'] = isset($config['menu_content_desc']) ? $config['menu_content_desc'] : '';
 
                             } elseif ($config['type'] == "padding_margin") {
-                                $json_theme_config_arr[$config['name'] . '_mt'] = $config['mt'];
-                                $json_theme_config_arr[$config['name'] . '_mb'] = $config['mb'];
+                                $json_theme_config_arr[$k]['mt'] = ${$config2_name . '_mt'};
+                                $json_theme_config_arr[$k]['mb'] = ${$config2_name . '_mb'};
                             }
                         }
+                        $json_theme_config_arr['config2'] = $config2;
                     }
+
+                    // if (file_exists(XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}/{$config2_file}.php")) {
+                    //     $json_theme_config_arr['config2'][] = $config2_file;
+                    //     include XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}/{$config2_file}.php";
+                    // } elseif (file_exists(XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php")) {
+                    //     $json_theme_config_arr['config2'][] = $config2_file;
+                    //     include XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php";
+                    // }
+
+                    // if (!empty($theme_config)) {
+                    //     foreach ($theme_config as $k => $config) {
+
+                    //         if (in_array($config['name'], ['slide_mask', 'slide_def_mask'])) {
+                    //             continue;
+                    //         }
+
+                    //         if (!isset($json_theme_config_arr[$config['name']])) {
+                    //             $json_theme_config_arr[$config['name']] = $config['default'];
+                    //         }
+
+                    //         if ($config['type'] == "bg_file") {
+                    //             $json_theme_config_arr[$config['name'] . '_repeat'] = $config['repeat'];
+                    //             $json_theme_config_arr[$config['name'] . '_position'] = $config['position'];
+                    //             $json_theme_config_arr[$config['name'] . '_size'] = $config['size'];
+
+                    //         } elseif ($config['type'] == 'custom_zone') {
+                    //             $json_theme_config_arr[$config['name']] = is_array($config['default']) ? $config['default'] : \json_decode($config['default'], true);
+                    //             // $json_theme_config_arr[$config['name'] . '_bid'] = $config['bid'];
+                    //             $json_theme_config_arr[$config['name'] . '_block'] = \json_decode($config['block'], true);
+                    //             // $json_theme_config_arr[$config['name'] . '_content'] = $config['content'];
+                    //             $json_theme_config_arr[$config['name'] . '_html_content'] = $config['html_content'];
+                    //             $json_theme_config_arr[$config['name'] . '_html_content_desc'] = isset($config['html_content_desc']) ? $config['html_content_desc'] : '';
+                    //             $json_theme_config_arr[$config['name'] . '_fa_content'] = $config['fa_content'];
+                    //             $json_theme_config_arr[$config['name'] . '_fa_content_desc'] = isset($config['fa_content_desc']) ? $config['fa_content_desc'] : '';
+                    //             $json_theme_config_arr[$config['name'] . '_menu_content'] = $config['menu_content'];
+                    //             $json_theme_config_arr[$config['name'] . '_menu_content_desc'] = isset($config['menu_content_desc']) ? $config['menu_content_desc'] : '';
+
+                    //         } elseif ($config['type'] == "padding_margin") {
+                    //             $json_theme_config_arr[$config['name'] . '_mt'] = $config['mt'];
+                    //             $json_theme_config_arr[$config['name'] . '_mb'] = $config['mb'];
+                    //         }
+                    //     }
+                    // }
                 }
             }
+
+            // 滑動圖
+            $slider_var = self::get_theme_slide_items($theme_name);
+            $json_theme_config_arr['slider_var'] = $slider_var;
+
         } else {
             $json_theme_config_arr['theme_kind'] = 'xoops';
         }
 
-        // echo "3=>{$json_theme_config_arr['bg_color']}<br>";
-        // exit;
-        if (!file_put_contents($json_file, json_encode($json_theme_config_arr, 256))) {
-            throw new \Exception(sprintf(_TAD_MKFILE_ERROR, $json_file));
+        if (!file_put_contents($theme_json_file, json_encode($json_theme_config_arr, 256))) {
+            throw new \Exception(sprintf(_TAD_MKFILE_ERROR, $theme_json_file));
         }
-        return $def_config['theme_kind'];
+        return $json_theme_config_arr;
     }
 
     // 匯入或套用設定檔
@@ -277,14 +609,17 @@ class Tools
 
     public static function theme_config($theme_name, $def_config = [])
     {
-        $json_file = XOOPS_VAR_PATH . "/data/theme_{$theme_name}.json";
-        if (!file_exists($json_file)) {
+        // $theme_json_file = XOOPS_VAR_PATH . "/data/theme_{$theme_name}.json";
+        $theme_json_file = XOOPS_VAR_PATH . "/data/{$theme_name}_setup.json";
+
+        if (!file_exists($theme_json_file)) {
             self::import_theme_json($theme_name, $def_config);
         }
 
-        $theme_config = json_decode(file_get_contents($json_file), true);
+        $theme_config = json_decode(file_get_contents($theme_json_file), true);
 
-        $theme_config['use_slide'] = $theme_config['slide_width'] > 0 ? 1 : 0;
+        $theme_config['use_slide'] = (int) $theme_config['slide_width'] > 0 ? 1 : 0;
+
         /**** Tad Themes 的設定值****/
         if (file_exists(XOOPS_ROOT_PATH . "/modules/tad_themes/xoops_version.php")) {
             $file_col = ['bg_img' => 'bg', 'logo_img' => 'logo', 'navlogo_img' => 'navlogo', 'navbar_img' => 'nav_bg'];
@@ -315,8 +650,7 @@ class Tools
     {
     }
 
-    //取得選單選項
-    public static function get_theme_menu_items($id = "", $other_menu = true)
+    public static function get_theme_menu_items($id = "", $menu_var_kind = 'my_menu')
     {
         global $xoopsDB, $xoopsUser;
         //取得目前使用者的所屬群組
@@ -328,7 +662,7 @@ class Tools
 
         $my_menu = array();
         $i = 0;
-        if (strpos($_SESSION['menu_var_kind'], 'all') !== false or strpos($_SESSION['menu_var_kind'], 'my_menu') !== false) {
+        if (strpos($menu_var_kind, 'all') !== false or strpos($menu_var_kind, 'my_menu') !== false) {
 
             $sql = 'SELECT `menuid`, `itemname`, `itemurl`, `target`, `icon`, `link_cate_name`, `link_cate_sn`, `read_group` FROM `' . $xoopsDB->prefix('tad_themes_menu') . "` WHERE `of_level` = '$id' AND `status` = '1' ORDER BY `position`";
             $result = $xoopsDB->query($sql) or die($sql);
@@ -353,10 +687,10 @@ class Tools
                                     break;
                             }
                             $custom_menu = self::get_custom_menu_items($link_cate_name, $link_cate_sn);
-                            $sub_menu = self::get_theme_menu_items($menuid, false);
+                            $sub_menu = self::get_theme_menu_items($menuid, $menu_var_kind);
                             $my_menu[$i]['submenu'] = array_merge($custom_menu, $sub_menu);
                         } else {
-                            $my_menu[$i]['submenu'] = self::get_theme_menu_items($menuid, false);
+                            $my_menu[$i]['submenu'] = self::get_theme_menu_items($menuid, $menu_var_kind);
                         }
 
                         $my_menu[$i]['id'] = $menuid;
@@ -372,22 +706,7 @@ class Tools
             }
         }
 
-        if ($other_menu) {
-            $user_menu = array();
-            if (strpos($_SESSION['menu_var_kind'], 'all') !== false or strpos($_SESSION['menu_var_kind'], 'user') !== false) {
-                $user_menu = self::get_user_menu_item($i);
-            }
-
-            if (is_array($user_menu)) {
-                $all_menu = array_merge($my_menu, $user_menu);
-            } else {
-                $all_menu = $my_menu;
-            }
-        } else {
-            $all_menu = $my_menu;
-        }
-
-        return $all_menu;
+        return $my_menu;
     }
 
     //取得其他模組單元的選單

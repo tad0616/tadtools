@@ -126,13 +126,13 @@ if ($font) {
                 <div class="input-group-prepend input-group-addon">
                     <span class="input-group-text">標題字型</span>
                 </div>
-                <select name="title_font" class="form-select">
+                <select name="title_font" class="form-control form-select">
                 ' . $title_font_select . '
                 </select>
                 <div class="input-group-prepend input-group-addon">
                     <span class="input-group-text">內文字型</span>
                 </div>
-                <select name="font" class="form-select">
+                <select name="font" class="form-control form-select">
                 ' . $font_select . '
                 </select>
                 <div class="input-group-prepend input-group-addon">

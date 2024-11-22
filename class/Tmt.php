@@ -115,7 +115,7 @@ class Tmt
             <div class='col-md-5'>
                 {$from_title}
                 {$key_man_col}
-                <select name='{$from_name}' id='{$from_name}' style='height: $from_size' multiple='multiple' tmt:linkedselect='true' class='form-select'>
+                <select name='{$from_name}' id='{$from_name}' style='height: $from_size' multiple='multiple' tmt:linkedselect='true' class='form-control form-select'>
                     {$from_options}
                 </select>
             </div>
@@ -133,7 +133,7 @@ class Tmt
             </div>
             <div class='col-md-5'>
                 {$to_title}
-                <select id='{$to_name}' style='height: $to_size' multiple='multiple' tmt:linkedselect='true' class='form-select'>
+                <select id='{$to_name}' style='height: $to_size' multiple='multiple' tmt:linkedselect='true' class='form-control form-select'>
                 {$to_options}
                 </select>
             </div>

@@ -633,20 +633,16 @@ class Utility
     public static function web_error($sql, $file = '', $line = '', $force = false)
     {
         global $xoopsDB, $xoopsModule, $xoopsUser;
-        xoops_loadLanguage('main', 'tadtools');
+
+        // 僅在需要時獲取呼叫者信息
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+        $callerInfo = isset($backtrace[0]) ? $backtrace[0]['file'] . ' on line ' . $backtrace[0]['line'] : '';
         $isAdmin = ($xoopsUser and $xoopsModule) ? $xoopsUser->isAdmin($xoopsModule->mid()) : false;
-
         $in_admin = (false !== mb_strpos($_SERVER['PHP_SELF'], '/admin/')) ? true : false;
-        $main = '<h1>' . _TAD_OOPS_SOMETHING_WRONG . '</h1>';
+        $show_sql = ($isAdmin or $in_admin or $force) ? "<div>$sql</div>" : '';
 
-        if ($isAdmin or $in_admin or $force) {
-            $main .= "<div class='code'>{$sql}</div>";
-        }
+        throw new \Exception($xoopsDB->error() . ($callerInfo ? " in {$callerInfo}{$show_sql}" : ''));
 
-        $show_position = ($file) ? "<br>{$file}:{$line}" : '';
-        $main .= "<div class='alert alert-danger'>" . $xoopsDB->error() . $show_position . "</div><div class='text-center'><a href='javascript:history.go(-1);' class='btn btn-primary'>" . _TAD_BACK_PAGE . '</a></div>';
-
-        die(self::html5($main));
     }
 
     //載入 bootstrap，目前僅後台用得到
@@ -803,7 +799,7 @@ class Utility
                 $facebookAppId = $xoopsModuleConfig['facebook_app_id'];
             }
 
-            // $GLOBALS['xoTheme']->addStylesheet('modules/tadtools/css/fontawesome6/css/all.min.css');
+            $GLOBALS['xoTheme']->addStylesheet('modules/tadtools/css/fontawesome6/css/all.min.css');
             $GLOBALS['xoTheme']->addStylesheet('modules/tadtools/social-likes/social-likes.css');
 
             $main = "
@@ -1144,14 +1140,10 @@ class Utility
 
         self::get_jquery();
 
-        $options = !in_array('index.php', $interface_menu) ? "<li><a href='index.php' title='" . _TAD_HOME . "'>&#xf015;" : '';
+        $options = !in_array('index.php', $interface_menu) ? "<li><a href='index.php' title='" . _TAD_HOME . "'><i class=\"fa fa-home\" aria-hidden=\"true\"></i>" : '';
 
         if (is_array($interface_menu)) {
             $basename = basename($_SERVER['SCRIPT_NAME']);
-            // if (1 == count($interface_menu) and 'index.php' === mb_substr($_SERVER['REQUEST_URI'], -9)) {
-            //     return;
-            // }
-
             foreach ($interface_menu as $title => $url) {
                 $urlPath = (empty($moduleName) or 'http' === mb_substr($url, 0, 4)) ? $url : XOOPS_URL . "/modules/{$moduleName}/{$url}";
 
@@ -1533,7 +1525,7 @@ class Utility
                 $bindParams = array_merge(array($types), self::createReferenceArray($params));
 
                 // 綁定參數
-                if (!call_user_func_array(array($stmt, 'bind_param'), $bindParams)) {
+                if (!@call_user_func_array(array($stmt, 'bind_param'), $bindParams)) {
                     throw new \Exception('Failed to bind parameters: ' . $stmt->error);
                 }
             }

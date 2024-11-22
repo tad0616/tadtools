@@ -7,15 +7,10 @@
         <link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{$xoops_url}>/xoops.css">
         <!-- XOOPS theme Sheet Css -->
         <link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{$xoops_url}>/themes/<{$theme_name|default:''}>/css/xoops.css">
-        <!-- 44-1 <{$theme_color|default:''}> -->
-<{if $theme_color and $theme_color!="bootstrap4"}>
         <link href="<{$xoops_url}>/modules/tadtools/bootstrap4/css/bootstrap.css" rel="stylesheet" media="all">
-        <{if $theme_color|default:false}>
-        <!-- 44-2 <{$theme_color|default:''}> -->
+        <!-- theme_color= <{$theme_color|default:''}> -->
+<{if $theme_color|default:false and $theme_color!="bootstrap4"}>
         <link href="<{$xoops_url}>/modules/tadtools/<{$theme_color|default:''}>/bootstrap.min.css" rel="stylesheet" media="all">
-        <{/if}>
-<{else}>
-        <link href="<{$xoops_url}>/modules/tadtools/bootstrap4/css/bootstrap.css" rel="stylesheet" media="all">
 <{/if}>
 
         <!-- SmartMenus jQuery Bootstrap Addon CSS -->

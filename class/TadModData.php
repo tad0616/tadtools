@@ -1083,7 +1083,7 @@
 //             if ($validate === true) {
 //                 $validate = "validate[required]";
 //             }
-//             $select = '<select id="' . $col_name . '" name="' . $col_name . '" class="form-select ' . $validate . '">';
+//             $select = '<select id="' . $col_name . '" name="' . $col_name . '" class="form-control form-select ' . $validate . '">';
 //             foreach ($options as $val => $label) {
 //                 $selected = ($def_val == $val) ? 'selected' : '';
 //                 $select .= '<option value="' . $val . '" ' . $selected . '>' . $label . '</option>';
