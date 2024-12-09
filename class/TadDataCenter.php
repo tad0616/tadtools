@@ -502,7 +502,7 @@ class TadDataCenter
                     $data_sort += $old_data_sort;
                 }
                 $v = json_decode($val, true);
-                // $val = $myts->addSlashes($val);
+                $val = $myts->addSlashes($val);
 
                 $this->delData($name, $data_sort, $this->col_name, $this->col_sn, __FILE__, __LINE__);
 
@@ -515,10 +515,15 @@ class TadDataCenter
                     $val = '';
                 }
 
-                $sql = 'REPLACE INTO `' . $this->TadDataCenterTblName . '`
-                (`mid`, `col_name`, `col_sn`, `data_name`, `data_value`, `data_sort`, `col_id`, `sort`, `update_time`)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())';
-                Utility::query($sql, 'isissisi', [$this->mid, $this->col_name, $this->col_sn, $name, $val, $data_sort, $col_id, $sort]) or Utility::web_error($sql, __FILE__, __LINE__);
+                // $sql = 'REPLACE INTO `' . $this->TadDataCenterTblName . '`
+                // (`mid`, `col_name`, `col_sn`, `data_name`, `data_value`, `data_sort`, `col_id`, `sort`, `update_time`)
+                // VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())';
+                // Utility::query($sql, 'isissisi', [$this->mid, $this->col_name, $this->col_sn, $name, $val, $data_sort, $col_id, $sort]) or Utility::web_error($sql, __FILE__, __LINE__);
+
+                $sql = "REPLACE INTO `{$this->TadDataCenterTblName}`
+                (`mid` , `col_name` , `col_sn` , `data_name` , `data_value` , `data_sort`, `col_id`, `sort`, `update_time`)
+                values('{$this->mid}' , '{$this->col_name}' , '{$this->col_sn}' , '{$name}' , '{$val}' , '{$data_sort}', '{$col_id}' , '{$sort}', now())";
+                $xoopsDB->queryF($sql) or Utility::web_error($sql);
 
             }
             $sort++;

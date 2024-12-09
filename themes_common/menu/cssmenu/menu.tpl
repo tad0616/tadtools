@@ -78,7 +78,7 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <{$smarty.const._TAD_TF_USER_LOGIN}> <span class="caret"></span>
             </a>
-            <{assign var=bootstrap value=$smarty.session.bootstrap|default:$session.bootstrap}>
+            <{assign var="bootstrap" value=$smarty.session.bootstrap|default:$session.bootstrap}>
             <{if $bootstrap==5}>
               <{include file="$xoops_rootpath/modules/tadtools/themes5_tpl/menu_my.tpl"}>
             <{elseif $bootstrap==4}>

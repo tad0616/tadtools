@@ -150,9 +150,11 @@ define('TADTOOLS_CHK_HEAD_EMPTY', '空標題修正');
 define('TADTOOLS_CHK_LANG_ZH_TW', '同語系修正');
 define('TADTOOLS_CHK_NO_NEED', '無用語法修正');
 
-define('_SQL_EXECUTION_FAILED', 'SQL 執行失敗：');
-define('_SQL_PREPARE_FAILED', 'SQL 準備失敗：');
+define('_INVALID_SQL_QUERY', 'SQL 查詢語法不正確');
+define('_NUMBER_PARAMETER_NOT_MATCH', '參數數量不正確，應有 %d 個，實際有 %d 個');
+define('_TYPES_LENGTH_NOT_MATCH', '類型字串長度不正確，應有 %d，實際有 %d 個');
+define('_SQL_PREPARE_FAILED', 'SQL 查詢語法準備失敗：');
+define('_PARAMETER_BINDING_FAILED', '參數綁定失敗：');
+define('_SQL_EXECUTION_FAILED', 'SQL 查詢語法執行失敗：');
 define('_FAILED_TO_GET_RESULT', '無法取得結果：');
-define('_PARAMETER_BINDING_FAILED', '參數綁定失敗:');
-define('_TYPES_LENGTH_NOT_MATCH', '類型字串的長度 (%s) 與參數的數量 (%d) 不相符。');
-define('_NUMBER_PARAMETER_NOT_MATCH', '參數數量 (%d) 與 SQL 語法中的占位符數量 (%d) 不匹配。');
+define('_DATABASE_ERROR', '資料庫錯誤：');

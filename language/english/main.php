@@ -145,9 +145,11 @@ define('TADTOOLS_CHK_HEAD_EMPTY', 'Title correction');
 define('TADTOOLS_CHK_LANG_ZH_TW', 'Correction of the same language system');
 define('TADTOOLS_CHK_NO_NEED', 'Useless syntax correction');
 
+define('_INVALID_SQL_QUERY', 'Invalid SQL query');
+define('_NUMBER_PARAMETER_NOT_MATCH', 'Parameter count mismatch. Expected %d, got %d');
+define('_TYPES_LENGTH_NOT_MATCH', 'Types string length mismatch. Expected %d, got %d');
 define('_SQL_PREPARE_FAILED', 'SQL prepare failed: ');
-define('_SQL_EXECUTION_FAILED', 'SQL execution failed: ');
+define('_PARAMETER_BINDING_FAILED', 'Failed to bind parameters: ');
+define('_SQL_EXECUTION_FAILED', 'Failed to execute query: ');
 define('_FAILED_TO_GET_RESULT', 'Failed to get result: ');
-define('_PARAMETER_BINDING_FAILED', 'Parameter binding failed: ');
-define('_TYPES_LENGTH_NOT_MATCH', 'Length of types string (%s) doesn\'t match the number of parameters (%d).');
-define('_NUMBER_PARAMETER_NOT_MATCH', 'Number of parameters (%d) doesn\'t match the number of placeholders (%d) in SQL.');
+define('_DATABASE_ERROR', 'Database Error: ');

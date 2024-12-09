@@ -56,7 +56,7 @@
         <{if $show_sitename==0 or $show_sitename==''}>
           <li role="presentation"><a href="<{$xoops_url}>/index.php" style="color:<{$navbar_color|default:''}>"><{$smarty.const._TAD_HOME}></a></li>
         <{/if}>
-        <{assign var=bootstrap value=$smarty.session.bootstrap|default:$session.bootstrap}>
+        <{assign var="bootstrap" value=$smarty.session.bootstrap|default:$session.bootstrap}>
         <{if $bootstrap==5}>
           <{include file="$xoops_rootpath/modules/tadtools/themes5_tpl/menu_my.tpl"}>
         <{elseif $bootstrap==4}>

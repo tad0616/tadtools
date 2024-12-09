@@ -131,7 +131,15 @@ class PageBar
         return $this->order_sql ? " {$this->order_sql} LIMIT {$row_start}, {$this->limit}" : " LIMIT {$row_start}, {$this->limit}";
     }
 
-    // ... (保留其他方法)
+    public function set_to_page($page = '')
+    {
+        $this->to_page = $page;
+    }
+
+    public function set_url_other($other = '')
+    {
+        $this->url_other = $other;
+    }
 
     public function makeBootStrapBar($url_page = 'g2p')
     {

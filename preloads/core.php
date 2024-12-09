@@ -94,7 +94,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
             // if ($_SESSION['xoops_version'] < 20509) {
             //     $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-1.4.1.min.js');
             // } else {
-            $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
+            $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.5.2.js');
             // }
             $xoTheme->addStylesheet('modules/tadtools/jquery/themes/base/jquery.ui.all.css');
             // $xoTheme->addScript('modules/tadtools/jquery/ui/jquery-ui.js');
@@ -141,6 +141,8 @@ class TadtoolsCorePreload extends XoopsPreloadItem
             $debug = 0;
         }
         $xoopsTpl->assign('debug', $debug);
+
+        xoops_loadLanguage('main', 'tadtools');
 
         $admin_menu[] = ['title' => _TAD_TF_USER_ADMIN, 'url' => XOOPS_URL . '/admin.php', 'icon' => 'fa-lock', 'target' => '_self'];
         $admin_menu[] = ['title' => _TAD_TF_SYSTEM_CONFIG, 'url' => XOOPS_URL . '/modules/system/admin.php?fct=preferences&op=show&confcat_id=1', 'icon' => 'fa-cog', 'target' => '_blank'];

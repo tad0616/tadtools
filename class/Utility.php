@@ -639,7 +639,7 @@ class Utility
         $callerInfo = isset($backtrace[0]) ? $backtrace[0]['file'] . ' on line ' . $backtrace[0]['line'] : '';
         $isAdmin = ($xoopsUser and $xoopsModule) ? $xoopsUser->isAdmin($xoopsModule->mid()) : false;
         $in_admin = (false !== mb_strpos($_SERVER['PHP_SELF'], '/admin/')) ? true : false;
-        $show_sql = ($isAdmin or $in_admin or $force) ? "<div>$sql</div>" : '';
+        $show_sql = ($isAdmin or $in_admin or $force) ? "<div style=\"margin-top:4px;border:1px solid pink;padding:4px;border-radius:5px;\">$sql</div>" : '';
 
         throw new \Exception($xoopsDB->error() . ($callerInfo ? " in {$callerInfo}{$show_sql}" : ''));
 
@@ -963,6 +963,76 @@ class Utility
         return $data;
     }
 
+    // 建立群組
+    public static function mk_group($name = "")
+    {
+        global $xoopsDB;
+        $sql = 'SELECT `groupid` FROM `' . $xoopsDB->prefix('groups') . '` WHERE `name`=?';
+        $result = Utility::query($sql, 's', [$name]) or Utility::web_error($sql, __FILE__, __LINE__, true);
+
+        list($group_id) = $xoopsDB->fetchRow($result);
+
+        if (empty($group_id)) {
+            $sql = 'INSERT INTO `' . $xoopsDB->prefix('groups') . '` (`name`) VALUES(?)';
+            Utility::query($sql, 's', [$name]) or Utility::web_error($sql, __FILE__, __LINE__, true);
+
+            //取得最後新增資料的流水編號
+            $group_id = $xoopsDB->getInsertId();
+        }
+        return $group_id;
+    }
+
+    //根據名稱找群組編號
+    public static function group_id_from_name($name = "")
+    {
+        global $xoopsDB;
+        $sql = "select `groupid` from `" . $xoopsDB->prefix("groups") . "` where `name`='{$name}'";
+        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        list($groupid) = $xoopsDB->fetchRow($result);
+        return $groupid;
+    }
+
+    // 將某人加入群組
+    public static function add_user_to_group($uid, $group_id)
+    {
+        global $xoopsDB;
+        $sql = "replace into " . $xoopsDB->prefix("groups_users_link") . " (`groupid`,`uid`) values('$group_id','$uid')";
+        $xoopsDB->queryF($sql) or die($sql);
+    }
+
+    // 將某人移出群組
+    public static function del_user_from_group($uid, $group_id)
+    {
+        global $xoopsDB;
+        $sql = "delete from " . $xoopsDB->prefix("groups_users_link") . " where `groupid`='$group_id' and `uid`='$uid'";
+        $xoopsDB->queryF($sql) or die($sql);
+    }
+
+    // uid 轉姓名
+    public static function get_name_by_uid($uid)
+    {
+        $uid_name = \XoopsUser::getUnameFromId($uid, 1);
+        if (empty($uid_name)) {
+            $uid_name = \XoopsUser::getUnameFromId($uid, 0);
+        }
+
+        return $uid_name;
+    }
+
+    // 產生 token
+    public static function token_form($mode = 'assign')
+    {
+        global $xoopsTpl;
+        include_once XOOPS_ROOT_PATH . "/class/xoopsformloader.php";
+        $token = new \XoopsFormHiddenToken();
+        $token_form = $token->render();
+        if ($mode == 'assign') {
+            $xoopsTpl->assign("token_form", $token_form);
+        } else {
+            return $token_form;
+        }
+    }
+
     //輸出為UTF8
     public static function to_utf8($buffer = '')
     {
@@ -1239,23 +1309,59 @@ class Utility
     //遠端取得資料
     public static function vita_get_url_content($url)
     {
+        $file_contents = '';
+        $timeout = 5;
+
+        // 使用 cURL 作为首选方法
         if (function_exists('curl_init')) {
             $ch = curl_init();
-            $timeout = 5;
 
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+            curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+
             $file_contents = curl_exec($ch);
+
+            if (curl_errno($ch)) {
+                $file_contents = '';
+            }
+
             curl_close($ch);
-        } elseif (function_exists('file_get_contents')) {
-            $file_contents = file_get_contents($url, false, stream_context_create(['ssl' => ['verify_peer' => false, 'verify_peer_name' => false]]));
-        } else {
-            $handle = fopen($url, 'rb');
-            $file_contents = stream_get_contents($handle);
-            fclose($handle);
+        }
+        // 使用 file_get_contents 作为备选方法
+        elseif (function_exists('file_get_contents')) {
+            $context = stream_context_create([
+                'http' => [
+                    'timeout' => $timeout,
+                ],
+                'ssl' => [
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                ],
+            ]);
+
+            $file_contents = @file_get_contents($url, false, $context);
+        }
+        // 使用 fopen 作为最后的备选方法
+        else {
+            $context = stream_context_create([
+                'http' => [
+                    'timeout' => $timeout,
+                ],
+                'ssl' => [
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                ],
+            ]);
+
+            $handle = @fopen($url, 'rb', false, $context);
+            if ($handle) {
+                $file_contents = stream_get_contents($handle);
+                fclose($handle);
+            }
         }
 
         return $file_contents;
@@ -1282,6 +1388,22 @@ class Utility
     {
         global $xoopsModuleConfig;
 
+        // 判斷是否為網路圖片
+        $isRemoteImage = filter_var($imagePath, FILTER_VALIDATE_URL);
+
+        if ($isRemoteImage) {
+            // 如果是網路圖片，先下載到臨時檔案
+            $tempFile = tempnam(sys_get_temp_dir(), 'thumbnail_');
+            $imageContent = @file_get_contents($imagePath);
+
+            if ($imageContent === false) {
+                return "無法下載圖片：{$imagePath}";
+            }
+
+            file_put_contents($tempFile, $imageContent);
+            $imagePath = $tempFile;
+        }
+
         // 檢查文件是否存在
         if (!file_exists($imagePath)) {
             return "{$imagePath} 不存在";
@@ -1291,20 +1413,22 @@ class Utility
         $height = $height ? $height : $width;
 
         // 獲取圖片信息，包括類型、尺寸等
-        $imageInfo = getimagesize($imagePath);
+        $imageInfo = @getimagesize($imagePath);
 
+        if ($imageInfo === false) {
+            return "無法讀取圖片信息";
+        }
+
+        // Utility::dd($imageInfo);
         if (0 !== $angle) {
             $h = $imageInfo[1];
             $w = $imageInfo[0];
-
             $imageInfo[0] = $h;
             $imageInfo[1] = $w;
         }
 
-        if ($imageInfo[0] > $width || $imageInfo[1] > $height) {
-
+        if ($imageInfo[0] >= $width || $imageInfo[1] >= $height) {
             $imageType = $imageInfo[2];
-
             // 根據不同的圖片類型，使用不同的函數讀取圖片
             switch ($imageType) {
                 case IMAGETYPE_JPEG:
@@ -1316,8 +1440,13 @@ class Utility
                 case IMAGETYPE_GIF:
                     $image = imagecreatefromgif($imagePath);
                     break;
+                // 只有在支援 WebP 時才處理
                 case IMAGETYPE_WEBP:
-                    $image = imagecreatefromwebp($imagePath);
+                    if (function_exists('imagecreatefromwebp')) {
+                        $image = imagecreatefromwebp($imagePath);
+                    } else {
+                        return "WebP 格式不支援";
+                    }
                     break;
                 default:
                     return "{$imageType} 不支援";
@@ -1330,10 +1459,11 @@ class Utility
             // 計算縮圖尺寸
             $originalWidth = imagesx($image);
             $originalHeight = imagesy($image);
+
             if ($originalWidth > $width && $originalHeight > $height) {
                 $scale = min($width / $originalWidth, $height / $originalHeight);
             } else {
-                return;
+                $scale = 1;
             }
 
             $newWidth = $originalWidth * $scale;
@@ -1341,11 +1471,19 @@ class Utility
 
             // 創建一個新的圖片，並將原始圖片縮放到新尺寸
             $newImage = imagecreatetruecolor($newWidth, $newHeight);
+
+            // 處理透明背景
+            if ($imageType == IMAGETYPE_PNG || $imageType == IMAGETYPE_WEBP) {
+                imagealphablending($newImage, false);
+                imagesavealpha($newImage, true);
+            }
+
             imagecopyresampled($newImage, $image, 0, 0, 0, 0, $newWidth, $newHeight, $originalWidth, $originalHeight);
 
             if (empty($imagethumbPath)) {
                 $imagethumbPath = $imagePath;
             }
+
             // 根據不同的圖片類型，使用不同的函數保存縮圖
             switch ($imageType) {
                 case IMAGETYPE_JPEG:
@@ -1358,14 +1496,26 @@ class Utility
                     imagegif($newImage, $imagethumbPath);
                     break;
                 case IMAGETYPE_WEBP:
-                    imagewebp($newImage, $imagethumbPath, 90);
+                    if (function_exists('imagewebp')) {
+                        imagewebp($newImage, $imagethumbPath, 90);
+                    } else {
+                        return "WebP 格式儲存不支援";
+                    }
                     break;
             }
 
             // 釋放圖片資源
             imagedestroy($image);
             imagedestroy($newImage);
+        } else {
+            \copy($imagePath, $imagethumbPath);
         }
+
+        // 如果是臨時下載的網路圖片，刪除臨時檔案
+        if ($isRemoteImage) {
+            @unlink($imagePath);
+        }
+
         return true;
     }
 
@@ -1466,112 +1616,6 @@ class Utility
     }
 
     /**
-     * 參數化資料庫查詢
-     *
-     * @param string $sql SQL查詢語句
-     * @param string $types 參數類型
-     * @param array $params 參數陣列
-     * @param bool $throwExceptions 是否拋出異常
-     * @param bool $debug 是否開啟調試模式
-     * @return mixed 查詢結果或布林值
-     * @throws Exception
-     */
-    public static function query($sql, $types = '', array $params = array(), $throwExceptions = true, $debug = false)
-    {
-        global $xoopsDB;
-
-        // 僅在需要時獲取呼叫者信息
-        $callerInfo = '';
-        if ($debug || $throwExceptions) {
-            $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-            $callerInfo = isset($backtrace[0]) ? $backtrace[0]['file'] . ' on line ' . $backtrace[0]['line'] : '';
-        }
-
-        $stmt = null;
-        try {
-            // 基本驗證
-            if (!is_string($sql) || empty($sql)) {
-                throw new \Exception('Invalid SQL query');
-            }
-
-            // 檢查參數數量
-            $placeholderCount = substr_count($sql, '?');
-            if ($placeholderCount !== count($params)) {
-                throw new \Exception(sprintf(
-                    'Parameter count mismatch. Expected %d, got %d',
-                    $placeholderCount,
-                    count($params)
-                ));
-            }
-
-            // 檢查類型字串長度
-            if (strlen($types) !== count($params)) {
-                throw new \Exception(sprintf(
-                    'Types string length mismatch. Expected %d, got %d',
-                    count($params),
-                    strlen($types)
-                ));
-            }
-
-            // 準備語句
-            $stmt = $xoopsDB->conn->prepare($sql);
-            if (!$stmt) {
-                throw new \Exception('Failed to prepare statement: ' . $xoopsDB->conn->error);
-            }
-
-            // 綁定參數
-            if (!empty($params)) {
-                // 創建參數陣列
-                $bindParams = array_merge(array($types), self::createReferenceArray($params));
-
-                // 綁定參數
-                if (!@call_user_func_array(array($stmt, 'bind_param'), $bindParams)) {
-                    throw new \Exception('Failed to bind parameters: ' . $stmt->error);
-                }
-            }
-
-            // Debug 日誌
-            if ($debug) {
-                self::logDebugInfo($sql, $types, $params, $callerInfo);
-            }
-
-            // 執行查詢
-            if (!$stmt->execute()) {
-                throw new \Exception('Failed to execute query: ' . $stmt->error);
-            }
-
-            // 處理查詢結果
-            $isSelect = self::isSelectQuery($sql);
-            if ($isSelect) {
-                $result = $stmt->get_result();
-                if ($result === false) {
-                    throw new \Exception('Failed to get result: ' . $stmt->error);
-                }
-                return $result;
-            }
-
-            return true;
-
-        } catch (\Exception $e) {
-            if ($debug) {
-                error_log('Database Error: ' . $e->getMessage() . ($callerInfo ? " in $callerInfo" : ''));
-            }
-
-            if ($throwExceptions) {
-                throw new \Exception($e->getMessage() . ($callerInfo ? " in $callerInfo" : ''));
-            }
-
-            return false;
-
-        } finally {
-            // 釋放資源
-            if ($stmt instanceof mysqli_stmt) {
-                $stmt->close();
-            }
-        }
-    }
-
-    /**
      * 建立參數引用陣列
      *
      * @param array $params
@@ -1629,6 +1673,110 @@ class Utility
             $callerInfo
         );
         error_log($logMessage);
+    }
+
+    /**
+     * 參數化資料庫查詢
+     *
+     * @param string $sql SQL查詢語句
+     * @param string $types 參數類型
+     * @param array $params 參數陣列
+     * @param bool $throwExceptions 是否拋出異常
+     * @param bool $debug 是否開啟調試模式
+     * @return mixed 查詢結果或布林值
+     * @throws Exception
+     */
+    public static function query($sql, $types = '', array $params = array(), $throwExceptions = true, $debug = false)
+    {
+        global $xoopsDB;
+
+        // 僅在需要時獲取呼叫者信息
+        $callerInfo = '';
+        if ($debug || $throwExceptions) {
+            $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+            $callerInfo = isset($backtrace[0]) ? $backtrace[0]['file'] . ' on line ' . $backtrace[0]['line'] : '';
+        }
+
+        $stmt = null;
+        try {
+            // 基本驗證
+            if (!is_string($sql) || empty($sql)) {
+                throw new \Exception(_INVALID_SQL_QUERY);
+            }
+
+            // 檢查參數數量
+            // $placeholderCount = substr_count($sql, '?');
+            // if ($placeholderCount !== count($params)) {
+            //     throw new \Exception(sprintf(_NUMBER_PARAMETER_NOT_MATCH,
+            //         $placeholderCount,
+            //         count($params)
+            //     ));
+            // }
+
+            // 檢查類型字串長度
+            if (strlen($types) !== count($params)) {
+                throw new \Exception(sprintf(_TYPES_LENGTH_NOT_MATCH,
+                    count($params),
+                    strlen($types)
+                ));
+            }
+
+            // 準備語句
+            $stmt = $xoopsDB->conn->prepare($sql);
+            if (!$stmt) {
+                throw new \Exception(_SQL_PREPARE_FAILED . $xoopsDB->conn->error);
+            }
+
+            // 綁定參數
+            if (!empty($params)) {
+                // 創建參數陣列
+                $bindParams = array_merge(array($types), self::createReferenceArray($params));
+
+                // 綁定參數
+                if (!@call_user_func_array(array($stmt, 'bind_param'), $bindParams)) {
+                    throw new \Exception(_PARAMETER_BINDING_FAILED . $stmt->error);
+                }
+            }
+
+            // Debug 日誌
+            if ($debug) {
+                self::logDebugInfo($sql, $types, $params, $callerInfo);
+            }
+
+            // 執行查詢
+            if (!$stmt->execute()) {
+                throw new \Exception(_SQL_EXECUTION_FAILED . $stmt->error);
+            }
+
+            // 處理查詢結果
+            $isSelect = self::isSelectQuery($sql);
+            if ($isSelect) {
+                $result = $stmt->get_result();
+                if ($result === false) {
+                    throw new \Exception(_FAILED_TO_GET_RESULT . $stmt->error);
+                }
+                return $result;
+            }
+
+            return true;
+
+        } catch (\Exception $e) {
+            if ($debug) {
+                error_log(_DATABASE_ERROR . $e->getMessage() . ($callerInfo ? " in $callerInfo" : ''));
+            }
+
+            if ($throwExceptions) {
+                throw new \Exception($e->getMessage() . ($callerInfo ? " in $callerInfo" : ''));
+            }
+
+            return false;
+
+        } finally {
+            // 釋放資源
+            if ($stmt instanceof mysqli_stmt) {
+                $stmt->close();
+            }
+        }
     }
 
     // /**

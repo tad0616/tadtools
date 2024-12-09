@@ -14,7 +14,7 @@ class SimpleRest
 
     public function __construct($token)
     {
-        $this->getXoopsSUser($token);
+        $this->getXoopsUser($token);
     }
 
     public function setHttpHeaders($statusCode)
@@ -91,7 +91,7 @@ class SimpleRest
         return ($httpStatus[$statusCode]) ? $httpStatus[$statusCode] : $status[500];
     }
 
-    public function getXoopsSUser($token = '')
+    public function getXoopsUser($token = '')
     {
         if ($token) {
             $rememberClaims = TokenReader::fromString('rememberme', $token);

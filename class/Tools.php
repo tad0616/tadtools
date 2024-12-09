@@ -114,25 +114,31 @@ class Tools
         }
 
         $file_as_def = false;
-        // 若 tad_themes 有內容，則存入 $json_theme_config_arr
-        $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_themes') . "` WHERE `theme_name` = '$theme_name'";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
-        $theme_arr = $xoopsDB->fetchArray($result);
-        foreach ($theme_arr as $k => $v) {
-            if ($k == 'bg_img') {
-                $v = !empty($v) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/bg/{$v}" : "";
-            } elseif ($k == 'logo_img') {
-                $v = !empty($v) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/logo/{$v}" : "";
-            } elseif ($k == 'navlogo_img') {
-                $v = !empty($v) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/navlogo/{$v}" : "";
-            } elseif ($k == 'navbar_img') {
-                $v = !empty($v) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/nav_bg/{$v}" : "";
-            } elseif ($k == 'slide_width') {
-                $json_theme_config_arr['use_slide'] = !empty($v) ? 1 : 0;
+        // 檢查資料表是否存在
+        $sql = "SHOW TABLES LIKE '" . $xoopsDB->prefix('tad_themes') . "'";
+        $result = Utility::query($sql);
+        if ($result && $result->num_rows > 0) {
+            // 若 tad_themes 有內容，則存入 $json_theme_config_arr
+            $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_themes') . "` WHERE `theme_name` = '$theme_name'";
+            $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
+            $theme_arr = $xoopsDB->fetchArray($result);
+            foreach ($theme_arr as $k => $v) {
+                if ($k == 'bg_img') {
+                    $v = !empty($v) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/bg/{$v}" : "";
+                } elseif ($k == 'logo_img') {
+                    $v = !empty($v) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/logo/{$v}" : "";
+                } elseif ($k == 'navlogo_img') {
+                    $v = !empty($v) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/navlogo/{$v}" : "";
+                } elseif ($k == 'navbar_img') {
+                    $v = !empty($v) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/nav_bg/{$v}" : "";
+                } elseif ($k == 'slide_width') {
+                    $json_theme_config_arr['use_slide'] = !empty($v) ? 1 : 0;
+                }
+
+                $json_theme_config_arr[$k] = $def_config[$k] = $v;
             }
-
-            $json_theme_config_arr[$k] = $def_config[$k] = $v;
         }
 
         // 僅支援 tad themes 佈景才需要的設定

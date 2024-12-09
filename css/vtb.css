@@ -1,8 +1,9 @@
 .vtb {
   width: 100%;
   display: table;
-  border-left: 0px solid #d9e6f3;
-  border-top: 1px solid #d9e6f3;
+  /* 若是 0 左標右文 的左邊會沒有線 */
+  border-left: 1px solid #bbd0e7;
+  border-top: 1px solid #bbd0e7;
   margin: 0px;
 }
 
@@ -27,8 +28,9 @@
   width: 14%;
   padding: 8px 6px;
   box-sizing: border-box;
-  border-right: 0px solid #d9e6f3;
-  border-bottom: 1px solid #d9e6f3;
+  /* 若是 0 左標右文 的右邊會沒有線 */
+  border-right: 1px solid #bbd0e7;
+  border-bottom: 1px solid #bbd0e7;
 }
 
 .vtb ul.odd li {
@@ -58,7 +60,7 @@
   padding: 8px 6px;
   background: #d9e6f3;
   color: rgb(75, 75, 75);
-  border: 1px solid #d9e6f3;
+  border: 1px solid #bbd0e7;
   font-weight: 900;
 }
 
@@ -209,21 +211,35 @@
     display: none;
   }
 
-  .vtb li,
   .vtb li.vtitle {
     display: block;
     height: auto !important;
     border: 1px solid rgba(200, 200, 200, 0.5);
     width: 100%;
     padding: 10px;
+    background: #d9e6f3;
+    /*margin-bottom: -1px;*/
+  }
+
+  .vtb li{
+    display: block;
+    height: auto !important;
+    border: 1px solid rgba(200, 200, 200, 0.5);
+    width: 100%;
+    padding: 10px;
     background: #ffffff;
+    text-align: left;
     /*margin-bottom: -1px;*/
   }
 
   .vtb li.mobile-title,
+  .vtb li.mobile-title a,
   .vtb ul.odd li.mobile-title,
-  .vtb ul.even li.mobile-title {
+  .vtb ul.odd li.mobile-title a,
+  .vtb ul.even li.mobile-title,
+  .vtb ul.even li.mobile-title a {
     background: #d9e6f3;
+    color:#224257;
   }
 
   .vtb .date {
@@ -257,6 +273,7 @@
     display: block;
     background: #f5f8fa;
     color: rgb(22, 22, 26);
+    text-align: left;
   }
 
   .vtb li.blank {
