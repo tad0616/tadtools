@@ -124,20 +124,23 @@ class Tools
             $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
             $theme_arr = $xoopsDB->fetchArray($result);
-            foreach ($theme_arr as $k => $v) {
-                if ($k == 'bg_img') {
-                    $v = !empty($v) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/bg/{$v}" : "";
-                } elseif ($k == 'logo_img') {
-                    $v = !empty($v) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/logo/{$v}" : "";
-                } elseif ($k == 'navlogo_img') {
-                    $v = !empty($v) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/navlogo/{$v}" : "";
-                } elseif ($k == 'navbar_img') {
-                    $v = !empty($v) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/nav_bg/{$v}" : "";
-                } elseif ($k == 'slide_width') {
-                    $json_theme_config_arr['use_slide'] = !empty($v) ? 1 : 0;
-                }
 
-                $json_theme_config_arr[$k] = $def_config[$k] = $v;
+            if (!empty($theme_arr)) {
+                foreach ($theme_arr as $k => $v) {
+                    if ($k == 'bg_img') {
+                        $v = !empty($v) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/bg/{$v}" : "";
+                    } elseif ($k == 'logo_img') {
+                        $v = !empty($v) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/logo/{$v}" : "";
+                    } elseif ($k == 'navlogo_img') {
+                        $v = !empty($v) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/navlogo/{$v}" : "";
+                    } elseif ($k == 'navbar_img') {
+                        $v = !empty($v) ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/nav_bg/{$v}" : "";
+                    } elseif ($k == 'slide_width') {
+                        $json_theme_config_arr['use_slide'] = !empty($v) ? 1 : 0;
+                    }
+
+                    $json_theme_config_arr[$k] = $def_config[$k] = $v;
+                }
             }
         }
 
@@ -375,13 +378,15 @@ class Tools
             }
 
             /****區塊標題設定****/
-            $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_themes_blocks') . '` WHERE `theme_id` = ' . $json_theme_config_arr['theme_id'];
-            $result = $xoopsDB->query($sql);
-            //`theme_id`, `block_position`, `block_config`, `bt_text`, `bt_text_padding`, `bt_text_size`, `bt_bg_color`, `bt_bg_img`, `bt_bg_repeat`, `bt_radius`
-            while (false !== ($all = $xoopsDB->fetchArray($result))) {
-                $block_position = $all['block_position'];
-                $all['bt_bg_img'] = $all['bt_bg_img'] ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/bt_bg/{$all['bt_bg_img']}" : '';
-                $db[$block_position] = $all;
+            $db = [];
+            if (isset($json_theme_config_arr['theme_id'])) {
+                $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_themes_blocks') . '` WHERE `theme_id` = ' . $json_theme_config_arr['theme_id'];
+                $result = $xoopsDB->query($sql);
+                while (false !== ($all = $xoopsDB->fetchArray($result))) {
+                    $block_position = $all['block_position'];
+                    $all['bt_bg_img'] = $all['bt_bg_img'] ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/bt_bg/{$all['bt_bg_img']}" : '';
+                    $db[$block_position] = $all;
+                }
             }
 
             $block_position = ['leftBlock', 'rightBlock', 'centerBlock', 'centerLeftBlock', 'centerRightBlock', 'centerBottomBlock', 'centerBottomLeftBlock', 'centerBottomRightBlock', 'footerCenterBlock', 'footerLeftBlock', 'footerRightBlock'];
@@ -483,7 +488,7 @@ class Tools
                             foreach ($block_position as $position) {
                                 if ($db_as_def) {
                                     $json_theme_config_arr[$config_item][$position] = isset($json_theme_config_arr[$config_item][$position]) ? $json_theme_config_arr[$config_item][$position]['default'] : $val_arr['default'];
-                                } else {
+                                } elseif (is_array($json_theme_config_arr[$config_item])) {
                                     $json_theme_config_arr[$config_item][$position] = isset($config_enable[$config_item][$position]) ? $config_enable[$config_item][$position]['default'] : $val_arr['default'];
                                 }
                             }
@@ -545,48 +550,6 @@ class Tools
                         $json_theme_config_arr['config2'] = $config2;
                     }
 
-                    // if (file_exists(XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}/{$config2_file}.php")) {
-                    //     $json_theme_config_arr['config2'][] = $config2_file;
-                    //     include XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}/{$config2_file}.php";
-                    // } elseif (file_exists(XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php")) {
-                    //     $json_theme_config_arr['config2'][] = $config2_file;
-                    //     include XOOPS_ROOT_PATH . "/themes/{$theme_name}/{$config2_file}.php";
-                    // }
-
-                    // if (!empty($theme_config)) {
-                    //     foreach ($theme_config as $k => $config) {
-
-                    //         if (in_array($config['name'], ['slide_mask', 'slide_def_mask'])) {
-                    //             continue;
-                    //         }
-
-                    //         if (!isset($json_theme_config_arr[$config['name']])) {
-                    //             $json_theme_config_arr[$config['name']] = $config['default'];
-                    //         }
-
-                    //         if ($config['type'] == "bg_file") {
-                    //             $json_theme_config_arr[$config['name'] . '_repeat'] = $config['repeat'];
-                    //             $json_theme_config_arr[$config['name'] . '_position'] = $config['position'];
-                    //             $json_theme_config_arr[$config['name'] . '_size'] = $config['size'];
-
-                    //         } elseif ($config['type'] == 'custom_zone') {
-                    //             $json_theme_config_arr[$config['name']] = is_array($config['default']) ? $config['default'] : \json_decode($config['default'], true);
-                    //             // $json_theme_config_arr[$config['name'] . '_bid'] = $config['bid'];
-                    //             $json_theme_config_arr[$config['name'] . '_block'] = \json_decode($config['block'], true);
-                    //             // $json_theme_config_arr[$config['name'] . '_content'] = $config['content'];
-                    //             $json_theme_config_arr[$config['name'] . '_html_content'] = $config['html_content'];
-                    //             $json_theme_config_arr[$config['name'] . '_html_content_desc'] = isset($config['html_content_desc']) ? $config['html_content_desc'] : '';
-                    //             $json_theme_config_arr[$config['name'] . '_fa_content'] = $config['fa_content'];
-                    //             $json_theme_config_arr[$config['name'] . '_fa_content_desc'] = isset($config['fa_content_desc']) ? $config['fa_content_desc'] : '';
-                    //             $json_theme_config_arr[$config['name'] . '_menu_content'] = $config['menu_content'];
-                    //             $json_theme_config_arr[$config['name'] . '_menu_content_desc'] = isset($config['menu_content_desc']) ? $config['menu_content_desc'] : '';
-
-                    //         } elseif ($config['type'] == "padding_margin") {
-                    //             $json_theme_config_arr[$config['name'] . '_mt'] = $config['mt'];
-                    //             $json_theme_config_arr[$config['name'] . '_mb'] = $config['mb'];
-                    //         }
-                    //     }
-                    // }
                 }
             }
 
@@ -703,7 +666,7 @@ class Tools
                         $my_menu[$i]['title'] = $itemname;
                         $my_menu[$i]['url'] = ($itemurl == '' or $itemurl == '#') ? '' : $itemurl;
                         $my_menu[$i]['target'] = $target;
-                        $my_menu[$i]['icon'] = str_replace('icon-', 'fa-', $icon);
+                        $my_menu[$i]['icon'] = str_replace(['icon-'], ['fa-'], $icon);
                         $my_menu[$i]['img'] = '';
                         $my_menu[$i]['read_group'] = explode(',', $read_group);
                         $i++;

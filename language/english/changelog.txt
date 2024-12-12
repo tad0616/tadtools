@@ -1,12 +1,12 @@
-TadTools 4.0 (released on 2024-11-18)
+TadTools 4.0 (released on 2024-12-12)
 ====================================
-1. Upgrade tcpdf to version 6.6.65
+1. Upgrade tcpdf to version 6.7.7
 2. Modify the navigation bar text size setting and force the unit rem to be added.
 3. Modify power_chk()
 4. Add the setting of whether the development test mode is only open to managers
 5. TadUpFiles If there are already files, cancel the required check
 6. Support SweetAlert2
-7. Remove flexslider kit
+7. Remove flexslider kit, fpdf kit, jwplayer kit
 8. Support PHP8.1.x
 9. Support XOOPS 2.5.11
 10. Optimize social sharing buttons
@@ -25,7 +25,8 @@ TadTools 4.0 (released on 2024-11-18)
 20. Support non-tad_theme background use
 21. Remove bubblepopup.php, ckcal.php, ck.php, dtree.php, elrte.php, fancybox.php, fck.php, flexslider2.php, FooTable.php, formValidator.php, jBreadCrumb.php, jeditable. php, jquery.php, jquery_pin.php, jwplayer.php, jwplayer_new.php, lofslidernews.php, star_rating.php, stickytableheaders.php, sweet_alert.php, syntaxhighlighter.php, treetable.php and other files.
 22. Upgrade BootStrap-Table to 1.23.5
-23. Support fontawesome for 6.6.0
+23. Support fontawesome for 6.7.1
+24. Upgrade elFinder to 2.1.64
 
 TadTools 3.55 (released 2023-10-17)
 ====================================

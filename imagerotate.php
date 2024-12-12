@@ -17,6 +17,7 @@ $pic = XOOPS_ROOT_PATH . "/uploads/{$subdir}{$image_dir}/{$filename}";
 $thumb = XOOPS_ROOT_PATH . "/uploads/{$subdir}{$thumbs_dir}/{$filename}";
 
 // 關閉除錯訊息
+header('HTTP/1.1 200 OK');
 $xoopsLogger->activated = false;
 if ('image/jpeg' === $type or 'image/jpg' === $type or 'image/pjpg' === $type or 'image/pjpeg' === $type) {
     $pic_im = imagecreatefromjpeg($pic);

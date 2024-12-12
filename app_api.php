@@ -7,6 +7,7 @@ require_once __DIR__ . '/tadtools_header.php';
 $op = Request::getString('op');
 
 // 關閉除錯訊息
+header('HTTP/1.1 200 OK');
 $xoopsLogger->activated = false;
 header("Content-Type: application/json; charset=utf-8");
 switch ($op) {

@@ -10,7 +10,7 @@
             <{if $module.name|default:false}>
                 <li <{if isset($module.highlight) && $module.highlight}>class="selected"<{/if}>>
                     <a href="<{$xoops_url}>/modules/<{$module.directory}>/" title="<{$module.name}>">
-                    <i class="fa fa-arrow-circle-end" aria-hidden="true"></i>
+                    <i class="fa fa-circle-right" aria-hidden="true"></i>
                     <{$module.name}>
                     </a>
                 </li>
@@ -20,7 +20,7 @@
                     <li style="padding-left: 2em; font-size: 0.925rem;">
                         <a href="<{if $sublink.url|default:false}><{$sublink.url}><{else}>#<{/if}>" title="<{$sublink.name}>">
                         <{$sublink.name}>
-                        <i class="fa fa-arrow-circle-o-end" aria-hidden="true"></i>
+                        <i class="fa fa-circle-right" aria-hidden="true"></i>
                         </a>
                     </li>
                 <{/foreach}>

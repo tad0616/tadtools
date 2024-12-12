@@ -103,7 +103,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
             $xoTheme->addStylesheet('modules/tadtools/colorbox/colorbox.css');
             $xoTheme->addStylesheet('modules/tadtools/css/xoops.css');
             $xoTheme->addScript('modules/tadtools/colorbox/jquery.colorbox.js');
-            // $xoTheme->addStylesheet('modules/tadtools/css/fontawesome6/css/all.min.css');
+            $xoTheme->addStylesheet('modules/tadtools/css/fontawesome6/css/all.min.css');
             $xoTheme->addStylesheet('media/font-awesome/css/font-awesome.min.css');
         }
 
@@ -175,7 +175,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         if ($xoops_inbox_count) {
             $user_menu[] = ['title' => sprintf(_TAD_TF_USER_NEWMSG, $xoops_inbox_count), 'url' => XOOPS_URL . '/viewpmsg.php', 'icon' => 'fa-envelope', 'target' => '_self'];
         } else {
-            $user_menu[] = ['title' => _TAD_TF_USER_MSG, 'url' => XOOPS_URL . '/viewpmsg.php', 'icon' => 'fa-envelope-o', 'target' => '_self'];
+            $user_menu[] = ['title' => _TAD_TF_USER_MSG, 'url' => XOOPS_URL . '/viewpmsg.php', 'icon' => 'fa-envelope', 'target' => '_self'];
         }
         $user_menu[] = ['title' => _TAD_TF_USER_NOTICE, 'url' => XOOPS_URL . '/notifications.php', 'icon' => 'fa-bell', 'target' => '_self'];
         $user_menu[] = ['title' => _TAD_TF_USER_PROFILE, 'url' => XOOPS_URL . '/user.php', 'icon' => 'fa-user', 'target' => '_self'];

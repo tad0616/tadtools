@@ -18,7 +18,7 @@ CKEDITOR.editorConfig = function (config) {
             { name: 'bar7-1', items: ['TextColor', 'BGColor', 'Bold', 'Italic', 'Underline', 'Strike'] },
             { name: 'bar8', items: ['Outdent', 'Indent'] },
             { name: 'bar9', items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
-            { name: 'bar10', items: ['Find', 'Replace', 'SelectAll', 'FontAwesome'] }
+            { name: 'bar10', items: ['Find', 'Replace', 'SelectAll', 'ckeditorfa'] }
         ];
 
     //CKEDITOR.config.autoGrow_maxHeight = 450;

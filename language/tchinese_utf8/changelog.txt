@@ -1,12 +1,12 @@
-TadTools 4.0 (2024-11-18 釋出)
+TadTools 4.0 (2024-12-12 釋出)
 ====================================
-1.升級 tcpdf 為 6.6.65 版
+1.升級 tcpdf 為 6.7.7 版
 2.修改導覽列文字大小設定，強制加上單位 rem
 3.修改 power_chk()
 4.加入開發測試模式是否僅開放給管理者的設定
 5.TadUpFiles 若已有檔案時，則取消必填檢查
 6.支援SweetAlert2
-7.移除flexslider套件
+7.移除flexslider套件、fpdf套件、jwplayer套件
 8.支援PHP8.1.x
 9.支援XOOPS 2.5.11
 10.優化社群分享按鈕
@@ -25,7 +25,8 @@ TadTools 4.0 (2024-11-18 釋出)
 20.支援非tad_theme佈景使用
 21.移除  bubblepopup.php、ckcal.php、ck.php、dtree.php、elrte.php、fancybox.php、fck.php、flexslider2.php、FooTable.php、formValidator.php、jBreadCrumb.php、jeditable.php、jquery.php、jquery_pin.php、jwplayer.php、jwplayer_new.php、lofslidernews.php、star_rating.php、stickytableheaders.php、sweet_alert.php、syntaxhighlighter.php、treetable.php 等檔案。
 22.升級 BootStrap-Table 為 1.23.5
-23.支援 fontawesome 為 6.6.0
+23.支援 fontawesome 6.7.1
+24.升級 elFinder 為 2.1.64
 
 TadTools 3.55 (2023-10-17 釋出)
 ====================================
@@ -36,6 +37,7 @@ TadTools 3.55 (2023-10-17 釋出)
 5.新增 FullCalendar 6.1.9
 6.升級 phpoffice/phpword 為 0.18.3
 7.Utility 加入各種系統權限相關函數
+8.修改QRCode區塊無法正常運作的問題
 
 TadTools 3.54 (2023-03-24 釋出)
 ====================================

@@ -51,7 +51,7 @@
                         </div>
                         <div class="col-md-6">
                             <a href="<{$xoops_url}>/user.php#lost">
-                                <span class="fa fa-search"></span>
+                                <span class="fa fa-magnifying-glass"></span>
                                 <{$smarty.const.TF_USER_FORGET_PASS}>
                             </a>
                         </div>

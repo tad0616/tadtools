@@ -878,10 +878,10 @@ class TadDataCenter
         }
 
         if ($json != 'template') {
-            $del = ($col_id) ? "<a href=\"javascript:del_{$this->col_name}_dcq_col('{$col_id}')\" style='color:red;'><i class='fa fa-trash-o' title='" . _TAD_DEL . "'></i></a>
+            $del = ($col_id) ? "<a href=\"javascript:del_{$this->col_name}_dcq_col('{$col_id}')\" style='color:red;'><i class='fa fa-trash' title='" . _TAD_DEL . "'></i></a>
             <input type='hidden' class='{$id}_arr' name='col_ids[]' value='{$col_id}'> " : '';
         } else {
-            $del = '<a href="#' . $id . '" id="remove_' . $id . '" style="color:red;" class="remove_' . $id . '"><i class="fa fa-trash-o" title="' . _TAD_DEL . '"></i></a> ';
+            $del = '<a href="#' . $id . '" id="remove_' . $id . '" style="color:red;" class="remove_' . $id . '"><i class="fa fa-trash" title="' . _TAD_DEL . '"></i></a> ';
         }
 
         $i = $sort + 1;
@@ -1130,7 +1130,7 @@ class TadDataCenter
             if ($del_col_name) {
                 $main .= "<ul>
                 <li class='w2 vtitle'>" . _TAD_FUNCTION . "</li>
-                <li class='w8'><li style='text-align: center;'><a href='javascript:del_dcq_ans({$this->col_sn})' style='color:red;'><li class='fa fa-trash-o' title='" . _TAD_DEL . "'></li></li>
+                <li class='w8'><li style='text-align: center;'><a href='javascript:del_dcq_ans({$this->col_sn})' style='color:red;'><li class='fa fa-trash' title='" . _TAD_DEL . "'></li></li>
                 </ul>";
             }
             $main .= '</div>';
@@ -1183,7 +1183,7 @@ class TadDataCenter
                 }
 
                 if ($del_col_name) {
-                    $main .= "<li style='text-align: center;'><a href='javascript:del_dcq_ans({$col_sn})' style='color:red;'><i class='fa fa-trash-o' title='" . _TAD_DEL . "'></i>
+                    $main .= "<li style='text-align: center;'><a href='javascript:del_dcq_ans({$col_sn})' style='color:red;'><i class='fa fa-trash' title='" . _TAD_DEL . "'></i>
                     </a></li>";
                 }
                 $main .= '</ul>';

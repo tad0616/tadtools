@@ -19,7 +19,7 @@
                     <li style="padding-left: 2em; font-size: 0.925rem;">
                         <a href="<{$sublink.url}>" title="<{$sublink.name}>">
                         <{$sublink.name}>
-                        <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
                         </a>
                     </li>
                 <{/foreach}>

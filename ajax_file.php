@@ -22,6 +22,7 @@ $sort_arr = Request::getArray('sort_arr');
 $db_prefix = Request::getString('db_prefix');
 
 // 關閉除錯訊息
+header('HTTP/1.1 200 OK');
 $xoopsLogger->activated = false;
 
 switch ($op) {
@@ -38,9 +39,6 @@ switch ($op) {
         }
         exit;
 
-    case 'save_sort':
-        save_sort($table, $sort_col, $primary_key, $sort_arr);
-        exit;
     default:
         # code...
         break;

@@ -3,7 +3,7 @@
         <{foreach from=$admin_menu_var item=admin_menu}>
             <li>
                 <a href="<{$admin_menu.url}>" class="dropdown-item" target="<{$admin_menu.target}>">
-                    <span class="fa <{$admin_menu.icon}>"></span>
+                    <span class="<{if $admin_menu.icon|substr:0:3=='fa-'}>fa <{/if}><{$admin_menu.icon}>"></span>
                     <{$admin_menu.title}>
                 </a>
             </li>
@@ -14,7 +14,7 @@
     <{foreach from=$user_menu_var item=user_menu}>
         <li>
             <a href="<{$user_menu.url}>" class="dropdown-item" target="<{$user_menu.target}>">
-                <span class="fa <{$user_menu.icon}>"></span>
+                <span class="<{if $user_menu.icon|substr:0:3=='fa-'}>fa <{/if}><{$user_menu.icon}>"></span>
                 <{$user_menu.title}>
             </a>
         </li>

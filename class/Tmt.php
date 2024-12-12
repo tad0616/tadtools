@@ -51,7 +51,7 @@ class Tmt
         $keyman_js = "";
         if ($keyman_file) {
             $keyman_js = "$(document).ready(function() {
-                $('#keyman').change(function(event) {
+                $('#keyman').on('change', function(event) {
                     $.post('{$keyman_file}', {op: 'keyman' , keyman: $('#keyman').val(){$key_man_var}}, function(theResponse){
                         $('#{$from_name}').html(theResponse);
                     });
@@ -103,7 +103,7 @@ class Tmt
             ";
         }
 
-        $submit_btn = $submit ? "<button type='submit' class='btn btn-primary'><i class=\"fa fa-floppy-o\" aria-hidden=\"true\"></i> " . _TAD_SAVE . "</button>" : "";
+        $submit_btn = $submit ? "<button type='submit' class='btn btn-primary'><i class=\"fa fa-floppy-disk\" aria-hidden=\"true\"></i> " . _TAD_SAVE . "</button>" : "";
         $key_man_col = $keyman_file ? "
         <div class='input-group'>
             <input type='text' name='keyman' id='keyman' placeholder='輸入關鍵字以篩選' class='form-control'>

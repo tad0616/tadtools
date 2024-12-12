@@ -9,7 +9,7 @@
         <{/if}>
         <div class="caption">
           <h3><a href="<{$xoops_url}>/userinfo.php?uid=<{$user.id}>" title="<{$user.name}>"><{$user.name}></a>
-          <small><i class="fa fa-star-o" aria-hidden="true"></i> <{$user.rank}> <i class="fa fa-file-text-o" aria-hidden="true"></i> <{$user.posts}></small>
+          <small><i class="fa-regular fa-star" aria-hidden="true"></i> <{$user.rank}> <i class="fa fa-file-text" aria-hidden="true"></i> <{$user.posts}></small>
           </h3>
         </div>
       </div>

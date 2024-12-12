@@ -129,7 +129,7 @@ class Utility
         }
 
         // 關閉除錯訊息
-        // $xoopsLogger->activated = false;
+        $xoopsLogger->activated = false;
 
         if (isset($_GET[$key]) && $_GET[$key] == $v) {
             if ($mode == 'die') {
@@ -588,6 +588,7 @@ class Utility
     {
         global $xoopsLogger;
         error_reporting(0);
+        header('HTTP/1.1 200 OK');
         $xoopsLogger->activated = false;
         $jquery = '';
         if ($use_jquery) {
@@ -1311,7 +1312,6 @@ class Utility
     {
         $file_contents = '';
         $timeout = 5;
-
         // 使用 cURL 作为首选方法
         if (function_exists('curl_init')) {
             $ch = curl_init();
@@ -1324,7 +1324,6 @@ class Utility
             curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
 
             $file_contents = curl_exec($ch);
-
             if (curl_errno($ch)) {
                 $file_contents = '';
             }
@@ -1394,7 +1393,7 @@ class Utility
         if ($isRemoteImage) {
             // 如果是網路圖片，先下載到臨時檔案
             $tempFile = tempnam(sys_get_temp_dir(), 'thumbnail_');
-            $imageContent = @file_get_contents($imagePath);
+            $imageContent = self::vita_get_url_content($imagePath);
 
             if ($imageContent === false) {
                 return "無法下載圖片：{$imagePath}";
@@ -1705,13 +1704,13 @@ class Utility
             }
 
             // 檢查參數數量
-            // $placeholderCount = substr_count($sql, '?');
-            // if ($placeholderCount !== count($params)) {
-            //     throw new \Exception(sprintf(_NUMBER_PARAMETER_NOT_MATCH,
-            //         $placeholderCount,
-            //         count($params)
-            //     ));
-            // }
+            $placeholderCount = substr_count($sql, '?');
+            if ($placeholderCount !== count($params)) {
+                throw new \Exception(sprintf(_NUMBER_PARAMETER_NOT_MATCH,
+                    $placeholderCount,
+                    count($params)
+                ));
+            }
 
             // 檢查類型字串長度
             if (strlen($types) !== count($params)) {

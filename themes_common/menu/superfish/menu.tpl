@@ -42,21 +42,21 @@ $(document).ready(function(){
   <{foreach from=$menu_var item=menu}>
     <li>
       <a href='<{$menu.url}>' target="<{$menu.target}>">
-        <span><{if $menu.icon|default:false}><span class="fa <{$menu.icon}>" <{$navbar_icon|default:''}>></span> <{/if}><{$menu.title}></span>
+        <span><{if $menu.icon|default:false}><span class="<{if $menu.icon|substr:0:3=='fa-'}>fa <{/if}><{$menu.icon}>" <{$navbar_icon|default:''}>></span> <{/if}><{$menu.title}></span>
       </a>
       <{if $menu.submenu|default:false}>
         <ul>
           <{foreach from=$menu.submenu item=menu2}>
             <li>
               <a href='<{$menu2.url}>' target="<{$menu2.target}>">
-                <span><{if $menu2.icon|default:false}><span class="fa <{$menu2.icon}>"></span> <{/if}><{$menu2.title}></span>
+                <span><{if $menu2.icon|default:false}><span class="<{if $menu2.icon|substr:0:3=='fa-'}>fa <{/if}><{$menu2.icon}>"></span> <{/if}><{$menu2.title}></span>
               </a>
               <{if $menu2.submenu|default:false}>
                 <ul>
                   <{foreach from=$menu2.submenu item=menu3}>
                     <li>
                       <a href='<{$menu3.url}>' target="<{$menu3.target}>">
-                        <span><{if $menu3.icon|default:false}><span class="fa <{$menu3.icon}>"></span> <{/if}><{$menu3.title}></span>
+                        <span><{if $menu3.icon|default:false}><span class="<{if $menu3.icon|substr:0:3=='fa-'}>fa <{/if}><{$menu3.icon}>"></span> <{/if}><{$menu3.title}></span>
                       </a>
                     </li>
                    <{/foreach}>

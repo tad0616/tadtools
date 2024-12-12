@@ -7451,7 +7451,7 @@
         paginationActive: 'active',
         paginationDropdown: 'btn-group dropdown',
         pull: 'float',
-        select: 'form-control form-select'
+        select: 'form-select'
       },
       html: {
         dataToggle: 'data-bs-toggle',

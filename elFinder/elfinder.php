@@ -23,7 +23,7 @@ $subDir = Request::getString('subDir');
 
 		<!-- Require JS (REQUIRED) -->
 		<!-- Rename "main.default.js" to "main.js" and edit it if you need configure elFInder options or any things -->
-		<script data-main="<?php echo XOOPS_URL; ?>/modules/tadtools/elFinder/main.default.js" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+		<script data-main="<?php echo XOOPS_URL; ?>/modules/tadtools/elFinder/main.js" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
 		<script>
 			define('elFinderConfig', {
 				// elFinder options (REQUIRED)
