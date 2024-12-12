@@ -17,16 +17,16 @@ TadTools 4.0 (released on 2024-12-12)
 15. Upgrade jQuery to 3.7.1
 16. Upgrade jGrowl to 1.4.5
 17. Remove grunt.js, chk_jquery.js
-15. Upgrade jQuery ui to 1.14.0
-16. When jGrowl dynamic steering is not used, replace it with SweetAlert2
-17. Remove jquerychained, SyntaxHighlighter, framework7, spruto_player, smoothslides and other packages
-18. Remove tad_function.php
-19. Database syntax parameterization
-20. Support non-tad_theme background use
-21. Remove bubblepopup.php, ckcal.php, ck.php, dtree.php, elrte.php, fancybox.php, fck.php, flexslider2.php, FooTable.php, formValidator.php, jBreadCrumb.php, jeditable. php, jquery.php, jquery_pin.php, jwplayer.php, jwplayer_new.php, lofslidernews.php, star_rating.php, stickytableheaders.php, sweet_alert.php, syntaxhighlighter.php, treetable.php and other files.
-22. Upgrade BootStrap-Table to 1.23.5
-23. Support fontawesome for 6.7.1
-24. Upgrade elFinder to 2.1.64
+18. Upgrade jQuery ui to 1.14.0
+19. When jGrowl dynamic steering is not used, replace it with SweetAlert2
+20. Remove jquerychained, SyntaxHighlighter, framework7, spruto_player, smoothslides and other packages
+21. Remove tad_function.php
+22. Database syntax parameterization
+23. Support non-tad_theme background use
+24. Remove bubblepopup.php, ckcal.php, ck.php, dtree.php, elrte.php, fancybox.php, fck.php, flexslider2.php, FooTable.php, formValidator.php, jBreadCrumb.php, jeditable. php, jquery.php, jquery_pin.php, jwplayer.php, jwplayer_new.php, lofslidernews.php, star_rating.php, stickytableheaders.php, sweet_alert.php, syntaxhighlighter.php, treetable.php and other files.
+25. Upgrade BootStrap-Table to 1.23.5
+26. Support fontawesome for 6.7.1
+27. Upgrade elFinder to 2.1.64
 
 TadTools 3.55 (released 2023-10-17)
 ====================================
