@@ -3,6 +3,7 @@ use Xmf\Request;
 use XoopsModules\Tadtools\Utility;
 
 require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
+header('HTTP/1.1 200 OK');
 $mdir = $_SESSION['xoops_mod_name'];
 if (empty($mdir)) {
     die('畫面靜止操作過久，已無法讀取檔案，請關閉視窗，並重新整理畫面再繼續操作。');

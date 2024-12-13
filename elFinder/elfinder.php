@@ -6,7 +6,7 @@ if (!$xoopsUser) {
     header('location:' . XOOPS_URL);
     exit;
 }
-
+header('HTTP/1.1 200 OK');
 $LANGCODE = str_replace('-', '_', _LANGCODE);
 $type = Request::getString('type');
 $mod_dir = Request::getString('mod_dir');

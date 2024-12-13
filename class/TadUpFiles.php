@@ -2139,7 +2139,7 @@ class TadUpFiles
 
         // 為了無礙，改成下載
         $force_arr = $this->pdf_force_dl ? ['application/pdf', 'audio/mp3', 'video/mp4', 'audio/mp4'] : [];
-        $force = ($kind == 'img' or in_array($mimetype, $force_arr)) ? true : $force;
+        $force = ($file['kind'] == 'img' or in_array($mimetype, $force_arr)) ? true : $force;
 
         if ($force) {
             if (!\file_exists($file_hd_saved)) {
@@ -2164,7 +2164,7 @@ class TadUpFiles
 
             header('Expires: 0');
             header('Content-Type: ' . $mimetype);
-            //header('Content-Type: application/octet-stream');
+            header('HTTP/1.1 200 OK');
             if (preg_match("/MSIE ([0-9]\.[0-9]{1,2})/", $_SERVER['HTTP_USER_AGENT'])) {
                 header('Content-Disposition: inline; filename="' . $file_display . '"');
                 header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
