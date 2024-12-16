@@ -128,9 +128,6 @@ class Utility
             return;
         }
 
-        // 關閉除錯訊息
-        $xoopsLogger->activated = false;
-
         if (isset($_GET[$key]) && $_GET[$key] == $v) {
             if ($mode == 'die') {
                 die($var);
