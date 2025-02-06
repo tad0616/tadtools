@@ -12,14 +12,15 @@ use XoopsModules\Tad_themes\Tools;
 
 require_once __DIR__ . '/tadtools_header.php';
 
-$op = Request::getString('op');
-$mod_name = Request::getString('mod_name');
-$table = Request::getString('table');
-$sort_col = Request::getString('sort_col');
+$op          = Request::getString('op');
+$mod_name    = Request::getString('mod_name');
+$table       = Request::getString('table');
+$sort_col    = Request::getString('sort_col');
 $primary_key = Request::getString('primary_key');
-$files_sn = Request::getInt('files_sn');
-$sort_arr = Request::getArray('sort_arr');
-$db_prefix = Request::getString('db_prefix');
+$files_sn    = Request::getInt('files_sn');
+$sort_arr    = Request::getArray('sort_arr');
+$db_prefix   = Request::getString('db_prefix');
+$thumbs_dir  = Request::getString('thumbs_dir');
 
 // 關閉除錯訊息
 header('HTTP/1.1 200 OK');
@@ -34,7 +35,7 @@ switch ($op) {
     case 'remove_file':
         $TadUpFiles = new TadUpFiles($mod_name);
         $TadUpFiles->set_db_prefix($db_prefix);
-        if ($TadUpFiles->del_files($files_sn)) {
+        if ($TadUpFiles->del_files($files_sn, '', false, $thumbs_dir)) {
             echo '1';
         }
         exit;
@@ -44,15 +45,15 @@ switch ($op) {
         break;
 }
 
-$dcq_op = Request::getString('dcq_op');
-$dirname = Request::getString('dirname');
-$col_name = Request::getString('col_name');
-$col_sn = Request::getInt('col_sn');
+$dcq_op    = Request::getString('dcq_op');
+$dirname   = Request::getString('dirname');
+$col_name  = Request::getString('col_name');
+$col_sn    = Request::getInt('col_sn');
 $data_name = Request::getString('data_name');
 switch ($dcq_op) {
     case 'save_dcq_sort':
         $col_ids = Request::getArray('col_ids');
-        $sql = 'UPDATE ' . $xoopsDB->prefix("{$dirname}_data_center") . " SET `data_sort`=`data_sort`+1000 WHERE `data_name`='dcq' AND `col_name`=? AND `col_sn`=?";
+        $sql     = 'UPDATE ' . $xoopsDB->prefix("{$dirname}_data_center") . " SET `data_sort`=`data_sort`+1000 WHERE `data_name`='dcq' AND `col_name`=? AND `col_sn`=?";
         Utility::query($sql, 'si', [$col_name, $col_sn]) or die(_TAD_SORT_FAIL . ' (' . date('Y-m-d H:i:s') . ')' . $sql);
 
         $sort = 0;

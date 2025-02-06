@@ -420,7 +420,7 @@ class TadDataCenter
         $sort = 0;
 
         foreach ($TDC as $name => $value) {
-            $name = $myts->addSlashes($name);
+            $name = addslashes($name);
             $values = [];
 
             if (!is_array($value)) {
@@ -434,7 +434,7 @@ class TadDataCenter
                 if ('saveCustomSetupForm' === $dc_op and empty($val)) {
                     continue;
                 }
-                $val = $myts->addSlashes($val);
+                $val = addslashes($val);
 
                 $col_id = $this->col_id ? $this->col_id : "{$this->mid}-{$this->col_name}-{$this->col_sn}-{$name}-{$data_sort}";
 
@@ -479,7 +479,7 @@ class TadDataCenter
         $myts = \MyTextSanitizer::getInstance();
         $sort = $old_data_sort = 0;
         foreach ($data_arr as $name => $value) {
-            $name = $myts->addSlashes($name);
+            $name = addslashes($name);
 
             // 若為接續模式，取出目前最大 data_sort
             if ($mode == 'append') {
@@ -502,7 +502,7 @@ class TadDataCenter
                     $data_sort += $old_data_sort;
                 }
                 $v = json_decode($val, true);
-                $val = $myts->addSlashes($val);
+                $val = addslashes($val);
 
                 $this->delData($name, $data_sort, $this->col_name, $this->col_sn, __FILE__, __LINE__);
 
@@ -953,7 +953,7 @@ class TadDataCenter
                     }
 
                     $json_val = json_encode($item, JSON_UNESCAPED_UNICODE);
-                    $json_val = $myts->addSlashes($json_val);
+                    $json_val = addslashes($json_val);
 
                     $this->delData('dcq', $data_sort, $col_name, $col_sn, __FILE__, __LINE__);
                     if (!empty($item['col_id'])) {

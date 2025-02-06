@@ -13,6 +13,7 @@ class VideoJs
     public $position;
     public $start;
     public $vtt;
+    public $youtube_id;
 
     //建構函數
     public function __construct($id = '', $file = '', $image = '', $mode = '', $autoplay = 'false', $loop = 'false', $position = 'bottom')

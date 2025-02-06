@@ -1,5 +1,4 @@
 <?php
-
 namespace XoopsModules\Tadtools;
 
 use XoopsModules\Tadtools\Utility;
@@ -54,7 +53,7 @@ class Bootstrap5Editable
             </script>
             ";
         }
-        //     return $main;
+        return $main;
         // }
     }
 }

@@ -1,5 +1,4 @@
 <?php
-
 namespace XoopsModules\Tadtools;
 
 use XoopsModules\Tadtools\Utility;
@@ -7,20 +6,20 @@ use XoopsModules\Tadtools\Utility;
 class EasyResponsiveTabs
 {
     public $name;
-    public $my_function = '';
-    public $type = 'default';
-    public $activetab_bg = '#FFFFFF';
-    public $inactive_bg = '#E0D9D9';
-    public $active_border_color = '#9C905C';
+    public $my_function                 = '';
+    public $type                        = 'default';
+    public $activetab_bg                = '#FFFFFF';
+    public $inactive_bg                 = '#E0D9D9';
+    public $active_border_color         = '#9C905C';
     public $active_content_border_color = '#9C905C';
 
     public function __construct($name = '#demoTab', $type = 'default', $activetab_bg = '#FFFFFF', $inactive_bg = '#E0D9D9', $active_border_color = '#9C905C', $active_content_border_color = '#9C905C')
     {
-        $this->name = $name;
-        $this->type = $type;
-        $this->activetab_bg = $activetab_bg;
-        $this->inactive_bg = $inactive_bg;
-        $this->active_border_color = $active_border_color;
+        $this->name                        = $name;
+        $this->type                        = $type;
+        $this->activetab_bg                = $activetab_bg;
+        $this->inactive_bg                 = $inactive_bg;
+        $this->active_border_color         = $active_border_color;
         $this->active_content_border_color = $active_content_border_color;
     }
 
@@ -32,7 +31,7 @@ class EasyResponsiveTabs
     public function rander($tabidentify = 'vert', $function = '')
     {
         global $xoTheme;
-        $jquery = Utility::get_jquery();
+        $jquery          = Utility::get_jquery();
         $responsive_tabs = '';
         if ($xoTheme) {
             $xoTheme->addScript('modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js');
@@ -114,7 +113,7 @@ class EasyResponsiveTabs
     public function render($tabidentify = 'vert', $function = '')
     {
         global $xoTheme;
-        $jquery = Utility::get_jquery();
+        $jquery          = Utility::get_jquery();
         $responsive_tabs = '';
         if ($xoTheme) {
             $xoTheme->addScript('modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js');
@@ -199,7 +198,7 @@ class EasyResponsiveTabs
 use XoopsModules\Tadtools\EasyResponsiveTabs;
 
 $EasyResponsiveTabs = new EasyResponsiveTabs('#demoTab', $type = 'default, vertical, accordion', $activetab_bg = '#B5AC5F', $inactive_bg = '#E0D78C', $active_border_color = '#9C905C', $active_content_border_color = '#9C905C');
-$EasyResponsiveTabs->rander();
+$EasyResponsiveTabs->render();
 
 <div id="demoTab">
 <ul class="resp-tabs-list vert">

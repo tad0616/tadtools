@@ -41,7 +41,7 @@
   background: #d9e6f322;
 }
 
-.vtb ul.unable > li {
+.vtb ul.unable>li {
   background: #efefef;
 }
 
@@ -206,6 +206,7 @@
   ============================*/
 
 @media (max-width: 768px) {
+
   .vtb .vhead,
   .vtb .other-month {
     display: none;
@@ -221,7 +222,7 @@
     /*margin-bottom: -1px;*/
   }
 
-  .vtb li{
+  .vtb li {
     display: block;
     height: auto !important;
     border: 1px solid rgba(200, 200, 200, 0.5);
@@ -239,7 +240,7 @@
   .vtb ul.even li.mobile-title,
   .vtb ul.even li.mobile-title a {
     background: #d9e6f3;
-    color:#224257;
+    color: #224257;
   }
 
   .vtb .date {
@@ -264,6 +265,7 @@
     margin-bottom: 4px;
     border-radius: 4px;
     font-weight: 900;
+    font-size: 90%;
   }
 
   .vtb li.vcell.light,

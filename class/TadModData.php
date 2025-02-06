@@ -564,7 +564,7 @@
 //                 if (\strpos($this->var_type[$col_name], 'int') !== false) {
 //                     $value = (int) $value;
 //                 } else {
-//                     $value = $myts->addSlashes($value);
+//                     $value = addslashes($value);
 //                 }
 //                 $update_arr[] = "`$col_name` = '{$value}'";
 //             }
@@ -602,7 +602,7 @@
 //                 if (\strpos($this->var_type[$col_name], 'int') !== false) {
 //                     $col_val_arr[] = (int) $value;
 //                 } else {
-//                     $col_val_arr[] = $myts->addSlashes($value);
+//                     $col_val_arr[] = addslashes($value);
 //                 }
 //             }
 //         }

@@ -88,7 +88,7 @@ class PageBar
         $this->used_query = array($this->url_page);
         $this->query_str = $this->processQuery($this->used_query);
         $this->glue = ('' == $this->query_str) ? '?' : '&';
-
+        $this->limit = empty($this->limit) ? 10 : $this->limit;
         $this->current = isset($_GET[$this->url_page]) ? max(1, (int) $_GET[$this->url_page]) : 1;
         $this->pTotal = ceil($this->total / $this->limit);
 

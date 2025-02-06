@@ -133,12 +133,12 @@ function mk_bootstrap_menu_options($theme_kind = '', $mode = 'light')
 function directory_list($directory_base_path = '')
 {
     $myts = \MyTextSanitizer::getInstance();
-    $directory_base_path = $myts->addSlashes($directory_base_path);
+    $directory_base_path = addslashes($directory_base_path);
     $directory_base_path = rtrim($directory_base_path, '/') . '/';
     $result_list = [];
     $allfile = glob($directory_base_path . '*');
     foreach ($allfile as $filename) {
-        $filename = $myts->addSlashes($filename);
+        $filename = addslashes($filename);
         $basefilename = str_replace($directory_base_path, '', $filename);
         if (is_dir($filename)) {
             $result_list[$basefilename] = directory_list($filename);
@@ -171,8 +171,8 @@ function save()
     $tt_theme_kind = Request::getArray('tt_theme_kind');
 
     foreach ($tt_use_bootstrap as $tt_theme => $use_bootstrap) {
-        $bootstrap_color = $myts->addSlashes($tt_bootstrap_color[$tt_theme]);
-        $theme_kind = $myts->addSlashes($tt_theme_kind[$tt_theme]);
+        $bootstrap_color = addslashes($tt_bootstrap_color[$tt_theme]);
+        $theme_kind = addslashes($tt_theme_kind[$tt_theme]);
 
         $sql = 'REPLACE INTO `' . $xoopsDB->prefix('tadtools_setup') . '` (`tt_theme`, `tt_use_bootstrap`, `tt_bootstrap_color`, `tt_theme_kind`) VALUES (?, ?, ?, ?)';
         Utility::query($sql, 'ssss', [$tt_theme, $use_bootstrap, $bootstrap_color, $theme_kind]) or Utility::web_error($sql, __FILE__, __LINE__);

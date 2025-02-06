@@ -1,5 +1,4 @@
 <?php
-
 namespace XoopsModules\Tadtools;
 
 use Xmf\Request;
@@ -157,7 +156,7 @@ class TadUpFiles
     public $TadUpFilesThumbDir;
     public $TadUpFilesThumbUrl;
     public $col_name = '';
-    public $col_sn = 0;
+    public $col_sn   = 0;
     public $sort;
     public $subdir = '';
     public $dir;
@@ -166,21 +165,21 @@ class TadUpFiles
     public $filename;
     public $force_filename;
 
-    public $file_dir = '/file';
-    public $image_dir = '/image';
+    public $file_dir   = '/file';
+    public $image_dir  = '/image';
     public $thumbs_dir = '/image/.thumbs';
     public $permission = false;
-    public $upname = 'upfile';
+    public $upname     = 'upfile';
 
-    public $thumb_width = '120px';
-    public $thumb_height = '70px';
-    public $thumb_bg_color = 'transparent';
-    public $thumb_position = 'center center';
-    public $thumb_repeat = 'no-repeat';
-    public $thumb_size = 'contain';
-    public $show_width = 120;
-    public $show_height = 120;
-    public $desc_height = 140;
+    public $thumb_width     = '120px';
+    public $thumb_height    = '70px';
+    public $thumb_bg_color  = 'transparent';
+    public $thumb_position  = 'center center';
+    public $thumb_repeat    = 'no-repeat';
+    public $thumb_size      = 'contain';
+    public $show_width      = 120;
+    public $show_height     = 120;
+    public $desc_height     = 140;
     public $background_size = 'contain';
 
     public $showFancyBox = true;
@@ -194,21 +193,21 @@ class TadUpFiles
     public $other_css;
     public $thumb_css;
 
-    public $tag = '';
-    public $require = '';
-    public $max_size = '';
+    public $tag          = '';
+    public $require      = '';
+    public $max_size     = '';
     public $pdf_force_dl = false;
-    public $reload = false;
-    public $show_path = false;
+    public $reload       = false;
+    public $show_path    = false;
 
     public function __construct($dir = '', $subdir = '', $file = '/file', $image = '/image', $thumbs = '/image/.thumbs')
     {
         global $xoopsDB;
-        if (!empty($dir)) {
+        if (! empty($dir)) {
             $this->set_prefix($dir);
         }
 
-        if (!empty($subdir)) {
+        if (! empty($subdir)) {
             $this->set_dir('subdir', $subdir);
         }
 
@@ -221,17 +220,17 @@ class TadUpFiles
         $this->set_dir('thumbs', $thumbs);
 
         $TadToolsModuleConfig = Utility::getXoopsModuleConfig('tadtools');
-        $this->auto_charset = $TadToolsModuleConfig['auto_charset'];
-        $this->pdf_force_dl = $TadToolsModuleConfig['pdf_force_dl'];
+        $this->auto_charset   = $TadToolsModuleConfig['auto_charset'];
+        $this->pdf_force_dl   = $TadToolsModuleConfig['pdf_force_dl'];
     }
 
     //設定路徑
     public function set_path()
     {
-        $this->TadUpFilesDir = XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$this->subdir}{$this->file_dir}";
-        $this->TadUpFilesUrl = XOOPS_URL . "/uploads/{$this->dir}{$this->subdir}{$this->file_dir}";
-        $this->TadUpFilesImgDir = XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$this->subdir}{$this->image_dir}";
-        $this->TadUpFilesImgUrl = XOOPS_URL . "/uploads/{$this->dir}{$this->subdir}{$this->image_dir}";
+        $this->TadUpFilesDir      = XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$this->subdir}{$this->file_dir}";
+        $this->TadUpFilesUrl      = XOOPS_URL . "/uploads/{$this->dir}{$this->subdir}{$this->file_dir}";
+        $this->TadUpFilesImgDir   = XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$this->subdir}{$this->image_dir}";
+        $this->TadUpFilesImgUrl   = XOOPS_URL . "/uploads/{$this->dir}{$this->subdir}{$this->image_dir}";
         $this->TadUpFilesThumbDir = XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$this->subdir}{$this->thumbs_dir}";
         $this->TadUpFilesThumbUrl = XOOPS_URL . "/uploads/{$this->dir}{$this->subdir}{$this->thumbs_dir}";
     }
@@ -267,8 +266,8 @@ class TadUpFiles
                 $path['url'] = $this->TadUpFilesThumbUrl;
             }
         } else {
-            $path['file']['dir'] = $this->TadUpFilesDir;
-            $path['file']['url'] = $this->TadUpFilesUrl;
+            $path['file']['dir']  = $this->TadUpFilesDir;
+            $path['file']['url']  = $this->TadUpFilesUrl;
             $path['image']['dir'] = $this->TadUpFilesImgDir;
             $path['image']['url'] = $this->TadUpFilesImgUrl;
             $path['thumb']['dir'] = $this->TadUpFilesThumbDir;
@@ -281,27 +280,27 @@ class TadUpFiles
     //設定縮圖背景
     public function set_thumb($width = '', $height = '', $bg_color = '', $position = '', $repeat = '', $size = '')
     {
-        if (!empty($width)) {
+        if (! empty($width)) {
             $this->thumb_width = $width;
         }
 
-        if (!empty($height)) {
+        if (! empty($height)) {
             $this->thumb_height = $height;
         }
 
-        if (!empty($bg_color)) {
+        if (! empty($bg_color)) {
             $this->thumb_bg_color = $bg_color;
         }
 
-        if (!empty($position)) {
+        if (! empty($position)) {
             $this->thumb_position = $position;
         }
 
-        if (!empty($repeat)) {
+        if (! empty($repeat)) {
             $this->thumb_repeat = $repeat;
         }
 
-        if (!empty($size)) {
+        if (! empty($size)) {
             $this->thumb_size = $size;
         }
     }
@@ -315,7 +314,7 @@ class TadUpFiles
     public function set_db_prefix($db_prefix = '')
     {
         global $xoopsDB;
-        $this->db_prefix = $db_prefix;
+        $this->db_prefix         = $db_prefix;
         $this->TadUpFilesTblName = $xoopsDB->prefix("{$db_prefix}_files_center");
     }
 
@@ -352,8 +351,8 @@ class TadUpFiles
     public function set_col($col_name = '', $col_sn = '', $sort = '')
     {
         $this->col_name = $col_name;
-        $this->col_sn = $col_sn;
-        $this->sort = $sort;
+        $this->col_sn   = $col_sn;
+        $this->sort     = $sort;
     }
 
     public function set_files_sn($files_sn = '')
@@ -382,12 +381,12 @@ class TadUpFiles
     //上傳元件
     public function upform($show_edit = false, $upname = 'upfile', $maxlength = '', $show_list_del_file = true, $only_type = '', $thumb = true, $id = '', $show_filename = true)
     {
-        $this->upname = $upname;
+        $this->upname   = $upname;
         $maxlength_code = empty($maxlength) ? '' : "maxlength='{$maxlength}'";
-        $accept = ($only_type) ? "accept='{$only_type}'" : '';
-        $list_del_file = ($show_list_del_file) ? $this->list_del_file($show_edit, $thumb, null, $show_filename) : '';
-        $jquery = Utility::get_jquery(true);
-        $id = empty($id) ? $upname : $id;
+        $accept         = ($only_type) ? "accept='{$only_type}'" : '';
+        $list_del_file  = ($show_list_del_file) ? $this->list_del_file($show_edit, $thumb, null, $show_filename) : '';
+        $jquery         = Utility::get_jquery(true);
+        $id             = empty($id) ? $upname : $id;
 
         $multiple = ($maxlength == 1) ? $maxlength_code : "$maxlength_code multiple='multiple'";
 
@@ -424,11 +423,11 @@ class TadUpFiles
     {
         global $xoopsDB;
 
-        $sql = 'SELECT `groupid`, `name` FROM `' . $xoopsDB->prefix('groups') . "` WHERE `group_type` != 'Anonymous' ORDER BY `groupid`";
+        $sql    = 'SELECT `groupid`, `name` FROM `' . $xoopsDB->prefix('groups') . "` WHERE `group_type` != 'Anonymous' ORDER BY `groupid`";
         $result = Utility::query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $permission = _TUF_PERMISSION_NOTE;
-        $groups = [];
+        $groups     = [];
         while (list($groupid, $name) = $xoopsDB->fetchRow($result)) {
             $groups[$groupid] = $name;
         }
@@ -465,12 +464,12 @@ class TadUpFiles
         }
 
         $all_file = '';
-        $and_tag = $this->tag ? "and `tag`='{$this->tag}'" : '';
-        if (!empty($files_sn_arr)) {
-            $sql = 'SELECT * FROM `' . $this->TadUpFilesTblName . '` WHERE `files_sn` IN (' . implode(',', array_map('addslashes', $files_sn_arr)) . ') ORDER BY `sort`';
+        $and_tag  = $this->tag ? "and `tag`='{$this->tag}'" : '';
+        if (! empty($files_sn_arr)) {
+            $sql    = 'SELECT * FROM `' . $this->TadUpFilesTblName . '` WHERE `files_sn` IN (' . implode(',', array_map('addslashes', $files_sn_arr)) . ') ORDER BY `sort`';
             $result = Utility::query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         } else {
-            $sql = 'SELECT * FROM `' . $this->TadUpFilesTblName . '` WHERE `col_name` = ? AND `col_sn` = ?' . $and_tag . ' ORDER BY `sort`';
+            $sql    = 'SELECT * FROM `' . $this->TadUpFilesTblName . '` WHERE `col_name` = ? AND `col_sn` = ?' . $and_tag . ' ORDER BY `sort`';
             $result = Utility::query($sql, 'si', [$this->col_name, $this->col_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
         }
         $i = 0;
@@ -504,7 +503,7 @@ class TadUpFiles
                         <div class='col-sm-3 text-left'>
                         </div>
                         <div class='col-sm-6 text-center'>
-                            <a href=\"javascript:remove_file('{$files_sn}');\" style='font-size: 0.8rem;' class='text-danger' data-toggle=\"tooltip\" title=\"" . sprintf(_TM_FILE_DEL_BY, $uid_name, $uid_name) . "\">
+                            <a href=\"javascript:remove_file('{$files_sn}', '{$this->thumbs_dir}');\" style='font-size: 0.8rem;' class='text-danger' data-toggle=\"tooltip\" title=\"" . sprintf(_TM_FILE_DEL_BY, $uid_name, $uid_name) . "\">
                                 <i class=\"fa fa-trash\"></i> " . _TAD_DEL . "
                             </a></div>
                         <div class='col-sm-3 text-right'>
@@ -525,7 +524,7 @@ class TadUpFiles
                             <a href=\"javascript:rotate_img('left','{$files_sn}','{$this->dir}{$this->subdir}','{$this->image_dir}','{$this->thumbs_dir}','{$file_name}','{$file_type}')\" id='left90'><i class=\"fa fa-undo text-success\" title='" . TADTOOLS_ROTATE_LEFT . "'></i></a>
                         </td>
                         <td class='text-center'>
-                            <a href=\"javascript:remove_file('{$files_sn}');\" style='font-size: 0.8rem;' class='text-danger' data-toggle=\"tooltip\" title=\"" . sprintf(_TM_FILE_DEL_BY, $uid_name, $uid_name) . "\">
+                            <a href=\"javascript:remove_file('{$files_sn}', '{$this->thumbs_dir}');\" style='font-size: 0.8rem;' class='text-danger' data-toggle=\"tooltip\" title=\"" . sprintf(_TM_FILE_DEL_BY, $uid_name, $uid_name) . "\">
                                 <i class=\"fa fa-times text-danger\" title=\"" . _TAD_DEL . "\"></i>
                             </a>
                         </td>
@@ -540,16 +539,16 @@ class TadUpFiles
                     $thumb_style2 = "<a class='thumbnail' id='thumb{$files_sn}' style='display:inline-block; width:{$this->thumb_width};height:{$this->thumb_height};overflow:hidden;background-color:{$this->thumb_bg_color};background-image:url({$thumb_pic});background-position:{$this->thumb_position};background-repeat:{$this->thumb_repeat};background-size:{$this->thumb_size}; margin-bottom: 4px;' title='{$description}'></a>";
                 }
 
-                $w = 'width:130px; word-break: break-word;';
+                $w  = 'width:130px; word-break: break-word;';
                 $w2 = "width:{$this->thumb_width}; float:left; margin-right:10px;";
             } else {
-                $thumb_tool = "<a href=\"javascript:remove_file('{$files_sn}');\" style='font-size: 0.8rem;' class='text-danger' data-toggle=\"tooltip\" title=\"" . sprintf(_TM_FILE_DEL_BY, $uid_name, $uid_name) . "\">
+                $thumb_tool = "<a href=\"javascript:remove_file('{$files_sn}', '{$this->thumbs_dir}');\" style='font-size: 0.8rem;' class='text-danger' data-toggle=\"tooltip\" title=\"" . sprintf(_TM_FILE_DEL_BY, $uid_name, $uid_name) . "\">
                                 <i class=\"fa fa-trash\"></i> " . _TAD_DEL . '</a></div>';
-                $thumb_style = '';
+                $thumb_style  = '';
                 $thumb_style2 = '';
-                $thumb_pic = '';
-                $w = '';
-                $w2 = 'list-style-position: outside;';
+                $thumb_pic    = '';
+                $w            = '';
+                $w2           = 'list-style-position: outside;';
             }
 
             $filename_label = '';
@@ -557,7 +556,7 @@ class TadUpFiles
             if ($show_edit === true or $show_edit === 'full') {
                 // 權限設定
                 if ($this->permission) {
-                    $sql = 'SELECT `gperm_groupid` FROM `' . $xoopsDB->prefix('group_permission') . '` WHERE `gperm_name` = ? AND `gperm_itemid` = ? ORDER BY `gperm_groupid`';
+                    $sql     = 'SELECT `gperm_groupid` FROM `' . $xoopsDB->prefix('group_permission') . '` WHERE `gperm_name` = ? AND `gperm_itemid` = ? ORDER BY `gperm_groupid`';
                     $result2 = Utility::query($sql, 'si', ['dl_group', $files_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
 
                     $gperm_groupid_arr = [];
@@ -596,7 +595,7 @@ class TadUpFiles
                 $file_href = ($kind === 'file') ? "href='{$this->TadUpFilesUrl}/{$file_name}'" : "href='{$this->TadUpFilesImgUrl}/{$file_name}' class='fancybox_demo' rel='demo'";
                 $all_file .= "
                 <li id='fdtr_{$files_sn}' name='{$files_sn}'>
-                    <i class='fa fa-times-circle' aria-hidden='true' onClick=\"remove_file('{$files_sn}');\" style='color: red;position: relative; float:right; z-index:10;' data-toggle=\"tooltip\" title=\"" . sprintf(_TM_FILE_DEL_BY, $uid_name, $uid_name) . "\"></i>
+                    <i class='fa fa-times-circle' aria-hidden='true' onClick=\"remove_file('{$files_sn}', '{$this->thumbs_dir}');\" style='color: red;position: relative; float:right; z-index:10;' data-toggle=\"tooltip\" title=\"" . sprintf(_TM_FILE_DEL_BY, $uid_name, $uid_name) . "\"></i>
                     <a $file_href style='position: relative;z-index:9;'>{$show_file_name}</a>
                 </li>
                 ";
@@ -643,12 +642,12 @@ class TadUpFiles
                     }
                 });
             });
-            function remove_file(files_sn){
+            function remove_file(files_sn, thumbs_dir){
                 var sure = window.confirm('" . _TAD_DEL_CONFIRM . "');
                 if (!sure){
                     return;
                 } else{
-                    $.post('" . XOOPS_URL . "/modules/tadtools/ajax_file.php', {op: 'remove_file', mod_name: '{$this->dir}', db_prefix: '{$this->db_prefix}', files_sn: files_sn}, function(data){
+                    $.post('" . XOOPS_URL . "/modules/tadtools/ajax_file.php', {op: 'remove_file', mod_name: '{$this->dir}', db_prefix: '{$this->db_prefix}', files_sn: files_sn, thumbs_dir: thumbs_dir}, function(data){
                         if(data=='1'){
                             $('#fdtr_' + files_sn).html('<li>已刪除</li>');
                             $('#fdtr_' + files_sn).remove();
@@ -712,7 +711,7 @@ class TadUpFiles
         global $xoopsDB, $xoopsUser;
 
         $this->upname = $upname;
-        $myts = \MyTextSanitizer::getInstance();
+        $myts         = \MyTextSanitizer::getInstance();
 
         if ($hash) {
             $this->set_hash($hash);
@@ -726,8 +725,8 @@ class TadUpFiles
             $thumb_width = '240';
         }
         //新增限制允許檔案類型
-        if (!empty($allow)) {
-            $allows = explode(';', $allow);
+        if (! empty($allow)) {
+            $allows    = explode(';', $allow);
             $allow_arr = [];
             foreach ($allows as $ext) {
                 $mime_arr = $this->ext2mime($ext);
@@ -741,7 +740,7 @@ class TadUpFiles
 
         //新增限制不允許檔案類型
         $deny_arr = [];
-        if (!empty($deny)) {
+        if (! empty($deny)) {
             $denys = explode(';', $deny);
             foreach ($denys as $ext) {
                 $mime_arr = $this->ext2mime($ext);
@@ -767,8 +766,8 @@ class TadUpFiles
         // 更新權限
         if ($this->permission) {
             $modhandler = xoops_getHandler('module');
-            $theModule = $modhandler->getByDirname($this->dir);
-            $mod_id = $theModule->mid();
+            $theModule  = $modhandler->getByDirname($this->dir);
+            $mod_id     = $theModule->mid();
         }
 
         //儲存檔案描述
@@ -776,7 +775,7 @@ class TadUpFiles
 
         $dl_group = Request::getArray('dl_group');
 
-        if (!empty($save_description)) {
+        if (! empty($save_description)) {
             foreach ($save_description as $save_files_sn => $files_desc) {
                 $this->update_col_val($save_files_sn, 'description', $files_desc);
                 // 順便更新權限
@@ -786,7 +785,7 @@ class TadUpFiles
 
                     foreach ($dl_group[$save_files_sn] as $groupid) {
                         $gperm_groupid = (int) $groupid;
-                        $sql = 'INSERT INTO `' . $xoopsDB->prefix('group_permission') . '` (`gperm_groupid`, `gperm_itemid`, `gperm_modid`, `gperm_name`) VALUES (?, ?, ?, ?)';
+                        $sql           = 'INSERT INTO `' . $xoopsDB->prefix('group_permission') . '` (`gperm_groupid`, `gperm_itemid`, `gperm_modid`, `gperm_name`) VALUES (?, ?, ?, ?)';
                         Utility::query($sql, 'iiis', [$gperm_groupid, $save_files_sn, $mod_id, 'dl_group']) or Utility::web_error($sql, __FILE__, __LINE__);
                     }
                 }
@@ -795,7 +794,7 @@ class TadUpFiles
         //刪除勾選檔案
         $del_file = Request::getArray('del_file');
 
-        if (!empty($del_file)) {
+        if (! empty($del_file)) {
             foreach ($del_file as $del_files_sn) {
                 $this->del_files($del_files_sn);
             }
@@ -804,7 +803,7 @@ class TadUpFiles
         $files = [];
         foreach ($_FILES[$upname] as $k => $l) {
             foreach ($l as $i => $v) {
-                if (!array_key_exists($i, $files)) {
+                if (! array_key_exists($i, $files)) {
                     $files[$i] = [];
                 }
                 $files[$i][$k] = $v;
@@ -814,20 +813,20 @@ class TadUpFiles
         // die(var_dump($files));
         $all_files_sn = $all_original_filename = [];
         foreach ($files as $file) {
-            if (function_exists('exif_read_data') && isset($file['tmp_name']) && !empty($file['tmp_name'])) {
-                $exif = exif_read_data($file['tmp_name'], null, true);
+            if (function_exists('exif_read_data') && isset($file['tmp_name']) && ! empty($file['tmp_name'])) {
+                $exif       = exif_read_data($file['tmp_name'], null, true);
                 $creat_date = $exif['IFD0']['DateTime'];
-                $Model360 = ['LG-R105', 'RICOH THETA S'];
+                $Model360   = ['LG-R105', 'RICOH THETA S'];
                 if (in_array($exif['IFD0']['Model'], $Model360)) {
-                    $this->tag = '360';
+                    $this->tag   = '360';
                     $thumb_width = $thumb_width * 2;
-                    $main_width = 0;
+                    $main_width  = 0;
                 }
             }
             $randStr = Utility::randStr(3);
 
             //先刪除舊檔
-            if (!empty($files_sn)) {
+            if (! empty($files_sn)) {
                 $this->del_files($files_sn);
             }
 
@@ -842,7 +841,7 @@ class TadUpFiles
             if ($file_handle->uploaded) {
                 //取得副檔名
                 $file_ext = $file_handle->file_src_name_ext;
-                $ext = mb_strtolower($file_ext);
+                $ext      = mb_strtolower($file_ext);
 
                 //判斷檔案種類
                 if ($ext === 'jpg' or $ext === 'jpeg' or $ext === 'png' or $ext === 'gif') {
@@ -853,11 +852,11 @@ class TadUpFiles
 
                 $file_handle->file_safe_name = false;
                 // $file_handle->mime_check = (empty($allow) and empty($deny)) ? false : true;
-                $file_handle->mime_check = true;
-                $file_handle->file_overwrite = true;
-                $file_handle->no_script = false;
+                $file_handle->mime_check        = true;
+                $file_handle->file_overwrite    = true;
+                $file_handle->no_script         = false;
                 $file_handle->file_new_name_ext = $ext;
-                $hash_name = md5(mt_rand(0, 1000) . $file['name']);
+                $hash_name                      = md5(Utility::randStr(8) . $file['name'] . time());
                 if ($this->hash) {
                     $new_filename = $hash_name;
                 } else {
@@ -881,22 +880,22 @@ class TadUpFiles
                 $file_handle->file_new_name_body = $new_filename;
 
                 //若是圖片才縮圖
-                if ($kind === 'img' and !empty($main_width)) {
+                if ($kind === 'img' and ! empty($main_width)) {
                     if ($file_handle->image_src_x > $main_width) {
-                        $file_handle->image_resize = true;
-                        $file_handle->image_x = $main_width;
+                        $file_handle->image_resize  = true;
+                        $file_handle->image_x       = $main_width;
                         $file_handle->image_ratio_y = true;
                     }
                 }
-                $path = ($kind === 'img') ? $this->TadUpFilesImgDir : $this->TadUpFilesDir;
+                $path   = ($kind === 'img') ? $this->TadUpFilesImgDir : $this->TadUpFilesDir;
                 $readme = ($this->hash) ? "{$path}/{$hash_name}_info.txt" : '';
 
                 //新增限制檔案類型
-                if (!empty($allow_arr)) {
+                if (! empty($allow_arr)) {
                     $file_handle->allowed = $allow_arr;
                 }
 
-                if (!empty($deny_arr)) {
+                if (! empty($deny_arr)) {
                     $file_handle->forbidden = $deny_arr;
                 }
 
@@ -904,28 +903,28 @@ class TadUpFiles
                 $file_handle->auto_create_dir = true;
 
                 $upload_date = date('Y-m-d H:i:s');
-                $uid = is_object($xoopsUser) ? $xoopsUser->uid() : 0;
+                $uid         = is_object($xoopsUser) ? $xoopsUser->uid() : 0;
 
                 //若是圖片才製作小縮圖
                 if ($kind === 'img') {
                     $file_handle->file_safe_name = false;
                     // $file_handle->mime_check = (empty($allow) and empty($deny)) ? false : true;
-                    $file_handle->mime_check = true;
-                    $file_handle->file_overwrite = true;
-                    $file_handle->file_new_name_ext = $ext;
+                    $file_handle->mime_check         = true;
+                    $file_handle->file_overwrite     = true;
+                    $file_handle->file_new_name_ext  = $ext;
                     $file_handle->file_new_name_body = $new_filename;
 
                     if ($file_handle->image_src_x > $thumb_width) {
-                        $file_handle->image_resize = true;
-                        $file_handle->image_x = $thumb_width;
+                        $file_handle->image_resize  = true;
+                        $file_handle->image_x       = $thumb_width;
                         $file_handle->image_ratio_y = true;
                     }
                     //新增限制檔案類型
-                    if (!empty($allow_arr)) {
+                    if (! empty($allow_arr)) {
                         $file_handle->allowed = $allow_arr;
                     }
 
-                    if (!empty($deny_arr)) {
+                    if (! empty($deny_arr)) {
                         $file_handle->forbidden = $deny_arr;
                     }
                     $file_handle->process($this->TadUpFilesThumbDir);
@@ -972,18 +971,18 @@ class TadUpFiles
                             $dl_group = Request::getArray('dl_group');
                             foreach ($dl_group['new'] as $groupid) {
                                 $gperm_groupid = (int) $groupid;
-                                $sql = 'INSERT INTO `' . $xoopsDB->prefix('group_permission') . '` (`gperm_groupid`, `gperm_itemid`, `gperm_modid`, `gperm_name`) VALUES (?, ?, ?, ?)';
+                                $sql           = 'INSERT INTO `' . $xoopsDB->prefix('group_permission') . '` (`gperm_groupid`, `gperm_itemid`, `gperm_modid`, `gperm_name`) VALUES (?, ?, ?, ?)';
                                 Utility::query($sql, 'iiis', [$gperm_groupid, $insert_files_sn, $mod_id, 'dl_group']) or Utility::web_error($sql, __FILE__, __LINE__);
 
                             }
                         }
                     } else {
-                        $description = !isset($save_description[$files_sn]) ? $save_description[$files_sn] : $description;
-                        $sql = 'REPLACE INTO `' . $this->TadUpFilesTblName . '` (`files_sn`, `col_name`, `col_sn`, `sort`, `kind`, `file_name`, `file_type`, `file_size`, `description`, `original_filename`, `sub_dir`, `hash_filename`, `upload_date`, `uid`, `tag`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                        $description = ! isset($save_description[$files_sn]) ? $save_description[$files_sn] : $description;
+                        $sql         = 'REPLACE INTO `' . $this->TadUpFilesTblName . '` (`files_sn`, `col_name`, `col_sn`, `sort`, `kind`, `file_name`, `file_type`, `file_size`, `description`, `original_filename`, `sub_dir`, `hash_filename`, `upload_date`, `uid`, `tag`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
                         Utility::query($sql, 'isiisssisssssis', [$files_sn, $this->col_name, $this->col_sn, $this->sort, $kind, $file_name, $file['type'], $file['size'], $description, $file['name'], $this->subdir, $hash_name, $upload_date, $uid, $this->tag]) or Utility::web_error($sql, __FILE__, __LINE__);
                     }
 
-                    $all_files_sn[] = $insert_files_sn;
+                    $all_files_sn[]                          = $insert_files_sn;
                     $all_original_filename[$insert_files_sn] = $file['name'];
                 } else {
                     redirect_header($_SERVER["HTTP_REFERER"], 3, 'Error:' . $file_handle->error);
@@ -1017,16 +1016,16 @@ class TadUpFiles
         }
 
         if (is_array($from)) {
-            $ext = substr(strrchr($from['name'], '.'), 1);
+            $ext      = substr(strrchr($from['name'], '.'), 1);
             $filename = empty($filename_new) ? $from['name'] : "{$filename_new}.{$ext}";
-            $type = $from['type'];
-            $size = $from['size'];
-            $from = $from['tmp_name'];
+            $type     = $from['type'];
+            $size     = $from['size'];
+            $from     = $from['tmp_name'];
         } else {
             $filename = empty($filename_new) ? Utility::get_basename($from) : $filename_new;
-            $type = $this->mime_content_type($filename);
-            $size = filesize($from);
-            $ext = substr(strrchr($filename, '.'), 1);
+            $type     = $this->mime_content_type($filename);
+            $size     = filesize($from);
+            $ext      = substr(strrchr($filename, '.'), 1);
         }
 
         //取得副檔名
@@ -1054,25 +1053,25 @@ class TadUpFiles
             $this->set_hash($hash);
         }
 
-        if (!$only_import2db) {
+        if (! $only_import2db) {
             //先刪除舊檔
-            if (!empty($files_sn)) {
+            if (! empty($files_sn)) {
                 $this->del_files($files_sn);
             }
         }
 
-        $randStr = Utility::randStr(3);
-        $path = ($kind === 'img') ? $this->TadUpFilesImgDir : $this->TadUpFilesDir;
+        $randStr      = Utility::randStr(3);
+        $path         = ($kind === 'img') ? $this->TadUpFilesImgDir : $this->TadUpFilesDir;
         $new_filename = ($safe_name) ? "{$this->col_name}_{$this->col_sn}_{$this->sort}_{$randStr}.{$ext}" : $filename;
 
         Utility::mk_dir($path);
 
-        $readme = '';
-        $hash_name = md5(mt_rand(0, 1000) . $filename);
+        $readme    = '';
+        $hash_name = md5(Utility::randStr(8) . $filename . time());
         if ($this->hash) {
             $hash_filename = $hash_name . '.' . $ext;
-            $readme = "{$path}/{$hash_name}_info.txt";
-            $fp = fopen($readme, 'wb');
+            $readme        = "{$path}/{$hash_name}_info.txt";
+            $fp            = fopen($readme, 'wb');
             fwrite($fp, $filename);
             fclose($fp);
         } else {
@@ -1080,21 +1079,21 @@ class TadUpFiles
         }
 
         $upload_date = date('Y-m-d H:i:s');
-        $uid = is_object($xoopsUser) ? $xoopsUser->uid() : 0;
+        $uid         = is_object($xoopsUser) ? $xoopsUser->uid() : 0;
 
         //若是圖片才縮圖
-        if ($kind === 'img' and !empty($main_width)) {
-            $filename = Utility::auto_charset($filename);
+        if ($kind === 'img' and ! empty($main_width)) {
+            $filename  = Utility::auto_charset($filename);
             $new_thumb = $this->TadUpFilesThumbDir . '/' . $hash_filename;
 
-            if (!$only_import2db) {
+            if (! $only_import2db) {
                 if (file_exists($path . '/' . $hash_filename)) {
                     unlink($path . '/' . $hash_filename);
                 }
             }
 
             if (function_exists('exif_read_data')) {
-                $exif = exif_read_data($filename, null, true);
+                $exif     = exif_read_data($filename, null, true);
                 $Model360 = ['LG-R105', 'RICOH THETA S'];
                 if (in_array($exif['IFD0']['Model'], $Model360)) {
                     $this->tag = '360';
@@ -1105,7 +1104,7 @@ class TadUpFiles
             Utility::generateThumbnail($from, $new_thumb, $thumb_width);
 
             $copy_or_link = true;
-            if (!$only_import2db) {
+            if (! $only_import2db) {
                 if ($link) {
                     $copy_or_link = symlink($from, $path . '/' . $hash_filename);
                 } else {
@@ -1135,7 +1134,7 @@ class TadUpFiles
 
         } else {
             $copy_or_link = true;
-            if (!$only_import2db) {
+            if (! $only_import2db) {
                 if ($link) {
                     $copy_or_link = symlink($from, $path . '/' . $hash_filename);
                 } else {
@@ -1143,7 +1142,7 @@ class TadUpFiles
                 }
             }
             if ($copy_or_link or $only_import2db) {
-                $filename = Utility::auto_charset($filename);
+                $filename    = Utility::auto_charset($filename);
                 $description = (empty($files_sn) or empty($desc)) ? $filename : $desc;
 
                 if (empty($files_sn)) {
@@ -1169,66 +1168,66 @@ class TadUpFiles
     protected function mime_content_type($filename)
     {
         $mime_types = [
-            'txt' => 'text/plain',
-            'htm' => 'text/html',
+            'txt'  => 'text/plain',
+            'htm'  => 'text/html',
             'html' => 'text/html',
-            'php' => 'text/html',
-            'css' => 'text/css',
-            'csv' => 'text/comma-separated-values',
-            'js' => 'application/javascript',
+            'php'  => 'text/html',
+            'css'  => 'text/css',
+            'csv'  => 'text/comma-separated-values',
+            'js'   => 'application/javascript',
             'json' => 'application/json',
-            'xml' => 'application/xml',
-            'swf' => 'application/x-shockwave-flash',
-            'flv' => 'video/x-flv',
+            'xml'  => 'application/xml',
+            'swf'  => 'application/x-shockwave-flash',
+            'flv'  => 'video/x-flv',
 
             // images
-            'png' => 'image/png',
-            'jpe' => 'image/jpeg',
+            'png'  => 'image/png',
+            'jpe'  => 'image/jpeg',
             'jpeg' => 'image/jpeg',
-            'jpg' => 'image/jpeg',
-            'gif' => 'image/gif',
-            'bmp' => 'image/bmp',
-            'ico' => 'image/vnd.microsoft.icon',
+            'jpg'  => 'image/jpeg',
+            'gif'  => 'image/gif',
+            'bmp'  => 'image/bmp',
+            'ico'  => 'image/vnd.microsoft.icon',
             'tiff' => 'image/tiff',
-            'tif' => 'image/tiff',
-            'svg' => 'image/svg+xml',
+            'tif'  => 'image/tiff',
+            'svg'  => 'image/svg+xml',
             'svgz' => 'image/svg+xml',
 
             // archives
-            'zip' => 'application/zip',
-            'rar' => 'application/x-rar-compressed',
-            'exe' => 'application/x-msdownload',
-            'msi' => 'application/x-msdownload',
-            'cab' => 'application/vnd.ms-cab-compressed',
+            'zip'  => 'application/zip',
+            'rar'  => 'application/x-rar-compressed',
+            'exe'  => 'application/x-msdownload',
+            'msi'  => 'application/x-msdownload',
+            'cab'  => 'application/vnd.ms-cab-compressed',
 
             // audio/video
-            'mp3' => 'audio/mpeg',
-            'qt' => 'video/quicktime',
-            'mov' => 'video/quicktime',
+            'mp3'  => 'audio/mpeg',
+            'qt'   => 'video/quicktime',
+            'mov'  => 'video/quicktime',
 
             // adobe
-            'pdf' => 'application/pdf',
-            'psd' => 'image/vnd.adobe.photoshop',
-            'ai' => 'application/postscript',
-            'eps' => 'application/postscript',
-            'ps' => 'application/postscript',
+            'pdf'  => 'application/pdf',
+            'psd'  => 'image/vnd.adobe.photoshop',
+            'ai'   => 'application/postscript',
+            'eps'  => 'application/postscript',
+            'ps'   => 'application/postscript',
 
             // ms office
-            'doc' => 'application/msword',
-            'rtf' => 'application/rtf',
-            'xls' => 'application/vnd.ms-excel',
-            'ppt' => 'application/vnd.ms-powerpoint',
+            'doc'  => 'application/msword',
+            'rtf'  => 'application/rtf',
+            'xls'  => 'application/vnd.ms-excel',
+            'ppt'  => 'application/vnd.ms-powerpoint',
 
             // open office
-            'odt' => 'application/vnd.oasis.opendocument.text',
-            'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
+            'odt'  => 'application/vnd.oasis.opendocument.text',
+            'ods'  => 'application/vnd.oasis.opendocument.spreadsheet',
         ];
 
         $ext = mb_strtolower(array_pop(explode('.', $filename)));
         if (array_key_exists($ext, $mime_types)) {
             return $mime_types[$ext];
         } elseif (function_exists('finfo_open')) {
-            $finfo = finfo_open(FILEINFO_MIME);
+            $finfo    = finfo_open(FILEINFO_MIME);
             $mimetype = finfo_file($finfo, $filename);
             finfo_close($finfo);
 
@@ -1266,7 +1265,7 @@ class TadUpFiles
         ini_set('memory_limit', '200M');
 
         //先刪除舊檔
-        if (!empty($files_sn)) {
+        if (! empty($files_sn)) {
             $this->del_files($files_sn);
         }
 
@@ -1276,8 +1275,8 @@ class TadUpFiles
         }
 
         //新增限制允許檔案類型
-        if (!empty($allow)) {
-            $allows = explode(';', $allow);
+        if (! empty($allow)) {
+            $allows    = explode(';', $allow);
             $allow_arr = [];
             foreach ($allows as $ext) {
                 $mime_arr = $this->ext2mime($ext);
@@ -1291,7 +1290,7 @@ class TadUpFiles
 
         //新增限制不允許檔案類型
         $deny_arr = [];
-        if (!empty($deny)) {
+        if (! empty($deny)) {
             $denys = explode(';', $deny);
             foreach ($denys as $ext) {
                 $mime_arr = $this->ext2mime($ext);
@@ -1306,10 +1305,10 @@ class TadUpFiles
             }
         }
 
-        $file['name'] = $myts->addSlashes($name);
+        $file['name']     = addslashes($name);
         $file['tmp_name'] = $tmp_name;
-        $file['type'] = $type;
-        $file['size'] = $size;
+        $file['type']     = $type;
+        $file['size']     = $size;
 
         //取得檔案
         $file_handle = new \Verot\Upload\Upload($file, 'zh_TW');
@@ -1324,13 +1323,13 @@ class TadUpFiles
                 $kind = 'file';
             }
 
-            $hash_name = md5(mt_rand(0, 1000) . $name);
-            $randStr = Utility::randStr(3);
+            $hash_name = md5(Utility::randStr(8) . $name . time());
+            $randStr   = Utility::randStr(3);
 
             $file_handle->file_safe_name = false;
             // $file_handle->mime_check = (empty($allow) and empty($deny)) ? false : true;
-            $file_handle->mime_check = true;
-            $file_handle->file_overwrite = true;
+            $file_handle->mime_check        = true;
+            $file_handle->file_overwrite    = true;
             $file_handle->file_new_name_ext = $ext;
             if ($this->hash) {
                 $file_handle->file_new_name_body = $hash_name;
@@ -1339,10 +1338,10 @@ class TadUpFiles
             }
 
             //若是圖片才縮圖
-            if ($kind === 'img' and !empty($main_width)) {
+            if ($kind === 'img' and ! empty($main_width)) {
                 if ($file_handle->image_src_x > $main_width) {
-                    $file_handle->image_resize = true;
-                    $file_handle->image_x = $main_width;
+                    $file_handle->image_resize  = true;
+                    $file_handle->image_x       = $main_width;
                     $file_handle->image_ratio_y = true;
                 }
             }
@@ -1351,11 +1350,11 @@ class TadUpFiles
             $readme = ($this->hash) ? "{$path}/{$hash_name}_info.txt" : '';
 
             //新增限制檔案類型
-            if (!empty($allow_arr)) {
+            if (! empty($allow_arr)) {
                 $file_handle->allowed = $allow_arr;
             }
 
-            if (!empty($deny_arr)) {
+            if (! empty($deny_arr)) {
                 $file_handle->forbidden = $deny_arr;
             }
 
@@ -1363,14 +1362,14 @@ class TadUpFiles
             $file_handle->auto_create_dir = true;
 
             $upload_date = date('Y-m-d H:i:s');
-            $uid = is_object($xoopsUser) ? $xoopsUser->uid() : 0;
+            $uid         = is_object($xoopsUser) ? $xoopsUser->uid() : 0;
 
             //若是圖片才製作小縮圖
             if ($kind === 'img') {
                 $file_handle->file_safe_name = false;
                 // $file_handle->mime_check = (empty($allow) and empty($deny)) ? false : true;
-                $file_handle->mime_check = true;
-                $file_handle->file_overwrite = true;
+                $file_handle->mime_check        = true;
+                $file_handle->file_overwrite    = true;
                 $file_handle->file_new_name_ext = $ext;
                 if ($this->hash) {
                     $file_handle->file_new_name_body = $hash_name;
@@ -1378,17 +1377,17 @@ class TadUpFiles
                     $file_handle->file_new_name_body = ($safe_name) ? "{$this->col_name}_{$this->col_sn}_{$this->sort}_{$randStr}" : $file_handle->file_src_name_body;
                 }
                 if ($file_handle->image_src_x > $thumb_width) {
-                    $file_handle->image_resize = true;
-                    $file_handle->image_x = $thumb_width;
+                    $file_handle->image_resize  = true;
+                    $file_handle->image_x       = $thumb_width;
                     $file_handle->image_ratio_y = true;
                 }
 
                 //新增限制檔案類型
-                if (!empty($allow_arr)) {
+                if (! empty($allow_arr)) {
                     $file_handle->allowed = $allow_arr;
                 }
 
-                if (!empty($deny_arr)) {
+                if (! empty($deny_arr)) {
                     $file_handle->forbidden = $deny_arr;
                 }
 
@@ -1396,9 +1395,9 @@ class TadUpFiles
                 $file_handle->auto_create_dir = true;
 
                 if (function_exists('exif_read_data')) {
-                    $exif = exif_read_data($file['tmp_name'], null, true);
+                    $exif       = exif_read_data($file['tmp_name'], null, true);
                     $creat_date = $exif['IFD0']['DateTime'];
-                    $Model360 = ['LG-R105', 'RICOH THETA S'];
+                    $Model360   = ['LG-R105', 'RICOH THETA S'];
                     if (in_array($exif['IFD0']['Model'], $Model360)) {
                         $this->tag = '360';
                     }
@@ -1459,7 +1458,7 @@ class TadUpFiles
     public function auto_sort()
     {
         global $xoopsDB;
-        $sql = 'SELECT MAX(sort) FROM `' . $this->TadUpFilesTblName . '` WHERE `col_name` = ? AND `col_sn` = ?';
+        $sql    = 'SELECT MAX(sort) FROM `' . $this->TadUpFilesTblName . '` WHERE `col_name` = ? AND `col_sn` = ?';
         $result = Utility::query($sql, 'si', [$this->col_name, $this->col_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         list($max) = $xoopsDB->fetchRow($result);
@@ -1473,7 +1472,7 @@ class TadUpFiles
         global $xoopsDB;
 
         $myts = \MyTextSanitizer::getInstance();
-        $col = $myts->addSlashes($col);
+        $col  = addslashes($col);
 
         $sql = 'UPDATE `' . $this->TadUpFilesTblName . '` SET `' . $col . '` = ? WHERE `files_sn` = ?';
         Utility::query($sql, 'si', [$val, $files_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -1481,31 +1480,31 @@ class TadUpFiles
     }
 
     //刪除實體檔案
-    public function del_files($files_sn = '', $trash_can_table = '', $force = false)
+    public function del_files($files_sn = '', $trash_can_table = '', $force = false, $thumb_dir = '')
     {
         global $xoopsDB, $xoopsUser;
 
         $modhandler = xoops_getHandler('module');
-        $theModule = $modhandler->getByDirname($this->dir);
-        $mod_id = $theModule->mid();
-        $isAdmin = $xoopsUser ? $xoopsUser->isAdmin($mod_id) : false;
-        $my_uid = $xoopsUser ? $xoopsUser->uid() : 0;
+        $theModule  = $modhandler->getByDirname($this->dir);
+        $mod_id     = $theModule->mid();
+        $isAdmin    = $xoopsUser ? $xoopsUser->isAdmin($mod_id) : false;
+        $my_uid     = $xoopsUser ? $xoopsUser->uid() : 0;
 
         $del_what = '';
-        $params = [];
-        $types = '';
+        $params   = [];
+        $types    = '';
 
-        if (!empty($files_sn)) {
+        if (! empty($files_sn)) {
             $del_what = '`files_sn`=?';
             $params[] = $files_sn;
             $types .= 'i';
-        } elseif (!empty($this->col_name) && !empty($this->col_sn)) {
+        } elseif (! empty($this->col_name) && ! empty($this->col_sn)) {
             $del_what = '`col_name`=? AND `col_sn`=?';
             $params[] = $this->col_name;
             $params[] = $this->col_sn;
             $types .= 'si';
 
-            if (!empty($this->sort)) {
+            if (! empty($this->sort)) {
                 $del_what .= ' AND `sort`=?';
                 $params[] = $this->sort;
                 $types .= 'i';
@@ -1516,7 +1515,7 @@ class TadUpFiles
             return false;
         }
 
-        $sql = "SELECT * FROM `{$this->TadUpFilesTblName}` WHERE {$del_what}";
+        $sql    = "SELECT * FROM `{$this->TadUpFilesTblName}` WHERE {$del_what}";
         $result = Utility::query($sql, $types, $params) or die($sql);
 
         $del_amount = 0;
@@ -1527,7 +1526,7 @@ class TadUpFiles
             if ($isAdmin or $uid == $my_uid or empty($uid) or $force) {
                 $this->set_col($col_name, $col_sn, $sort);
 
-                if (!empty($trash_can_table)) {
+                if (! empty($trash_can_table)) {
                     $sql = 'REPLACE INTO `' . $xoopsDB->prefix($trash_can_table) . '` SELECT * FROM `' . $this->TadUpFilesTblName . '` WHERE `files_sn` = ?';
                     Utility::query($sql, 'i', [$files_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
                 }
@@ -1535,17 +1534,19 @@ class TadUpFiles
                 Utility::query($del_sql, 'i', [$files_sn]) or Utility::web_error($del_sql, __FILE__, __LINE__);
 
                 if ($kind === 'img') {
-                    // die(XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$sub_dir}{$this->image_dir}/{$file_name}");
-                    unlink(XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$sub_dir}{$this->image_dir}/{$file_name}");
-                    unlink(XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$sub_dir}{$this->thumbs_dir}/{$file_name}");
-                    if (!empty($hash_filename)) {
-                        unlink(XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$sub_dir}{$this->image_dir}/{$hash_filename}");
-                        unlink(XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$sub_dir}{$this->thumbs_dir}/{$hash_filename}");
+                    $image_dir = empty($sub_dir) ? $this->image_dir : $sub_dir;
+                    unlink(XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$image_dir}/{$file_name}");
+                    $thumbs_dir = empty($thumb_dir) ? $this->thumbs_dir : $image_dir . '/' . $thumb_dir;
+                    unlink(XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$thumbs_dir}/{$file_name}");
+                    if (! empty($hash_filename)) {
+                        unlink(XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$thumbs_dir}/{$hash_filename}");
+                        unlink(XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$thumbs_dir}/{$hash_filename}");
                     }
                 } else {
-                    unlink(XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$sub_dir}{$this->file_dir}/{$file_name}");
-                    if (!empty($hash_filename)) {
-                        unlink(XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$sub_dir}{$this->file_dir}/{$hash_filename}");
+                    $file_dir = empty($sub_dir) ? $this->file_dir : $sub_dir;
+                    unlink(XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$file_dir}/{$file_name}");
+                    if (! empty($hash_filename)) {
+                        unlink(XOOPS_ROOT_PATH . "/uploads/{$this->dir}{$file_dir}/{$hash_filename}");
                     }
                 }
 
@@ -1591,11 +1592,11 @@ class TadUpFiles
     public function get_files_url($files_sn = '', $limit = null, $path = null, $hash = false, $desc_as_name = false, $keyword = '', $only_keyword = false, $target = '_self', $my_where = '', $file_sn_key = true)
     {
         $files_url = null;
-        $files = $this->get_file($files_sn = '', $limit = null, $path = null, $hash = false, $desc_as_name = false, $keyword = '', $only_keyword = false, $target = '_self', $my_where = '', $file_sn_key = true);
-        $i = 0;
+        $files     = $this->get_file($files_sn = '', $limit = null, $path = null, $hash = false, $desc_as_name = false, $keyword = '', $only_keyword = false, $target = '_self', $my_where = '', $file_sn_key = true);
+        $i         = 0;
         foreach ($files as $files_sn => $file) {
-            $files_url['image'][$i] = $file['path'];
-            $files_url['thumb'][$i] = $file['tb_path'];
+            $files_url['image'][$i]    = $file['path'];
+            $files_url['thumb'][$i]    = $file['tb_path'];
             $files_url['files_sn'][$i] = (int) $files_sn;
             $i++;
         }
@@ -1606,12 +1607,12 @@ class TadUpFiles
     public function get_file($files_sn = '', $limit = null, $path = null, $hash = false, $desc_as_name = false, $keyword = '', $only_keyword = false, $target = '_self', $my_where = '', $file_sn_key = true)
     {
         global $xoopsDB;
-        $files = [];
+        $files      = [];
         $os_charset = (PATH_SEPARATOR === ':') ? 'UTF-8' : 'Big5';
 
-        $and_sort = (!empty($this->sort)) ? " and `sort`='{$this->sort}'" : '';
+        $and_sort = (! empty($this->sort)) ? " and `sort`='{$this->sort}'" : '';
 
-        $andLimit = (!empty($limit)) ? "limit 0 , {$limit}" : '';
+        $andLimit = (! empty($limit)) ? "limit 0 , {$limit}" : '';
 
         $link_path = $path === null ? $_SERVER['PHP_SELF'] : $path;
 
@@ -1619,7 +1620,7 @@ class TadUpFiles
             $this->set_hash($hash);
         }
 
-        if (empty($files_sn) and !empty($this->files_sn)) {
+        if (empty($files_sn) and ! empty($this->files_sn)) {
             $files_sn = $this->files_sn;
         }
 
@@ -1629,10 +1630,10 @@ class TadUpFiles
             $where = "where `files_sn` in('" . implode("','", $files_sn) . "')";
         } else {
             $and_tag = $this->tag ? "and `tag`='{$this->tag}'" : '';
-            $where = ($files_sn) ? "where `files_sn`='{$files_sn}'" : "where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' $and_sort $and_tag order by sort $andLimit";
+            $where   = ($files_sn) ? "where `files_sn`='{$files_sn}'" : "where `col_name`='{$this->col_name}' and `col_sn`='{$this->col_sn}' $and_sort $and_tag order by sort $andLimit";
         }
 
-        $sql = "select * from `{$this->TadUpFilesTblName}` $where";
+        $sql    = "select * from `{$this->TadUpFilesTblName}` $where";
         $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $i = 0;
@@ -1647,8 +1648,8 @@ class TadUpFiles
             //     $file_name = iconv($os_charset, _CHARSET, $file_name);
             // }
 
-            $show_file_name = ($desc_as_name and !empty($description)) ? $description : $original_filename;
-            if (!empty($keyword)) {
+            $show_file_name = ($desc_as_name and ! empty($description)) ? $description : $original_filename;
+            if (! empty($keyword)) {
                 if (mb_strrpos($show_file_name, $keyword) !== false) {
                     $show_file_name = str_replace($keyword, "<span class='keyword'>{$keyword}</span>", $show_file_name);
                 } elseif ($only_keyword) {
@@ -1656,21 +1657,21 @@ class TadUpFiles
                 }
             }
 
-            $key = $file_sn_key ? $files_sn : $i;
+            $key                           = $file_sn_key ? $files_sn : $i;
             $files[$key]['show_file_name'] = $show_file_name;
 
-            $files[$key]['files_sn'] = $files_sn;
-            $files[$key]['kind'] = $kind;
-            $files[$key]['sort'] = $sort;
-            $files[$key]['file_name'] = $file_name;
-            $files[$key]['file_type'] = $file_type;
-            $files[$key]['file_size'] = $file_size;
-            $files[$key]['counter'] = $counter;
-            $files[$key]['description'] = $description;
+            $files[$key]['files_sn']          = $files_sn;
+            $files[$key]['kind']              = $kind;
+            $files[$key]['sort']              = $sort;
+            $files[$key]['file_name']         = $file_name;
+            $files[$key]['file_type']         = $file_type;
+            $files[$key]['file_size']         = $file_size;
+            $files[$key]['counter']           = $counter;
+            $files[$key]['description']       = $description;
             $files[$key]['original_filename'] = $original_filename;
-            $files[$key]['hash_filename'] = $hash_filename;
-            $files[$key]['upload_date'] = $upload_date;
-            $files[$key]['uid'] = $uid;
+            $files[$key]['hash_filename']     = $hash_filename;
+            $files[$key]['upload_date']       = $upload_date;
+            $files[$key]['uid']               = $uid;
 
             $uid_name = \XoopsUser::getUnameFromId($uid, 1);
             if (empty($uid_name)) {
@@ -1678,7 +1679,7 @@ class TadUpFiles
             }
 
             $files[$key]['uid_name'] = $uid_name;
-            $files[$key]['tag'] = $tag;
+            $files[$key]['tag']      = $tag;
 
             $mark = strpos($link_path, '?') !== false ? '&' : '?';
 
@@ -1688,60 +1689,60 @@ class TadUpFiles
 
             if ($kind === 'img') {
                 $fancyboxset = "fancybox_{$this->col_name}";
-                $rel = "rel='f{$this->col_name}'";
+                $rel         = "rel='f{$this->col_name}'";
 
                 $file_name = $this->hash ? $hash_filename : $file_name;
-                $pic_name = $this->TadUpFilesImgUrl . "/{$file_name}";
+                $pic_name  = $this->TadUpFilesImgUrl . "/{$file_name}";
                 $thumb_pic = $this->TadUpFilesThumbUrl . "/{$file_name}";
 
-                if (!file_exists($this->TadUpFilesThumbDir . "/{$file_name}")) {
+                if (! file_exists($this->TadUpFilesThumbDir . "/{$file_name}")) {
                     Utility::mk_dir($this->TadUpFilesThumbDir);
                     Utility::generateThumbnail($this->TadUpFilesImgDir . "/{$file_name}", $this->TadUpFilesThumbDir . "/{$file_name}", $this->thumb_width);
                 }
 
                 if ($tag == '360') {
                     $fancyboxset = "fancybox_{$this->col_name} $tag";
-                    $rel = "data-fancybox-type='iframe'";
+                    $rel         = "data-fancybox-type='iframe'";
                 } else {
                     $fancyboxset = "fancybox_{$this->col_name} $tag";
-                    $rel = "rel='f{$this->col_name}'";
+                    $rel         = "rel='f{$this->col_name}'";
                 }
 
-                $show_dl_url = $this->show_path ? "($dl_url)" : '';
+                $show_dl_url   = $this->show_path ? "($dl_url)" : '';
                 $show_pic_name = $this->show_path ? "($pic_name)" : '';
 
                 $files[$key]['link'] = "<a href='{$dl_url}' title='{$description}{$show_dl_url}' {$rel} class='{$fancyboxset}'><img src='{$pic_name}' alt='{$description}' title='{$description}'></a>";
                 $files[$key]['path'] = $pic_name;
-                $files[$key]['url'] = "<a href='{$pic_name}' title='{$description}{$show_pic_name}' {$rel} class='{$fancyboxset}'>{$show_file_name}</a>";
+                $files[$key]['url']  = "<a href='{$pic_name}' title='{$description}{$show_pic_name}' {$rel} class='{$fancyboxset}'>{$show_file_name}</a>";
 
-                $files[$key]['tb_link'] = "<a href='{$dl_url}' title='{$description}{$show_dl_url}' {$rel} class='{$fancyboxset}'><img src='$thumb_pic' alt='{$description}' title='{$description}'></a>";
-                $files[$key]['tb_path'] = $thumb_pic;
-                $files[$key]['tb_url'] = "<a href='{$dl_url}' title='{$description}{$show_dl_url}' {$rel} class='{$fancyboxset}'>{$description}</a>";
+                $files[$key]['tb_link']            = "<a href='{$dl_url}' title='{$description}{$show_dl_url}' {$rel} class='{$fancyboxset}'><img src='$thumb_pic' alt='{$description}' title='{$description}'></a>";
+                $files[$key]['tb_path']            = $thumb_pic;
+                $files[$key]['tb_url']             = "<a href='{$dl_url}' title='{$description}{$show_dl_url}' {$rel} class='{$fancyboxset}'>{$description}</a>";
                 $files[$key]['original_file_path'] = $this->TadUpFilesImgUrl . "/{$file_name}";
                 $files[$key]['physical_file_path'] = $this->TadUpFilesImgDir . "/{$file_name}";
 
                 //將附檔強制轉小寫
-                $thumb_pic_ext = mb_strtolower(mb_substr($thumb_pic, -3));
+                $thumb_pic_ext            = mb_strtolower(mb_substr($thumb_pic, -3));
                 $files[$key]['thumb_pic'] = mb_substr($thumb_pic, 0, -3) . $thumb_pic_ext;
             } else {
-                $fancyboxset = (isset($fext) && $fext == 'pdf') ? "fancybox_{$this->col_name}" : '';
-                $rel = (isset($fext) && $fext == 'pdf') == 'pdf' ? "rel='f{$this->col_name}'" : '';
-                $fext = strtolower(pathinfo($original_filename, PATHINFO_EXTENSION));
+                $fancyboxset              = (isset($fext) && $fext == 'pdf') ? "fancybox_{$this->col_name}" : '';
+                $rel                      = (isset($fext) && $fext == 'pdf') == 'pdf' ? "rel='f{$this->col_name}'" : '';
+                $fext                     = strtolower(pathinfo($original_filename, PATHINFO_EXTENSION));
                 $files[$key]['thumb_pic'] = XOOPS_URL . "/modules/tadtools/images/mimetype/{$fext}.png";
-                $file_name = $this->hash ? $hash_filename : $file_name;
+                $file_name                = $this->hash ? $hash_filename : $file_name;
 
-                $files[$key]['link'] = "<a href='{$dl_url}#{$original_filename}' target='{$target}'>{$show_file_name}</a>";
-                $files[$key]['path'] = "{$dl_url}#{$original_filename}";
-                $files[$key]['url'] = "<a href='{$dl_url}' title='{$description}' {$rel} class='{$fancyboxset}' data-fancybox-type='iframe'>{$show_file_name}</a>";
-                $files[$key]['dl_url'] = $dl_url;
+                $files[$key]['link']               = "<a href='{$dl_url}#{$original_filename}' target='{$target}'>{$show_file_name}</a>";
+                $files[$key]['path']               = "{$dl_url}#{$original_filename}";
+                $files[$key]['url']                = "<a href='{$dl_url}' title='{$description}' {$rel} class='{$fancyboxset}' data-fancybox-type='iframe'>{$show_file_name}</a>";
+                $files[$key]['dl_url']             = $dl_url;
                 $files[$key]['original_file_path'] = $this->TadUpFilesUrl . "/{$file_name}";
                 $files[$key]['physical_file_path'] = $this->TadUpFilesDir . "/{$file_name}";
             }
             $files[$key]['original_filename'] = $original_filename;
-            $files[$key]['full_dl_url'] = $full_dl_url;
-            $files[$key]['show_file_name'] = $show_file_name;
-            $files[$key]['text_link'] = "{$show_file_name} : {$full_dl_url}";
-            $files[$key]['html_link'] = "{$show_file_name} : <a href='{$full_dl_url}'>{$full_dl_url}</a>";
+            $files[$key]['full_dl_url']       = $full_dl_url;
+            $files[$key]['show_file_name']    = $show_file_name;
+            $files[$key]['text_link']         = "{$show_file_name} : {$full_dl_url}";
+            $files[$key]['html_link']         = "{$show_file_name} : <a href='{$full_dl_url}'>{$full_dl_url}</a>";
             $i++;
         }
 
@@ -1755,13 +1756,13 @@ class TadUpFiles
 
         $os_charset = (PATH_SEPARATOR === ':') ? 'UTF-8' : 'Big5';
 
-        $and_sort = (!empty($this->sort)) ? " and `sort`='{$this->sort}'" : '';
+        $and_sort = (! empty($this->sort)) ? " and `sort`='{$this->sort}'" : '';
 
-        $andLimit = (!empty($limit)) ? "limit 0 , {$limit}" : '';
+        $andLimit = (! empty($limit)) ? "limit 0 , {$limit}" : '';
 
         $link_path = $path === null ? $_SERVER['PHP_SELF'] : $path;
 
-        if (empty($files_sn) and !empty($this->files_sn)) {
+        if (empty($files_sn) and ! empty($this->files_sn)) {
             $files_sn = $this->files_sn;
         }
 
@@ -1776,7 +1777,7 @@ class TadUpFiles
         $params = is_array($files_sn) ? $files_sn : ($files_sn ? [$files_sn] : [$this->col_name, $this->col_sn]);
         $result = Utility::query($sql, is_array($files_sn) ? str_repeat('s', count($files_sn)) : ($files_sn ? 'i' : 'si'), $params) or Utility::web_error($sql, __FILE__, __LINE__);
 
-        $i = 0;
+        $i     = 0;
         $files = [];
         while ($all = $xoopsDB->fetchArray($result)) {
             //以下會產生這些變數： $files_sn, $col_name, $col_sn, $sort, $kind, $file_name, $file_type, $file_size, $description
@@ -1789,46 +1790,46 @@ class TadUpFiles
             }
             // 移除實體檔案不存在的紀錄
             $check_dir = ($kind === 'img') ? $this->TadUpFilesImgDir : $this->TadUpFilesDir;
-            if ($remove_blank and !file_exists("{$check_dir}/{$file_name}")) {
+            if ($remove_blank and ! file_exists("{$check_dir}/{$file_name}")) {
                 $sql = 'DELETE FROM `' . $this->TadUpFilesTblName . '` WHERE `files_sn` = ?';
                 Utility::query($sql, 'i', [$files_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
 
                 continue;
             }
-            $files[$i]['files_sn'] = $files_sn;
-            $files[$i]['kind'] = $kind;
-            $files[$i]['sort'] = $sort;
-            $files[$i]['file_name'] = $file_name;
-            $files[$i]['file_type'] = $file_type;
-            $files[$i]['file_size'] = $file_size;
-            $files[$i]['counter'] = $counter;
-            $files[$i]['description'] = $description;
+            $files[$i]['files_sn']          = $files_sn;
+            $files[$i]['kind']              = $kind;
+            $files[$i]['sort']              = $sort;
+            $files[$i]['file_name']         = $file_name;
+            $files[$i]['file_type']         = $file_type;
+            $files[$i]['file_size']         = $file_size;
+            $files[$i]['counter']           = $counter;
+            $files[$i]['description']       = $description;
             $files[$i]['original_filename'] = $original_filename;
 
             $dl_url = empty($this->download_url) ? "{$link_path}?op=tufdl&files_sn=$files_sn" : $this->download_url . "&files_sn=$files_sn";
 
             if ($kind === 'img') {
-                $pic_name = $this->TadUpFilesImgUrl . "/{$file_name}";
+                $pic_name  = $this->TadUpFilesImgUrl . "/{$file_name}";
                 $thumb_pic = $this->TadUpFilesThumbUrl . "/{$file_name}";
 
                 $files[$i]['link'] = "<a href='{$dl_url}' title='{$description}' rel='lytebox'><img src='{$pic_name}' alt='{$description}' title='{$description}' rel='lytebox'></a>";
                 $files[$i]['path'] = $pic_name;
-                $files[$i]['url'] = "<a href='{$dl_url}' title='{$description}' target='_blank'>{$description}</a>";
+                $files[$i]['url']  = "<a href='{$dl_url}' title='{$description}' target='_blank'>{$description}</a>";
 
                 $files[$i]['tb_link'] = "<a href='{$dl_url}' title='{$description}' rel='lytebox'><img src='$thumb_pic' alt='{$description}' title='{$description}'></a>";
                 $files[$i]['tb_path'] = $thumb_pic;
-                $files[$i]['tb_url'] = "<a href='{$dl_url}' title='{$description}' rel='lytebox'>{$description}</a>";
+                $files[$i]['tb_url']  = "<a href='{$dl_url}' title='{$description}' rel='lytebox'>{$description}</a>";
             } elseif (mb_strtolower(mb_substr($file_name, -3)) === 'swf') {
-                $pic_name = $this->TadUpFilesImgUrl . "/{$file_name}";
+                $pic_name  = $this->TadUpFilesImgUrl . "/{$file_name}";
                 $thumb_pic = $this->TadUpFilesThumbUrl . "/{$file_name}";
 
                 $files[$i]['link'] = "<a href='{$dl_url}' title='{$description}' rel='lytebox'><img src='{$pic_name}' alt='{$description}' title='{$description}' rel='lytebox'></a>";
                 $files[$i]['path'] = $pic_name;
-                $files[$i]['url'] = "<a href='{$dl_url}' title='{$description}' target='_blank'>{$description}</a>";
+                $files[$i]['url']  = "<a href='{$dl_url}' title='{$description}' target='_blank'>{$description}</a>";
 
                 $files[$i]['tb_link'] = "<a href='{$dl_url}' title='{$description}' rel='lytebox'><img src='$thumb_pic' alt='{$description}' title='{$description}'></a>";
                 $files[$i]['tb_path'] = $thumb_pic;
-                $files[$i]['tb_url'] = "<a href='{$dl_url}' title='{$description}' rel='lytebox'>{$description}</a>";
+                $files[$i]['tb_url']  = "<a href='{$dl_url}' title='{$description}' rel='lytebox'>{$description}</a>";
             } else {
                 $files[$i]['link'] = "<a href='{$dl_url}#{$original_filename}'>{$original_filename}</a>";
                 $files[$i]['path'] = "{$dl_url}#{$original_filename}";
@@ -1850,25 +1851,25 @@ class TadUpFiles
             $this->set_hash($hash);
         }
 
-        $and_sort = !empty($this->sort) ? ' AND `sort`=?' : '';
+        $and_sort = ! empty($this->sort) ? ' AND `sort`=?' : '';
         $and_kind = $showkind == 'file' ? " AND `kind`='file'" : " AND `kind`='img'";
 
         if ($files_sn) {
-            $where = 'WHERE `files_sn`=?' . $and_kind . ' ORDER BY sort LIMIT 0,1';
+            $where  = 'WHERE `files_sn`=?' . $and_kind . ' ORDER BY sort LIMIT 0,1';
             $params = [$files_sn];
-            $types = 'i';
+            $types  = 'i';
         } else {
-            $where = 'WHERE `col_name`=? AND `col_sn`=?' . $and_sort . $and_kind . ' ORDER BY sort LIMIT 0,1';
+            $where  = 'WHERE `col_name`=? AND `col_sn`=?' . $and_sort . $and_kind . ' ORDER BY sort LIMIT 0,1';
             $params = [$this->col_name, $this->col_sn];
-            $types = 'si';
+            $types  = 'si';
 
-            if (!empty($this->sort)) {
+            if (! empty($this->sort)) {
                 $params[] = $this->sort;
                 $types .= 'i';
             }
         }
 
-        $sql = 'SELECT * FROM `' . $this->TadUpFilesTblName . '` ' . $where;
+        $sql    = 'SELECT * FROM `' . $this->TadUpFilesTblName . '` ' . $where;
         $result = Utility::query($sql, $types, $params) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $files = '';
@@ -1879,14 +1880,14 @@ class TadUpFiles
             }
             $file_name = $this->hash ? $hash_filename : $file_name;
             if ($showkind === 'thumb') {
-                $path = ($show_kind === 'dir') ? $this->TadUpFilesThumbDir : $this->TadUpFilesThumbUrl;
+                $path  = ($show_kind === 'dir') ? $this->TadUpFilesThumbDir : $this->TadUpFilesThumbUrl;
                 $files = (file_exists("{$this->TadUpFilesThumbDir}/{$file_name}")) ? "{$path}/{$file_name}" : '';
             } elseif ($showkind === 'file') {
                 $path = ($show_kind === 'dir') ? $this->TadUpFilesDir : $this->TadUpFilesUrl;
                 // die("{$this->TadUpFilesDir}/{$file_name}");
                 $files = (file_exists("{$this->TadUpFilesDir}/{$file_name}")) ? "{$path}/{$file_name}" : '';
             } else {
-                $path = ($show_kind === 'dir') ? $this->TadUpFilesImgDir : $this->TadUpFilesImgUrl;
+                $path  = ($show_kind === 'dir') ? $this->TadUpFilesImgDir : $this->TadUpFilesImgUrl;
                 $files = (file_exists("{$this->TadUpFilesImgDir}/{$file_name}")) ? "{$path}/{$file_name}" : '';
             }
         }
@@ -1898,7 +1899,7 @@ class TadUpFiles
     public function get_file_amount()
     {
         global $xoopsDB;
-        $sql = 'SELECT COUNT(*) FROM `' . $this->TadUpFilesTblName . '` WHERE `col_name` = ? AND `col_sn` = ?';
+        $sql    = 'SELECT COUNT(*) FROM `' . $this->TadUpFilesTblName . '` WHERE `col_name` = ? AND `col_sn` = ?';
         $result = Utility::query($sql, 'si', [$this->col_name, $this->col_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         list($amount) = $xoopsDB->fetchRow($result);
@@ -1911,7 +1912,7 @@ class TadUpFiles
     {
         global $xoTheme;
         $this->upname = $upname;
-        $all_files = '';
+        $all_files    = '';
         if ($xoTheme) {
             if ($show_mode === 'small') {
                 $xoTheme->addStylesheet('modules/tadtools/css/iconize.css');
@@ -1930,7 +1931,7 @@ class TadUpFiles
             $this->set_hash($hash);
         }
         $playSpeed = empty($playSpeed) ? 0 : $playSpeed;
-        $autoPlay = empty($playSpeed) ? false : true;
+        $autoPlay  = empty($playSpeed) ? false : true;
 
         if ($this->showFancyBox) {
             $fancybox = new FancyBox(".fancybox_{$this->col_name}", '1920', '1080');
@@ -1949,7 +1950,7 @@ class TadUpFiles
             if ($show_mode === 'file_url') {
                 $all_files .= '<ul class="tuf-icon">';
             } elseif ($show_mode === 'app') {
-                $all_files = array();
+                $all_files = [];
             } elseif ($show_mode === 'file_text_url' or $show_mode === 'small') {
                 $all_files .= '';
             } elseif ($show_mode === 'filename') {
@@ -1971,19 +1972,19 @@ class TadUpFiles
                         }
                     }
                 } elseif ($show_mode === 'app') {
-                    $all_files[] = array('url' => $file_info['original_file_path'], 'file_name' => $file_info['show_file_name'], 'dl_url' => $file_info['full_dl_url']);
+                    $all_files[] = ['url' => $file_info['original_file_path'], 'file_name' => $file_info['show_file_name'], 'dl_url' => $file_info['full_dl_url']];
                 } elseif ($show_mode === 'file_url') {
                     $all_files .= "<li>{$file_info['html_link']}</li>";
                 } elseif ($show_mode === 'file_text_url') {
                     $all_files .= "{$file_info['text_link']},";
                 } else {
-                    $linkto = $file_info['path'];
+                    $linkto       = $file_info['path'];
                     $linkto_clean = $file_info['full_dl_url'];
-                    $description = empty($file_info['description']) ? $file_info['original_filename'] : $file_info['description'];
+                    $description  = empty($file_info['description']) ? $file_info['original_filename'] : $file_info['description'];
                     if ($file_info['kind'] === 'file') {
-                        $fext = strtolower(pathinfo($file_info['path'], PATHINFO_EXTENSION));
+                        $fext      = strtolower(pathinfo($file_info['path'], PATHINFO_EXTENSION));
                         $thumb_pic = XOOPS_URL . "/modules/tadtools/images/mimetype/{$fext}.png";
-                        if (!\file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/images/mimetype/{$fext}.png")) {
+                        if (! \file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/images/mimetype/{$fext}.png")) {
                             $thumb_pic = XOOPS_URL . "/modules/tadtools/images/mimetype/none.png";
                         }
 
@@ -1991,23 +1992,23 @@ class TadUpFiles
                         if ($fext === 'mp4' or $fext === 'flv' or $fext === '3gp' or $fext === 'mp3' or $fext === 'm4a') {
                             if ($this->showFancyBox) {
                                 $fancyboxset = "fancybox_{$this->col_name}";
-                                $rel = "data-fancybox-type='iframe'";
+                                $rel         = "data-fancybox-type='iframe'";
                             } else {
                                 $fancyboxset = $rel = '';
                             }
                             $linkto = XOOPS_URL . "/modules/tadtools/video.php?file_name={$file_info['original_file_path']}";
                         } elseif ($fext === 'pdf' && $this->pdf_force_dl != 1) {
                             $fancyboxset = "fancybox_{$this->col_name}";
-                            $rel = "data-fancybox-type='iframe'";
-                            $linkto = $file_info['path'];
+                            $rel         = "data-fancybox-type='iframe'";
+                            $linkto      = $file_info['path'];
                         } elseif ($fext === 'jpg' or $fext === 'gif' or $fext === 'png' or $fext === 'jpeg') {
                             if ($file_info['tag'] == '360') {
                                 $fancyboxset = "fancybox_{$this->col_name}";
-                                $rel = "data-fancybox-type='iframe'";
-                                $linkto = XOOPS_URL . "/modules/tadtools/360.php?photo={$file_info['path']}";
+                                $rel         = "data-fancybox-type='iframe'";
+                                $linkto      = XOOPS_URL . "/modules/tadtools/360.php?photo={$file_info['path']}";
                             } else {
                                 $fancyboxset = "fancybox_{$this->col_name}";
-                                $rel = "rel='f{$this->col_name}'";
+                                $rel         = "rel='f{$this->col_name}'";
                             }
                         } else {
                             $fancyboxset = $rel = '';
@@ -2018,21 +2019,21 @@ class TadUpFiles
                         if ($this->showFancyBox) {
                             if ($file_info['tag'] == '360') {
                                 $fancyboxset = "fancybox_{$this->col_name}";
-                                $rel = "data-fancybox-type='iframe'";
-                                $linkto = XOOPS_URL . "/modules/tadtools/360.php?photo={$file_info['path']}";
+                                $rel         = "data-fancybox-type='iframe'";
+                                $linkto      = XOOPS_URL . "/modules/tadtools/360.php?photo={$file_info['path']}";
                             } else {
                                 $fancyboxset = "fancybox_{$this->col_name}";
-                                $rel = "rel='f{$this->col_name}'";
+                                $rel         = "rel='f{$this->col_name}'";
                             }
                         } else {
                             $fancyboxset = $rel = '';
                         }
                         //將附檔強制轉小寫
                         $thumb_pic_ext = mb_strtolower(mb_substr($thumb_pic, -3));
-                        $thumb_pic = mb_substr($thumb_pic, 0, -3) . $thumb_pic_ext;
-                        $linkto_ext = mb_strtolower(mb_substr($linkto, -3));
-                        $linkto = mb_substr($linkto, 0, -3) . $linkto_ext;
-                        $thumb_css = $this->thumb_css == '' ? 'background-color: #cfcfcf; background-size: contain;border-radius: 5px;' : $this->thumb_css;
+                        $thumb_pic     = mb_substr($thumb_pic, 0, -3) . $thumb_pic_ext;
+                        $linkto_ext    = mb_strtolower(mb_substr($linkto, -3));
+                        $linkto        = mb_substr($linkto, 0, -3) . $linkto_ext;
+                        $thumb_css     = $this->thumb_css == '' ? 'background-color: #cfcfcf; background-size: contain;border-radius: 5px;' : $this->thumb_css;
                     }
 
                     //下載次數顯示
@@ -2041,11 +2042,11 @@ class TadUpFiles
                     //描述顯示
                     $show_description_txt = ($show_description) ? "<div class='file_description' style='font-weight: normal; font-size: 0.8em; word-break: break-all; line-height: 1.2; margin: 4px auto 4px 0px; text-align: left;'><a href='{$linkto_clean}' target='{$target}' {$rel} class='file_url'>{$i}) {$description} {$show_dl_txt}</a></div>" : (string) ($show_dl_txt);
 
-                    $w = (int) $this->show_width;
-                    $h = (int) $this->show_height;
+                    $w   = (int) $this->show_width;
+                    $h   = (int) $this->show_height;
                     $bgs = $this->background_size;
 
-                    $item_h = !empty($show_description) ? $h + $this->desc_height : $h;
+                    $item_h = ! empty($show_description) ? $h + $this->desc_height : $h;
 
                     $all_files .= ($show_mode === 'small') ? "<a href='{$linkto}' data-toggle='tooltip' data-placement='top' title='{$description}' class='iconize {$fancyboxset}' {$rel}>&nbsp;</a> " : "
                     <li class='tuf-icon-item' style='width:{$w}px;height:{$item_h}px;float:left;list-style:none;{$this->other_css}'>
@@ -2081,27 +2082,27 @@ class TadUpFiles
         // 權限設定
         if ($this->permission) {
             $files_sn = (int) $files_sn;
-            $sql = 'SELECT `gperm_groupid` FROM `' . $xoopsDB->prefix('group_permission') . "` WHERE `gperm_name` = 'dl_group' AND `gperm_itemid` = $files_sn ORDER BY `gperm_groupid`";
-            $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+            $sql      = 'SELECT `gperm_groupid` FROM `' . $xoopsDB->prefix('group_permission') . "` WHERE `gperm_name` = 'dl_group' AND `gperm_itemid` = $files_sn ORDER BY `gperm_groupid`";
+            $result   = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
             $gperm_groupid_arr = [];
             while (list($gperm_groupid) = $xoopsDB->fetchRow($result)) {
                 $gperm_groupid_arr[] = $gperm_groupid;
             }
 
-            if (!empty($gperm_groupid_arr)) {
+            if (! empty($gperm_groupid_arr)) {
                 //取得目前使用者的群組編號
                 $groups = $xoopsUser ? $xoopsUser->getGroups() : [XOOPS_GROUP_ANONYMOUS];
 
-                if (!array_intersect($groups, $gperm_groupid_arr)) {
+                if (! array_intersect($groups, $gperm_groupid_arr)) {
                     redirect_header(XOOPS_URL, 3, _TAD_PERMISSION_DENIED);
                 }
             }
-        } elseif (!empty($can_groupid)) {
+        } elseif (! empty($can_groupid)) {
 
-        } elseif (!empty($can_uid)) {
+        } elseif (! empty($can_uid)) {
             $now_uid = $xoopsUser ? $xoopsUser->uid() : 0;
-            if (!in_array($now_uid, $can_uid)) {
+            if (! in_array($now_uid, $can_uid)) {
                 redirect_header(XOOPS_URL, 3, _TAD_PERMISSION_DENIED);
             }
         }
@@ -2114,19 +2115,19 @@ class TadUpFiles
             $this->set_hash($hash);
         }
 
-        $file_type = $file['file_type'];
-        $file_size = $file['file_size'];
+        $file_type     = $file['file_type'];
+        $file_size     = $file['file_size'];
         $real_filename = $file['original_filename'] ? $file['original_filename'] : $file['description'];
-        $dl_name = ($this->hash) ? $file['hash_filename'] : str_replace(['/', '|', '\\', '?', '"', '*', ':', '<', '>'], '', $file['file_name']);
+        $dl_name       = ($this->hash) ? $file['hash_filename'] : str_replace(['/', '|', '\\', '?', '"', '*', ':', '<', '>'], '', $file['file_name']);
 
         $sql = 'UPDATE `' . $this->TadUpFilesTblName . "` SET `counter`=`counter`+1 WHERE `files_sn`='{$files_sn}'";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         if ($file['kind'] === 'img') {
-            $file_saved = "{$this->TadUpFilesImgUrl}/{$dl_name}";
+            $file_saved    = "{$this->TadUpFilesImgUrl}/{$dl_name}";
             $file_hd_saved = "{$this->TadUpFilesImgDir}/{$dl_name}";
         } else {
-            $file_saved = "{$this->TadUpFilesUrl}/{$dl_name}";
+            $file_saved    = "{$this->TadUpFilesUrl}/{$dl_name}";
             $file_hd_saved = "{$this->TadUpFilesDir}/{$dl_name}";
         }
 
@@ -2139,10 +2140,10 @@ class TadUpFiles
 
         // 為了無礙，改成下載
         $force_arr = $this->pdf_force_dl ? ['application/pdf', 'audio/mp3', 'video/mp4', 'audio/mp4'] : [];
-        $force = ($file['kind'] == 'img' or in_array($mimetype, $force_arr)) ? true : $force;
+        $force     = ($file['kind'] == 'img' or in_array($mimetype, $force_arr)) ? true : $force;
 
         if ($force) {
-            if (!\file_exists($file_hd_saved)) {
+            if (! \file_exists($file_hd_saved)) {
                 redirect_header($_SERVER['PHP_SELF'], 3, _TUF_FILE_DOES_NOT_EXIST);
             }
 
@@ -2150,7 +2151,7 @@ class TadUpFiles
                 // $file_display = iconv($os_charset, _CHARSET, $real_filename);
                 // $file_hd_saved = iconv($os_charset, _CHARSET, $file_hd_saved);
 
-                $file_display = mb_convert_encoding($real_filename, $os_charset, _CHARSET);
+                $file_display  = mb_convert_encoding($real_filename, $os_charset, _CHARSET);
                 $file_hd_saved = mb_convert_encoding($file_hd_saved, $os_charset, _CHARSET);
 
             } else {
@@ -2181,7 +2182,7 @@ class TadUpFiles
             $handle = fopen($file_hd_saved, 'rb');
 
             set_time_limit(0);
-            while (!feof($handle)) {
+            while (! feof($handle)) {
                 echo fread($handle, 4096);
                 flush();
             }
@@ -2192,7 +2193,7 @@ class TadUpFiles
 
         if ($os_charset != _CHARSET) {
             //若網站和主機編碼不同，則將 $file_display (真實檔名) 轉為主機編碼，以便等一下建立檔案
-            $file_display = iconv(_CHARSET, $os_charset, $real_filename);
+            $file_display  = iconv(_CHARSET, $os_charset, $real_filename);
             $file_hd_saved = iconv(_CHARSET, $os_charset, $file_hd_saved);
         } else {
             $file_display = $real_filename;
@@ -2204,11 +2205,11 @@ class TadUpFiles
         $tmp_dir = XOOPS_ROOT_PATH . "/uploads/{$this->dir}/tmp/{$file['files_sn']}";
         $tmp_url = XOOPS_URL . "/uploads/{$this->dir}/tmp/{$file['files_sn']}";
         Utility::mk_dir($tmp_dir);
-        $tmp_file = $tmp_dir . '/' . $file_display;
+        $tmp_file     = $tmp_dir . '/' . $file_display;
         $tmp_file_url = $tmp_url . '/' . $file_display;
 
-        if (!file_exists($tmp_file)) {
-            if (!copy($file_hd_saved, $tmp_file)) {
+        if (! file_exists($tmp_file)) {
+            if (! copy($file_hd_saved, $tmp_file)) {
                 $errors = error_get_last();
                 redirect_header($_SERVER['PHP_SELF'], 10, "COPY ERROR: copy $file_hd_saved to $tmp_file fail!");
             }
@@ -2218,11 +2219,11 @@ class TadUpFiles
             $tmp_file_url = Utility::auto_charset($tmp_file_url);
         }
 
-        if (!empty($path)) {
+        if (! empty($path)) {
             if (mb_substr($path, -1) === '/') {
                 $path = mb_substr($path, 0, -1);
             }
-            if (!is_dir($path)) {
+            if (! is_dir($path)) {
                 Utility::mk_dir($path);
             }
             rename($tmp_file, $path . '/' . $file_display);
@@ -2240,9 +2241,9 @@ class TadUpFiles
     public function get_one_file($files_sn = '')
     {
         global $xoopsDB;
-        $sql = 'SELECT * FROM `' . $this->TadUpFilesTblName . '` WHERE `files_sn`=' . $files_sn;
+        $sql    = 'SELECT * FROM `' . $this->TadUpFilesTblName . '` WHERE `files_sn`=' . $files_sn;
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-        $all = $xoopsDB->fetchArray($result);
+        $all    = $xoopsDB->fetchArray($result);
         return $all;
     }
 
@@ -2261,7 +2262,7 @@ class TadUpFiles
 
         $bytes = (float) $str;
 
-        if (preg_match('#([KMGTP]?)$#si', $str, $matches) && !empty($bytes_array[$matches[1]])) {
+        if (preg_match('#([KMGTP]?)$#si', $str, $matches) && ! empty($bytes_array[$matches[1]])) {
             $bytes *= $bytes_array[$matches[1]];
         }
 
@@ -2279,1230 +2280,1230 @@ class TadUpFiles
         // http://pastebin.com/iuTy6K6d
         // total: 1223 extensions as of 16 November 2015
         $all_mimes = [
-            '3dm' => ['x-world/x-3dmf'],
-            '3dmf' => ['x-world/x-3dmf'],
-            '3dml' => ['text/vnd.in3d.3dml'],
-            '3ds' => ['image/x-3ds'],
-            '3g2' => ['video/3gpp2'],
-            '3gp' => ['video/3gpp'],
-            '7z' => ['application/x-7z-compressed'],
-            'a' => ['application/octet-stream'],
-            'aab' => ['application/x-authorware-bin'],
-            'aac' => ['audio/x-aac'],
-            'aam' => ['application/x-authorware-map'],
-            'aas' => ['application/x-authorware-seg'],
-            'abc' => ['text/vnd.abc'],
-            'abw' => ['application/x-abiword'],
-            'ac' => ['application/pkix-attr-cert'],
-            'acc' => ['application/vnd.americandynamics.acc'],
-            'ace' => ['application/x-ace-compressed'],
-            'acgi' => ['text/html'],
-            'acu' => ['application/vnd.acucobol'],
-            'acutc' => ['application/vnd.acucorp'],
-            'adp' => ['audio/adpcm'],
-            'aep' => ['application/vnd.audiograph'],
-            'afl' => ['video/animaflex'],
-            'afm' => ['application/x-font-type1'],
-            'afp' => ['application/vnd.ibm.modcap'],
-            'ahead' => ['application/vnd.ahead.space'],
-            'ai' => ['application/postscript'],
-            'aif' => ['audio/aiff', 'audio/x-aiff'],
-            'aifc' => ['audio/aiff', 'audio/x-aiff'],
-            'aiff' => ['audio/aiff', 'audio/x-aiff'],
-            'aim' => ['application/x-aim'],
-            'aip' => ['text/x-audiosoft-intra'],
-            'air' => ['application/vnd.adobe.air-application-installer-package+zip'],
-            'ait' => ['application/vnd.dvb.ait'],
-            'ami' => ['application/vnd.amiga.ami'],
-            'ani' => ['application/x-navi-animation'],
-            'aos' => ['application/x-nokia-9000-communicator-add-on-software'],
-            'apk' => ['application/vnd.android.package-archive'],
-            'appcache' => ['text/cache-manifest'],
-            'application' => ['application/x-ms-application'],
-            'apr' => ['application/vnd.lotus-approach'],
-            'aps' => ['application/mime'],
-            'arc' => ['application/x-freearc'],
-            'arj' => ['application/arj', 'application/octet-stream'],
-            'art' => ['image/x-jg'],
-            'asc' => ['application/pgp-signature'],
-            'asf' => ['video/x-ms-asf'],
-            'asm' => ['text/x-asm'],
-            'aso' => ['application/vnd.accpac.simply.aso'],
-            'asp' => ['text/asp'],
-            'asx' => ['application/x-mplayer2', 'video/x-ms-asf', 'video/x-ms-asf-plugin'],
-            'atc' => ['application/vnd.acucorp'],
-            'atom' => ['application/atom+xml'],
-            'atomcat' => ['application/atomcat+xml'],
-            'atomsvc' => ['application/atomsvc+xml'],
-            'atx' => ['application/vnd.antix.game-component'],
-            'au' => ['audio/basic'],
-            'avi' => ['application/x-troff-msvideo', 'video/avi', 'video/msvideo', 'video/x-msvideo'],
-            'avs' => ['video/avs-video'],
-            'aw' => ['application/applixware'],
-            'azf' => ['application/vnd.airzip.filesecure.azf'],
-            'azs' => ['application/vnd.airzip.filesecure.azs'],
-            'azw' => ['application/vnd.amazon.ebook'],
-            'bat' => ['application/x-msdownload'],
-            'bcpio' => ['application/x-bcpio'],
-            'bdf' => ['application/x-font-bdf'],
-            'bdm' => ['application/vnd.syncml.dm+wbxml'],
-            'bed' => ['application/vnd.realvnc.bed'],
-            'bh2' => ['application/vnd.fujitsu.oasysprs'],
-            'bin' => ['application/mac-binary', 'application/macbinary', 'application/octet-stream', 'application/x-binary', 'application/x-macbinary'],
-            'blb' => ['application/x-blorb'],
-            'blorb' => ['application/x-blorb'],
-            'bm' => ['image/bmp'],
-            'bmi' => ['application/vnd.bmi'],
-            'bmp' => ['image/bmp', 'image/x-windows-bmp'],
-            'boo' => ['application/book'],
-            'book' => ['application/vnd.framemaker'],
-            'box' => ['application/vnd.previewsystems.box'],
-            'boz' => ['application/x-bzip2'],
-            'bpk' => ['application/octet-stream'],
-            'bsh' => ['application/x-bsh'],
-            'btif' => ['image/prs.btif'],
-            'buffer' => ['application/octet-stream'],
-            'bz' => ['application/x-bzip'],
-            'bz2' => ['application/x-bzip2'],
-            'c' => ['text/x-c'],
-            'c++' => ['text/plain'],
-            'c11amc' => ['application/vnd.cluetrust.cartomobile-config'],
-            'c11amz' => ['application/vnd.cluetrust.cartomobile-config-pkg'],
-            'c4d' => ['application/vnd.clonk.c4group'],
-            'c4f' => ['application/vnd.clonk.c4group'],
-            'c4g' => ['application/vnd.clonk.c4group'],
-            'c4p' => ['application/vnd.clonk.c4group'],
-            'c4u' => ['application/vnd.clonk.c4group'],
-            'cab' => ['application/vnd.ms-cab-compressed'],
-            'caf' => ['audio/x-caf'],
-            'cap' => ['application/vnd.tcpdump.pcap'],
-            'car' => ['application/vnd.curl.car'],
-            'cat' => ['application/vnd.ms-pki.seccat'],
-            'cb7' => ['application/x-cbr'],
-            'cba' => ['application/x-cbr'],
-            'cbr' => ['application/x-cbr'],
-            'cbt' => ['application/x-cbr'],
-            'cbz' => ['application/x-cbr'],
-            'cc' => ['text/plain', 'text/x-c'],
-            'ccad' => ['application/clariscad'],
-            'cco' => ['application/x-cocoa'],
-            'cct' => ['application/x-director'],
-            'ccxml' => ['application/ccxml+xml'],
-            'cdbcmsg' => ['application/vnd.contact.cmsg'],
-            'cdf' => ['application/cdf', 'application/x-cdf', 'application/x-netcdf'],
-            'cdkey' => ['application/vnd.mediastation.cdkey'],
-            'cdmia' => ['application/cdmi-capability'],
-            'cdmic' => ['application/cdmi-container'],
-            'cdmid' => ['application/cdmi-domain'],
-            'cdmio' => ['application/cdmi-object'],
-            'cdmiq' => ['application/cdmi-queue'],
-            'cdx' => ['chemical/x-cdx'],
-            'cdxml' => ['application/vnd.chemdraw+xml'],
-            'cdy' => ['application/vnd.cinderella'],
-            'cer' => ['application/pkix-cert', 'application/x-x509-ca-cert'],
-            'cfs' => ['application/x-cfs-compressed'],
-            'cgm' => ['image/cgm'],
-            'cha' => ['application/x-chat'],
-            'chat' => ['application/x-chat'],
-            'chm' => ['application/vnd.ms-htmlhelp'],
-            'chrt' => ['application/vnd.kde.kchart'],
-            'cif' => ['chemical/x-cif'],
-            'cii' => ['application/vnd.anser-web-certificate-issue-initiation'],
-            'cil' => ['application/vnd.ms-artgalry'],
-            'cla' => ['application/vnd.claymore'],
-            'class' => ['application/java', 'application/java-byte-code', 'application/x-java-class'],
-            'clkk' => ['application/vnd.crick.clicker.keyboard'],
-            'clkp' => ['application/vnd.crick.clicker.palette'],
-            'clkt' => ['application/vnd.crick.clicker.template'],
-            'clkw' => ['application/vnd.crick.clicker.wordbank'],
-            'clkx' => ['application/vnd.crick.clicker'],
-            'clp' => ['application/x-msclip'],
-            'cmc' => ['application/vnd.cosmocaller'],
-            'cmdf' => ['chemical/x-cmdf'],
-            'cml' => ['chemical/x-cml'],
-            'cmp' => ['application/vnd.yellowriver-custom-menu'],
-            'cmx' => ['image/x-cmx'],
-            'cod' => ['application/vnd.rim.cod'],
-            'com' => ['application/octet-stream', 'text/plain'],
-            'conf' => ['text/plain'],
-            'cpio' => ['application/x-cpio'],
-            'cpp' => ['text/x-c'],
-            'cpt' => ['application/x-compactpro', 'application/x-cpt'],
-            'crd' => ['application/x-mscardfile'],
-            'crl' => ['application/pkcs-crl', 'application/pkix-crl'],
-            'crt' => ['application/pkix-cert', 'application/x-x509-ca-cert', 'application/x-x509-user-cert'],
-            'crx' => ['application/x-chrome-extension'],
-            'cryptonote' => ['application/vnd.rig.cryptonote'],
-            'csh' => ['application/x-csh', 'text/x-script.csh'],
-            'csml' => ['chemical/x-csml'],
-            'csp' => ['application/vnd.commonspace'],
-            'css' => ['application/x-pointplus', 'text/css'],
-            'cst' => ['application/x-director'],
-            'csv' => ['text/csv'],
-            'cu' => ['application/cu-seeme'],
-            'curl' => ['text/vnd.curl'],
-            'cww' => ['application/prs.cww'],
-            'cxt' => ['application/x-director'],
-            'cxx' => ['text/x-c'],
-            'dae' => ['model/vnd.collada+xml'],
-            'daf' => ['application/vnd.mobius.daf'],
-            'dart' => ['application/vnd.dart'],
-            'dataless' => ['application/vnd.fdsn.seed'],
-            'davmount' => ['application/davmount+xml'],
-            'dbk' => ['application/docbook+xml'],
-            'dcr' => ['application/x-director'],
-            'dcurl' => ['text/vnd.curl.dcurl'],
-            'dd2' => ['application/vnd.oma.dd2+xml'],
-            'ddd' => ['application/vnd.fujixerox.ddd'],
-            'deb' => ['application/x-debian-package'],
-            'deepv' => ['application/x-deepv'],
-            'def' => ['text/plain'],
-            'deploy' => ['application/octet-stream'],
-            'der' => ['application/x-x509-ca-cert'],
-            'dfac' => ['application/vnd.dreamfactory'],
-            'dgc' => ['application/x-dgc-compressed'],
-            'dic' => ['text/x-c'],
-            'dif' => ['video/x-dv'],
-            'diff' => ['text/plain'],
-            'dir' => ['application/x-director'],
-            'dis' => ['application/vnd.mobius.dis'],
-            'dist' => ['application/octet-stream'],
-            'distz' => ['application/octet-stream'],
-            'djv' => ['image/vnd.djvu'],
-            'djvu' => ['image/vnd.djvu'],
-            'dl' => ['video/dl', 'video/x-dl'],
-            'dll' => ['application/x-msdownload'],
-            'dmg' => ['application/x-apple-diskimage'],
-            'dmp' => ['application/vnd.tcpdump.pcap'],
-            'dms' => ['application/octet-stream'],
-            'dna' => ['application/vnd.dna'],
-            'doc' => ['application/msword'],
-            'docm' => ['application/vnd.ms-word.document.macroenabled.12'],
-            'docx' => ['application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
-            'dot' => ['application/msword'],
-            'dotm' => ['application/vnd.ms-word.template.macroenabled.12'],
-            'dotx' => ['application/vnd.openxmlformats-officedocument.wordprocessingml.template'],
-            'dp' => ['application/vnd.osgi.dp'],
-            'dpg' => ['application/vnd.dpgraph'],
-            'dra' => ['audio/vnd.dra'],
-            'drw' => ['application/drafting'],
-            'dsc' => ['text/prs.lines.tag'],
-            'dssc' => ['application/dssc+der'],
-            'dtb' => ['application/x-dtbook+xml'],
-            'dtd' => ['application/xml-dtd'],
-            'dts' => ['audio/vnd.dts'],
-            'dtshd' => ['audio/vnd.dts.hd'],
-            'dump' => ['application/octet-stream'],
-            'dv' => ['video/x-dv'],
-            'dvb' => ['video/vnd.dvb.file'],
-            'dvi' => ['application/x-dvi'],
-            'dwf' => ['drawing/x-dwf (old)', 'model/vnd.dwf'],
-            'dwg' => ['application/acad', 'image/vnd.dwg', 'image/x-dwg'],
-            'dxf' => ['image/vnd.dxf'],
-            'dxp' => ['application/vnd.spotfire.dxp'],
-            'dxr' => ['application/x-director'],
-            'ecelp4800' => ['audio/vnd.nuera.ecelp4800'],
-            'ecelp7470' => ['audio/vnd.nuera.ecelp7470'],
-            'ecelp9600' => ['audio/vnd.nuera.ecelp9600'],
-            'ecma' => ['application/ecmascript'],
-            'edm' => ['application/vnd.novadigm.edm'],
-            'edx' => ['application/vnd.novadigm.edx'],
-            'efif' => ['application/vnd.picsel'],
-            'ei6' => ['application/vnd.pg.osasli'],
-            'el' => ['text/x-script.elisp'],
-            'elc' => ['application/x-bytecode.elisp (compiled elisp)', 'application/x-elc'],
-            'emf' => ['application/x-msmetafile'],
-            'eml' => ['message/rfc822'],
-            'emma' => ['application/emma+xml'],
-            'emz' => ['application/x-msmetafile'],
-            'env' => ['application/x-envoy'],
-            'eol' => ['audio/vnd.digital-winds'],
-            'eot' => ['application/vnd.ms-fontobject'],
-            'eps' => ['application/postscript'],
-            'epub' => ['application/epub+zip'],
-            'es' => ['application/x-esrehber'],
-            'es3' => ['application/vnd.eszigno3+xml'],
-            'esa' => ['application/vnd.osgi.subsystem'],
-            'esf' => ['application/vnd.epson.esf'],
-            'et3' => ['application/vnd.eszigno3+xml'],
-            'etx' => ['text/x-setext'],
-            'eva' => ['application/x-eva'],
+            '3dm'          => ['x-world/x-3dmf'],
+            '3dmf'         => ['x-world/x-3dmf'],
+            '3dml'         => ['text/vnd.in3d.3dml'],
+            '3ds'          => ['image/x-3ds'],
+            '3g2'          => ['video/3gpp2'],
+            '3gp'          => ['video/3gpp'],
+            '7z'           => ['application/x-7z-compressed'],
+            'a'            => ['application/octet-stream'],
+            'aab'          => ['application/x-authorware-bin'],
+            'aac'          => ['audio/x-aac'],
+            'aam'          => ['application/x-authorware-map'],
+            'aas'          => ['application/x-authorware-seg'],
+            'abc'          => ['text/vnd.abc'],
+            'abw'          => ['application/x-abiword'],
+            'ac'           => ['application/pkix-attr-cert'],
+            'acc'          => ['application/vnd.americandynamics.acc'],
+            'ace'          => ['application/x-ace-compressed'],
+            'acgi'         => ['text/html'],
+            'acu'          => ['application/vnd.acucobol'],
+            'acutc'        => ['application/vnd.acucorp'],
+            'adp'          => ['audio/adpcm'],
+            'aep'          => ['application/vnd.audiograph'],
+            'afl'          => ['video/animaflex'],
+            'afm'          => ['application/x-font-type1'],
+            'afp'          => ['application/vnd.ibm.modcap'],
+            'ahead'        => ['application/vnd.ahead.space'],
+            'ai'           => ['application/postscript'],
+            'aif'          => ['audio/aiff', 'audio/x-aiff'],
+            'aifc'         => ['audio/aiff', 'audio/x-aiff'],
+            'aiff'         => ['audio/aiff', 'audio/x-aiff'],
+            'aim'          => ['application/x-aim'],
+            'aip'          => ['text/x-audiosoft-intra'],
+            'air'          => ['application/vnd.adobe.air-application-installer-package+zip'],
+            'ait'          => ['application/vnd.dvb.ait'],
+            'ami'          => ['application/vnd.amiga.ami'],
+            'ani'          => ['application/x-navi-animation'],
+            'aos'          => ['application/x-nokia-9000-communicator-add-on-software'],
+            'apk'          => ['application/vnd.android.package-archive'],
+            'appcache'     => ['text/cache-manifest'],
+            'application'  => ['application/x-ms-application'],
+            'apr'          => ['application/vnd.lotus-approach'],
+            'aps'          => ['application/mime'],
+            'arc'          => ['application/x-freearc'],
+            'arj'          => ['application/arj', 'application/octet-stream'],
+            'art'          => ['image/x-jg'],
+            'asc'          => ['application/pgp-signature'],
+            'asf'          => ['video/x-ms-asf'],
+            'asm'          => ['text/x-asm'],
+            'aso'          => ['application/vnd.accpac.simply.aso'],
+            'asp'          => ['text/asp'],
+            'asx'          => ['application/x-mplayer2', 'video/x-ms-asf', 'video/x-ms-asf-plugin'],
+            'atc'          => ['application/vnd.acucorp'],
+            'atom'         => ['application/atom+xml'],
+            'atomcat'      => ['application/atomcat+xml'],
+            'atomsvc'      => ['application/atomsvc+xml'],
+            'atx'          => ['application/vnd.antix.game-component'],
+            'au'           => ['audio/basic'],
+            'avi'          => ['application/x-troff-msvideo', 'video/avi', 'video/msvideo', 'video/x-msvideo'],
+            'avs'          => ['video/avs-video'],
+            'aw'           => ['application/applixware'],
+            'azf'          => ['application/vnd.airzip.filesecure.azf'],
+            'azs'          => ['application/vnd.airzip.filesecure.azs'],
+            'azw'          => ['application/vnd.amazon.ebook'],
+            'bat'          => ['application/x-msdownload'],
+            'bcpio'        => ['application/x-bcpio'],
+            'bdf'          => ['application/x-font-bdf'],
+            'bdm'          => ['application/vnd.syncml.dm+wbxml'],
+            'bed'          => ['application/vnd.realvnc.bed'],
+            'bh2'          => ['application/vnd.fujitsu.oasysprs'],
+            'bin'          => ['application/mac-binary', 'application/macbinary', 'application/octet-stream', 'application/x-binary', 'application/x-macbinary'],
+            'blb'          => ['application/x-blorb'],
+            'blorb'        => ['application/x-blorb'],
+            'bm'           => ['image/bmp'],
+            'bmi'          => ['application/vnd.bmi'],
+            'bmp'          => ['image/bmp', 'image/x-windows-bmp'],
+            'boo'          => ['application/book'],
+            'book'         => ['application/vnd.framemaker'],
+            'box'          => ['application/vnd.previewsystems.box'],
+            'boz'          => ['application/x-bzip2'],
+            'bpk'          => ['application/octet-stream'],
+            'bsh'          => ['application/x-bsh'],
+            'btif'         => ['image/prs.btif'],
+            'buffer'       => ['application/octet-stream'],
+            'bz'           => ['application/x-bzip'],
+            'bz2'          => ['application/x-bzip2'],
+            'c'            => ['text/x-c'],
+            'c++'          => ['text/plain'],
+            'c11amc'       => ['application/vnd.cluetrust.cartomobile-config'],
+            'c11amz'       => ['application/vnd.cluetrust.cartomobile-config-pkg'],
+            'c4d'          => ['application/vnd.clonk.c4group'],
+            'c4f'          => ['application/vnd.clonk.c4group'],
+            'c4g'          => ['application/vnd.clonk.c4group'],
+            'c4p'          => ['application/vnd.clonk.c4group'],
+            'c4u'          => ['application/vnd.clonk.c4group'],
+            'cab'          => ['application/vnd.ms-cab-compressed'],
+            'caf'          => ['audio/x-caf'],
+            'cap'          => ['application/vnd.tcpdump.pcap'],
+            'car'          => ['application/vnd.curl.car'],
+            'cat'          => ['application/vnd.ms-pki.seccat'],
+            'cb7'          => ['application/x-cbr'],
+            'cba'          => ['application/x-cbr'],
+            'cbr'          => ['application/x-cbr'],
+            'cbt'          => ['application/x-cbr'],
+            'cbz'          => ['application/x-cbr'],
+            'cc'           => ['text/plain', 'text/x-c'],
+            'ccad'         => ['application/clariscad'],
+            'cco'          => ['application/x-cocoa'],
+            'cct'          => ['application/x-director'],
+            'ccxml'        => ['application/ccxml+xml'],
+            'cdbcmsg'      => ['application/vnd.contact.cmsg'],
+            'cdf'          => ['application/cdf', 'application/x-cdf', 'application/x-netcdf'],
+            'cdkey'        => ['application/vnd.mediastation.cdkey'],
+            'cdmia'        => ['application/cdmi-capability'],
+            'cdmic'        => ['application/cdmi-container'],
+            'cdmid'        => ['application/cdmi-domain'],
+            'cdmio'        => ['application/cdmi-object'],
+            'cdmiq'        => ['application/cdmi-queue'],
+            'cdx'          => ['chemical/x-cdx'],
+            'cdxml'        => ['application/vnd.chemdraw+xml'],
+            'cdy'          => ['application/vnd.cinderella'],
+            'cer'          => ['application/pkix-cert', 'application/x-x509-ca-cert'],
+            'cfs'          => ['application/x-cfs-compressed'],
+            'cgm'          => ['image/cgm'],
+            'cha'          => ['application/x-chat'],
+            'chat'         => ['application/x-chat'],
+            'chm'          => ['application/vnd.ms-htmlhelp'],
+            'chrt'         => ['application/vnd.kde.kchart'],
+            'cif'          => ['chemical/x-cif'],
+            'cii'          => ['application/vnd.anser-web-certificate-issue-initiation'],
+            'cil'          => ['application/vnd.ms-artgalry'],
+            'cla'          => ['application/vnd.claymore'],
+            'class'        => ['application/java', 'application/java-byte-code', 'application/x-java-class'],
+            'clkk'         => ['application/vnd.crick.clicker.keyboard'],
+            'clkp'         => ['application/vnd.crick.clicker.palette'],
+            'clkt'         => ['application/vnd.crick.clicker.template'],
+            'clkw'         => ['application/vnd.crick.clicker.wordbank'],
+            'clkx'         => ['application/vnd.crick.clicker'],
+            'clp'          => ['application/x-msclip'],
+            'cmc'          => ['application/vnd.cosmocaller'],
+            'cmdf'         => ['chemical/x-cmdf'],
+            'cml'          => ['chemical/x-cml'],
+            'cmp'          => ['application/vnd.yellowriver-custom-menu'],
+            'cmx'          => ['image/x-cmx'],
+            'cod'          => ['application/vnd.rim.cod'],
+            'com'          => ['application/octet-stream', 'text/plain'],
+            'conf'         => ['text/plain'],
+            'cpio'         => ['application/x-cpio'],
+            'cpp'          => ['text/x-c'],
+            'cpt'          => ['application/x-compactpro', 'application/x-cpt'],
+            'crd'          => ['application/x-mscardfile'],
+            'crl'          => ['application/pkcs-crl', 'application/pkix-crl'],
+            'crt'          => ['application/pkix-cert', 'application/x-x509-ca-cert', 'application/x-x509-user-cert'],
+            'crx'          => ['application/x-chrome-extension'],
+            'cryptonote'   => ['application/vnd.rig.cryptonote'],
+            'csh'          => ['application/x-csh', 'text/x-script.csh'],
+            'csml'         => ['chemical/x-csml'],
+            'csp'          => ['application/vnd.commonspace'],
+            'css'          => ['application/x-pointplus', 'text/css'],
+            'cst'          => ['application/x-director'],
+            'csv'          => ['text/csv'],
+            'cu'           => ['application/cu-seeme'],
+            'curl'         => ['text/vnd.curl'],
+            'cww'          => ['application/prs.cww'],
+            'cxt'          => ['application/x-director'],
+            'cxx'          => ['text/x-c'],
+            'dae'          => ['model/vnd.collada+xml'],
+            'daf'          => ['application/vnd.mobius.daf'],
+            'dart'         => ['application/vnd.dart'],
+            'dataless'     => ['application/vnd.fdsn.seed'],
+            'davmount'     => ['application/davmount+xml'],
+            'dbk'          => ['application/docbook+xml'],
+            'dcr'          => ['application/x-director'],
+            'dcurl'        => ['text/vnd.curl.dcurl'],
+            'dd2'          => ['application/vnd.oma.dd2+xml'],
+            'ddd'          => ['application/vnd.fujixerox.ddd'],
+            'deb'          => ['application/x-debian-package'],
+            'deepv'        => ['application/x-deepv'],
+            'def'          => ['text/plain'],
+            'deploy'       => ['application/octet-stream'],
+            'der'          => ['application/x-x509-ca-cert'],
+            'dfac'         => ['application/vnd.dreamfactory'],
+            'dgc'          => ['application/x-dgc-compressed'],
+            'dic'          => ['text/x-c'],
+            'dif'          => ['video/x-dv'],
+            'diff'         => ['text/plain'],
+            'dir'          => ['application/x-director'],
+            'dis'          => ['application/vnd.mobius.dis'],
+            'dist'         => ['application/octet-stream'],
+            'distz'        => ['application/octet-stream'],
+            'djv'          => ['image/vnd.djvu'],
+            'djvu'         => ['image/vnd.djvu'],
+            'dl'           => ['video/dl', 'video/x-dl'],
+            'dll'          => ['application/x-msdownload'],
+            'dmg'          => ['application/x-apple-diskimage'],
+            'dmp'          => ['application/vnd.tcpdump.pcap'],
+            'dms'          => ['application/octet-stream'],
+            'dna'          => ['application/vnd.dna'],
+            'doc'          => ['application/msword'],
+            'docm'         => ['application/vnd.ms-word.document.macroenabled.12'],
+            'docx'         => ['application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+            'dot'          => ['application/msword'],
+            'dotm'         => ['application/vnd.ms-word.template.macroenabled.12'],
+            'dotx'         => ['application/vnd.openxmlformats-officedocument.wordprocessingml.template'],
+            'dp'           => ['application/vnd.osgi.dp'],
+            'dpg'          => ['application/vnd.dpgraph'],
+            'dra'          => ['audio/vnd.dra'],
+            'drw'          => ['application/drafting'],
+            'dsc'          => ['text/prs.lines.tag'],
+            'dssc'         => ['application/dssc+der'],
+            'dtb'          => ['application/x-dtbook+xml'],
+            'dtd'          => ['application/xml-dtd'],
+            'dts'          => ['audio/vnd.dts'],
+            'dtshd'        => ['audio/vnd.dts.hd'],
+            'dump'         => ['application/octet-stream'],
+            'dv'           => ['video/x-dv'],
+            'dvb'          => ['video/vnd.dvb.file'],
+            'dvi'          => ['application/x-dvi'],
+            'dwf'          => ['drawing/x-dwf (old)', 'model/vnd.dwf'],
+            'dwg'          => ['application/acad', 'image/vnd.dwg', 'image/x-dwg'],
+            'dxf'          => ['image/vnd.dxf'],
+            'dxp'          => ['application/vnd.spotfire.dxp'],
+            'dxr'          => ['application/x-director'],
+            'ecelp4800'    => ['audio/vnd.nuera.ecelp4800'],
+            'ecelp7470'    => ['audio/vnd.nuera.ecelp7470'],
+            'ecelp9600'    => ['audio/vnd.nuera.ecelp9600'],
+            'ecma'         => ['application/ecmascript'],
+            'edm'          => ['application/vnd.novadigm.edm'],
+            'edx'          => ['application/vnd.novadigm.edx'],
+            'efif'         => ['application/vnd.picsel'],
+            'ei6'          => ['application/vnd.pg.osasli'],
+            'el'           => ['text/x-script.elisp'],
+            'elc'          => ['application/x-bytecode.elisp (compiled elisp)', 'application/x-elc'],
+            'emf'          => ['application/x-msmetafile'],
+            'eml'          => ['message/rfc822'],
+            'emma'         => ['application/emma+xml'],
+            'emz'          => ['application/x-msmetafile'],
+            'env'          => ['application/x-envoy'],
+            'eol'          => ['audio/vnd.digital-winds'],
+            'eot'          => ['application/vnd.ms-fontobject'],
+            'eps'          => ['application/postscript'],
+            'epub'         => ['application/epub+zip'],
+            'es'           => ['application/x-esrehber'],
+            'es3'          => ['application/vnd.eszigno3+xml'],
+            'esa'          => ['application/vnd.osgi.subsystem'],
+            'esf'          => ['application/vnd.epson.esf'],
+            'et3'          => ['application/vnd.eszigno3+xml'],
+            'etx'          => ['text/x-setext'],
+            'eva'          => ['application/x-eva'],
             'event-stream' => ['text/event-stream'],
-            'evy' => ['application/envoy', 'application/x-envoy'],
-            'exe' => ['application/x-msdownload'],
-            'exi' => ['application/exi'],
-            'ext' => ['application/vnd.novadigm.ext'],
-            'ez' => ['application/andrew-inset'],
-            'ez2' => ['application/vnd.ezpix-album'],
-            'ez3' => ['application/vnd.ezpix-package'],
-            'f' => ['text/plain', 'text/x-fortran'],
-            'f4v' => ['video/x-f4v'],
-            'f77' => ['text/x-fortran'],
-            'f90' => ['text/plain', 'text/x-fortran'],
-            'fbs' => ['image/vnd.fastbidsheet'],
-            'fcdt' => ['application/vnd.adobe.formscentral.fcdt'],
-            'fcs' => ['application/vnd.isac.fcs'],
-            'fdf' => ['application/vnd.fdf'],
-            'fe_launch' => ['application/vnd.denovo.fcselayout-link'],
-            'fg5' => ['application/vnd.fujitsu.oasysgp'],
-            'fgd' => ['application/x-director'],
-            'fh' => ['image/x-freehand'],
-            'fh4' => ['image/x-freehand'],
-            'fh5' => ['image/x-freehand'],
-            'fh7' => ['image/x-freehand'],
-            'fhc' => ['image/x-freehand'],
-            'fif' => ['application/fractals', 'image/fif'],
-            'fig' => ['application/x-xfig'],
-            'flac' => ['audio/flac'],
-            'fli' => ['video/fli', 'video/x-fli'],
-            'flo' => ['application/vnd.micrografx.flo'],
-            'flv' => ['video/x-flv'],
-            'flw' => ['application/vnd.kde.kivio'],
-            'flx' => ['text/vnd.fmi.flexstor'],
-            'fly' => ['text/vnd.fly'],
-            'fm' => ['application/vnd.framemaker'],
-            'fmf' => ['video/x-atomic3d-feature'],
-            'fnc' => ['application/vnd.frogans.fnc'],
-            'for' => ['text/plain', 'text/x-fortran'],
-            'fpx' => ['image/vnd.fpx', 'image/vnd.net-fpx'],
-            'frame' => ['application/vnd.framemaker'],
-            'frl' => ['application/freeloader'],
-            'fsc' => ['application/vnd.fsc.weblaunch'],
-            'fst' => ['image/vnd.fst'],
-            'ftc' => ['application/vnd.fluxtime.clip'],
-            'fti' => ['application/vnd.anser-web-funds-transfer-initiation'],
-            'funk' => ['audio/make'],
-            'fvt' => ['video/vnd.fvt'],
-            'fxp' => ['application/vnd.adobe.fxp'],
-            'fxpl' => ['application/vnd.adobe.fxp'],
-            'fzs' => ['application/vnd.fuzzysheet'],
-            'g' => ['text/plain'],
-            'g2w' => ['application/vnd.geoplan'],
-            'g3' => ['image/g3fax'],
-            'g3w' => ['application/vnd.geospace'],
-            'gac' => ['application/vnd.groove-account'],
-            'gam' => ['application/x-tads'],
-            'gbr' => ['application/rpki-ghostbusters'],
-            'gca' => ['application/x-gca-compressed'],
-            'gdl' => ['model/vnd.gdl'],
-            'geo' => ['application/vnd.dynageo'],
-            'gex' => ['application/vnd.geometry-explorer'],
-            'ggb' => ['application/vnd.geogebra.file'],
-            'ggt' => ['application/vnd.geogebra.tool'],
-            'ghf' => ['application/vnd.groove-help'],
-            'gif' => ['image/gif'],
-            'gim' => ['application/vnd.groove-identity-message'],
-            'gl' => ['video/gl', 'video/x-gl'],
-            'gml' => ['application/gml+xml'],
-            'gmx' => ['application/vnd.gmx'],
-            'gnumeric' => ['application/x-gnumeric'],
-            'gph' => ['application/vnd.flographit'],
-            'gpx' => ['application/gpx+xml'],
-            'gqf' => ['application/vnd.grafeq'],
-            'gqs' => ['application/vnd.grafeq'],
-            'gram' => ['application/srgs'],
-            'gramps' => ['application/x-gramps-xml'],
-            'gre' => ['application/vnd.geometry-explorer'],
-            'grv' => ['application/vnd.groove-injector'],
-            'grxml' => ['application/srgs+xml'],
-            'gsd' => ['audio/x-gsm'],
-            'gsf' => ['application/x-font-ghostscript'],
-            'gsm' => ['audio/x-gsm'],
-            'gsp' => ['application/x-gsp'],
-            'gss' => ['application/x-gss'],
-            'gtar' => ['application/x-gtar'],
-            'gtm' => ['application/vnd.groove-tool-message'],
-            'gtw' => ['model/vnd.gtw'],
-            'gv' => ['text/vnd.graphviz'],
-            'gxf' => ['application/gxf'],
-            'gxt' => ['application/vnd.geonext'],
-            'gz' => ['application/x-compressed', 'application/x-gzip'],
-            'gzip' => ['application/x-gzip', 'multipart/x-gzip'],
-            'h' => ['text/plain', 'text/x-h'],
-            'h261' => ['video/h261'],
-            'h263' => ['video/h263'],
-            'h264' => ['video/h264'],
-            'hal' => ['application/vnd.hal+xml'],
-            'hbci' => ['application/vnd.hbci'],
-            'hdf' => ['application/x-hdf'],
-            'help' => ['application/x-helpfile'],
-            'hgl' => ['application/vnd.hp-hpgl'],
-            'hh' => ['text/plain', 'text/x-h'],
-            'hlb' => ['text/x-script'],
-            'hlp' => ['application/hlp', 'application/x-helpfile', 'application/x-winhelp'],
-            'hpg' => ['application/vnd.hp-hpgl'],
-            'hpgl' => ['application/vnd.hp-hpgl'],
-            'hpid' => ['application/vnd.hp-hpid'],
-            'hps' => ['application/vnd.hp-hps'],
-            'hqx' => ['application/binhex', 'application/binhex4', 'application/mac-binhex', 'application/mac-binhex40', 'application/x-binhex40', 'application/x-mac-binhex40'],
-            'hta' => ['application/hta'],
-            'htc' => ['text/x-component'],
-            'htke' => ['application/vnd.kenameaapp'],
-            'htm' => ['text/html'],
-            'html' => ['text/html'],
-            'htmls' => ['text/html'],
-            'htt' => ['text/webviewhtml'],
-            'htx' => ['text/html'],
-            'hvd' => ['application/vnd.yamaha.hv-dic'],
-            'hvp' => ['application/vnd.yamaha.hv-voice'],
-            'hvs' => ['application/vnd.yamaha.hv-script'],
-            'i2g' => ['application/vnd.intergeo'],
-            'icc' => ['application/vnd.iccprofile'],
-            'ice' => ['x-conference/x-cooltalk'],
-            'icm' => ['application/vnd.iccprofile'],
-            'ico' => ['image/x-icon'],
-            'ics' => ['text/calendar'],
-            'idc' => ['text/plain'],
-            'ief' => ['image/ief'],
-            'iefs' => ['image/ief'],
-            'ifb' => ['text/calendar'],
-            'ifm' => ['application/vnd.shana.informed.formdata'],
-            'iges' => ['application/iges', 'model/iges'],
-            'igl' => ['application/vnd.igloader'],
-            'igm' => ['application/vnd.insors.igm'],
-            'igs' => ['application/iges', 'model/iges'],
-            'igx' => ['application/vnd.micrografx.igx'],
-            'iif' => ['application/vnd.shana.informed.interchange'],
-            'ima' => ['application/x-ima'],
-            'imap' => ['application/x-httpd-imap'],
-            'imp' => ['application/vnd.accpac.simply.imp'],
-            'ims' => ['application/vnd.ms-ims'],
-            'in' => ['text/plain'],
-            'inf' => ['application/inf'],
-            'ink' => ['application/inkml+xml'],
-            'inkml' => ['application/inkml+xml'],
-            'ins' => ['application/x-internett-signup'],
-            'install' => ['application/x-install-instructions'],
-            'iota' => ['application/vnd.astraea-software.iota'],
-            'ip' => ['application/x-ip2'],
-            'ipfix' => ['application/ipfix'],
-            'ipk' => ['application/vnd.shana.informed.package'],
-            'irm' => ['application/vnd.ibm.rights-management'],
-            'irp' => ['application/vnd.irepository.package+xml'],
-            'iso' => ['application/x-iso9660-image'],
-            'isu' => ['video/x-isvideo'],
-            'it' => ['audio/it'],
-            'itp' => ['application/vnd.shana.informed.formtemplate'],
-            'iv' => ['application/x-inventor'],
-            'ivp' => ['application/vnd.immervision-ivp'],
-            'ivr' => ['i-world/i-vrml'],
-            'ivu' => ['application/vnd.immervision-ivu'],
-            'ivy' => ['application/x-livescreen'],
-            'jad' => ['text/vnd.sun.j2me.app-descriptor'],
-            'jam' => ['application/vnd.jam'],
-            'jar' => ['application/java-archive'],
-            'jav' => ['text/plain', 'text/x-java-source'],
-            'java' => ['text/plain', 'text/x-java-source'],
-            'jcm' => ['application/x-java-commerce'],
-            'jfif' => ['image/jpeg', 'image/pjpeg'],
-            'jfif-tbnl' => ['image/jpeg'],
-            'jisp' => ['application/vnd.jisp'],
-            'jlt' => ['application/vnd.hp-jlyt'],
-            'jnlp' => ['application/x-java-jnlp-file'],
-            'joda' => ['application/vnd.joost.joda-archive'],
-            'jpe' => ['image/jpeg', 'image/pjpeg'],
-            'jpeg' => ['image/jpeg', 'image/pjpeg'],
-            'jpg' => ['image/jpeg', 'image/pjpeg'],
-            'jpgm' => ['video/jpm'],
-            'jpgv' => ['video/jpeg'],
-            'jpm' => ['video/jpm'],
-            'jps' => ['image/x-jps'],
-            'js' => ['application/javascript'],
-            'json' => ['application/json', 'text/plain'],
-            'jsonml' => ['application/jsonml+json'],
-            'jut' => ['image/jutvision'],
-            'kar' => ['audio/midi', 'music/x-karaoke'],
-            'karbon' => ['application/vnd.kde.karbon'],
-            'kfo' => ['application/vnd.kde.kformula'],
-            'kia' => ['application/vnd.kidspiration'],
-            'kil' => ['application/x-killustrator'],
-            'kml' => ['application/vnd.google-earth.kml+xml'],
-            'kmz' => ['application/vnd.google-earth.kmz'],
-            'kne' => ['application/vnd.kinar'],
-            'knp' => ['application/vnd.kinar'],
-            'kon' => ['application/vnd.kde.kontour'],
-            'kpr' => ['application/vnd.kde.kpresenter'],
-            'kpt' => ['application/vnd.kde.kpresenter'],
-            'kpxx' => ['application/vnd.ds-keypoint'],
-            'ksh' => ['application/x-ksh', 'text/x-script.ksh'],
-            'ksp' => ['application/vnd.kde.kspread'],
-            'ktr' => ['application/vnd.kahootz'],
-            'ktx' => ['image/ktx'],
-            'ktz' => ['application/vnd.kahootz'],
-            'kwd' => ['application/vnd.kde.kword'],
-            'kwt' => ['application/vnd.kde.kword'],
-            'la' => ['audio/nspaudio', 'audio/x-nspaudio'],
-            'lam' => ['audio/x-liveaudio'],
-            'lasxml' => ['application/vnd.las.las+xml'],
-            'latex' => ['application/x-latex'],
-            'lbd' => ['application/vnd.llamagraphics.life-balance.desktop'],
-            'lbe' => ['application/vnd.llamagraphics.life-balance.exchange+xml'],
-            'les' => ['application/vnd.hhe.lesson-player'],
-            'lha' => ['application/lha', 'application/octet-stream', 'application/x-lha'],
-            'lhx' => ['application/octet-stream'],
-            'link66' => ['application/vnd.route66.link66+xml'],
-            'list' => ['text/plain'],
-            'list3820' => ['application/vnd.ibm.modcap'],
-            'listafp' => ['application/vnd.ibm.modcap'],
-            'lma' => ['audio/nspaudio', 'audio/x-nspaudio'],
-            'lnk' => ['application/x-ms-shortcut'],
-            'log' => ['text/plain'],
-            'lostxml' => ['application/lost+xml'],
-            'lrf' => ['application/octet-stream'],
-            'lrm' => ['application/vnd.ms-lrm'],
-            'lsp' => ['application/x-lisp', 'text/x-script.lisp'],
-            'lst' => ['text/plain'],
-            'lsx' => ['text/x-la-asf'],
-            'ltf' => ['application/vnd.frogans.ltf'],
-            'ltx' => ['application/x-latex'],
-            'lua' => ['text/x-lua'],
-            'luac' => ['application/x-lua-bytecode'],
-            'lvp' => ['audio/vnd.lucent.voice'],
-            'lwp' => ['application/vnd.lotus-wordpro'],
-            'lzh' => ['application/octet-stream', 'application/x-lzh'],
-            'lzx' => ['application/lzx', 'application/octet-stream', 'application/x-lzx'],
-            'm' => ['text/plain', 'text/x-m'],
-            'm13' => ['application/x-msmediaview'],
-            'm14' => ['application/x-msmediaview'],
-            'm1v' => ['video/mpeg'],
-            'm21' => ['application/mp21'],
-            'm2a' => ['audio/mpeg'],
-            'm2v' => ['video/mpeg'],
-            'm3a' => ['audio/mpeg'],
-            'm3u' => ['audio/x-mpegurl'],
-            'm3u8' => ['application/x-mpegURL'],
-            'm4a' => ['audio/mp4'],
-            'm4p' => ['application/mp4'],
-            'm4u' => ['video/vnd.mpegurl'],
-            'm4v' => ['video/x-m4v'],
-            'ma' => ['application/mathematica'],
-            'mads' => ['application/mads+xml'],
-            'mag' => ['application/vnd.ecowin.chart'],
-            'maker' => ['application/vnd.framemaker'],
-            'man' => ['text/troff'],
-            'manifest' => ['text/cache-manifest'],
-            'map' => ['application/x-navimap'],
-            'mar' => ['application/octet-stream'],
-            'markdown' => ['text/x-markdown'],
-            'mathml' => ['application/mathml+xml'],
-            'mb' => ['application/mathematica'],
-            'mbd' => ['application/mbedlet'],
-            'mbk' => ['application/vnd.mobius.mbk'],
-            'mbox' => ['application/mbox'],
-            'mc' => ['application/x-magic-cap-package-1.0'],
-            'mc1' => ['application/vnd.medcalcdata'],
-            'mcd' => ['application/mcad', 'application/x-mathcad'],
-            'mcf' => ['image/vasa', 'text/mcf'],
-            'mcp' => ['application/netmc'],
-            'mcurl' => ['text/vnd.curl.mcurl'],
-            'md' => ['text/x-markdown'],
-            'mdb' => ['application/x-msaccess'],
-            'mdi' => ['image/vnd.ms-modi'],
-            'me' => ['text/troff'],
-            'mesh' => ['model/mesh'],
-            'meta4' => ['application/metalink4+xml'],
-            'metalink' => ['application/metalink+xml'],
-            'mets' => ['application/mets+xml'],
-            'mfm' => ['application/vnd.mfmp'],
-            'mft' => ['application/rpki-manifest'],
-            'mgp' => ['application/vnd.osgeo.mapguide.package'],
-            'mgz' => ['application/vnd.proteus.magazine'],
-            'mht' => ['message/rfc822'],
-            'mhtml' => ['message/rfc822'],
-            'mid' => ['application/x-midi', 'audio/midi', 'audio/x-mid', 'audio/x-midi', 'music/crescendo', 'x-music/x-midi'],
-            'midi' => ['application/x-midi', 'audio/midi', 'audio/x-mid', 'audio/x-midi', 'music/crescendo', 'x-music/x-midi'],
-            'mie' => ['application/x-mie'],
-            'mif' => ['application/x-frame', 'application/x-mif'],
-            'mime' => ['message/rfc822', 'www/mime'],
-            'mj2' => ['video/mj2'],
-            'mjf' => ['audio/x-vnd.audioexplosion.mjuicemediafile'],
-            'mjp2' => ['video/mj2'],
-            'mjpg' => ['video/x-motion-jpeg'],
-            'mk3d' => ['video/x-matroska'],
-            'mka' => ['audio/x-matroska'],
-            'mkd' => ['text/x-markdown'],
-            'mks' => ['video/x-matroska'],
-            'mkv' => ['video/x-matroska'],
-            'mlp' => ['application/vnd.dolby.mlp'],
-            'mm' => ['application/base64', 'application/x-meme'],
-            'mmd' => ['application/vnd.chipnuts.karaoke-mmd'],
-            'mme' => ['application/base64'],
-            'mmf' => ['application/vnd.smaf'],
-            'mmr' => ['image/vnd.fujixerox.edmics-mmr'],
-            'mng' => ['video/x-mng'],
-            'mny' => ['application/x-msmoney'],
-            'mobi' => ['application/x-mobipocket-ebook'],
-            'mod' => ['audio/mod', 'audio/x-mod'],
-            'mods' => ['application/mods+xml'],
-            'moov' => ['video/quicktime'],
-            'mov' => ['video/quicktime'],
-            'movie' => ['video/x-sgi-movie'],
-            'mp2' => ['audio/mpeg', 'audio/x-mpeg', 'video/mpeg', 'video/x-mpeg', 'video/x-mpeq2a'],
-            'mp21' => ['application/mp21'],
-            'mp2a' => ['audio/mpeg'],
-            'mp3' => ['audio/mpeg3', 'audio/x-mpeg-3', 'video/mpeg', 'video/x-mpeg'],
-            'mp4' => ['video/mp4'],
-            'mp4a' => ['audio/mp4'],
-            'mp4s' => ['application/mp4'],
-            'mp4v' => ['video/mp4'],
-            'mpa' => ['audio/mpeg', 'video/mpeg'],
-            'mpc' => ['application/vnd.mophun.certificate'],
-            'mpe' => ['video/mpeg'],
-            'mpeg' => ['video/mpeg'],
-            'mpg' => ['audio/mpeg', 'video/mpeg'],
-            'mpg4' => ['video/mp4'],
-            'mpga' => ['audio/mpeg'],
-            'mpkg' => ['application/vnd.apple.installer+xml'],
-            'mpm' => ['application/vnd.blueice.multipass'],
-            'mpn' => ['application/vnd.mophun.application'],
-            'mpp' => ['application/vnd.ms-project'],
-            'mpt' => ['application/vnd.ms-project'],
-            'mpv' => ['application/x-project'],
-            'mpx' => ['application/x-project'],
-            'mpy' => ['application/vnd.ibm.minipay'],
-            'mqy' => ['application/vnd.mobius.mqy'],
-            'mrc' => ['application/marc'],
-            'mrcx' => ['application/marcxml+xml'],
-            'ms' => ['text/troff'],
-            'mscml' => ['application/mediaservercontrol+xml'],
-            'mseed' => ['application/vnd.fdsn.mseed'],
-            'mseq' => ['application/vnd.mseq'],
-            'msf' => ['application/vnd.epson.msf'],
-            'msh' => ['model/mesh'],
-            'msi' => ['application/x-msdownload'],
-            'msl' => ['application/vnd.mobius.msl'],
-            'msty' => ['application/vnd.muvee.style'],
-            'mts' => ['model/vnd.mts'],
-            'mus' => ['application/vnd.musician'],
-            'musicxml' => ['application/vnd.recordare.musicxml+xml'],
-            'mv' => ['video/x-sgi-movie'],
-            'mvb' => ['application/x-msmediaview'],
-            'mwf' => ['application/vnd.mfer'],
-            'mxf' => ['application/mxf'],
-            'mxl' => ['application/vnd.recordare.musicxml'],
-            'mxml' => ['application/xv+xml'],
-            'mxs' => ['application/vnd.triscape.mxs'],
-            'mxu' => ['video/vnd.mpegurl'],
-            'my' => ['audio/make'],
-            'mzz' => ['application/x-vnd.audioexplosion.mzz'],
-            'n-gage' => ['application/vnd.nokia.n-gage.symbian.install'],
-            'n3' => ['text/n3'],
-            'nap' => ['image/naplps'],
-            'naplps' => ['image/naplps'],
-            'nb' => ['application/mathematica'],
-            'nbp' => ['application/vnd.wolfram.player'],
-            'nc' => ['application/x-netcdf'],
-            'ncm' => ['application/vnd.nokia.configuration-message'],
-            'ncx' => ['application/x-dtbncx+xml'],
-            'nfo' => ['text/x-nfo'],
-            'ngdat' => ['application/vnd.nokia.n-gage.data'],
-            'nif' => ['image/x-niff'],
-            'niff' => ['image/x-niff'],
-            'nitf' => ['application/vnd.nitf'],
-            'nix' => ['application/x-mix-transfer'],
-            'nlu' => ['application/vnd.neurolanguage.nlu'],
-            'nml' => ['application/vnd.enliven'],
-            'nnd' => ['application/vnd.noblenet-directory'],
-            'nns' => ['application/vnd.noblenet-sealer'],
-            'nnw' => ['application/vnd.noblenet-web'],
-            'npx' => ['image/vnd.net-fpx'],
-            'nsc' => ['application/x-conference'],
-            'nsf' => ['application/vnd.lotus-notes'],
-            'ntf' => ['application/vnd.nitf'],
-            'nvd' => ['application/x-navidoc'],
-            'nws' => ['message/rfc822'],
-            'nzb' => ['application/x-nzb'],
-            'o' => ['application/octet-stream'],
-            'oa2' => ['application/vnd.fujitsu.oasys2'],
-            'oa3' => ['application/vnd.fujitsu.oasys3'],
-            'oas' => ['application/vnd.fujitsu.oasys'],
-            'obd' => ['application/x-msbinder'],
-            'obj' => ['application/x-tgif'],
-            'oda' => ['application/oda'],
-            'odb' => ['application/vnd.oasis.opendocument.database'],
-            'odc' => ['application/vnd.oasis.opendocument.chart'],
-            'odf' => ['application/vnd.oasis.opendocument.formula'],
-            'odft' => ['application/vnd.oasis.opendocument.formula-template'],
-            'odg' => ['application/vnd.oasis.opendocument.graphics'],
-            'odi' => ['application/vnd.oasis.opendocument.image'],
-            'odm' => ['application/vnd.oasis.opendocument.text-master'],
-            'odp' => ['application/vnd.oasis.opendocument.presentation'],
-            'ods' => ['application/vnd.oasis.opendocument.spreadsheet'],
-            'odt' => ['application/vnd.oasis.opendocument.text'],
-            'oga' => ['audio/ogg'],
-            'ogg' => ['audio/ogg'],
-            'ogv' => ['video/ogg'],
-            'ogx' => ['application/ogg'],
-            'omc' => ['application/x-omc'],
-            'omcd' => ['application/x-omcdatamaker'],
-            'omcr' => ['application/x-omcregerator'],
-            'omdoc' => ['application/omdoc+xml'],
-            'onepkg' => ['application/onenote'],
-            'onetmp' => ['application/onenote'],
-            'onetoc' => ['application/onenote'],
-            'onetoc2' => ['application/onenote'],
-            'opf' => ['application/oebps-package+xml'],
-            'opml' => ['text/x-opml'],
-            'oprc' => ['application/vnd.palm'],
-            'org' => ['application/vnd.lotus-organizer'],
-            'osf' => ['application/vnd.yamaha.openscoreformat'],
-            'osfpvg' => ['application/vnd.yamaha.openscoreformat.osfpvg+xml'],
-            'otc' => ['application/vnd.oasis.opendocument.chart-template'],
-            'otf' => ['font/opentype', 'application/octet-stream', 'application/vnd.ms-opentype'],
-            'otg' => ['application/vnd.oasis.opendocument.graphics-template'],
-            'oth' => ['application/vnd.oasis.opendocument.text-web'],
-            'oti' => ['application/vnd.oasis.opendocument.image-template'],
-            'otm' => ['application/vnd.oasis.opendocument.text-master'],
-            'otp' => ['application/vnd.oasis.opendocument.presentation-template'],
-            'ots' => ['application/vnd.oasis.opendocument.spreadsheet-template'],
-            'ott' => ['application/vnd.oasis.opendocument.text-template'],
-            'oxps' => ['application/oxps'],
-            'oxt' => ['application/vnd.openofficeorg.extension'],
-            'p' => ['text/x-pascal'],
-            'p10' => ['application/pkcs10', 'application/x-pkcs10'],
-            'p12' => ['application/pkcs-12', 'application/x-pkcs12'],
-            'p7a' => ['application/x-pkcs7-signature'],
-            'p7b' => ['application/x-pkcs7-certificates'],
-            'p7c' => ['application/pkcs7-mime', 'application/x-pkcs7-mime'],
-            'p7m' => ['application/pkcs7-mime', 'application/x-pkcs7-mime'],
-            'p7r' => ['application/x-pkcs7-certreqresp'],
-            'p7s' => ['application/pkcs7-signature'],
-            'p8' => ['application/pkcs8'],
-            'part' => ['application/pro_eng'],
-            'pas' => ['text/x-pascal'],
-            'paw' => ['application/vnd.pawaafile'],
-            'pbd' => ['application/vnd.powerbuilder6'],
-            'pbm' => ['image/x-portable-bitmap'],
-            'pcap' => ['application/vnd.tcpdump.pcap'],
-            'pcf' => ['application/x-font-pcf'],
-            'pcl' => ['application/vnd.hp-pcl', 'application/x-pcl'],
-            'pclxl' => ['application/vnd.hp-pclxl'],
-            'pct' => ['image/x-pict'],
-            'pcurl' => ['application/vnd.curl.pcurl'],
-            'pcx' => ['image/x-pcx'],
-            'pdb' => ['application/vnd.palm'],
-            'pdf' => ['application/pdf'],
-            'pfa' => ['application/x-font-type1'],
-            'pfb' => ['application/x-font-type1'],
-            'pfm' => ['application/x-font-type1'],
-            'pfr' => ['application/font-tdpfr'],
-            'pfunk' => ['audio/make'],
-            'pfx' => ['application/x-pkcs12'],
-            'pgm' => ['image/x-portable-graymap'],
-            'pgn' => ['application/x-chess-pgn'],
-            'pgp' => ['application/pgp-encrypted'],
-            'php' => ['text/x-php'],
-            'pic' => ['image/x-pict'],
-            'pict' => ['image/pict'],
-            'pkg' => ['application/octet-stream'],
-            'pki' => ['application/pkixcmp'],
-            'pkipath' => ['application/pkix-pkipath'],
-            'pko' => ['application/vnd.ms-pki.pko'],
-            'pl' => ['text/plain', 'text/x-script.perl'],
-            'plb' => ['application/vnd.3gpp.pic-bw-large'],
-            'plc' => ['application/vnd.mobius.plc'],
-            'plf' => ['application/vnd.pocketlearn'],
-            'pls' => ['application/pls+xml'],
-            'plx' => ['application/x-pixclscript'],
-            'pm' => ['image/x-xpixmap', 'text/x-script.perl-module'],
-            'pm4' => ['application/x-pagemaker'],
-            'pm5' => ['application/x-pagemaker'],
-            'pml' => ['application/vnd.ctc-posml'],
-            'png' => ['image/png'],
-            'pnm' => ['application/x-portable-anymap', 'image/x-portable-anymap'],
-            'portpkg' => ['application/vnd.macports.portpkg'],
-            'pot' => ['application/mspowerpoint', 'application/vnd.ms-powerpoint'],
-            'potm' => ['application/vnd.ms-powerpoint.template.macroenabled.12'],
-            'potx' => ['application/vnd.openxmlformats-officedocument.presentationml.template'],
-            'pov' => ['model/x-pov'],
-            'ppa' => ['application/vnd.ms-powerpoint'],
-            'ppam' => ['application/vnd.ms-powerpoint.addin.macroenabled.12'],
-            'ppd' => ['application/vnd.cups-ppd'],
-            'ppm' => ['image/x-portable-pixmap'],
-            'pps' => ['application/mspowerpoint', 'application/vnd.ms-powerpoint'],
-            'ppsm' => ['application/vnd.ms-powerpoint.slideshow.macroenabled.12'],
-            'ppsx' => ['application/vnd.openxmlformats-officedocument.presentationml.slideshow'],
-            'ppt' => ['application/mspowerpoint', 'application/powerpoint', 'application/vnd.ms-powerpoint', 'application/x-mspowerpoint'],
-            'pptm' => ['application/vnd.ms-powerpoint.presentation.macroenabled.12'],
-            'pptx' => ['application/vnd.openxmlformats-officedocument.presentationml.presentation'],
-            'ppz' => ['application/mspowerpoint'],
-            'pqa' => ['application/vnd.palm'],
-            'prc' => ['application/x-mobipocket-ebook'],
-            'pre' => ['application/vnd.lotus-freelance'],
-            'prf' => ['application/pics-rules'],
-            'prt' => ['application/pro_eng'],
-            'ps' => ['application/postscript'],
-            'psb' => ['application/vnd.3gpp.pic-bw-small'],
-            'psd' => ['image/vnd.adobe.photoshop'],
-            'psf' => ['application/x-font-linux-psf'],
-            'pskcxml' => ['application/pskc+xml'],
-            'ptid' => ['application/vnd.pvi.ptid1'],
-            'pub' => ['application/x-mspublisher'],
-            'pvb' => ['application/vnd.3gpp.pic-bw-var'],
-            'pvu' => ['paleovu/x-pv'],
-            'pwn' => ['application/vnd.3m.post-it-notes'],
-            'pwz' => ['application/vnd.ms-powerpoint'],
-            'py' => ['text/x-script.phyton'],
-            'pya' => ['audio/vnd.ms-playready.media.pya'],
-            'pyc' => ['applicaiton/x-bytecode.python'],
-            'pyo' => ['application/x-python-code'],
-            'pyv' => ['video/vnd.ms-playready.media.pyv'],
-            'qam' => ['application/vnd.epson.quickanime'],
-            'qbo' => ['application/vnd.intu.qbo'],
-            'qcp' => ['audio/vnd.qcelp'],
-            'qd3' => ['x-world/x-3dmf'],
-            'qd3d' => ['x-world/x-3dmf'],
-            'qfx' => ['application/vnd.intu.qfx'],
-            'qif' => ['image/x-quicktime'],
-            'qps' => ['application/vnd.publishare-delta-tree'],
-            'qt' => ['video/quicktime'],
-            'qtc' => ['video/x-qtc'],
-            'qti' => ['image/x-quicktime'],
-            'qtif' => ['image/x-quicktime'],
-            'qwd' => ['application/vnd.quark.quarkxpress'],
-            'qwt' => ['application/vnd.quark.quarkxpress'],
-            'qxb' => ['application/vnd.quark.quarkxpress'],
-            'qxd' => ['application/vnd.quark.quarkxpress'],
-            'qxl' => ['application/vnd.quark.quarkxpress'],
-            'qxt' => ['application/vnd.quark.quarkxpress'],
-            'ra' => ['audio/x-pn-realaudio', 'audio/x-pn-realaudio-plugin', 'audio/x-realaudio'],
-            'ram' => ['audio/x-pn-realaudio'],
-            'rar' => ['application/x-rar-compressed'],
-            'ras' => ['application/x-cmu-raster', 'image/cmu-raster', 'image/x-cmu-raster'],
-            'rast' => ['image/cmu-raster'],
-            'rcprofile' => ['application/vnd.ipunplugged.rcprofile'],
-            'rdf' => ['application/rdf+xml'],
-            'rdz' => ['application/vnd.data-vision.rdz'],
-            'rep' => ['application/vnd.businessobjects'],
-            'res' => ['application/x-dtbresource+xml'],
-            'rexx' => ['text/x-script.rexx'],
-            'rf' => ['image/vnd.rn-realflash'],
-            'rgb' => ['image/x-rgb'],
-            'rif' => ['application/reginfo+xml'],
-            'rip' => ['audio/vnd.rip'],
-            'ris' => ['application/x-research-info-systems'],
-            'rl' => ['application/resource-lists+xml'],
-            'rlc' => ['image/vnd.fujixerox.edmics-rlc'],
-            'rld' => ['application/resource-lists-diff+xml'],
-            'rm' => ['application/vnd.rn-realmedia', 'audio/x-pn-realaudio'],
-            'rmi' => ['audio/midi'],
-            'rmm' => ['audio/x-pn-realaudio'],
-            'rmp' => ['audio/x-pn-realaudio', 'audio/x-pn-realaudio-plugin'],
-            'rms' => ['application/vnd.jcp.javame.midlet-rms'],
-            'rmvb' => ['application/vnd.rn-realmedia-vbr'],
-            'rnc' => ['application/relax-ng-compact-syntax'],
-            'rng' => ['application/ringing-tones', 'application/vnd.nokia.ringing-tone'],
-            'rnx' => ['application/vnd.rn-realplayer'],
-            'roa' => ['application/rpki-roa'],
-            'roff' => ['text/troff'],
-            'rp' => ['image/vnd.rn-realpix'],
-            'rp9' => ['application/vnd.cloanto.rp9'],
-            'rpm' => ['audio/x-pn-realaudio-plugin'],
-            'rpss' => ['application/vnd.nokia.radio-presets'],
-            'rpst' => ['application/vnd.nokia.radio-preset'],
-            'rq' => ['application/sparql-query'],
-            'rs' => ['application/rls-services+xml'],
-            'rsd' => ['application/rsd+xml'],
-            'rss' => ['application/rss+xml'],
-            'rt' => ['text/richtext', 'text/vnd.rn-realtext'],
-            'rtf' => ['application/rtf', 'application/x-rtf', 'text/richtext'],
-            'rtx' => ['application/rtf', 'text/richtext'],
-            'rv' => ['video/vnd.rn-realvideo'],
-            's' => ['text/x-asm'],
-            's3m' => ['audio/s3m'],
-            'saf' => ['application/vnd.yamaha.smaf-audio'],
-            'saveme' => ['aapplication/octet-stream'],
-            'sb3' => ['application/x.scratch.sb3'],
-            'sbk' => ['application/x-tbook'],
-            'sbml' => ['application/sbml+xml'],
-            'sc' => ['application/vnd.ibm.secure-container'],
-            'scd' => ['application/x-msschedule'],
-            'scm' => ['application/x-lotusscreencam', 'text/x-script.guile', 'text/x-script.scheme', 'video/x-scm'],
-            'scq' => ['application/scvp-cv-request'],
-            'scs' => ['application/scvp-cv-response'],
-            'scurl' => ['text/vnd.curl.scurl'],
-            'sda' => ['application/vnd.stardivision.draw'],
-            'sdc' => ['application/vnd.stardivision.calc'],
-            'sdd' => ['application/vnd.stardivision.impress'],
-            'sdkd' => ['application/vnd.solent.sdkm+xml'],
-            'sdkm' => ['application/vnd.solent.sdkm+xml'],
-            'sdml' => ['text/plain'],
-            'sdp' => ['application/sdp', 'application/x-sdp'],
-            'sdr' => ['application/sounder'],
-            'sdw' => ['application/vnd.stardivision.writer'],
-            'sea' => ['application/sea', 'application/x-sea'],
-            'see' => ['application/vnd.seemail'],
-            'seed' => ['application/vnd.fdsn.seed'],
-            'sema' => ['application/vnd.sema'],
-            'semd' => ['application/vnd.semd'],
-            'semf' => ['application/vnd.semf'],
-            'ser' => ['application/java-serialized-object'],
-            'set' => ['application/set'],
-            'setpay' => ['application/set-payment-initiation'],
-            'setreg' => ['application/set-registration-initiation'],
-            'sfd-hdstx' => ['application/vnd.hydrostatix.sof-data'],
-            'sfs' => ['application/vnd.spotfire.sfs'],
-            'sfv' => ['text/x-sfv'],
-            'sgi' => ['image/sgi'],
-            'sgl' => ['application/vnd.stardivision.writer-global'],
-            'sgm' => ['text/sgml', 'text/x-sgml'],
-            'sgml' => ['text/sgml', 'text/x-sgml'],
-            'sh' => ['application/x-bsh', 'application/x-sh', 'application/x-shar', 'text/x-script.sh'],
-            'shar' => ['application/x-bsh', 'application/x-shar'],
-            'shf' => ['application/shf+xml'],
-            'shtml' => ['text/html', 'text/x-server-parsed-html'],
-            'si' => ['text/vnd.wap.si'],
-            'sic' => ['application/vnd.wap.sic'],
-            'sid' => ['image/x-mrsid-image'],
-            'sig' => ['application/pgp-signature'],
-            'sil' => ['audio/silk'],
-            'silo' => ['model/mesh'],
-            'sis' => ['application/vnd.symbian.install'],
-            'sisx' => ['application/vnd.symbian.install'],
-            'sit' => ['application/x-sit', 'application/x-stuffit'],
-            'sitx' => ['application/x-stuffitx'],
-            'skd' => ['application/vnd.koan'],
-            'skm' => ['application/vnd.koan'],
-            'skp' => ['application/vnd.koan'],
-            'skt' => ['application/vnd.koan'],
-            'sl' => ['application/x-seelogo'],
-            'slc' => ['application/vnd.wap.slc'],
-            'sldm' => ['application/vnd.ms-powerpoint.slide.macroenabled.12'],
-            'sldx' => ['application/vnd.openxmlformats-officedocument.presentationml.slide'],
-            'slt' => ['application/vnd.epson.salt'],
-            'sm' => ['application/vnd.stepmania.stepchart'],
-            'smf' => ['application/vnd.stardivision.math'],
-            'smi' => ['application/smil+xml'],
-            'smil' => ['application/smil+xml'],
-            'smv' => ['video/x-smv'],
-            'smzip' => ['application/vnd.stepmania.package'],
-            'snd' => ['audio/basic', 'audio/x-adpcm'],
-            'snf' => ['application/x-font-snf'],
-            'so' => ['application/octet-stream'],
-            'sol' => ['application/solids'],
-            'spc' => ['application/x-pkcs7-certificates', 'text/x-speech'],
-            'spf' => ['application/vnd.yamaha.smaf-phrase'],
-            'spl' => ['application/x-futuresplash'],
-            'spot' => ['text/vnd.in3d.spot'],
-            'spp' => ['application/scvp-vp-response'],
-            'spq' => ['application/scvp-vp-request'],
-            'spr' => ['application/x-sprite'],
-            'sprite' => ['application/x-sprite'],
-            'spx' => ['audio/ogg'],
-            'sql' => ['application/x-sql'],
-            'src' => ['application/x-wais-source'],
-            'srt' => ['application/x-subrip'],
-            'sru' => ['application/sru+xml'],
-            'srx' => ['application/sparql-results+xml'],
-            'ssdl' => ['application/ssdl+xml'],
-            'sse' => ['application/vnd.kodak-descriptor'],
-            'ssf' => ['application/vnd.epson.ssf'],
-            'ssi' => ['text/x-server-parsed-html'],
-            'ssm' => ['application/streamingmedia'],
-            'ssml' => ['application/ssml+xml'],
-            'sst' => ['application/vnd.ms-pki.certstore'],
-            'st' => ['application/vnd.sailingtracker.track'],
-            'stc' => ['application/vnd.sun.xml.calc.template'],
-            'std' => ['application/vnd.sun.xml.draw.template'],
-            'step' => ['application/step'],
-            'stf' => ['application/vnd.wt.stf'],
-            'sti' => ['application/vnd.sun.xml.impress.template'],
-            'stk' => ['application/hyperstudio'],
-            'stl' => ['application/sla', 'application/vnd.ms-pki.stl', 'application/x-navistyle'],
-            'stp' => ['application/step'],
-            'str' => ['application/vnd.pg.format'],
-            'stw' => ['application/vnd.sun.xml.writer.template'],
-            'sub' => ['text/vnd.dvb.subtitle'],
-            'sus' => ['application/vnd.sus-calendar'],
-            'susp' => ['application/vnd.sus-calendar'],
-            'sv4cpio' => ['application/x-sv4cpio'],
-            'sv4crc' => ['application/x-sv4crc'],
-            'svc' => ['application/vnd.dvb.service'],
-            'svd' => ['application/vnd.svd'],
-            'svf' => ['image/vnd.dwg', 'image/x-dwg'],
-            'svg' => ['image/svg+xml'],
-            'svgz' => ['image/svg+xml'],
-            'svr' => ['application/x-world', 'x-world/x-svr'],
-            'swa' => ['application/x-director'],
-            'swf' => ['application/x-shockwave-flash'],
-            'swi' => ['application/vnd.aristanetworks.swi'],
-            'sxc' => ['application/vnd.sun.xml.calc'],
-            'sxd' => ['application/vnd.sun.xml.draw'],
-            'sxg' => ['application/vnd.sun.xml.writer.global'],
-            'sxi' => ['application/vnd.sun.xml.impress'],
-            'sxm' => ['application/vnd.sun.xml.math'],
-            'sxw' => ['application/vnd.sun.xml.writer'],
-            't' => ['text/troff'],
-            't3' => ['application/x-t3vm-image'],
-            'taglet' => ['application/vnd.mynfc'],
-            'talk' => ['text/x-speech'],
-            'tao' => ['application/vnd.tao.intent-module-archive'],
-            'tar' => ['application/x-tar'],
-            'tbk' => ['application/toolbook', 'application/x-tbook'],
-            'tcap' => ['application/vnd.3gpp2.tcap'],
-            'tcl' => ['application/x-tcl', 'text/x-script.tcl'],
-            'tcsh' => ['text/x-script.tcsh'],
-            'teacher' => ['application/vnd.smart.teacher'],
-            'tei' => ['application/tei+xml'],
-            'teicorpus' => ['application/tei+xml'],
-            'tex' => ['application/x-tex'],
-            'texi' => ['application/x-texinfo'],
-            'texinfo' => ['application/x-texinfo'],
-            'text' => ['application/plain', 'text/plain'],
-            'tfi' => ['application/thraud+xml'],
-            'tfm' => ['application/x-tex-tfm'],
-            'tga' => ['image/x-tga'],
-            'tgz' => ['application/gnutar', 'application/x-compressed'],
-            'thmx' => ['application/vnd.ms-officetheme'],
-            'tif' => ['image/tiff', 'image/x-tiff'],
-            'tiff' => ['image/tiff', 'image/x-tiff'],
-            'tmo' => ['application/vnd.tmobile-livetv'],
-            'torrent' => ['application/x-bittorrent'],
-            'tpl' => ['application/vnd.groove-tool-template'],
-            'tpt' => ['application/vnd.trid.tpt'],
-            'tr' => ['text/troff'],
-            'tra' => ['application/vnd.trueapp'],
-            'trm' => ['application/x-msterminal'],
-            'ts' => ['video/MP2T'],
-            'tsd' => ['application/timestamped-data'],
-            'tsi' => ['audio/tsp-audio'],
-            'tsp' => ['application/dsptype', 'audio/tsplayer'],
-            'tsv' => ['text/tab-separated-values'],
-            'ttc' => ['application/x-font-ttf', 'application/octet-stream', 'application/font-sfnt', 'font/sfnt'],
-            'ttf' => ['application/x-font-ttf', 'application/octet-stream', 'application/font-sfnt', 'font/sfnt'],
-            'ttl' => ['text/turtle'],
-            'turbot' => ['image/florian'],
-            'twd' => ['application/vnd.simtech-mindmapper'],
-            'twds' => ['application/vnd.simtech-mindmapper'],
-            'txd' => ['application/vnd.genomatix.tuxedo'],
-            'txf' => ['application/vnd.mobius.txf'],
-            'txt' => ['text/plain'],
-            'u32' => ['application/x-authorware-bin'],
-            'udeb' => ['application/x-debian-package'],
-            'ufd' => ['application/vnd.ufdl'],
-            'ufdl' => ['application/vnd.ufdl'],
-            'uil' => ['text/x-uil'],
-            'ulx' => ['application/x-glulx'],
-            'umj' => ['application/vnd.umajin'],
-            'uni' => ['text/uri-list'],
-            'unis' => ['text/uri-list'],
-            'unityweb' => ['application/vnd.unity'],
-            'unv' => ['application/i-deas'],
-            'uoml' => ['application/vnd.uoml+xml'],
-            'uri' => ['text/uri-list'],
-            'uris' => ['text/uri-list'],
-            'urls' => ['text/uri-list'],
-            'ustar' => ['application/x-ustar', 'multipart/x-ustar'],
-            'utz' => ['application/vnd.uiq.theme'],
-            'uu' => ['application/octet-stream', 'text/x-uuencode'],
-            'uue' => ['text/x-uuencode'],
-            'uva' => ['audio/vnd.dece.audio'],
-            'uvd' => ['application/vnd.dece.data'],
-            'uvf' => ['application/vnd.dece.data'],
-            'uvg' => ['image/vnd.dece.graphic'],
-            'uvh' => ['video/vnd.dece.hd'],
-            'uvi' => ['image/vnd.dece.graphic'],
-            'uvm' => ['video/vnd.dece.mobile'],
-            'uvp' => ['video/vnd.dece.pd'],
-            'uvs' => ['video/vnd.dece.sd'],
-            'uvt' => ['application/vnd.dece.ttml+xml'],
-            'uvu' => ['video/vnd.uvvu.mp4'],
-            'uvv' => ['video/vnd.dece.video'],
-            'uvva' => ['audio/vnd.dece.audio'],
-            'uvvd' => ['application/vnd.dece.data'],
-            'uvvf' => ['application/vnd.dece.data'],
-            'uvvg' => ['image/vnd.dece.graphic'],
-            'uvvh' => ['video/vnd.dece.hd'],
-            'uvvi' => ['image/vnd.dece.graphic'],
-            'uvvm' => ['video/vnd.dece.mobile'],
-            'uvvp' => ['video/vnd.dece.pd'],
-            'uvvs' => ['video/vnd.dece.sd'],
-            'uvvt' => ['application/vnd.dece.ttml+xml'],
-            'uvvu' => ['video/vnd.uvvu.mp4'],
-            'uvvv' => ['video/vnd.dece.video'],
-            'uvvx' => ['application/vnd.dece.unspecified'],
-            'uvvz' => ['application/vnd.dece.zip'],
-            'uvx' => ['application/vnd.dece.unspecified'],
-            'uvz' => ['application/vnd.dece.zip'],
-            'vcard' => ['text/vcard'],
-            'vcd' => ['application/x-cdlink'],
-            'vcf' => ['text/x-vcard'],
-            'vcg' => ['application/vnd.groove-vcard'],
-            'vcs' => ['text/x-vcalendar'],
-            'vcx' => ['application/vnd.vcx'],
-            'vda' => ['application/vda'],
-            'vdo' => ['video/vdo'],
-            'vew' => ['application/groupwise'],
-            'vis' => ['application/vnd.visionary'],
-            'viv' => ['video/vivo', 'video/vnd.vivo'],
-            'vivo' => ['video/vivo', 'video/vnd.vivo'],
-            'vmd' => ['application/vocaltec-media-desc'],
-            'vmf' => ['application/vocaltec-media-file'],
-            'vob' => ['video/x-ms-vob'],
-            'voc' => ['audio/voc', 'audio/x-voc'],
-            'vor' => ['application/vnd.stardivision.writer'],
-            'vos' => ['video/vosaic'],
-            'vox' => ['application/x-authorware-bin'],
-            'vqe' => ['audio/x-twinvq-plugin'],
-            'vqf' => ['audio/x-twinvq'],
-            'vql' => ['audio/x-twinvq-plugin'],
-            'vrml' => ['application/x-vrml', 'model/vrml', 'x-world/x-vrml'],
-            'vrt' => ['x-world/x-vrt'],
-            'vsd' => ['application/vnd.visio'],
-            'vsf' => ['application/vnd.vsf'],
-            'vss' => ['application/vnd.visio'],
-            'vst' => ['application/vnd.visio'],
-            'vsw' => ['application/vnd.visio'],
-            'vtt' => ['text/vtt'],
-            'vtu' => ['model/vnd.vtu'],
-            'vxml' => ['application/voicexml+xml'],
-            'w3d' => ['application/x-director'],
-            'w60' => ['application/wordperfect6.0'],
-            'w61' => ['application/wordperfect6.1'],
-            'w6w' => ['application/msword'],
-            'wad' => ['application/x-doom'],
-            'wav' => ['audio/wav', 'audio/x-wav'],
-            'wax' => ['audio/x-ms-wax'],
-            'wb1' => ['application/x-qpro'],
-            'wbmp' => ['image/vnd.wap.wbmp'],
-            'wbs' => ['application/vnd.criticaltools.wbs+xml'],
-            'wbxml' => ['application/vnd.wap.wbxml'],
-            'wcm' => ['application/vnd.ms-works'],
-            'wdb' => ['application/vnd.ms-works'],
-            'wdp' => ['image/vnd.ms-photo'],
-            'web' => ['application/vnd.xara'],
-            'weba' => ['audio/webm'],
-            'webapp' => ['application/x-web-app-manifest+json'],
-            'webm' => ['video/webm'],
-            'webp' => ['image/webp'],
-            'wg' => ['application/vnd.pmi.widget'],
-            'wgt' => ['application/widget'],
-            'wiz' => ['application/msword'],
-            'wk1' => ['application/x-123'],
-            'wks' => ['application/vnd.ms-works'],
-            'wm' => ['video/x-ms-wm'],
-            'wma' => ['audio/x-ms-wma'],
-            'wmd' => ['application/x-ms-wmd'],
-            'wmf' => ['application/x-msmetafile'],
-            'wml' => ['text/vnd.wap.wml'],
-            'wmlc' => ['application/vnd.wap.wmlc'],
-            'wmls' => ['text/vnd.wap.wmlscript'],
-            'wmlsc' => ['application/vnd.wap.wmlscriptc'],
-            'wmv' => ['video/x-ms-wmv'],
-            'wmx' => ['video/x-ms-wmx'],
-            'wmz' => ['application/x-msmetafile'],
-            'woff' => ['application/x-font-woff'],
-            'word' => ['application/msword'],
-            'wp' => ['application/wordperfect'],
-            'wp5' => ['application/wordperfect', 'application/wordperfect6.0'],
-            'wp6' => ['application/wordperfect'],
-            'wpd' => ['application/wordperfect', 'application/x-wpwin'],
-            'wpl' => ['application/vnd.ms-wpl'],
-            'wps' => ['application/vnd.ms-works'],
-            'wq1' => ['application/x-lotus'],
-            'wqd' => ['application/vnd.wqd'],
-            'wri' => ['application/mswrite', 'application/x-wri'],
-            'wrl' => ['application/x-world', 'model/vrml', 'x-world/x-vrml'],
-            'wrz' => ['model/vrml', 'x-world/x-vrml'],
-            'wsc' => ['text/scriplet'],
-            'wsdl' => ['application/wsdl+xml'],
-            'wspolicy' => ['application/wspolicy+xml'],
-            'wsrc' => ['application/x-wais-source'],
-            'wtb' => ['application/vnd.webturbo'],
-            'wtk' => ['application/x-wintalk'],
-            'wvx' => ['video/x-ms-wvx'],
-            'x-png' => ['image/png'],
-            'x32' => ['application/x-authorware-bin'],
-            'x3d' => ['model/x3d+xml'],
-            'x3db' => ['model/x3d+binary'],
-            'x3dbz' => ['model/x3d+binary'],
-            'x3dv' => ['model/x3d+vrml'],
-            'x3dvz' => ['model/x3d+vrml'],
-            'x3dz' => ['model/x3d+xml'],
-            'xaml' => ['application/xaml+xml'],
-            'xap' => ['application/x-silverlight-app'],
-            'xar' => ['application/vnd.xara'],
-            'xbap' => ['application/x-ms-xbap'],
-            'xbd' => ['application/vnd.fujixerox.docuworks.binder'],
-            'xbm' => ['image/x-xbitmap', 'image/x-xbm', 'image/xbm'],
-            'xdf' => ['application/xcap-diff+xml'],
-            'xdm' => ['application/vnd.syncml.dm+xml'],
-            'xdp' => ['application/vnd.adobe.xdp+xml'],
-            'xdr' => ['video/x-amt-demorun'],
-            'xdssc' => ['application/dssc+xml'],
-            'xdw' => ['application/vnd.fujixerox.docuworks'],
-            'xenc' => ['application/xenc+xml'],
-            'xer' => ['application/patch-ops-error+xml'],
-            'xfdf' => ['application/vnd.adobe.xfdf'],
-            'xfdl' => ['application/vnd.xfdl'],
-            'xgz' => ['xgl/drawing'],
-            'xht' => ['application/xhtml+xml'],
-            'xhtml' => ['application/xhtml+xml'],
-            'xhvml' => ['application/xv+xml'],
-            'xif' => ['image/vnd.xiff'],
-            'xl' => ['application/excel'],
-            'xla' => ['application/excel', 'application/x-excel', 'application/x-msexcel'],
-            'xlam' => ['application/vnd.ms-excel.addin.macroenabled.12'],
-            'xlb' => ['application/excel', 'application/vnd.ms-excel', 'application/x-excel'],
-            'xlc' => ['application/excel', 'application/vnd.ms-excel', 'application/x-excel'],
-            'xld' => ['application/excel', 'application/x-excel'],
-            'xlf' => ['application/x-xliff+xml'],
-            'xlk' => ['application/excel', 'application/x-excel'],
-            'xll' => ['application/excel', 'application/vnd.ms-excel', 'application/x-excel'],
-            'xlm' => ['application/excel', 'application/vnd.ms-excel', 'application/x-excel'],
-            'xls' => ['application/excel', 'application/vnd.ms-excel', 'application/x-excel', 'application/x-msexcel'],
-            'xlsb' => ['application/vnd.ms-excel.sheet.binary.macroenabled.12'],
-            'xlsm' => ['application/vnd.ms-excel.sheet.macroenabled.12'],
-            'xlsx' => ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
-            'xlt' => ['application/excel', 'application/x-excel'],
-            'xltm' => ['application/vnd.ms-excel.template.macroenabled.12'],
-            'xltx' => ['application/vnd.openxmlformats-officedocument.spreadsheetml.template'],
-            'xlv' => ['application/excel', 'application/x-excel'],
-            'xlw' => ['application/excel', 'application/vnd.ms-excel', 'application/x-excel', 'application/x-msexcel'],
-            'xm' => ['audio/xm'],
-            'xml' => ['application/xml', 'text/xml'],
-            'xmz' => ['xgl/movie'],
-            'xo' => ['application/vnd.olpc-sugar'],
-            'xop' => ['application/xop+xml'],
-            'xpdl' => ['application/xml'],
-            'xpi' => ['application/x-xpinstall'],
-            'xpix' => ['application/x-vnd.ls-xpix'],
-            'xpl' => ['application/xproc+xml'],
-            'xpm' => ['image/x-xpixmap', 'image/xpm'],
-            'xpr' => ['application/vnd.is-xpr'],
-            'xps' => ['application/vnd.ms-xpsdocument'],
-            'xpw' => ['application/vnd.intercon.formnet'],
-            'xpx' => ['application/vnd.intercon.formnet'],
-            'xsl' => ['application/xml'],
-            'xslt' => ['application/xslt+xml'],
-            'xsm' => ['application/vnd.syncml+xml'],
-            'xspf' => ['application/xspf+xml'],
-            'xsr' => ['video/x-amt-showrun'],
-            'xul' => ['application/vnd.mozilla.xul+xml'],
-            'xvm' => ['application/xv+xml'],
-            'xvml' => ['application/xv+xml'],
-            'xwd' => ['image/x-xwd', 'image/x-xwindowdump'],
-            'xyz' => ['chemical/x-xyz'],
-            'xz' => ['application/x-xz'],
-            'yang' => ['application/yang'],
-            'yin' => ['application/yin+xml'],
-            'z' => ['application/x-compress', 'application/x-compressed'],
-            'z1' => ['application/x-zmachine'],
-            'z2' => ['application/x-zmachine'],
-            'z3' => ['application/x-zmachine'],
-            'z4' => ['application/x-zmachine'],
-            'z5' => ['application/x-zmachine'],
-            'z6' => ['application/x-zmachine'],
-            'z7' => ['application/x-zmachine'],
-            'z8' => ['application/x-zmachine'],
-            'zaz' => ['application/vnd.zzazz.deck+xml'],
-            'zip' => ['application/x-compressed', 'application/x-zip-compressed', 'application/zip', 'multipart/x-zip'],
-            'zir' => ['application/vnd.zul'],
-            'zirz' => ['application/vnd.zul'],
-            'zmm' => ['application/vnd.handheld-entertainment+xml'],
-            'zoo' => ['application/octet-stream'],
-            'zsh' => ['text/x-script.zsh'],
-            '123' => ['application/vnd.lotus-1-2-3'],
+            'evy'          => ['application/envoy', 'application/x-envoy'],
+            'exe'          => ['application/x-msdownload'],
+            'exi'          => ['application/exi'],
+            'ext'          => ['application/vnd.novadigm.ext'],
+            'ez'           => ['application/andrew-inset'],
+            'ez2'          => ['application/vnd.ezpix-album'],
+            'ez3'          => ['application/vnd.ezpix-package'],
+            'f'            => ['text/plain', 'text/x-fortran'],
+            'f4v'          => ['video/x-f4v'],
+            'f77'          => ['text/x-fortran'],
+            'f90'          => ['text/plain', 'text/x-fortran'],
+            'fbs'          => ['image/vnd.fastbidsheet'],
+            'fcdt'         => ['application/vnd.adobe.formscentral.fcdt'],
+            'fcs'          => ['application/vnd.isac.fcs'],
+            'fdf'          => ['application/vnd.fdf'],
+            'fe_launch'    => ['application/vnd.denovo.fcselayout-link'],
+            'fg5'          => ['application/vnd.fujitsu.oasysgp'],
+            'fgd'          => ['application/x-director'],
+            'fh'           => ['image/x-freehand'],
+            'fh4'          => ['image/x-freehand'],
+            'fh5'          => ['image/x-freehand'],
+            'fh7'          => ['image/x-freehand'],
+            'fhc'          => ['image/x-freehand'],
+            'fif'          => ['application/fractals', 'image/fif'],
+            'fig'          => ['application/x-xfig'],
+            'flac'         => ['audio/flac'],
+            'fli'          => ['video/fli', 'video/x-fli'],
+            'flo'          => ['application/vnd.micrografx.flo'],
+            'flv'          => ['video/x-flv'],
+            'flw'          => ['application/vnd.kde.kivio'],
+            'flx'          => ['text/vnd.fmi.flexstor'],
+            'fly'          => ['text/vnd.fly'],
+            'fm'           => ['application/vnd.framemaker'],
+            'fmf'          => ['video/x-atomic3d-feature'],
+            'fnc'          => ['application/vnd.frogans.fnc'],
+            'for'          => ['text/plain', 'text/x-fortran'],
+            'fpx'          => ['image/vnd.fpx', 'image/vnd.net-fpx'],
+            'frame'        => ['application/vnd.framemaker'],
+            'frl'          => ['application/freeloader'],
+            'fsc'          => ['application/vnd.fsc.weblaunch'],
+            'fst'          => ['image/vnd.fst'],
+            'ftc'          => ['application/vnd.fluxtime.clip'],
+            'fti'          => ['application/vnd.anser-web-funds-transfer-initiation'],
+            'funk'         => ['audio/make'],
+            'fvt'          => ['video/vnd.fvt'],
+            'fxp'          => ['application/vnd.adobe.fxp'],
+            'fxpl'         => ['application/vnd.adobe.fxp'],
+            'fzs'          => ['application/vnd.fuzzysheet'],
+            'g'            => ['text/plain'],
+            'g2w'          => ['application/vnd.geoplan'],
+            'g3'           => ['image/g3fax'],
+            'g3w'          => ['application/vnd.geospace'],
+            'gac'          => ['application/vnd.groove-account'],
+            'gam'          => ['application/x-tads'],
+            'gbr'          => ['application/rpki-ghostbusters'],
+            'gca'          => ['application/x-gca-compressed'],
+            'gdl'          => ['model/vnd.gdl'],
+            'geo'          => ['application/vnd.dynageo'],
+            'gex'          => ['application/vnd.geometry-explorer'],
+            'ggb'          => ['application/vnd.geogebra.file'],
+            'ggt'          => ['application/vnd.geogebra.tool'],
+            'ghf'          => ['application/vnd.groove-help'],
+            'gif'          => ['image/gif'],
+            'gim'          => ['application/vnd.groove-identity-message'],
+            'gl'           => ['video/gl', 'video/x-gl'],
+            'gml'          => ['application/gml+xml'],
+            'gmx'          => ['application/vnd.gmx'],
+            'gnumeric'     => ['application/x-gnumeric'],
+            'gph'          => ['application/vnd.flographit'],
+            'gpx'          => ['application/gpx+xml'],
+            'gqf'          => ['application/vnd.grafeq'],
+            'gqs'          => ['application/vnd.grafeq'],
+            'gram'         => ['application/srgs'],
+            'gramps'       => ['application/x-gramps-xml'],
+            'gre'          => ['application/vnd.geometry-explorer'],
+            'grv'          => ['application/vnd.groove-injector'],
+            'grxml'        => ['application/srgs+xml'],
+            'gsd'          => ['audio/x-gsm'],
+            'gsf'          => ['application/x-font-ghostscript'],
+            'gsm'          => ['audio/x-gsm'],
+            'gsp'          => ['application/x-gsp'],
+            'gss'          => ['application/x-gss'],
+            'gtar'         => ['application/x-gtar'],
+            'gtm'          => ['application/vnd.groove-tool-message'],
+            'gtw'          => ['model/vnd.gtw'],
+            'gv'           => ['text/vnd.graphviz'],
+            'gxf'          => ['application/gxf'],
+            'gxt'          => ['application/vnd.geonext'],
+            'gz'           => ['application/x-compressed', 'application/x-gzip'],
+            'gzip'         => ['application/x-gzip', 'multipart/x-gzip'],
+            'h'            => ['text/plain', 'text/x-h'],
+            'h261'         => ['video/h261'],
+            'h263'         => ['video/h263'],
+            'h264'         => ['video/h264'],
+            'hal'          => ['application/vnd.hal+xml'],
+            'hbci'         => ['application/vnd.hbci'],
+            'hdf'          => ['application/x-hdf'],
+            'help'         => ['application/x-helpfile'],
+            'hgl'          => ['application/vnd.hp-hpgl'],
+            'hh'           => ['text/plain', 'text/x-h'],
+            'hlb'          => ['text/x-script'],
+            'hlp'          => ['application/hlp', 'application/x-helpfile', 'application/x-winhelp'],
+            'hpg'          => ['application/vnd.hp-hpgl'],
+            'hpgl'         => ['application/vnd.hp-hpgl'],
+            'hpid'         => ['application/vnd.hp-hpid'],
+            'hps'          => ['application/vnd.hp-hps'],
+            'hqx'          => ['application/binhex', 'application/binhex4', 'application/mac-binhex', 'application/mac-binhex40', 'application/x-binhex40', 'application/x-mac-binhex40'],
+            'hta'          => ['application/hta'],
+            'htc'          => ['text/x-component'],
+            'htke'         => ['application/vnd.kenameaapp'],
+            'htm'          => ['text/html'],
+            'html'         => ['text/html'],
+            'htmls'        => ['text/html'],
+            'htt'          => ['text/webviewhtml'],
+            'htx'          => ['text/html'],
+            'hvd'          => ['application/vnd.yamaha.hv-dic'],
+            'hvp'          => ['application/vnd.yamaha.hv-voice'],
+            'hvs'          => ['application/vnd.yamaha.hv-script'],
+            'i2g'          => ['application/vnd.intergeo'],
+            'icc'          => ['application/vnd.iccprofile'],
+            'ice'          => ['x-conference/x-cooltalk'],
+            'icm'          => ['application/vnd.iccprofile'],
+            'ico'          => ['image/x-icon'],
+            'ics'          => ['text/calendar'],
+            'idc'          => ['text/plain'],
+            'ief'          => ['image/ief'],
+            'iefs'         => ['image/ief'],
+            'ifb'          => ['text/calendar'],
+            'ifm'          => ['application/vnd.shana.informed.formdata'],
+            'iges'         => ['application/iges', 'model/iges'],
+            'igl'          => ['application/vnd.igloader'],
+            'igm'          => ['application/vnd.insors.igm'],
+            'igs'          => ['application/iges', 'model/iges'],
+            'igx'          => ['application/vnd.micrografx.igx'],
+            'iif'          => ['application/vnd.shana.informed.interchange'],
+            'ima'          => ['application/x-ima'],
+            'imap'         => ['application/x-httpd-imap'],
+            'imp'          => ['application/vnd.accpac.simply.imp'],
+            'ims'          => ['application/vnd.ms-ims'],
+            'in'           => ['text/plain'],
+            'inf'          => ['application/inf'],
+            'ink'          => ['application/inkml+xml'],
+            'inkml'        => ['application/inkml+xml'],
+            'ins'          => ['application/x-internett-signup'],
+            'install'      => ['application/x-install-instructions'],
+            'iota'         => ['application/vnd.astraea-software.iota'],
+            'ip'           => ['application/x-ip2'],
+            'ipfix'        => ['application/ipfix'],
+            'ipk'          => ['application/vnd.shana.informed.package'],
+            'irm'          => ['application/vnd.ibm.rights-management'],
+            'irp'          => ['application/vnd.irepository.package+xml'],
+            'iso'          => ['application/x-iso9660-image'],
+            'isu'          => ['video/x-isvideo'],
+            'it'           => ['audio/it'],
+            'itp'          => ['application/vnd.shana.informed.formtemplate'],
+            'iv'           => ['application/x-inventor'],
+            'ivp'          => ['application/vnd.immervision-ivp'],
+            'ivr'          => ['i-world/i-vrml'],
+            'ivu'          => ['application/vnd.immervision-ivu'],
+            'ivy'          => ['application/x-livescreen'],
+            'jad'          => ['text/vnd.sun.j2me.app-descriptor'],
+            'jam'          => ['application/vnd.jam'],
+            'jar'          => ['application/java-archive'],
+            'jav'          => ['text/plain', 'text/x-java-source'],
+            'java'         => ['text/plain', 'text/x-java-source'],
+            'jcm'          => ['application/x-java-commerce'],
+            'jfif'         => ['image/jpeg', 'image/pjpeg'],
+            'jfif-tbnl'    => ['image/jpeg'],
+            'jisp'         => ['application/vnd.jisp'],
+            'jlt'          => ['application/vnd.hp-jlyt'],
+            'jnlp'         => ['application/x-java-jnlp-file'],
+            'joda'         => ['application/vnd.joost.joda-archive'],
+            'jpe'          => ['image/jpeg', 'image/pjpeg'],
+            'jpeg'         => ['image/jpeg', 'image/pjpeg'],
+            'jpg'          => ['image/jpeg', 'image/pjpeg'],
+            'jpgm'         => ['video/jpm'],
+            'jpgv'         => ['video/jpeg'],
+            'jpm'          => ['video/jpm'],
+            'jps'          => ['image/x-jps'],
+            'js'           => ['application/javascript'],
+            'json'         => ['application/json', 'text/plain'],
+            'jsonml'       => ['application/jsonml+json'],
+            'jut'          => ['image/jutvision'],
+            'kar'          => ['audio/midi', 'music/x-karaoke'],
+            'karbon'       => ['application/vnd.kde.karbon'],
+            'kfo'          => ['application/vnd.kde.kformula'],
+            'kia'          => ['application/vnd.kidspiration'],
+            'kil'          => ['application/x-killustrator'],
+            'kml'          => ['application/vnd.google-earth.kml+xml'],
+            'kmz'          => ['application/vnd.google-earth.kmz'],
+            'kne'          => ['application/vnd.kinar'],
+            'knp'          => ['application/vnd.kinar'],
+            'kon'          => ['application/vnd.kde.kontour'],
+            'kpr'          => ['application/vnd.kde.kpresenter'],
+            'kpt'          => ['application/vnd.kde.kpresenter'],
+            'kpxx'         => ['application/vnd.ds-keypoint'],
+            'ksh'          => ['application/x-ksh', 'text/x-script.ksh'],
+            'ksp'          => ['application/vnd.kde.kspread'],
+            'ktr'          => ['application/vnd.kahootz'],
+            'ktx'          => ['image/ktx'],
+            'ktz'          => ['application/vnd.kahootz'],
+            'kwd'          => ['application/vnd.kde.kword'],
+            'kwt'          => ['application/vnd.kde.kword'],
+            'la'           => ['audio/nspaudio', 'audio/x-nspaudio'],
+            'lam'          => ['audio/x-liveaudio'],
+            'lasxml'       => ['application/vnd.las.las+xml'],
+            'latex'        => ['application/x-latex'],
+            'lbd'          => ['application/vnd.llamagraphics.life-balance.desktop'],
+            'lbe'          => ['application/vnd.llamagraphics.life-balance.exchange+xml'],
+            'les'          => ['application/vnd.hhe.lesson-player'],
+            'lha'          => ['application/lha', 'application/octet-stream', 'application/x-lha'],
+            'lhx'          => ['application/octet-stream'],
+            'link66'       => ['application/vnd.route66.link66+xml'],
+            'list'         => ['text/plain'],
+            'list3820'     => ['application/vnd.ibm.modcap'],
+            'listafp'      => ['application/vnd.ibm.modcap'],
+            'lma'          => ['audio/nspaudio', 'audio/x-nspaudio'],
+            'lnk'          => ['application/x-ms-shortcut'],
+            'log'          => ['text/plain'],
+            'lostxml'      => ['application/lost+xml'],
+            'lrf'          => ['application/octet-stream'],
+            'lrm'          => ['application/vnd.ms-lrm'],
+            'lsp'          => ['application/x-lisp', 'text/x-script.lisp'],
+            'lst'          => ['text/plain'],
+            'lsx'          => ['text/x-la-asf'],
+            'ltf'          => ['application/vnd.frogans.ltf'],
+            'ltx'          => ['application/x-latex'],
+            'lua'          => ['text/x-lua'],
+            'luac'         => ['application/x-lua-bytecode'],
+            'lvp'          => ['audio/vnd.lucent.voice'],
+            'lwp'          => ['application/vnd.lotus-wordpro'],
+            'lzh'          => ['application/octet-stream', 'application/x-lzh'],
+            'lzx'          => ['application/lzx', 'application/octet-stream', 'application/x-lzx'],
+            'm'            => ['text/plain', 'text/x-m'],
+            'm13'          => ['application/x-msmediaview'],
+            'm14'          => ['application/x-msmediaview'],
+            'm1v'          => ['video/mpeg'],
+            'm21'          => ['application/mp21'],
+            'm2a'          => ['audio/mpeg'],
+            'm2v'          => ['video/mpeg'],
+            'm3a'          => ['audio/mpeg'],
+            'm3u'          => ['audio/x-mpegurl'],
+            'm3u8'         => ['application/x-mpegURL'],
+            'm4a'          => ['audio/mp4'],
+            'm4p'          => ['application/mp4'],
+            'm4u'          => ['video/vnd.mpegurl'],
+            'm4v'          => ['video/x-m4v'],
+            'ma'           => ['application/mathematica'],
+            'mads'         => ['application/mads+xml'],
+            'mag'          => ['application/vnd.ecowin.chart'],
+            'maker'        => ['application/vnd.framemaker'],
+            'man'          => ['text/troff'],
+            'manifest'     => ['text/cache-manifest'],
+            'map'          => ['application/x-navimap'],
+            'mar'          => ['application/octet-stream'],
+            'markdown'     => ['text/x-markdown'],
+            'mathml'       => ['application/mathml+xml'],
+            'mb'           => ['application/mathematica'],
+            'mbd'          => ['application/mbedlet'],
+            'mbk'          => ['application/vnd.mobius.mbk'],
+            'mbox'         => ['application/mbox'],
+            'mc'           => ['application/x-magic-cap-package-1.0'],
+            'mc1'          => ['application/vnd.medcalcdata'],
+            'mcd'          => ['application/mcad', 'application/x-mathcad'],
+            'mcf'          => ['image/vasa', 'text/mcf'],
+            'mcp'          => ['application/netmc'],
+            'mcurl'        => ['text/vnd.curl.mcurl'],
+            'md'           => ['text/x-markdown'],
+            'mdb'          => ['application/x-msaccess'],
+            'mdi'          => ['image/vnd.ms-modi'],
+            'me'           => ['text/troff'],
+            'mesh'         => ['model/mesh'],
+            'meta4'        => ['application/metalink4+xml'],
+            'metalink'     => ['application/metalink+xml'],
+            'mets'         => ['application/mets+xml'],
+            'mfm'          => ['application/vnd.mfmp'],
+            'mft'          => ['application/rpki-manifest'],
+            'mgp'          => ['application/vnd.osgeo.mapguide.package'],
+            'mgz'          => ['application/vnd.proteus.magazine'],
+            'mht'          => ['message/rfc822'],
+            'mhtml'        => ['message/rfc822'],
+            'mid'          => ['application/x-midi', 'audio/midi', 'audio/x-mid', 'audio/x-midi', 'music/crescendo', 'x-music/x-midi'],
+            'midi'         => ['application/x-midi', 'audio/midi', 'audio/x-mid', 'audio/x-midi', 'music/crescendo', 'x-music/x-midi'],
+            'mie'          => ['application/x-mie'],
+            'mif'          => ['application/x-frame', 'application/x-mif'],
+            'mime'         => ['message/rfc822', 'www/mime'],
+            'mj2'          => ['video/mj2'],
+            'mjf'          => ['audio/x-vnd.audioexplosion.mjuicemediafile'],
+            'mjp2'         => ['video/mj2'],
+            'mjpg'         => ['video/x-motion-jpeg'],
+            'mk3d'         => ['video/x-matroska'],
+            'mka'          => ['audio/x-matroska'],
+            'mkd'          => ['text/x-markdown'],
+            'mks'          => ['video/x-matroska'],
+            'mkv'          => ['video/x-matroska'],
+            'mlp'          => ['application/vnd.dolby.mlp'],
+            'mm'           => ['application/base64', 'application/x-meme'],
+            'mmd'          => ['application/vnd.chipnuts.karaoke-mmd'],
+            'mme'          => ['application/base64'],
+            'mmf'          => ['application/vnd.smaf'],
+            'mmr'          => ['image/vnd.fujixerox.edmics-mmr'],
+            'mng'          => ['video/x-mng'],
+            'mny'          => ['application/x-msmoney'],
+            'mobi'         => ['application/x-mobipocket-ebook'],
+            'mod'          => ['audio/mod', 'audio/x-mod'],
+            'mods'         => ['application/mods+xml'],
+            'moov'         => ['video/quicktime'],
+            'mov'          => ['video/quicktime'],
+            'movie'        => ['video/x-sgi-movie'],
+            'mp2'          => ['audio/mpeg', 'audio/x-mpeg', 'video/mpeg', 'video/x-mpeg', 'video/x-mpeq2a'],
+            'mp21'         => ['application/mp21'],
+            'mp2a'         => ['audio/mpeg'],
+            'mp3'          => ['audio/mpeg3', 'audio/x-mpeg-3', 'video/mpeg', 'video/x-mpeg'],
+            'mp4'          => ['video/mp4'],
+            'mp4a'         => ['audio/mp4'],
+            'mp4s'         => ['application/mp4'],
+            'mp4v'         => ['video/mp4'],
+            'mpa'          => ['audio/mpeg', 'video/mpeg'],
+            'mpc'          => ['application/vnd.mophun.certificate'],
+            'mpe'          => ['video/mpeg'],
+            'mpeg'         => ['video/mpeg'],
+            'mpg'          => ['audio/mpeg', 'video/mpeg'],
+            'mpg4'         => ['video/mp4'],
+            'mpga'         => ['audio/mpeg'],
+            'mpkg'         => ['application/vnd.apple.installer+xml'],
+            'mpm'          => ['application/vnd.blueice.multipass'],
+            'mpn'          => ['application/vnd.mophun.application'],
+            'mpp'          => ['application/vnd.ms-project'],
+            'mpt'          => ['application/vnd.ms-project'],
+            'mpv'          => ['application/x-project'],
+            'mpx'          => ['application/x-project'],
+            'mpy'          => ['application/vnd.ibm.minipay'],
+            'mqy'          => ['application/vnd.mobius.mqy'],
+            'mrc'          => ['application/marc'],
+            'mrcx'         => ['application/marcxml+xml'],
+            'ms'           => ['text/troff'],
+            'mscml'        => ['application/mediaservercontrol+xml'],
+            'mseed'        => ['application/vnd.fdsn.mseed'],
+            'mseq'         => ['application/vnd.mseq'],
+            'msf'          => ['application/vnd.epson.msf'],
+            'msh'          => ['model/mesh'],
+            'msi'          => ['application/x-msdownload'],
+            'msl'          => ['application/vnd.mobius.msl'],
+            'msty'         => ['application/vnd.muvee.style'],
+            'mts'          => ['model/vnd.mts'],
+            'mus'          => ['application/vnd.musician'],
+            'musicxml'     => ['application/vnd.recordare.musicxml+xml'],
+            'mv'           => ['video/x-sgi-movie'],
+            'mvb'          => ['application/x-msmediaview'],
+            'mwf'          => ['application/vnd.mfer'],
+            'mxf'          => ['application/mxf'],
+            'mxl'          => ['application/vnd.recordare.musicxml'],
+            'mxml'         => ['application/xv+xml'],
+            'mxs'          => ['application/vnd.triscape.mxs'],
+            'mxu'          => ['video/vnd.mpegurl'],
+            'my'           => ['audio/make'],
+            'mzz'          => ['application/x-vnd.audioexplosion.mzz'],
+            'n-gage'       => ['application/vnd.nokia.n-gage.symbian.install'],
+            'n3'           => ['text/n3'],
+            'nap'          => ['image/naplps'],
+            'naplps'       => ['image/naplps'],
+            'nb'           => ['application/mathematica'],
+            'nbp'          => ['application/vnd.wolfram.player'],
+            'nc'           => ['application/x-netcdf'],
+            'ncm'          => ['application/vnd.nokia.configuration-message'],
+            'ncx'          => ['application/x-dtbncx+xml'],
+            'nfo'          => ['text/x-nfo'],
+            'ngdat'        => ['application/vnd.nokia.n-gage.data'],
+            'nif'          => ['image/x-niff'],
+            'niff'         => ['image/x-niff'],
+            'nitf'         => ['application/vnd.nitf'],
+            'nix'          => ['application/x-mix-transfer'],
+            'nlu'          => ['application/vnd.neurolanguage.nlu'],
+            'nml'          => ['application/vnd.enliven'],
+            'nnd'          => ['application/vnd.noblenet-directory'],
+            'nns'          => ['application/vnd.noblenet-sealer'],
+            'nnw'          => ['application/vnd.noblenet-web'],
+            'npx'          => ['image/vnd.net-fpx'],
+            'nsc'          => ['application/x-conference'],
+            'nsf'          => ['application/vnd.lotus-notes'],
+            'ntf'          => ['application/vnd.nitf'],
+            'nvd'          => ['application/x-navidoc'],
+            'nws'          => ['message/rfc822'],
+            'nzb'          => ['application/x-nzb'],
+            'o'            => ['application/octet-stream'],
+            'oa2'          => ['application/vnd.fujitsu.oasys2'],
+            'oa3'          => ['application/vnd.fujitsu.oasys3'],
+            'oas'          => ['application/vnd.fujitsu.oasys'],
+            'obd'          => ['application/x-msbinder'],
+            'obj'          => ['application/x-tgif'],
+            'oda'          => ['application/oda'],
+            'odb'          => ['application/vnd.oasis.opendocument.database'],
+            'odc'          => ['application/vnd.oasis.opendocument.chart'],
+            'odf'          => ['application/vnd.oasis.opendocument.formula'],
+            'odft'         => ['application/vnd.oasis.opendocument.formula-template'],
+            'odg'          => ['application/vnd.oasis.opendocument.graphics'],
+            'odi'          => ['application/vnd.oasis.opendocument.image'],
+            'odm'          => ['application/vnd.oasis.opendocument.text-master'],
+            'odp'          => ['application/vnd.oasis.opendocument.presentation'],
+            'ods'          => ['application/vnd.oasis.opendocument.spreadsheet'],
+            'odt'          => ['application/vnd.oasis.opendocument.text'],
+            'oga'          => ['audio/ogg'],
+            'ogg'          => ['audio/ogg'],
+            'ogv'          => ['video/ogg'],
+            'ogx'          => ['application/ogg'],
+            'omc'          => ['application/x-omc'],
+            'omcd'         => ['application/x-omcdatamaker'],
+            'omcr'         => ['application/x-omcregerator'],
+            'omdoc'        => ['application/omdoc+xml'],
+            'onepkg'       => ['application/onenote'],
+            'onetmp'       => ['application/onenote'],
+            'onetoc'       => ['application/onenote'],
+            'onetoc2'      => ['application/onenote'],
+            'opf'          => ['application/oebps-package+xml'],
+            'opml'         => ['text/x-opml'],
+            'oprc'         => ['application/vnd.palm'],
+            'org'          => ['application/vnd.lotus-organizer'],
+            'osf'          => ['application/vnd.yamaha.openscoreformat'],
+            'osfpvg'       => ['application/vnd.yamaha.openscoreformat.osfpvg+xml'],
+            'otc'          => ['application/vnd.oasis.opendocument.chart-template'],
+            'otf'          => ['font/opentype', 'application/octet-stream', 'application/vnd.ms-opentype'],
+            'otg'          => ['application/vnd.oasis.opendocument.graphics-template'],
+            'oth'          => ['application/vnd.oasis.opendocument.text-web'],
+            'oti'          => ['application/vnd.oasis.opendocument.image-template'],
+            'otm'          => ['application/vnd.oasis.opendocument.text-master'],
+            'otp'          => ['application/vnd.oasis.opendocument.presentation-template'],
+            'ots'          => ['application/vnd.oasis.opendocument.spreadsheet-template'],
+            'ott'          => ['application/vnd.oasis.opendocument.text-template'],
+            'oxps'         => ['application/oxps'],
+            'oxt'          => ['application/vnd.openofficeorg.extension'],
+            'p'            => ['text/x-pascal'],
+            'p10'          => ['application/pkcs10', 'application/x-pkcs10'],
+            'p12'          => ['application/pkcs-12', 'application/x-pkcs12'],
+            'p7a'          => ['application/x-pkcs7-signature'],
+            'p7b'          => ['application/x-pkcs7-certificates'],
+            'p7c'          => ['application/pkcs7-mime', 'application/x-pkcs7-mime'],
+            'p7m'          => ['application/pkcs7-mime', 'application/x-pkcs7-mime'],
+            'p7r'          => ['application/x-pkcs7-certreqresp'],
+            'p7s'          => ['application/pkcs7-signature'],
+            'p8'           => ['application/pkcs8'],
+            'part'         => ['application/pro_eng'],
+            'pas'          => ['text/x-pascal'],
+            'paw'          => ['application/vnd.pawaafile'],
+            'pbd'          => ['application/vnd.powerbuilder6'],
+            'pbm'          => ['image/x-portable-bitmap'],
+            'pcap'         => ['application/vnd.tcpdump.pcap'],
+            'pcf'          => ['application/x-font-pcf'],
+            'pcl'          => ['application/vnd.hp-pcl', 'application/x-pcl'],
+            'pclxl'        => ['application/vnd.hp-pclxl'],
+            'pct'          => ['image/x-pict'],
+            'pcurl'        => ['application/vnd.curl.pcurl'],
+            'pcx'          => ['image/x-pcx'],
+            'pdb'          => ['application/vnd.palm'],
+            'pdf'          => ['application/pdf'],
+            'pfa'          => ['application/x-font-type1'],
+            'pfb'          => ['application/x-font-type1'],
+            'pfm'          => ['application/x-font-type1'],
+            'pfr'          => ['application/font-tdpfr'],
+            'pfunk'        => ['audio/make'],
+            'pfx'          => ['application/x-pkcs12'],
+            'pgm'          => ['image/x-portable-graymap'],
+            'pgn'          => ['application/x-chess-pgn'],
+            'pgp'          => ['application/pgp-encrypted'],
+            'php'          => ['text/x-php'],
+            'pic'          => ['image/x-pict'],
+            'pict'         => ['image/pict'],
+            'pkg'          => ['application/octet-stream'],
+            'pki'          => ['application/pkixcmp'],
+            'pkipath'      => ['application/pkix-pkipath'],
+            'pko'          => ['application/vnd.ms-pki.pko'],
+            'pl'           => ['text/plain', 'text/x-script.perl'],
+            'plb'          => ['application/vnd.3gpp.pic-bw-large'],
+            'plc'          => ['application/vnd.mobius.plc'],
+            'plf'          => ['application/vnd.pocketlearn'],
+            'pls'          => ['application/pls+xml'],
+            'plx'          => ['application/x-pixclscript'],
+            'pm'           => ['image/x-xpixmap', 'text/x-script.perl-module'],
+            'pm4'          => ['application/x-pagemaker'],
+            'pm5'          => ['application/x-pagemaker'],
+            'pml'          => ['application/vnd.ctc-posml'],
+            'png'          => ['image/png'],
+            'pnm'          => ['application/x-portable-anymap', 'image/x-portable-anymap'],
+            'portpkg'      => ['application/vnd.macports.portpkg'],
+            'pot'          => ['application/mspowerpoint', 'application/vnd.ms-powerpoint'],
+            'potm'         => ['application/vnd.ms-powerpoint.template.macroenabled.12'],
+            'potx'         => ['application/vnd.openxmlformats-officedocument.presentationml.template'],
+            'pov'          => ['model/x-pov'],
+            'ppa'          => ['application/vnd.ms-powerpoint'],
+            'ppam'         => ['application/vnd.ms-powerpoint.addin.macroenabled.12'],
+            'ppd'          => ['application/vnd.cups-ppd'],
+            'ppm'          => ['image/x-portable-pixmap'],
+            'pps'          => ['application/mspowerpoint', 'application/vnd.ms-powerpoint'],
+            'ppsm'         => ['application/vnd.ms-powerpoint.slideshow.macroenabled.12'],
+            'ppsx'         => ['application/vnd.openxmlformats-officedocument.presentationml.slideshow'],
+            'ppt'          => ['application/mspowerpoint', 'application/powerpoint', 'application/vnd.ms-powerpoint', 'application/x-mspowerpoint'],
+            'pptm'         => ['application/vnd.ms-powerpoint.presentation.macroenabled.12'],
+            'pptx'         => ['application/vnd.openxmlformats-officedocument.presentationml.presentation'],
+            'ppz'          => ['application/mspowerpoint'],
+            'pqa'          => ['application/vnd.palm'],
+            'prc'          => ['application/x-mobipocket-ebook'],
+            'pre'          => ['application/vnd.lotus-freelance'],
+            'prf'          => ['application/pics-rules'],
+            'prt'          => ['application/pro_eng'],
+            'ps'           => ['application/postscript'],
+            'psb'          => ['application/vnd.3gpp.pic-bw-small'],
+            'psd'          => ['image/vnd.adobe.photoshop'],
+            'psf'          => ['application/x-font-linux-psf'],
+            'pskcxml'      => ['application/pskc+xml'],
+            'ptid'         => ['application/vnd.pvi.ptid1'],
+            'pub'          => ['application/x-mspublisher'],
+            'pvb'          => ['application/vnd.3gpp.pic-bw-var'],
+            'pvu'          => ['paleovu/x-pv'],
+            'pwn'          => ['application/vnd.3m.post-it-notes'],
+            'pwz'          => ['application/vnd.ms-powerpoint'],
+            'py'           => ['text/x-script.phyton'],
+            'pya'          => ['audio/vnd.ms-playready.media.pya'],
+            'pyc'          => ['applicaiton/x-bytecode.python'],
+            'pyo'          => ['application/x-python-code'],
+            'pyv'          => ['video/vnd.ms-playready.media.pyv'],
+            'qam'          => ['application/vnd.epson.quickanime'],
+            'qbo'          => ['application/vnd.intu.qbo'],
+            'qcp'          => ['audio/vnd.qcelp'],
+            'qd3'          => ['x-world/x-3dmf'],
+            'qd3d'         => ['x-world/x-3dmf'],
+            'qfx'          => ['application/vnd.intu.qfx'],
+            'qif'          => ['image/x-quicktime'],
+            'qps'          => ['application/vnd.publishare-delta-tree'],
+            'qt'           => ['video/quicktime'],
+            'qtc'          => ['video/x-qtc'],
+            'qti'          => ['image/x-quicktime'],
+            'qtif'         => ['image/x-quicktime'],
+            'qwd'          => ['application/vnd.quark.quarkxpress'],
+            'qwt'          => ['application/vnd.quark.quarkxpress'],
+            'qxb'          => ['application/vnd.quark.quarkxpress'],
+            'qxd'          => ['application/vnd.quark.quarkxpress'],
+            'qxl'          => ['application/vnd.quark.quarkxpress'],
+            'qxt'          => ['application/vnd.quark.quarkxpress'],
+            'ra'           => ['audio/x-pn-realaudio', 'audio/x-pn-realaudio-plugin', 'audio/x-realaudio'],
+            'ram'          => ['audio/x-pn-realaudio'],
+            'rar'          => ['application/x-rar-compressed'],
+            'ras'          => ['application/x-cmu-raster', 'image/cmu-raster', 'image/x-cmu-raster'],
+            'rast'         => ['image/cmu-raster'],
+            'rcprofile'    => ['application/vnd.ipunplugged.rcprofile'],
+            'rdf'          => ['application/rdf+xml'],
+            'rdz'          => ['application/vnd.data-vision.rdz'],
+            'rep'          => ['application/vnd.businessobjects'],
+            'res'          => ['application/x-dtbresource+xml'],
+            'rexx'         => ['text/x-script.rexx'],
+            'rf'           => ['image/vnd.rn-realflash'],
+            'rgb'          => ['image/x-rgb'],
+            'rif'          => ['application/reginfo+xml'],
+            'rip'          => ['audio/vnd.rip'],
+            'ris'          => ['application/x-research-info-systems'],
+            'rl'           => ['application/resource-lists+xml'],
+            'rlc'          => ['image/vnd.fujixerox.edmics-rlc'],
+            'rld'          => ['application/resource-lists-diff+xml'],
+            'rm'           => ['application/vnd.rn-realmedia', 'audio/x-pn-realaudio'],
+            'rmi'          => ['audio/midi'],
+            'rmm'          => ['audio/x-pn-realaudio'],
+            'rmp'          => ['audio/x-pn-realaudio', 'audio/x-pn-realaudio-plugin'],
+            'rms'          => ['application/vnd.jcp.javame.midlet-rms'],
+            'rmvb'         => ['application/vnd.rn-realmedia-vbr'],
+            'rnc'          => ['application/relax-ng-compact-syntax'],
+            'rng'          => ['application/ringing-tones', 'application/vnd.nokia.ringing-tone'],
+            'rnx'          => ['application/vnd.rn-realplayer'],
+            'roa'          => ['application/rpki-roa'],
+            'roff'         => ['text/troff'],
+            'rp'           => ['image/vnd.rn-realpix'],
+            'rp9'          => ['application/vnd.cloanto.rp9'],
+            'rpm'          => ['audio/x-pn-realaudio-plugin'],
+            'rpss'         => ['application/vnd.nokia.radio-presets'],
+            'rpst'         => ['application/vnd.nokia.radio-preset'],
+            'rq'           => ['application/sparql-query'],
+            'rs'           => ['application/rls-services+xml'],
+            'rsd'          => ['application/rsd+xml'],
+            'rss'          => ['application/rss+xml'],
+            'rt'           => ['text/richtext', 'text/vnd.rn-realtext'],
+            'rtf'          => ['application/rtf', 'application/x-rtf', 'text/richtext'],
+            'rtx'          => ['application/rtf', 'text/richtext'],
+            'rv'           => ['video/vnd.rn-realvideo'],
+            's'            => ['text/x-asm'],
+            's3m'          => ['audio/s3m'],
+            'saf'          => ['application/vnd.yamaha.smaf-audio'],
+            'saveme'       => ['aapplication/octet-stream'],
+            'sb3'          => ['application/x.scratch.sb3'],
+            'sbk'          => ['application/x-tbook'],
+            'sbml'         => ['application/sbml+xml'],
+            'sc'           => ['application/vnd.ibm.secure-container'],
+            'scd'          => ['application/x-msschedule'],
+            'scm'          => ['application/x-lotusscreencam', 'text/x-script.guile', 'text/x-script.scheme', 'video/x-scm'],
+            'scq'          => ['application/scvp-cv-request'],
+            'scs'          => ['application/scvp-cv-response'],
+            'scurl'        => ['text/vnd.curl.scurl'],
+            'sda'          => ['application/vnd.stardivision.draw'],
+            'sdc'          => ['application/vnd.stardivision.calc'],
+            'sdd'          => ['application/vnd.stardivision.impress'],
+            'sdkd'         => ['application/vnd.solent.sdkm+xml'],
+            'sdkm'         => ['application/vnd.solent.sdkm+xml'],
+            'sdml'         => ['text/plain'],
+            'sdp'          => ['application/sdp', 'application/x-sdp'],
+            'sdr'          => ['application/sounder'],
+            'sdw'          => ['application/vnd.stardivision.writer'],
+            'sea'          => ['application/sea', 'application/x-sea'],
+            'see'          => ['application/vnd.seemail'],
+            'seed'         => ['application/vnd.fdsn.seed'],
+            'sema'         => ['application/vnd.sema'],
+            'semd'         => ['application/vnd.semd'],
+            'semf'         => ['application/vnd.semf'],
+            'ser'          => ['application/java-serialized-object'],
+            'set'          => ['application/set'],
+            'setpay'       => ['application/set-payment-initiation'],
+            'setreg'       => ['application/set-registration-initiation'],
+            'sfd-hdstx'    => ['application/vnd.hydrostatix.sof-data'],
+            'sfs'          => ['application/vnd.spotfire.sfs'],
+            'sfv'          => ['text/x-sfv'],
+            'sgi'          => ['image/sgi'],
+            'sgl'          => ['application/vnd.stardivision.writer-global'],
+            'sgm'          => ['text/sgml', 'text/x-sgml'],
+            'sgml'         => ['text/sgml', 'text/x-sgml'],
+            'sh'           => ['application/x-bsh', 'application/x-sh', 'application/x-shar', 'text/x-script.sh'],
+            'shar'         => ['application/x-bsh', 'application/x-shar'],
+            'shf'          => ['application/shf+xml'],
+            'shtml'        => ['text/html', 'text/x-server-parsed-html'],
+            'si'           => ['text/vnd.wap.si'],
+            'sic'          => ['application/vnd.wap.sic'],
+            'sid'          => ['image/x-mrsid-image'],
+            'sig'          => ['application/pgp-signature'],
+            'sil'          => ['audio/silk'],
+            'silo'         => ['model/mesh'],
+            'sis'          => ['application/vnd.symbian.install'],
+            'sisx'         => ['application/vnd.symbian.install'],
+            'sit'          => ['application/x-sit', 'application/x-stuffit'],
+            'sitx'         => ['application/x-stuffitx'],
+            'skd'          => ['application/vnd.koan'],
+            'skm'          => ['application/vnd.koan'],
+            'skp'          => ['application/vnd.koan'],
+            'skt'          => ['application/vnd.koan'],
+            'sl'           => ['application/x-seelogo'],
+            'slc'          => ['application/vnd.wap.slc'],
+            'sldm'         => ['application/vnd.ms-powerpoint.slide.macroenabled.12'],
+            'sldx'         => ['application/vnd.openxmlformats-officedocument.presentationml.slide'],
+            'slt'          => ['application/vnd.epson.salt'],
+            'sm'           => ['application/vnd.stepmania.stepchart'],
+            'smf'          => ['application/vnd.stardivision.math'],
+            'smi'          => ['application/smil+xml'],
+            'smil'         => ['application/smil+xml'],
+            'smv'          => ['video/x-smv'],
+            'smzip'        => ['application/vnd.stepmania.package'],
+            'snd'          => ['audio/basic', 'audio/x-adpcm'],
+            'snf'          => ['application/x-font-snf'],
+            'so'           => ['application/octet-stream'],
+            'sol'          => ['application/solids'],
+            'spc'          => ['application/x-pkcs7-certificates', 'text/x-speech'],
+            'spf'          => ['application/vnd.yamaha.smaf-phrase'],
+            'spl'          => ['application/x-futuresplash'],
+            'spot'         => ['text/vnd.in3d.spot'],
+            'spp'          => ['application/scvp-vp-response'],
+            'spq'          => ['application/scvp-vp-request'],
+            'spr'          => ['application/x-sprite'],
+            'sprite'       => ['application/x-sprite'],
+            'spx'          => ['audio/ogg'],
+            'sql'          => ['application/x-sql'],
+            'src'          => ['application/x-wais-source'],
+            'srt'          => ['application/x-subrip'],
+            'sru'          => ['application/sru+xml'],
+            'srx'          => ['application/sparql-results+xml'],
+            'ssdl'         => ['application/ssdl+xml'],
+            'sse'          => ['application/vnd.kodak-descriptor'],
+            'ssf'          => ['application/vnd.epson.ssf'],
+            'ssi'          => ['text/x-server-parsed-html'],
+            'ssm'          => ['application/streamingmedia'],
+            'ssml'         => ['application/ssml+xml'],
+            'sst'          => ['application/vnd.ms-pki.certstore'],
+            'st'           => ['application/vnd.sailingtracker.track'],
+            'stc'          => ['application/vnd.sun.xml.calc.template'],
+            'std'          => ['application/vnd.sun.xml.draw.template'],
+            'step'         => ['application/step'],
+            'stf'          => ['application/vnd.wt.stf'],
+            'sti'          => ['application/vnd.sun.xml.impress.template'],
+            'stk'          => ['application/hyperstudio'],
+            'stl'          => ['application/sla', 'application/vnd.ms-pki.stl', 'application/x-navistyle'],
+            'stp'          => ['application/step'],
+            'str'          => ['application/vnd.pg.format'],
+            'stw'          => ['application/vnd.sun.xml.writer.template'],
+            'sub'          => ['text/vnd.dvb.subtitle'],
+            'sus'          => ['application/vnd.sus-calendar'],
+            'susp'         => ['application/vnd.sus-calendar'],
+            'sv4cpio'      => ['application/x-sv4cpio'],
+            'sv4crc'       => ['application/x-sv4crc'],
+            'svc'          => ['application/vnd.dvb.service'],
+            'svd'          => ['application/vnd.svd'],
+            'svf'          => ['image/vnd.dwg', 'image/x-dwg'],
+            'svg'          => ['image/svg+xml'],
+            'svgz'         => ['image/svg+xml'],
+            'svr'          => ['application/x-world', 'x-world/x-svr'],
+            'swa'          => ['application/x-director'],
+            'swf'          => ['application/x-shockwave-flash'],
+            'swi'          => ['application/vnd.aristanetworks.swi'],
+            'sxc'          => ['application/vnd.sun.xml.calc'],
+            'sxd'          => ['application/vnd.sun.xml.draw'],
+            'sxg'          => ['application/vnd.sun.xml.writer.global'],
+            'sxi'          => ['application/vnd.sun.xml.impress'],
+            'sxm'          => ['application/vnd.sun.xml.math'],
+            'sxw'          => ['application/vnd.sun.xml.writer'],
+            't'            => ['text/troff'],
+            't3'           => ['application/x-t3vm-image'],
+            'taglet'       => ['application/vnd.mynfc'],
+            'talk'         => ['text/x-speech'],
+            'tao'          => ['application/vnd.tao.intent-module-archive'],
+            'tar'          => ['application/x-tar'],
+            'tbk'          => ['application/toolbook', 'application/x-tbook'],
+            'tcap'         => ['application/vnd.3gpp2.tcap'],
+            'tcl'          => ['application/x-tcl', 'text/x-script.tcl'],
+            'tcsh'         => ['text/x-script.tcsh'],
+            'teacher'      => ['application/vnd.smart.teacher'],
+            'tei'          => ['application/tei+xml'],
+            'teicorpus'    => ['application/tei+xml'],
+            'tex'          => ['application/x-tex'],
+            'texi'         => ['application/x-texinfo'],
+            'texinfo'      => ['application/x-texinfo'],
+            'text'         => ['application/plain', 'text/plain'],
+            'tfi'          => ['application/thraud+xml'],
+            'tfm'          => ['application/x-tex-tfm'],
+            'tga'          => ['image/x-tga'],
+            'tgz'          => ['application/gnutar', 'application/x-compressed'],
+            'thmx'         => ['application/vnd.ms-officetheme'],
+            'tif'          => ['image/tiff', 'image/x-tiff'],
+            'tiff'         => ['image/tiff', 'image/x-tiff'],
+            'tmo'          => ['application/vnd.tmobile-livetv'],
+            'torrent'      => ['application/x-bittorrent'],
+            'tpl'          => ['application/vnd.groove-tool-template'],
+            'tpt'          => ['application/vnd.trid.tpt'],
+            'tr'           => ['text/troff'],
+            'tra'          => ['application/vnd.trueapp'],
+            'trm'          => ['application/x-msterminal'],
+            'ts'           => ['video/MP2T'],
+            'tsd'          => ['application/timestamped-data'],
+            'tsi'          => ['audio/tsp-audio'],
+            'tsp'          => ['application/dsptype', 'audio/tsplayer'],
+            'tsv'          => ['text/tab-separated-values'],
+            'ttc'          => ['application/x-font-ttf', 'application/octet-stream', 'application/font-sfnt', 'font/sfnt'],
+            'ttf'          => ['application/x-font-ttf', 'application/octet-stream', 'application/font-sfnt', 'font/sfnt'],
+            'ttl'          => ['text/turtle'],
+            'turbot'       => ['image/florian'],
+            'twd'          => ['application/vnd.simtech-mindmapper'],
+            'twds'         => ['application/vnd.simtech-mindmapper'],
+            'txd'          => ['application/vnd.genomatix.tuxedo'],
+            'txf'          => ['application/vnd.mobius.txf'],
+            'txt'          => ['text/plain'],
+            'u32'          => ['application/x-authorware-bin'],
+            'udeb'         => ['application/x-debian-package'],
+            'ufd'          => ['application/vnd.ufdl'],
+            'ufdl'         => ['application/vnd.ufdl'],
+            'uil'          => ['text/x-uil'],
+            'ulx'          => ['application/x-glulx'],
+            'umj'          => ['application/vnd.umajin'],
+            'uni'          => ['text/uri-list'],
+            'unis'         => ['text/uri-list'],
+            'unityweb'     => ['application/vnd.unity'],
+            'unv'          => ['application/i-deas'],
+            'uoml'         => ['application/vnd.uoml+xml'],
+            'uri'          => ['text/uri-list'],
+            'uris'         => ['text/uri-list'],
+            'urls'         => ['text/uri-list'],
+            'ustar'        => ['application/x-ustar', 'multipart/x-ustar'],
+            'utz'          => ['application/vnd.uiq.theme'],
+            'uu'           => ['application/octet-stream', 'text/x-uuencode'],
+            'uue'          => ['text/x-uuencode'],
+            'uva'          => ['audio/vnd.dece.audio'],
+            'uvd'          => ['application/vnd.dece.data'],
+            'uvf'          => ['application/vnd.dece.data'],
+            'uvg'          => ['image/vnd.dece.graphic'],
+            'uvh'          => ['video/vnd.dece.hd'],
+            'uvi'          => ['image/vnd.dece.graphic'],
+            'uvm'          => ['video/vnd.dece.mobile'],
+            'uvp'          => ['video/vnd.dece.pd'],
+            'uvs'          => ['video/vnd.dece.sd'],
+            'uvt'          => ['application/vnd.dece.ttml+xml'],
+            'uvu'          => ['video/vnd.uvvu.mp4'],
+            'uvv'          => ['video/vnd.dece.video'],
+            'uvva'         => ['audio/vnd.dece.audio'],
+            'uvvd'         => ['application/vnd.dece.data'],
+            'uvvf'         => ['application/vnd.dece.data'],
+            'uvvg'         => ['image/vnd.dece.graphic'],
+            'uvvh'         => ['video/vnd.dece.hd'],
+            'uvvi'         => ['image/vnd.dece.graphic'],
+            'uvvm'         => ['video/vnd.dece.mobile'],
+            'uvvp'         => ['video/vnd.dece.pd'],
+            'uvvs'         => ['video/vnd.dece.sd'],
+            'uvvt'         => ['application/vnd.dece.ttml+xml'],
+            'uvvu'         => ['video/vnd.uvvu.mp4'],
+            'uvvv'         => ['video/vnd.dece.video'],
+            'uvvx'         => ['application/vnd.dece.unspecified'],
+            'uvvz'         => ['application/vnd.dece.zip'],
+            'uvx'          => ['application/vnd.dece.unspecified'],
+            'uvz'          => ['application/vnd.dece.zip'],
+            'vcard'        => ['text/vcard'],
+            'vcd'          => ['application/x-cdlink'],
+            'vcf'          => ['text/x-vcard'],
+            'vcg'          => ['application/vnd.groove-vcard'],
+            'vcs'          => ['text/x-vcalendar'],
+            'vcx'          => ['application/vnd.vcx'],
+            'vda'          => ['application/vda'],
+            'vdo'          => ['video/vdo'],
+            'vew'          => ['application/groupwise'],
+            'vis'          => ['application/vnd.visionary'],
+            'viv'          => ['video/vivo', 'video/vnd.vivo'],
+            'vivo'         => ['video/vivo', 'video/vnd.vivo'],
+            'vmd'          => ['application/vocaltec-media-desc'],
+            'vmf'          => ['application/vocaltec-media-file'],
+            'vob'          => ['video/x-ms-vob'],
+            'voc'          => ['audio/voc', 'audio/x-voc'],
+            'vor'          => ['application/vnd.stardivision.writer'],
+            'vos'          => ['video/vosaic'],
+            'vox'          => ['application/x-authorware-bin'],
+            'vqe'          => ['audio/x-twinvq-plugin'],
+            'vqf'          => ['audio/x-twinvq'],
+            'vql'          => ['audio/x-twinvq-plugin'],
+            'vrml'         => ['application/x-vrml', 'model/vrml', 'x-world/x-vrml'],
+            'vrt'          => ['x-world/x-vrt'],
+            'vsd'          => ['application/vnd.visio'],
+            'vsf'          => ['application/vnd.vsf'],
+            'vss'          => ['application/vnd.visio'],
+            'vst'          => ['application/vnd.visio'],
+            'vsw'          => ['application/vnd.visio'],
+            'vtt'          => ['text/vtt'],
+            'vtu'          => ['model/vnd.vtu'],
+            'vxml'         => ['application/voicexml+xml'],
+            'w3d'          => ['application/x-director'],
+            'w60'          => ['application/wordperfect6.0'],
+            'w61'          => ['application/wordperfect6.1'],
+            'w6w'          => ['application/msword'],
+            'wad'          => ['application/x-doom'],
+            'wav'          => ['audio/wav', 'audio/x-wav'],
+            'wax'          => ['audio/x-ms-wax'],
+            'wb1'          => ['application/x-qpro'],
+            'wbmp'         => ['image/vnd.wap.wbmp'],
+            'wbs'          => ['application/vnd.criticaltools.wbs+xml'],
+            'wbxml'        => ['application/vnd.wap.wbxml'],
+            'wcm'          => ['application/vnd.ms-works'],
+            'wdb'          => ['application/vnd.ms-works'],
+            'wdp'          => ['image/vnd.ms-photo'],
+            'web'          => ['application/vnd.xara'],
+            'weba'         => ['audio/webm'],
+            'webapp'       => ['application/x-web-app-manifest+json'],
+            'webm'         => ['video/webm'],
+            'webp'         => ['image/webp'],
+            'wg'           => ['application/vnd.pmi.widget'],
+            'wgt'          => ['application/widget'],
+            'wiz'          => ['application/msword'],
+            'wk1'          => ['application/x-123'],
+            'wks'          => ['application/vnd.ms-works'],
+            'wm'           => ['video/x-ms-wm'],
+            'wma'          => ['audio/x-ms-wma'],
+            'wmd'          => ['application/x-ms-wmd'],
+            'wmf'          => ['application/x-msmetafile'],
+            'wml'          => ['text/vnd.wap.wml'],
+            'wmlc'         => ['application/vnd.wap.wmlc'],
+            'wmls'         => ['text/vnd.wap.wmlscript'],
+            'wmlsc'        => ['application/vnd.wap.wmlscriptc'],
+            'wmv'          => ['video/x-ms-wmv'],
+            'wmx'          => ['video/x-ms-wmx'],
+            'wmz'          => ['application/x-msmetafile'],
+            'woff'         => ['application/x-font-woff'],
+            'word'         => ['application/msword'],
+            'wp'           => ['application/wordperfect'],
+            'wp5'          => ['application/wordperfect', 'application/wordperfect6.0'],
+            'wp6'          => ['application/wordperfect'],
+            'wpd'          => ['application/wordperfect', 'application/x-wpwin'],
+            'wpl'          => ['application/vnd.ms-wpl'],
+            'wps'          => ['application/vnd.ms-works'],
+            'wq1'          => ['application/x-lotus'],
+            'wqd'          => ['application/vnd.wqd'],
+            'wri'          => ['application/mswrite', 'application/x-wri'],
+            'wrl'          => ['application/x-world', 'model/vrml', 'x-world/x-vrml'],
+            'wrz'          => ['model/vrml', 'x-world/x-vrml'],
+            'wsc'          => ['text/scriplet'],
+            'wsdl'         => ['application/wsdl+xml'],
+            'wspolicy'     => ['application/wspolicy+xml'],
+            'wsrc'         => ['application/x-wais-source'],
+            'wtb'          => ['application/vnd.webturbo'],
+            'wtk'          => ['application/x-wintalk'],
+            'wvx'          => ['video/x-ms-wvx'],
+            'x-png'        => ['image/png'],
+            'x32'          => ['application/x-authorware-bin'],
+            'x3d'          => ['model/x3d+xml'],
+            'x3db'         => ['model/x3d+binary'],
+            'x3dbz'        => ['model/x3d+binary'],
+            'x3dv'         => ['model/x3d+vrml'],
+            'x3dvz'        => ['model/x3d+vrml'],
+            'x3dz'         => ['model/x3d+xml'],
+            'xaml'         => ['application/xaml+xml'],
+            'xap'          => ['application/x-silverlight-app'],
+            'xar'          => ['application/vnd.xara'],
+            'xbap'         => ['application/x-ms-xbap'],
+            'xbd'          => ['application/vnd.fujixerox.docuworks.binder'],
+            'xbm'          => ['image/x-xbitmap', 'image/x-xbm', 'image/xbm'],
+            'xdf'          => ['application/xcap-diff+xml'],
+            'xdm'          => ['application/vnd.syncml.dm+xml'],
+            'xdp'          => ['application/vnd.adobe.xdp+xml'],
+            'xdr'          => ['video/x-amt-demorun'],
+            'xdssc'        => ['application/dssc+xml'],
+            'xdw'          => ['application/vnd.fujixerox.docuworks'],
+            'xenc'         => ['application/xenc+xml'],
+            'xer'          => ['application/patch-ops-error+xml'],
+            'xfdf'         => ['application/vnd.adobe.xfdf'],
+            'xfdl'         => ['application/vnd.xfdl'],
+            'xgz'          => ['xgl/drawing'],
+            'xht'          => ['application/xhtml+xml'],
+            'xhtml'        => ['application/xhtml+xml'],
+            'xhvml'        => ['application/xv+xml'],
+            'xif'          => ['image/vnd.xiff'],
+            'xl'           => ['application/excel'],
+            'xla'          => ['application/excel', 'application/x-excel', 'application/x-msexcel'],
+            'xlam'         => ['application/vnd.ms-excel.addin.macroenabled.12'],
+            'xlb'          => ['application/excel', 'application/vnd.ms-excel', 'application/x-excel'],
+            'xlc'          => ['application/excel', 'application/vnd.ms-excel', 'application/x-excel'],
+            'xld'          => ['application/excel', 'application/x-excel'],
+            'xlf'          => ['application/x-xliff+xml'],
+            'xlk'          => ['application/excel', 'application/x-excel'],
+            'xll'          => ['application/excel', 'application/vnd.ms-excel', 'application/x-excel'],
+            'xlm'          => ['application/excel', 'application/vnd.ms-excel', 'application/x-excel'],
+            'xls'          => ['application/excel', 'application/vnd.ms-excel', 'application/x-excel', 'application/x-msexcel'],
+            'xlsb'         => ['application/vnd.ms-excel.sheet.binary.macroenabled.12'],
+            'xlsm'         => ['application/vnd.ms-excel.sheet.macroenabled.12'],
+            'xlsx'         => ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+            'xlt'          => ['application/excel', 'application/x-excel'],
+            'xltm'         => ['application/vnd.ms-excel.template.macroenabled.12'],
+            'xltx'         => ['application/vnd.openxmlformats-officedocument.spreadsheetml.template'],
+            'xlv'          => ['application/excel', 'application/x-excel'],
+            'xlw'          => ['application/excel', 'application/vnd.ms-excel', 'application/x-excel', 'application/x-msexcel'],
+            'xm'           => ['audio/xm'],
+            'xml'          => ['application/xml', 'text/xml'],
+            'xmz'          => ['xgl/movie'],
+            'xo'           => ['application/vnd.olpc-sugar'],
+            'xop'          => ['application/xop+xml'],
+            'xpdl'         => ['application/xml'],
+            'xpi'          => ['application/x-xpinstall'],
+            'xpix'         => ['application/x-vnd.ls-xpix'],
+            'xpl'          => ['application/xproc+xml'],
+            'xpm'          => ['image/x-xpixmap', 'image/xpm'],
+            'xpr'          => ['application/vnd.is-xpr'],
+            'xps'          => ['application/vnd.ms-xpsdocument'],
+            'xpw'          => ['application/vnd.intercon.formnet'],
+            'xpx'          => ['application/vnd.intercon.formnet'],
+            'xsl'          => ['application/xml'],
+            'xslt'         => ['application/xslt+xml'],
+            'xsm'          => ['application/vnd.syncml+xml'],
+            'xspf'         => ['application/xspf+xml'],
+            'xsr'          => ['video/x-amt-showrun'],
+            'xul'          => ['application/vnd.mozilla.xul+xml'],
+            'xvm'          => ['application/xv+xml'],
+            'xvml'         => ['application/xv+xml'],
+            'xwd'          => ['image/x-xwd', 'image/x-xwindowdump'],
+            'xyz'          => ['chemical/x-xyz'],
+            'xz'           => ['application/x-xz'],
+            'yang'         => ['application/yang'],
+            'yin'          => ['application/yin+xml'],
+            'z'            => ['application/x-compress', 'application/x-compressed'],
+            'z1'           => ['application/x-zmachine'],
+            'z2'           => ['application/x-zmachine'],
+            'z3'           => ['application/x-zmachine'],
+            'z4'           => ['application/x-zmachine'],
+            'z5'           => ['application/x-zmachine'],
+            'z6'           => ['application/x-zmachine'],
+            'z7'           => ['application/x-zmachine'],
+            'z8'           => ['application/x-zmachine'],
+            'zaz'          => ['application/vnd.zzazz.deck+xml'],
+            'zip'          => ['application/x-compressed', 'application/x-zip-compressed', 'application/zip', 'multipart/x-zip'],
+            'zir'          => ['application/vnd.zul'],
+            'zirz'         => ['application/vnd.zul'],
+            'zmm'          => ['application/vnd.handheld-entertainment+xml'],
+            'zoo'          => ['application/octet-stream'],
+            'zsh'          => ['text/x-script.zsh'],
+            '123'          => ['application/vnd.lotus-1-2-3'],
         ];
 
         if ($ext == 'all') {
@@ -3517,11 +3518,11 @@ class TadUpFiles
     {
         global $xoopsDB;
 
-        if (!empty($where)) {
-            $sql = "select count(*) from `{$this->TadUpFilesTblName}`  where $where";
+        if (! empty($where)) {
+            $sql    = "select count(*) from `{$this->TadUpFilesTblName}`  where $where";
             $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         } else {
-            $sql = 'SELECT COUNT(*) FROM `' . $this->TadUpFilesTblName . '` WHERE `col_name`=? AND `col_sn`=?';
+            $sql    = 'SELECT COUNT(*) FROM `' . $this->TadUpFilesTblName . '` WHERE `col_name`=? AND `col_sn`=?';
             $result = Utility::query($sql, 'si', [$this->col_name, $this->col_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
         }
         list($count) = $xoopsDB->fetchRow($result);

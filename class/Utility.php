@@ -1,5 +1,4 @@
 <?php
-
 namespace XoopsModules\Tadtools;
 
 use Xmf\Request;
@@ -31,85 +30,85 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 class Utility
 {
     public static $fonts = [
-        '851DianJiWenZiTi' => '851電機文字',
-        'Bakudai' => '莫大毛筆字體',
-        'BoTa' => '波塔',
-        'BpmfGenRyuMin-B' => '源流注音明體-粗體',
-        'BpmfGenRyuMin-R' => '源流注音明體',
-        'BpmfGenSekiGothic-B' => '源石注音黑體-粗體',
-        'BpmfGenSekiGothic-R' => '源石注音黑體',
-        'BpmfGenSenRounded-B' => '源泉注音圓體-粗體',
-        'BpmfGenSenRounded-R' => '源泉注音圓體',
-        'BpmfGenWanMin-R' => '源雲注音明體',
-        'BpmfGenYoGothic-B' => '源樣注音黑體-粗體',
-        'BpmfGenYoGothic-R' => '源樣注音黑體',
-        'BpmfGenYoMin-B' => '源樣注音明體-粗體',
-        'BpmfGenYoMin-R' => '源樣注音明體',
-        'BpmfZihiKaiStd-Regular' => '字嗨注音標楷',
-        'BpmfZihiSans-Bold' => '字嗨注音黑體-粗體',
-        'BpmfZihiSans-Regular' => '字嗨注音黑體',
-        'BpmfZihiSerif-Bold' => '字嗨注音宋體-粗體',
-        'BpmfZihiSerif-Regular' => '字嗨注音宋體',
-        'Chalk' => '粉筆體',
-        'ChaoJiXi' => '超級細ゴシック體',
-        'CorpRound' => '公司LOGO圓體',
-        'Crayon' => '黑板粉筆體',
-        'Cubic' => '俐方體11號',
-        'Doudouziti' => '豆豆體',
-        'HanWangFangSongMedium' => '王漢宗中仿宋',
-        'HanWangHeiHeavy' => '王漢宗特黑體',
-        'HanWangHeiLight' => '王漢宗細黑體',
-        'HanWangKaiMediumChuIn' => '王漢宗中楷注音',
-        'HanWangKanTan' => '王漢宗勘亭流',
-        'HanWangLiSuMedium' => '王漢宗中隸書',
-        'HanWangMingBlack' => '王漢宗超明體',
-        'HanWangWeBe' => '王漢宗魏碑體',
-        'HanWangYenHeavy' => '王漢宗特圓體',
-        'HanWangYenLight' => '王漢宗細圓體',
-        'HanWangZonYi' => '王漢宗綜藝體',
-        'HanZiBiShunZiTi' => '漢字筆順體原版',
-        'HengShanMaoBiCaoShu' => '衡山毛筆草書',
-        'I-Ngaan' => '刻石錄顏體',
-        'I-PenCrane-B' => '刻石錄鋼筆鶴體',
-        'Iansui' => '芫荽體',
-        'JasonHandwriting1' => '清松手寫體1',
-        'JasonHandwriting2' => '清松手寫體2',
-        'JasonHandwriting3' => '清松手寫體3',
-        'JasonHandwriting4' => '清松手寫體4',
-        'JfOpenhuninn' => 'jf open 粉圓體',
-        'KaiseiTokumin' => '解星 B',
-        'KingnamMaiyuan' => '荊南麥圓體',
-        'Kurewa' => '苦累蛙圓體',
-        'Mamelon' => 'Mamelon字體',
-        'MamelonHi' => 'Mamelon新版字體',
-        'MasaFont' => '正風毛筆字體（衡山毛筆行書）',
-        'NaikaiFont' => '內海字體',
-        'NishikiTeki' => '馬克筆手寫',
-        'PangPangZhuRouTi' => '胖胖豬肉體',
-        'PoSuiLingHaoZi' => '破碎零號字',
-        'PopGothicCjkJp' => '大波浪圓體',
-        'QianTuMaKeShouXieTi' => '千圖馬克手寫體',
-        'Qiang' => '黒薔薇',
-        'QingLiuShu' => '青柳隷書',
-        'SuiFengTi ' => '隨峰體',
-        'SweiFistLegCJKjp' => '獅尾詠腿黑體',
-        'SweiSpringSugarCJKtc' => '獅尾四季春',
-        'SweiToothpasteCJKtc' => '獅尾牙膏圓體',
-        'TanugoTangGuoShouXieTiBold' => '糖果手寫粗體',
+        '851DianJiWenZiTi'              => '851電機文字',
+        'Bakudai'                       => '莫大毛筆字體',
+        'BoTa'                          => '波塔',
+        'BpmfGenRyuMin-B'               => '源流注音明體-粗體',
+        'BpmfGenRyuMin-R'               => '源流注音明體',
+        'BpmfGenSekiGothic-B'           => '源石注音黑體-粗體',
+        'BpmfGenSekiGothic-R'           => '源石注音黑體',
+        'BpmfGenSenRounded-B'           => '源泉注音圓體-粗體',
+        'BpmfGenSenRounded-R'           => '源泉注音圓體',
+        'BpmfGenWanMin-R'               => '源雲注音明體',
+        'BpmfGenYoGothic-B'             => '源樣注音黑體-粗體',
+        'BpmfGenYoGothic-R'             => '源樣注音黑體',
+        'BpmfGenYoMin-B'                => '源樣注音明體-粗體',
+        'BpmfGenYoMin-R'                => '源樣注音明體',
+        'BpmfZihiKaiStd-Regular'        => '字嗨注音標楷',
+        'BpmfZihiSans-Bold'             => '字嗨注音黑體-粗體',
+        'BpmfZihiSans-Regular'          => '字嗨注音黑體',
+        'BpmfZihiSerif-Bold'            => '字嗨注音宋體-粗體',
+        'BpmfZihiSerif-Regular'         => '字嗨注音宋體',
+        'Chalk'                         => '粉筆體',
+        'ChaoJiXi'                      => '超級細ゴシック體',
+        'CorpRound'                     => '公司LOGO圓體',
+        'Crayon'                        => '黑板粉筆體',
+        'Cubic'                         => '俐方體11號',
+        'Doudouziti'                    => '豆豆體',
+        'HanWangFangSongMedium'         => '王漢宗中仿宋',
+        'HanWangHeiHeavy'               => '王漢宗特黑體',
+        'HanWangHeiLight'               => '王漢宗細黑體',
+        'HanWangKaiMediumChuIn'         => '王漢宗中楷注音',
+        'HanWangKanTan'                 => '王漢宗勘亭流',
+        'HanWangLiSuMedium'             => '王漢宗中隸書',
+        'HanWangMingBlack'              => '王漢宗超明體',
+        'HanWangWeBe'                   => '王漢宗魏碑體',
+        'HanWangYenHeavy'               => '王漢宗特圓體',
+        'HanWangYenLight'               => '王漢宗細圓體',
+        'HanWangZonYi'                  => '王漢宗綜藝體',
+        'HanZiBiShunZiTi'               => '漢字筆順體原版',
+        'HengShanMaoBiCaoShu'           => '衡山毛筆草書',
+        'I-Ngaan'                       => '刻石錄顏體',
+        'I-PenCrane-B'                  => '刻石錄鋼筆鶴體',
+        'Iansui'                        => '芫荽體',
+        'JasonHandwriting1'             => '清松手寫體1',
+        'JasonHandwriting2'             => '清松手寫體2',
+        'JasonHandwriting3'             => '清松手寫體3',
+        'JasonHandwriting4'             => '清松手寫體4',
+        'JfOpenhuninn'                  => 'jf open 粉圓體',
+        'KaiseiTokumin'                 => '解星 B',
+        'KingnamMaiyuan'                => '荊南麥圓體',
+        'Kurewa'                        => '苦累蛙圓體',
+        'Mamelon'                       => 'Mamelon字體',
+        'MamelonHi'                     => 'Mamelon新版字體',
+        'MasaFont'                      => '正風毛筆字體（衡山毛筆行書）',
+        'NaikaiFont'                    => '內海字體',
+        'NishikiTeki'                   => '馬克筆手寫',
+        'PangPangZhuRouTi'              => '胖胖豬肉體',
+        'PoSuiLingHaoZi'                => '破碎零號字',
+        'PopGothicCjkJp'                => '大波浪圓體',
+        'QianTuMaKeShouXieTi'           => '千圖馬克手寫體',
+        'Qiang'                         => '黒薔薇',
+        'QingLiuShu'                    => '青柳隷書',
+        'SuiFengTi '                    => '隨峰體',
+        'SweiFistLegCJKjp'              => '獅尾詠腿黑體',
+        'SweiSpringSugarCJKtc'          => '獅尾四季春',
+        'SweiToothpasteCJKtc'           => '獅尾牙膏圓體',
+        'TanugoTangGuoShouXieTiBold'    => '糖果手寫粗體',
         'TanugoTangGuoShouXieTiRegular' => '糖果手寫體',
-        'Tanukimagic' => 'たぬき油性マジック',
-        'UzuraZiTi' => '鵪鶉字體',
-        'WuXinShouXieTi' => '無心手寫體',
-        'XianErTi' => '賢二體',
-        'XinYiGuanHeiTi' => '字體圈欣意冠黑體',
-        'YOzShouXieTi' => 'YOz手寫體',
-        'YingZhuiXingShu' => '英椎行書',
-        'YouZi' => '佑字',
-        'YuanYingHeiTi' => '源影黑體',
-        'ZhaiZaiJiaFenTiaoTian' => '宅在家粉條甜',
-        'ZhaiZaiJiaMaiKeBi' => '宅在家麥克筆',
-        'ZhaiZaiJiaZiDongBi' => '宅在家自動筆',
-        'ZuoZuoMuZiTi' => '佐佐木字體',
+        'Tanukimagic'                   => 'たぬき油性マジック',
+        'UzuraZiTi'                     => '鵪鶉字體',
+        'WuXinShouXieTi'                => '無心手寫體',
+        'XianErTi'                      => '賢二體',
+        'XinYiGuanHeiTi'                => '字體圈欣意冠黑體',
+        'YOzShouXieTi'                  => 'YOz手寫體',
+        'YingZhuiXingShu'               => '英椎行書',
+        'YouZi'                         => '佑字',
+        'YuanYingHeiTi'                 => '源影黑體',
+        'ZhaiZaiJiaFenTiaoTian'         => '宅在家粉條甜',
+        'ZhaiZaiJiaMaiKeBi'             => '宅在家麥克筆',
+        'ZhaiZaiJiaZiDongBi'            => '宅在家自動筆',
+        'ZuoZuoMuZiTi'                  => '佐佐木字體',
     ];
 
     //建構函數
@@ -120,11 +119,11 @@ class Utility
         self::get_bootstrap();
     }
 
-    public static function test($var, $v = 1, $mode = 'dd', $key = 'test')
+    public static function test($var, $v = 1, $mode = 'dd', $key = 'test', $force = false)
     {
         global $xoopsUser, $xoopsModuleConfig, $xoopsLogger;
 
-        if (isset($xoopsModuleConfig['test_mode']) && $xoopsModuleConfig['test_mode'] && $xoopsUser && !$xoopsUser->isAdmin()) {
+        if (isset($xoopsModuleConfig['test_mode']) && $xoopsModuleConfig['test_mode'] && $xoopsUser && ! $xoopsUser->isAdmin()) {
             return;
         }
 
@@ -152,11 +151,11 @@ class Utility
     }
 
     // 將網址轉為連結
-    public static function linkify($value, $protocols = array('http', 'mail'), array $attributes = array())
+    public static function linkify($value, $protocols = ['http', 'mail'], array $attributes = [])
     {
         $TadToolsXoopsModuleConfig = self::TadToolsXoopsModuleConfig();
 
-        if (!$TadToolsXoopsModuleConfig['linkify']) {
+        if (! $TadToolsXoopsModuleConfig['linkify']) {
             return $value;
         }
 
@@ -166,7 +165,7 @@ class Utility
             $attr .= ' ' . $key . '="' . htmlentities($val) . '"';
         }
 
-        $links = array();
+        $links = [];
 
         if ($TadToolsXoopsModuleConfig['insert_spacing']) {
             $value = self::insert_spacing($value);
@@ -203,7 +202,7 @@ class Utility
     public static function xoops_security_check($file = '', $line = '')
     {
         $where = $file ? "( $file $line )" : "";
-        if ($_SERVER['SERVER_ADDR'] != '127.0.0.1' && !$GLOBALS['xoopsSecurity']->check()) {
+        if ($_SERVER['SERVER_ADDR'] != '127.0.0.1' && ! $GLOBALS['xoopsSecurity']->check()) {
             $error = implode("<br>", $GLOBALS['xoopsSecurity']->getErrors());
             redirect_header($_SERVER['PHP_SELF'], 3, $error . $where);
         }
@@ -253,7 +252,7 @@ class Utility
                     $ver = XOOPS_VERSION;
                 }
                 $version = explode('.', str_replace('XOOPS ', '', $ver));
-                if (!empty($version[2]) && strpos($version[2], 'Beta') !== false) {
+                if (! empty($version[2]) && strpos($version[2], 'Beta') !== false) {
                     $version[2] = intval($version[2]) - 1;
                 }
                 break;
@@ -281,11 +280,11 @@ class Utility
 
             default:
                 if (empty($ver)) {
-                    $sql = 'SELECT `version` FROM `' . $xoopsDB->prefix('modules') . "` WHERE `dirname` = '$dirname'";
+                    $sql    = 'SELECT `version` FROM `' . $xoopsDB->prefix('modules') . "` WHERE `dirname` = '$dirname'";
                     $result = $xoopsDB->query($sql) or self::web_error($sql, __FILE__, __LINE__);
 
                     list($ver) = $xoopsDB->fetchRow($result);
-                    if (!empty($ver) && strpos($ver, '-') === false) {
+                    if (! empty($ver) && strpos($ver, '-') === false) {
                         if (strpos($ver, '.') !== false) {
                             for ($i = 0; $i < strlen($ver); $i++) {
                                 $version[] = substr($ver, $i, 1);
@@ -299,7 +298,7 @@ class Utility
                     } else {
                         if ($ver) {
                             list($version, $version_status) = explode('-', $ver);
-                            $version = explode('.', $version);
+                            $version                        = explode('.', $version);
                         } else {
                             $version = [];
                         }
@@ -308,7 +307,7 @@ class Utility
                 } else {
                     if (strpos($ver, '-') === false) {
                         if (strpos($ver, '.') !== false) {
-                            $v = explode('.', $ver);
+                            $v         = explode('.', $ver);
                             $version[] = $v[0];
                             for ($i = 0; $i < strlen($v[1]); $i++) {
                                 $version[] = substr($v[1], $i, 1);
@@ -321,16 +320,16 @@ class Utility
                         }
                     } else {
                         list($version, $version_status) = explode('-', $ver);
-                        $version = explode('.', $version);
+                        $version                        = explode('.', $version);
                     }
 
                 }
                 break;
         }
 
-        $version[0] = isset($version[0]) ? $version[0] : 0;
-        $version[1] = isset($version[1]) ? $version[1] : 0;
-        $version[2] = isset($version[2]) ? $version[2] : 0;
+        $version[0]  = isset($version[0]) ? $version[0] : 0;
+        $version[1]  = isset($version[1]) ? $version[1] : 0;
+        $version[2]  = isset($version[2]) ? $version[2] : 0;
         $int_version = (int) $version[0] * 10000 + (int) $version[1] * 100 + (int) $version[2];
         return $int_version;
 
@@ -338,7 +337,7 @@ class Utility
 
     public static function get_theme_version($dirname)
     {
-        $handle = @fopen(XOOPS_ROOT_PATH . "/themes/{$dirname}/theme.ini", "r");
+        $handle  = @fopen(XOOPS_ROOT_PATH . "/themes/{$dirname}/theme.ini", "r");
         $version = '';
         if ($handle) {
             while (($buffer = fgets($handle, 4096)) !== false) {
@@ -409,18 +408,18 @@ class Utility
         }
         $source_dir = $dir;
 
-        $dir = \str_replace([XOOPS_ROOT_PATH, XOOPS_VAR_PATH], '', $dir);
+        $dir      = \str_replace([XOOPS_ROOT_PATH, XOOPS_VAR_PATH], '', $dir);
         $dir_path = explode('/', $dir);
-        $mk_dir = strpos($source_dir, XOOPS_VAR_PATH) !== false ? XOOPS_VAR_PATH : XOOPS_ROOT_PATH;
+        $mk_dir   = strpos($source_dir, XOOPS_VAR_PATH) !== false ? XOOPS_VAR_PATH : XOOPS_ROOT_PATH;
 
         foreach ($dir_path as $i => $sub_dir) {
             $mk_dir .= $i > 0 ? "/{$sub_dir}" : $sub_dir;
 
             //若目錄不存在的話建立目錄
-            if ($mk_dir != '' && !is_dir($mk_dir)) {
+            if ($mk_dir != '' && ! is_dir($mk_dir)) {
                 umask(000);
                 //若建立失敗秀出警告訊息
-                if (!mkdir($mk_dir, 0777) && !is_dir($mk_dir)) {
+                if (! mkdir($mk_dir, 0777) && ! is_dir($mk_dir)) {
                     throw new \RuntimeException(sprintf('Directory "%s" was not created', $mk_dir));
                 }
             }
@@ -435,13 +434,13 @@ class Utility
             $dir_handle = opendir($dirname);
         }
 
-        if (!$dir_handle) {
+        if (! $dir_handle) {
             return false;
         }
 
         while ($file = readdir($dir_handle)) {
             if ('.' !== $file && '..' !== $file) {
-                if (!is_dir($dirname . '/' . $file)) {
+                if (! is_dir($dirname . '/' . $file)) {
                     unlink($dirname . '/' . $file);
                 } else {
                     self::delete_directory($dirname . '/' . $file);
@@ -458,27 +457,27 @@ class Utility
     {
 
         // 檢查來源資料夾是否存在
-        if (!is_dir($source)) {
+        if (! is_dir($source)) {
             return false;
         }
 
         // 確保目標資料夾存在,否則創建它
-        if (!is_dir($dest)) {
+        if (! is_dir($dest)) {
             mkdir($dest, 0755, true);
         }
 
         // 遍歷來源資料夾中的所有檔案和資料夾
-        $files = array_diff(scandir($source), array('.', '..'));
+        $files = array_diff(scandir($source), ['.', '..']);
         foreach ($files as $file) {
             $sourceFile = $source . DIRECTORY_SEPARATOR . $file;
-            $destFile = $dest . DIRECTORY_SEPARATOR . $file;
+            $destFile   = $dest . DIRECTORY_SEPARATOR . $file;
 
             // 如果是資料夾,則遞歸複製
             if (is_dir($sourceFile)) {
                 self::full_copy($sourceFile, $destFile, $overwrite);
             } else {
                 // 如果是檔案,則複製檔案
-                if ($overwrite || !file_exists($destFile)) {
+                if ($overwrite || ! file_exists($destFile)) {
                     copy($sourceFile, $destFile);
                 }
             }
@@ -513,7 +512,7 @@ class Utility
 
     public static function rename_win($oldfile, $newfile)
     {
-        if (!rename($oldfile, $newfile)) {
+        if (! rename($oldfile, $newfile)) {
             if (copy($oldfile, $newfile)) {
                 unlink($oldfile);
 
@@ -536,7 +535,7 @@ class Utility
         $item = '';
         if (is_array($cate_path_array)) {
             foreach ($cate_path_array as $path_cate_sn => $cate) {
-                $url = ($cate_sn == $path_cate_sn) ? "<a href='{$url_page}?{$page_cate_name}={$path_cate_sn}'>{$cate[$cate_title_name]}</a>" : "<a href='{$url_page}?{$page_cate_name}={$path_cate_sn}'>{$cate[$cate_title_name]}</a>";
+                $url    = ($cate_sn == $path_cate_sn) ? "<a href='{$url_page}?{$page_cate_name}={$path_cate_sn}'>{$cate[$cate_title_name]}</a>" : "<a href='{$url_page}?{$page_cate_name}={$path_cate_sn}'>{$cate[$cate_title_name]}</a>";
                 $active = ($cate_sn == $path_cate_sn) ? 'active' : '';
                 $item .= "<li class='breadcrumb-item {$active}'>{$url}</li>";
             }
@@ -587,7 +586,7 @@ class Utility
         error_reporting(0);
         header('HTTP/1.1 200 OK');
         $xoopsLogger->activated = false;
-        $jquery = '';
+        $jquery                 = '';
         if ($use_jquery) {
             $jquery = self::get_jquery($ui, 'return');
         }
@@ -600,7 +599,7 @@ class Utility
         <script src='" . XOOPS_URL . "/modules/tadtools/bootstrap{$bootstrap_version}/js/popper.min.js' crossorigin='anonymous'></script>
         <script src='" . XOOPS_URL . "/modules/tadtools/bootstrap{$bootstrap_version}/js/bootstrap.js'></script>" : '';
         $font_awesome_link = $font_awesome ? " <link href=\"" . XOOPS_URL . "/media/font-awesome/css/font-awesome.min.css\" rel=\"stylesheet\" media=\"all\">" : '';
-        $prism_link = '';
+        $prism_link        = '';
         if ($prism) {
             $prism_link = Utility::prism('return');
         }
@@ -633,11 +632,11 @@ class Utility
         global $xoopsDB, $xoopsModule, $xoopsUser;
 
         // 僅在需要時獲取呼叫者信息
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+        $backtrace  = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $callerInfo = isset($backtrace[0]) ? $backtrace[0]['file'] . ' on line ' . $backtrace[0]['line'] : '';
-        $isAdmin = ($xoopsUser and $xoopsModule) ? $xoopsUser->isAdmin($xoopsModule->mid()) : false;
-        $in_admin = (false !== mb_strpos($_SERVER['PHP_SELF'], '/admin/')) ? true : false;
-        $show_sql = ($isAdmin or $in_admin or $force) ? "<div style=\"margin-top:4px;border:1px solid pink;padding:4px;border-radius:5px;\">$sql</div>" : '';
+        $isAdmin    = ($xoopsUser and $xoopsModule) ? $xoopsUser->isAdmin($xoopsModule->mid()) : false;
+        $in_admin   = (false !== mb_strpos($_SERVER['PHP_SELF'], '/admin/')) ? true : false;
+        $show_sql   = ($isAdmin or $in_admin or $force) ? "<div style=\"margin-top:4px;border:1px solid pink;padding:4px;border-radius:5px;\">$sql</div>" : '';
 
         throw new \Exception($xoopsDB->error() . ($callerInfo ? " in {$callerInfo}{$show_sql}" : ''));
 
@@ -652,12 +651,12 @@ class Utility
 
         $theme_set = $xoopsConfig['theme_set'];
 
-        $sql = 'SELECT `tt_theme_kind` FROM `' . $xoopsDB->prefix('tadtools_setup') . "` WHERE `tt_theme` = '$theme_set'";
+        $sql    = 'SELECT `tt_theme_kind` FROM `' . $xoopsDB->prefix('tadtools_setup') . "` WHERE `tt_theme` = '$theme_set'";
         $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error() . '<br>' . __FILE__ . ':' . __LINE__);
 
         list($tt_theme_kind) = $xoopsDB->fetchRow($result);
 
-        $_SESSION['theme_kind'] = $tt_theme_kind;
+        $_SESSION['theme_kind']                    = $tt_theme_kind;
         $_SESSION[$theme_set]['bootstrap_version'] = $tt_theme_kind;
 
         if (strpos((string) isset($tt_theme_kind) ?: '', 'bootstrap') !== false) {
@@ -689,19 +688,19 @@ class Utility
     {
         $http = ($_SERVER['HTTPS']) ? 'https://' : 'http://';
         $port = 80 == $_SERVER['SERVER_PORT'] ? '' : ":{$_SERVER['SERVER_PORT']}";
-        if (!isset($_SESSION['ez_url'])) {
+        if (! isset($_SESSION['ez_url'])) {
             $u = parse_url($http . $_SERVER['SERVER_NAME'] . $port . $_SERVER['REQUEST_URI']);
-            if (!empty($u['path']) and preg_match('/\/modules/', $u['path'])) {
+            if (! empty($u['path']) and preg_match('/\/modules/', $u['path'])) {
                 $XMUrl = explode('/modules', $u['path']);
-            } elseif (!empty($u['path']) and preg_match('/\/themes/', $u['path'])) {
+            } elseif (! empty($u['path']) and preg_match('/\/themes/', $u['path'])) {
                 $XMUrl = explode('/themes', $u['path']);
-            } elseif (!empty($u['path']) and preg_match('/\/upgrade/', $u['path'])) {
+            } elseif (! empty($u['path']) and preg_match('/\/upgrade/', $u['path'])) {
                 $XMUrl = explode('/upgrade', $u['path']);
-            } elseif (!empty($u['path']) and preg_match('/\/include/', $u['path'])) {
+            } elseif (! empty($u['path']) and preg_match('/\/include/', $u['path'])) {
                 $XMUrl = explode('/include', $u['path']);
-            } elseif (!empty($u['path']) and preg_match('/.php/', $u['path'])) {
+            } elseif (! empty($u['path']) and preg_match('/.php/', $u['path'])) {
                 $XMUrl[0] = dirname($u['path']);
-            } elseif (!empty($u['path'])) {
+            } elseif (! empty($u['path'])) {
                 $XMUrl[0] = $u['path'];
             } else {
                 $XMUrl[0] = '';
@@ -722,10 +721,10 @@ class Utility
     public static function get_xoops_path()
     {
         if (preg_match('/\/modules/', $_SERVER['SCRIPT_FILENAME'])) {
-            $XMPath = explode('/modules', $_SERVER['SCRIPT_FILENAME']);
+            $XMPath    = explode('/modules', $_SERVER['SCRIPT_FILENAME']);
             $root_path = $XMPath[0];
         } elseif (preg_match('/\/themes/', $_SERVER['SCRIPT_FILENAME'])) {
-            $XMPath = explode('/themes', $_SERVER['SCRIPT_FILENAME']);
+            $XMPath    = explode('/themes', $_SERVER['SCRIPT_FILENAME']);
             $root_path = $XMPath[0];
         } else {
             $root_path = dirname($_SERVER['SCRIPT_FILENAME']);
@@ -745,7 +744,7 @@ class Utility
     {
         // grab anything that looks like a URL...
         $urls = self::_autolink_find_URLS($text);
-        if (!empty($urls)) {
+        if (! empty($urls)) {
             // i.e. there were some URLS found in the text
             array_walk($urls, '_autolink_create_html_tags', ['target' => $target, 'nofollow' => $nofollow]);
             $text = strtr($text, $urls);
@@ -756,17 +755,17 @@ class Utility
     private static function _autolink_find_URLS($text)
     {
         // build the patterns
-        $scheme = '(http:\/\/|https:\/\/)';
-        $www = 'www\.';
-        $ip = '\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}';
+        $scheme    = '(http:\/\/|https:\/\/)';
+        $www       = 'www\.';
+        $ip        = '\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}';
         $subdomain = '[-a-z0-9_]+\.';
-        $name = '[a-z][-a-z0-9]+\.';
-        $tld = '[a-z]+(\.[a-z]{2,2})?';
-        $the_rest = '\/?[a-z0-9._\/~#&=;%+?-]+[a-z0-9\/#=?]{1,1}';
-        $pattern = "$scheme?(?(1)($ip|($subdomain)?$name$tld)|($www$name$tld))$the_rest";
+        $name      = '[a-z][-a-z0-9]+\.';
+        $tld       = '[a-z]+(\.[a-z]{2,2})?';
+        $the_rest  = '\/?[a-z0-9._\/~#&=;%+?-]+[a-z0-9\/#=?]{1,1}';
+        $pattern   = "$scheme?(?(1)($ip|($subdomain)?$name$tld)|($www$name$tld))$the_rest";
 
         $pattern = '/' . $pattern . '/is';
-        $c = preg_match_all($pattern, $text, $m);
+        $c       = preg_match_all($pattern, $text, $m);
         unset($text, $scheme, $www, $ip, $subdomain, $name, $tld, $the_rest, $pattern);
         if ($c) {
             return (array_flip($m[0]));
@@ -779,7 +778,7 @@ class Utility
     {
         $target = $nofollow = null;
         if (is_array($other)) {
-            $target = ($other['target'] ? " target=\"$other[target]\"" : null);
+            $target   = ($other['target'] ? " target=\"$other[target]\"" : null);
             $nofollow = ($other['nofollow'] ? ' rel="nofollow"' : null);
         }
         $value = "<a href=\"$key\"$target$nofollow>$key</a>";
@@ -790,9 +789,9 @@ class Utility
     {
         global $xoopsModuleConfig;
         if ($enable) {
-            if (!isset($xoopsModuleConfig['facebook_app_id'])) {
+            if (! isset($xoopsModuleConfig['facebook_app_id'])) {
                 $xoopsTadtoolsConfig = self::TadToolsXoopsModuleConfig();
-                $facebookAppId = $xoopsTadtoolsConfig['facebook_app_id'];
+                $facebookAppId       = $xoopsTadtoolsConfig['facebook_app_id'];
             } else {
                 $facebookAppId = $xoopsModuleConfig['facebook_app_id'];
             }
@@ -819,10 +818,10 @@ class Utility
     {
         $imgurl = self::mk_qrcode_name($url);
         self::mk_dir(XOOPS_ROOT_PATH . '/uploads/qrcode');
-        if (!file_exists(XOOPS_ROOT_PATH . "/uploads/qrcode/{$imgurl}.gif")) {
+        if (! file_exists(XOOPS_ROOT_PATH . "/uploads/qrcode/{$imgurl}.gif")) {
             include_once 'qrcode/qrcode.php';
             $url = self::chk_qrcode_url($url);
-            $a = new \QR("{$_SERVER['HTTP_HOST']}{$url}");
+            $a   = new \QR("{$_SERVER['HTTP_HOST']}{$url}");
             //die(XOOPS_ROOT_PATH."/uploads/qrcode/{$imgurl}.gif");
             file_put_contents(XOOPS_ROOT_PATH . "/uploads/qrcode/{$imgurl}.gif", $a->image(2));
         }
@@ -831,7 +830,7 @@ class Utility
     //產生QR Code檔案的名稱
     private static function mk_qrcode_name($url = '')
     {
-        $url = self::chk_qrcode_url($url);
+        $url    = self::chk_qrcode_url($url);
         $imgurl = str_replace(XOOPS_URL, '', $url);
         $imgurl = str_replace('modules/', '', $imgurl);
         $imgurl = str_replace('/', '_', $imgurl);
@@ -866,7 +865,7 @@ class Utility
         }
 
         $var2 = implode('&', $varall);
-        $url = "{$var[0]}?{$var2}";
+        $url  = "{$var[0]}?{$var2}";
 
         return $url;
     }
@@ -900,13 +899,13 @@ class Utility
     {
         global $xoopsUser, $xoopsModule;
 
-        if (!$xoopsModule) {
-            $modhandler = xoops_gethandler('module');
+        if (! $xoopsModule) {
+            $modhandler  = xoops_gethandler('module');
             $xoopsModule = $modhandler->getByDirname($mod_name);
         }
 
         //取得目前使用者的群組編號
-        if (!isset($_SESSION['groups']) or $_SESSION['groups'] === '') {
+        if (! isset($_SESSION['groups']) or $_SESSION['groups'] === '') {
             $_SESSION['groups'] = $xoopsUser ? $xoopsUser->getGroups() : [XOOPS_GROUP_ANONYMOUS];
         }
 
@@ -937,7 +936,7 @@ class Utility
         if (empty($groupid_txt)) {
             $g_txt_all = $default_txt;
         } else {
-            $gs = explode(',', $groupid_txt);
+            $gs    = explode(',', $groupid_txt);
             $g_txt = [];
             foreach ($gs as $gid) {
                 $g_txt[] = isset($groups_array[$gid]) ? $groups_array[$gid] : '';
@@ -952,7 +951,7 @@ class Utility
     public static function get_all_groups()
     {
         global $xoopsDB;
-        $sql = 'SELECT `groupid`,`name` FROM `' . $xoopsDB->prefix('groups') . '`';
+        $sql    = 'SELECT `groupid`,`name` FROM `' . $xoopsDB->prefix('groups') . '`';
         $result = $xoopsDB->query($sql);
         while (list($groupid, $name) = $xoopsDB->fetchRow($result)) {
             $data[$groupid] = $name;
@@ -965,7 +964,7 @@ class Utility
     public static function mk_group($name = "")
     {
         global $xoopsDB;
-        $sql = 'SELECT `groupid` FROM `' . $xoopsDB->prefix('groups') . '` WHERE `name`=?';
+        $sql    = 'SELECT `groupid` FROM `' . $xoopsDB->prefix('groups') . '` WHERE `name`=?';
         $result = Utility::query($sql, 's', [$name]) or Utility::web_error($sql, __FILE__, __LINE__, true);
 
         list($group_id) = $xoopsDB->fetchRow($result);
@@ -984,8 +983,8 @@ class Utility
     public static function group_id_from_name($name = "")
     {
         global $xoopsDB;
-        $sql = "select `groupid` from `" . $xoopsDB->prefix("groups") . "` where `name`='{$name}'";
-        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql           = "select `groupid` from `" . $xoopsDB->prefix("groups") . "` where `name`='{$name}'";
+        $result        = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($groupid) = $xoopsDB->fetchRow($result);
         return $groupid;
     }
@@ -1022,7 +1021,7 @@ class Utility
     {
         global $xoopsTpl;
         include_once XOOPS_ROOT_PATH . "/class/xoopsformloader.php";
-        $token = new \XoopsFormHiddenToken();
+        $token      = new \XoopsFormHiddenToken();
         $token_form = $token->render();
         if ($mode == 'assign') {
             $xoopsTpl->assign("token_form", $token_form);
@@ -1037,7 +1036,7 @@ class Utility
         if (_CHARSET === 'UTF-8') {
             return $buffer;
         }
-        $buffer = (!function_exists('mb_convert_encoding')) ? iconv('Big5', 'UTF-8', $buffer) : mb_convert_encoding($buffer, 'UTF-8', 'Big5');
+        $buffer = (! function_exists('mb_convert_encoding')) ? iconv('Big5', 'UTF-8', $buffer) : mb_convert_encoding($buffer, 'UTF-8', 'Big5');
 
         return $buffer;
     }
@@ -1045,7 +1044,7 @@ class Utility
     //判斷字串是否為utf8
     public static function is_utf8($str)
     {
-        $i = 0;
+        $i   = 0;
         $len = mb_strlen($str);
 
         for ($i = 0; $i < $len; $i++) {
@@ -1134,20 +1133,20 @@ class Utility
         }
 
         $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 10, $xoopsDB->error() . '<br>' . __FILE__ . ':' . __LINE__ . "<br>$sql");
-        $total = $xoopsDB->getRowsNum($result);
+        $total  = $xoopsDB->getRowsNum($result);
 
         $navbar = new \XoopsModules\Tadtools\PageBar($total, $show_num, $page_list, $order_sql);
 
-        if (!empty($to_page)) {
+        if (! empty($to_page)) {
             $navbar->set_to_page($to_page);
         }
 
-        if (!empty($url_other)) {
+        if (! empty($url_other)) {
             $navbar->set_url_other($url_other);
         }
 
         if ('gmail' == $bootstrap) {
-            $mybar = $navbar->makeBootStrapBar($g2p_name);
+            $mybar       = $navbar->makeBootStrapBar($g2p_name);
             $main['bar'] = "
                 <nav class='my-0'>
                     <ul class='pagination justify-content-end justify-content-right align-items-center flex-wrap'>
@@ -1158,7 +1157,7 @@ class Utility
                 </nav>
                 ";
         } else {
-            $mybar = $navbar->makeBootStrapBar($g2p_name);
+            $mybar       = $navbar->makeBootStrapBar($g2p_name);
             $main['bar'] = "
                 <div class='text-center'>
                     <nav>
@@ -1172,7 +1171,7 @@ class Utility
                 ";
         }
 
-        $main['sql'] = $sql . $mybar['sql'];
+        $main['sql']   = $sql . $mybar['sql'];
         $main['total'] = $total;
 
         return $main;
@@ -1189,8 +1188,8 @@ class Utility
         $op = Request::getString('op');
 
         if ($xoopsModule) {
-            $module_id = $xoopsModule->mid();
-            $mod_name = $xoopsModule->name();
+            $module_id  = $xoopsModule->mid();
+            $mod_name   = $xoopsModule->name();
             $moduleName = $xoopsModule->dirname();
         } else {
             $mod_name = $moduleName = '';
@@ -1202,13 +1201,13 @@ class Utility
             $isAdmin = false;
         }
 
-        if (empty($interface_menu) and !$force) {
+        if (empty($interface_menu) and ! $force) {
             return;
         }
 
         self::get_jquery();
 
-        $options = !in_array('index.php', $interface_menu) ? "<li><a href='index.php' title='" . _TAD_HOME . "'><i class=\"fa fa-home\" aria-hidden=\"true\"></i>" : '';
+        $options = ! in_array('index.php', $interface_menu) ? "<li><a href='index.php' title='" . _TAD_HOME . "'><i class=\"fa fa-home\" aria-hidden=\"true\"></i>" : '';
 
         if (is_array($interface_menu)) {
             $basename = basename($_SERVER['SCRIPT_NAME']);
@@ -1221,7 +1220,7 @@ class Utility
                 } else {
                     $target = substr($url, 0, 4) == 'http' ? "target='_blank'" : '';
 
-                    if (!empty($op) and false !== strpos($url, "?op=") and false !== strpos($url, "{$basename}?op={$op}")) {
+                    if (! empty($op) and false !== strpos($url, "?op=") and false !== strpos($url, "{$basename}?op={$op}")) {
                         $current = "class='current' title='$title'";
                     } elseif (false !== strpos($_SERVER['SCRIPT_NAME'], $url) && empty($op)) {
                         $current = "class='current' title='$title'";
@@ -1255,10 +1254,10 @@ class Utility
     public static function getXoopsModuleConfig($module)
     {
         $modhandler = xoops_getHandler('module');
-        $Module = $modhandler->getByDirname($module);
+        $Module     = $modhandler->getByDirname($module);
         if (is_object($Module)) {
             $config_handler = xoops_getHandler('config');
-            $ModuleConfig = $config_handler->getConfigsByCat(0, $Module->getVar('mid'));
+            $ModuleConfig   = $config_handler->getConfigsByCat(0, $Module->getVar('mid'));
             return $ModuleConfig;
         }
 
@@ -1273,7 +1272,7 @@ class Utility
     public static function get_jquery($ui = false, $mode = '', $theme = 'base')
     {
         global $xoTheme;
-        if (!isset($xoTheme) or 'return' === $mode) {
+        if (! isset($xoTheme) or 'return' === $mode) {
             $jqueryui_path = '';
             if ($ui) {
                 $jqueryui_path = "
@@ -1308,7 +1307,7 @@ class Utility
     public static function vita_get_url_content($url)
     {
         $file_contents = '';
-        $timeout = 5;
+        $timeout       = 5;
         // 使用 cURL 作为首选方法
         if (function_exists('curl_init')) {
             $ch = curl_init();
@@ -1333,8 +1332,8 @@ class Utility
                 'http' => [
                     'timeout' => $timeout,
                 ],
-                'ssl' => [
-                    'verify_peer' => false,
+                'ssl'  => [
+                    'verify_peer'      => false,
                     'verify_peer_name' => false,
                 ],
             ]);
@@ -1347,8 +1346,8 @@ class Utility
                 'http' => [
                     'timeout' => $timeout,
                 ],
-                'ssl' => [
-                    'verify_peer' => false,
+                'ssl'  => [
+                    'verify_peer'      => false,
                     'verify_peer_name' => false,
                 ],
             ]);
@@ -1366,7 +1365,7 @@ class Utility
     //複製檔案
     public static function copyemz($file1, $file2)
     {
-        $contentx = self::vita_get_url_content($file1);
+        $contentx   = self::vita_get_url_content($file1);
         $openedfile = fopen($file2, 'wb');
         fwrite($openedfile, $contentx);
         fclose($openedfile);
@@ -1383,13 +1382,14 @@ class Utility
     public static function generateThumbnail($imagePath, $imagethumbPath = '', $width = '', $height = '', $angle = 0)
     {
         global $xoopsModuleConfig;
+        $image_max_width = isset($xoopsModuleConfig['image_max_width']) ? (int) $xoopsModuleConfig['image_max_width'] : 1920;
 
         // 判斷是否為網路圖片
         $isRemoteImage = filter_var($imagePath, FILTER_VALIDATE_URL);
 
         if ($isRemoteImage) {
             // 如果是網路圖片，先下載到臨時檔案
-            $tempFile = tempnam(sys_get_temp_dir(), 'thumbnail_');
+            $tempFile     = tempnam(sys_get_temp_dir(), 'thumbnail_');
             $imageContent = self::vita_get_url_content($imagePath);
 
             if ($imageContent === false) {
@@ -1401,11 +1401,11 @@ class Utility
         }
 
         // 檢查文件是否存在
-        if (!file_exists($imagePath)) {
+        if (! file_exists($imagePath)) {
             return "{$imagePath} 不存在";
         }
 
-        $width = $width ? $width : (int) $xoopsModuleConfig['image_max_width'];
+        $width  = $width ? $width : $image_max_width;
         $height = $height ? $height : $width;
 
         // 獲取圖片信息，包括類型、尺寸等
@@ -1417,8 +1417,8 @@ class Utility
 
         // Utility::dd($imageInfo);
         if (0 !== $angle) {
-            $h = $imageInfo[1];
-            $w = $imageInfo[0];
+            $h            = $imageInfo[1];
+            $w            = $imageInfo[0];
             $imageInfo[0] = $h;
             $imageInfo[1] = $w;
         }
@@ -1453,7 +1453,7 @@ class Utility
             }
 
             // 計算縮圖尺寸
-            $originalWidth = imagesx($image);
+            $originalWidth  = imagesx($image);
             $originalHeight = imagesy($image);
 
             if ($originalWidth > $width && $originalHeight > $height) {
@@ -1462,7 +1462,7 @@ class Utility
                 $scale = 1;
             }
 
-            $newWidth = $originalWidth * $scale;
+            $newWidth  = $originalWidth * $scale;
             $newHeight = $originalHeight * $scale;
 
             // 創建一個新的圖片，並將原始圖片縮放到新尺寸
@@ -1519,7 +1519,7 @@ class Utility
     public static function save_perm($groups, $itemid, $perm_name)
     {
         global $xoopsModule;
-        $module_id = $xoopsModule->mid();
+        $module_id    = $xoopsModule->mid();
         $gpermHandler = xoops_getHandler('groupperm');
 
         // First, if the permissions are already there, delete them
@@ -1540,23 +1540,23 @@ class Utility
     {
         global $xoopsDB, $xoopsUser, $xoopsModule;
         $ok_cate_arr = [];
-        if (!$xoopsModule) {
-            $modhandler = xoops_gethandler('module');
+        if (! $xoopsModule) {
+            $modhandler  = xoops_gethandler('module');
             $xoopsModule = $modhandler->getByDirname($dirname);
         }
 
-        if (!empty($xoopsUser)) {
+        if (! empty($xoopsUser)) {
             $module_id = $xoopsModule->getVar('mid');
             if ($xoopsUser->isAdmin($module_id)) {
                 $ok_cate_arr[] = 0;
             }
-            $user_array = $xoopsUser->getGroups();
+            $user_array   = $xoopsUser->getGroups();
             $user_groupid = implode(',', $user_array);
         } else {
-            $user_array = [3];
+            $user_array   = [3];
             $user_groupid = 3;
         }
-        $sql = 'SELECT `gperm_itemid` FROM `' . $xoopsDB->prefix('group_permission') . "` WHERE `gperm_modid`='$module_id' AND `gperm_name`='$gperm_name' AND `gperm_groupid` IN ($user_groupid)";
+        $sql    = 'SELECT `gperm_itemid` FROM `' . $xoopsDB->prefix('group_permission') . "` WHERE `gperm_modid`='$module_id' AND `gperm_name`='$gperm_name' AND `gperm_groupid` IN ($user_groupid)";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         while (list($gperm_itemid) = $xoopsDB->fetchRow($result)) {
@@ -1570,10 +1570,10 @@ class Utility
     public static function get_perm($itemid, $gperm_name)
     {
         global $xoopsModule, $xoopsDB;
-        $itemid = (int) $itemid;
+        $itemid    = (int) $itemid;
         $module_id = $xoopsModule->mid();
-        $sql = "SELECT `gperm_groupid` FROM `" . $xoopsDB->prefix("group_permission") . "` WHERE `gperm_modid` = '$module_id' AND `gperm_itemid`='$itemid' AND `gperm_name`='$gperm_name'";
-        $result = $xoopsDB->query($sql) or self::web_error($sql, __FILE__, __LINE__);
+        $sql       = "SELECT `gperm_groupid` FROM `" . $xoopsDB->prefix("group_permission") . "` WHERE `gperm_modid` = '$module_id' AND `gperm_itemid`='$itemid' AND `gperm_name`='$gperm_name'";
+        $result    = $xoopsDB->query($sql) or self::web_error($sql, __FILE__, __LINE__);
 
         while (false !== ($row = $xoopsDB->fetchArray($result))) {
             $data[] = $row['gperm_groupid'];
@@ -1587,7 +1587,7 @@ class Utility
     {
         global $xoopsModule, $xoopsDB;
         $module_id = $xoopsModule->mid();
-        $sql = "DELETE FROM `" . $xoopsDB->prefix("group_permission") . "` WHERE `gperm_modid` = '$module_id' AND `gperm_itemid`='$itemid' AND `gperm_name`='$gperm_name'";
+        $sql       = "DELETE FROM `" . $xoopsDB->prefix("group_permission") . "` WHERE `gperm_modid` = '$module_id' AND `gperm_itemid`='$itemid' AND `gperm_name`='$gperm_name'";
         $xoopsDB->queryF($sql) or self::web_error($sql, __FILE__, __LINE__);
 
     }
@@ -1596,7 +1596,7 @@ class Utility
     public static function prism($mode = '', $line_numbers = false)
     {
         global $xoTheme, $xoopsTpl;
-        if ($mode == 'return' || !$xoTheme) {
+        if ($mode == 'return' || ! $xoTheme) {
             return "
             <link type='text/css' rel='stylesheet' href='" . XOOPS_URL . "/modules/tadtools/prism/prism.css'>
             <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/prism/prism.js'></script>
@@ -1619,7 +1619,7 @@ class Utility
      */
     private static function createReferenceArray(array $params)
     {
-        $references = array();
+        $references = [];
         foreach ($params as $key => $value) {
             $references[$key] = &$params[$key];
         }
@@ -1634,13 +1634,13 @@ class Utility
      */
     private static function isSelectQuery($sql)
     {
-        $selectPatterns = array(
+        $selectPatterns = [
             'SELECT',
             'SHOW',
             'DESCRIBE',
             'EXPLAIN',
             'PRAGMA',
-        );
+        ];
 
         $trimmedSql = trim($sql);
         foreach ($selectPatterns as $pattern) {
@@ -1682,21 +1682,21 @@ class Utility
      * @return mixed 查詢結果或布林值
      * @throws Exception
      */
-    public static function query($sql, $types = '', array $params = array(), $throwExceptions = true, $debug = false)
+    public static function query($sql, $types = '', array $params = [], $throwExceptions = true, $debug = false)
     {
         global $xoopsDB;
 
         // 僅在需要時獲取呼叫者信息
         $callerInfo = '';
         if ($debug || $throwExceptions) {
-            $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+            $backtrace  = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
             $callerInfo = isset($backtrace[0]) ? $backtrace[0]['file'] . ' on line ' . $backtrace[0]['line'] : '';
         }
 
         $stmt = null;
         try {
             // 基本驗證
-            if (!is_string($sql) || empty($sql)) {
+            if (! is_string($sql) || empty($sql)) {
                 throw new \Exception(_INVALID_SQL_QUERY);
             }
 
@@ -1719,17 +1719,17 @@ class Utility
 
             // 準備語句
             $stmt = $xoopsDB->conn->prepare($sql);
-            if (!$stmt) {
+            if (! $stmt) {
                 throw new \Exception(_SQL_PREPARE_FAILED . $xoopsDB->conn->error);
             }
 
             // 綁定參數
-            if (!empty($params)) {
+            if (! empty($params)) {
                 // 創建參數陣列
-                $bindParams = array_merge(array($types), self::createReferenceArray($params));
+                $bindParams = array_merge([$types], self::createReferenceArray($params));
 
                 // 綁定參數
-                if (!@call_user_func_array(array($stmt, 'bind_param'), $bindParams)) {
+                if (! @call_user_func_array([$stmt, 'bind_param'], $bindParams)) {
                     throw new \Exception(_PARAMETER_BINDING_FAILED . $stmt->error);
                 }
             }
@@ -1740,7 +1740,7 @@ class Utility
             }
 
             // 執行查詢
-            if (!$stmt->execute()) {
+            if (! $stmt->execute()) {
                 throw new \Exception(_SQL_EXECUTION_FAILED . $stmt->error);
             }
 
@@ -1892,12 +1892,12 @@ class Utility
             return;
         }
 
-        $width = $pic_width ? $pic_width : $size * 1.4 * $n;
+        $width  = $pic_width ? $pic_width : $size * 1.4 * $n;
         $height = $pic_height ? $pic_height : $size * 2 + $margin_top + $margin_bottom;
 
-        $x = 2;
-        $y = $size * 1.5;
-        list($color_r, $color_g, $color_b) = sscanf($color, '#%02x%02x%02x');
+        $x                                                      = 2;
+        $y                                                      = $size * 1.5;
+        list($color_r, $color_g, $color_b)                      = sscanf($color, '#%02x%02x%02x');
         list($border_color_r, $border_color_g, $border_color_b) = sscanf($border_color, '#%02x%02x%02x');
         list($shadow_color_r, $shadow_color_g, $shadow_color_b) = sscanf($shadow_color, '#%02x%02x%02x');
 
@@ -1908,7 +1908,7 @@ class Utility
         $trans_colour = imagecolorallocatealpha($im, 255, 255, 255, 127);
         imagefill($im, 0, 0, $trans_colour);
 
-        $text_color = imagecolorallocate($im, $color_r, $color_g, $color_b);
+        $text_color        = imagecolorallocate($im, $color_r, $color_g, $color_b);
         $text_border_color = imagecolorallocatealpha($im, $border_color_r, $border_color_g, $border_color_b, 50);
         $text_shadow_color = imagecolorallocatealpha($im, $shadow_color_r, $shadow_color_g, $shadow_color_b, 50);
 
@@ -1964,10 +1964,10 @@ class Utility
             // $return_array will be returned once all calculations are complete
             $return_array = [
                 imagesx($im), // lower left, x coordinate
-                -1, // lower left, y coordinate
-                -1, // lower right, x coordinate
-                -1, // lower right, y coordinate
-                -1, // upper right, x coordinate
+                -1,           // lower left, y coordinate
+                -1,           // lower right, x coordinate
+                -1,           // lower right, y coordinate
+                -1,           // upper right, x coordinate
                 imagesy($im), // upper right, y coordinate
                 imagesx($im), // upper left, x coordinate
                 imagesy($im), // upper left, y coordinate

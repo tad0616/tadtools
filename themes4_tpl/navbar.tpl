@@ -33,10 +33,12 @@
                 <{if "$xoops_rootpath/uploads/docs_top_menu_b4.tpl"|file_exists}>
                     <{include file="$xoops_rootpath/uploads/docs_top_menu_b4.tpl"}>
                 <{/if}>
+
                 <li class="nav-item">
                     <a class="nav-link" href="<{$xoops_url}>/modules/tadtools/ajax_file.php?op=remove_json" title="重整畫面"><i class="fa fa-refresh" aria-hidden="true"></i>
                     </a>
                 </li>
+
                 <{include file="$xoops_rootpath/modules/tadtools/themes4_tpl/menu_my.tpl"}>
             </ul>
 
