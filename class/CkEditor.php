@@ -10,26 +10,26 @@ class CkEditor
     public $ColID;
     public $CustomConfigurationsPath;
     public $ToolbarSet = 'my';
-    public $Width = '100%';
-    public $Height = 300;
+    public $Width      = '100%';
+    public $Height     = 300;
     public $Value;
-    public $ContentsCss = [];
+    public $ContentsCss   = [];
     public $demopublickey = '';
-    public $subDir = '';
-    public $Style = [];
-    public $Modal_ID = '';
-    public $placeholder = '';
+    public $subDir        = '';
+    public $Style         = [];
+    public $Modal_ID      = '';
+    public $placeholder   = '';
 
     //建構函數
     public function __construct($xoopsDirName = '', $ColName = '', $Value = '', $subDir = '')
     {
         $TadToolsModuleConfig = Utility::TadToolsXoopsModuleConfig();
-        $this->xoopsDirName = $xoopsDirName;
-        $this->ColName = $ColName;
-        $this->ColID = "editor_{$ColName}";
-        $this->Value = $Value;
-        $this->subDir = $subDir;
-        if (!empty($TadToolsModuleConfig['uploadcare_publickey'])) {
+        $this->xoopsDirName   = $xoopsDirName;
+        $this->ColName        = $ColName;
+        $this->ColID          = "editor_{$ColName}";
+        $this->Value          = $Value;
+        $this->subDir         = $subDir;
+        if (! empty($TadToolsModuleConfig['uploadcare_publickey'])) {
             $this->set_demopublickey($TadToolsModuleConfig['uploadcare_publickey']);
         }
     }
@@ -73,7 +73,7 @@ class CkEditor
     //新增樣式 stylesSet :
     public function setStyle($name, $element, $attributes = [], $styles = [])
     {
-        $Style['name'] = $name;
+        $Style['name']    = $name;
         $Style['element'] = $element;
         if ($attributes) {
             $Style['attributes'] = $attributes;
@@ -128,8 +128,8 @@ class CkEditor
 
         Utility::get_jquery();
         $_SESSION['xoops_mod_name'] = $this->xoopsDirName;
-        $placeholder = $this->placeholder ? "editorplaceholder: '{$this->placeholder}'," : "";
-        $stylesSet = $this->getStyle();
+        $placeholder                = $this->placeholder ? "editorplaceholder: '{$this->placeholder}'," : "";
+        $stylesSet                  = $this->getStyle();
         // die($stylesSet);
         // before being fed to the textarea of CKEditor
         $content = str_replace('&', '&amp;', $this->Value);
@@ -159,7 +159,7 @@ class CkEditor
         // }
 
         $TadToolsModuleConfig = Utility::TadToolsXoopsModuleConfig();
-        $codemirror = $TadToolsModuleConfig['use_codemirror'] ? ',codemirror' : '';
+        $codemirror           = $TadToolsModuleConfig['use_codemirror'] ? ',codemirror' : '';
 
         $bs = $_SESSION['bootstrap'] ? $_SESSION['bootstrap'] : 4;
 
@@ -174,6 +174,7 @@ class CkEditor
         contentsCss : ['" . XOOPS_URL . "/modules/tadtools/bootstrap{$bs}/css/bootstrap.css', '" . XOOPS_URL . "/modules/tadtools/css/fonts.css', '" . XOOPS_URL . "/modules/tadtools/css/ckeditor.css', '" . XOOPS_URL . "/modules/tadtools/css/fontawesome6/css/all.min.css'{$other_css}],
         extraPlugins: 'editorplaceholder,pasteUploadImage,sourcearea,font,syntaxhighlight,dialog,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak,ckeditorfa,prism,codesnippet,undo,autoembed,autolink,clipboard,toolbar,button,dialogui,notification,textmatch,embed,embedbase,widgetselection,notificationaggregator,embedsemantic,panel,floatpanel,menu{$codemirror}{$extra_uploadcare}',
         {$uploadcare_setup}
+        pasteFilter: 'plain-text',
         filebrowserBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=file&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',
         filebrowserImageBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=image&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',
 

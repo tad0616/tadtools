@@ -622,60 +622,102 @@ class Tools
     public static function get_theme_menu_items($id = "", $menu_var_kind = 'my_menu')
     {
         global $xoopsDB, $xoopsUser;
-        //取得目前使用者的所屬群組
-        if ($xoopsUser) {
-            $User_Groups = $xoopsUser->getGroups();
-        } else {
-            $User_Groups = array(3);
+
+        // 使用靜態快取來儲存菜單項目
+        static $menu_cache = [];
+        $cache_key = $id . '_' . $menu_var_kind;
+
+        if (isset($menu_cache[$cache_key])) {
+            return $menu_cache[$cache_key];
         }
 
-        $my_menu = array();
-        $i = 0;
-        if (strpos($menu_var_kind, 'all') !== false or strpos($menu_var_kind, 'my_menu') !== false) {
+        // 獲取使用者群組
+        $User_Groups = $xoopsUser ? $xoopsUser->getGroups() : [3];
 
-            $sql = 'SELECT `menuid`, `itemname`, `itemurl`, `target`, `icon`, `link_cate_name`, `link_cate_sn`, `read_group` FROM `' . $xoopsDB->prefix('tad_themes_menu') . "` WHERE `of_level` = '$id' AND `status` = '1' ORDER BY `position`";
-            $result = $xoopsDB->query($sql) or die($sql);
+        // 如果不是所需的菜單類型，直接返回空數組
+        if (strpos($menu_var_kind, 'all') === false && strpos($menu_var_kind, 'my_menu') === false) {
+            return [];
+        }
 
-            $moduleHandler = xoops_getHandler('module');
-            if ($result) {
-                while (list($menuid, $itemname, $itemurl, $target, $icon, $link_cate_name, $link_cate_sn, $read_group) = $xoopsDB->fetchRow($result)) {
-                    if (empty($read_group)) {
-                        $read_group = '1,2,3';
-                    }
-                    $read_group_array = explode(',', $read_group);
-                    if (array_intersect($User_Groups, $read_group_array)) {
-                        if (!empty($link_cate_name)) {
+        // 預先獲取所有子菜單項目
+        $all_menu_items = [];
+        $moduleHandler = xoops_getHandler('module');
 
-                            switch ($link_cate_name) {
+        $sql = 'SELECT `menuid`, `itemname`, `itemurl`, `target`, `icon`, `link_cate_name`,
+                `link_cate_sn`, `read_group`, `of_level`
+                FROM `' . $xoopsDB->prefix('tad_themes_menu') . '`
+                WHERE `status` = 1
+                ORDER BY `of_level`, `position`';
 
-                                case "tadnews_page_cate":
-                                    $TadNewsModule = $moduleHandler->getByDirname("tadnews");
-                                    if (!$TadNewsModule) {
-                                        continue 2;
-                                    }
-                                    break;
-                            }
-                            $custom_menu = self::get_custom_menu_items($link_cate_name, $link_cate_sn);
-                            $sub_menu = self::get_theme_menu_items($menuid, $menu_var_kind);
-                            $my_menu[$i]['submenu'] = array_merge($custom_menu, $sub_menu);
-                        } else {
-                            $my_menu[$i]['submenu'] = self::get_theme_menu_items($menuid, $menu_var_kind);
-                        }
+        $result = $xoopsDB->query($sql);
 
-                        $my_menu[$i]['id'] = $menuid;
-                        $my_menu[$i]['title'] = $itemname;
-                        $my_menu[$i]['url'] = ($itemurl == '' or $itemurl == '#') ? '' : $itemurl;
-                        $my_menu[$i]['target'] = $target;
-                        $my_menu[$i]['icon'] = str_replace(['icon-'], ['fa-'], $icon);
-                        $my_menu[$i]['img'] = '';
-                        $my_menu[$i]['read_group'] = explode(',', $read_group);
-                        $i++;
-                    }
-                }
+        if (!$result) {
+            return [];
+        }
+
+        // 建立菜單項目的層次結構
+        $menu_hierarchy = [];
+        while ($row = $xoopsDB->fetchArray($result)) {
+            $of_level = $row['of_level'];
+            if (!isset($menu_hierarchy[$of_level])) {
+                $menu_hierarchy[$of_level] = [];
             }
+            $menu_hierarchy[$of_level][] = $row;
         }
+
+        // 遞迴構建菜單
+        $my_menu = self::buildMenuTree($id, $menu_hierarchy, $User_Groups, $moduleHandler);
+
+        // 儲存到快取
+        $menu_cache[$cache_key] = $my_menu;
 
         return $my_menu;
+    }
+
+    private static function buildMenuTree($parent_id, &$menu_hierarchy, $User_Groups, $moduleHandler)
+    {
+        if (!isset($menu_hierarchy[$parent_id])) {
+            return [];
+        }
+
+        $menu = [];
+        foreach ($menu_hierarchy[$parent_id] as $item) {
+            // 檢查讀取權限
+            $read_group = empty($item['read_group']) ? '1,2,3' : $item['read_group'];
+            $read_group_array = explode(',', $read_group);
+
+            if (!array_intersect($User_Groups, $read_group_array)) {
+                continue;
+            }
+
+            // 處理特殊類別
+            if (!empty($item['link_cate_name'])) {
+                if ($item['link_cate_name'] === 'tadnews_page_cate') {
+                    $TadNewsModule = $moduleHandler->getByDirname('tadnews');
+                    if (!$TadNewsModule) {
+                        continue;
+                    }
+                }
+                $custom_menu = self::get_custom_menu_items($item['link_cate_name'], $item['link_cate_sn']);
+                $sub_menu = self::buildMenuTree($item['menuid'], $menu_hierarchy, $User_Groups, $moduleHandler);
+                $submenu = array_merge($custom_menu, $sub_menu);
+            } else {
+                $submenu = self::buildMenuTree($item['menuid'], $menu_hierarchy, $User_Groups, $moduleHandler);
+            }
+
+            $menu[] = [
+                'id' => $item['menuid'],
+                'title' => $item['itemname'],
+                'url' => ($item['itemurl'] == '' || $item['itemurl'] == '#') ? '' : $item['itemurl'],
+                'target' => $item['target'],
+                'icon' => str_replace(['icon-'], ['fa-'], $item['icon']),
+                'img' => '',
+                'read_group' => $read_group_array,
+                'submenu' => $submenu
+            ];
+        }
+
+        return $menu;
     }
 
     //取得其他模組單元的選單

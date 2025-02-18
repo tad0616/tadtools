@@ -1305,7 +1305,7 @@ class TadUpFiles
             }
         }
 
-        $file['name']     = addslashes($name);
+        $file['name']     = $myts->addSlashes($name);
         $file['tmp_name'] = $tmp_name;
         $file['type']     = $type;
         $file['size']     = $size;
@@ -1472,7 +1472,7 @@ class TadUpFiles
         global $xoopsDB;
 
         $myts = \MyTextSanitizer::getInstance();
-        $col  = addslashes($col);
+        $col  = $myts->addSlashes($col);
 
         $sql = 'UPDATE `' . $this->TadUpFilesTblName . '` SET `' . $col . '` = ? WHERE `files_sn` = ?';
         Utility::query($sql, 'si', [$val, $files_sn]) or Utility::web_error($sql, __FILE__, __LINE__);

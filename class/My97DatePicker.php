@@ -25,6 +25,8 @@ class My97DatePicker
 
 /*
 use XoopsModules\Tadtools\My97DatePicker;
+My97DatePicker::render();
+
 $My97DatePicker=new My97DatePicker();
 $My97DatePicker->render();
 or
