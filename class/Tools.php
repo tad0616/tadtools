@@ -57,12 +57,12 @@ class Tools
         global $aggreg, $xoopsConfig, $xoopsTpl;
         /**** 取得佈景設定的各個預設值 ****/
         if (\file_exists(XOOPS_ROOT_PATH . "/themes/{$theme_name}/config.php")) {
-            $def_config = Utility::getXoopsModuleConfig('tad_themes');
+            $def_config                 = Utility::getXoopsModuleConfig('tad_themes');
             $def_config['TadThemesMid'] = $TadThemesMid;
 
             /**** 取得左右區塊數 ****/
-            $def_config['left_count'] = $aggreg ? count($aggreg->blocks['canvas_left']) : 0;
-            $def_config['right_count'] = $aggreg ? count($aggreg->blocks['canvas_right']) : 0;
+            $def_config['left_count']       = $aggreg ? count($aggreg->blocks['canvas_left']) : 0;
+            $def_config['right_count']      = $aggreg ? count($aggreg->blocks['canvas_right']) : 0;
             $def_config['xoops_showlblock'] = empty($def_config['left_count']) ? false : true;
             $def_config['xoops_showrblock'] = empty($def_config['right_count']) ? false : true;
             /**** 取得 Tad Themes 偏好設定****/
@@ -76,11 +76,11 @@ class Tools
             foreach ($config_enable as $k => $v) {
                 $def_config[$k] = $v['default'];
             }
-            $def_config['theme_change'] = $theme_change;
-            $def_config['theme_kind'] = $theme_kind;
-            $def_config['theme_kind_arr'] = explode(',', $theme_kind_arr);
-            $def_config['menu_var_kind'] = $menu_var_kind;
-            $def_config['theme_color'] = $theme_color;
+            $def_config['theme_change']      = $theme_change;
+            $def_config['theme_kind']        = $theme_kind;
+            $def_config['theme_kind_arr']    = explode(',', $theme_kind_arr);
+            $def_config['menu_var_kind']     = $menu_var_kind;
+            $def_config['theme_color']       = $theme_color;
             $def_config['theme_set_allowed'] = $xoopsConfig['theme_set_allowed'];
 
             /**** 產生 Smarty 的設定檔（以取得 bootstrap 版本） ****/
@@ -90,11 +90,11 @@ class Tools
             }
 
             /**** 模擬偏好設定預設值（避免沒裝 tad_theme 無法取得資料庫資料） ****/
-            $def_config['bg_img'] = !empty($def_config['bg_img']) ? XOOPS_URL . "/themes/{$theme_name}/images/bg/{$def_config['bg_img']}" : "";
-            $def_config['logo_img'] = !empty($def_config['logo_img']) ? XOOPS_URL . "/themes/{$theme_name}/images/logo/{$def_config['logo_img']}" : "";
+            $def_config['bg_img']      = !empty($def_config['bg_img']) ? XOOPS_URL . "/themes/{$theme_name}/images/bg/{$def_config['bg_img']}" : "";
+            $def_config['logo_img']    = !empty($def_config['logo_img']) ? XOOPS_URL . "/themes/{$theme_name}/images/logo/{$def_config['logo_img']}" : "";
             $def_config['navlogo_img'] = !empty($def_config['navlogo_img']) ? XOOPS_URL . "/themes/{$theme_name}/images/navlogo/{$def_config['navlogo_img']}" : "";
-            $def_config['navbar_img'] = !empty($def_config['navbar_img']) ? XOOPS_URL . "/themes/{$theme_name}/images/nav_bg/{$def_config['navbar_img']}" : "";
-            $def_config['bt_bg_img'] = !empty($def_config['bt_bg_img']) ? XOOPS_URL . "/themes/{$theme_name}/images/bt_bg/{$def_config['bt_bg_img']}" : "";
+            $def_config['navbar_img']  = !empty($def_config['navbar_img']) ? XOOPS_URL . "/themes/{$theme_name}/images/nav_bg/{$def_config['navbar_img']}" : "";
+            $def_config['bt_bg_img']   = !empty($def_config['bt_bg_img']) ? XOOPS_URL . "/themes/{$theme_name}/images/bt_bg/{$def_config['bt_bg_img']}" : "";
         } else {
             $def_config['theme_kind'] = 'xoops';
         }
@@ -116,11 +116,11 @@ class Tools
         $file_as_def = false;
 
         // 檢查資料表是否存在
-        $sql = "SHOW TABLES LIKE '" . $xoopsDB->prefix('tad_themes') . "'";
+        $sql    = "SHOW TABLES LIKE '" . $xoopsDB->prefix('tad_themes') . "'";
         $result = Utility::query($sql);
         if ($result && $result->num_rows > 0) {
             // 若 tad_themes 有內容，則存入 $json_theme_config_arr
-            $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_themes') . "` WHERE `theme_name` = '$theme_name'";
+            $sql    = 'SELECT * FROM `' . $xoopsDB->prefix('tad_themes') . "` WHERE `theme_name` = '$theme_name'";
             $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
             $theme_arr = $xoopsDB->fetchArray($result);
@@ -149,7 +149,7 @@ class Tools
             // return 'bootstrap4';
 
             /****設定各個區域的底色****/
-            $left_block = $left_block2 = $center_block_content = $right_block = $right_block2 = "";
+            $left_block   = $left_block2   = $center_block_content   = $right_block   = $right_block2   = "";
             $center_block = "background-color: {$def_config['cb_color']};";
 
             /****設定各個區域的寬度****/
@@ -163,7 +163,7 @@ class Tools
                     if (!$def_config['xoops_showlblock'] and !$def_config['xoops_showrblock']) {
                         $center_width = $theme_width;
                     } else {
-                        $center_width = $theme_width - $def_config['lb_width'] - 50;
+                        $center_width         = $theme_width - $def_config['lb_width'] - 50;
                         $center_content_width = $center_width - 15;
                     }
 
@@ -208,7 +208,7 @@ class Tools
                     if (!$def_config['xoops_showlblock']) {
                         $center_width = $theme_width;
                     } else {
-                        $center_width = $theme_width - $def_config['lb_width'] - 60;
+                        $center_width         = $theme_width - $def_config['lb_width'] - 60;
                         $center_content_width = $center_width - 15;
                     }
                     $left_block .= "float:left; width:{$def_config['lb_width']}px;";
@@ -224,7 +224,7 @@ class Tools
                     $def_config['rb_width'] = "12";
                 } else {
                     $def_config['rb_width'] = "12";
-                    $center_width = $theme_width - $def_config['lb_width'];
+                    $center_width           = $theme_width - $def_config['lb_width'];
                 }
 
                 //TYPE4:二欄式（左區域在右邊，右區域在下方）
@@ -248,7 +248,7 @@ class Tools
                     $def_config['rb_width'] = "12";
                 } else {
                     $def_config['rb_width'] = "12";
-                    $center_width = $theme_width - $def_config['lb_width'];
+                    $center_width           = $theme_width - $def_config['lb_width'];
                 }
 
                 //TYPE5:三欄式標準配置
@@ -331,17 +331,17 @@ class Tools
                 }
             }
 
-            $json_theme_config_arr['content_zone'] = "background-color:{$def_config['base_color']};";
-            $json_theme_config_arr['left_block'] = $left_block;
-            $json_theme_config_arr['center_block'] = $center_block;
+            $json_theme_config_arr['content_zone']         = "background-color:{$def_config['base_color']};";
+            $json_theme_config_arr['left_block']           = $left_block;
+            $json_theme_config_arr['center_block']         = $center_block;
             $json_theme_config_arr['center_block_content'] = $center_block_content;
-            $json_theme_config_arr['right_block'] = $right_block;
-            $json_theme_config_arr['left_block2'] = $left_block2;
-            $json_theme_config_arr['right_block2'] = $right_block2;
+            $json_theme_config_arr['right_block']          = $right_block;
+            $json_theme_config_arr['left_block2']          = $left_block2;
+            $json_theme_config_arr['right_block2']         = $right_block2;
 
-            $json_theme_config_arr['lb_width'] = $def_config['lb_width'];
-            $json_theme_config_arr['cb_width'] = $def_config['cb_width'];
-            $json_theme_config_arr['rb_width'] = $def_config['rb_width'];
+            $json_theme_config_arr['lb_width']     = $def_config['lb_width'];
+            $json_theme_config_arr['cb_width']     = $def_config['cb_width'];
+            $json_theme_config_arr['rb_width']     = $def_config['rb_width'];
             $json_theme_config_arr['center_width'] = $center_width;
 
             /****設定Logo圖位置****/
@@ -367,10 +367,10 @@ class Tools
             }
             $json_theme_config_arr['logo_place'] = $logo_place;
 
-            list($navbar_bg_top_rgb['r'], $navbar_bg_top_rgb['g'], $navbar_bg_top_rgb['b']) = sscanf($def_config['navbar_bg_top'], "#%02x%02x%02x");
-            $json_theme_config_arr['navbar_bg_top_rgb'] = $navbar_bg_top_rgb;
+            list($navbar_bg_top_rgb['r'], $navbar_bg_top_rgb['g'], $navbar_bg_top_rgb['b'])          = sscanf($def_config['navbar_bg_top'], "#%02x%02x%02x");
+            $json_theme_config_arr['navbar_bg_top_rgb']                                              = $navbar_bg_top_rgb;
             list($navbar_bg_bottom_rgb['r'], $navbar_bg_bottom_rgb['g'], $navbar_bg_bottom_rgb['b']) = sscanf($def_config['navbar_bg_bottom'], "#%02x%02x%02x");
-            $json_theme_config_arr['navbar_bg_bottom_rgb'] = $navbar_bg_bottom_rgb;
+            $json_theme_config_arr['navbar_bg_bottom_rgb']                                           = $navbar_bg_bottom_rgb;
 
             /****若有logo.png或logo.gif時導覽工具列以圖替代網站標題文字****/
             if ($def_config['navlogo_img']) {
@@ -380,32 +380,32 @@ class Tools
             /****區塊標題設定****/
             $db = [];
             if (isset($json_theme_config_arr['theme_id'])) {
-                $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_themes_blocks') . '` WHERE `theme_id` = ' . $json_theme_config_arr['theme_id'];
+                $sql    = 'SELECT * FROM `' . $xoopsDB->prefix('tad_themes_blocks') . '` WHERE `theme_id` = ' . $json_theme_config_arr['theme_id'];
                 $result = $xoopsDB->query($sql);
                 while (false !== ($all = $xoopsDB->fetchArray($result))) {
-                    $block_position = $all['block_position'];
-                    $all['bt_bg_img'] = $all['bt_bg_img'] ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/bt_bg/{$all['bt_bg_img']}" : '';
+                    $block_position      = $all['block_position'];
+                    $all['bt_bg_img']    = $all['bt_bg_img'] ? XOOPS_URL . "/uploads/tad_themes/{$theme_name}/bt_bg/{$all['bt_bg_img']}" : '';
                     $db[$block_position] = $all;
                 }
             }
 
-            $block_position = ['leftBlock', 'rightBlock', 'centerBlock', 'centerLeftBlock', 'centerRightBlock', 'centerBottomBlock', 'centerBottomLeftBlock', 'centerBottomRightBlock', 'footerCenterBlock', 'footerLeftBlock', 'footerRightBlock'];
+            $block_position                          = ['leftBlock', 'rightBlock', 'centerBlock', 'centerLeftBlock', 'centerRightBlock', 'centerBottomBlock', 'centerBottomLeftBlock', 'centerBottomRightBlock', 'footerCenterBlock', 'footerLeftBlock', 'footerRightBlock'];
             $json_theme_config_arr['block_position'] = $def_config['block_position'];
-            $use_default_config = $json_theme_config_arr['use_default_config'] = false;
-            $i = 0;
-            $positions = [];
+            $use_default_config                      = $json_theme_config_arr['use_default_config']                      = false;
+            $i                                       = 0;
+            $positions                               = [];
             foreach ($block_position as $position) {
-                $positions[$i]['block_position'] = $position;
-                $positions[$i]['block_config'] = $use_default_config ? $def_config['block_config'][$position] : $db[$position]['block_config'];
-                $positions[$i]['bt_text'] = $use_default_config ? $def_config['bt_text'][$position] : $db[$position]['bt_text'];
-                $positions[$i]['bt_text_padding'] = $use_default_config ? $def_config['bt_text_padding'][$position] : $db[$position]['bt_text_padding'];
-                $positions[$i]['bt_text_size'] = $use_default_config ? $def_config['bt_text_size'][$position] : $db[$position]['bt_text_size'];
-                $positions[$i]['bt_bg_color'] = $use_default_config ? $def_config['bt_bg_color'][$position] : $db[$position]['bt_bg_color'];
-                $positions[$i]['bt_bg_img'] = $use_default_config ? $def_config['bt_bg_img'][$position] : $db[$position]['bt_bg_img'];
-                $positions[$i]['bt_bg_repeat'] = $use_default_config ? $def_config['bt_bg_repeat'][$position] : $db[$position]['bt_bg_repeat'];
-                $positions[$i]['bt_radius'] = $use_default_config ? $def_config['bt_radius'][$position] : $db[$position]['bt_radius'];
-                $positions[$i]['block_style'] = $use_default_config ? $def_config['block_style'][$position] : $db[$position]['block_style'];
-                $positions[$i]['block_title_style'] = $use_default_config ? $def_config['block_title_style'][$position] : $db[$position]['block_title_style'];
+                $positions[$i]['block_position']      = $position;
+                $positions[$i]['block_config']        = $use_default_config ? $def_config['block_config'][$position] : $db[$position]['block_config'];
+                $positions[$i]['bt_text']             = $use_default_config ? $def_config['bt_text'][$position] : $db[$position]['bt_text'];
+                $positions[$i]['bt_text_padding']     = $use_default_config ? $def_config['bt_text_padding'][$position] : $db[$position]['bt_text_padding'];
+                $positions[$i]['bt_text_size']        = $use_default_config ? $def_config['bt_text_size'][$position] : $db[$position]['bt_text_size'];
+                $positions[$i]['bt_bg_color']         = $use_default_config ? $def_config['bt_bg_color'][$position] : $db[$position]['bt_bg_color'];
+                $positions[$i]['bt_bg_img']           = $use_default_config ? $def_config['bt_bg_img'][$position] : $db[$position]['bt_bg_img'];
+                $positions[$i]['bt_bg_repeat']        = $use_default_config ? $def_config['bt_bg_repeat'][$position] : $db[$position]['bt_bg_repeat'];
+                $positions[$i]['bt_radius']           = $use_default_config ? $def_config['bt_radius'][$position] : $db[$position]['bt_radius'];
+                $positions[$i]['block_style']         = $use_default_config ? $def_config['block_style'][$position] : $db[$position]['block_style'];
+                $positions[$i]['block_title_style']   = $use_default_config ? $def_config['block_title_style'][$position] : $db[$position]['block_title_style'];
                 $positions[$i]['block_content_style'] = $use_default_config ? $def_config['block_content_style'][$position] : $db[$position]['block_content_style'];
 
                 $json_theme_config_arr[$position] = $positions[$i];
@@ -430,9 +430,9 @@ class Tools
                 self::copy_default_file($theme_name);
             }
 
-            $array_type = ['custom_zone', 'array', 'checkbox'];
+            $array_type     = ['custom_zone', 'array', 'checkbox'];
             $block_position = ['leftBlock', 'rightBlock', 'centerBlock', 'centerLeftBlock', 'centerRightBlock', 'centerBottomBlock', 'centerBottomLeftBlock', 'centerBottomRightBlock', 'footerCenterBlock', 'footerLeftBlock', 'footerRightBlock'];
-            $block_config = ['block_config', 'bt_text', 'bt_text_padding', 'bt_text_size', 'bt_bg_color', 'bt_bg_img', 'bt_bg_repeat', 'bt_radius', 'block_style', 'block_title_style', 'block_content_style'];
+            $block_config   = ['block_config', 'bt_text', 'bt_text_padding', 'bt_text_size', 'bt_bg_color', 'bt_bg_img', 'bt_bg_repeat', 'bt_radius', 'block_style', 'block_title_style', 'block_content_style'];
 
             $TadDataCenter = new TadDataCenter('tad_themes');
 
@@ -452,14 +452,14 @@ class Tools
             }
 
             // 若 tad_themes_config2 有內容，則存入 $json_theme_config_arr
-            $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_themes_config2') . '` WHERE `theme_id`=' . (int) $theme_arr['theme_id'];
+            $sql    = 'SELECT * FROM `' . $xoopsDB->prefix('tad_themes_config2') . '` WHERE `theme_id`=' . (int) $theme_arr['theme_id'];
             $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
             while ($config2 = $xoopsDB->fetchArray($result)) {
                 if (in_array($config2['type'], $array_type)) {
                     $json_theme_config_arr[$config2['name']] = \json_decode($config2['value'], true);
                 } elseif (preg_match('/^\s*({|\[).*?(}|\])\s*$/', $config2['value']) === 1) {
-                    $json_theme_config_arr[$config2['name']] = $config2['value'];
+                    $json_theme_config_arr[$config2['name']]          = $config2['value'];
                     $json_theme_config_arr[$config2['name'] . '_arr'] = \json_decode($config2['value'], true);
                 } elseif ($config2['type'] == "checkbox") {
                     if (!empty($config2['value']) && !is_array($config2['value'])) {
@@ -510,7 +510,7 @@ class Tools
 
                         foreach ($theme_config as $k => $config) {
                             $config2_name = $config['name'];
-                            $value = $$config2_name;
+                            $value        = $$config2_name;
 
                             if ($config['type'] == "array") {
                                 $value = str_replace("{XOOPS_URL}", XOOPS_URL, $value);
@@ -528,18 +528,18 @@ class Tools
                             $json_theme_config_arr[$k]['value'] = $json_theme_config_arr[$k]['default'] = $value;
 
                             if ($config['type'] == "bg_file") {
-                                $json_theme_config_arr[$k]['repeat'] = ${$config2_name . '_repeat'};
+                                $json_theme_config_arr[$k]['repeat']   = ${$config2_name . '_repeat'};
                                 $json_theme_config_arr[$k]['position'] = ${$config2_name . '_position'};
-                                $json_theme_config_arr[$k]['size'] = ${$config2_name . '_size'};
+                                $json_theme_config_arr[$k]['size']     = ${$config2_name . '_size'};
                             } elseif ($config['type'] == 'custom_zone') {
-                                $json_theme_config_arr[$k]['deault'] = isset(${$config2_name}) ? ${$config2_name} : '';
-                                $json_theme_config_arr[$k]['block'] = isset(${$config2_name . '_block'}) ? ['hi' => 'tad'] : [];
-                                $json_theme_config_arr[$k]['content'] = isset(${$config2_name . '_content'}) ? ${$config2_name . '_content'} : '';
-                                $json_theme_config_arr[$k]['html_content'] = isset(${$config2_name . '_html_content'}) ? ${$config2_name . '_html_content'} : '';
+                                $json_theme_config_arr[$k]['deault']            = isset(${$config2_name}) ? ${$config2_name} : '';
+                                $json_theme_config_arr[$k]['block']             = isset(${$config2_name . '_block'}) ? ['hi' => 'tad'] : [];
+                                $json_theme_config_arr[$k]['content']           = isset(${$config2_name . '_content'}) ? ${$config2_name . '_content'} : '';
+                                $json_theme_config_arr[$k]['html_content']      = isset(${$config2_name . '_html_content'}) ? ${$config2_name . '_html_content'} : '';
                                 $json_theme_config_arr[$k]['html_content_desc'] = isset($config['html_content_desc']) ? $config['html_content_desc'] : '';
-                                $json_theme_config_arr[$k]['fa_content'] = isset(${$config2_name . '_fa_content'}) ? ${$config2_name . '_fa_content'} : '';
-                                $json_theme_config_arr[$k]['fa_content_desc'] = isset($config['fa_content_desc']) ? $config['fa_content_desc'] : '';
-                                $json_theme_config_arr[$k]['menu_content'] = isset(${$config2_name . '_menu_content'}) ? ${$config2_name . '_menu_content'} : '';
+                                $json_theme_config_arr[$k]['fa_content']        = isset(${$config2_name . '_fa_content'}) ? ${$config2_name . '_fa_content'} : '';
+                                $json_theme_config_arr[$k]['fa_content_desc']   = isset($config['fa_content_desc']) ? $config['fa_content_desc'] : '';
+                                $json_theme_config_arr[$k]['menu_content']      = isset(${$config2_name . '_menu_content'}) ? ${$config2_name . '_menu_content'} : '';
                                 $json_theme_config_arr[$k]['menu_content_desc'] = isset($config['menu_content_desc']) ? $config['menu_content_desc'] : '';
 
                             } elseif ($config['type'] == "padding_margin") {
@@ -554,7 +554,7 @@ class Tools
             }
 
             // 滑動圖
-            $slider_var = self::get_theme_slide_items($theme_name);
+            $slider_var                          = self::get_theme_slide_items($theme_name);
             $json_theme_config_arr['slider_var'] = $slider_var;
 
         } else {
@@ -591,7 +591,7 @@ class Tools
 
         /**** Tad Themes 的設定值****/
         if (file_exists(XOOPS_ROOT_PATH . "/modules/tad_themes/xoops_version.php")) {
-            $file_col = ['bg_img' => 'bg', 'logo_img' => 'logo', 'navlogo_img' => 'navlogo', 'navbar_img' => 'nav_bg'];
+            $file_col  = ['bg_img' => 'bg', 'logo_img' => 'logo', 'navlogo_img' => 'navlogo', 'navbar_img' => 'nav_bg'];
             $file_cols = array_keys($file_col);
             if (!empty($theme_config) and !empty($theme_config['theme_width'])) {
                 foreach ($theme_config as $k => $v) {
@@ -625,7 +625,7 @@ class Tools
 
         // 使用靜態快取來儲存菜單項目
         static $menu_cache = [];
-        $cache_key = $id . '_' . $menu_var_kind;
+        $cache_key         = $id . '_' . $menu_var_kind;
 
         if (isset($menu_cache[$cache_key])) {
             return $menu_cache[$cache_key];
@@ -641,7 +641,7 @@ class Tools
 
         // 預先獲取所有子菜單項目
         $all_menu_items = [];
-        $moduleHandler = xoops_getHandler('module');
+        $moduleHandler  = xoops_getHandler('module');
 
         $sql = 'SELECT `menuid`, `itemname`, `itemurl`, `target`, `icon`, `link_cate_name`,
                 `link_cate_sn`, `read_group`, `of_level`
@@ -683,7 +683,7 @@ class Tools
         $menu = [];
         foreach ($menu_hierarchy[$parent_id] as $item) {
             // 檢查讀取權限
-            $read_group = empty($item['read_group']) ? '1,2,3' : $item['read_group'];
+            $read_group       = empty($item['read_group']) ? '1,2,3' : $item['read_group'];
             $read_group_array = explode(',', $read_group);
 
             if (!array_intersect($User_Groups, $read_group_array)) {
@@ -699,8 +699,8 @@ class Tools
                     }
                 }
                 $custom_menu = self::get_custom_menu_items($item['link_cate_name'], $item['link_cate_sn']);
-                $sub_menu = self::buildMenuTree($item['menuid'], $menu_hierarchy, $User_Groups, $moduleHandler);
-                $submenu = array_merge($custom_menu, $sub_menu);
+                $sub_menu    = self::buildMenuTree($item['menuid'], $menu_hierarchy, $User_Groups, $moduleHandler);
+                $submenu     = array_merge($custom_menu, $sub_menu);
             } else {
                 $submenu = self::buildMenuTree($item['menuid'], $menu_hierarchy, $User_Groups, $moduleHandler);
             }
@@ -713,7 +713,7 @@ class Tools
                 'icon' => str_replace(['icon-'], ['fa-'], $item['icon']),
                 'img' => '',
                 'read_group' => $read_group_array,
-                'submenu' => $submenu
+                'submenu' => $submenu,
             ];
         }
 
@@ -724,22 +724,22 @@ class Tools
     public static function get_custom_menu_items($link_cate_name, $link_cate_sn)
     {
         global $xoopsDB;
-        $i = 0;
+        $i        = 0;
         $sub_menu = [];
 
         switch ($link_cate_name) {
 
             case "tadnews_page_cate":
                 $link_cate_sn = (int) $link_cate_sn;
-                $sql = 'SELECT `nsn`, `news_title` FROM `' . $xoopsDB->prefix('tad_news') . "` WHERE `ncsn` = '$link_cate_sn' ORDER BY `page_sort`";
-                $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                $sql          = 'SELECT `nsn`, `news_title` FROM `' . $xoopsDB->prefix('tad_news') . "` WHERE `ncsn` = '$link_cate_sn' ORDER BY `page_sort`";
+                $result       = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
                 while (list($nsn, $news_title) = $xoopsDB->fetchRow($result)) {
-                    $sub_menu[$link_cate_name . $i]['id'] = $i;
-                    $sub_menu[$link_cate_name . $i]['title'] = $news_title;
-                    $sub_menu[$link_cate_name . $i]['url'] = XOOPS_URL . "/modules/tadnews/page.php?ncsn={$link_cate_sn}&nsn={$nsn}";
-                    $sub_menu[$link_cate_name . $i]['target'] = "_self";
-                    $sub_menu[$link_cate_name . $i]['icon'] = '';
+                    $sub_menu[$link_cate_name . $i]['id']      = $i;
+                    $sub_menu[$link_cate_name . $i]['title']   = $news_title;
+                    $sub_menu[$link_cate_name . $i]['url']     = XOOPS_URL . "/modules/tadnews/page.php?ncsn={$link_cate_sn}&nsn={$nsn}";
+                    $sub_menu[$link_cate_name . $i]['target']  = "_self";
+                    $sub_menu[$link_cate_name . $i]['icon']    = '';
                     $sub_menu[$link_cate_name . $i]['submenu'] = "";
                     $i++;
                 }
@@ -754,7 +754,7 @@ class Tools
     {
         global $xoopsModuleConfig;
         $dir = '';
-        $u = parse_url($_SERVER['REQUEST_URI']);
+        $u   = parse_url($_SERVER['REQUEST_URI']);
         if (!empty($u['path']) and strpos($u['path'], '/modules/') !== false) {
             preg_match_all('/\/modules\/(.*)\//', $u['path'], $all);
             $dir = $all[1][0];
@@ -766,33 +766,32 @@ class Tools
         if (file_exists(XOOPS_ROOT_PATH . "/modules/{$dir}/interface_menu.php")) {
             if (!isset($xoopsModuleConfig['tootbar_in_navbar']) or $xoopsModuleConfig['tootbar_in_navbar'] == 1) {
                 require XOOPS_ROOT_PATH . "/modules/{$dir}/interface_menu.php";
-
                 foreach ($interface_menu as $title => $url) {
-                    $my_menu[$i]['id'] = $i;
-                    $my_menu[$i]['title'] = $title;
+                    $my_menu[$i]['id']     = $i;
+                    $my_menu[$i]['title']  = $title;
                     $my_menu[$i]['target'] = "_self";
-                    $my_menu[$i]['icon'] = isset($interface_icon) ? $interface_icon[$title] : '';
-                    $my_menu[$i]['img'] = isset($interface_menu_img) ? XOOPS_URL . "/modules/{$dir}/images/{$interface_menu_img[$title]}" : '';
+                    $my_menu[$i]['icon']   = isset($interface_icon) ? $interface_icon[$title] : '';
+                    $my_menu[$i]['img']    = isset($interface_menu_img) ? XOOPS_URL . "/modules/{$dir}/images/{$interface_menu_img[$title]}" : '';
 
                     if (is_array($url)) {
                         $my_menu[$i]['url'] = 'index.php';
-                        $sub_menu = [];
-                        $j = 0;
+                        $sub_menu           = [];
+                        $j                  = 0;
                         foreach ($url as $title2 => $url2) {
                             if ($title2 == 'icon') {
                                 continue;
                             }
-                            $sub_menu[$j]['id'] = $j;
-                            $sub_menu[$j]['title'] = $title2;
-                            $sub_menu[$j]['url'] = strpos($url2, 'http') === false ? XOOPS_URL . "/modules/{$dir}/{$url2}" : $url2;
-                            $sub_menu[$j]['target'] = "_self";
-                            $sub_menu[$j]['icon'] = isset($interface_icon) ? $interface_icon[$title][$title2] : '';
+                            $sub_menu[$j]['id']      = $j;
+                            $sub_menu[$j]['title']   = $title2;
+                            $sub_menu[$j]['url']     = strpos($url2, 'http') === false ? XOOPS_URL . "/modules/{$dir}/{$url2}" : $url2;
+                            $sub_menu[$j]['target']  = "_self";
+                            $sub_menu[$j]['icon']    = isset($interface_icon) ? $interface_icon[$title][$title2] : '';
                             $sub_menu[$j]['submenu'] = '';
                             $j++;
                         }
                         $my_menu[$i]['submenu'] = $sub_menu;
                     } else {
-                        $my_menu[$i]['url'] = strpos($url, 'http') === false ? XOOPS_URL . "/modules/{$dir}/{$url}" : $url;
+                        $my_menu[$i]['url']     = strpos($url, 'http') === false ? XOOPS_URL . "/modules/{$dir}/{$url}" : $url;
                         $my_menu[$i]['submenu'] = "";
                     }
                     $i++;
@@ -801,7 +800,6 @@ class Tools
         } else {
             return;
         }
-
         return $my_menu;
     }
 
@@ -810,11 +808,11 @@ class Tools
     {
         global $xoopsUser;
         if ($xoopsUser) {
-            $my_menu[$i]['id'] = $i;
-            $my_menu[$i]['title'] = _TAD_TF_MYMENU;
-            $my_menu[$i]['url'] = "#";
-            $my_menu[$i]['target'] = "_self";
-            $my_menu[$i]['icon'] = "";
+            $my_menu[$i]['id']      = $i;
+            $my_menu[$i]['title']   = _TAD_TF_MYMENU;
+            $my_menu[$i]['url']     = "#";
+            $my_menu[$i]['target']  = "_self";
+            $my_menu[$i]['icon']    = "";
             $my_menu[$i]['submenu'] = self::get_user_submenu_item();
         } else {
             return;
@@ -829,7 +827,7 @@ class Tools
         global $xoopsDB, $xoopsUser;
         $i = 0;
         if ($xoopsUser && $xoopsUser->isAdmin(1)) {
-            $sql = 'SELECT `conf_value` FROM `' . $xoopsDB->prefix('config') . "` WHERE `conf_title` = '_MD_AM_DEBUGMODE'";
+            $sql    = 'SELECT `conf_value` FROM `' . $xoopsDB->prefix('config') . "` WHERE `conf_title` = '_MD_AM_DEBUGMODE'";
             $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error());
 
             list($debug) = $xoopsDB->fetchRow($result);
@@ -839,117 +837,117 @@ class Tools
                 $debug = 0;
             }
 
-            $my_menu[$i]['id'] = $i;
-            $my_menu[$i]['title'] = _TAD_TF_USER_ADMIN;
-            $my_menu[$i]['url'] = XOOPS_URL . "/admin.php";
-            $my_menu[$i]['target'] = "_self";
-            $my_menu[$i]['icon'] = "fa-th-large";
+            $my_menu[$i]['id']      = $i;
+            $my_menu[$i]['title']   = _TAD_TF_USER_ADMIN;
+            $my_menu[$i]['url']     = XOOPS_URL . "/admin.php";
+            $my_menu[$i]['target']  = "_self";
+            $my_menu[$i]['icon']    = "fa-th-large";
             $my_menu[$i]['submenu'] = "";
             $i++;
 
-            $my_menu[$i]['id'] = $i;
-            $my_menu[$i]['title'] = _TAD_TF_SYSTEM_CONFIG;
-            $my_menu[$i]['url'] = XOOPS_URL . "/modules/system/admin.php?fct=preferences&op=show&confcat_id=1";
-            $my_menu[$i]['target'] = "_self";
-            $my_menu[$i]['icon'] = "fa-cog";
+            $my_menu[$i]['id']      = $i;
+            $my_menu[$i]['title']   = _TAD_TF_SYSTEM_CONFIG;
+            $my_menu[$i]['url']     = XOOPS_URL . "/modules/system/admin.php?fct=preferences&op=show&confcat_id=1";
+            $my_menu[$i]['target']  = "_self";
+            $my_menu[$i]['icon']    = "fa-cog";
             $my_menu[$i]['submenu'] = "";
             $i++;
 
-            $my_menu[$i]['id'] = $i;
-            $my_menu[$i]['title'] = _TAD_TF_SYSTEM_MODADM;
-            $my_menu[$i]['url'] = XOOPS_URL . "/modules/tad_adm/admin/main.php";
-            $my_menu[$i]['target'] = "_self";
-            $my_menu[$i]['icon'] = "fa-wrench";
+            $my_menu[$i]['id']      = $i;
+            $my_menu[$i]['title']   = _TAD_TF_SYSTEM_MODADM;
+            $my_menu[$i]['url']     = XOOPS_URL . "/modules/tad_adm/admin/main.php";
+            $my_menu[$i]['target']  = "_self";
+            $my_menu[$i]['icon']    = "fa-wrench";
             $my_menu[$i]['submenu'] = "";
             $i++;
 
-            $my_menu[$i]['id'] = $i;
-            $my_menu[$i]['title'] = _TAD_TF_SYSTEM_DBADM;
-            $my_menu[$i]['url'] = XOOPS_URL . "/modules/tad_adm/pma.php?server=" . XOOPS_DB_HOST . "&db=" . XOOPS_DB_NAME;
-            $my_menu[$i]['target'] = "_blank";
-            $my_menu[$i]['icon'] = "fa-database";
+            $my_menu[$i]['id']      = $i;
+            $my_menu[$i]['title']   = _TAD_TF_SYSTEM_DBADM;
+            $my_menu[$i]['url']     = XOOPS_URL . "/modules/tad_adm/pma.php?server=" . XOOPS_DB_HOST . "&db=" . XOOPS_DB_NAME;
+            $my_menu[$i]['target']  = "_blank";
+            $my_menu[$i]['icon']    = "fa-database";
             $my_menu[$i]['submenu'] = "";
             $i++;
 
-            $my_menu[$i]['id'] = $i;
-            $my_menu[$i]['title'] = _TAD_TF_THEME_ADMIN;
-            $my_menu[$i]['url'] = XOOPS_URL . "/modules/tad_themes/admin/main.php";
-            $my_menu[$i]['target'] = "_self";
-            $my_menu[$i]['icon'] = "fa-list-alt";
+            $my_menu[$i]['id']      = $i;
+            $my_menu[$i]['title']   = _TAD_TF_THEME_ADMIN;
+            $my_menu[$i]['url']     = XOOPS_URL . "/modules/tad_themes/admin/main.php";
+            $my_menu[$i]['target']  = "_self";
+            $my_menu[$i]['icon']    = "fa-list-alt";
             $my_menu[$i]['submenu'] = "";
             $i++;
 
-            $my_menu[$i]['id'] = $i;
-            $my_menu[$i]['title'] = ($debug == 1) ? _TAD_TF_THEME_DEBUG : _TAD_TF_THEME_UNDEBUG;
-            $my_menu[$i]['url'] = XOOPS_URL . "/modules/tadtools/themes_common/tools/debug.php?op=debug&v={$debug}";
-            $my_menu[$i]['target'] = "_self";
-            $my_menu[$i]['icon'] = "fa-warning";
+            $my_menu[$i]['id']      = $i;
+            $my_menu[$i]['title']   = ($debug == 1) ? _TAD_TF_THEME_DEBUG : _TAD_TF_THEME_UNDEBUG;
+            $my_menu[$i]['url']     = XOOPS_URL . "/modules/tadtools/themes_common/tools/debug.php?op=debug&v={$debug}";
+            $my_menu[$i]['target']  = "_self";
+            $my_menu[$i]['icon']    = "fa-warning";
             $my_menu[$i]['submenu'] = "";
             $i++;
 
-            $my_menu[$i]['id'] = $i;
-            $my_menu[$i]['title'] = _TAD_TF_USER_BLOCK;
-            $my_menu[$i]['url'] = XOOPS_URL . "/modules/system/admin.php?fct=blocksadmin&op=list&filter=1&selgen=-1&selmod=-2&selgrp=-1&selvis=1";
-            $my_menu[$i]['target'] = "_self";
-            $my_menu[$i]['icon'] = "fa-cubes";
+            $my_menu[$i]['id']      = $i;
+            $my_menu[$i]['title']   = _TAD_TF_USER_BLOCK;
+            $my_menu[$i]['url']     = XOOPS_URL . "/modules/system/admin.php?fct=blocksadmin&op=list&filter=1&selgen=-1&selmod=-2&selgrp=-1&selvis=1";
+            $my_menu[$i]['target']  = "_self";
+            $my_menu[$i]['icon']    = "fa-cubes";
             $my_menu[$i]['submenu'] = "";
             $i++;
 
-            $my_menu[$i]['id'] = $i;
-            $my_menu[$i]['title'] = _TAD_TF_USER_TAD_BLOCK;
-            $my_menu[$i]['url'] = XOOPS_URL . "/modules/tad_blocks/blocks.php";
-            $my_menu[$i]['target'] = "_self";
-            $my_menu[$i]['icon'] = "fa-th";
+            $my_menu[$i]['id']      = $i;
+            $my_menu[$i]['title']   = _TAD_TF_USER_TAD_BLOCK;
+            $my_menu[$i]['url']     = XOOPS_URL . "/modules/tad_blocks/blocks.php";
+            $my_menu[$i]['target']  = "_self";
+            $my_menu[$i]['icon']    = "fa-th";
             $my_menu[$i]['submenu'] = "";
             $i++;
 
-            $my_menu[$i]['id'] = $i;
-            $my_menu[$i]['title'] = 'separator';
-            $my_menu[$i]['url'] = '';
-            $my_menu[$i]['target'] = "";
-            $my_menu[$i]['icon'] = "";
+            $my_menu[$i]['id']      = $i;
+            $my_menu[$i]['title']   = 'separator';
+            $my_menu[$i]['url']     = '';
+            $my_menu[$i]['target']  = "";
+            $my_menu[$i]['icon']    = "";
             $my_menu[$i]['submenu'] = "";
             $i++;
         }
 
-        $pmcount = isset($_SESSION['xoops_inbox_count']) ? $_SESSION['xoops_inbox_count'] : 0;
-        $my_menu[$i]['id'] = $i;
-        $my_menu[$i]['title'] = !empty($pmcount) ? sprintf(_TAD_TF_USER_NEWMSG, $pmcount) : _TAD_TF_USER_MSG;
-        $my_menu[$i]['url'] = XOOPS_URL . "/viewpmsg.php";
-        $my_menu[$i]['target'] = "_self";
-        $my_menu[$i]['icon'] = "fa-envelope";
+        $pmcount                = isset($_SESSION['xoops_inbox_count']) ? $_SESSION['xoops_inbox_count'] : 0;
+        $my_menu[$i]['id']      = $i;
+        $my_menu[$i]['title']   = !empty($pmcount) ? sprintf(_TAD_TF_USER_NEWMSG, $pmcount) : _TAD_TF_USER_MSG;
+        $my_menu[$i]['url']     = XOOPS_URL . "/viewpmsg.php";
+        $my_menu[$i]['target']  = "_self";
+        $my_menu[$i]['icon']    = "fa-envelope";
         $my_menu[$i]['submenu'] = "";
         $i++;
 
-        $my_menu[$i]['id'] = $i;
-        $my_menu[$i]['title'] = _TAD_TF_USER_NOTICE;
-        $my_menu[$i]['url'] = XOOPS_URL . "/notifications.php";
-        $my_menu[$i]['target'] = "_self";
-        $my_menu[$i]['icon'] = "fa-bell";
+        $my_menu[$i]['id']      = $i;
+        $my_menu[$i]['title']   = _TAD_TF_USER_NOTICE;
+        $my_menu[$i]['url']     = XOOPS_URL . "/notifications.php";
+        $my_menu[$i]['target']  = "_self";
+        $my_menu[$i]['icon']    = "fa-bell";
         $my_menu[$i]['submenu'] = "";
         $i++;
 
-        $my_menu[$i]['id'] = $i;
-        $my_menu[$i]['title'] = _TAD_TF_THEME_ADMIN;
-        $my_menu[$i]['url'] = XOOPS_URL . "/modules/tad_themes/admin/main.php";
-        $my_menu[$i]['target'] = "_self";
-        $my_menu[$i]['icon'] = "fa-list-alt";
+        $my_menu[$i]['id']      = $i;
+        $my_menu[$i]['title']   = _TAD_TF_THEME_ADMIN;
+        $my_menu[$i]['url']     = XOOPS_URL . "/modules/tad_themes/admin/main.php";
+        $my_menu[$i]['target']  = "_self";
+        $my_menu[$i]['icon']    = "fa-list-alt";
         $my_menu[$i]['submenu'] = "";
         $i++;
 
-        $my_menu[$i]['id'] = $i;
-        $my_menu[$i]['title'] = _TAD_TF_USER_PROFILE;
-        $my_menu[$i]['url'] = XOOPS_URL . "/user.php";
-        $my_menu[$i]['target'] = "_self";
-        $my_menu[$i]['icon'] = "fa-user";
+        $my_menu[$i]['id']      = $i;
+        $my_menu[$i]['title']   = _TAD_TF_USER_PROFILE;
+        $my_menu[$i]['url']     = XOOPS_URL . "/user.php";
+        $my_menu[$i]['target']  = "_self";
+        $my_menu[$i]['icon']    = "fa-user";
         $my_menu[$i]['submenu'] = "";
         $i++;
 
-        $my_menu[$i]['id'] = $i;
-        $my_menu[$i]['title'] = _TAD_TF_USER_EXIT;
-        $my_menu[$i]['url'] = XOOPS_URL . "/user.php?op=logout";
-        $my_menu[$i]['target'] = "_self";
-        $my_menu[$i]['icon'] = "fa-share";
+        $my_menu[$i]['id']      = $i;
+        $my_menu[$i]['title']   = _TAD_TF_USER_EXIT;
+        $my_menu[$i]['url']     = XOOPS_URL . "/user.php?op=logout";
+        $my_menu[$i]['target']  = "_self";
+        $my_menu[$i]['icon']    = "fa-share";
         $my_menu[$i]['submenu'] = "";
 
         return $my_menu;
@@ -962,7 +960,7 @@ class Tools
         $sql = 'SELECT a.* FROM `' . $xoopsDB->prefix('tad_themes_files_center') . '` AS a
         LEFT JOIN `' . $xoopsDB->prefix('tad_themes') . "` AS b ON a.`col_sn` = b.`theme_id`
         WHERE a.`col_name` = 'slide' AND b.`theme_name` = '{$theme_name}'";
-        $result = $xoopsDB->query($sql);
+        $result     = $xoopsDB->query($sql);
         $slider_var = [];
         if ($result) {
             $i = 0;
@@ -980,23 +978,23 @@ class Tools
 
                 if (strpos($description, 'url_blank') !== false) {
                     $description = str_replace("[url_blank]{$url}[/url_blank]", "", $description);
-                    $target = "target='_blank'";
+                    $target      = "target='_blank'";
                 } else {
                     $description = str_replace("[url]{$url}[/url]", "", $description);
-                    $target = "";
+                    $target      = "";
                 }
 
-                $slider_var[$i]['files_sn'] = $files_sn;
-                $slider_var[$i]['sort'] = $sort;
-                $slider_var[$i]['file_name'] = $file_name;
-                $slider_var[$i]['description'] = $description;
-                $slider_var[$i]['text_description'] = strip_tags($description);
+                $slider_var[$i]['files_sn']          = $files_sn;
+                $slider_var[$i]['sort']              = $sort;
+                $slider_var[$i]['file_name']         = $file_name;
+                $slider_var[$i]['description']       = $description;
+                $slider_var[$i]['text_description']  = strip_tags($description);
                 $slider_var[$i]['original_filename'] = $original_filename;
-                $slider_var[$i]['sub_dir'] = $sub_dir;
-                $slider_var[$i]['file_url'] = XOOPS_URL . "/uploads/tad_themes{$sub_dir}/{$file_name}";
-                $slider_var[$i]['file_thumb_url'] = XOOPS_URL . "/uploads/tad_themes{$sub_dir}/thumbs/{$file_name}";
-                $slider_var[$i]['slide_url'] = $url;
-                $slider_var[$i]['slide_target'] = $target;
+                $slider_var[$i]['sub_dir']           = $sub_dir;
+                $slider_var[$i]['file_url']          = XOOPS_URL . "/uploads/tad_themes{$sub_dir}/{$file_name}";
+                $slider_var[$i]['file_thumb_url']    = XOOPS_URL . "/uploads/tad_themes{$sub_dir}/thumbs/{$file_name}";
+                $slider_var[$i]['slide_url']         = $url;
+                $slider_var[$i]['slide_target']      = $target;
                 $i++;
             }
         }

@@ -8,3 +8,7 @@
     <{$mobile_device|default:''}>
   });
 </script>
+
+<{*
+<{include file="$xoops_rootpath/modules/tadtools/templates/toast.tpl"}>
+*}>

@@ -28,6 +28,7 @@ $xoopsLogger->activated = false;
 
 switch ($op) {
     case 'remove_json':
+        xoops_loadLanguage('admin', 'tad_themes');
         Tools::del_theme_json();
         header("location:" . XOOPS_URL);
         exit;

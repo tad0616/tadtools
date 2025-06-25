@@ -15,26 +15,37 @@ class SweetAlert
     }
 
     //產生語法 $type=error,warning,info,success
-    public function render($func_name = '', $url = '', $var = '', $title = _TAD_DEL_CONFIRM_TITLE, $text = _TAD_DEL_CONFIRM_TEXT, $confirmButtonText = _TAD_DEL_CONFIRM_BTN, $type = 'warning', $showCancelButton = 'true', $html = '')
+    public function render($func_name = '', $url = '', $var = '', $title = '', $text = '', $confirmButtonText = '', $type = 'warning', $showCancelButton = 'true', $html = '')
     {
         global $xoTheme;
         $jquery = $this->show_jquery ? Utility::get_jquery() : '';
         if (is_array($var)) {
             $parm_var = [];
-            $href = [];
+            $href     = [];
             foreach ($var as $key => $value) {
                 if (is_string($key)) {
                     $href[] = "{$key}={$value}";
                 } else {
-                    $href[] = "{$value}=' + $value + '";
+                    $href[]     = "{$value}=' + $value + '";
                     $parm_var[] = $value;
                 }
             }
-            $href = "'{$url}" . implode('&', $href) . "'";
+            $href     = "'{$url}" . implode('&', $href) . "'";
             $parm_var = implode(', ', $parm_var);
         } else {
-            $href = empty($var) ? "'$url'" : "'$url' + $var";
+            $href     = empty($var) ? "'$url'" : "'$url' + $var";
             $parm_var = $var;
+        }
+
+        xoops_loadLanguage('main', 'tadtools');
+        if (empty($title)) {
+            $title = _TAD_DEL_CONFIRM_TITLE;
+        }
+        if (empty($text)) {
+            $text = _TAD_DEL_CONFIRM_TEXT;
+        }
+        if (empty($confirmButtonText)) {
+            $confirmButtonText = _TAD_DEL_CONFIRM_BTN;
         }
 
         if ($xoTheme) {

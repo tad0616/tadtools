@@ -1,6 +1,8 @@
 <?php
 namespace XoopsModules\Tadtools;
 
+require XOOPS_ROOT_PATH . '/modules/tadtools/vendor/autoload.php';
+use phpseclib3\Net\SSH2;
 use Xmf\Request;
 
 // use XoopsModules\Tadtools\PageBar;
@@ -30,85 +32,85 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 class Utility
 {
     public static $fonts = [
-        '851DianJiWenZiTi'              => '851電機文字',
-        'Bakudai'                       => '莫大毛筆字體',
-        'BoTa'                          => '波塔',
-        'BpmfGenRyuMin-B'               => '源流注音明體-粗體',
-        'BpmfGenRyuMin-R'               => '源流注音明體',
-        'BpmfGenSekiGothic-B'           => '源石注音黑體-粗體',
-        'BpmfGenSekiGothic-R'           => '源石注音黑體',
-        'BpmfGenSenRounded-B'           => '源泉注音圓體-粗體',
-        'BpmfGenSenRounded-R'           => '源泉注音圓體',
-        'BpmfGenWanMin-R'               => '源雲注音明體',
-        'BpmfGenYoGothic-B'             => '源樣注音黑體-粗體',
-        'BpmfGenYoGothic-R'             => '源樣注音黑體',
-        'BpmfGenYoMin-B'                => '源樣注音明體-粗體',
-        'BpmfGenYoMin-R'                => '源樣注音明體',
-        'BpmfZihiKaiStd-Regular'        => '字嗨注音標楷',
-        'BpmfZihiSans-Bold'             => '字嗨注音黑體-粗體',
-        'BpmfZihiSans-Regular'          => '字嗨注音黑體',
-        'BpmfZihiSerif-Bold'            => '字嗨注音宋體-粗體',
-        'BpmfZihiSerif-Regular'         => '字嗨注音宋體',
-        'Chalk'                         => '粉筆體',
-        'ChaoJiXi'                      => '超級細ゴシック體',
-        'CorpRound'                     => '公司LOGO圓體',
-        'Crayon'                        => '黑板粉筆體',
-        'Cubic'                         => '俐方體11號',
-        'Doudouziti'                    => '豆豆體',
-        'HanWangFangSongMedium'         => '王漢宗中仿宋',
-        'HanWangHeiHeavy'               => '王漢宗特黑體',
-        'HanWangHeiLight'               => '王漢宗細黑體',
-        'HanWangKaiMediumChuIn'         => '王漢宗中楷注音',
-        'HanWangKanTan'                 => '王漢宗勘亭流',
-        'HanWangLiSuMedium'             => '王漢宗中隸書',
-        'HanWangMingBlack'              => '王漢宗超明體',
-        'HanWangWeBe'                   => '王漢宗魏碑體',
-        'HanWangYenHeavy'               => '王漢宗特圓體',
-        'HanWangYenLight'               => '王漢宗細圓體',
-        'HanWangZonYi'                  => '王漢宗綜藝體',
-        'HanZiBiShunZiTi'               => '漢字筆順體原版',
-        'HengShanMaoBiCaoShu'           => '衡山毛筆草書',
-        'I-Ngaan'                       => '刻石錄顏體',
-        'I-PenCrane-B'                  => '刻石錄鋼筆鶴體',
-        'Iansui'                        => '芫荽體',
-        'JasonHandwriting1'             => '清松手寫體1',
-        'JasonHandwriting2'             => '清松手寫體2',
-        'JasonHandwriting3'             => '清松手寫體3',
-        'JasonHandwriting4'             => '清松手寫體4',
-        'JfOpenhuninn'                  => 'jf open 粉圓體',
-        'KaiseiTokumin'                 => '解星 B',
-        'KingnamMaiyuan'                => '荊南麥圓體',
-        'Kurewa'                        => '苦累蛙圓體',
-        'Mamelon'                       => 'Mamelon字體',
-        'MamelonHi'                     => 'Mamelon新版字體',
-        'MasaFont'                      => '正風毛筆字體（衡山毛筆行書）',
-        'NaikaiFont'                    => '內海字體',
-        'NishikiTeki'                   => '馬克筆手寫',
-        'PangPangZhuRouTi'              => '胖胖豬肉體',
-        'PoSuiLingHaoZi'                => '破碎零號字',
-        'PopGothicCjkJp'                => '大波浪圓體',
-        'QianTuMaKeShouXieTi'           => '千圖馬克手寫體',
-        'Qiang'                         => '黒薔薇',
-        'QingLiuShu'                    => '青柳隷書',
-        'SuiFengTi '                    => '隨峰體',
-        'SweiFistLegCJKjp'              => '獅尾詠腿黑體',
-        'SweiSpringSugarCJKtc'          => '獅尾四季春',
-        'SweiToothpasteCJKtc'           => '獅尾牙膏圓體',
-        'TanugoTangGuoShouXieTiBold'    => '糖果手寫粗體',
+        '851DianJiWenZiTi' => '851電機文字',
+        'Bakudai' => '莫大毛筆字體',
+        'BoTa' => '波塔',
+        'BpmfGenRyuMin-B' => '源流注音明體-粗體',
+        'BpmfGenRyuMin-R' => '源流注音明體',
+        'BpmfGenSekiGothic-B' => '源石注音黑體-粗體',
+        'BpmfGenSekiGothic-R' => '源石注音黑體',
+        'BpmfGenSenRounded-B' => '源泉注音圓體-粗體',
+        'BpmfGenSenRounded-R' => '源泉注音圓體',
+        'BpmfGenWanMin-R' => '源雲注音明體',
+        'BpmfGenYoGothic-B' => '源樣注音黑體-粗體',
+        'BpmfGenYoGothic-R' => '源樣注音黑體',
+        'BpmfGenYoMin-B' => '源樣注音明體-粗體',
+        'BpmfGenYoMin-R' => '源樣注音明體',
+        'BpmfZihiKaiStd-Regular' => '字嗨注音標楷',
+        'BpmfZihiSans-Bold' => '字嗨注音黑體-粗體',
+        'BpmfZihiSans-Regular' => '字嗨注音黑體',
+        'BpmfZihiSerif-Bold' => '字嗨注音宋體-粗體',
+        'BpmfZihiSerif-Regular' => '字嗨注音宋體',
+        'Chalk' => '粉筆體',
+        'ChaoJiXi' => '超級細ゴシック體',
+        'CorpRound' => '公司LOGO圓體',
+        'Crayon' => '黑板粉筆體',
+        'Cubic' => '俐方體11號',
+        'Doudouziti' => '豆豆體',
+        'HanWangFangSongMedium' => '王漢宗中仿宋',
+        'HanWangHeiHeavy' => '王漢宗特黑體',
+        'HanWangHeiLight' => '王漢宗細黑體',
+        'HanWangKaiMediumChuIn' => '王漢宗中楷注音',
+        'HanWangKanTan' => '王漢宗勘亭流',
+        'HanWangLiSuMedium' => '王漢宗中隸書',
+        'HanWangMingBlack' => '王漢宗超明體',
+        'HanWangWeBe' => '王漢宗魏碑體',
+        'HanWangYenHeavy' => '王漢宗特圓體',
+        'HanWangYenLight' => '王漢宗細圓體',
+        'HanWangZonYi' => '王漢宗綜藝體',
+        'HanZiBiShunZiTi' => '漢字筆順體原版',
+        'HengShanMaoBiCaoShu' => '衡山毛筆草書',
+        'I-Ngaan' => '刻石錄顏體',
+        'I-PenCrane-B' => '刻石錄鋼筆鶴體',
+        'Iansui' => '芫荽體',
+        'JasonHandwriting1' => '清松手寫體1',
+        'JasonHandwriting2' => '清松手寫體2',
+        'JasonHandwriting3' => '清松手寫體3',
+        'JasonHandwriting4' => '清松手寫體4',
+        'JfOpenhuninn' => 'jf open 粉圓體',
+        'KaiseiTokumin' => '解星 B',
+        'KingnamMaiyuan' => '荊南麥圓體',
+        'Kurewa' => '苦累蛙圓體',
+        'Mamelon' => 'Mamelon字體',
+        'MamelonHi' => 'Mamelon新版字體',
+        'MasaFont' => '正風毛筆字體（衡山毛筆行書）',
+        'NaikaiFont' => '內海字體',
+        'NishikiTeki' => '馬克筆手寫',
+        'PangPangZhuRouTi' => '胖胖豬肉體',
+        'PoSuiLingHaoZi' => '破碎零號字',
+        'PopGothicCjkJp' => '大波浪圓體',
+        'QianTuMaKeShouXieTi' => '千圖馬克手寫體',
+        'Qiang' => '黒薔薇',
+        'QingLiuShu' => '青柳隷書',
+        'SuiFengTi ' => '隨峰體',
+        'SweiFistLegCJKjp' => '獅尾詠腿黑體',
+        'SweiSpringSugarCJKtc' => '獅尾四季春',
+        'SweiToothpasteCJKtc' => '獅尾牙膏圓體',
+        'TanugoTangGuoShouXieTiBold' => '糖果手寫粗體',
         'TanugoTangGuoShouXieTiRegular' => '糖果手寫體',
-        'Tanukimagic'                   => 'たぬき油性マジック',
-        'UzuraZiTi'                     => '鵪鶉字體',
-        'WuXinShouXieTi'                => '無心手寫體',
-        'XianErTi'                      => '賢二體',
-        'XinYiGuanHeiTi'                => '字體圈欣意冠黑體',
-        'YOzShouXieTi'                  => 'YOz手寫體',
-        'YingZhuiXingShu'               => '英椎行書',
-        'YouZi'                         => '佑字',
-        'YuanYingHeiTi'                 => '源影黑體',
-        'ZhaiZaiJiaFenTiaoTian'         => '宅在家粉條甜',
-        'ZhaiZaiJiaMaiKeBi'             => '宅在家麥克筆',
-        'ZhaiZaiJiaZiDongBi'            => '宅在家自動筆',
-        'ZuoZuoMuZiTi'                  => '佐佐木字體',
+        'Tanukimagic' => 'たぬき油性マジック',
+        'UzuraZiTi' => '鵪鶉字體',
+        'WuXinShouXieTi' => '無心手寫體',
+        'XianErTi' => '賢二體',
+        'XinYiGuanHeiTi' => '字體圈欣意冠黑體',
+        'YOzShouXieTi' => 'YOz手寫體',
+        'YingZhuiXingShu' => '英椎行書',
+        'YouZi' => '佑字',
+        'YuanYingHeiTi' => '源影黑體',
+        'ZhaiZaiJiaFenTiaoTian' => '宅在家粉條甜',
+        'ZhaiZaiJiaMaiKeBi' => '宅在家麥克筆',
+        'ZhaiZaiJiaZiDongBi' => '宅在家自動筆',
+        'ZuoZuoMuZiTi' => '佐佐木字體',
     ];
 
     //建構函數
@@ -123,7 +125,7 @@ class Utility
     {
         global $xoopsUser, $xoopsModuleConfig, $xoopsLogger;
 
-        if (isset($xoopsModuleConfig['test_mode']) && $xoopsModuleConfig['test_mode'] && $xoopsUser && ! $xoopsUser->isAdmin()) {
+        if (isset($xoopsModuleConfig['test_mode']) && $xoopsModuleConfig['test_mode'] && $xoopsUser && !$xoopsUser->isAdmin()) {
             return;
         }
 
@@ -155,7 +157,7 @@ class Utility
     {
         $TadToolsXoopsModuleConfig = self::TadToolsXoopsModuleConfig();
 
-        if (! $TadToolsXoopsModuleConfig['linkify']) {
+        if (!$TadToolsXoopsModuleConfig['linkify']) {
             return $value;
         }
 
@@ -202,7 +204,7 @@ class Utility
     public static function xoops_security_check($file = '', $line = '')
     {
         $where = $file ? "( $file $line )" : "";
-        if ($_SERVER['SERVER_ADDR'] != '127.0.0.1' && ! $GLOBALS['xoopsSecurity']->check()) {
+        if ($_SERVER['SERVER_ADDR'] != '127.0.0.1' && !$GLOBALS['xoopsSecurity']->check()) {
             $error = implode("<br>", $GLOBALS['xoopsSecurity']->getErrors());
             redirect_header($_SERVER['PHP_SELF'], 3, $error . $where);
         }
@@ -252,7 +254,7 @@ class Utility
                     $ver = XOOPS_VERSION;
                 }
                 $version = explode('.', str_replace('XOOPS ', '', $ver));
-                if (! empty($version[2]) && strpos($version[2], 'Beta') !== false) {
+                if (!empty($version[2]) && strpos($version[2], 'Beta') !== false) {
                     $version[2] = intval($version[2]) - 1;
                 }
                 break;
@@ -284,7 +286,7 @@ class Utility
                     $result = $xoopsDB->query($sql) or self::web_error($sql, __FILE__, __LINE__);
 
                     list($ver) = $xoopsDB->fetchRow($result);
-                    if (! empty($ver) && strpos($ver, '-') === false) {
+                    if (!empty($ver) && strpos($ver, '-') === false) {
                         if (strpos($ver, '.') !== false) {
                             for ($i = 0; $i < strlen($ver); $i++) {
                                 $version[] = substr($ver, $i, 1);
@@ -416,10 +418,10 @@ class Utility
             $mk_dir .= $i > 0 ? "/{$sub_dir}" : $sub_dir;
 
             //若目錄不存在的話建立目錄
-            if ($mk_dir != '' && ! is_dir($mk_dir)) {
+            if ($mk_dir != '' && !is_dir($mk_dir)) {
                 umask(000);
                 //若建立失敗秀出警告訊息
-                if (! mkdir($mk_dir, 0777) && ! is_dir($mk_dir)) {
+                if (!mkdir($mk_dir, 0777) && !is_dir($mk_dir)) {
                     throw new \RuntimeException(sprintf('Directory "%s" was not created', $mk_dir));
                 }
             }
@@ -434,13 +436,13 @@ class Utility
             $dir_handle = opendir($dirname);
         }
 
-        if (! $dir_handle) {
+        if (!$dir_handle) {
             return false;
         }
 
         while ($file = readdir($dir_handle)) {
             if ('.' !== $file && '..' !== $file) {
-                if (! is_dir($dirname . '/' . $file)) {
+                if (!is_dir($dirname . '/' . $file)) {
                     unlink($dirname . '/' . $file);
                 } else {
                     self::delete_directory($dirname . '/' . $file);
@@ -457,12 +459,12 @@ class Utility
     {
 
         // 檢查來源資料夾是否存在
-        if (! is_dir($source)) {
+        if (!is_dir($source)) {
             return false;
         }
 
         // 確保目標資料夾存在,否則創建它
-        if (! is_dir($dest)) {
+        if (!is_dir($dest)) {
             mkdir($dest, 0755, true);
         }
 
@@ -477,7 +479,7 @@ class Utility
                 self::full_copy($sourceFile, $destFile, $overwrite);
             } else {
                 // 如果是檔案,則複製檔案
-                if ($overwrite || ! file_exists($destFile)) {
+                if ($overwrite || !file_exists($destFile)) {
                     copy($sourceFile, $destFile);
                 }
             }
@@ -512,7 +514,7 @@ class Utility
 
     public static function rename_win($oldfile, $newfile)
     {
-        if (! rename($oldfile, $newfile)) {
+        if (!rename($oldfile, $newfile)) {
             if (copy($oldfile, $newfile)) {
                 unlink($oldfile);
 
@@ -598,7 +600,7 @@ class Utility
         $bootstrap_link = $bootstrap ? "<link rel='stylesheet' type='text/css' media='all' href='" . XOOPS_URL . "/modules/tadtools/bootstrap{$bootstrap_version}/css/bootstrap.css' />
         <script src='" . XOOPS_URL . "/modules/tadtools/bootstrap{$bootstrap_version}/js/popper.min.js' crossorigin='anonymous'></script>
         <script src='" . XOOPS_URL . "/modules/tadtools/bootstrap{$bootstrap_version}/js/bootstrap.js'></script>" : '';
-        $font_awesome_link = $font_awesome ? " <link href=\"" . XOOPS_URL . "/media/font-awesome/css/font-awesome.min.css\" rel=\"stylesheet\" media=\"all\">" : '';
+        $font_awesome_link = $font_awesome ? " <link href=\"" . XOOPS_URL . "/modules/tadtools/css/fontawesome6/css/all.min.css\" rel=\"stylesheet\" media=\"all\">" : '';
         $prism_link        = '';
         if ($prism) {
             $prism_link = Utility::prism('return');
@@ -688,19 +690,19 @@ class Utility
     {
         $http = ($_SERVER['HTTPS']) ? 'https://' : 'http://';
         $port = 80 == $_SERVER['SERVER_PORT'] ? '' : ":{$_SERVER['SERVER_PORT']}";
-        if (! isset($_SESSION['ez_url'])) {
+        if (!isset($_SESSION['ez_url'])) {
             $u = parse_url($http . $_SERVER['SERVER_NAME'] . $port . $_SERVER['REQUEST_URI']);
-            if (! empty($u['path']) and preg_match('/\/modules/', $u['path'])) {
+            if (!empty($u['path']) and preg_match('/\/modules/', $u['path'])) {
                 $XMUrl = explode('/modules', $u['path']);
-            } elseif (! empty($u['path']) and preg_match('/\/themes/', $u['path'])) {
+            } elseif (!empty($u['path']) and preg_match('/\/themes/', $u['path'])) {
                 $XMUrl = explode('/themes', $u['path']);
-            } elseif (! empty($u['path']) and preg_match('/\/upgrade/', $u['path'])) {
+            } elseif (!empty($u['path']) and preg_match('/\/upgrade/', $u['path'])) {
                 $XMUrl = explode('/upgrade', $u['path']);
-            } elseif (! empty($u['path']) and preg_match('/\/include/', $u['path'])) {
+            } elseif (!empty($u['path']) and preg_match('/\/include/', $u['path'])) {
                 $XMUrl = explode('/include', $u['path']);
-            } elseif (! empty($u['path']) and preg_match('/.php/', $u['path'])) {
+            } elseif (!empty($u['path']) and preg_match('/.php/', $u['path'])) {
                 $XMUrl[0] = dirname($u['path']);
-            } elseif (! empty($u['path'])) {
+            } elseif (!empty($u['path'])) {
                 $XMUrl[0] = $u['path'];
             } else {
                 $XMUrl[0] = '';
@@ -744,7 +746,7 @@ class Utility
     {
         // grab anything that looks like a URL...
         $urls = self::_autolink_find_URLS($text);
-        if (! empty($urls)) {
+        if (!empty($urls)) {
             // i.e. there were some URLS found in the text
             array_walk($urls, '_autolink_create_html_tags', ['target' => $target, 'nofollow' => $nofollow]);
             $text = strtr($text, $urls);
@@ -789,7 +791,7 @@ class Utility
     {
         global $xoopsModuleConfig;
         if ($enable) {
-            if (! isset($xoopsModuleConfig['facebook_app_id'])) {
+            if (!isset($xoopsModuleConfig['facebook_app_id'])) {
                 $xoopsTadtoolsConfig = self::TadToolsXoopsModuleConfig();
                 $facebookAppId       = $xoopsTadtoolsConfig['facebook_app_id'];
             } else {
@@ -818,7 +820,7 @@ class Utility
     {
         $imgurl = self::mk_qrcode_name($url);
         self::mk_dir(XOOPS_ROOT_PATH . '/uploads/qrcode');
-        if (! file_exists(XOOPS_ROOT_PATH . "/uploads/qrcode/{$imgurl}.gif")) {
+        if (!file_exists(XOOPS_ROOT_PATH . "/uploads/qrcode/{$imgurl}.gif")) {
             include_once 'qrcode/qrcode.php';
             $url = self::chk_qrcode_url($url);
             $a   = new \QR("{$_SERVER['HTTP_HOST']}{$url}");
@@ -899,15 +901,13 @@ class Utility
     {
         global $xoopsUser, $xoopsModule;
 
-        if (! $xoopsModule) {
+        if (!$xoopsModule) {
             $modhandler  = xoops_gethandler('module');
             $xoopsModule = $modhandler->getByDirname($mod_name);
         }
 
         //取得目前使用者的群組編號
-        if (! isset($_SESSION['groups']) or $_SESSION['groups'] === '') {
-            $_SESSION['groups'] = $xoopsUser ? $xoopsUser->getGroups() : [XOOPS_GROUP_ANONYMOUS];
-        }
+        $groups = $xoopsUser ? $xoopsUser->getGroups() : [XOOPS_GROUP_ANONYMOUS];
 
         //取得模組編號
         if (empty($module_id)) {
@@ -921,8 +921,9 @@ class Utility
 
         //權限項目編號
         $perm_itemid = (int) $perm_itemid;
+
         //依據該群組是否對該權限項目有使用權之判斷 ，做不同之處理
-        if ($gperm_handler->checkRight($perm_name, $perm_itemid, $_SESSION['groups'], $module_id, $trueifadmin)) {
+        if ($gperm_handler->checkRight($perm_name, $perm_itemid, $groups, $module_id, $trueifadmin)) {
             return true;
         }
 
@@ -1036,7 +1037,7 @@ class Utility
         if (_CHARSET === 'UTF-8') {
             return $buffer;
         }
-        $buffer = (! function_exists('mb_convert_encoding')) ? iconv('Big5', 'UTF-8', $buffer) : mb_convert_encoding($buffer, 'UTF-8', 'Big5');
+        $buffer = (!function_exists('mb_convert_encoding')) ? iconv('Big5', 'UTF-8', $buffer) : mb_convert_encoding($buffer, 'UTF-8', 'Big5');
 
         return $buffer;
     }
@@ -1137,17 +1138,18 @@ class Utility
 
         $navbar = new \XoopsModules\Tadtools\PageBar($total, $show_num, $page_list, $order_sql);
 
-        if (! empty($to_page)) {
+        if (!empty($to_page)) {
             $navbar->set_to_page($to_page);
         }
 
-        if (! empty($url_other)) {
+        if (!empty($url_other)) {
             $navbar->set_url_other($url_other);
         }
 
-        if ('gmail' == $bootstrap) {
-            $mybar       = $navbar->makeBootStrapBar($g2p_name);
-            $main['bar'] = "
+        if ($total > 0) {
+            if ('gmail' == $bootstrap) {
+                $mybar       = $navbar->makeBootStrapBar($g2p_name);
+                $main['bar'] = "
                 <nav class='my-0'>
                     <ul class='pagination justify-content-end justify-content-right align-items-center flex-wrap'>
                     <li>{$mybar['start']}-{$mybar['end']}則（共 {$total} 則）</li>
@@ -1156,9 +1158,9 @@ class Utility
                     </ul>
                 </nav>
                 ";
-        } else {
-            $mybar       = $navbar->makeBootStrapBar($g2p_name);
-            $main['bar'] = "
+            } else {
+                $mybar       = $navbar->makeBootStrapBar($g2p_name);
+                $main['bar'] = "
                 <div class='text-center'>
                     <nav>
                         <ul class='pagination justify-content-center flex-wrap'>
@@ -1169,6 +1171,9 @@ class Utility
                     </nav>
                 </div>
                 ";
+            }
+        } else {
+            $main['bar'] = '';
         }
 
         $main['sql']   = $sql . $mybar['sql'];
@@ -1182,7 +1187,7 @@ class Utility
         global $xoTheme, $xoopsUser, $xoopsModule;
 
         if (is_object($xoTheme)) {
-            $xoTheme->addStylesheet('modules/tadtools/css/xoops.css');
+            $xoTheme->addStylesheet('modules/tadtools/css/xoops.css?t=20250304');
         }
         xoops_loadLanguage('main', 'tadtools');
         $op = Request::getString('op');
@@ -1201,13 +1206,13 @@ class Utility
             $isAdmin = false;
         }
 
-        if (empty($interface_menu) and ! $force) {
+        if (empty($interface_menu) and !$force) {
             return;
         }
 
         self::get_jquery();
 
-        $options = ! in_array('index.php', $interface_menu) ? "<li><a href='index.php' title='" . _TAD_HOME . "'><i class=\"fa fa-home\" aria-hidden=\"true\"></i>" : '';
+        $options = !in_array('index.php', $interface_menu) ? "<li><a href='index.php' title='" . _TAD_HOME . "'><i class=\"fa fa-home\" aria-hidden=\"true\"></i>" : '';
 
         if (is_array($interface_menu)) {
             $basename = basename($_SERVER['SCRIPT_NAME']);
@@ -1220,7 +1225,7 @@ class Utility
                 } else {
                     $target = substr($url, 0, 4) == 'http' ? "target='_blank'" : '';
 
-                    if (! empty($op) and false !== strpos($url, "?op=") and false !== strpos($url, "{$basename}?op={$op}")) {
+                    if (!empty($op) and false !== strpos($url, "?op=") and false !== strpos($url, "{$basename}?op={$op}")) {
                         $current = "class='current' title='$title'";
                     } elseif (false !== strpos($_SERVER['SCRIPT_NAME'], $url) && empty($op)) {
                         $current = "class='current' title='$title'";
@@ -1272,7 +1277,7 @@ class Utility
     public static function get_jquery($ui = false, $mode = '', $theme = 'base')
     {
         global $xoTheme;
-        if (! isset($xoTheme) or 'return' === $mode) {
+        if (!isset($xoTheme) or 'return' === $mode) {
             $jqueryui_path = '';
             if ($ui) {
                 $jqueryui_path = "
@@ -1332,8 +1337,8 @@ class Utility
                 'http' => [
                     'timeout' => $timeout,
                 ],
-                'ssl'  => [
-                    'verify_peer'      => false,
+                'ssl' => [
+                    'verify_peer' => false,
                     'verify_peer_name' => false,
                 ],
             ]);
@@ -1346,8 +1351,8 @@ class Utility
                 'http' => [
                     'timeout' => $timeout,
                 ],
-                'ssl'  => [
-                    'verify_peer'      => false,
+                'ssl' => [
+                    'verify_peer' => false,
                     'verify_peer_name' => false,
                 ],
             ]);
@@ -1401,7 +1406,7 @@ class Utility
         }
 
         // 檢查文件是否存在
-        if (! file_exists($imagePath)) {
+        if (!file_exists($imagePath)) {
             return "{$imagePath} 不存在";
         }
 
@@ -1540,12 +1545,12 @@ class Utility
     {
         global $xoopsDB, $xoopsUser, $xoopsModule;
         $ok_cate_arr = [];
-        if (! $xoopsModule) {
+        if (!$xoopsModule) {
             $modhandler  = xoops_gethandler('module');
             $xoopsModule = $modhandler->getByDirname($dirname);
         }
 
-        if (! empty($xoopsUser)) {
+        if (!empty($xoopsUser)) {
             $module_id = $xoopsModule->getVar('mid');
             if ($xoopsUser->isAdmin($module_id)) {
                 $ok_cate_arr[] = 0;
@@ -1596,7 +1601,7 @@ class Utility
     public static function prism($mode = '', $line_numbers = false)
     {
         global $xoTheme, $xoopsTpl;
-        if ($mode == 'return' || ! $xoTheme) {
+        if ($mode == 'return' || !$xoTheme) {
             return "
             <link type='text/css' rel='stylesheet' href='" . XOOPS_URL . "/modules/tadtools/prism/prism.css'>
             <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/prism/prism.js'></script>
@@ -1696,7 +1701,7 @@ class Utility
         $stmt = null;
         try {
             // 基本驗證
-            if (! is_string($sql) || empty($sql)) {
+            if (!is_string($sql) || empty($sql)) {
                 throw new \Exception(_INVALID_SQL_QUERY);
             }
 
@@ -1719,17 +1724,17 @@ class Utility
 
             // 準備語句
             $stmt = $xoopsDB->conn->prepare($sql);
-            if (! $stmt) {
+            if (!$stmt) {
                 throw new \Exception(_SQL_PREPARE_FAILED . $xoopsDB->conn->error);
             }
 
             // 綁定參數
-            if (! empty($params)) {
+            if (!empty($params)) {
                 // 創建參數陣列
                 $bindParams = array_merge([$types], self::createReferenceArray($params));
 
                 // 綁定參數
-                if (! @call_user_func_array([$stmt, 'bind_param'], $bindParams)) {
+                if (!@call_user_func_array([$stmt, 'bind_param'], $bindParams)) {
                     throw new \Exception(_PARAMETER_BINDING_FAILED . $stmt->error);
                 }
             }
@@ -1740,7 +1745,7 @@ class Utility
             }
 
             // 執行查詢
-            if (! $stmt->execute()) {
+            if (!$stmt->execute()) {
                 throw new \Exception(_SQL_EXECUTION_FAILED . $stmt->error);
             }
 
@@ -1964,10 +1969,10 @@ class Utility
             // $return_array will be returned once all calculations are complete
             $return_array = [
                 imagesx($im), // lower left, x coordinate
-                -1,           // lower left, y coordinate
-                -1,           // lower right, x coordinate
-                -1,           // lower right, y coordinate
-                -1,           // upper right, x coordinate
+                -1, // lower left, y coordinate
+                -1, // lower right, x coordinate
+                -1, // lower right, y coordinate
+                -1, // upper right, x coordinate
                 imagesy($im), // upper right, y coordinate
                 imagesx($im), // upper left, x coordinate
                 imagesy($im), // upper left, y coordinate
@@ -2057,6 +2062,20 @@ class Utility
                 $fontfile,
                 $text
             );
+        }
+    }
+
+    //登入SSH
+    public static function ssh_login($ssh_host, $ssh_port, $ssh_id, $ssh_passwd)
+    {
+        // 建立 SSH 連線
+        $ssh = new SSH2($ssh_host, $ssh_port);
+
+        // 嘗試登入
+        if (!$ssh->login($ssh_id, $ssh_passwd)) {
+            exit('Login Failed:' . $ssh->getLastError());
+        } else {
+            return $ssh;
         }
     }
 

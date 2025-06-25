@@ -255,7 +255,7 @@ if (!function_exists('getPageBar')) {
 if (!function_exists('toolbar_bootstrap')) {
     function toolbar_bootstrap($interface_menu = [])
     {
-        return Utility::toolbar_bootstrap($interface_menu);
+        return Utility::toolbar_bootstrap($interface_menu, false, $interface_icon);
     }
 }
 

@@ -4,9 +4,9 @@ namespace XoopsModules\Tadtools;
 
 class FullCalendar6
 {
-    public $js_parameter = [];
+    public $js_parameter   = [];
     public $json_parameter = [];
-    public $quotation = [];
+    public $quotation      = [];
 
     //建構函數
     public function __construct()
@@ -16,7 +16,7 @@ class FullCalendar6
     public function add_js_parameter($key = '', $val = '', $quotation = true)
     {
         $this->js_parameter[$key] = $val;
-        $this->quotation[$key] = $quotation;
+        $this->quotation[$key]    = $quotation;
     }
 
     public function add_json_parameter($key = '', $val = '')
@@ -104,6 +104,7 @@ $FullCalendar->add_js_parameter('month', 6);
 $FullCalendar->add_js_parameter('date', 16);
 $FullCalendar->add_json_parameter('WebID', $WebID);
 $FullCalendar->add_json_parameter('CateID', $CateID);
+//注意，不需要 #
 $fullcalendar_code = $FullCalendar->render('calendar', 'get_event.php');
 $xoopsTpl->assign('fullcalendar_code',$fullcalendar_code);
  */

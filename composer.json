@@ -2,6 +2,9 @@
     "require": {
         "phpoffice/phpword": "0.18.3",
         "phpoffice/phpexcel": "^1.8",
-        "laminas/laminas-escaper": "2.9"
+        "laminas/laminas-escaper": "2.9",
+        "phpseclib/phpseclib": "^3.0",
+        "paragonie/constant_time_encoding": "2.6",
+        "php": "^7.3 || ^8"
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 use XoopsModules\Tadtools\Tools;
 use XoopsModules\Tadtools\Utility;
 use XoopsModules\Tad_login\Tools as TadLoginTools;
@@ -13,7 +14,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         $_SESSION['xoops_version'] = Utility::get_version('xoops');
 
         if (!isset($_SESSION['bootstrap'])) {
-            $theme_name = isset($_SESSION['xoopsUserTheme']) ? $_SESSION['xoopsUserTheme'] : $xoopsConfig['theme_set'];
+            $theme_name      = isset($_SESSION['xoopsUserTheme']) ? $_SESSION['xoopsUserTheme'] : $xoopsConfig['theme_set'];
             $theme_json_file = XOOPS_VAR_PATH . "/data/{$theme_name}_setup.json";
 
             if (file_exists($theme_json_file)) {
@@ -38,13 +39,37 @@ class TadtoolsCorePreload extends XoopsPreloadItem
     {
         global $xoopsConfig, $xoopsTpl, $xoopsDB, $xoTheme, $xoopsUser;
 
-        $theme_id = 0;
-        $theme_name = isset($_SESSION['xoopsUserTheme']) ? $_SESSION['xoopsUserTheme'] : $xoopsConfig['theme_set'];
+        // $ng_web = [];
+        // if (!isset($_SESSION['have_ng_web']) || !empty($_SESSION['have_ng_web'])) {
+        //     $json = "/var/www/xoops_data/all_web_modules.json";
+        //     if (file_exists($json)) {
+        //         $all_web_modules = json_decode(file_get_contents($json), true);
+        //         $server          = explode('.', $_SERVER['SERVER_NAME']);
+        //         foreach ($all_web_modules as $key => $value) {
+        //             if (strpos($key, $server[1] . '_') !== false) {
+        //                 $my_modules[$key] = $value;
+        //                 foreach ($value as $data) {
+        //                     if ($data['dirname'] == 'system' && $data['version'] != '20107') {
+        //                         list($domain, $sub) = explode('_', $key);
+        //                         $ng_web[]           = "{$sub}.{$domain}.tn.edu.tw";
+        //                     }
+        //                 }
+        //             }
+        //         }
+
+        //         $_SESSION['have_ng_web'] = count($ng_web);
+
+        //     }
+        // }
+        // $xoopsTpl->assign('ng_web', $ng_web);
+
+        $theme_id           = 0;
+        $theme_name         = isset($_SESSION['xoopsUserTheme']) ? $_SESSION['xoopsUserTheme'] : $xoopsConfig['theme_set'];
         $use_default_config = false;
 
         /****檢查是否開放註冊****/
-        $sql = 'SELECT `conf_value` FROM `' . $xoopsDB->prefix('config') . "` WHERE `conf_name` = 'allow_register'";
-        $result = $xoopsDB->query($sql);
+        $sql                  = 'SELECT `conf_value` FROM `' . $xoopsDB->prefix('config') . "` WHERE `conf_name` = 'allow_register'";
+        $result               = $xoopsDB->query($sql);
         list($allow_register) = $xoopsDB->fetchRow($result);
         $xoopsTpl->assign('allow_register', $allow_register);
 
@@ -62,7 +87,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         $url = $http . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
         $xoopsTpl->assign('now_url', $url);
 
-        $theme_name = isset($_SESSION['xoopsUserTheme']) ? $_SESSION['xoopsUserTheme'] : $xoopsConfig['theme_set'];
+        $theme_name      = isset($_SESSION['xoopsUserTheme']) ? $_SESSION['xoopsUserTheme'] : $xoopsConfig['theme_set'];
         $theme_json_file = XOOPS_VAR_PATH . "/data/{$theme_name}_setup.json";
         if (file_exists($theme_json_file)) {
             $theme_config = json_decode(file_get_contents($theme_json_file), true);
@@ -104,36 +129,36 @@ class TadtoolsCorePreload extends XoopsPreloadItem
             $xoTheme->addStylesheet('modules/tadtools/css/xoops.css');
             $xoTheme->addScript('modules/tadtools/colorbox/jquery.colorbox.js');
             $xoTheme->addStylesheet('modules/tadtools/css/fontawesome6/css/all.min.css');
-            $xoTheme->addStylesheet('media/font-awesome/css/font-awesome.min.css');
+            // $xoTheme->addStylesheet('media/font-awesome/css/font-awesome.min.css');
         }
 
         //製作主選單
         $main_menu = [];
-        $i = 0;
-        $sql = 'SELECT `mid`, `name`, `dirname` FROM `' . $xoopsDB->prefix('modules') . '` WHERE `isactive` = 1 AND `hasmain` = 1 AND `weight` != 0 ORDER BY `weight`';
-        $result = $xoopsDB->query($sql);
+        $i         = 0;
+        $sql       = 'SELECT `mid`, `name`, `dirname` FROM `' . $xoopsDB->prefix('modules') . '` WHERE `isactive` = 1 AND `hasmain` = 1 AND `weight` != 0 ORDER BY `weight`';
+        $result    = $xoopsDB->query($sql);
 
         while (list($mid, $name, $dirname) = $xoopsDB->fetchRow($result)) {
-            $main_menu[$i]['id'] = $mid;
-            $main_menu[$i]['title'] = $name;
-            $main_menu[$i]['url'] = XOOPS_URL . "/modules/{$dirname}/";
+            $main_menu[$i]['id']     = $mid;
+            $main_menu[$i]['title']  = $name;
+            $main_menu[$i]['url']    = XOOPS_URL . "/modules/{$dirname}/";
             $main_menu[$i]['target'] = '_self';
-            $main_menu[$i]['icon'] = 'fa-th-list';
-            $main_menu[$i]['img'] = '';
+            $main_menu[$i]['icon']   = 'fa-th-list';
+            $main_menu[$i]['img']    = '';
             $i++;
         }
         $xoopsTpl->assign('main_menu_var', $main_menu);
         Utility::test($main_menu, 'main_menu', 'dd');
 
         //製作管理選單
-        $moduleHandler = xoops_getHandler('module');
+        $moduleHandler   = xoops_getHandler('module');
         $TadBlocksModule = $moduleHandler->getByDirname("tad_blocks");
-        $TadBlocksMid = ($TadBlocksModule) ? $TadBlocksModule->mid() : 0;
+        $TadBlocksMid    = ($TadBlocksModule) ? $TadBlocksModule->mid() : 0;
         $TadThemesModule = $moduleHandler->getByDirname("tad_themes");
-        $TadThemesMid = ($TadThemesModule) ? $TadThemesModule->mid() : 0;
+        $TadThemesMid    = ($TadThemesModule) ? $TadThemesModule->mid() : 0;
 
-        $sql = 'SELECT `conf_value` FROM `' . $xoopsDB->prefix('config') . "` WHERE `conf_title` = '_MD_AM_DEBUGMODE'";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error());
+        $sql         = 'SELECT `conf_value` FROM `' . $xoopsDB->prefix('config') . "` WHERE `conf_title` = '_MD_AM_DEBUGMODE'";
+        $result      = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error());
         list($debug) = $xoopsDB->fetchRow($result);
         if ($debug == 0) {
             $debug = 1;
@@ -155,7 +180,6 @@ class TadtoolsCorePreload extends XoopsPreloadItem
             $admin_menu[] = ['title' => _TAD_TF_THEME_DEBUG, 'url' => XOOPS_URL . "/modules/tadtools/themes_common/tools/debug.php?op=debug&v={$debug}", 'icon' => 'fa-warning', 'target' => '_self'];
         } else {
             $admin_menu[] = ['title' => _TAD_TF_THEME_UNDEBUG, 'url' => XOOPS_URL . "/modules/tadtools/themes_common/tools/debug.php?op=debug&v={$debug}", 'icon' => 'fa-warning', 'target' => '_self'];
-
         }
         $admin_menu[] = ['title' => _TAD_TF_USER_BLOCK, 'url' => XOOPS_URL . '/modules/system/admin.php?fct=blocksadmin&op=list&filter=1&selgen=-1&selmod=-2&selgrp=-1&selvis=1', 'icon' => 'fa-th', 'target' => '_blank'];
         if ($TadBlocksMid) {
@@ -167,9 +191,9 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         $xoopsTpl->assign('admin_menu_var', $admin_menu);
 
         //製作使用者選單
-        $uid = $xoopsUser ? $xoopsUser->uid() : 0;
-        $sql = 'SELECT COUNT(*) FROM `' . $xoopsDB->prefix('priv_msgs') . "` WHERE `to_userid` = $uid AND `read_msg`=0 GROUP BY `to_userid`";
-        $result = $xoopsDB->query($sql);
+        $uid                     = $xoopsUser ? $xoopsUser->uid() : 0;
+        $sql                     = 'SELECT COUNT(*) FROM `' . $xoopsDB->prefix('priv_msgs') . "` WHERE `to_userid` = $uid AND `read_msg`=0 GROUP BY `to_userid`";
+        $result                  = $xoopsDB->query($sql);
         list($xoops_inbox_count) = $xoopsDB->fetchRow($result);
 
         if ($xoops_inbox_count) {
@@ -184,8 +208,8 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         $xoopsTpl->assign('user_menu_var', $user_menu);
 
         // 自訂選單
-        $my_menu = Tools::get_theme_menu_items(0, $theme_config['menu_var_kind']);
-        $i = sizeof($my_menu);
+        $my_menu  = Tools::get_theme_menu_items(0, $theme_config['menu_var_kind']);
+        $i        = sizeof($my_menu);
         $mod_menu = Tools::get_module_menu_item($i, $theme_config['menu_var_kind']);
         if (!empty($mod_menu)) {
             if (empty($my_menu)) {
@@ -211,26 +235,26 @@ class TadtoolsCorePreload extends XoopsPreloadItem
                 $configHandler = xoops_gethandler('config');
 
                 $TadLoginXoopsModule = $moduleHandler->getByDirname("tad_login");
-                $TnLoginXoopsModule = $moduleHandler->getByDirname("tn_login");
+                $TnLoginXoopsModule  = $moduleHandler->getByDirname("tn_login");
 
                 if ($TadLoginXoopsModule) {
                     require_once XOOPS_ROOT_PATH . "/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
 
                     $modConfig = $configHandler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
 
-                    $tad_login['line'] = in_array('line', $modConfig['auth_method']) ? Tools::tad_login('line', 'return') : '';
+                    $tad_login['line']   = in_array('line', $modConfig['auth_method']) ? Tools::tad_login('line', 'return') : '';
                     $tad_login['google'] = in_array('google', $modConfig['auth_method']) ? Tools::tad_login('google', 'return') : '';
 
                     $auth_method = $modConfig['auth_method'];
-                    $i = 0;
+                    $i           = 0;
 
                     if ($_SESSION['xoops_version'] < 20511 && !class_exists('XoopsModules\Tad_login\Tools')) {
                         require_once XOOPS_ROOT_PATH . "/modules/tad_login/oidc.php";
                     } else {
-                        $all_oidc = TadLoginTools::$all_oidc;
+                        $all_oidc  = TadLoginTools::$all_oidc;
                         $all_oidc2 = TadLoginTools::$all_oidc2;
                     }
-                    $oidc_array = array_keys($all_oidc);
+                    $oidc_array  = array_keys($all_oidc);
                     $oidc_array2 = array_keys($all_oidc2);
                     foreach ($auth_method as $method) {
                         $method_const = "_" . strtoupper($method);
@@ -247,15 +271,13 @@ class TadtoolsCorePreload extends XoopsPreloadItem
                         }
 
                         if (isset($oidc_array) && is_array($oidc_array) && in_array($method, $oidc_array)) {
-                            $tlogin[$i]['img'] = XOOPS_URL . "/modules/tad_login/images/oidc/" . $all_oidc[$method]['tail'] . ".png";
+                            $tlogin[$i]['img']  = XOOPS_URL . "/modules/tad_login/images/oidc/" . $all_oidc[$method]['tail'] . ".png";
                             $tlogin[$i]['text'] = sprintf(_TAD_LOGIN_BY, constant('_' . strtoupper($all_oidc[$method]['tail'])) . _TADLOGIN_OIDC);
-
                         } elseif (isset($oidc_array2) && is_array($oidc_array2) && in_array($method, $oidc_array2)) {
-                            $tlogin[$i]['img'] = XOOPS_URL . "/modules/tad_login/images/{$method}.png";
+                            $tlogin[$i]['img']  = XOOPS_URL . "/modules/tad_login/images/{$method}.png";
                             $tlogin[$i]['text'] = sprintf(_TAD_LOGIN_BY, constant('_' . strtoupper($all_oidc2[$method]['tail'])) . _TADLOGIN_LDAP);
-
                         } else {
-                            $tlogin[$i]['img'] = XOOPS_URL . "/modules/tad_login/images/{$method}.png";
+                            $tlogin[$i]['img']  = XOOPS_URL . "/modules/tad_login/images/{$method}.png";
                             $tlogin[$i]['text'] = sprintf(_TAD_LOGIN_BY, constant($method_const) . ' OpenID ');
                         }
 
@@ -264,16 +286,15 @@ class TadtoolsCorePreload extends XoopsPreloadItem
                     $xoopsTpl->assign('tlogin', $tlogin);
                 } elseif ($TnLoginXoopsModule) {
                     require_once XOOPS_ROOT_PATH . "/modules/tn_login/function.php";
-                    $tlogin[0]['link'] = XOOPS_URL . "/modules/tn_login/index.php";
-                    $tlogin[0]['img'] = XOOPS_URL . "/modules/tn_login/images/login_logo.png";
-                    $tlogin[0]['text'] = '由南資 OpenID 認證登入';
+                    $tlogin[0]['link']     = XOOPS_URL . "/modules/tn_login/index.php";
+                    $tlogin[0]['img']      = XOOPS_URL . "/modules/tn_login/images/login_logo.png";
+                    $tlogin[0]['text']     = '由南資 OpenID 認證登入';
                     $tlogin[0]['tn_login'] = true;
 
                     $xoopsTpl->assign('tlogin', $tlogin);
                 }
             }
         }
-
     }
 
     public static function eventCoreFooterStart($args)
@@ -293,17 +314,16 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         $_SESSION['old_theme_set'] = $theme_set;
 
         if (isset($_SESSION['theme_kind'])) {
-
         } else {
-            $sql = 'SELECT `tt_theme`,`tt_use_bootstrap`,`tt_bootstrap_color`,`tt_theme_kind` FROM `' . $xoopsDB->prefix('tadtools_setup') . "` WHERE `tt_theme` = '$theme_set'";
-            $result = $xoopsDB->query($sql);
+            $sql                                                                    = 'SELECT `tt_theme`,`tt_use_bootstrap`,`tt_bootstrap_color`,`tt_theme_kind` FROM `' . $xoopsDB->prefix('tadtools_setup') . "` WHERE `tt_theme` = '$theme_set'";
+            $result                                                                 = $xoopsDB->query($sql);
             list($tt_theme, $tt_use_bootstrap, $tt_bootstrap_color, $tt_theme_kind) = $xoopsDB->fetchRow($result);
             if (empty($tt_theme_kind)) {
                 if (file_exists(XOOPS_ROOT_PATH . "/themes/{$theme_set}/config.php")) {
                     require_once XOOPS_ROOT_PATH . "/themes/{$theme_set}/config.php";
                     if (isset($theme_kind)) {
-                        $tt_theme_kind = $theme_kind;
-                        $tt_use_bootstrap = 'html' === $theme_kind ? 1 : 0;
+                        $tt_theme_kind      = $theme_kind;
+                        $tt_use_bootstrap   = 'html' === $theme_kind ? 1 : 0;
                         $tt_bootstrap_color = 'bootstrap3';
                         if (empty($tt_theme)) {
                             $sql = 'INSERT INTO `' . $xoopsDB->prefix('tadtools_setup') . '` (`tt_theme`,`tt_use_bootstrap`,`tt_bootstrap_color`,`tt_theme_kind`) VALUES(?, ?, ?, ?)';
@@ -314,12 +334,12 @@ class TadtoolsCorePreload extends XoopsPreloadItem
                         }
                     }
                 } else {
-                    $tt_theme_kind = 'html';
-                    $tt_use_bootstrap = 1;
+                    $tt_theme_kind      = 'html';
+                    $tt_use_bootstrap   = 1;
                     $tt_bootstrap_color = 'bootstrap5';
                 }
             }
-            $_SESSION['theme_kind'] = $tt_theme_kind;
+            $_SESSION['theme_kind']                    = $tt_theme_kind;
             $_SESSION[$theme_set]['bootstrap_version'] = $tt_theme_kind;
         }
 

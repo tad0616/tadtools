@@ -8,9 +8,10 @@ if (!$xoopsUser) {
 }
 header('HTTP/1.1 200 OK');
 $LANGCODE = str_replace('-', '_', _LANGCODE);
-$type = Request::getString('type');
-$mod_dir = Request::getString('mod_dir');
-$subDir = Request::getString('subDir');
+$type     = Request::getString('type');
+$type     = $type == 'image' ? 'image' : 'file';
+$mod_dir  = Request::getString('mod_dir');
+$subDir   = Request::getString('subDir');
 
 ?>
 <!DOCTYPE html>
@@ -30,7 +31,7 @@ $subDir = Request::getString('subDir');
 				// Documentation for client options:
 				// https://github.com/Studio-42/elFinder/wiki/Client-configuration-options
 				defaultOpts : {
-					url : '<?php echo XOOPS_URL; ?>/modules/tadtools/elFinder/php/connector.minimal.php?type=<?php echo $type; ?>&subDir=<?php echo $subDir; ?>', // or connector.maximal.php : connector URL (REQUIRED)
+					url : '<?php echo XOOPS_URL; ?>/modules/tadtools/elFinder/php/connector.minimal.php?type=<?php echo $type; ?>&mod_dir=<?php echo $mod_dir; ?>&subDir=<?php echo $subDir; ?>', // or connector.maximal.php : connector URL (REQUIRED)
                     lang: '<?php echo $LANGCODE; ?>',
 					commandsOptions : {
 						edit : {

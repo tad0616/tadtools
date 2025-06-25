@@ -4,21 +4,22 @@ use XoopsModules\Tadtools\Utility;
 
 require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
 header('HTTP/1.1 200 OK');
-$mdir = $_SESSION['xoops_mod_name'];
+
+$type   = Request::getString('type');
+$subDir = Request::getString('subDir');
+$mdir   = Request::getString('mod_dir', $_SESSION['xoops_mod_name']);
+
 if (empty($mdir)) {
     die('畫面靜止操作過久，已無法讀取檔案，請關閉視窗，並重新整理畫面再繼續操作。');
 }
 
 $TadToolsModuleConfig = Utility::getXoopsModuleConfig('tadtools');
 
-$image_max_width = $TadToolsModuleConfig['image_max_width'] ? (int) $TadToolsModuleConfig['image_max_width'] : 640;
+$image_max_width  = $TadToolsModuleConfig['image_max_width'] ? (int) $TadToolsModuleConfig['image_max_width'] : 640;
 $image_max_height = $TadToolsModuleConfig['image_max_height'] ? (int) $TadToolsModuleConfig['image_max_height'] : 640;
 
-$type = Request::getString('type');
-$subDir = Request::getString('subDir');
-
 $path = XOOPS_ROOT_PATH . "/uploads/{$mdir}/{$type}/";
-$URL = XOOPS_URL . "/uploads/{$mdir}/{$type}/";
+$URL  = XOOPS_URL . "/uploads/{$mdir}/{$type}/";
 if (!empty($subDir)) {
     $path .= "{$subDir}/";
     $URL .= "{$subDir}/";
@@ -179,6 +180,7 @@ $opts = array(
             'Plugin.AutoResize.onUpLoadPreSave',
         ],
     ],
+    'session' => null, // 禁用自訂 session handler
     'plugin' => [
         'AutoResize' => [
             'enable' => true, // For control by volume driver

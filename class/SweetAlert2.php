@@ -7,17 +7,17 @@ use XoopsModules\Tadtools\Utility;
 class SweetAlert2
 {
     private $show_jquery;
-    private $showConfirmButton = 'true';
-    private $timer = 0;
-    private $html = '';
-    private $showCancelButton = 'true';
+    private $showConfirmButton  = 'true';
+    private $timer              = 0;
+    private $html               = '';
+    private $showCancelButton   = 'true';
     private $confirmButtonColor = '#DD6B55';
-    private $cancelButtonColor = '#8c8c8c';
-    private $closeOnConfirm = 'false';
-    private $allowOutsideClick = 'true';
-    private $complete = _TAD_DEL_CONFIRM_COMPLETE;
-    private $complete_txt = _TAD_DEL_CONFIRM_COMPLETE_TXT;
-    private $confirmButtonText = _TAD_DEL_CONFIRM_BTN;
+    private $cancelButtonColor  = '#8c8c8c';
+    private $closeOnConfirm     = 'false';
+    private $allowOutsideClick  = 'true';
+    private $complete           = _TAD_DEL_CONFIRM_COMPLETE;
+    private $complete_txt       = _TAD_DEL_CONFIRM_COMPLETE_TXT;
+    private $confirmButtonText  = _TAD_DEL_CONFIRM_BTN;
 
     //建構函數
     public function __construct($show_jquery = true)
@@ -38,19 +38,19 @@ class SweetAlert2
         $jquery = $this->show_jquery ? Utility::get_jquery() : '';
         if (is_array($var)) {
             $parm_var = [];
-            $href = [];
+            $href     = [];
             foreach ($var as $key => $value) {
                 if (is_string($key)) {
                     $href[] = "{$key}={$value}";
                 } else {
-                    $href[] = "{$value}=' + $value + '";
+                    $href[]     = "{$value}=' + $value + '";
                     $parm_var[] = $value;
                 }
             }
-            $href = "'{$url}" . implode('&', $href) . "'";
+            $href     = "'{$url}" . implode('&', $href) . "'";
             $parm_var = implode(', ', $parm_var);
         } else {
-            $href = empty($var) ? "'$url'" : "'$url' + $var";
+            $href     = empty($var) ? "'$url'" : "'$url' + $var";
             $parm_var = $var;
         }
 
@@ -74,18 +74,9 @@ class SweetAlert2
                     allowOutsideClick: $this->allowOutsideClick
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        Swal.fire({
-                            title: '{$this->complete}',
-                            text: '{$this->complete_txt}',
-                            icon: 'success'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                location.href=$href;
-                            }
-                        });
+                        location.href=$href;
                     }
-                });
-            }
+            });
             ");
         } else {
             $main = "
@@ -108,15 +99,7 @@ class SweetAlert2
                     allowOutsideClick: $this->allowOutsideClick
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        Swal.fire({
-                            title: '{$this->complete}',
-                            text: '{$this->complete_txt}',
-                            icon: 'success'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                location.href=$href;
-                            }
-                        });
+                        location.href=$href;
                     }
                 });
             }

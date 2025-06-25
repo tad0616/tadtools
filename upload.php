@@ -4,33 +4,32 @@ use XoopsModules\Tadtools\Utility;
 
 //此檔案是給 CkEditor.php 用的，勿刪
 require_once dirname(dirname(__DIR__)) . '/mainfile.php';
-if (! $xoopsUser) {
+if (!$xoopsUser) {
     exit;
 }
+if (strpos($_SERVER['HTTP_REFERER'], XOOPS_URL) !== 0) {
+    die("非法調用");
+}
+
 require_once __DIR__ . '/upload/class.upload.php';
 
-$type    = Request::getString('type');
+$type_arr = ['image', 'file'];
+$type     = Request::getString('type');
+if (!in_array($type, $type_arr)) {
+    die("不支援 {$type} 類型 ");
+}
 $mod_dir = Request::getString('mod_dir');
 $subDir  = Request::getString('subDir');
 
 $save_to = XOOPS_ROOT_PATH . "/uploads/{$mod_dir}/{$type}/";
 $img_url = XOOPS_URL . "/uploads/{$mod_dir}/{$type}/";
-if (! empty($subDir)) {
+if (!empty($subDir)) {
     $save_to .= "{$subDir}/";
     $img_url .= "{$subDir}/";
     Utility::mk_dir($save_to);
 }
-$type_arr         = ['image', 'file'];
 $image_max_width  = $xoopsModuleConfig['image_max_width'] ? (int) $xoopsModuleConfig['image_max_width'] : 640;
 $image_max_height = $xoopsModuleConfig['image_max_height'] ? (int) $xoopsModuleConfig['image_max_height'] : 640;
-
-if (strpos($_SERVER['HTTP_REFERER'], XOOPS_URL) !== 0) {
-    die("非法調用");
-}
-
-if (! in_array($type, $type_arr)) {
-    die("不支援 {$type} 類型 ");
-}
 
 if (isset($_FILES['upload'])) {
     $foo = new \Verot\Upload\Upload($_FILES['upload'], 'zh_TW');

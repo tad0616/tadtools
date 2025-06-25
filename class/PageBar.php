@@ -68,29 +68,29 @@ class PageBar
 
     public function __construct($total, $limit = 20, $page_limit = 10, $order_sql = '')
     {
-        $this->prev = "<img src='" . XOOPS_URL . "/modules/tadtools/images/1leftarrow.png' alt='" . _TAD_BACK_PAGE . "' align='absmiddle' hspace=3>";
-        $this->next = "<img src='" . XOOPS_URL . "/modules/tadtools/images/1rightarrow.png' alt='" . _TAD_NEXT_PAGE . "' align='absmiddle' hspace=3>";
-        $this->first = "<img src='" . XOOPS_URL . "/modules/tadtools/images/2leftarrow.png' alt='" . _TAD_FIRST_PAGE . "' align='absmiddle' hspace=3>";
-        $this->last = "<img src='" . XOOPS_URL . "/modules/tadtools/images/2rightarrow.png' alt='" . _TAD_LAST_PAGE . "' align='absmiddle' hspace=3>";
-        $this->prev2 = "<img src='" . XOOPS_URL . "/modules/tadtools/images/1leftarrow_g.png' alt='" . _TAD_BACK_PAGE . "' align='absmiddle' hspace=3>";
-        $this->next2 = "<img src='" . XOOPS_URL . "/modules/tadtools/images/1rightarrow_g.png' alt='" . _TAD_NEXT_PAGE . "' align='absmiddle' hspace=3>";
-        $this->first2 = "<img src='" . XOOPS_URL . "/modules/tadtools/images/2leftarrow_g.png' alt='" . _TAD_FIRST_PAGE . "' align='absmiddle' hspace=3>";
-        $this->last2 = "<img src='" . XOOPS_URL . "/modules/tadtools/images/2rightarrow_g.png' alt='" . _TAD_LAST_PAGE . "' align='absmiddle' hspace=3>";
-        $this->to_page = $_SERVER['PHP_SELF'];
-        $this->limit = (int) $limit;
-        $this->total = $total;
-        $this->pLimit = $page_limit;
+        $this->prev      = "<img src='" . XOOPS_URL . "/modules/tadtools/images/1leftarrow.png' alt='" . _TAD_BACK_PAGE . "' align='absmiddle' hspace=3>";
+        $this->next      = "<img src='" . XOOPS_URL . "/modules/tadtools/images/1rightarrow.png' alt='" . _TAD_NEXT_PAGE . "' align='absmiddle' hspace=3>";
+        $this->first     = "<img src='" . XOOPS_URL . "/modules/tadtools/images/2leftarrow.png' alt='" . _TAD_FIRST_PAGE . "' align='absmiddle' hspace=3>";
+        $this->last      = "<img src='" . XOOPS_URL . "/modules/tadtools/images/2rightarrow.png' alt='" . _TAD_LAST_PAGE . "' align='absmiddle' hspace=3>";
+        $this->prev2     = "<img src='" . XOOPS_URL . "/modules/tadtools/images/1leftarrow_g.png' alt='" . _TAD_BACK_PAGE . "' align='absmiddle' hspace=3>";
+        $this->next2     = "<img src='" . XOOPS_URL . "/modules/tadtools/images/1rightarrow_g.png' alt='" . _TAD_NEXT_PAGE . "' align='absmiddle' hspace=3>";
+        $this->first2    = "<img src='" . XOOPS_URL . "/modules/tadtools/images/2leftarrow_g.png' alt='" . _TAD_FIRST_PAGE . "' align='absmiddle' hspace=3>";
+        $this->last2     = "<img src='" . XOOPS_URL . "/modules/tadtools/images/2rightarrow_g.png' alt='" . _TAD_LAST_PAGE . "' align='absmiddle' hspace=3>";
+        $this->to_page   = $_SERVER['PHP_SELF'];
+        $this->limit     = (int) $limit;
+        $this->total     = $total;
+        $this->pLimit    = $page_limit;
         $this->order_sql = $order_sql;
     }
 
     public function init()
     {
         $this->used_query = array($this->url_page);
-        $this->query_str = $this->processQuery($this->used_query);
-        $this->glue = ('' == $this->query_str) ? '?' : '&';
-        $this->limit = empty($this->limit) ? 10 : $this->limit;
-        $this->current = isset($_GET[$this->url_page]) ? max(1, (int) $_GET[$this->url_page]) : 1;
-        $this->pTotal = ceil($this->total / $this->limit);
+        $this->query_str  = $this->processQuery($this->used_query);
+        $this->glue       = ('' == $this->query_str) ? '?' : '&';
+        $this->limit      = empty($this->limit) ? 10 : $this->limit;
+        $this->current    = isset($_GET[$this->url_page]) ? max(1, (int) $_GET[$this->url_page]) : 1;
+        $this->pTotal     = ceil($this->total / $this->limit);
 
         if ($this->current < 1) {
             $this->current = 1;
@@ -104,18 +104,35 @@ class PageBar
     public function processQuery($used_query)
     {
         $QUERY_STRING = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '';
-
         // 使用 parse_str() 來解析查詢字符串
         parse_str($QUERY_STRING, $query_vars);
-
         $filtered_vars = array();
+
         foreach ($query_vars as $key => $value) {
             // 檢查鍵是否在 used_query 中
             if (!in_array($key, $used_query)) {
-                // 對鍵和值進行 HTML 轉義
-                $safe_key = htmlspecialchars($key, ENT_QUOTES, 'UTF-8');
-                $safe_value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
-                $filtered_vars[] = $safe_key . '=' . $safe_value;
+                // 處理陣列值
+                if (is_array($value)) {
+                    foreach ($value as $array_key => $array_value) {
+                        $safe_key         = htmlspecialchars($key, ENT_QUOTES, 'UTF-8');
+                        $safe_array_key   = htmlspecialchars($array_key, ENT_QUOTES, 'UTF-8');
+                        $safe_array_value = htmlspecialchars($array_value, ENT_QUOTES, 'UTF-8');
+
+                        // 構建陣列參數的格式：key[array_key]=array_value
+                        if (is_numeric($array_key)) {
+                            // 如果是數字索引陣列，使用 [] 格式
+                            $filtered_vars[] = $safe_key . '[]=' . $safe_array_value;
+                        } else {
+                            // 如果是關聯陣列，使用 [key] 格式
+                            $filtered_vars[] = $safe_key . '[' . $safe_array_key . ']=' . $safe_array_value;
+                        }
+                    }
+                } else {
+                    // 處理非陣列值
+                    $safe_key        = htmlspecialchars($key, ENT_QUOTES, 'UTF-8');
+                    $safe_value      = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+                    $filtered_vars[] = $safe_key . '=' . $safe_value;
+                }
             }
         }
 
@@ -143,18 +160,19 @@ class PageBar
 
     public function makeBootStrapBar($url_page = 'g2p')
     {
+
         if ('' !== $url_page) {
             $this->url_page = $url_page;
         }
         $this->init();
 
         $loadtime = $this->url_other;
-        $start = ($this->pCurrent - 1) * $this->pLimit + 1;
-        $end = min($this->pTotal, $this->pCurrent * $this->pLimit);
+        $start    = ($this->pCurrent - 1) * $this->pLimit + 1;
+        $end      = min($this->pTotal, $this->pCurrent * $this->pLimit);
 
         $bar_center = '';
         for ($i = $start; $i <= $end; $i++) {
-            $active = $i == $this->current ? ' active' : '';
+            $active  = $i == $this->current ? ' active' : '';
             $sr_only = $i == $this->current ? '<span class="sr-only">(current)</span>' : '';
             $bar_center .= sprintf(
                 '<li class="page-item%s"><a class="page-link" href="%s%s%s%s=%d%s" title="%d">%d%s</a></li>',

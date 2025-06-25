@@ -8,3 +8,7 @@
                 $('iframe:not([title])').attr('title','iframe content');
             });
         </script>
+
+<{*
+<{include file="$xoops_rootpath/modules/tadtools/templates/toast.tpl"}>
+*}>
