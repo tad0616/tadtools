@@ -29,7 +29,7 @@ class CkEditor
         $this->ColID          = "editor_{$ColName}";
         $this->Value          = $Value;
         $this->subDir         = $subDir;
-        if (! empty($TadToolsModuleConfig['uploadcare_publickey'])) {
+        if (!empty($TadToolsModuleConfig['uploadcare_publickey'])) {
             $this->set_demopublickey($TadToolsModuleConfig['uploadcare_publickey']);
         }
     }
@@ -97,6 +97,7 @@ class CkEditor
         $this->setStyle('語法', 'code');
         $this->setStyle('按鍵', 'kbd');
 
+        $this->setStyle('巢狀清單「1.、(1)、A.」', 'ol', ['class' => 'my-list'], []);
         $this->setStyle('清單「壹、貳」', 'ol', ['class' => 'big-tw'], []);
         $this->setStyle('清單「一、二」', 'ol', ['class' => 'small-tw'], []);
         $this->setStyle('清單「(一)、(二)」', 'ol', ['class' => 'brackets-tw'], []);
@@ -174,7 +175,6 @@ class CkEditor
         contentsCss : ['" . XOOPS_URL . "/modules/tadtools/bootstrap{$bs}/css/bootstrap.css', '" . XOOPS_URL . "/modules/tadtools/css/fonts.css', '" . XOOPS_URL . "/modules/tadtools/css/ckeditor.css', '" . XOOPS_URL . "/modules/tadtools/css/fontawesome6/css/all.min.css'{$other_css}],
         extraPlugins: 'editorplaceholder,pasteUploadImage,sourcearea,font,syntaxhighlight,dialog,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak,ckeditorfa,prism,codesnippet,undo,autoembed,autolink,clipboard,toolbar,button,dialogui,notification,textmatch,embed,embedbase,widgetselection,notificationaggregator,embedsemantic,panel,floatpanel,menu{$codemirror}{$extra_uploadcare}',
         {$uploadcare_setup}
-        pasteFilter: 'plain-text',
         filebrowserBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=file&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',
         filebrowserImageBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=image&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',
 

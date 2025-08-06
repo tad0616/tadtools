@@ -14,18 +14,20 @@ class VideoJs
     public $start;
     public $vtt;
     public $youtube_id;
+    public $player;
 
     //建構函數
     public function __construct($id = '', $file = '', $image = '', $mode = '', $autoplay = 'false', $loop = 'false', $position = 'bottom')
     {
-        $this->file = ('playlist' === $mode) ? $file : strip_tags($file);
+        $this->file       = ('playlist' === $mode) ? $file : strip_tags($file);
         $this->youtube_id = $this->getYTid($file);
-        $this->image = empty($image) ? "https://i3.ytimg.com/vi/{$this->youtube_id}/0.jpg" : strip_tags($image);
-        $this->mode = $mode;
-        $this->id = $id;
-        $this->autoplay = $autoplay !== 'true' ? 'false' : 'true';
-        $this->loop = $loop !== 'true' ? 'false' : 'true';
-        $this->position = $position !== 'right' ? 'bottom' : 'right';
+        $this->image      = empty($image) ? "https://i3.ytimg.com/vi/{$this->youtube_id}/0.jpg" : strip_tags($image);
+        $this->mode       = $mode;
+        $this->id         = \str_replace('#', '', $id);
+        $this->player     = 'player_' . $this->id;
+        $this->autoplay   = $autoplay !== 'true' ? 'false' : 'true';
+        $this->loop       = $loop !== 'true' ? 'false' : 'true';
+        $this->position   = $position !== 'right' ? 'bottom' : 'right';
     }
 
     //設定變數
@@ -74,7 +76,7 @@ class VideoJs
             class="video-js vjs-fluid vjs-big-play-centered vjs-theme-fantasy" controls>
             ' . $vtt . '
         </video>
-        <div id="' . $this->id . 'timer" ></div>
+        <div id="' . $this->id . 'timer" style="color: transparent"></div>
         ';
 
         if ('playlist' === $this->mode) {
@@ -99,29 +101,28 @@ class VideoJs
         if ('playlist' === $this->mode) {
             $playlist = "
             var samplePlaylist ={$this->file};
-            player.playlist(samplePlaylist);
-            player.playlist.autoadvance(0);
-            player.playlistUi();
+            " . $this->player . ".playlist(samplePlaylist);
+            " . $this->player . ".playlist.autoadvance(0);
+            " . $this->player . ".playlistUi();
             ";
 
             if ($this->position == 'right') {
                 $playlist .= "
                 $(document).ready(function(){
-                    var h=$('#" . $this->id . ">.vjs-poster').height();
+                    var h=$('" . $this->id . ">.vjs-poster').height();
                     console.log('h:'+h);
                     $('." . $this->id . ">.vjs-playlist').css('max-height', h).css('overflow', 'auto');
                 });
                 ";
             }
         } elseif ($this->youtube_id) {
-            $source = "
-            techOrder: ['youtube'],
-            sources: [
-                {
-                    'type': 'video/youtube',
-                    'src': 'https://www.youtube.com/watch?v=" . $this->youtube_id . "'
-                }
-            ],";
+            $source = "techOrder: ['youtube'],
+                sources: [
+                    {
+                        'type': 'video/youtube',
+                        'src': 'https://www.youtube.com/watch?v=" . $this->youtube_id . "'
+                    }
+                ],";
         } else {
             $ext = substr($this->file, -3);
             if ('mp4' === $ext) {
@@ -136,18 +137,13 @@ class VideoJs
                 $type = 'video/x-flv';
             }
 
-            // $poster = "PosterImage: false,";
-            // if (empty($this->start)) {
-            //     $poster = "PosterImage: '{$this->image}',";
-            // }
-
             $source = "
-            sources: [
-                {
-                    'type': '$type',
-                    'src': '{$this->file}'
-                }
-            ],";
+                sources: [
+                    {
+                        'type': '$type',
+                        'src': '{$this->file}'
+                    }
+                ],";
         }
 
         if ($xoTheme) {
@@ -157,7 +153,7 @@ class VideoJs
             $xoTheme->addScript('modules/tadtools/video-js/videojs-flash.min.js');
             // $xoTheme->addScript('modules/tadtools/video-js/flv.js');
             // $xoTheme->addScript('modules/tadtools/video-js/videojs-flvjs.min.js');
-            $xoTheme->addStylesheet('modules/tadtools/video-js/video-js.css');
+            $xoTheme->addStylesheet('modules/tadtools/video-js/video-js.css?v=' . time());
             $xoTheme->addStylesheet('modules/tadtools/video-js/themes/fantasy/index.css');
             if ('playlist' === $this->mode) {
                 $xoTheme->addScript('modules/tadtools/video-js/videojs-playlist.js');
@@ -187,19 +183,19 @@ class VideoJs
         $video_log = '';
         if ($module_dirname) {
             $video_log = "
-            player.on('loadedmetadata',function(){
-                console.log('影片長度'+ player.duration());
-                $.post('$ajax_file', { op:'video_length', mod: '$module_dirname', col_name: '{$length['col_name']}', col_sn: '{$length['col_sn']}', length: player.duration()} );
+            " . $this->player . ".on('loadedmetadata',function(){
+                console.log('影片長度'+ " . $this->player . ".duration());
+                $.post('$ajax_file', { op:'video_length', mod: '$module_dirname', col_name: '{$length['col_name']}', col_sn: '{$length['col_sn']}', length: " . $this->player . ".duration()} );
             });
 
-            player.on('pause',()=>{
-                console.log('暫停影片'+ player.currentTime());
-                $.post('$ajax_file', { op:'video_log', mod: '$module_dirname', col_name: '{$log['col_name']}', col_sn: '{$log['col_sn']}', time: player.currentTime()} );
+            " . $this->player . ".on('pause',()=>{
+                console.log('暫停影片'+ " . $this->player . ".currentTime());
+                $.post('$ajax_file', { op:'video_log', mod: '$module_dirname', col_name: '{$log['col_name']}', col_sn: '{$log['col_sn']}', time: " . $this->player . ".currentTime()} );
             });
 
-            player.on('ended',()=>{
-                console.log('影片結束'+ player.currentTime());
-                $.post('$ajax_file', { op:'video_log', mod: '$module_dirname', col_name: '{$log['col_name']}', col_sn: '{$log['col_sn']}', time: player.currentTime()} );
+            " . $this->player . ".on('ended',()=>{
+                console.log('影片結束'+ " . $this->player . ".currentTime());
+                $.post('$ajax_file', { op:'video_log', mod: '$module_dirname', col_name: '{$log['col_name']}', col_sn: '{$log['col_sn']}', time: " . $this->player . ".currentTime()} );
             });
             ";
         }
@@ -208,18 +204,13 @@ class VideoJs
         if ($this->start > 0) {
             $start_form = "
             console.log('從這裡開始播放'+ $this->start);
-            player.currentTime($this->start);
+            " . $this->player . ".currentTime($this->start);
             ";
         }
 
         $player .= "
         <script>
-            document.getElementById('" . $this->id . "').addEventListener('timeupdate', function() {
-                document.getElementById('" . $this->id . "timer').innerHTML = this.currentTime;
-                currentTime = this.currentTime;
-            });
-
-            var options = {
+            const {$this->id}_options = {
                 preload: 'auto',
                 $source
                 controls: true,
@@ -247,23 +238,20 @@ class VideoJs
                 },
                 liveui: true
             };
-            var player = videojs('#{$this->id}', options);
 
-            player.ready(function(){
-                var settings = this.textTrackSettings;
-                settings.setValues({
-                    // 'fontFamily': 'Microsoft JhengHei',
-                    'color': '#f4ff84',
-                    'backgroundColor': 'transparent',
-                    'backgroundOpacity': '0',
-                    'edgeStyle': 'uniform',
+            const  " . $this->player . " = videojs('{$this->id}', {$this->id}_options);
+
+            " . $this->player . ".ready(function () {
+                " . $this->player . ".on('timeupdate', function() {
+                    const current = " . $this->player . ".currentTime();
+                    document.getElementById('" . $this->id . "timer').textContent = current.toFixed(1);
                 });
-                settings.updateDisplay();
             });
             $start_form
             $playlist
             $video_log
-        </script>";
+        </script>
+        ";
         return $player;
     }
 

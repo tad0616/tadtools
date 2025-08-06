@@ -108,3 +108,51 @@ ol.brackets-num li:before {
   position: fixed;
   z-index: 1300;
 } */
+
+/* 清除 Bootstrap 的 list 樣式干擾 */
+.my-list, .my-list ol, .my-list li {
+  list-style: none !important;
+  margin: 0;
+  padding-left: 0em !important;
+}
+
+/* 第一層 */
+.my-list {
+  counter-reset: level1;
+}
+.my-list > li {
+  counter-increment: level1;
+}
+.my-list > li::before {
+  content: counter(level1) ". ";
+  font-weight: normal;
+  margin-right: 0.5em;
+}
+
+/* 第二層 */
+.my-list > li > ol {
+  counter-reset: level2;
+  padding-left: 0em !important;
+}
+.my-list > li > ol > li {
+  counter-increment: level2;
+}
+.my-list > li > ol > li::before {
+  content: "(" counter(level2) ") ";
+  font-style: normal;
+  margin-right: 0.5em;
+}
+
+/* 第三層 */
+.my-list > li > ol > li > ol {
+  counter-reset: level3;
+  padding-left: 0em !important;
+}
+.my-list > li > ol > li > ol > li {
+  counter-increment: level3;
+}
+.my-list > li > ol > li > ol > li::before {
+  content: counter(level3, upper-alpha) ". ";
+  text-decoration: none;
+  margin-right: 0.5em;
+}
