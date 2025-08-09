@@ -1,3 +1,9 @@
+TadTools 4.0.2 (released 2025-08-06)
+====================================
+1. Upgrade BootStrap 5.3.3 to 5.3.7.
+2. Handle the problem that the format will not be seen when CKeditor pastes the copied content.
+3. Upgrade Video.js to 8.23.4.
+
 TadTools 4.0.1 (released 2025-06-25)
 ====================================
 1. added fontawesome6-picker.js
