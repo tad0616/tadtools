@@ -84,6 +84,15 @@
     </ul>
 </nav>
 
+<{if $use_pin=="1"}>
+    <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/jquery.sticky/jquery.sticky.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $("#nav-wrapper").sticky({topSpacing:0 , zIndex: 100});
+    });
+    </script>
+<{/if}>
+
 <script type="text/javascript">
     document.addEventListener('click',function(e){
         // Hamburger menu

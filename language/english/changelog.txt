@@ -1,3 +1,8 @@
+TadTools 4.0.3 (released 2025-08-15)
+====================================
+1. Adjusted TadUpFiles lightbox effect part.
+2. Fixed BootStrap5 navigation options and arrow color to make it clearer.
+
 TadTools 4.0.2 (released 2025-08-06)
 ====================================
 1. Upgrade BootStrap 5.3.3 to 5.3.7.

@@ -33,7 +33,7 @@
   text-align: center;
   text-shadow: none;
   background: <{$navbar_hover|default:''}>;
-  color:<{$navbar_color_hover|default:''}>;
+  color:<{$navbar_color|default:''}>;
   border-radius: 4px;
 }
 .sm-mint a .sub-arrow::before {
@@ -51,41 +51,34 @@
 .sm-mint ul {
   background: <{$nav_sub_bg_color|default:''}>88;
 }
-.sm-mint ul a, .sm-mint ul a:hover, .sm-mint ul a:focus, .sm-mint ul a:active {
+
+.sm-mint ul a,
+.sm-mint ul ul a,
+.sm-mint ul ul ul a,
+.sm-mint ul ul ul ul a,
+.sm-mint ul ul ul ul ul a{
   color: <{$nav_sub_font_color|default:''}>;
   font-size: <{$navbar_font_size|default:''}>rem;
   border-left: 8px solid transparent;
 }
 
-.sm-mint ul ul a,
+.sm-mint ul a:hover,
+.sm-mint ul a:focus,
+.sm-mint ul a:active,
 .sm-mint ul ul a:hover,
 .sm-mint ul ul a:focus,
-.sm-mint ul ul a:active {
-  color: <{$nav_sub_font_color|default:''}>;
-  border-left: 8px solid transparent;
-}
-
-.sm-mint ul ul ul a,
+.sm-mint ul ul a:active,
 .sm-mint ul ul ul a:hover,
 .sm-mint ul ul ul a:focus,
-.sm-mint ul ul ul a:active {
-  color: <{$nav_sub_font_color|default:''}>;
-  border-left: 8px solid transparent;
-}
-.sm-mint ul ul ul ul a,
+.sm-mint ul ul ul a:active,
 .sm-mint ul ul ul ul a:hover,
 .sm-mint ul ul ul ul a:focus,
-.sm-mint ul ul ul ul a:active {
-  color: <{$nav_sub_font_color|default:''}>;
-  border-left: 8px solid transparent;
-}
-
-.sm-mint ul ul ul ul ul a,
+.sm-mint ul ul ul ul a:active,
 .sm-mint ul ul ul ul ul a:hover,
 .sm-mint ul ul ul ul ul a:focus,
-.sm-mint ul ul ul ul ul a:active {
-  color: <{$nav_sub_font_color|default:''}>;
-  border-left: 8px solid transparent;
+.sm-mint ul ul ul ul ul a:active  {
+    background: <{$navbar_hover|default:''}>;
+    color: <{$navbar_color_hover|default:''}>;
 }
 
 @media (min-width: 768px) {
@@ -156,6 +149,7 @@
   .sm-mint a.has-submenu {
     padding-right: 34px;
   }
+
   .sm-mint a .sub-arrow {
     top: 50%;
     margin-top: -3px;
@@ -169,10 +163,10 @@
     border-radius: 0;
   }
   .sm-mint a:hover .sub-arrow, .sm-mint a:focus .sub-arrow, .sm-mint a:active .sub-arrow {
-    border-color: <{$navbar_color_hover|default:''}> transparent transparent transparent;
+    border-color: <{$navbar_color|default:''}> transparent transparent transparent;
   }
   .sm-mint a.highlighted .sub-arrow {
-    border-color: <{$navbar_color|default:''}> transparent transparent transparent;
+    border-color: <{$nav_sub_font_color|default:''}> transparent transparent transparent;
   }
   .sm-mint a.disabled .sub-arrow {
     border-color: <{$navbar_color|default:''}> transparent transparent transparent;
@@ -230,16 +224,19 @@
   .sm-mint ul a.has-submenu {
     padding-right: 20px;
   }
+
   .sm-mint ul a .sub-arrow {
     right: 10px;
     margin-top: -4.02px;
     border-width: 4.02px 0 4.02px 6px;
     border-style: dashed dashed dashed solid;
-    border-color: transparent transparent transparent <{$navbar_color|default:''}>;
+    border-color: transparent transparent transparent <{$nav_sub_font_color|default:''}>;
   }
+
   .sm-mint ul a:hover .sub-arrow, .sm-mint ul a:focus .sub-arrow, .sm-mint ul a:active .sub-arrow, .sm-mint ul a.highlighted .sub-arrow {
     border-color: transparent transparent transparent <{$navbar_color_hover|default:''}>;
   }
+
   .sm-mint ul a.disabled .sub-arrow {
     border-color: transparent transparent transparent <{$navbar_color|default:''}>;
   }
@@ -263,12 +260,14 @@
     overflow: hidden;
     border-width: 0 6px 8px 6px;
     border-style: dashed dashed solid dashed;
-    border-color: transparent transparent <{$navbar_hover|default:''}> transparent;
+    border-color: transparent transparent <{$nav_sub_font_color|default:''}> transparent;
   }
+
+
   .sm-mint .scroll-down-arrow {
     border-width: 8px 6px 0 6px;
     border-style: solid dashed dashed dashed;
-    border-color: <{$navbar_hover|default:''}> transparent transparent transparent;
+    border-color: <{$nav_sub_font_color|default:''}> transparent transparent transparent;
   }
   .sm-mint.sm-rtl a.has-submenu {
     padding-right: 20px;
@@ -293,13 +292,13 @@
     left: 10px;
     border-width: 4.02px 6px 4.02px 0;
     border-style: dashed solid dashed dashed;
-    border-color: transparent <{$navbar_hover|default:''}> transparent transparent;
+    border-color: transparent <{$navbar_color_hover|default:''}> transparent transparent;
   }
   .sm-mint.sm-rtl.sm-vertical a:hover .sub-arrow, .sm-mint.sm-rtl.sm-vertical a:focus .sub-arrow, .sm-mint.sm-rtl.sm-vertical a:active .sub-arrow, .sm-mint.sm-rtl.sm-vertical a.highlighted .sub-arrow {
     border-color: transparent <{$navbar_color_hover|default:''}> transparent transparent;
   }
   .sm-mint.sm-rtl.sm-vertical a.disabled .sub-arrow {
-    border-color: transparent <{$navbar_hover|default:''}> transparent transparent;
+    border-color: transparent <{$navbar_color_hover|default:''}> transparent transparent;
   }
   .sm-mint.sm-rtl ul {
     border-radius: 4px 0 4px 4px;
@@ -315,13 +314,13 @@
     left: 10px;
     border-width: 4.02px 6px 4.02px 0;
     border-style: dashed solid dashed dashed;
-    border-color: transparent <{$navbar_hover|default:''}> transparent transparent;
+    border-color: transparent <{$navbar_color_hover|default:''}> transparent transparent;
   }
   .sm-mint.sm-rtl ul a:hover .sub-arrow, .sm-mint.sm-rtl ul a:focus .sub-arrow, .sm-mint.sm-rtl ul a:active .sub-arrow, .sm-mint.sm-rtl ul a.highlighted .sub-arrow {
     border-color: transparent <{$navbar_color_hover|default:''}> transparent transparent;
   }
   .sm-mint.sm-rtl ul a.disabled .sub-arrow {
-    border-color: transparent <{$navbar_hover|default:''}> transparent transparent;
+    border-color: transparent <{$navbar_color_hover|default:''}> transparent transparent;
   }
   .sm-mint.sm-vertical {
     border-bottom: 0;
@@ -345,13 +344,13 @@
     margin-top: -4.02px;
     border-width: 4.02px 0 4.02px 6px;
     border-style: dashed dashed dashed solid;
-    border-color: transparent transparent transparent <{$navbar_hover|default:''}>;
+    border-color: transparent transparent transparent <{$navbar_color_hover|default:''}>;
   }
   .sm-mint.sm-vertical a:hover .sub-arrow, .sm-mint.sm-vertical a:focus .sub-arrow, .sm-mint.sm-vertical a:active .sub-arrow, .sm-mint.sm-vertical a.highlighted .sub-arrow {
     border-color: transparent transparent transparent <{$navbar_color|default:''}>;
   }
   .sm-mint.sm-vertical a.disabled .sub-arrow {
-    border-color: transparent transparent transparent <{$navbar_hover|default:''}>;
+    border-color: transparent transparent transparent <{$navbar_color_hover|default:''}>;
   }
   .sm-mint.sm-vertical ul {
     border-radius: 4px !important;

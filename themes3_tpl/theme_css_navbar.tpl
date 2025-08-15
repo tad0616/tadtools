@@ -23,6 +23,7 @@
 }
 .navbar-default .navbar-nav > li > a:hover {
   background-color: <{$navbar_hover|default:''}>;
+  color:<{$navbar_color_hover|default:''}>;
 }
 
 
@@ -30,6 +31,7 @@
 .navbar-default .navbar-nav li.dropdown.active > .dropdown-toggle,
 .navbar-default .navbar-nav li.dropdown.open.active > .dropdown-toggle {
   background-color: <{$navbar_hover|default:''}>;
+  color:<{$navbar_color_hover|default:''}>;
 }
 
 .navbar-default .navbar-navbar-btn {

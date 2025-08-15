@@ -1687,7 +1687,7 @@ class TadUpFiles
             $full_dl_url = empty($this->download_url) ? "{$link_path}{$mark}op=tufdl&files_sn=$files_sn" : $this->download_url . "&files_sn=$files_sn";
 
             if ($kind === 'img') {
-                $fancyboxset = "fancybox_{$this->col_name}";
+                $fancyboxset = "fancybox_{$this->col_name} fancybox_{$this->col_name}{$this->col_sn}";
                 $rel         = "rel='f{$this->col_name}'";
 
                 $file_name = $this->hash ? $hash_filename : $file_name;
@@ -1700,10 +1700,10 @@ class TadUpFiles
                 }
 
                 if ($tag == '360') {
-                    $fancyboxset = "fancybox_{$this->col_name} $tag";
+                    $fancyboxset = "fancybox_{$this->col_name} fancybox_{$this->col_name}{$this->col_sn} $tag";
                     $rel         = "data-fancybox-type='iframe'";
                 } else {
-                    $fancyboxset = "fancybox_{$this->col_name} $tag";
+                    $fancyboxset = "fancybox_{$this->col_name} fancybox_{$this->col_name}{$this->col_sn} $tag";
                     $rel         = "rel='f{$this->col_name}'";
                 }
 
@@ -1724,7 +1724,7 @@ class TadUpFiles
                 $thumb_pic_ext            = mb_strtolower(mb_substr($thumb_pic, -3));
                 $files[$key]['thumb_pic'] = mb_substr($thumb_pic, 0, -3) . $thumb_pic_ext;
             } else {
-                $fancyboxset              = (isset($fext) && $fext == 'pdf') ? "fancybox_{$this->col_name}" : '';
+                $fancyboxset              = (isset($fext) && $fext == 'pdf') ? "fancybox_{$this->col_name} fancybox_{$this->col_name}{$this->col_sn}" : '';
                 $rel                      = (isset($fext) && $fext == 'pdf') == 'pdf' ? "rel='f{$this->col_name}'" : '';
                 $fext                     = strtolower(pathinfo($original_filename, PATHINFO_EXTENSION));
                 $files[$key]['thumb_pic'] = XOOPS_URL . "/modules/tadtools/images/mimetype/{$fext}.png";
@@ -1990,23 +1990,23 @@ class TadUpFiles
                         //$fext=strtolower(substr($file_info['path'], -3));
                         if ($fext === 'mp4' or $fext === 'flv' or $fext === '3gp' or $fext === 'mp3' or $fext === 'm4a') {
                             if ($this->showFancyBox) {
-                                $fancyboxset = "fancybox_{$this->col_name}";
+                                $fancyboxset = "fancybox_{$this->col_name} fancybox_{$this->col_name}{$this->col_sn}";
                                 $rel         = "data-fancybox-type='iframe'";
                             } else {
                                 $fancyboxset = $rel = '';
                             }
                             $linkto = XOOPS_URL . "/modules/tadtools/video.php?file_name={$file_info['original_file_path']}";
                         } elseif ($fext === 'pdf' && $this->pdf_force_dl != 1) {
-                            $fancyboxset = "fancybox_{$this->col_name}";
+                            $fancyboxset = "fancybox_{$this->col_name} fancybox_{$this->col_name}{$this->col_sn}";
                             $rel         = "data-fancybox-type='iframe'";
                             $linkto      = $file_info['path'];
                         } elseif ($fext === 'jpg' or $fext === 'gif' or $fext === 'png' or $fext === 'jpeg') {
                             if ($file_info['tag'] == '360') {
-                                $fancyboxset = "fancybox_{$this->col_name}";
+                                $fancyboxset = "fancybox_{$this->col_name} fancybox_{$this->col_name}{$this->col_sn}";
                                 $rel         = "data-fancybox-type='iframe'";
                                 $linkto      = XOOPS_URL . "/modules/tadtools/360.php?photo={$file_info['path']}";
                             } else {
-                                $fancyboxset = "fancybox_{$this->col_name}";
+                                $fancyboxset = "fancybox_{$this->col_name} fancybox_{$this->col_name}{$this->col_sn}";
                                 $rel         = "rel='f{$this->col_name}'";
                             }
                         } else {
@@ -2017,11 +2017,11 @@ class TadUpFiles
                         $thumb_pic = ($thumb) ? $file_info['tb_path'] : $file_info['path'];
                         if ($this->showFancyBox) {
                             if ($file_info['tag'] == '360') {
-                                $fancyboxset = "fancybox_{$this->col_name}";
+                                $fancyboxset = "fancybox_{$this->col_name} fancybox_{$this->col_name}{$this->col_sn}";
                                 $rel         = "data-fancybox-type='iframe'";
                                 $linkto      = XOOPS_URL . "/modules/tadtools/360.php?photo={$file_info['path']}";
                             } else {
-                                $fancyboxset = "fancybox_{$this->col_name}";
+                                $fancyboxset = "fancybox_{$this->col_name} fancybox_{$this->col_name}{$this->col_sn}";
                                 $rel         = "rel='f{$this->col_name}'";
                             }
                         } else {

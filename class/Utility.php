@@ -191,7 +191,7 @@ class Utility
                 //     break;
                 // case 'twitter':$value = preg_replace_callback('~(?<!\w)[@#](\w++)~', function ($match) use (&$links, $attr) {return '<' . array_push($links, "<a $attr href=\"https://twitter.com/" . ($match[0][0] == '@' ? '' : 'search/%23') . $match[1] . "\">{$match[0]}</a>") . '>';}, $value);
                 //     break;
-                default:$value = preg_replace_callback('~' . preg_quote($protocol, '~') . '://([^\s<]+?)(?<![\.,:])~i', function ($match) use ($protocol, &$links, $attr) {return '<' . array_push($links, "<a $attr href=\"$protocol://{$match[1]}\">{$match[1]}</a>") . '>';}, $value);
+                default: $value = preg_replace_callback('~' . preg_quote($protocol, '~') . '://([^\s<]+?)(?<![\.,:])~i', function ($match) use ($protocol, &$links, $attr) {return '<' . array_push($links, "<a $attr href=\"$protocol://{$match[1]}\">{$match[1]}</a>") . '>';}, $value);
                     break;
             }
         }
@@ -211,13 +211,17 @@ class Utility
     }
 
     //除錯工具
-    public static function dd($array = [])
+    public static function dd($array = [], $mode = '')
     {
         global $xoopsLogger;
         $xoopsLogger->activated = false;
 
-        header("Content-Type: application/json; charset=utf-8");
-        die(json_encode($array, 256));
+        if ($mode == 'return') {
+            return json_encode($array, 256);
+        } else {
+            header("Content-Type: application/json; charset=utf-8");
+            die(json_encode($array, 256));
+        }
     }
 
     public static function add_migrate($mode = "")
