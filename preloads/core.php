@@ -237,7 +237,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
                 $TadLoginXoopsModule = $moduleHandler->getByDirname("tad_login");
                 $TnLoginXoopsModule  = $moduleHandler->getByDirname("tn_login");
 
-                if ($TadLoginXoopsModule) {
+                if ($TadLoginXoopsModule->isactive()) {
                     require_once XOOPS_ROOT_PATH . "/modules/tad_login/language/{$xoopsConfig['language']}/county.php";
 
                     $modConfig = $configHandler->getConfigsByCat(0, $TadLoginXoopsModule->getVar('mid'));
@@ -284,7 +284,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
                         $i++;
                     }
                     $xoopsTpl->assign('tlogin', $tlogin);
-                } elseif ($TnLoginXoopsModule) {
+                } elseif ($TnLoginXoopsModule->isactive()) {
                     require_once XOOPS_ROOT_PATH . "/modules/tn_login/function.php";
                     $tlogin[0]['link']     = XOOPS_URL . "/modules/tn_login/index.php";
                     $tlogin[0]['img']      = XOOPS_URL . "/modules/tn_login/images/login_logo.png";
