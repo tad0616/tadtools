@@ -411,7 +411,7 @@ class TadUpFiles
 
         $main = "
             $jquery
-            <input type='file' name='{$upname}[]' id='{$id}' $multiple $accept class='form-control $require' style='width: 100%;height: initial;'>
+            <input type='file' name='{$upname}[]' id='{$id}' $multiple $accept class='form-control $require'>
             $permission
             {$list_del_file}
             ";
@@ -464,40 +464,47 @@ class TadUpFiles
 
         $all_file = '';
         $and_tag  = $this->tag ? " AND `tag`='{$this->tag}'" : '';
-        if (!empty($files_sn_arr)) {
-            $sql    = 'SELECT * FROM `' . $this->TadUpFilesTblName . '` WHERE `files_sn` IN (' . implode(',', array_map('addslashes', $files_sn_arr)) . ') ORDER BY `sort`';
-            $result = Utility::query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        if (!empty($files_sn_arr) && is_array($files_sn_arr)) {
+            $all_files_sn = implode(',', array_map('addslashes', $files_sn_arr));
+            if (!empty($all_files_sn)) {
+                $sql    = 'SELECT * FROM `' . $this->TadUpFilesTblName . '` WHERE `files_sn` IN (' . $all_files_sn . ') ORDER BY `sort`';
+                $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+            } else {
+                $result = '';
+            }
+
         } else {
             $sql    = 'SELECT * FROM `' . $this->TadUpFilesTblName . '` WHERE `col_name` = ? AND `col_sn` = ?' . $and_tag . ' ORDER BY `sort`';
             $result = Utility::query($sql, 'ss', [$this->col_name, $this->col_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
         }
         $i = 0;
 
-        while ($all = $xoopsDB->fetchArray($result)) {
-            //以下會產生這些變數： $files_sn, $col_name, $col_sn, $sort, $kind, $file_name, $file_type, $file_size, $description
-            foreach ($all as $k => $v) {
-                $$k = $v;
-            }
-            $show_file_name = $$filename_col;
+        if ($result) {
+            while ($all = $xoopsDB->fetchArray($result)) {
+                //以下會產生這些變數： $files_sn, $col_name, $col_sn, $sort, $kind, $file_name, $file_type, $file_size, $description
+                foreach ($all as $k => $v) {
+                    $$k = $v;
+                }
+                $show_file_name = $$filename_col;
 
-            //以uid取得使用者名稱
-            $uid_name = \XoopsUser::getUnameFromId($uid, 1);
-            if (empty($uid_name)) {
-                $uid_name = \XoopsUser::getUnameFromId($uid, 0);
-            }
+                //以uid取得使用者名稱
+                $uid_name = \XoopsUser::getUnameFromId($uid, 1);
+                if (empty($uid_name)) {
+                    $uid_name = \XoopsUser::getUnameFromId($uid, 0);
+                }
 
-            // $fileidname = str_replace('.', '', $file_name);
-            $file_name = $this->hash ? $hash_filename : $file_name;
+                // $fileidname = str_replace('.', '', $file_name);
+                $file_name = $this->hash ? $hash_filename : $file_name;
 
-            if ($thumb) {
-                if ($kind === 'file') {
-                    $fext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-                    if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/images/mimetype/{$fext}.png")) {
-                        $thumb_pic = XOOPS_URL . "/modules/tadtools/images/mimetype/{$fext}.png";
-                    } else {
-                        $thumb_pic = XOOPS_URL . '/modules/tadtools/images/downloads.png';
-                    }
-                    $thumb_tool = "
+                if ($thumb) {
+                    if ($kind === 'file') {
+                        $fext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+                        if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/images/mimetype/{$fext}.png")) {
+                            $thumb_pic = XOOPS_URL . "/modules/tadtools/images/mimetype/{$fext}.png";
+                        } else {
+                            $thumb_pic = XOOPS_URL . '/modules/tadtools/images/downloads.png';
+                        }
+                        $thumb_tool = "
                     <div class='row'>
                         <div class='col-sm-3 text-left'>
                         </div>
@@ -509,14 +516,14 @@ class TadUpFiles
                         </div>
                     </div>";
 
-                    //有編輯框
-                    $thumb_style = "<div style='text-align: center;'><img src='{$thumb_pic}' alt='{$file_name}'></div>";
-                    //無編輯框
-                    $thumb_style2 = "<a class='thumbnail' style='display:inline-block; width:{$this->thumb_width};height:{$this->thumb_height};overflow:hidden;background-color: transparent; background-image:url({$thumb_pic});background-position:{$this->thumb_position};background-repeat:{$this->thumb_repeat};background-size:{$this->thumb_size}; margin-bottom: 4px;' title='{$description}'></a>";
-                } else {
-                    $thumb_pic = "{$this->TadUpFilesThumbUrl}/{$file_name}";
+                        //有編輯框
+                        $thumb_style = "<div style='text-align: center;'><img src='{$thumb_pic}' alt='{$file_name}'></div>";
+                        //無編輯框
+                        $thumb_style2 = "<a class='thumbnail' style='display:inline-block; width:{$this->thumb_width};height:{$this->thumb_height};overflow:hidden;background-color: transparent; background-image:url({$thumb_pic});background-position:{$this->thumb_position};background-repeat:{$this->thumb_repeat};background-size:{$this->thumb_size}; margin-bottom: 4px;' title='{$description}'></a>";
+                    } else {
+                        $thumb_pic = "{$this->TadUpFilesThumbUrl}/{$file_name}";
 
-                    $thumb_tool = "
+                        $thumb_tool = "
                     <table class='table'>
                         <tr>
                         <td class='text-right'>
@@ -533,51 +540,51 @@ class TadUpFiles
                         </tr>
                     </table>";
 
-                    $thumb_style = "<a name='{$files_sn}' id='thumb{$files_sn}' href='{$this->TadUpFilesImgUrl}/{$file_name}' style='display: block; width: 120px; height: 80px; overflow: hidden; background-color: {$this->thumb_bg_color}; background-image: url({$thumb_pic}),url(" . XOOPS_URL . "/modules/tadtools/images/transparent.png); background-position: center center; background-repeat: no-repeat; background-size: contain; border: 1px solid gray; margin: 0px auto;' title='{$description}' class='fancybox_demo' rel='demo'></a>";
+                        $thumb_style = "<a name='{$files_sn}' id='thumb{$files_sn}' href='{$this->TadUpFilesImgUrl}/{$file_name}' style='display: block; width: 120px; height: 80px; overflow: hidden; background-color: {$this->thumb_bg_color}; background-image: url({$thumb_pic}),url(" . XOOPS_URL . "/modules/tadtools/images/transparent.png); background-position: center center; background-repeat: no-repeat; background-size: contain; border: 1px solid gray; margin: 0px auto;' title='{$description}' class='fancybox_demo' rel='demo'></a>";
 
-                    $thumb_style2 = "<a class='thumbnail' id='thumb{$files_sn}' style='display:inline-block; width:{$this->thumb_width};height:{$this->thumb_height};overflow:hidden;background-color:{$this->thumb_bg_color};background-image:url({$thumb_pic});background-position:{$this->thumb_position};background-repeat:{$this->thumb_repeat};background-size:{$this->thumb_size}; margin-bottom: 4px;' title='{$description}'></a>";
-                }
+                        $thumb_style2 = "<a class='thumbnail' id='thumb{$files_sn}' style='display:inline-block; width:{$this->thumb_width};height:{$this->thumb_height};overflow:hidden;background-color:{$this->thumb_bg_color};background-image:url({$thumb_pic});background-position:{$this->thumb_position};background-repeat:{$this->thumb_repeat};background-size:{$this->thumb_size}; margin-bottom: 4px;' title='{$description}'></a>";
+                    }
 
-                $w  = 'width:130px; word-break: break-word;';
-                $w2 = "width:{$this->thumb_width}; float:left; margin-right:10px;";
-            } else {
-                $thumb_tool = "<a href=\"javascript:remove_file('{$files_sn}', '{$this->thumbs_dir}');\" style='font-size: 0.8rem;' class='text-danger' data-toggle=\"tooltip\" title=\"" . sprintf(_TM_FILE_DEL_BY, $uid_name, $uid_name) . "\">
+                    $w  = 'width:130px; word-break: break-word;';
+                    $w2 = "width:{$this->thumb_width}; float:left; margin-right:10px;";
+                } else {
+                    $thumb_tool = "<a href=\"javascript:remove_file('{$files_sn}', '{$this->thumbs_dir}');\" style='font-size: 0.8rem;' class='text-danger' data-toggle=\"tooltip\" title=\"" . sprintf(_TM_FILE_DEL_BY, $uid_name, $uid_name) . "\">
                                 <i class=\"fa fa-trash\"></i> " . _TAD_DEL . '</a></div>';
-                $thumb_style  = '';
-                $thumb_style2 = '';
-                $thumb_pic    = '';
-                $w            = '';
-                $w2           = 'list-style-position: outside;';
-            }
-
-            $filename_label = '';
-
-            if ($show_edit === true or $show_edit === 'full') {
-                // 權限設定
-                if ($this->permission) {
-                    $sql     = 'SELECT `gperm_groupid` FROM `' . $xoopsDB->prefix('group_permission') . '` WHERE `gperm_name` = ? AND `gperm_itemid` = ? ORDER BY `gperm_groupid`';
-                    $result2 = Utility::query($sql, 'si', ['dl_group', $files_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
-
-                    $gperm_groupid_arr = [];
-                    while (list($gperm_groupid) = $xoopsDB->fetchRow($result2)) {
-                        $gperm_groupid_arr[] = $gperm_groupid;
-                    }
-                    $permission = _TUF_PERMISSION_NOTE;
-                    foreach ($groups as $groupid => $name) {
-                        $checked = in_array($groupid, $gperm_groupid_arr) ? 'checked' : '';
-                        $permission .= "<label><input type='checkbox' name='dl_group[$files_sn][]' value='{$groupid}' {$checked}>{$name}</label> \n";
-                    }
+                    $thumb_style  = '';
+                    $thumb_style2 = '';
+                    $thumb_pic    = '';
+                    $w            = '';
+                    $w2           = 'list-style-position: outside;';
                 }
 
-                if ($show_filename) {
-                    $filename_label = "
+                $filename_label = '';
+
+                if ($show_edit === true or $show_edit === 'full') {
+                    // 權限設定
+                    if ($this->permission) {
+                        $sql     = 'SELECT `gperm_groupid` FROM `' . $xoopsDB->prefix('group_permission') . '` WHERE `gperm_name` = ? AND `gperm_itemid` = ? ORDER BY `gperm_groupid`';
+                        $result2 = Utility::query($sql, 'si', ['dl_group', $files_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
+
+                        $gperm_groupid_arr = [];
+                        while (list($gperm_groupid) = $xoopsDB->fetchRow($result2)) {
+                            $gperm_groupid_arr[] = $gperm_groupid;
+                        }
+                        $permission = _TUF_PERMISSION_NOTE;
+                        foreach ($groups as $groupid => $name) {
+                            $checked = in_array($groupid, $gperm_groupid_arr) ? 'checked' : '';
+                            $permission .= "<label><input type='checkbox' name='dl_group[$files_sn][]' value='{$groupid}' {$checked}>{$name}</label> \n";
+                        }
+                    }
+
+                    if ($show_filename) {
+                        $filename_label = "
                     <label class='checkbox' style='margin:5px 0px;'>
                     {$show_file_name}
                     </label>
                    ";
-                }
+                    }
 
-                $all_file .= "
+                    $all_file .= "
                 <tr id='fdtr_{$files_sn}'>
                     <td style='{$w}'>
                         {$thumb_style}
@@ -589,35 +596,36 @@ class TadUpFiles
                     $permission
                     </td>
                 </tr>";
-            } elseif ($show_edit === 'list') {
-                //無編輯框，無圖示
-                $file_href = ($kind === 'file') ? "href='{$this->TadUpFilesUrl}/{$file_name}'" : "href='{$this->TadUpFilesImgUrl}/{$file_name}' class='fancybox_demo' rel='demo'";
-                $all_file .= "
+                } elseif ($show_edit === 'list') {
+                    //無編輯框，無圖示
+                    $file_href = ($kind === 'file') ? "href='{$this->TadUpFilesUrl}/{$file_name}'" : "href='{$this->TadUpFilesImgUrl}/{$file_name}' class='fancybox_demo' rel='demo'";
+                    $all_file .= "
                 <li id='fdtr_{$files_sn}' name='{$files_sn}'>
                     <i class='fa fa-times-circle' aria-hidden='true' onClick=\"remove_file('{$files_sn}', '{$this->thumbs_dir}');\" style='color: red;position: relative; float:right; z-index:10;' data-toggle=\"tooltip\" title=\"" . sprintf(_TM_FILE_DEL_BY, $uid_name, $uid_name) . "\"></i>
                     <a $file_href style='position: relative;z-index:9;'>{$show_file_name}</a>
                 </li>
                 ";
-            } else {
-                //無編輯框，有圖示水平排列
+                } else {
+                    //無編輯框，有圖示水平排列
 
-                if ($show_filename) {
-                    $filename_label = "
+                    if ($show_filename) {
+                        $filename_label = "
                     <label class='checkbox-inline' style='width:{$this->thumb_width}; height: 100px;font-size: 0.8em;word-wrap: break-word;'>
                     <!--input type='checkbox' name='del_file[]' value='{$files_sn}'-->
                     {$show_file_name}
                     </label>
                     ";
-                }
-                $all_file .= "
+                    }
+                    $all_file .= "
                 <li style='list-style-type:none;{$w2}' id='fdtr_{$files_sn}'>
                     {$thumb_style2}
                     {$thumb_tool}
                     {$filename_label}
                 </li>
                 ";
+                }
+                $i++;
             }
-            $i++;
         }
 
         // die($all_file);
