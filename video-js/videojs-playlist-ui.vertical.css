@@ -3,11 +3,12 @@
     background-color: #ffffff;
     color: rgb(0, 0, 0);
     list-style-type: none;
+    overflow: auto !important;
 }
 
 .vjs-playlist img {
     object-fit: cover;
-    width: 20%;
+    width: 30%;
     float: left;
 }
 
@@ -31,8 +32,8 @@
 
 .vjs-playlist .vjs-playlist-now-playing-text {
     display: none;
-    padding: .1rem 2px;
-    font-size: 0.75em;
+    padding: 4px 0px 0px 8px;
+    font-size: 0.6rem;
     text-transform: uppercase;
     color: rgb(73, 70, 218);
 }
@@ -43,33 +44,34 @@
     left: .5rem;
     padding: 2px 5px 3px;
     margin-left: 2px;
-    color:white;
+    color: white;
     background-color: rgba(26, 26, 26, 0.8)
 }
 
 .vjs-playlist .vjs-playlist-title-container {
     display: inline-block;
-    width: 80%;
+    width: 70%;
     /* position: absolute; */
     /* bottom: 0; */
     box-sizing: border-box;
-    padding: .5rem .8rem;
+    padding: 4px;
     color: #000;
     /* text-shadow: 1px 1px 2px black, -1px 1px 2px black, 1px -1px 2px black, -1px -1px 2px black */
 }
 
 .vjs-playlist .vjs-playlist-name {
     display: inline-block;
-    max-height: 2.5em;
+    max-height: 3.6rem;
     padding: 0 0 4px 2px;
     font-style: normal;
     text-overflow: ellipsis;
     overflow: hidden;
-    line-height: 20px
+    line-height: 1.2rem;
+    font-size: 0.925rem;;
 }
 
 .vjs-playlist .vjs-playlist-description {
-    font-size: 0.75em;
+    font-size: 0.75rem;
     margin: 0;
     text-overflow: ellipsis;
     overflow: hidden
@@ -124,6 +126,10 @@
 .vjs-playlist-vertical .vjs-playlist-thumbnail {
     display: block;
     /* width: 100% */
+}
+
+.vjs-playlist-vertical .vjs-playlist-thumbnail img{
+    border-radius: 0px !important;
 }
 
 .vjs-playlist-vertical .vjs-playlist-thumbnail-placeholder {
@@ -215,7 +221,7 @@
     }
 
     .vjs-playlist .vjs-playlist-name {
-        line-height: 22px
+        line-height: 1.2rem;
     }
 }
 

@@ -86,8 +86,8 @@ class VideoJs
                     <div class="col-sm-8">
                         ' . $player . '
                     </div>
-                    <div class="col-sm-4 ' . $this->id . '">
-                        <div class="vjs-playlist"></div>
+                    <div class="col-sm-4 d-flex ' . $this->id . '">
+                        <div class="vjs-playlist flex-grow-1"></div>
                     </div>
                 </div>
                 ';
@@ -109,7 +109,7 @@ class VideoJs
             if ($this->position == 'right') {
                 $playlist .= "
                 $(document).ready(function(){
-                    var h=$('" . $this->id . ">.vjs-poster').height();
+                    var h=$('#" . $this->id . ">.vjs-poster').height();
                     console.log('h:'+h);
                     $('." . $this->id . ">.vjs-playlist').css('max-height', h).css('overflow', 'auto');
                 });
@@ -158,13 +158,13 @@ class VideoJs
             if ('playlist' === $this->mode) {
                 $xoTheme->addScript('modules/tadtools/video-js/videojs-playlist.js');
                 $xoTheme->addScript('modules/tadtools/video-js/videojs-playlist-ui.js');
-                $xoTheme->addStylesheet('modules/tadtools/video-js/videojs-playlist-ui.vertical.css');
+                $xoTheme->addStylesheet('modules/tadtools/video-js/videojs-playlist-ui.vertical.css?t=' . time());
             }
         } else {
             $playlist_js = '';
             if ('playlist' === $this->mode) {
                 $playlist_js = "
-                <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/video-js/videojs-playlist-ui.vertical.css'>
+                <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/video-js/videojs-playlist-ui.vertical.css?t=" . time() . "'>
                 <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/video-js/videojs-playlist.js'></script><script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/video-js/videojs-playlist-ui.js'></script>";
             }
             $player .= "
