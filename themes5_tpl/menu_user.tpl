@@ -8,9 +8,12 @@
                 </a>
             </li>
         <{/foreach}>
-        <li class="hide-in-phone"><hr></li>
     <{/if}>
-
+    <li>
+        <a href="<{$xoops_url}>/modules/tadtools/ajax_file.php?op=remove_json" title="重整畫面">
+            <i class="fa fa-refresh"></i> 重整畫面
+        </a>
+    </li>
     <{foreach from=$user_menu_var item=user_menu}>
         <li>
             <a href="<{$user_menu.url}>" target="<{$user_menu.target}>">

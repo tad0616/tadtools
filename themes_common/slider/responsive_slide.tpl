@@ -26,10 +26,10 @@
 <!-- 滑動圖片 -->
 <div class="callbacks">
     <ul class="rslides" id="ThemeResponsiveSlides" style="margin-top: 0px;">
-        <{foreach from=$slider_var item=slide}>
+        <{foreach from=$slider_var key=i item=slide}>
         <li>
             <{if $slide.slide_url|default:false}>
-            <a href="<{$slide.slide_url}>" <{$slide.slide_target}>><img src="<{$slide.file_url}>" alt="<{$slide.description}>"></a>
+            <a href="<{$slide.slide_url}>" <{$slide.slide_target}>><img src="<{$slide.file_url}>" alt="<{$slide.description|default:'Slider'}>" title="<{$slide.description}>"></a>
             <{else}>
                 <img src="<{$slide.file_url}>" alt="Slider" title="<{$slide.description}>">
             <{/if}>

@@ -39,12 +39,6 @@
         <{if "$xoops_rootpath/uploads/docs_top_menu_b4.tpl"|file_exists}>
             <{include file="$xoops_rootpath/uploads/docs_top_menu_b4.tpl"}>
         <{/if}>
-
-        <li>
-            <a href="<{$xoops_url}>/modules/tadtools/ajax_file.php?op=remove_json" title="重整畫面"><i class="fa fa-refresh" aria-hidden="true"></i>
-            </a>
-        </li>
-
         <{include file="$xoops_rootpath/modules/tadtools/themes5_tpl/menu_my.tpl"}>
         <li class="flex-grow-1 hide-in-phone">
             <a accesskey="U" href="#xoops_theme_nav_key" title="<{$smarty.const._TAD_ZAV_ZONE}>" id="xoops_theme_nav_key" style="color: transparent; font-size: 0.625rem;" class="disabled">:::</a>
@@ -52,7 +46,7 @@
 
         <{if $xoops_isadmin|default:false}>
             <li>
-                <a href="<{$xoops_url}>/modules/tad_themes/admin/dropdown.php" title="<{$smarty.const._TAD_MENU_CONFIG}>"><i class="fa fa-plus-circle"></i></a>
+                <a href="<{$xoops_url}>/modules/tad_themes/admin/dropdown.php" title="<{$smarty.const._TAD_MENU_CONFIG}>"><i class="fa fa-plus-circle"></i><span class="sr-only visually-hidden"><{$smarty.const._TAD_MENU_CONFIG}></span></a>
             </li>
             <{if $xoops_dirname=="" || $xoops_dirname=="system"}>
                 <li>

@@ -11,7 +11,6 @@ class JqueryPrintPreview
     public function __construct($name = 'a.print-preview')
     {
         $this->name = $name;
-        $this->show_jquery = $show_jquery;
     }
 
     public function render($mode = 'assign')
@@ -19,8 +18,7 @@ class JqueryPrintPreview
         global $xoTheme;
 
         if ($xoTheme and 'assign' === $mode) {
-            $xoTheme->addScript('modules/tadtools/jquery-print-preview/jquery.print-preview.js');
-
+            $xoTheme->addScript(XOOPS_URL . '/modules/tadtools/jquery-print-preview/jquery.print-preview.js');
             $xoTheme->addScript('', null, "
                 (function(\$){
                     \$(document).ready(function(){
@@ -28,7 +26,7 @@ class JqueryPrintPreview
                     });
                 })(jQuery);
                 ");
-            $xoTheme->addStylesheet('modules/tadtools/jquery-print-preview/css/print-preview.css');
+            $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/jquery-print-preview/css/print-preview.css');
         } else {
             $jquery = Utility::get_jquery();
 

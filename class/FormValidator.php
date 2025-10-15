@@ -14,7 +14,7 @@ class FormValidator
     {
         Utility::get_jquery(true);
         $this->show_jquery = $show_jquery;
-        $this->id = $id;
+        $this->id          = $id;
     }
 
     //產生路徑工具
@@ -35,6 +35,15 @@ class FormValidator
                 \$(document).ready(function(){
                     \$('{$this->id}').validationEngine({
                         promptPosition: '$Position', //選項有：topLeft, topRight, bottomLeft,  centerRight, bottomRight
+                        // 當驗證失敗時觸發
+                        onFieldFailure: function(field) {
+                            $(field).addClass('is-invalid');
+                        },
+                        // 當驗證成功時觸發
+                        onFieldSuccess: function(field) {
+                            $(field).removeClass('is-invalid');
+                        },
+                        scroll: true
                     });
                 });
             ");
@@ -48,6 +57,15 @@ class FormValidator
             \$(document).ready(function(){
                 \$('{$this->id}').validationEngine({
                     promptPosition: '$Position', //選項有：topLeft, topRight, bottomLeft,  centerRight, bottomRight
+                    // 當驗證失敗時觸發
+                    onFieldFailure: function(field) {
+                        $(field).addClass('is-invalid');
+                    },
+                    // 當驗證成功時觸發
+                    onFieldSuccess: function(field) {
+                        $(field).removeClass('is-invalid');
+                    },
+                    scroll: true
                 });
             });
             </script>";

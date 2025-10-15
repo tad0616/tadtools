@@ -10,13 +10,13 @@ function tadtools_app($options)
     global $xoopsDB, $xoopsConfig;
 
     $usercookie = $xoopsConfig['usercookie'];
-    $protocol = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
+    $protocol   = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
     Utility::get_jquery();
-    $block['url1'] = "https://wst24365888.github.io/xoops-app/";
-    $block['url2'] = XOOPS_URL;
-    $block['token'] = empty($usercookie) ? '' : $_COOKIE[$usercookie];
-    $block['width'] = $options[0] < 50 ? 120 : (int) $options[0];
-    $block['title'] = $xoopsConfig['sitename'];
+    $block['url1']      = "https://wst24365888.github.io/xoops-app/";
+    $block['url2']      = XOOPS_URL;
+    $block['token']     = empty($usercookie) ? '' : $_COOKIE[$usercookie];
+    $block['width']     = $options[0] < 50 ? 120 : (int) $options[0];
+    $block['title']     = $xoopsConfig['sitename'];
     $block['direction'] = $options[1];
 
     return $block;
@@ -30,11 +30,11 @@ function tadtools_app_edit($options)
     $form = "
     <ol class='my-form'>
         <li class='my-row'>
-            <lable class='my-label'>" . _MB_TT_QRCODE_WIDTH . "</lable>
+            <label class='my-label'>" . _MB_TT_QRCODE_WIDTH . "</label>
             <div class='my-content'>
                 <input type='text' name='options[0]' value='{$options[0]}' class='my-input' size=5>px
             </div>
-            <lable class='my-label'>" . _MB_TT_APP_SETUP_1 . "</lable>
+            <label class='my-label'>" . _MB_TT_APP_SETUP_1 . "</label>
             <div class='my-content'>
                 <input type='radio' name='options[1]' value='v' {$options1_v} class='my-input'> " . _MB_TT_APP_SETUP_1V . "
                 <input type='radio' name='options[1]' value='h' {$options1_h} class='my-input'> " . _MB_TT_APP_SETUP_1H . "

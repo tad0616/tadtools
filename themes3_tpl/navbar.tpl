@@ -46,7 +46,7 @@
             <{/if}>
 
         <li>
-            <a href="<{$xoops_url}>/modules/tadtools/ajax_file.php?op=remove_json" title="重整畫面"><i class="fa fa-refresh" aria-hidden="true"></i>
+            <a href="<{$xoops_url}>/modules/tadtools/ajax_file.php?op=remove_json" title="重整畫面"><i class="fa fa-refresh" title="重整畫面圖示"></i>
             </a>
         </li>
             <{include file="$xoops_rootpath/modules/tadtools/themes3_tpl/menu_my.tpl"}>
@@ -56,7 +56,7 @@
             <{if $xoops_isuser|default:false}>
             <{if $xoops_isadmin|default:false}>
 
-            <li><a rel="tooltip" href="<{$xoops_url}>/modules/tad_themes/admin/dropdown.php" title="<{$smarty.const._TAD_MENU_CONFIG}>"><i class="fa fa-plus-circle"></i></a></li>
+            <li><a rel="tooltip" href="<{$xoops_url}>/modules/tad_themes/admin/dropdown.php" title="<{$smarty.const._TAD_MENU_CONFIG}>"><i class="fa fa-plus-circle"></i><span class="sr-only visually-hidden"><{$smarty.const._TAD_MENU_CONFIG}></span></a></li>
 
                 <{if $xoops_dirname=="" || $xoops_dirname=="system"}>
                 <li><a rel="tooltip" href="<{$xoops_url}>/admin.php" title="<{$smarty.const.TF_MODULE_CONFIG}>"><span class="fa fa-wrench"></span></a></li>

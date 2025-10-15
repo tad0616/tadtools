@@ -11,11 +11,12 @@ class MColorPicker
 
     public function __construct($name = '.color', $show_jquery = true)
     {
-        $this->name = $name;
+        $this->name        = $name;
         $this->show_jquery = $show_jquery;
     }
 
-    public function render($show_picker = 'pic')
+    // bootstrap,bootstrap-sm,bootstrap5,bootstrap5-sm,pic
+    public function render($show_picker = 'bootstrap')
     {
         global $xoTheme;
         $jquery = $this->show_jquery ? Utility::get_jquery() : '';

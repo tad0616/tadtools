@@ -5,10 +5,11 @@ namespace XoopsModules\Tadtools;
 class Fontawesome6Picker
 {
     //建構函數
-    public function __construct() {}
+    public function __construct()
+    {}
 
     //產生月曆
-    public static function render($selecteor = "", $path =  XOOPS_URL . "/modules/tadtools/fontawesome6-picker/")
+    public static function render($selecteor = "", $path = XOOPS_URL . "/modules/tadtools/fontawesome6-picker/")
     {
         global $xoTheme;
 

@@ -10,7 +10,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
 
     public static function eventCoreIncludeCommonAuthSuccess()
     {
-        global $xoopsConfig, $xoopsTpl, $xoopsDB;
+        global $xoopsConfig, $xoopsTpl;
         $_SESSION['xoops_version'] = Utility::get_version('xoops');
 
         if (!isset($_SESSION['bootstrap'])) {
@@ -208,16 +208,19 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         $xoopsTpl->assign('user_menu_var', $user_menu);
 
         // 自訂選單
-        $my_menu  = Tools::get_theme_menu_items(0, $theme_config['menu_var_kind']);
-        $i        = sizeof($my_menu);
-        $mod_menu = Tools::get_module_menu_item($i, $theme_config['menu_var_kind']);
-        if (!empty($mod_menu)) {
-            if (empty($my_menu)) {
-                $my_menu = array();
-            }
+        $my_menu           = Tools::get_theme_menu_items(0, $theme_config['menu_var_kind']);
+        $i                 = sizeof($my_menu);
+        $SchoolXoopsModule = $moduleHandler->getByDirname("school");
+        $def_mod_menu      = ($SchoolXoopsModule && $SchoolXoopsModule->getVar('isactive') == 1) ? Tools::get_module_menu_item($i, 'school') : [];
+        $i++;
+        $mod_menu = Tools::get_module_menu_item($i);
+        // if (!empty($mod_menu)) {
+        //     if (empty($my_menu)) {
+        //         $my_menu = array();
+        //     }
 
-            $my_menu = array_merge($my_menu, $mod_menu);
-        }
+        $my_menu = array_merge((Array) $my_menu, (Array) $def_mod_menu, (Array) $mod_menu);
+        // }
         $xoopsTpl->assign('menu_var', $my_menu);
         Utility::test($my_menu, 'my_menu', 'dd');
 
@@ -257,7 +260,14 @@ class TadtoolsCorePreload extends XoopsPreloadItem
                     $oidc_array  = array_keys($all_oidc);
                     $oidc_array2 = array_keys($all_oidc2);
                     foreach ($auth_method as $method) {
-                        $method_const = "_" . strtoupper($method);
+
+                        if (strpos($method, '_oidc') !== false) {
+                            $login_method = str_replace('_oidc', '', $method);
+                        } else {
+                            $login_method = $method;
+                        }
+
+                        $method_const = "_" . strtoupper($login_method);
 
                         if ($method == "google") {
                             $tlogin[$i]['link'] = $tad_login['google'];

@@ -73,6 +73,7 @@ $modversion['config']                       = [
     ['name' => 'pdf_force_dl', 'title' => '_MI_TADTOOLS_PDF_FORCE_DL', 'description' => '_MI_TADTOOLS__MI_TADTOOLS_PDF_FORCE_DL_DESC', 'formtype' => 'yesno', 'valuetype' => 'int', 'default' => 0],
     ['name' => 'test_mode', 'title' => '_MI_TADTOOLS_TEST_MODE', 'description' => '_MI_TADTOOLS_TEST_MODE_DESC', 'formtype' => 'yesno', 'valuetype' => 'int', 'default' => 1],
     ['name' => 'facebook_app_id', 'title' => '_MI_TADTOOLS_FACEBOOK_APP_ID', 'description' => '_MI_TADTOOLS_FACEBOOK_APP_ID_DESC', 'formtype' => 'textbox', 'valuetype' => 'text', 'default' => ''],
+    ['name' => 'ck_wcag', 'title' => '_MI_TADTOOLS_CK_WCAG', 'description' => '_MI_TADTOOLS__MI_TADTOOLS_CK_WCAG_DESC', 'formtype' => 'yesno', 'valuetype' => 'int', 'default' => 0],
 ];
 
 //---區塊設定 (索引為固定值，若欲刪除區塊記得補上索引，避免區塊重複)---//

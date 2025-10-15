@@ -27,14 +27,14 @@
             $.get(basePath + 'free.txt', function(freeData) {
                 const freeIcons = freeData.split(',').map(name => ({
                     name: name.trim(),
-                    type: 'fas'
+                    type: 'fa-solid'
                 }));
 
                 // 讀取品牌圖示
                 $.get(basePath + 'brands.txt', function(brandData) {
                     const brandIcons = brandData.split(',').map(name => ({
                         name: name.trim(),
-                        type: 'fab'
+                        type: 'fa-brands'
                     }));
 
                     // 合併兩種圖示

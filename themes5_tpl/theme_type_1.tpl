@@ -6,7 +6,7 @@
 
         <div id="xoops_theme_left_zone" class="col-xl-<{$lb_width|default:''}> order-lg-1">
             <div id="xoops_theme_left" style="<{$leftBlocks|default:''}>">
-            <a accesskey="L" href="#xoops_theme_left_zone_key" title="<{$smarty.const._TAD_LEFT_ZONE}>" id="xoops_theme_left_zone_key" style="color: transparent; font-size: 0.625rem; position: absolute;">:::</a>
+            <a accesskey="L" href="#xoops_theme_left_zone" title="<{$smarty.const._TAD_LEFT_ZONE}>" id="xoops_theme_left_zone_key" style="color: transparent; font-size: 0.625rem; position: absolute;">:::</a>
             <{if $xoBlocks.canvas_left|default:null}>
                 <{include file="$xoops_rootpath/modules/tadtools/themes5_tpl/leftBlock.tpl"}>
             <{/if}>

@@ -560,6 +560,103 @@ class Utility
         return $main;
     }
 
+    /**
+     * 生成Bootstrap 5 breadcrumb導航
+     *
+     * @param array $breadcrumbs 麵包屑陣列，格式：
+     *   - 字串格式：['首頁', '產品', '手機', 'iPhone'] (只有文字，無連結)
+     *   - 關聯陣列格式：[
+     *       ['text' => '首頁', 'url' => '/'],
+     *       ['text' => '產品', 'url' => '/products'],
+     *       ['text' => '手機', 'url' => '/products/phones'],
+     *       ['text' => 'iPhone'] // 最後一項通常不需要連結
+     *     ]
+     * @param array $options 選項設定
+     *   - 'divider' => 分隔符號 (預設：'>')
+     *   - 'home_icon' => 是否在第一項顯示home圖示 (預設：false)
+     *   - 'class' => 額外的CSS類別
+     * @return string HTML字串
+     */
+    public static function generateBreadcrumb($breadcrumbs = [], $options = [], $tail = '')
+    {
+        // 預設選項
+        $defaults = [
+            'divider' => '>',
+            'home_icon' => false,
+            'class' => '',
+            'len' => '111',
+        ];
+
+        $options = array_merge($defaults, $options);
+
+        // 如果陣列為空或不是陣列，返回空字串
+        if (!is_array($breadcrumbs) || empty($breadcrumbs)) {
+            return '';
+        }
+
+        $html = '<nav id="breadcrumb_nav" aria-label="breadcrumb">';
+        $html .= '<ol class="breadcrumb' . ($options['class'] ? ' ' . $options['class'] : '') . '">';
+
+        $total = count($breadcrumbs);
+
+        foreach ($breadcrumbs as $index => $item) {
+            $isLast = ($index === $total - 1);
+
+            // 處理不同的陣列格式
+            if (is_string($item)) {
+                // 簡單字串格式
+                $text = xoops_substr($item, 0, $options['len']);
+                $url  = null;
+            } else if (is_array($item)) {
+                // 關聯陣列格式
+                $text = isset($item['text']) ? xoops_substr($item['text'], 0, $options['len']) : '';
+                $url  = isset($item['url']) ? $item['url'] . $tail : null;
+            } else {
+                continue; // 跳過不支援的格式
+            }
+
+            $html .= '<li class="breadcrumb-item';
+
+            // 最後一項設為active
+            if ($isLast) {
+                $html .= ' active" aria-current="page">';
+
+                // 處理首頁圖示
+                if ($index === 0 && $options['home_icon']) {
+                    $html .= '<i class="fa-solid fa-house-chimney"></i><span class="sr-only visually-hidden">Home</span> ';
+                }
+                $html .= htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+            } else {
+                $html .= '">';
+
+                // 如果有URL且不是最後一項，建立連結
+                if ($url) {
+                    $html .= '<a href="' . htmlspecialchars($url, ENT_QUOTES, 'UTF-8') . '">';
+
+                    // 處理首頁圖示
+                    if ($index === 0 && $options['home_icon']) {
+                        $html .= '<i class="fa-solid fa-house-chimney"></i><span class="sr-only visually-hidden">Home</span> ';
+                    }
+                    $html .= htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+                    $html .= '</a>';
+                } else {
+                    // 處理首頁圖示
+                    if ($index === 0 && $options['home_icon']) {
+                        $html .= '<i class="fa-solid fa-house-chimney"></i><span class="sr-only visually-hidden">Home</span> ';
+                    }
+                    $html .= htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+                }
+            }
+
+            $html .= '</li>';
+        }
+
+        $html .= '</ol>';
+        $html .= '</nav>';
+
+        return $html;
+    }
+
     public static function setup_meta($title = '', $content = '', $image = '')
     {
         global $xoTheme, $xoopsTpl;
@@ -623,6 +720,7 @@ class Utility
         $main .= "  {$head_code}\n";
         $main .= "</head>\n";
         $main .= "<body>\n";
+        $main .= "    <h1><span class=\"sr-only visually-hidden\">{$title}</span></h1>\n";
         $main .= "    <div class='$container'>\n";
         $main .= "        {$content}\n";
         $main .= "    </div>\n";
@@ -988,17 +1086,66 @@ class Utility
     public static function group_id_from_name($name = "")
     {
         global $xoopsDB;
-        $sql           = "select `groupid` from `" . $xoopsDB->prefix("groups") . "` where `name`='{$name}'";
+        $sql           = "SELECT `groupid` FROM `" . $xoopsDB->prefix('groups') . "` WHERE `name`='{$name}'";
         $result        = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         list($groupid) = $xoopsDB->fetchRow($result);
         return $groupid;
+    }
+
+    //根據名稱找群組編號
+    public static function get_group_from_name($name = "")
+    {
+        global $xoopsDB;
+        $sql    = "SELECT * FROM `" . $xoopsDB->prefix('groups') . "` WHERE `name`='{$name}'";
+        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $group  = $xoopsDB->fetchArray($result);
+        return $group;
+    }
+
+    //根據groupid找群組編號
+    public static function get_group($groupid = "")
+    {
+        global $xoopsDB;
+        $sql    = "SELECT * FROM `" . $xoopsDB->prefix('groups') . "` WHERE `groupid`='{$groupid}'";
+        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $group  = $xoopsDB->fetchArray($result);
+        return $group;
+    }
+
+    //根據編號找出群組所有使用者
+    public static function get_group_users($groupid)
+    {
+        global $xoopsDB;
+        $users = [];
+        $sql   = "SELECT b.* FROM `" . $xoopsDB->prefix('groups_users_link') . "` as a WHERE a.`groupid`='{$groupid}'
+        JOIN `" . $xoopsDB->prefix('users') . "` as b on a.`uid`=b.`uid`";
+        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        while ($user = $xoopsDB->fetchArray($result)) {
+            $users[] = $user;
+        }
+        return $users;
+    }
+
+    //根據uid編號找出所屬群組
+    public static function get_user_groups($uid)
+    {
+        global $xoopsDB;
+        $groups = [];
+        $sql    = "SELECT b.* FROM `" . $xoopsDB->prefix('groups_users_link') . "` as a
+        LEFT JOIN `" . $xoopsDB->prefix('groups') . "` as b ON a.`groupid`=b.`groupid`
+        WHERE a.`uid`='{$uid}'";
+        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        while ($group = $xoopsDB->fetchArray($result)) {
+            $groups[$group['groupid']] = $group;
+        }
+        return $groups;
     }
 
     // 將某人加入群組
     public static function add_user_to_group($uid, $group_id)
     {
         global $xoopsDB;
-        $sql = "replace into " . $xoopsDB->prefix("groups_users_link") . " (`groupid`,`uid`) values('$group_id','$uid')";
+        $sql = "replace into " . $xoopsDB->prefix('groups_users_link') . " (`groupid`,`uid`) values('$group_id','$uid')";
         $xoopsDB->queryF($sql) or die($sql);
     }
 
@@ -1006,7 +1153,7 @@ class Utility
     public static function del_user_from_group($uid, $group_id)
     {
         global $xoopsDB;
-        $sql = "delete from " . $xoopsDB->prefix("groups_users_link") . " where `groupid`='$group_id' and `uid`='$uid'";
+        $sql = "delete from " . $xoopsDB->prefix('groups_users_link') . " where `groupid`='$group_id' and `uid`='$uid'";
         $xoopsDB->queryF($sql) or die($sql);
     }
 
@@ -1221,22 +1368,44 @@ class Utility
         if (is_array($interface_menu)) {
             $basename = basename($_SERVER['SCRIPT_NAME']);
             foreach ($interface_menu as $title => $url) {
-                $urlPath = (empty($moduleName) or 'http' === mb_substr($url, 0, 4)) ? $url : XOOPS_URL . "/modules/{$moduleName}/{$url}";
+                if (is_array($url)) {
+                    foreach ($url as $title2 => $url2) {
+                        $urlPath = (empty($moduleName) or 'http' === mb_substr($url2, 0, 4)) ? $url2 : XOOPS_URL . "/modules/{$moduleName}/{$url2}";
 
-                $current = '';
-                if (strpos($url, 'admin/index.php') !== false or strpos($url, 'admin/main.php') !== false) {
-                    continue;
-                } else {
-                    $target = substr($url, 0, 4) == 'http' ? "target='_blank'" : '';
+                        $current = '';
+                        if (strpos($url2, 'admin/index.php') !== false or strpos($url2, 'admin/main.php') !== false) {
+                            continue;
+                        } else {
+                            $target = substr($url2, 0, 4) == 'http' ? "target='_blank'" : '';
 
-                    if (!empty($op) and false !== strpos($url, "?op=") and false !== strpos($url, "{$basename}?op={$op}")) {
-                        $current = "class='current' title='$title'";
-                    } elseif (false !== strpos($_SERVER['SCRIPT_NAME'], $url) && empty($op)) {
-                        $current = "class='current' title='$title'";
+                            if (!empty($op) and false !== strpos($url2, "?op=") and false !== strpos($url2, "{$basename}?op={$op}")) {
+                                $current = "class='current' title='$title2'";
+                            } elseif (false !== strpos($_SERVER['SCRIPT_NAME'], $url2) && empty($op)) {
+                                $current = "class='current' title='$title2'";
+                            }
+                            $icon = isset($interface_icon[$title2]) ? "<i class='fa {$interface_icon[$title2]}'></i> " : '';
+
+                            $options .= "<li {$current}><a href='{$urlPath}' $target>{$icon}{$title2}</a></li>";
+                        }
                     }
-                    $icon = isset($interface_icon[$title]) ? "<i class='fa {$interface_icon[$title]}'></i> " : '';
+                } else {
+                    $urlPath = (empty($moduleName) or 'http' === mb_substr($url, 0, 4)) ? $url : XOOPS_URL . "/modules/{$moduleName}/{$url}";
 
-                    $options .= "<li {$current}><a href='{$urlPath}' $target>{$icon}{$title}</a></li>";
+                    $current = '';
+                    if (strpos($url, 'admin/index.php') !== false or strpos($url, 'admin/main.php') !== false) {
+                        continue;
+                    } else {
+                        $target = substr($url, 0, 4) == 'http' ? "target='_blank'" : '';
+
+                        if (!empty($op) and false !== strpos($url, "?op=") and false !== strpos($url, "{$basename}?op={$op}")) {
+                            $current = "class='current' title='$title'";
+                        } elseif (false !== strpos($_SERVER['SCRIPT_NAME'], $url) && empty($op)) {
+                            $current = "class='current' title='$title'";
+                        }
+                        $icon = isset($interface_icon[$title]) ? "<i class='fa {$interface_icon[$title]}'></i> " : '';
+
+                        $options .= "<li {$current}><a href='{$urlPath}' $target>{$icon}{$title}</a></li>";
+                    }
                 }
             }
 
@@ -1581,7 +1750,7 @@ class Utility
         global $xoopsModule, $xoopsDB;
         $itemid    = (int) $itemid;
         $module_id = $xoopsModule->mid();
-        $sql       = "SELECT `gperm_groupid` FROM `" . $xoopsDB->prefix("group_permission") . "` WHERE `gperm_modid` = '$module_id' AND `gperm_itemid`='$itemid' AND `gperm_name`='$gperm_name'";
+        $sql       = "SELECT `gperm_groupid` FROM `" . $xoopsDB->prefix('group_permission') . "` WHERE `gperm_modid` = '$module_id' AND `gperm_itemid`='$itemid' AND `gperm_name`='$gperm_name'";
         $result    = $xoopsDB->query($sql) or self::web_error($sql, __FILE__, __LINE__);
 
         while (false !== ($row = $xoopsDB->fetchArray($result))) {
@@ -1596,7 +1765,7 @@ class Utility
     {
         global $xoopsModule, $xoopsDB;
         $module_id = $xoopsModule->mid();
-        $sql       = "DELETE FROM `" . $xoopsDB->prefix("group_permission") . "` WHERE `gperm_modid` = '$module_id' AND `gperm_itemid`='$itemid' AND `gperm_name`='$gperm_name'";
+        $sql       = "DELETE FROM `" . $xoopsDB->prefix('group_permission') . "` WHERE `gperm_modid` = '$module_id' AND `gperm_itemid`='$itemid' AND `gperm_name`='$gperm_name'";
         $xoopsDB->queryF($sql) or self::web_error($sql, __FILE__, __LINE__);
 
     }

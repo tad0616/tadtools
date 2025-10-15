@@ -1,9 +1,8 @@
 .vtb {
   width: 100%;
   display: table;
-  /* 若是 0 左標右文 的左邊會沒有線 */
-  border-left: 1px solid #bbd0e7;
-  border-top: 1px solid #bbd0e7;
+  border-left: 0px solid #d9e6f3;
+  border-top: 1px solid #d9e6f3;
   margin: 0px;
 }
 
@@ -18,6 +17,19 @@
   margin: 0;
   width: 100%;
   display: table-row;
+  /* transition: outline 0.2s ease-in-out; */
+}
+
+/* 滑鼠移到 ul 時的效果 */
+.vtb ul:hover {
+  position: relative;
+  /* 為了讓 outline 正確顯示 */
+  outline: 3px solid #c76503;
+  /* 橘色外框 */
+  outline-offset: -1px;
+  /* 讓外框貼近元素 */
+  z-index: 1;
+  /* 確保外框不會被其他元素遮蓋 */
 }
 
 .vtb li,
@@ -28,9 +40,8 @@
   width: 14%;
   padding: 8px 6px;
   box-sizing: border-box;
-  /* 若是 0 左標右文 的右邊會沒有線 */
-  border-right: 1px solid #bbd0e7;
-  border-bottom: 1px solid #bbd0e7;
+  border-right: 0px solid #d9e6f3;
+  border-bottom: 1px solid #d9e6f3;
 }
 
 .vtb ul.odd li {
@@ -60,7 +71,7 @@
   padding: 8px 6px;
   background: #d9e6f3;
   color: rgb(75, 75, 75);
-  border: 1px solid #bbd0e7;
+  border: 1px solid #d9e6f3;
   font-weight: 900;
 }
 
@@ -70,6 +81,11 @@
   line-height: 1em;
   padding: 8px 6px;
   text-align: left;
+}
+
+.vtb li.vm span.vlabel,
+.vtb li.vm.light span.vlabel {
+  display: none;
 }
 
 .vtb li.vbody {
@@ -103,84 +119,400 @@
   display: none;
 }
 
+.vtb li.w1 {
+  width: 1%;
+}
+
 .vtb li.w2 {
   width: 2%;
+}
+
+.vtb li.w3 {
+  width: 3%;
+}
+
+.vtb li.w4 {
+  width: 4%;
 }
 
 .vtb li.w5 {
   width: 5%;
 }
 
+.vtb li.w6 {
+  width: 6%;
+}
+
+.vtb li.w7 {
+  width: 7%;
+}
+
+.vtb li.w8 {
+  width: 8%;
+}
+
+.vtb li.w9 {
+  width: 9%;
+}
+
 .vtb li.w10 {
   width: 10%;
+}
+
+.vtb li.w11 {
+  width: 11%;
+}
+
+.vtb li.w12 {
+  width: 12%;
+}
+
+.vtb li.w13 {
+  width: 13%;
+}
+
+.vtb li.w14 {
+  width: 14%;
 }
 
 .vtb li.w15 {
   width: 15%;
 }
 
+.vtb li.w16 {
+  width: 16%;
+}
+
+.vtb li.w17 {
+  width: 17%;
+}
+
+.vtb li.w18 {
+  width: 18%;
+}
+
+.vtb li.w19 {
+  width: 19%;
+}
+
 .vtb li.w20 {
   width: 20%;
+}
+
+.vtb li.w21 {
+  width: 21%;
+}
+
+.vtb li.w22 {
+  width: 22%;
+}
+
+.vtb li.w23 {
+  width: 23%;
+}
+
+.vtb li.w24 {
+  width: 24%;
 }
 
 .vtb li.w25 {
   width: 25%;
 }
 
+.vtb li.w26 {
+  width: 26%;
+}
+
+.vtb li.w27 {
+  width: 27%;
+}
+
+.vtb li.w28 {
+  width: 28%;
+}
+
+.vtb li.w29 {
+  width: 29%;
+}
+
 .vtb li.w30 {
   width: 30%;
+}
+
+.vtb li.w31 {
+  width: 31%;
+}
+
+.vtb li.w32 {
+  width: 32%;
+}
+
+.vtb li.w33 {
+  width: 33%;
+}
+
+.vtb li.w34 {
+  width: 34%;
 }
 
 .vtb li.w35 {
   width: 35%;
 }
 
+.vtb li.w36 {
+  width: 36%;
+}
+
+.vtb li.w37 {
+  width: 37%;
+}
+
+.vtb li.w38 {
+  width: 38%;
+}
+
+.vtb li.w39 {
+  width: 39%;
+}
+
 .vtb li.w40 {
   width: 40%;
+}
+
+.vtb li.w41 {
+  width: 41%;
+}
+
+.vtb li.w42 {
+  width: 42%;
+}
+
+.vtb li.w43 {
+  width: 43%;
+}
+
+.vtb li.w44 {
+  width: 44%;
 }
 
 .vtb li.w45 {
   width: 45%;
 }
 
+.vtb li.w46 {
+  width: 46%;
+}
+
+.vtb li.w47 {
+  width: 47%;
+}
+
+.vtb li.w48 {
+  width: 48%;
+}
+
+.vtb li.w49 {
+  width: 49%;
+}
+
 .vtb li.w50 {
   width: 50%;
+}
+
+.vtb li.w51 {
+  width: 51%;
+}
+
+.vtb li.w52 {
+  width: 52%;
+}
+
+.vtb li.w53 {
+  width: 53%;
+}
+
+.vtb li.w54 {
+  width: 54%;
 }
 
 .vtb li.w55 {
   width: 55%;
 }
 
+.vtb li.w56 {
+  width: 56%;
+}
+
+.vtb li.w57 {
+  width: 57%;
+}
+
+.vtb li.w58 {
+  width: 58%;
+}
+
+.vtb li.w59 {
+  width: 59%;
+}
+
 .vtb li.w60 {
   width: 60%;
+}
+
+.vtb li.w61 {
+  width: 61%;
+}
+
+.vtb li.w62 {
+  width: 62%;
+}
+
+.vtb li.w63 {
+  width: 63%;
+}
+
+.vtb li.w64 {
+  width: 64%;
 }
 
 .vtb li.w65 {
   width: 65%;
 }
 
+.vtb li.w66 {
+  width: 66%;
+}
+
+.vtb li.w67 {
+  width: 67%;
+}
+
+.vtb li.w68 {
+  width: 68%;
+}
+
+.vtb li.w69 {
+  width: 69%;
+}
+
 .vtb li.w70 {
   width: 70%;
+}
+
+.vtb li.w71 {
+  width: 71%;
+}
+
+.vtb li.w72 {
+  width: 72%;
+}
+
+.vtb li.w73 {
+  width: 73%;
+}
+
+.vtb li.w74 {
+  width: 74%;
 }
 
 .vtb li.w75 {
   width: 75%;
 }
 
+.vtb li.w76 {
+  width: 76%;
+}
+
+.vtb li.w77 {
+  width: 77%;
+}
+
+.vtb li.w78 {
+  width: 78%;
+}
+
+.vtb li.w79 {
+  width: 79%;
+}
+
 .vtb li.w80 {
   width: 80%;
+}
+
+.vtb li.w81 {
+  width: 81%;
+}
+
+.vtb li.w82 {
+  width: 82%;
+}
+
+.vtb li.w83 {
+  width: 83%;
+}
+
+.vtb li.w84 {
+  width: 84%;
 }
 
 .vtb li.w85 {
   width: 85%;
 }
 
+.vtb li.w86 {
+  width: 86%;
+}
+
+.vtb li.w87 {
+  width: 87%;
+}
+
+.vtb li.w88 {
+  width: 88%;
+}
+
+.vtb li.w89 {
+  width: 89%;
+}
+
 .vtb li.w90 {
   width: 90%;
 }
 
+.vtb li.w91 {
+  width: 91%;
+}
+
+.vtb li.w92 {
+  width: 92%;
+}
+
+.vtb li.w93 {
+  width: 93%;
+}
+
+.vtb li.w94 {
+  width: 94%;
+}
+
 .vtb li.w95 {
   width: 95%;
+}
+
+.vtb li.w96 {
+  width: 96%;
+}
+
+.vtb li.w97 {
+  width: 97%;
+}
+
+.vtb li.w98 {
+  width: 98%;
+}
+
+.vtb li.w99 {
+  width: 99%;
 }
 
 .vtb li.w100 {
@@ -207,40 +539,31 @@
 
 @media (max-width: 768px) {
 
+  .vtb li.vm span.vlabel,
+  .vtb li.vm.light span.vlabel {
+    display: inline;
+  }
+
   .vtb .vhead,
   .vtb .other-month {
     display: none;
   }
 
+  .vtb li,
   .vtb li.vtitle {
     display: block;
     height: auto !important;
     border: 1px solid rgba(200, 200, 200, 0.5);
     width: 100%;
     padding: 10px;
-    background: #d9e6f3;
-    /*margin-bottom: -1px;*/
-  }
-
-  .vtb li {
-    display: block;
-    height: auto !important;
-    border: 1px solid rgba(200, 200, 200, 0.5);
-    width: 100%;
-    padding: 10px;
     background: #ffffff;
-    text-align: left;
     /*margin-bottom: -1px;*/
   }
 
   .vtb li.mobile-title,
-  .vtb li.mobile-title a,
   .vtb ul.odd li.mobile-title,
-  .vtb ul.odd li.mobile-title a,
-  .vtb ul.even li.mobile-title,
-  .vtb ul.even li.mobile-title a {
+  .vtb ul.even li.mobile-title {
     background: #d9e6f3;
-    color: #224257;
   }
 
   .vtb .date {
@@ -265,7 +588,6 @@
     margin-bottom: 4px;
     border-radius: 4px;
     font-weight: 900;
-    font-size: 90%;
   }
 
   .vtb li.vcell.light,
@@ -275,7 +597,6 @@
     display: block;
     background: #f5f8fa;
     color: rgb(22, 22, 26);
-    text-align: left;
   }
 
   .vtb li.blank {
@@ -290,56 +611,139 @@
     text-align: left;
   }
 
+  .vtb li.w1,
   .vtb li.w2,
+  .vtb li.w3,
+  .vtb li.w4,
   .vtb li.w5,
+  .vtb li.w6,
+  .vtb li.w7,
+  .vtb li.w8,
+  .vtb li.w9,
   .vtb li.w10,
-  .vtb li.w20,
-  .vtb li.w30,
-  .vtb li.w40,
-  .vtb li.w50,
-  .vtb li.w60,
-  .vtb li.w70,
-  .vtb li.w80,
-  .vtb li.w90,
-  .vtb li.w100,
+  .vtb li.w11,
+  .vtb li.w12,
+  .vtb li.w13,
+  .vtb li.w14,
   .vtb li.w15,
+  .vtb li.w16,
+  .vtb li.w17,
+  .vtb li.w18,
+  .vtb li.w19,
+  .vtb li.w20,
+  .vtb li.w21,
+  .vtb li.w22,
+  .vtb li.w23,
+  .vtb li.w24,
   .vtb li.w25,
+  .vtb li.w26,
+  .vtb li.w27,
+  .vtb li.w28,
+  .vtb li.w29,
+  .vtb li.w30,
+  .vtb li.w31,
+  .vtb li.w32,
+  .vtb li.w33,
+  .vtb li.w34,
   .vtb li.w35,
+  .vtb li.w36,
+  .vtb li.w37,
+  .vtb li.w38,
+  .vtb li.w39,
+  .vtb li.w40,
+  .vtb li.w41,
+  .vtb li.w42,
+  .vtb li.w43,
+  .vtb li.w44,
   .vtb li.w45,
+  .vtb li.w46,
+  .vtb li.w47,
+  .vtb li.w48,
+  .vtb li.w49,
+  .vtb li.w50,
+  .vtb li.w51,
+  .vtb li.w52,
+  .vtb li.w53,
+  .vtb li.w54,
   .vtb li.w55,
+  .vtb li.w56,
+  .vtb li.w57,
+  .vtb li.w58,
+  .vtb li.w59,
+  .vtb li.w60,
+  .vtb li.w61,
+  .vtb li.w62,
+  .vtb li.w63,
+  .vtb li.w64,
   .vtb li.w65,
+  .vtb li.w66,
+  .vtb li.w67,
+  .vtb li.w68,
+  .vtb li.w69,
+  .vtb li.w70,
+  .vtb li.w71,
+  .vtb li.w72,
+  .vtb li.w73,
+  .vtb li.w74,
   .vtb li.w75,
+  .vtb li.w76,
+  .vtb li.w77,
+  .vtb li.w78,
+  .vtb li.w79,
+  .vtb li.w80,
+  .vtb li.w81,
+  .vtb li.w82,
+  .vtb li.w83,
+  .vtb li.w84,
   .vtb li.w85,
-  .vtb li.w95 {
+  .vtb li.w86,
+  .vtb li.w87,
+  .vtb li.w88,
+  .vtb li.w89,
+  .vtb li.w90,
+  .vtb li.w91,
+  .vtb li.w92,
+  .vtb li.w93,
+  .vtb li.w94,
+  .vtb li.w95,
+  .vtb li.w96,
+  .vtb li.w97,
+  .vtb li.w98,
+  .vtb li.w99,
+  .vtb li.w100 {
     width: 100%;
   }
 }
 
 /*
-  $xoTheme->addStylesheet('modules/tadtools/css/vtb.css');
+  $xoTheme->addStylesheet(XOOPS_URL . '/modules/tadtools/css/vtb.css');
   <link href="<{$xoops_url}>/modules/tadtools/css/vtb.css" media="all" rel="stylesheet">
   <!-- 左標右格 -->
   <div class="vtb">
-  <ul>
-  <li class="w2 vtitle">到園日期</li>
-  <li class="w8">
-  <{$order_start|default:''}>～<{$order_end|default:''}>
-  </li>
-  </ul>
+    <ul>
+      <li class="w2 vtitle">到園日期</li>
+      <li class="w8">
+      <{$order_start|default:''}>～<{$order_end|default:''}>
+      </li>
+    </ul>
   </div>
 
   <!-- 上標下格 -->
   <div class="vtb">
-  <ul class="vhead">
-  <li>日期</li>
-  <li>營位名稱</li>
-  </ul>
-  <ul>
-  <li class="vcell">日期</li>
-  <li class="vm">XXXX</li>
-  <li class="vcell">營位名稱</li>
-  <li class="vm">XXXX</li>
-  </ul>
+    <ul class="vhead">
+      <li class="w15">日期</li>
+      <li class="w85">營位名稱</li>
+    </ul>
+    <ul>
+      <li class="vm w15 c num blank">
+          <span class="vlabel">日期</span>
+          XXXX
+      </li>
+      <li class="vm w85">
+          <span class="vlabel">營位名稱</span>
+          XXXX
+      </li>
+    </ul>
   </div>
 
   */

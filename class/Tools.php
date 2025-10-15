@@ -750,58 +750,191 @@ class Tools
     }
 
     //取得模組選單
-    public static function get_module_menu_item($i)
+    public static function get_module_menu_item($i, $def_dir = '')
     {
         global $xoopsModuleConfig;
-        $dir = '';
-        $u   = parse_url($_SERVER['REQUEST_URI']);
-        if (!empty($u['path']) and strpos($u['path'], '/modules/') !== false) {
-            preg_match_all('/\/modules\/(.*)\//', $u['path'], $all);
-            $dir = $all[1][0];
-        }
-        if (empty($dir)) {
-            return;
-        }
 
-        if (file_exists(XOOPS_ROOT_PATH . "/modules/{$dir}/interface_menu.php")) {
-            if (!isset($xoopsModuleConfig['tootbar_in_navbar']) or $xoopsModuleConfig['tootbar_in_navbar'] == 1) {
-                require XOOPS_ROOT_PATH . "/modules/{$dir}/interface_menu.php";
-                foreach ($interface_menu as $title => $url) {
-                    $my_menu[$i]['id']     = $i;
-                    $my_menu[$i]['title']  = $title;
-                    $my_menu[$i]['target'] = "_self";
-                    $my_menu[$i]['icon']   = isset($interface_icon) ? $interface_icon[$title] : '';
-                    $my_menu[$i]['img']    = isset($interface_menu_img) ? XOOPS_URL . "/modules/{$dir}/images/{$interface_menu_img[$title]}" : '';
-
-                    if (is_array($url)) {
-                        $my_menu[$i]['url'] = 'index.php';
-                        $sub_menu           = [];
-                        $j                  = 0;
-                        foreach ($url as $title2 => $url2) {
-                            if ($title2 == 'icon') {
-                                continue;
-                            }
-                            $sub_menu[$j]['id']      = $j;
-                            $sub_menu[$j]['title']   = $title2;
-                            $sub_menu[$j]['url']     = strpos($url2, 'http') === false ? XOOPS_URL . "/modules/{$dir}/{$url2}" : $url2;
-                            $sub_menu[$j]['target']  = "_self";
-                            $sub_menu[$j]['icon']    = isset($interface_icon) ? $interface_icon[$title][$title2] : '';
-                            $sub_menu[$j]['submenu'] = '';
-                            $j++;
-                        }
-                        $my_menu[$i]['submenu'] = $sub_menu;
-                    } else {
-                        $my_menu[$i]['url']     = strpos($url, 'http') === false ? XOOPS_URL . "/modules/{$dir}/{$url}" : $url;
-                        $my_menu[$i]['submenu'] = "";
-                    }
-                    $i++;
+        // 確定模組目錄
+        if ($def_dir == '') {
+            $u = parse_url($_SERVER['REQUEST_URI']);
+            if (!empty($u['path']) and strpos($u['path'], '/modules/') !== false) {
+                preg_match_all('/\/modules\/(.*)\//', $u['path'], $all);
+                $dir = $all[1][0];
+                if ($dir == 'school') {
+                    return [];
                 }
             }
         } else {
-            return;
+            $dir = $def_dir;
         }
-        return $my_menu;
+
+        if (empty($dir)) {
+            return [];
+        }
+
+        // 檢查是否有介面選單檔案
+        if (!file_exists(XOOPS_ROOT_PATH . "/modules/{$dir}/interface_menu.php")) {
+            return [];
+        }
+
+        // 檢查導覽列設定
+        if (!isset($xoopsModuleConfig['tootbar_in_navbar']) or $xoopsModuleConfig['tootbar_in_navbar'] == 1) {
+            require XOOPS_ROOT_PATH . "/modules/{$dir}/interface_menu.php";
+
+            // 遞迴處理選單的函數（改進：支援 interface_icon 多種結構，並傳入 ancestors 以便查找子項目的 icon）
+            $processMenu = function ($menu_items, $parent_i = 0, $ancestors = []) use (&$processMenu, $dir, &$interface_icon, &$interface_menu_img) {
+                $menu = [];
+                $i    = $parent_i;
+
+                // helper: resolve icon by checking direct keys and ancestor chains
+                $resolveIcon = function ($title, $ancestors) use (&$interface_icon) {
+                    // direct string value
+                    if (isset($interface_icon[$title]) && !is_array($interface_icon[$title])) {
+                        return $interface_icon[$title];
+                    }
+                    // direct ['icon'] field
+                    if (isset($interface_icon[$title]['icon']) && is_string($interface_icon[$title]['icon'])) {
+                        return $interface_icon[$title]['icon'];
+                    }
+
+                    // try ancestor chains: longest first
+                    $n = count($ancestors);
+                    for ($len = $n; $len >= 1; $len--) {
+                        $ref   = $interface_icon;
+                        $slice = array_slice($ancestors, 0, $len);
+                        $found = true;
+                        foreach ($slice as $anc) {
+                            if (isset($ref[$anc])) {
+                                $ref = $ref[$anc];
+                            } else {
+                                $found = false;
+                                break;
+                            }
+                        }
+                        if (!$found) {
+                            continue;
+                        }
+
+                        // if the ancestor ref has a child keyed by title
+                        if (is_array($ref) && isset($ref[$title])) {
+                            if (!is_array($ref[$title])) {
+                                return $ref[$title];
+                            }
+                            if (isset($ref[$title]['icon']) && is_string($ref[$title]['icon'])) {
+                                return $ref[$title]['icon'];
+                            }
+                        }
+
+                        // sometimes the group icon is in 'icon' of the ancestor
+                        if (is_array($ref) && isset($ref['icon']) && is_string($ref['icon'])) {
+                            return $ref['icon'];
+                        }
+                    }
+
+                    return '';
+                };
+
+                foreach ($menu_items as $title => $url) {
+                    if ($title == 'icon') {
+                        continue;
+                    }
+
+                    $icon = $resolveIcon($title, $ancestors);
+
+                    $menu_item = [
+                        'id' => $i,
+                        'title' => $title,
+                        'target' => "_self",
+                        'icon' => $icon,
+                        'img' => isset($interface_menu_img[$title]) ? XOOPS_URL . "/modules/{$dir}/images/{$interface_menu_img[$title]}" : '',
+                    ];
+
+                    // 處理子選單
+                    if (is_array($url)) {
+                        $menu_item['url'] = '#';
+                        // 如果群組本身有 icon，且尚未設定，使用群組 icon
+                        if (empty($menu_item['icon']) && isset($interface_icon[$title]['icon'])) {
+                            $menu_item['icon'] = is_string($interface_icon[$title]['icon']) ? $interface_icon[$title]['icon'] : '';
+                        }
+                        $new_ancestors        = array_merge($ancestors, [$title]);
+                        $submenu              = $processMenu($url, $i + 1, $new_ancestors);
+                        $menu_item['submenu'] = $submenu;
+                    } else {
+                        $menu_item['url']     = strpos($url, 'http') === false ? XOOPS_URL . "/modules/{$dir}/{$url}" : $url;
+                        $menu_item['submenu'] = "";
+                    }
+
+                    $menu[] = $menu_item;
+                    $i++;
+                }
+
+                return $menu;
+            };
+
+            // 開始處理選單
+            return $processMenu($interface_menu, $i);
+        }
+
+        return [];
     }
+    // public static function get_module_menu_item($i, $def_dir = '')
+    // {
+    //     global $xoopsModuleConfig;
+    //     if ($def_dir == '') {
+    //         $u = parse_url($_SERVER['REQUEST_URI']);
+    //         if (!empty($u['path']) and strpos($u['path'], '/modules/') !== false) {
+    //             preg_match_all('/\/modules\/(.*)\//', $u['path'], $all);
+    //             $dir = $all[1][0];
+    //             if ($dir == 'school') {
+    //                 return [];
+    //             }
+    //         }
+    //     } else {
+    //         $dir = $def_dir;
+    //     }
+
+    //     if (empty($dir)) {
+    //         return [];
+    //     }
+
+    //     if (file_exists(XOOPS_ROOT_PATH . "/modules/{$dir}/interface_menu.php")) {
+    //         if (!isset($xoopsModuleConfig['tootbar_in_navbar']) or $xoopsModuleConfig['tootbar_in_navbar'] == 1) {
+    //             require XOOPS_ROOT_PATH . "/modules/{$dir}/interface_menu.php";
+    //             foreach ($interface_menu as $title => $url) {
+    //                 $my_menu[$i]['id']     = $i;
+    //                 $my_menu[$i]['title']  = $title;
+    //                 $my_menu[$i]['target'] = "_self";
+    //                 $my_menu[$i]['icon']   = isset($interface_icon) ? $interface_icon[$title] : '';
+    //                 $my_menu[$i]['img']    = isset($interface_menu_img) ? XOOPS_URL . "/modules/{$dir}/images/{$interface_menu_img[$title]}" : '';
+    //                 if (is_array($url)) {
+    //                     $my_menu[$i]['url'] = 'index.php';
+    //                     $sub_menu           = [];
+    //                     $j                  = 0;
+    //                     foreach ($url as $title2 => $url2) {
+    //                         if ($title2 == 'icon') {
+    //                             continue;
+    //                         }
+    //                         $sub_menu[$j]['id']      = $j;
+    //                         $sub_menu[$j]['title']   = $title2;
+    //                         $sub_menu[$j]['url']     = strpos($url2, 'http') === false ? XOOPS_URL . "/modules/{$dir}/{$url2}" : $url2;
+    //                         $sub_menu[$j]['target']  = "_self";
+    //                         $sub_menu[$j]['icon']    = isset($interface_icon) ? $interface_icon[$title][$title2] : '';
+    //                         $sub_menu[$j]['submenu'] = '';
+    //                         $j++;
+    //                     }
+    //                     $my_menu[$i]['submenu'] = $sub_menu;
+    //                 } else {
+    //                     $my_menu[$i]['url']     = strpos($url, 'http') === false ? XOOPS_URL . "/modules/{$dir}/{$url}" : $url;
+    //                     $my_menu[$i]['submenu'] = "";
+    //                 }
+    //                 $i++;
+    //             }
+    //         }
+    //     } else {
+    //         return [];
+    //     }
+    //     return $my_menu;
+    // }
 
     //取得使用者選單
     public static function get_user_menu_item($i)

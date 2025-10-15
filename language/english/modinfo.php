@@ -50,3 +50,6 @@ define('_MI_TADTOOLS_TEST_MODE_DESC', 'It is recommended to select "Yes", this o
 
 define('_MI_TADTOOLS_FACEBOOK_APP_ID', 'Is the development test mode open to administrators only?');
 define('_MI_TADTOOLS_FACEBOOK_APP_ID_DESC', 'Is the development test mode open to administrators only?');
+
+define('_MI_TADTOOLS_CK_WCAG', 'CK editor complies with accessibility regulations when affixed.');
+define('_MI_TADTOOLS_CK_WCAG_DESC', 'It is recommended to select "Yes", when posting, it will be posted in plain text to avoid violating the accessibility regulations.');

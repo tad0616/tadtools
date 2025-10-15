@@ -202,7 +202,6 @@ class TadUpFiles
 
     public function __construct($dir = '', $subdir = '', $file = '/file', $image = '/image', $thumbs = '/image/.thumbs')
     {
-        global $xoopsDB;
         if (!empty($dir)) {
             $this->set_prefix($dir);
         }
@@ -505,44 +504,44 @@ class TadUpFiles
                             $thumb_pic = XOOPS_URL . '/modules/tadtools/images/downloads.png';
                         }
                         $thumb_tool = "
-                    <div class='row'>
-                        <div class='col-sm-3 text-left'>
-                        </div>
-                        <div class='col-sm-6 text-center'>
-                            <a href=\"javascript:remove_file('{$files_sn}', '{$this->thumbs_dir}');\" style='font-size: 0.8rem;' class='text-danger' data-toggle=\"tooltip\" title=\"" . sprintf(_TM_FILE_DEL_BY, $uid_name, $uid_name) . "\">
-                                <i class=\"fa fa-trash\"></i> " . _TAD_DEL . "
-                            </a></div>
-                        <div class='col-sm-3 text-right'>
-                        </div>
-                    </div>";
+                        <div class='row'>
+                            <div class='col-sm-3 text-left text-start'>
+                            </div>
+                            <div class='col-sm-6 text-center'>
+                                <a href=\"javascript:remove_file('{$files_sn}', '{$this->thumbs_dir}');\" style='font-size: 0.8rem;' class='text-danger' data-toggle=\"tooltip\" title=\"" . sprintf(_TM_FILE_DEL_BY, $uid_name, $uid_name) . "\">
+                                    <i class=\"fa fa-trash\"></i> " . _TAD_DEL . "
+                                </a></div>
+                            <div class='col-sm-3 text-right'>
+                            </div>
+                        </div>";
 
                         //有編輯框
                         $thumb_style = "<div style='text-align: center;'><img src='{$thumb_pic}' alt='{$file_name}'></div>";
                         //無編輯框
-                        $thumb_style2 = "<a class='thumbnail' style='display:inline-block; width:{$this->thumb_width};height:{$this->thumb_height};overflow:hidden;background-color: transparent; background-image:url({$thumb_pic});background-position:{$this->thumb_position};background-repeat:{$this->thumb_repeat};background-size:{$this->thumb_size}; margin-bottom: 4px;' title='{$description}'></a>";
+                        $thumb_style2 = "<a class='thumbnail $fext' style='display:inline-block; width:{$this->thumb_width};height:{$this->thumb_height};overflow:hidden;background-color: transparent; background-image:url({$thumb_pic});background-position:{$this->thumb_position};background-repeat:{$this->thumb_repeat};background-size:{$this->thumb_size}; margin-bottom: 4px;' title='{$description}'></a>";
                     } else {
                         $thumb_pic = "{$this->TadUpFilesThumbUrl}/{$file_name}";
 
                         $thumb_tool = "
-                    <table class='table'>
-                        <tr>
-                        <td class='text-right'>
-                            <a href=\"javascript:rotate_img('left','{$files_sn}','{$this->dir}{$this->subdir}','{$this->image_dir}','{$this->thumbs_dir}','{$file_name}','{$file_type}')\" id='left90'><i class=\"fa fa-undo text-success\" title='" . TADTOOLS_ROTATE_LEFT . "'></i></a>
-                        </td>
-                        <td class='text-center'>
-                            <a href=\"javascript:remove_file('{$files_sn}', '{$this->thumbs_dir}');\" style='font-size: 0.8rem;' class='text-danger' data-toggle=\"tooltip\" title=\"" . sprintf(_TM_FILE_DEL_BY, $uid_name, $uid_name) . "\">
-                                <i class=\"fa fa-times text-danger\" title=\"" . _TAD_DEL . "\"></i>
-                            </a>
-                        </td>
-                        <td class='text-left'>
-                            <a href=\"javascript:rotate_img('right','{$files_sn}','{$this->dir}{$this->subdir}','{$this->image_dir}','{$this->thumbs_dir}','{$file_name}','{$file_type}')\" id='right90'><i class=\"fa fa-repeat text-info\" title='" . TADTOOLS_ROTATE_RIGHT . "'></i></a>
-                        </td>
-                        </tr>
-                    </table>";
+                        <table class='table'>
+                            <tr>
+                            <td class='text-right'>
+                                <a href=\"javascript:rotate_img('left','{$files_sn}','{$this->dir}{$this->subdir}','{$this->image_dir}','{$this->thumbs_dir}','{$file_name}','{$file_type}')\" id='left90'><i class=\"fa fa-undo text-success\" title='" . TADTOOLS_ROTATE_LEFT . "'></i></a>
+                            </td>
+                            <td class='text-center'>
+                                <a href=\"javascript:remove_file('{$files_sn}', '{$this->thumbs_dir}');\" style='font-size: 0.8rem;' class='text-danger' data-toggle=\"tooltip\" title=\"" . sprintf(_TM_FILE_DEL_BY, $uid_name, $uid_name) . "\">
+                                    <i class=\"fa fa-times text-danger\" title=\"" . _TAD_DEL . "\"></i>
+                                </a>
+                            </td>
+                            <td class='text-left'>
+                                <a href=\"javascript:rotate_img('right','{$files_sn}','{$this->dir}{$this->subdir}','{$this->image_dir}','{$this->thumbs_dir}','{$file_name}','{$file_type}')\" id='right90'><i class=\"fa fa-repeat text-info\" title='" . TADTOOLS_ROTATE_RIGHT . "'></i></a>
+                            </td>
+                            </tr>
+                        </table>";
 
                         $thumb_style = "<a name='{$files_sn}' id='thumb{$files_sn}' href='{$this->TadUpFilesImgUrl}/{$file_name}' style='display: block; width: 120px; height: 80px; overflow: hidden; background-color: {$this->thumb_bg_color}; background-image: url({$thumb_pic}),url(" . XOOPS_URL . "/modules/tadtools/images/transparent.png); background-position: center center; background-repeat: no-repeat; background-size: contain; border: 1px solid gray; margin: 0px auto;' title='{$description}' class='fancybox_demo' rel='demo'></a>";
 
-                        $thumb_style2 = "<a class='thumbnail' id='thumb{$files_sn}' style='display:inline-block; width:{$this->thumb_width};height:{$this->thumb_height};overflow:hidden;background-color:{$this->thumb_bg_color};background-image:url({$thumb_pic});background-position:{$this->thumb_position};background-repeat:{$this->thumb_repeat};background-size:{$this->thumb_size}; margin-bottom: 4px;' title='{$description}'></a>";
+                        $thumb_style2 = "<a class='thumbnail $fext' id='thumb{$files_sn}' style='display:inline-block; width:{$this->thumb_width};height:{$this->thumb_height};overflow:hidden;background-color:{$this->thumb_bg_color};background-image:url({$thumb_pic});background-position:{$this->thumb_position};background-repeat:{$this->thumb_repeat};background-size:{$this->thumb_size}; margin-bottom: 4px;' title='{$description}'></a>";
                     }
 
                     $w  = 'width:130px; word-break: break-word;';
@@ -592,7 +591,7 @@ class TadUpFiles
                     </td>
                     <td>
                     {$filename_label}
-                    <textarea name='{$this->upname}_save_description[$files_sn]' rows=1 size=2 class='form-control'>{$description}</textarea>
+                    <textarea name='{$this->upname}_save_description[$files_sn]' rows=2 class='form-control'>{$description}</textarea>
                     $permission
                     </td>
                 </tr>";
@@ -768,7 +767,7 @@ class TadUpFiles
         //取消上傳時間限制
         set_time_limit(0);
         //設置上傳大小
-        ini_set('memory_limit', '180M');
+        ini_set('memory_limit', '240M');
 
         // 更新權限
         if ($this->permission) {
@@ -851,7 +850,7 @@ class TadUpFiles
                 $ext      = mb_strtolower($file_ext);
 
                 //判斷檔案種類
-                if ($ext === 'jpg' or $ext === 'jpeg' or $ext === 'png' or $ext === 'gif') {
+                if ($ext === 'jpg' or $ext === 'jpeg' or $ext === 'png' or $ext === 'gif' or $ext === 'webp') {
                     $kind = 'img';
                 } else {
                     $kind = 'file';
@@ -1184,7 +1183,6 @@ class TadUpFiles
             'js' => 'application/javascript',
             'json' => 'application/json',
             'xml' => 'application/xml',
-            'swf' => 'application/x-shockwave-flash',
             'flv' => 'video/x-flv',
 
             // images
@@ -1690,9 +1688,13 @@ class TadUpFiles
 
             $mark = strpos($link_path, '?') !== false ? '&' : '?';
 
-            $dl_url = empty($this->download_url) ? "{$link_path}{$mark}op=tufdl&files_sn=$files_sn" : $this->download_url . "&files_sn=$files_sn";
+            // 2025/09/25 為無障礙修改
+            $http           = ($_SERVER['HTTPS'] === 'on') ? 'https://' : 'http://';
+            $js_dl_url      = empty($this->download_url) ? "javascript:void(0)" : $this->download_url . "&files_sn=$files_sn";
+            $js_full_dl_url = empty($this->download_url) ? "javascript:void(0)" : $this->download_url . "&files_sn=$files_sn";
 
-            $full_dl_url = empty($this->download_url) ? "{$link_path}{$mark}op=tufdl&files_sn=$files_sn" : $this->download_url . "&files_sn=$files_sn";
+            $dl_url      = empty($this->download_url) ? "{$link_path}{$mark}op=tufdl&fn=$original_filename&files_sn=$files_sn" : $this->download_url . "&fn=$original_filename&files_sn=$files_sn";
+            $full_dl_url = empty($this->download_url) ? "{$link_path}{$mark}op=tufdl&fn=$original_filename&files_sn=$files_sn" : $this->download_url . "&fn=$original_filename&files_sn=$files_sn";
 
             if ($kind === 'img') {
                 $fancyboxset = "fancybox_{$this->col_name} fancybox_{$this->col_name}{$this->col_sn}";
@@ -1732,15 +1734,19 @@ class TadUpFiles
                 $thumb_pic_ext            = mb_strtolower(mb_substr($thumb_pic, -3));
                 $files[$key]['thumb_pic'] = mb_substr($thumb_pic, 0, -3) . $thumb_pic_ext;
             } else {
-                $fancyboxset              = (isset($fext) && $fext == 'pdf') ? "fancybox_{$this->col_name} fancybox_{$this->col_name}{$this->col_sn}" : '';
-                $rel                      = (isset($fext) && $fext == 'pdf') == 'pdf' ? "rel='f{$this->col_name}'" : '';
-                $fext                     = strtolower(pathinfo($original_filename, PATHINFO_EXTENSION));
+                $fext = strtolower(pathinfo($original_filename, PATHINFO_EXTENSION));
+
+                $fancyboxset              = ($fext == 'pdf' and !$this->pdf_force_dl) ? "fancybox_{$this->col_name} fancybox_{$this->col_name}{$this->col_sn}" : '';
+                $rel                      = ($fext == 'pdf' and !$this->pdf_force_dl) ? "rel='f{$this->col_name}'" : '';
+                $dl_url                   = ($fext == 'pdf' and !$this->pdf_force_dl) ? $dl_url : $js_dl_url;
+                $onclick                  = ($fext == 'pdf' and !$this->pdf_force_dl) ? '' : "onclick=\"downloadFile($files_sn, '$original_filename')\"";
                 $files[$key]['thumb_pic'] = XOOPS_URL . "/modules/tadtools/images/mimetype/{$fext}.png";
                 $file_name                = $this->hash ? $hash_filename : $file_name;
 
-                $files[$key]['link']               = "<a href='{$dl_url}#{$original_filename}' target='{$target}'>{$show_file_name}</a>";
-                $files[$key]['path']               = "{$dl_url}#{$original_filename}";
-                $files[$key]['url']                = "<a href='{$dl_url}' title='{$description}' {$rel} class='{$fancyboxset}' data-fancybox-type='iframe'>{$show_file_name}</a>";
+                // 2025/09/25 為無障礙修改
+                $files[$key]['url']                = "<a href='{$dl_url}' class='$fext' $onclick title='{$description}' {$rel} class='{$fancyboxset}' data-fancybox-type='iframe'>{$show_file_name}</a>";
+                $files[$key]['link']               = "<a href='{$dl_url}' class='$fext' $onclick target='{$target}'>{$show_file_name}</a>";
+                $files[$key]['path']               = "{$dl_url}";
                 $files[$key]['dl_url']             = $dl_url;
                 $files[$key]['original_file_path'] = $this->TadUpFilesUrl . "/{$file_name}";
                 $files[$key]['physical_file_path'] = $this->TadUpFilesDir . "/{$file_name}";
@@ -1767,7 +1773,9 @@ class TadUpFiles
 
         $andLimit = (!empty($limit)) ? "limit 0 , {$limit}" : '';
 
+        // 2025/09/25 為無障礙修改
         $link_path = $path === null ? $_SERVER['PHP_SELF'] : $path;
+        // $link_path = $path === null ? XOOPS_URL . '/modules/tadtools/download.php' : $path;
 
         if (empty($files_sn) and !empty($this->files_sn)) {
             $files_sn = $this->files_sn;
@@ -1813,7 +1821,9 @@ class TadUpFiles
             $files[$i]['description']       = $description;
             $files[$i]['original_filename'] = $original_filename;
 
-            $dl_url = empty($this->download_url) ? "{$link_path}?op=tufdl&files_sn=$files_sn" : $this->download_url . "&files_sn=$files_sn";
+            // 2025/09/25 為無障礙修改
+            $dl_url = empty($this->download_url) ? "{$link_path}?op=tufdl&fn=$original_filename&files_sn=$files_sn" : $this->download_url . "&fn=$original_filename&files_sn=$files_sn";
+            // $dl_url = empty($this->download_url) ? "{$link_path}?files_sn=$files_sn&mod_name=" . $this->dir : $this->download_url . "&files_sn=$files_sn";
 
             if ($kind === 'img') {
                 $pic_name  = $this->TadUpFilesImgUrl . "/{$file_name}";
@@ -1826,20 +1836,10 @@ class TadUpFiles
                 $files[$i]['tb_link'] = "<a href='{$dl_url}' title='{$description}' rel='lytebox'><img src='$thumb_pic' alt='{$description}' title='{$description}'></a>";
                 $files[$i]['tb_path'] = $thumb_pic;
                 $files[$i]['tb_url']  = "<a href='{$dl_url}' title='{$description}' rel='lytebox'>{$description}</a>";
-            } elseif (mb_strtolower(mb_substr($file_name, -3)) === 'swf') {
-                $pic_name  = $this->TadUpFilesImgUrl . "/{$file_name}";
-                $thumb_pic = $this->TadUpFilesThumbUrl . "/{$file_name}";
-
-                $files[$i]['link'] = "<a href='{$dl_url}' title='{$description}' rel='lytebox'><img src='{$pic_name}' alt='{$description}' title='{$description}' rel='lytebox'></a>";
-                $files[$i]['path'] = $pic_name;
-                $files[$i]['url']  = "<a href='{$dl_url}' title='{$description}' target='_blank'>{$description}</a>";
-
-                $files[$i]['tb_link'] = "<a href='{$dl_url}' title='{$description}' rel='lytebox'><img src='$thumb_pic' alt='{$description}' title='{$description}'></a>";
-                $files[$i]['tb_path'] = $thumb_pic;
-                $files[$i]['tb_url']  = "<a href='{$dl_url}' title='{$description}' rel='lytebox'>{$description}</a>";
             } else {
-                $files[$i]['link'] = "<a href='{$dl_url}#{$original_filename}'>{$original_filename}</a>";
-                $files[$i]['path'] = "{$dl_url}#{$original_filename}";
+                // 2025/09/25 為無障礙修改
+                $files[$i]['link'] = "<a href='{$dl_url}' class='$fext' onclick=\"downloadFile($files_sn, '$original_filename')\">{$original_filename}</a>";
+                $files[$i]['path'] = "{$dl_url}";
             }
             $i++;
         }
@@ -1946,7 +1946,7 @@ class TadUpFiles
         }
 
         $file_arr = $this->get_file(null, $limit, $path, $hash, $desc_as_name, $keyword, $only_keyword, $target);
-
+        Utility::test($file_arr, 'file_arr', 'dd');
         if (empty($file_arr)) {
             return;
         }
@@ -1986,10 +1986,11 @@ class TadUpFiles
                     $all_files .= "{$file_info['text_link']},";
                 } else {
                     $linkto       = $file_info['path'];
-                    $linkto_clean = $file_info['full_dl_url'];
+                    $linkto_clean = $file_info['dl_url'];
                     $description  = empty($file_info['description']) ? $file_info['original_filename'] : $file_info['description'];
+                    $fext         = strtolower(pathinfo($file_info['physical_file_path'], PATHINFO_EXTENSION));
+                    // Utility::dd($fext);
                     if ($file_info['kind'] === 'file') {
-                        $fext      = strtolower(pathinfo($file_info['path'], PATHINFO_EXTENSION));
                         $thumb_pic = XOOPS_URL . "/modules/tadtools/images/mimetype/{$fext}.png";
                         if (!\file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/images/mimetype/{$fext}.png")) {
                             $thumb_pic = XOOPS_URL . "/modules/tadtools/images/mimetype/none.png";
@@ -2001,7 +2002,8 @@ class TadUpFiles
                                 $fancyboxset = "fancybox_{$this->col_name} fancybox_{$this->col_name}{$this->col_sn}";
                                 $rel         = "data-fancybox-type='iframe'";
                             } else {
-                                $fancyboxset = $rel = '';
+                                $fancyboxset = '';
+                                $rel         = 'onclick="downloadFile(' . $files_sn . ', \'' . $description . '\')"';
                             }
                             $linkto = XOOPS_URL . "/modules/tadtools/video.php?file_name={$file_info['original_file_path']}";
                         } elseif ($fext === 'pdf' && $this->pdf_force_dl != 1) {
@@ -2018,7 +2020,8 @@ class TadUpFiles
                                 $rel         = "rel='f{$this->col_name}'";
                             }
                         } else {
-                            $fancyboxset = $rel = '';
+                            $fancyboxset = '';
+                            $rel         = 'onclick="downloadFile(' . $files_sn . ', \'' . $description . '\')"';
                         }
                         $thumb_css = $this->thumb_css == '' ? 'background-color: tranparent;' : $this->thumb_css;
                     } else {
@@ -2047,7 +2050,7 @@ class TadUpFiles
                     $show_dl_txt = ($show_dl) ? "<span class='label label-info'>{$file_info['counter']}</span>" : '';
 
                     //描述顯示
-                    $show_description_txt = ($show_description) ? "<div class='file_description' style='font-weight: normal; font-size: 0.8em; word-break: break-all; line-height: 1.2; margin: 4px auto 4px 0px; text-align: left;'><a href='{$linkto_clean}' target='{$target}' {$rel} class='file_url'>{$i}) {$description} {$show_dl_txt}</a></div>" : (string) ($show_dl_txt);
+                    $show_description_txt = ($show_description) ? "<div class='file_description' style='font-weight: normal; font-size: 0.8em; word-break: break-all; line-height: 1.2; margin: 4px auto 4px 0px; text-align: left;'><a href='{$linkto_clean}' target='{$target}' {$rel} class='file_url $fancyboxset'>{$i}) {$description} {$show_dl_txt}</a></div>" : (string) ($show_dl_txt);
 
                     $w   = (int) $this->show_width;
                     $h   = (int) $this->show_height;
@@ -2055,193 +2058,46 @@ class TadUpFiles
 
                     $item_h = !empty($show_description) ? $h + $this->desc_height : $h;
 
-                    $all_files .= ($show_mode === 'small') ? "<a href='{$linkto}' data-toggle='tooltip' data-placement='top' title='{$description}' class='iconize {$fancyboxset}' {$rel}>&nbsp;</a> " : "
+                    $all_files .= ($show_mode === 'small') ? "<a href='{$linkto}#{$description}' data-toggle='tooltip' data-placement='top' title='{$description}' class='iconize $fext {$fancyboxset}' {$rel}>&nbsp;</a> " : "
                     <li class='tuf-icon-item' style='width:{$w}px;height:{$item_h}px;float:left;list-style:none;{$this->other_css}'>
-                    <a href='{$linkto}' class='thumbnail {$fancyboxset}' target='{$target}' {$rel} style=\"display:inline-block; width: {$w}px; height: {$h}px; overflow: hidden; background-image: url('{$thumb_pic}'); background-size: {$bgs}; background-repeat: no-repeat; background-position: center center; margin-bottom: 4px; {$thumb_css}\" title='{$description}'>&nbsp;</a>{$show_description_txt}
+                    <a href='{$linkto}' class='thumbnail $fext {$fancyboxset}' target='{$target}' {$rel} style=\"display:inline-block; width: {$w}px; height: {$h}px; overflow: hidden; background-image: url('{$thumb_pic}'); background-size: {$bgs}; background-repeat: no-repeat; background-position: center center; margin-bottom: 4px; {$thumb_css}\" title='{$description}'>&nbsp;</a>{$show_description_txt}
                     </li>";
                 }
 
                 $i++;
             }
 
+            $link_path = $path === null ? $_SERVER['PHP_SELF'] : $path;
+            $mark      = strpos($link_path, '?') !== false ? '&' : '?';
+            // $download_url     = empty($this->download_url) ? "{$link_path}{$mark}op=tufdl&files_sn=" : $this->download_url . "&fn={$file_info['original_filename']}&files_sn=";
+            $download_url     = empty($this->download_url) ? "{$link_path}{$mark}" : $this->download_url;
+            $download_file_js = "<script>
+            function downloadFile(sn, filname) {
+                const link = document.createElement('a');
+
+                link.href = '{$download_url}op=tufdl&fn='+filname+'&files_sn='+sn;
+                link.download = filname;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+            </script>";
+
             if ($show_mode === 'file_url') {
-                $all_files .= '</ul>';
+                $all_files .= "</ul>$download_file_js";
             } elseif ($show_mode === 'app') {
             } elseif ($show_mode === 'file_text_url' or $show_mode === 'small') {
-                $all_files .= '';
+                $all_files .= $download_file_js;
             } elseif ($show_mode === 'filename') {
-                $all_files .= "</ol><div style='clear:both;'></div>";
+                $all_files .= "</ol><div style='clear:both;'></div>$download_file_js";
             } else {
-                $all_files .= "</ul><div style='clear:both;'></div>";
+                $all_files .= "</ul><div style='clear:both;'></div>$download_file_js";
             }
         } else {
             $all_files = '';
         }
 
         return $all_files;
-    }
-
-    //下載並新增計數器
-    public function add_file_counter($files_sn = '', $hash = false, $force = false, $path = '', $can_groupid = [], $can_uid = [], $prefix = '')
-    {
-        global $xoopsDB, $xoopsUser;
-
-        // 權限設定
-        if ($this->permission) {
-            $files_sn = (int) $files_sn;
-            $sql      = 'SELECT `gperm_groupid` FROM `' . $xoopsDB->prefix('group_permission') . "` WHERE `gperm_name` = 'dl_group' AND `gperm_itemid` = $files_sn ORDER BY `gperm_groupid`";
-            $result   = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-
-            $gperm_groupid_arr = [];
-            while (list($gperm_groupid) = $xoopsDB->fetchRow($result)) {
-                $gperm_groupid_arr[] = $gperm_groupid;
-            }
-
-            if (!empty($gperm_groupid_arr)) {
-                //取得目前使用者的群組編號
-                $groups = $xoopsUser ? $xoopsUser->getGroups() : [XOOPS_GROUP_ANONYMOUS];
-
-                if (!array_intersect($groups, $gperm_groupid_arr)) {
-                    redirect_header(XOOPS_URL, 3, _TAD_PERMISSION_DENIED);
-                }
-            }
-        } elseif (!empty($can_groupid)) {
-
-        } elseif (!empty($can_uid)) {
-            $now_uid = $xoopsUser ? $xoopsUser->uid() : 0;
-            if (!in_array($now_uid, $can_uid)) {
-                redirect_header(XOOPS_URL, 3, _TAD_PERMISSION_DENIED);
-            }
-        }
-        $file = $this->get_one_file($files_sn);
-        if ($_GET['test'] == 'file') {
-            Utility::dd($file);
-        }
-        $this->set_dir('subdir', $file['sub_dir']);
-        if ($hash) {
-            $this->set_hash($hash);
-        }
-
-        $file_type     = $file['file_type'];
-        $file_size     = $file['file_size'];
-        $real_filename = $file['original_filename'] ? $file['original_filename'] : $file['description'];
-        $dl_name       = ($this->hash) ? $file['hash_filename'] : str_replace(['/', '|', '\\', '?', '"', '*', ':', '<', '>'], '', $file['file_name']);
-
-        $sql = 'UPDATE `' . $this->TadUpFilesTblName . "` SET `counter`=`counter`+1 WHERE `files_sn`='{$files_sn}'";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-
-        if ($file['kind'] === 'img') {
-            $file_saved    = "{$this->TadUpFilesImgUrl}/{$dl_name}";
-            $file_hd_saved = "{$this->TadUpFilesImgDir}/{$dl_name}";
-        } else {
-            $file_saved    = "{$this->TadUpFilesUrl}/{$dl_name}";
-            $file_hd_saved = "{$this->TadUpFilesDir}/{$dl_name}";
-        }
-
-        $os_charset = (PATH_SEPARATOR === ':') ? 'UTF-8' : 'Big5';
-
-        $mimetype = $file_type;
-        if (function_exists('mb_http_output')) {
-            mb_http_output('pass');
-        }
-
-        // 為了無礙，改成下載
-        $force_arr = $this->pdf_force_dl ? ['application/pdf', 'audio/mp3', 'video/mp4', 'audio/mp4'] : [];
-        $force     = ($file['kind'] == 'img' or in_array($mimetype, $force_arr)) ? true : $force;
-
-        if ($force) {
-            if (!\file_exists($file_hd_saved)) {
-                redirect_header($_SERVER['PHP_SELF'], 3, _TUF_FILE_DOES_NOT_EXIST);
-            }
-
-            if ($os_charset != _CHARSET) {
-                // $file_display = iconv($os_charset, _CHARSET, $real_filename);
-                // $file_hd_saved = iconv($os_charset, _CHARSET, $file_hd_saved);
-
-                $file_display  = mb_convert_encoding($real_filename, $os_charset, _CHARSET);
-                $file_hd_saved = mb_convert_encoding($file_hd_saved, $os_charset, _CHARSET);
-
-            } else {
-                $file_display = $real_filename;
-            }
-            if ($prefix) {
-                $file_display = $prefix . '-' . $file_display;
-            }
-
-            $file_display = str_replace(['/', '|', '\\', '?', '"', '*', ':', '<', '>'], '', $file_display);
-
-            header('Expires: 0');
-            header('Content-Type: ' . $mimetype);
-            header('HTTP/1.1 200 OK');
-            if (preg_match("/MSIE ([0-9]\.[0-9]{1,2})/", $_SERVER['HTTP_USER_AGENT'])) {
-                header('Content-Disposition: inline; filename="' . $file_display . '"');
-                header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-                header('Pragma: public');
-            } else {
-                header('Content-Disposition: attachment; filename="' . $file_display . '"');
-                header('Pragma: no-cache');
-            }
-            //header("Content-Type: application/force-download");
-            header('Content-Transfer-Encoding: binary');
-            header('Content-Length: ' . filesize($file_hd_saved));
-
-            ob_clean();
-            $handle = fopen($file_hd_saved, 'rb');
-
-            set_time_limit(0);
-            while (!feof($handle)) {
-                echo fread($handle, 4096);
-                flush();
-            }
-            fclose($handle);
-
-            exit;
-        }
-
-        if ($os_charset != _CHARSET) {
-            //若網站和主機編碼不同，則將 $file_display (真實檔名) 轉為主機編碼，以便等一下建立檔案
-            $file_display  = iconv(_CHARSET, $os_charset, $real_filename);
-            $file_hd_saved = iconv(_CHARSET, $os_charset, $file_hd_saved);
-        } else {
-            $file_display = $real_filename;
-        }
-        $file_display = str_replace(['/', '|', '\\', '?', '"', '*', ':', '<', '>'], '', $file_display);
-
-        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/{$this->dir}");
-        Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/{$this->dir}/tmp");
-        $tmp_dir = XOOPS_ROOT_PATH . "/uploads/{$this->dir}/tmp/{$file['files_sn']}";
-        $tmp_url = XOOPS_URL . "/uploads/{$this->dir}/tmp/{$file['files_sn']}";
-        Utility::mk_dir($tmp_dir);
-        $tmp_file     = $tmp_dir . '/' . $file_display;
-        $tmp_file_url = $tmp_url . '/' . $file_display;
-
-        if (!file_exists($tmp_file)) {
-            if (!copy($file_hd_saved, $tmp_file)) {
-                $errors = error_get_last();
-                redirect_header($_SERVER['PHP_SELF'], 10, "COPY ERROR: copy $file_hd_saved to $tmp_file fail!");
-            }
-        }
-
-        if ($this->auto_charset != 0) {
-            $tmp_file_url = Utility::auto_charset($tmp_file_url);
-        }
-
-        if (!empty($path)) {
-            if (mb_substr($path, -1) === '/') {
-                $path = mb_substr($path, 0, -1);
-            }
-            if (!is_dir($path)) {
-                Utility::mk_dir($path);
-            }
-            rename($tmp_file, $path . '/' . $file_display);
-        } elseif (file_exists($tmp_file)) {
-            header('Content-Type: application/octet-stream');
-            header("location:{$tmp_file_url}");
-            exit;
-        } else {
-            redirect_header($_SERVER['PHP_SELF'], 3, "File does not exist");
-        }
-        exit;
     }
 
     //取得單一檔案資料
@@ -3232,7 +3088,6 @@ class TadUpFiles
             'svgz' => ['image/svg+xml'],
             'svr' => ['application/x-world', 'x-world/x-svr'],
             'swa' => ['application/x-director'],
-            'swf' => ['application/x-shockwave-flash'],
             'swi' => ['application/vnd.aristanetworks.swi'],
             'sxc' => ['application/vnd.sun.xml.calc'],
             'sxd' => ['application/vnd.sun.xml.draw'],
@@ -3535,5 +3390,179 @@ class TadUpFiles
         list($count) = $xoopsDB->fetchRow($result);
 
         return $count;
+    }
+
+    //下載並新增計數器
+    public function add_file_counter($files_sn = '', $hash = false, $force = false, $path = '', $can_groupid = [], $can_uid = [], $prefix = '', $fn = '')
+    {
+        global $xoopsDB, $xoopsUser;
+
+        // if (\strpos($_SERVER['HTTP_REFERER'], XOOPS_URL) === false) {
+        //     die('請從 ' . XOOPS_URL . ' 下載檔案');
+        // }
+
+        if (empty($fn)) {
+            $fn = Request::getString('fn');
+        }
+
+        // 權限設定
+        if ($this->permission) {
+            $files_sn = (int) $files_sn;
+            $sql      = 'SELECT `gperm_groupid` FROM `' . $xoopsDB->prefix('group_permission') . "` WHERE `gperm_name` = 'dl_group' AND `gperm_itemid` = $files_sn ORDER BY `gperm_groupid`";
+            $result   = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
+            $gperm_groupid_arr = [];
+            while (list($gperm_groupid) = $xoopsDB->fetchRow($result)) {
+                $gperm_groupid_arr[] = $gperm_groupid;
+            }
+
+            if (!empty($gperm_groupid_arr)) {
+                //取得目前使用者的群組編號
+                $groups = $xoopsUser ? $xoopsUser->getGroups() : [XOOPS_GROUP_ANONYMOUS];
+
+                if (!array_intersect($groups, $gperm_groupid_arr)) {
+                    redirect_header(XOOPS_URL, 3, _TAD_PERMISSION_DENIED);
+                }
+            }
+        } elseif (!empty($can_groupid)) {
+
+        } elseif (!empty($can_uid)) {
+            $now_uid = $xoopsUser ? $xoopsUser->uid() : 0;
+            if (!in_array($now_uid, $can_uid)) {
+                redirect_header(XOOPS_URL, 3, _TAD_PERMISSION_DENIED);
+            }
+        }
+        $file = $this->get_one_file($files_sn);
+
+        Utility::test($file, 'file', 'dd');
+
+        if ($file['original_filename'] != $fn) {
+            redirect_header($_SERVER['PHP_SELF'], 3, "下載檔名錯誤");
+            return;
+        }
+
+        $this->set_dir('subdir', $file['sub_dir']);
+        if ($hash) {
+            $this->set_hash($hash);
+        }
+
+        $file_type     = $file['file_type'];
+        $file_size     = $file['file_size'];
+        $real_filename = $file['original_filename'] ? $file['original_filename'] : $file['description'];
+        $dl_name       = ($this->hash) ? $file['hash_filename'] : str_replace(['/', '|', '\\', '?', '"', '*', ':', '<', '>'], '', $file['file_name']);
+
+        $sql = 'UPDATE `' . $this->TadUpFilesTblName . "` SET `counter`=`counter`+1 WHERE `files_sn`='{$files_sn}'";
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
+        if ($file['kind'] === 'img') {
+            $file_saved    = "{$this->TadUpFilesImgUrl}/{$dl_name}";
+            $file_hd_saved = "{$this->TadUpFilesImgDir}/{$dl_name}";
+        } else {
+            $file_saved    = "{$this->TadUpFilesUrl}/{$dl_name}";
+            $file_hd_saved = "{$this->TadUpFilesDir}/{$dl_name}";
+        }
+
+        $os_charset = (PATH_SEPARATOR === ':') ? 'UTF-8' : 'Big5';
+
+        $mimetype = $file_type;
+        if (function_exists('mb_http_output')) {
+            mb_http_output('pass');
+        }
+
+        // 為了無礙，改成下載
+        $force_arr = $this->pdf_force_dl ? ['application/pdf', 'audio/mp3', 'video/mp4', 'audio/mp4'] : [];
+        $force     = ($file['kind'] == 'img' or in_array($mimetype, $force_arr)) ? true : $force;
+
+        if ($force) {
+            if (!\file_exists($file_hd_saved)) {
+                redirect_header($_SERVER['PHP_SELF'], 3, _TUF_FILE_DOES_NOT_EXIST);
+            }
+
+            if ($os_charset != _CHARSET) {
+                $file_display  = mb_convert_encoding($real_filename, $os_charset, _CHARSET);
+                $file_hd_saved = mb_convert_encoding($file_hd_saved, $os_charset, _CHARSET);
+            } else {
+                $file_display = $real_filename;
+            }
+            if ($prefix) {
+                $file_display = $prefix . '-' . $file_display;
+            }
+
+            $file_display = str_replace(['/', '|', '\\', '?', '"', '*', ':', '<', '>'], '', $file_display);
+            // 在檔案下載前加入以下程式碼
+            while (ob_get_level()) {
+                ob_end_clean();
+            }
+            header('Expires: 0');
+            header('Content-Type: ' . $mimetype);
+            header('HTTP/1.1 200 OK');
+            if (preg_match("/MSIE ([0-9]\.[0-9]{1,2})/", $_SERVER['HTTP_USER_AGENT'])) {
+                header('Content-Disposition: inline; filename="' . $file_display . '"');
+                header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+                header('Pragma: public');
+            } else {
+                header('Content-Disposition: attachment; filename="' . $file_display . '"');
+                header('Pragma: no-cache');
+            }
+            //header("Content-Type: application/force-download");
+            header('Content-Transfer-Encoding: binary');
+            header('Content-Length: ' . filesize($file_hd_saved));
+
+            ob_clean();
+            $handle = fopen($file_hd_saved, 'rb');
+
+            set_time_limit(0);
+            while (!feof($handle)) {
+                echo fread($handle, 4096);
+                flush();
+            }
+            fclose($handle);
+            exit;
+        } else {
+            if ($os_charset != _CHARSET) {
+                //若網站和主機編碼不同，則將 $file_display (真實檔名) 轉為主機編碼，以便等一下建立檔案
+                $file_display  = iconv(_CHARSET, $os_charset, $real_filename);
+                $file_hd_saved = iconv(_CHARSET, $os_charset, $file_hd_saved);
+            } else {
+                $file_display = $real_filename;
+            }
+            $file_display = str_replace(['/', '|', '\\', '?', '"', '*', ':', '<', '>'], '', $file_display);
+
+            Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/{$this->dir}");
+            Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/{$this->dir}/tmp");
+            $tmp_dir = XOOPS_ROOT_PATH . "/uploads/{$this->dir}/tmp/{$file['files_sn']}";
+            $tmp_url = XOOPS_URL . "/uploads/{$this->dir}/tmp/{$file['files_sn']}";
+            Utility::mk_dir($tmp_dir);
+            $tmp_file     = $tmp_dir . '/' . $file_display;
+            $tmp_file_url = $tmp_url . '/' . $file_display;
+
+            if (!file_exists($tmp_file)) {
+                if (!copy($file_hd_saved, $tmp_file)) {
+                    $errors = error_get_last();
+                    redirect_header($_SERVER['PHP_SELF'], 10, "COPY ERROR: copy $file_hd_saved to $tmp_file fail!");
+                }
+            }
+
+            if ($this->auto_charset != 0) {
+                $tmp_file_url = Utility::auto_charset($tmp_file_url);
+            }
+
+            if (!empty($path)) {
+                if (mb_substr($path, -1) === '/') {
+                    $path = mb_substr($path, 0, -1);
+                }
+                if (!is_dir($path)) {
+                    Utility::mk_dir($path);
+                }
+                rename($tmp_file, $path . '/' . $file_display);
+            } elseif (file_exists($tmp_file)) {
+                header('Content-Type: application/octet-stream');
+                header("location:{$tmp_file_url}");
+                exit;
+            } else {
+                redirect_header($_SERVER['PHP_SELF'], 3, "File does not exist");
+            }
+            exit;
+        }
     }
 }

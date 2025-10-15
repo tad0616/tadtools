@@ -5,7 +5,7 @@
         </div>
 
         <div class="col-xl-<{$rb_width|default:''}>" id="xoops_theme_right_zone" style="background-color: <{$rb_color|default:''}>;">
-            <a accesskey="R" href="#xoops_theme_right_zone_key" title="<{$smarty.const._TAD_RIGHT_ZONE}>" id="xoops_theme_right_zone_key" style="color: transparent; font-size: 0.625rem; position: absolute;">:::</a>
+            <a accesskey="R" href="#xoops_theme_right_zone" title="<{$smarty.const._TAD_RIGHT_ZONE}>" id="xoops_theme_right_zone_key" style="color: transparent; font-size: 0.625rem; position: absolute;">:::</a>
             <div id="xoops_theme_right"  style="<{$rightBlocks|default:''}>">
                 <{if $xoBlocks.canvas_left|default:null}>
                     <{include file="$xoops_rootpath/modules/tadtools/themes4_tpl/leftBlock.tpl"}>

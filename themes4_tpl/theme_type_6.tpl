@@ -8,14 +8,14 @@
 
         <div id="xoops_theme_left_zone" class="col-xl-<{$lb_width|default:''}> order-lg-1" style="background-color:<{$lb_color|default:''}>;">
             <div id="xoops_theme_left" style="<{$leftBlocks|default:''}>">
-                <a accesskey="L" href="#xoops_theme_left_zone_key" title="<{$smarty.const._TAD_LEFT_ZONE}>" id="xoops_theme_left_zone_key" style="color: transparent; font-size: 0.625rem; position: absolute;">:::</a>
+                <a accesskey="L" href="#xoops_theme_left_zone" title="<{$smarty.const._TAD_LEFT_ZONE}>" id="xoops_theme_left_zone_key" style="color: transparent; font-size: 0.625rem; position: absolute;">:::</a>
                 <{include file="$xoops_rootpath/modules/tadtools/themes4_tpl/leftBlock.tpl"}>
             </div>
         </div>
 
         <div id="xoops_theme_right_zone" class="col-xl-<{$rb_width|default:''}> order-lg-2" style="background-color:<{$rb_color|default:''}>;">
             <div id="xoops_theme_right"  style="<{$rightBlocks|default:''}>">
-                <a accesskey="R" href="#xoops_theme_right_zone_key" title="<{$smarty.const._TAD_RIGHT_ZONE}>" id="xoops_theme_right_zone_key" style="color: transparent; font-size: 0.625rem; position: absolute;">:::</a>
+                <a accesskey="R" href="#xoops_theme_right_zone" title="<{$smarty.const._TAD_RIGHT_ZONE}>" id="xoops_theme_right_zone_key" style="color: transparent; font-size: 0.625rem; position: absolute;">:::</a>
                 <{include file="$xoops_rootpath/modules/tadtools/themes4_tpl/rightBlock.tpl"}>
             </div>
         </div>
@@ -26,7 +26,7 @@
 
         <div id="xoops_theme_left_zone" class="col-xl-<{$lb_width|default:''}> order-lg-1" style="background-color:<{$lb_color|default:''}>;">
             <div id="xoops_theme_left" style="<{$leftBlocks|default:''}>">
-                <a accesskey="L" href="#xoops_theme_left_zone_key" title="<{$smarty.const._TAD_LEFT_ZONE}>" id="xoops_theme_left_zone_key" style="color: transparent; font-size: 0.625rem; position: absolute;">:::</a>
+                <a accesskey="L" href="#xoops_theme_left_zone" title="<{$smarty.const._TAD_LEFT_ZONE}>" id="xoops_theme_left_zone_key" style="color: transparent; font-size: 0.625rem; position: absolute;">:::</a>
                 <{if $xoBlocks.canvas_left|default:null}>
                     <{include file="$xoops_rootpath/modules/tadtools/themes4_tpl/leftBlock.tpl"}>
                 <{/if}>
@@ -43,7 +43,7 @@
 
         <div id="xoops_theme_right_zone" class="col-xl-<{$lb_width|default:''}> order-lg-1" style="background-color:<{$rb_color|default:''}>;">
             <div id="xoops_theme_right" style="<{$rightBlocks|default:''}>">
-                <a accesskey="R" href="#xoops_theme_right_zone_key" title="<{$smarty.const._TAD_RIGHT_ZONE}>" id="xoops_theme_right_zone_key" style="color: transparent; font-size: 0.625rem; position: absolute;">:::</a>
+                <a accesskey="R" href="#xoops_theme_right_zone" title="<{$smarty.const._TAD_RIGHT_ZONE}>" id="xoops_theme_right_zone_key" style="color: transparent; font-size: 0.625rem; position: absolute;">:::</a>
                 <{include file="$xoops_rootpath/modules/tadtools/themes4_tpl/rightBlock.tpl"}>
             </div>
         </div>

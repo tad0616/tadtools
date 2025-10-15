@@ -162,7 +162,8 @@ class CkEditor
         $TadToolsModuleConfig = Utility::TadToolsXoopsModuleConfig();
         $codemirror           = $TadToolsModuleConfig['use_codemirror'] ? ',codemirror' : '';
 
-        $bs = $_SESSION['bootstrap'] ? $_SESSION['bootstrap'] : 4;
+        $bs      = $_SESSION['bootstrap'] ? $_SESSION['bootstrap'] : 4;
+        $ck_wcag = $TadToolsModuleConfig['ck_wcag'] ? 'pasteFromWordRemoveFontStyles: true,' : '';
 
         $editor_setup = "{$demopublickey_js}
         CKEDITOR.replace('{$this->ColID}' , {
@@ -172,8 +173,9 @@ class CkEditor
         language : '" . _LANGCODE . "' ,
         toolbar : '{$this->ToolbarSet}' ,
         $stylesSet
+        $ck_wcag
         contentsCss : ['" . XOOPS_URL . "/modules/tadtools/bootstrap{$bs}/css/bootstrap.css', '" . XOOPS_URL . "/modules/tadtools/css/fonts.css', '" . XOOPS_URL . "/modules/tadtools/css/ckeditor.css', '" . XOOPS_URL . "/modules/tadtools/css/fontawesome6/css/all.min.css'{$other_css}],
-        extraPlugins: 'editorplaceholder,pasteUploadImage,sourcearea,font,syntaxhighlight,dialog,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak,ckeditorfa,prism,codesnippet,undo,autoembed,autolink,clipboard,toolbar,button,dialogui,notification,textmatch,embed,embedbase,widgetselection,notificationaggregator,embedsemantic,panel,floatpanel,menu{$codemirror}{$extra_uploadcare}',
+        extraPlugins: 'autogrow,editorplaceholder,pasteUploadImage,sourcearea,font,syntaxhighlight,dialog,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak,ckeditorfa,prism,codesnippet,undo,autoembed,autolink,clipboard,toolbar,button,dialogui,notification,textmatch,embed,embedbase,widgetselection,notificationaggregator,embedsemantic,panel,floatpanel,menu{$codemirror}{$extra_uploadcare}',
         {$uploadcare_setup}
         filebrowserBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=file&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',
         filebrowserImageBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=image&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',

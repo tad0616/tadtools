@@ -1,5 +1,5 @@
 // Easy Responsive Tabs Plugin
-// Author: Samson.Onna <Email : samson3d@gmail.com> 
+// Author: Samson.Onna <Email : samson3d@gmail.com>
 (function ($) {
     $.fn.extend({
         easyResponsiveTabs: function (options) {
@@ -26,7 +26,6 @@
             //Events
             $(this).bind('tabactivate', function (e, currentTab) {
                 if (typeof options.activate === 'function') {
-                    // console.log(li.baseURI);
                     options.activate.call(currentTab, e)
                 }
             });
@@ -89,6 +88,8 @@
                     $tabItem = $(this);
                     $tabItem.attr('aria-controls', options.tabidentify + '_tab_item-' + (count));
                     $tabItem.attr('role', 'tab');
+                    // 初始化時設置 aria-selected 為 false
+                    $tabItem.attr('aria-selected', 'false');
                     $tabItem.css({
                         'background-color': options.inactive_bg,
                         'border-color': 'none'
@@ -122,7 +123,7 @@
                 $($respTabs.find('.resp-tab-item.' + options.tabidentify)[tabNum]).addClass('resp-tab-active').css({
                     'background-color': options.activetab_bg,
                     'border-color': options.active_border_color
-                });
+                }).attr('aria-selected', 'true'); // 初始化時設置選中頁籤的 aria-selected
 
                 //keep closed if option = 'closed' or option is 'accordion' and the element is in accordion mode
                 if (options.closed !== true && !(options.closed === 'accordion' && !$respTabsList.is(':visible')) && !(options.closed === 'tabs' && $respTabsList.is(':visible'))) {
@@ -130,26 +131,23 @@
                         'background-color': options.activetab_bg + ' !important',
                         'border-color': options.active_border_color,
                         'background': 'none'
-                    });
+                    }).attr('aria-selected', 'true'); // 初始化時設置選中手風琴的 aria-selected
 
                     $($respTabs.find('.resp-tab-content.' + options.tabidentify)[tabNum]).addClass('resp-tab-content-active').addClass(options.tabidentify).attr('style', 'display:block').css({
                         'background-color': options.activetab_bg,
                         'border-color': options.active_border_color
                     });
                 }
-                //assign proper classes for when tabs mode is activated before making a selection in accordion mode
-                else {
-                   // $($respTabs.find('.resp-tab-content.' + options.tabidentify)[tabNum]).addClass('resp-accordion-closed'); //removed resp-tab-content-active
-                }
 
                 //Tab Click action function
                 $respTabs.find("[role=tab]").each(function () {
-
                     var $currentTab = $(this);
                     $currentTab.click(function () {
-
                         var $currentTab = $(this);
                         var $tabAria = $currentTab.attr('aria-controls');
+
+                        // 重設所有頁籤的 aria-selected 為 false
+                        $respTabs.find("[role=tab]").attr('aria-selected', 'false');
 
                         if ($currentTab.hasClass('resp-accordion') && $currentTab.hasClass('resp-tab-active')) {
                             $respTabs.find('.resp-tab-content-active.' + options.tabidentify).slideUp('', function () {
@@ -170,7 +168,7 @@
                             $respTabs.find("[aria-controls=" + $tabAria + "]").addClass('resp-tab-active').css({
                                 'background-color': options.activetab_bg,
                                 'border-color': options.active_border_color
-                            });
+                            }).attr('aria-selected', 'true'); // 設置當前選中頁籤的 aria-selected
 
                             $respTabs.find('.resp-tab-content[aria-labelledby = ' + $tabAria + '].' + options.tabidentify).slideDown().addClass('resp-tab-content-active');
                         } else {
@@ -184,7 +182,7 @@
                             $respTabs.find("[aria-controls=" + $tabAria + "]").addClass('resp-tab-active').css({
                                 'background-color': options.activetab_bg,
                                 'border-color': options.active_border_color
-                            });
+                            }).attr('aria-selected', 'true'); // 設置當前選中頁籤的 aria-selected
 
                             $respTabs.find('.resp-tab-content[aria-labelledby = ' + $tabAria + '].' + options.tabidentify).addClass('resp-tab-content-active').attr('style', 'display:block').css({
                                 'background-color': options.activetab_bg,
@@ -196,7 +194,6 @@
                         if (historyApi) {
                             var currentHash = window.location.hash;
                             var tabAriaParts = $tabAria.split('tab_item-');
-                            // var newHash = respTabsId + (parseInt($tabAria.substring(9), 10) + 1).toString();
                             var newHash = respTabsId + (parseInt(tabAriaParts[1], 10) + 1).toString();
                             if (currentHash != "") {
                                 var re = new RegExp(respTabsId + "[0-9]+");
@@ -212,17 +209,14 @@
                             }
 
                             history.replaceState(null, null, newHash);
-                            console.log(newHash);
                         }
-
 
                         //Trigger tab activation event
                         $currentTab.trigger('tabactivate', $currentTab);
                     });
-
                 });
 
-                //Window resize function                   
+                //Window resize function
                 $(window).resize(function () {
                     $respTabs.find('.resp-accordion-closed').removeAttr('style');
                 });
@@ -230,4 +224,3 @@
         }
     });
 })(jQuery);
-

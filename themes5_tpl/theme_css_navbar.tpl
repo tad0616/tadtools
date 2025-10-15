@@ -406,9 +406,7 @@
   padding: 11px 11px 11px 20px;
   <{/if}>
   color: <{$navbar_color|default:''}>;
-  <{if $navbar_font_size|default:false}>
-    font-size: <{$navbar_font_size|default:''}>rem;
-  <{/if}>
+  font-size: 1.2rem;
   font-weight: normal;
   text-decoration: none;
 }

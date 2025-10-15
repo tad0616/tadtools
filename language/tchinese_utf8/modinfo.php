@@ -49,3 +49,6 @@ define('_MI_TADTOOLS_TEST_MODE_DESC', '建議選「是」，此選項一般使�
 
 define('_MI_TADTOOLS_FACEBOOK_APP_ID', 'FaceBook 的 App ID（推文工具會用到）');
 define('_MI_TADTOOLS_FACEBOOK_APP_ID_DESC', '可至 https://developers.facebook.com/apps 申請並取得 App ID');
+
+define('_MI_TADTOOLS_CK_WCAG', 'CK編輯器貼上時符合無障礙規範');
+define('_MI_TADTOOLS_CK_WCAG_DESC', '建議選「是」，貼上時，會以純文字貼上，避免違反無障礙規範');

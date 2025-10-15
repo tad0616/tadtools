@@ -35,7 +35,7 @@
                 <{/if}>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="<{$xoops_url}>/modules/tadtools/ajax_file.php?op=remove_json" title="重整畫面"><i class="fa fa-refresh" aria-hidden="true"></i>
+                    <a class="nav-link" href="<{$xoops_url}>/modules/tadtools/ajax_file.php?op=remove_json" title="重整畫面"><i class="fa fa-refresh" title="重整畫面圖示"></i>
                     </a>
                 </li>
 
@@ -46,7 +46,7 @@
             <ul class="nav navbar-nav">
                 <{if $xoops_isadmin|default:false}>
                     <li class="nav-item">
-                        <a class="nav-link" href="<{$xoops_url}>/modules/tad_themes/admin/dropdown.php" title="<{$smarty.const._TAD_MENU_CONFIG}>"><i class="fa fa-plus-circle"></i></a>
+                        <a class="nav-link" href="<{$xoops_url}>/modules/tad_themes/admin/dropdown.php" title="<{$smarty.const._TAD_MENU_CONFIG}>"><i class="fa fa-plus-circle"></i><span class="sr-only visually-hidden"><{$smarty.const._TAD_MENU_CONFIG}></span></a>
                     </li>
                     <{if $xoops_dirname=="" || $xoops_dirname=="system"}>
                         <li class="nav-item">

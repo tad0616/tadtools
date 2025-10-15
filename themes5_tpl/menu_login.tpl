@@ -83,5 +83,11 @@
             </div>
         </li>
     <{/if}>
+
+        <li>
+            <a href="<{$xoops_url}>/modules/tadtools/ajax_file.php?op=remove_json" title="重整畫面">
+                <i class="fa fa-refresh"></i> 重整畫面
+            </a>
+        </li>
     </ul>
 <{/if}>
