@@ -2067,21 +2067,7 @@ class TadUpFiles
                 $i++;
             }
 
-            $link_path = $path === null ? $_SERVER['PHP_SELF'] : $path;
-            $mark      = strpos($link_path, '?') !== false ? '&' : '?';
-            // $download_url     = empty($this->download_url) ? "{$link_path}{$mark}op=tufdl&files_sn=" : $this->download_url . "&fn={$file_info['original_filename']}&files_sn=";
-            $download_url     = empty($this->download_url) ? "{$link_path}{$mark}" : $this->download_url;
-            $download_file_js = "<script>
-            function downloadFile(sn, filname) {
-                const link = document.createElement('a');
-
-                link.href = '{$download_url}op=tufdl&fn='+filname+'&files_sn='+sn;
-                link.download = filname;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
-            </script>";
+            $download_file_js = $this->downloadFile($path);
 
             if ($show_mode === 'file_url') {
                 $all_files .= "</ul>$download_file_js";
@@ -2098,6 +2084,25 @@ class TadUpFiles
         }
 
         return $all_files;
+    }
+
+    public function downloadFile($path = null)
+    {
+        $link_path        = $path === null ? $_SERVER['PHP_SELF'] : $path;
+        $mark             = strpos($link_path, '?') !== false ? '&' : '?';
+        $download_url     = empty($this->download_url) ? "{$link_path}{$mark}" : $this->download_url;
+        $download_file_js = "<script>
+            function downloadFile(sn, filname) {
+                const link = document.createElement('a');
+
+                link.href = '{$download_url}op=tufdl&fn='+filname+'&files_sn='+sn;
+                link.download = filname;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+            </script>";
+        return $download_file_js;
     }
 
     //取得單一檔案資料

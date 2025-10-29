@@ -10,8 +10,11 @@
             // SmartMenus init
             $(function() {
                 $('#main-menu').smartmenus({
-                    <{if $noMouseOver|default:false}>
+                    hideTimeout: 0,      // 滑鼠移開不延遲關閉
                     noMouseOver: true,
+                    <{if $noMouseOver|default:false}>
+                        showOnClick: true, // 改為點擊才開啟
+                        hideOnClick: false, // 點擊外部時不要立即關閉
                     <{/if}>
                     <{if $navbar_pos=='fixed-bottom'}>
                     bottomToTopSubMenus: true
@@ -19,10 +22,8 @@
                     bottomToTopSubMenus: false
                     <{/if}>
                 });
-            });
 
-            // SmartMenus mobile menu toggle button
-            $(function() {
+            // SmartMenus mob
                 var $mainMenuState = $('#main-menu-state');
                 if ($mainMenuState.length) {
                     // animate mobile menu
