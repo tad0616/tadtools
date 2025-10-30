@@ -1,3 +1,15 @@
+TadTools 4.0.4 (Released 2025-10-30)
+====================================
+1. Adjusted TadUpFiles to prevent file retrieval failures
+2. Fixed potential blank screen issue when quick login is disabled
+3. Fixed video playback buttons not aligning with video height
+4. Fixed potential language missing issue during OIDC login
+5. Optimized login and personal information interfaces
+6. Added support for uploading webp image files
+7. Implemented various accessibility adjustments
+8. Added autogrow functionality to CKEditor
+9. Fixed navigation submenu automatically closing when mouse moves away
+
 TadTools 4.0.3 (released 2025-08-15)
 ====================================
 1. Adjusted TadUpFiles lightbox effect part.

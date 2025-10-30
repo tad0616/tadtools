@@ -20,9 +20,6 @@
     a:hover {
         color:<{$hover_color|default:''}>;
     }
-
-
-
     #nav-container, #nav-wrapper {
         <{if $navbar_pos=='fixed-bottom'}>
             position: fixed;

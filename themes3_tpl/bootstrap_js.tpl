@@ -11,10 +11,15 @@
 // SmartMenus init
 $(function() {
     $('#main-menu').smartmenus({
-        showOnClick: true, // 改為點擊才開啟
-        hideOnClick: false, // 點擊外部時不要立即關閉
         hideTimeout: 0,      // 滑鼠移開不延遲關閉
-        noMouseOver: true,
+        <{if $no_mouse_over|default:false}>
+            noMouseOver: true,
+            showOnClick: true, // 點擊才開啟
+        <{else}>
+            showOnClick: false,
+            noMouseOver: false,// 滑鼠移過開啟
+        <{/if}>
+        hideOnClick: true, // 點擊外部時關閉
         <{if $navbar_pos=='fixed-bottom'}>
         bottomToTopSubMenus: true
         <{else}>

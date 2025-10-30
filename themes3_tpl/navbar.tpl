@@ -86,7 +86,7 @@
         </div>
     </nav>
 
-    <{if $use_pin=="1"}>
+    <{if $use_pin|default:false}>
         <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/jquery.sticky/jquery.sticky.js"></script>
         <script type="text/javascript">
         $(document).ready(function(){
