@@ -74,11 +74,18 @@
                 </a>
                 <{include file="$xoops_rootpath/modules/tadtools/themes5_tpl/menu_login.tpl"}>
             </li>
+        <{else}>
+            <li>
+                <a href="<{$xoops_url}>/modules/tadtools/ajax_file.php?op=remove_json" title="重整新取得佈景設定">
+                    <i class="fa fa-refresh"></i>
+                </a>
+            </li>
         <{/if}>
     </ul>
 </nav>
 
-<{if $use_pin|default:false && $pin_zone|default:''!="nav"}>
+<!-- $use_pin = <{$use_pin}> , $pin_zone = <{$pin_zone}> , $navbar_pos = <{$navbar_pos}> -->
+<{if $use_pin|default:false || $navbar_pos|default:'' == "fixed-top"}>
     <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/jquery.sticky/jquery.sticky.js"></script>
     <script type="text/javascript">
     $(document).ready(function(){

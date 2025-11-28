@@ -2,7 +2,7 @@
 use XoopsModules\Tadtools\Utility;
 
 // print_r(get_declared_classes());
-require_once __DIR__ . '/include/beforeheader.php';
+//require_once __DIR__ . '/include/beforeheader.php';
 // 相容舊檔，還是需要
 require_once __DIR__ . '/tadtools_header.php';
 

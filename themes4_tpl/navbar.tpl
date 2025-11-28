@@ -35,7 +35,7 @@
                 <{/if}>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="<{$xoops_url}>/modules/tadtools/ajax_file.php?op=remove_json" title="重整畫面"><i class="fa fa-refresh" title="重整畫面圖示"></i>
+                    <a class="nav-link" href="<{$xoops_url}>/modules/tadtools/ajax_file.php?op=remove_json" title="重整新取得佈景設定"><i class="fa fa-refresh" title="重整畫面圖示"></i>
                     </a>
                 </li>
 

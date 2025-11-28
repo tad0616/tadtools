@@ -10,8 +10,8 @@
         <{/foreach}>
     <{/if}>
     <li>
-        <a href="<{$xoops_url}>/modules/tadtools/ajax_file.php?op=remove_json" title="重整畫面">
-            <i class="fa fa-refresh"></i> 重整畫面
+        <a href="<{$xoops_url}>/modules/tadtools/ajax_file.php?op=remove_json" title="重整畫面圖示">
+            <i class="fa fa-refresh"></i> 重整新取得佈景設定
         </a>
     </li>
     <{foreach from=$user_menu_var item=user_menu}>
