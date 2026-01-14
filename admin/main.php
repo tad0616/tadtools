@@ -36,7 +36,7 @@ function tadtools_setup()
         if (file_exists(XOOPS_ROOT_PATH . "/themes/{$theme}/config.php")) {
             $theme_kind = '';
             require_once XOOPS_ROOT_PATH . "/themes/{$theme}/config.php";
-            if (! empty($theme_kind)) {
+            if (!empty($theme_kind)) {
                 if (empty($tt_theme_kind_arr[$theme]) or 0 === $theme_change) {
                     $sql = 'UPDATE `' . $xoopsDB->prefix('tadtools_setup') . '` SET `tt_theme_kind` = ? WHERE `tt_theme` = ?';
                     Utility::query($sql, 'ss', [$theme_kind, $theme]) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -79,7 +79,7 @@ function search_bootstrap($path = '')
     $allfile  = directory_list($path);
     $file_str = json_encode($allfile);
     if (false !== mb_strpos($file_str, 'glyphicons')) {
-        return 'bootstrap3';
+        return 'bootstrap5';
     } elseif (false !== mb_strpos($file_str, 'bootstrap')) {
         return 'bootstrap';
     }

@@ -153,3 +153,5 @@ define('_PARAMETER_BINDING_FAILED', 'Failed to bind parameters: ');
 define('_SQL_EXECUTION_FAILED', 'Failed to execute query: ');
 define('_FAILED_TO_GET_RESULT', 'Failed to get result: ');
 define('_DATABASE_ERROR', 'Database Error: ');
+
+define('TADTOOLS_SLIDE_IMG', 'Sliding Image');

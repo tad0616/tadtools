@@ -29,9 +29,9 @@
         <{foreach from=$slider_var key=i item=slide}>
         <li>
             <{if $slide.slide_url|default:false}>
-            <a href="<{$slide.slide_url}>" <{$slide.slide_target}>><img src="<{$slide.file_url}>" alt="<{$slide.description|default:'Slider'}>" title="<{$slide.description}>"></a>
+            <a href="<{$slide.slide_url}>" <{$slide.slide_target}>><img src="<{$slide.file_url}>" alt="<{$smarty.const.TADTOOLS_SLIDE_IMG}> (<{$slide.original_filename}>)" title="<{$slide.description}>"></a>
             <{else}>
-                <img src="<{$slide.file_url}>" alt="Slider" title="<{$slide.description}>">
+                <img src="<{$slide.file_url}>" alt="<{$smarty.const.TADTOOLS_SLIDE_IMG}>(<{$slide.original_filename}>)" title="<{$slide.description}>">
             <{/if}>
             <{if $slide.description|default:false}>
                 <div class="caption">

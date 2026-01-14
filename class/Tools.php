@@ -84,7 +84,7 @@ class Tools
             $def_config['theme_set_allowed'] = $xoopsConfig['theme_set_allowed'];
 
             /**** 產生 Smarty 的設定檔（以取得 bootstrap 版本） ****/
-            $bootstrap = (strpos($theme_kind, 'bootstrap') !== false) ? substr($theme_kind, -1) : '4';
+            $bootstrap = (strpos($theme_kind, 'bootstrap') !== false) ? substr($theme_kind, -1) : '5';
             if ($xoopsTpl) {
                 $xoopsTpl->assign('bootstrap', $bootstrap);
             }
@@ -106,6 +106,7 @@ class Tools
         global $xoopsDB;
 
         // $theme_json_file = XOOPS_VAR_PATH . "/data/theme_{$theme_name}.json";
+
         $theme_json_file = XOOPS_VAR_PATH . "/data/{$theme_name}_setup.json";
 
         $json_theme_config_arr = [];
@@ -425,6 +426,8 @@ class Tools
                 Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}/bt_bg/thumbs");
                 Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}/nav_bg");
                 Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}/nav_bg/thumbs");
+                Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}/navlogo");
+                Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}/navlogo/thumbs");
                 Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}/config2");
                 Utility::mk_dir(XOOPS_ROOT_PATH . "/uploads/tad_themes/{$theme_name}/config2/thumbs");
                 self::copy_default_file($theme_name);
@@ -706,14 +709,14 @@ class Tools
             }
 
             $menu[] = [
-                'id' => $item['menuid'],
-                'title' => $item['itemname'],
-                'url' => ($item['itemurl'] == '' || $item['itemurl'] == '#') ? '' : $item['itemurl'],
-                'target' => $item['target'],
-                'icon' => str_replace(['icon-'], ['fa-'], $item['icon']),
-                'img' => '',
+                'id'         => $item['menuid'],
+                'title'      => $item['itemname'],
+                'url'        => ($item['itemurl'] == '' || $item['itemurl'] == '#') ? '' : $item['itemurl'],
+                'target'     => $item['target'],
+                'icon'       => str_replace(['icon-'], ['fa-'], $item['icon']),
+                'img'        => '',
                 'read_group' => $read_group_array,
-                'submenu' => $submenu,
+                'submenu'    => $submenu,
             ];
         }
 
@@ -842,11 +845,11 @@ class Tools
                     $icon = $resolveIcon($title, $ancestors);
 
                     $menu_item = [
-                        'id' => $i,
-                        'title' => $title,
+                        'id'     => $i,
+                        'title'  => $title,
                         'target' => "_self",
-                        'icon' => $icon,
-                        'img' => isset($interface_menu_img[$title]) ? XOOPS_URL . "/modules/{$dir}/images/{$interface_menu_img[$title]}" : '',
+                        'icon'   => $icon,
+                        'img'    => isset($interface_menu_img[$title]) ? XOOPS_URL . "/modules/{$dir}/images/{$interface_menu_img[$title]}" : '',
                     ];
 
                     // 處理子選單

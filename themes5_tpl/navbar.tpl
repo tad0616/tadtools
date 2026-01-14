@@ -76,8 +76,8 @@
             </li>
         <{else}>
             <li>
-                <a href="<{$xoops_url}>/modules/tadtools/ajax_file.php?op=remove_json" title="重整新取得佈景設定">
-                    <i class="fa fa-refresh"></i>
+                <a href="<{$xoops_url}>/modules/tadtools/ajax_file.php?op=remove_json" title="重取設定">
+                    <i class="fa fa-refresh" title="重整畫面圖示"></i><span class="sr-only visually-hidden">重新取得佈景設定</span>
                 </a>
             </li>
         <{/if}>

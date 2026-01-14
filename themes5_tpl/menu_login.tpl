@@ -86,7 +86,7 @@
 
         <li>
             <a href="<{$xoops_url}>/modules/tadtools/ajax_file.php?op=remove_json" title="重整畫面圖示">
-                <i class="fa fa-refresh"></i> 重整新取得佈景設定
+                <i class="fa fa-refresh"></i> 重取設定
             </a>
         </li>
     </ul>

@@ -158,3 +158,5 @@ define('_PARAMETER_BINDING_FAILED', '參數綁定失敗：');
 define('_SQL_EXECUTION_FAILED', 'SQL 查詢語法執行失敗：');
 define('_FAILED_TO_GET_RESULT', '無法取得結果：');
 define('_DATABASE_ERROR', '資料庫錯誤：');
+
+define('TADTOOLS_SLIDE_IMG', '滑動圖');

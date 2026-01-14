@@ -6,53 +6,53 @@ class Wcag
 {
     private static $check_items = [];
     private static $check_title = [];
-    private static $regular = [];
+    private static $regular     = [];
 
     public static function getVar($var)
     {
         self::$check_items['fontsize'] = ['font-size:'];
         self::$check_title['fontsize'] = TADTOOLS_CHK_FONTSIZE;
-        self::$regular['fontsize'] = ['fontsize' => "/font-size:\s*([+-]?\d*|\d*\.\d*)(px|pt|)\s*;/Ui"];
+        self::$regular['fontsize']     = ['fontsize' => "/font-size:\s*([+-]?\d*|\d*\.\d*)(px|pt|)\s*;/Ui"];
 
         self::$check_items['no_need'] = ['font-size-adjust:'];
         self::$check_title['no_need'] = TADTOOLS_CHK_NO_NEED;
-        self::$regular['no_need'] = ['font_size_adjust' => "/font-size-adjust:.*;/Uim"];
+        self::$regular['no_need']     = ['font_size_adjust' => "/font-size-adjust:.*;/Uim"];
 
         self::$check_items['size'] = ['font:'];
         self::$check_title['size'] = TADTOOLS_CHK_FONTSIZE2;
-        self::$regular['size'] = ['size' => "/font:\s?(\d*|\d*\.\d*)(px|pt)/Ui"];
+        self::$regular['size']     = ['size' => "/font:\s?(\d*|\d*\.\d*)(px|pt)/Ui"];
 
         self::$check_items['need_title'] = ['<iframe ', '<object ', '<applet ', '<embed ', '<input ', '<select ', '<textarea '];
         self::$check_title['need_title'] = TADTOOLS_CHK_NEED_TITLE;
-        self::$regular['need_title'] = ['iframe' => "/(<iframe[^>]*>.*<\/iframe>)/Uims", 'object' => "/<object (.*)><\/object>/Ui", 'applet' => "/<applet (.*)><\/applet>/Ui", 'embed' => "/<embed (.*)><\/embed>/Ui", 'input' => "/<input.*?\s.*?>/im", 'select' => "/<select.*?\s.*?>/im", 'textarea' => "/<textarea.*?\s.*?>/im"];
+        self::$regular['need_title']     = ['iframe' => "/(<iframe[^>]*>.*<\/iframe>)/Uims", 'object' => "/<object (.*)><\/object>/Ui", 'applet' => "/<applet (.*)><\/applet>/Ui", 'embed' => "/<embed (.*)><\/embed>/Ui", 'input' => "/<input.*?\s.*?>/im", 'select' => "/<select.*?\s.*?>/im", 'textarea' => "/<textarea.*?\s.*?>/im"];
 
         self::$check_items['img'] = ['<img '];
         self::$check_title['img'] = TADTOOLS_CHK_IMG;
-        self::$regular['img'] = ['img' => "/<\s*img\s+(.*)\/?\s?>/i"];
+        self::$regular['img']     = ['img' => "/<\s*img\s+(.*)\/?\s?>/i"];
 
         self::$check_items['blockquote'] = ['<blockquote'];
         self::$check_title['blockquote'] = TADTOOLS_CHK_BLOCKQUOTE;
-        self::$regular['blockquote'] = ['blockquote' => "/<blockquote(.*)<\/blockquote>/Ui"];
+        self::$regular['blockquote']     = ['blockquote' => "/<blockquote(.*)<\/blockquote>/Ui"];
 
         self::$check_items['unable_tag'] = ['<font', '<center>', '<big>'];
         self::$check_title['unable_tag'] = TADTOOLS_CHK_UNABLE_TAG;
-        self::$regular['unable_tag'] = ['empty_font' => "/(<font[^>]*><\/font>)/Uim", 'font' => "/(<font[^>]*>)|(<\/font>)/Uim", 'center' => "/<center>/Ui", 'big' => "/<big>/Ui"];
+        self::$regular['unable_tag']     = ['empty_font' => "/(<font[^>]*><\/font>)/Uim", 'font' => "/(<font[^>]*>)|(<\/font>)/Uim", 'center' => "/<center>/Ui", 'big' => "/<big>/Ui"];
 
         self::$check_items['th'] = ['<th'];
         self::$check_title['th'] = TADTOOLS_CHK_TH;
-        self::$regular['th'] = ['th' => "/<th(\s|>)(.*)>/Ui"];
+        self::$regular['th']     = ['th' => "/<th(\s|>)(.*)>/Ui"];
 
         self::$check_items['a_empty'] = ['<a '];
         self::$check_title['a_empty'] = TADTOOLS_CHK_A_EMPTY;
-        self::$regular['a_empty'] = ['a_empty' => "/<a(.*)>(.*)<\/a>/Usi", 'same_alt' => "/<a.*>(.*)<\/a>/Usi"];
+        self::$regular['a_empty']     = ['a_empty' => "/<a(.*)>(.*)<\/a>/Usi", 'same_alt' => "/<a.*>(.*)<\/a>/Usi"];
 
         self::$check_items['head_empty'] = ['<h'];
         self::$check_title['head_empty'] = TADTOOLS_CHK_HEAD_EMPTY;
-        self::$regular['head_empty'] = ['head_empty' => "/<h[1-6].*>(.*)<\/h[1-6]>/Ui"];
+        self::$regular['head_empty']     = ['head_empty' => "/<h[1-6].*>(.*)<\/h[1-6]>/Ui"];
 
         self::$check_items['lang_zh_tw'] = ['zh-TW'];
         self::$check_title['lang_zh_tw'] = TADTOOLS_CHK_LANG_ZH_TW;
-        self::$regular['lang_zh_tw'] = ['lang_zh_tw' => "/ lang=[\"|\']zh-TW[\"|\']/Uim"];
+        self::$regular['lang_zh_tw']     = ['lang_zh_tw' => "/ lang=[\"|\']zh-TW[\"|\']/Uim"];
 
         return self::$$var;
     }
@@ -80,13 +80,13 @@ class Wcag
                 $new_val = round($matches[1][$sk] / 16, 2);
             } elseif ($matches[2][$sk] == '') {
                 if (stripos($matches[1][$sk], '+') !== false) {
-                    $num = $matches[1][$sk];
+                    $num     = $matches[1][$sk];
                     $new_val = 1 + 0.2 * $num;
                 } elseif (stripos($matches[1][$sk], '-') !== false) {
-                    $num = $matches[1][$sk];
+                    $num     = $matches[1][$sk];
                     $new_val = 1 - 0.2 * $num;
                 } else {
-                    $num = $matches[1][$sk] - 3;
+                    $num     = $matches[1][$sk] - 3;
                     $new_val = 1 + 0.2 * $num;
                 }
             }
@@ -121,7 +121,7 @@ class Wcag
         foreach ($matches[0] as $old_str) {
             if (stripos($old_str, ' title=') === false) {
                 $new_str = str_ireplace('<iframe ', "<iframe title=iframe ", $old_str);
-                $v = str_ireplace($old_str, $new_str, $v);
+                $v       = str_ireplace($old_str, $new_str, $v);
             }
         }
 
@@ -166,7 +166,7 @@ class Wcag
         foreach ($matches[0] as $old_str) {
             if (stripos($old_str, ' title =') === false and stripos($old_str, ' title=') === false) {
                 $new_str = str_ireplace('<input', "<input title=input", $old_str);
-                $v = str_ireplace($old_str, $new_str, $v);
+                $v       = str_ireplace($old_str, $new_str, $v);
             }
         }
 
@@ -179,7 +179,7 @@ class Wcag
         foreach ($matches[0] as $old_str) {
             if (stripos($old_str, ' title =') === false and stripos($old_str, ' title=') === false) {
                 $new_str = str_ireplace('<select', "<select title=select", $old_str);
-                $v = str_ireplace($old_str, $new_str, $v);
+                $v       = str_ireplace($old_str, $new_str, $v);
             }
         }
 
@@ -191,7 +191,7 @@ class Wcag
         foreach ($matches[0] as $old_str) {
             if (stripos($old_str, ' title =') === false and stripos($old_str, ' title=') === false) {
                 $new_str = str_ireplace('<textarea ', "<textarea title=textarea ", $old_str);
-                $v = str_ireplace($old_str, $new_str, $v);
+                $v       = str_ireplace($old_str, $new_str, $v);
             }
         }
 
@@ -203,8 +203,16 @@ class Wcag
         foreach ($matches[0] as $old_img) {
             if (stripos($old_img, 'alt=') === false) {
                 $old_img = str_ireplace("\r\n", " ", $old_img);
-                $new_img = str_ireplace('<img ', "<img alt=img ", $old_img);
-                $v = str_ireplace($old_img, $new_img, $v);
+                $new_img = str_ireplace('<img ', "<img alt=\"文章插圖\" ", $old_img);
+                $v       = str_ireplace($old_img, $new_img, $v);
+            } else {
+                // 檢查 alt 屬性是否為空值
+                preg_match('/alt=[\"|\'](.*?)[\"|\']/i', $old_img, $alt_match);
+                if (empty(trim($alt_match[1]))) {
+                    $old_img = str_ireplace("\r\n", " ", $old_img);
+                    $new_img = preg_replace('/alt=[\"|\'](.*?)[\"|\']/i', 'alt="文章插圖"', $old_img);
+                    $v       = str_ireplace($old_img, $new_img, $v);
+                }
             }
         }
 
@@ -231,9 +239,9 @@ class Wcag
     public static function font($v, $matches)
     {
         foreach ($matches[0] as $old_str) {
-            $q = (stripos($old_str, '"') !== false) ? '"' : "'";
+            $q       = (stripos($old_str, '"') !== false) ? '"' : "'";
             $new_str = str_ireplace("'", '"', $old_str);
-            $style = [];
+            $style   = [];
             if ($new_str == '<font>') {
                 $new_str = str_ireplace("<font>", "<span>", $new_str);
             } elseif (stripos($new_str, '<font ') !== false) {
@@ -252,13 +260,13 @@ class Wcag
                 $re = '/size=[\"|\'](.*)[\"|\']/Uims';
                 preg_match($re, $new_str, $size);
                 if (stripos($size[1], '+') !== false) {
-                    $num = substr($size[1], 1);
+                    $num      = substr($size[1], 1);
                     $new_size = 1 + 0.2 * $num;
                 } elseif (stripos($size[1], '-') !== false) {
-                    $num = substr($size[1], 1);
+                    $num      = substr($size[1], 1);
                     $new_size = 1 - 0.2 * $num;
                 } else {
-                    $num = $size[1] - 3;
+                    $num      = $size[1] - 3;
                     $new_size = 1 + 0.2 * $num;
                 }
                 if ($size[1]) {
@@ -310,10 +318,10 @@ class Wcag
         $fix = false;
         foreach ($matches[2] as $key => $content_in_tag) {
             if (stripos($content_in_tag, '<{$') === false and stripos($matches[1][$key], 'href') !== false and empty(trim(strip_tags($content_in_tag)))) {
-                $old = $matches[0][$key];
+                $old    = $matches[0][$key];
                 $linkto = str_ireplace(['href=', '"', "'", 'target=', '_empty', '_self'], '', $matches[1][$key]);
-                $new = str_ireplace('</a>', "<span class=sr-only>link to $linkto</span></a>", $old);
-                $v = str_ireplace($old, $new, $v);
+                $new    = str_ireplace('</a>', "<span class=sr-only>link to $linkto</span></a>", $old);
+                $v      = str_ireplace($old, $new, $v);
             }
         }
         return $v;
@@ -323,13 +331,13 @@ class Wcag
     {
         foreach ($matches[1] as $key => $content_in_tag) {
             preg_match_all("/(.*)<img.*alt=[\"|\'](.*?)[\"|\'].*?[\"|\']?>(.*)/is", $content_in_tag, $match);
-            $alt = strip_tags(str_ireplace('&nbsp;', '', $match[2][0]));
+            $alt  = strip_tags(str_ireplace('&nbsp;', '', $match[2][0]));
             $txt1 = strip_tags(str_ireplace('&nbsp;', '', $match[1][0]));
             $txt2 = strip_tags(str_ireplace('&nbsp;', '', $match[3][0]));
             if (!empty($match[2][0]) and stripos($match[2][0], '<{$') === false and ($alt == $txt1 or $alt == $txt2)) {
                 $old = $matches[0][$key];
                 $new = str_ireplace(["alt='{$match[2][0]}'", 'alt="' . $match[2][0] . '"'], ["alt='image of {$alt}'", 'alt="image of ' . $alt . '"'], $old);
-                $v = str_ireplace($old, $new, $v);
+                $v   = str_ireplace($old, $new, $v);
             }
         }
         return $v;
@@ -341,7 +349,7 @@ class Wcag
             if (stripos($content_in_tag, '<{$') === false and empty(trim(strip_tags($content_in_tag)))) {
                 $old = $matches[0][$key];
                 $new = str_ireplace('</h', "<span class=sr-only>empty head</span></h", $old);
-                $v = str_ireplace($old, $new, $v);
+                $v   = str_ireplace($old, $new, $v);
             }
         }
         return $v;
@@ -352,7 +360,7 @@ class Wcag
         foreach ($matches[0] as $key => $content_in_tag) {
             $old = $content_in_tag;
             $new = '';
-            $v = str_ireplace($old, $new, $v);
+            $v   = str_ireplace($old, $new, $v);
         }
         return $v;
     }

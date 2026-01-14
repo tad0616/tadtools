@@ -21,18 +21,8 @@ class Bootstrap3Editable
 
         $jquery = $this->show_jquery ? Utility::get_jquery() : '';
 
-        // if ($xoTheme) {
-        //     $xoTheme->addStylesheet("modules/tadtools/bootstrap{$_SESSION['bootstrap']}-editable/css/bootstrap-editable.css");
-        //     $xoTheme->addScript("modules/tadtools/bootstrap{$_SESSION['bootstrap']}-editable/js/bootstrap-editable.min.js");
-
-        //     if ($url) {
-        //         $xoTheme->addScript('', null, "\$(document).ready(function(){
-        //             \$('{$name}').editable({url: '$url'});
-        //         });");
-        //     }
-        // } else {
         if (!isset($_SESSION['bootstrap'])) {
-            $_SESSION['bootstrap'] = 3;
+            $_SESSION['bootstrap'] = 5;
         }
 
         $main = "

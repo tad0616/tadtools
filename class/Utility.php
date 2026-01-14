@@ -32,85 +32,85 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 class Utility
 {
     public static $fonts = [
-        '851DianJiWenZiTi' => '851電機文字',
-        'Bakudai' => '莫大毛筆字體',
-        'BoTa' => '波塔',
-        'BpmfGenRyuMin-B' => '源流注音明體-粗體',
-        'BpmfGenRyuMin-R' => '源流注音明體',
-        'BpmfGenSekiGothic-B' => '源石注音黑體-粗體',
-        'BpmfGenSekiGothic-R' => '源石注音黑體',
-        'BpmfGenSenRounded-B' => '源泉注音圓體-粗體',
-        'BpmfGenSenRounded-R' => '源泉注音圓體',
-        'BpmfGenWanMin-R' => '源雲注音明體',
-        'BpmfGenYoGothic-B' => '源樣注音黑體-粗體',
-        'BpmfGenYoGothic-R' => '源樣注音黑體',
-        'BpmfGenYoMin-B' => '源樣注音明體-粗體',
-        'BpmfGenYoMin-R' => '源樣注音明體',
-        'BpmfZihiKaiStd-Regular' => '字嗨注音標楷',
-        'BpmfZihiSans-Bold' => '字嗨注音黑體-粗體',
-        'BpmfZihiSans-Regular' => '字嗨注音黑體',
-        'BpmfZihiSerif-Bold' => '字嗨注音宋體-粗體',
-        'BpmfZihiSerif-Regular' => '字嗨注音宋體',
-        'Chalk' => '粉筆體',
-        'ChaoJiXi' => '超級細ゴシック體',
-        'CorpRound' => '公司LOGO圓體',
-        'Crayon' => '黑板粉筆體',
-        'Cubic' => '俐方體11號',
-        'Doudouziti' => '豆豆體',
-        'HanWangFangSongMedium' => '王漢宗中仿宋',
-        'HanWangHeiHeavy' => '王漢宗特黑體',
-        'HanWangHeiLight' => '王漢宗細黑體',
-        'HanWangKaiMediumChuIn' => '王漢宗中楷注音',
-        'HanWangKanTan' => '王漢宗勘亭流',
-        'HanWangLiSuMedium' => '王漢宗中隸書',
-        'HanWangMingBlack' => '王漢宗超明體',
-        'HanWangWeBe' => '王漢宗魏碑體',
-        'HanWangYenHeavy' => '王漢宗特圓體',
-        'HanWangYenLight' => '王漢宗細圓體',
-        'HanWangZonYi' => '王漢宗綜藝體',
-        'HanZiBiShunZiTi' => '漢字筆順體原版',
-        'HengShanMaoBiCaoShu' => '衡山毛筆草書',
-        'I-Ngaan' => '刻石錄顏體',
-        'I-PenCrane-B' => '刻石錄鋼筆鶴體',
-        'Iansui' => '芫荽體',
-        'JasonHandwriting1' => '清松手寫體1',
-        'JasonHandwriting2' => '清松手寫體2',
-        'JasonHandwriting3' => '清松手寫體3',
-        'JasonHandwriting4' => '清松手寫體4',
-        'JfOpenhuninn' => 'jf open 粉圓體',
-        'KaiseiTokumin' => '解星 B',
-        'KingnamMaiyuan' => '荊南麥圓體',
-        'Kurewa' => '苦累蛙圓體',
-        'Mamelon' => 'Mamelon字體',
-        'MamelonHi' => 'Mamelon新版字體',
-        'MasaFont' => '正風毛筆字體（衡山毛筆行書）',
-        'NaikaiFont' => '內海字體',
-        'NishikiTeki' => '馬克筆手寫',
-        'PangPangZhuRouTi' => '胖胖豬肉體',
-        'PoSuiLingHaoZi' => '破碎零號字',
-        'PopGothicCjkJp' => '大波浪圓體',
-        'QianTuMaKeShouXieTi' => '千圖馬克手寫體',
-        'Qiang' => '黒薔薇',
-        'QingLiuShu' => '青柳隷書',
-        'SuiFengTi ' => '隨峰體',
-        'SweiFistLegCJKjp' => '獅尾詠腿黑體',
-        'SweiSpringSugarCJKtc' => '獅尾四季春',
-        'SweiToothpasteCJKtc' => '獅尾牙膏圓體',
-        'TanugoTangGuoShouXieTiBold' => '糖果手寫粗體',
+        '851DianJiWenZiTi'              => '851電機文字',
+        'Bakudai'                       => '莫大毛筆字體',
+        'BoTa'                          => '波塔',
+        'BpmfGenRyuMin-B'               => '源流注音明體-粗體',
+        'BpmfGenRyuMin-R'               => '源流注音明體',
+        'BpmfGenSekiGothic-B'           => '源石注音黑體-粗體',
+        'BpmfGenSekiGothic-R'           => '源石注音黑體',
+        'BpmfGenSenRounded-B'           => '源泉注音圓體-粗體',
+        'BpmfGenSenRounded-R'           => '源泉注音圓體',
+        'BpmfGenWanMin-R'               => '源雲注音明體',
+        'BpmfGenYoGothic-B'             => '源樣注音黑體-粗體',
+        'BpmfGenYoGothic-R'             => '源樣注音黑體',
+        'BpmfGenYoMin-B'                => '源樣注音明體-粗體',
+        'BpmfGenYoMin-R'                => '源樣注音明體',
+        'BpmfZihiKaiStd-Regular'        => '字嗨注音標楷',
+        'BpmfZihiSans-Bold'             => '字嗨注音黑體-粗體',
+        'BpmfZihiSans-Regular'          => '字嗨注音黑體',
+        'BpmfZihiSerif-Bold'            => '字嗨注音宋體-粗體',
+        'BpmfZihiSerif-Regular'         => '字嗨注音宋體',
+        'Chalk'                         => '粉筆體',
+        'ChaoJiXi'                      => '超級細ゴシック體',
+        'CorpRound'                     => '公司LOGO圓體',
+        'Crayon'                        => '黑板粉筆體',
+        'Cubic'                         => '俐方體11號',
+        'Doudouziti'                    => '豆豆體',
+        'HanWangFangSongMedium'         => '王漢宗中仿宋',
+        'HanWangHeiHeavy'               => '王漢宗特黑體',
+        'HanWangHeiLight'               => '王漢宗細黑體',
+        'HanWangKaiMediumChuIn'         => '王漢宗中楷注音',
+        'HanWangKanTan'                 => '王漢宗勘亭流',
+        'HanWangLiSuMedium'             => '王漢宗中隸書',
+        'HanWangMingBlack'              => '王漢宗超明體',
+        'HanWangWeBe'                   => '王漢宗魏碑體',
+        'HanWangYenHeavy'               => '王漢宗特圓體',
+        'HanWangYenLight'               => '王漢宗細圓體',
+        'HanWangZonYi'                  => '王漢宗綜藝體',
+        'HanZiBiShunZiTi'               => '漢字筆順體原版',
+        'HengShanMaoBiCaoShu'           => '衡山毛筆草書',
+        'I-Ngaan'                       => '刻石錄顏體',
+        'I-PenCrane-B'                  => '刻石錄鋼筆鶴體',
+        'Iansui'                        => '芫荽體',
+        'JasonHandwriting1'             => '清松手寫體1',
+        'JasonHandwriting2'             => '清松手寫體2',
+        'JasonHandwriting3'             => '清松手寫體3',
+        'JasonHandwriting4'             => '清松手寫體4',
+        'JfOpenhuninn'                  => 'jf open 粉圓體',
+        'KaiseiTokumin'                 => '解星 B',
+        'KingnamMaiyuan'                => '荊南麥圓體',
+        'Kurewa'                        => '苦累蛙圓體',
+        'Mamelon'                       => 'Mamelon字體',
+        'MamelonHi'                     => 'Mamelon新版字體',
+        'MasaFont'                      => '正風毛筆字體（衡山毛筆行書）',
+        'NaikaiFont'                    => '內海字體',
+        'NishikiTeki'                   => '馬克筆手寫',
+        'PangPangZhuRouTi'              => '胖胖豬肉體',
+        'PoSuiLingHaoZi'                => '破碎零號字',
+        'PopGothicCjkJp'                => '大波浪圓體',
+        'QianTuMaKeShouXieTi'           => '千圖馬克手寫體',
+        'Qiang'                         => '黒薔薇',
+        'QingLiuShu'                    => '青柳隷書',
+        'SuiFengTi '                    => '隨峰體',
+        'SweiFistLegCJKjp'              => '獅尾詠腿黑體',
+        'SweiSpringSugarCJKtc'          => '獅尾四季春',
+        'SweiToothpasteCJKtc'           => '獅尾牙膏圓體',
+        'TanugoTangGuoShouXieTiBold'    => '糖果手寫粗體',
         'TanugoTangGuoShouXieTiRegular' => '糖果手寫體',
-        'Tanukimagic' => 'たぬき油性マジック',
-        'UzuraZiTi' => '鵪鶉字體',
-        'WuXinShouXieTi' => '無心手寫體',
-        'XianErTi' => '賢二體',
-        'XinYiGuanHeiTi' => '字體圈欣意冠黑體',
-        'YOzShouXieTi' => 'YOz手寫體',
-        'YingZhuiXingShu' => '英椎行書',
-        'YouZi' => '佑字',
-        'YuanYingHeiTi' => '源影黑體',
-        'ZhaiZaiJiaFenTiaoTian' => '宅在家粉條甜',
-        'ZhaiZaiJiaMaiKeBi' => '宅在家麥克筆',
-        'ZhaiZaiJiaZiDongBi' => '宅在家自動筆',
-        'ZuoZuoMuZiTi' => '佐佐木字體',
+        'Tanukimagic'                   => 'たぬき油性マジック',
+        'UzuraZiTi'                     => '鵪鶉字體',
+        'WuXinShouXieTi'                => '無心手寫體',
+        'XianErTi'                      => '賢二體',
+        'XinYiGuanHeiTi'                => '字體圈欣意冠黑體',
+        'YOzShouXieTi'                  => 'YOz手寫體',
+        'YingZhuiXingShu'               => '英椎行書',
+        'YouZi'                         => '佑字',
+        'YuanYingHeiTi'                 => '源影黑體',
+        'ZhaiZaiJiaFenTiaoTian'         => '宅在家粉條甜',
+        'ZhaiZaiJiaMaiKeBi'             => '宅在家麥克筆',
+        'ZhaiZaiJiaZiDongBi'            => '宅在家自動筆',
+        'ZuoZuoMuZiTi'                  => '佐佐木字體',
     ];
 
     //建構函數
@@ -123,11 +123,11 @@ class Utility
 
     public static function test($var, $v = 1, $mode = 'dd', $key = 'test', $force = false)
     {
-        global $xoopsUser, $xoopsModuleConfig, $xoopsLogger;
+        global $xoopsUser, $xoopsModuleConfig;
 
-        if (isset($xoopsModuleConfig['test_mode']) && $xoopsModuleConfig['test_mode'] && $xoopsUser && !$xoopsUser->isAdmin()) {
-            return;
-        }
+        // if ((isset($xoopsModuleConfig['test_mode']) && $xoopsModuleConfig['test_mode'] == 1) && ($xoopsUser && !$xoopsUser->isAdmin())) {
+        //     return;
+        // }
 
         if (isset($_GET[$key]) && $_GET[$key] == $v) {
             if ($mode == 'die') {
@@ -414,6 +414,10 @@ class Utility
         }
         $source_dir = $dir;
 
+        if (is_dir($dir)) {
+            return $source_dir;
+        }
+
         $dir      = \str_replace([XOOPS_ROOT_PATH, XOOPS_VAR_PATH], '', $dir);
         $dir_path = explode('/', $dir);
         $mk_dir   = strpos($source_dir, XOOPS_VAR_PATH) !== false ? XOOPS_VAR_PATH : XOOPS_ROOT_PATH;
@@ -458,10 +462,9 @@ class Utility
         return rmdir($dirname);
     }
 
-    //拷貝目錄
+    //拷貝目錄（最後不需要加 /）
     public static function full_copy($source = '', $dest = '', $overwrite = true)
     {
-
         // 檢查來源資料夾是否存在
         if (!is_dir($source)) {
             return false;
@@ -490,30 +493,6 @@ class Utility
         }
 
         return true;
-
-        // if (is_dir($source)) {
-        //     if (!self::mk_dir($target) && !is_dir($target)) {
-        //         throw new \RuntimeException(sprintf('Directory "%s" was not created', $target));
-        //     }
-        //     $d = dir($source);
-        //     while (false !== ($entry = $d->read())) {
-        //         if ('.' === $entry || '..' === $entry) {
-        //             continue;
-        //         }
-
-        //         $Entry = $source . '/' . $entry;
-        //         if (is_dir($Entry)) {
-        //             self::full_copy($Entry, $target . '/' . $entry);
-        //             continue;
-        //         }
-        //         copy($Entry, $target . '/' . $entry);
-        //     }
-        //     $d->close();
-        // } else {
-        //     if (\file_exists($source)) {
-        //         copy($source, $target);
-        //     }
-        // }
     }
 
     public static function rename_win($oldfile, $newfile)
@@ -581,10 +560,10 @@ class Utility
     {
         // 預設選項
         $defaults = [
-            'divider' => '>',
+            'divider'   => '>',
             'home_icon' => false,
-            'class' => '',
-            'len' => '111',
+            'class'     => '',
+            'len'       => '111',
         ];
 
         $options = array_merge($defaults, $options);
@@ -1327,7 +1306,7 @@ class Utility
             $main['bar'] = '';
         }
 
-        $main['sql']   = $sql . $mybar['sql'];
+        $main['sql']   = isset($mybar['sql']) ? $sql . $mybar['sql'] : $sql;
         $main['total'] = $total;
 
         return $main;
@@ -1510,8 +1489,8 @@ class Utility
                 'http' => [
                     'timeout' => $timeout,
                 ],
-                'ssl' => [
-                    'verify_peer' => false,
+                'ssl'  => [
+                    'verify_peer'      => false,
                     'verify_peer_name' => false,
                 ],
             ]);
@@ -1524,8 +1503,8 @@ class Utility
                 'http' => [
                     'timeout' => $timeout,
                 ],
-                'ssl' => [
-                    'verify_peer' => false,
+                'ssl'  => [
+                    'verify_peer'      => false,
                     'verify_peer_name' => false,
                 ],
             ]);
@@ -1857,10 +1836,11 @@ class Utility
      * @param array $params 參數陣列
      * @param bool $throwExceptions 是否拋出異常
      * @param bool $debug 是否開啟調試模式
+     * @param mysqli|null $mysqli 外部提供的mysqli連線物件
      * @return mixed 查詢結果或布林值
      * @throws Exception
      */
-    public static function query($sql, $types = '', array $params = [], $throwExceptions = true, $debug = false)
+    public static function query($sql, $types = '', array $params = [], $throwExceptions = true, $debug = false, $mysqli = null)
     {
         global $xoopsDB;
 
@@ -1895,10 +1875,13 @@ class Utility
                 ));
             }
 
+            // 決定使用哪個連線物件
+            $connection = $mysqli ? $mysqli : $xoopsDB->conn;
+
             // 準備語句
-            $stmt = $xoopsDB->conn->prepare($sql);
+            $stmt = $connection->prepare($sql);
             if (!$stmt) {
-                throw new \Exception(_SQL_PREPARE_FAILED . $xoopsDB->conn->error);
+                throw new \Exception(_SQL_PREPARE_FAILED . $connection->error);
             }
 
             // 綁定參數
@@ -2142,10 +2125,10 @@ class Utility
             // $return_array will be returned once all calculations are complete
             $return_array = [
                 imagesx($im), // lower left, x coordinate
-                -1, // lower left, y coordinate
-                -1, // lower right, x coordinate
-                -1, // lower right, y coordinate
-                -1, // upper right, x coordinate
+                -1,           // lower left, y coordinate
+                -1,           // lower right, x coordinate
+                -1,           // lower right, y coordinate
+                -1,           // upper right, x coordinate
                 imagesy($im), // upper right, y coordinate
                 imagesx($im), // upper left, x coordinate
                 imagesy($im), // upper left, y coordinate

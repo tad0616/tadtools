@@ -94,7 +94,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         } else {
             $theme_config = Tools::import_theme_json($theme_name);
         }
-        Utility::test($theme_config, 'theme_config', 'dd');
+
         foreach ($theme_config as $key => $value) {
             $xoopsTpl->assign($key, $value);
         }
