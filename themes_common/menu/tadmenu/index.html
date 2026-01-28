@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TadMenu - 垂直三層選單</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome 6 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+    <!-- TadMenu 樣式 -->
+    <link href="menu.css" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .page-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: #f8f9fa;
+            border-right: 1px solid #dee2e6;
+            flex-shrink: 0;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .page-layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #dee2e6;
+            }
+        }
+
+        .menu-header {
+            padding: 1rem;
+            background: #0d6efd;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        kbd {
+            background: #eee;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 2px 6px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-layout">
+        <!-- 側邊欄 -->
+        <aside class="sidebar">
+            <div class="menu-header">
+                <i class="fa-solid fa-bars me-2"></i>
+                TadMenu
+            </div>
+            <div id="tadmenu-container"></div>
+        </aside>
+
+        <!-- 主要內容 -->
+        <main id="main-content" class="main-content" tabindex="-1">
+            <h1>TadMenu 垂直三層選單</h1>
+            <p class="lead">符合 WCAG 2.2 AAA 無障礙規範的響應式選單元件</p>
+
+            <hr>
+
+            <h2>✨ 功能特色</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <ul>
+                        <li>三層選單結構</li>
+                        <li>第二層滑動展開動畫</li>
+                        <li>第三層浮動顯示（桌面版）</li>
+                        <li>第三層展開顯示（手機版）</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <ul>
+                        <li>JSON 設定檔驅動</li>
+                        <li>完整鍵盤導覽</li>
+                        <li>WCAG 2.2 AAA 規範</li>
+                        <li>Font Awesome 圖示</li>
+                    </ul>
+                </div>
+            </div>
+
+            <hr>
+
+            <h2>🚀 使用方式</h2>
+            <pre class="bg-light p-3 rounded"><code>// 初始化 TadMenu
+const menu = new TadMenu('tadmenu-container', {
+  jsonPath: 'menu-data.json',
+  animationDuration: 300,
+  mainContentId: 'main-content'
+});
+
+// 展開指定選單
+menu.expand('products');
+
+// 收合所有選單
+menu.collapseAll();
+
+// 銷毀選單
+menu.destroy();</code></pre>
+
+            <hr>
+
+            <h2>⌨️ 鍵盤操作</h2>
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th style="width: 30%;">按鍵</th>
+                        <th>功能</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><kbd>↑</kbd> <kbd>↓</kbd></td>
+                        <td>在同層選項間移動</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>→</kbd></td>
+                        <td>展開子選單並進入</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>←</kbd></td>
+                        <td>收合選單或返回上層</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>Enter</kbd> <kbd>Space</kbd></td>
+                        <td>展開/收合或啟動連結</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>Home</kbd></td>
+                        <td>跳到第一個選項</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>End</kbd></td>
+                        <td>跳到最後一個選項</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>Esc</kbd></td>
+                        <td>關閉浮動選單</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <hr>
+
+            <h2>📋 測試步驟</h2>
+            <ol>
+                <li>點擊「<strong>產品服務</strong>」展開第二層</li>
+                <li>點擊「<strong>軟體開發</strong>」或「<strong>設計服務</strong>」查看第三層浮動選單</li>
+                <li>縮小視窗至手機寬度，觀察第三層改為展開式</li>
+            </ol>
+        </main>
+    </div>
+
+    <!-- TadMenu 腳本 -->
+    <script src="menu.js"></script>
+    <script>
+        // 初始化 TadMenu
+        const menu = new TadMenu('tadmenu-container', {
+            jsonPath: 'menu-data.json',
+            animationDuration: 300,
+            mainContentId: 'main-content'
+        });
+    </script>
+</body>
+
+</html>

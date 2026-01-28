@@ -1,4 +1,5 @@
 <?php
+
 namespace XoopsModules\Tadtools;
 
 use XoopsModules\Tadtools\Utility;
@@ -97,6 +98,7 @@ class CkEditor
         $this->setStyle('語法', 'code');
         $this->setStyle('按鍵', 'kbd');
 
+        $this->setStyle('公文編號「一、(一)、１」', 'ol', ['class' => 'paper-list'], []);
         $this->setStyle('巢狀清單「1.、(1)、A.」', 'ol', ['class' => 'my-list'], []);
         $this->setStyle('清單「壹、貳」', 'ol', ['class' => 'big-tw'], []);
         $this->setStyle('清單「一、二」', 'ol', ['class' => 'small-tw'], []);
@@ -162,9 +164,13 @@ class CkEditor
         $TadToolsModuleConfig = Utility::TadToolsXoopsModuleConfig();
         $codemirror           = $TadToolsModuleConfig['use_codemirror'] ? ',codemirror' : '';
 
-        $bs      = $_SESSION['bootstrap'] ? $_SESSION['bootstrap'] : 4;
-        $ck_wcag = $TadToolsModuleConfig['ck_wcag'] ? 'pasteFromWordRemoveFontStyles: true,' : '';
-
+        $bs      = $_SESSION['bootstrap'] ? $_SESSION['bootstrap'] : 5;
+        $ck_wcag = $TadToolsModuleConfig['ck_wcag'] ? "
+        forcePasteAsPlainText: true,
+        pasteFromWordRemoveStyles: true,
+        pasteFromWordRemoveFontStyles: true,
+        " : '';
+// extraPlugins:a11ychecker
         $editor_setup = "{$demopublickey_js}
         CKEDITOR.replace('{$this->ColID}' , {
         skin : 'moono' ,
@@ -174,12 +180,11 @@ class CkEditor
         toolbar : '{$this->ToolbarSet}' ,
         $stylesSet
         $ck_wcag
-        contentsCss : ['" . XOOPS_URL . "/modules/tadtools/bootstrap{$bs}/css/bootstrap.css', '" . XOOPS_URL . "/modules/tadtools/css/fonts.css', '" . XOOPS_URL . "/modules/tadtools/css/ckeditor.css', '" . XOOPS_URL . "/modules/tadtools/css/fontawesome6/css/all.min.css'{$other_css}],
-        extraPlugins: 'autogrow,editorplaceholder,pasteUploadImage,sourcearea,font,syntaxhighlight,dialog,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak,ckeditorfa,prism,codesnippet,undo,autoembed,autolink,clipboard,toolbar,button,dialogui,notification,textmatch,embed,embedbase,widgetselection,notificationaggregator,embedsemantic,panel,floatpanel,menu{$codemirror}{$extra_uploadcare}',
+        contentsCss : ['" . XOOPS_URL . "/modules/tadtools/bootstrap{$bs}/css/bootstrap.css', '" . XOOPS_URL . "/modules/tadtools/css/fonts.css', '" . XOOPS_URL . "/modules/tadtools/css/ckeditor.css?t=20260127', '" . XOOPS_URL . "/modules/tadtools/css/fontawesome6/css/all.min.css'{$other_css}],
+        extraPlugins: 'balloonpanel,autogrow,editorplaceholder,pasteUploadImage,sourcearea,font,syntaxhighlight,dialog,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak,ckeditorfa,prism,codesnippet,undo,autoembed,autolink,clipboard,toolbar,button,dialogui,notification,textmatch,embed,embedbase,widgetselection,notificationaggregator,embedsemantic,panel,floatpanel,menu{$codemirror}{$extra_uploadcare}',
         {$uploadcare_setup}
         filebrowserBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=file&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',
         filebrowserImageBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=image&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',
-
         pasteUploadFileApi: '" . XOOPS_URL . '/modules/tadtools/upload.php?type=image&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',
         pasteUploadImageUrlApi: '" . XOOPS_URL . '/modules/tadtools/upload.php?type=image&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',
         $placeholder

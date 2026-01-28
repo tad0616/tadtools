@@ -67,7 +67,7 @@
 
 /*** point all arrows down ***/
 .sf-arrows.sf-navbar ul .sf-with-ul:after {
-	margin-top: -3px;
+	margin-top: -0.1875rem;
 	margin-right: 0;
 	border-color: transparent;
 	border-top-color: #dFeEFF; /* edit this to suit design (no rgba in IE8) */

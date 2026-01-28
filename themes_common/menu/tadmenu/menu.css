@@ -1,0 +1,410 @@
+/* ========================================
+   TadMenu - 垂直三層選單元件
+   WCAG 2.2 AAA 無障礙設計
+   ======================================== */
+
+:root {
+    --tadmenu-transition-duration: 300ms;
+    --tadmenu-focus-color: #005fcc;
+    --tadmenu-focus-outline-width: 3px;
+    --tadmenu-border-radius: 4px;
+    --tadmenu-indent: 1.25rem;
+    /* 從 20px 轉為 1.25rem */
+}
+
+/* 選單容器 */
+.tadmenu {
+    width: 100%;
+    font-size: inherit;
+    line-height: 1.5;
+}
+
+.tadmenu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* 選單項目 */
+.tadmenu-item {
+    position: relative;
+}
+
+/* 選單按鈕/連結基礎樣式 */
+.tadmenu-link {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    border: none;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, filter 0.2s ease;
+    position: relative;
+    min-height: 3rem;
+    box-sizing: border-box;
+    font-size: inherit;
+    text-align: left;
+    background: none;
+}
+
+.tadmenu-link:hover {
+    filter: brightness(0.92);
+}
+
+.tadmenu-link:active {
+    filter: brightness(0.88);
+}
+
+/* 高對比焦點指示器 - WCAG AAA */
+.tadmenu-link:focus {
+    outline: var(--tadmenu-focus-outline-width) solid var(--tadmenu-focus-color);
+    outline-offset: -3px;
+    z-index: 10;
+}
+
+.tadmenu-link:focus:not(:focus-visible) {
+    outline: none;
+}
+
+.tadmenu-link:focus-visible {
+    outline: var(--tadmenu-focus-outline-width) solid var(--tadmenu-focus-color);
+    outline-offset: -3px;
+    z-index: 10;
+}
+
+/* 圖示樣式 */
+.tadmenu-icon {
+    margin-right: 0.75rem;
+    /* 從 12px 轉為 0.75rem */
+    width: 1.25rem;
+    /* 從 20px 轉為 1.25rem */
+    text-align: center;
+    flex-shrink: 0;
+}
+
+/* 選單文字 */
+.tadmenu-text {
+    flex-grow: 1;
+    text-align: left;
+}
+
+/* 展開箭頭指示器 */
+.tadmenu-arrow {
+    margin-left: 0.5rem;
+    /* 從 8px 轉為 0.5rem */
+    transition: transform var(--tadmenu-transition-duration) ease;
+    flex-shrink: 0;
+}
+
+.tadmenu-arrow i {
+    font-size: 0.75rem;
+    /* 從 12px 轉為 0.75rem */
+}
+
+.tadmenu-item.tadmenu-expanded>.tadmenu-link .tadmenu-arrow {
+    transform: rotate(90deg);
+}
+
+/* ========================================
+   第二層選單
+   ======================================== */
+.tadmenu-submenu-2 {
+    max-height: 0;
+    /* 保持為 0，這是初始狀態 */
+    overflow: hidden;
+    transition: max-height var(--tadmenu-transition-duration) ease-out;
+}
+
+.tadmenu-submenu-2.tadmenu-open {
+    overflow: visible;
+}
+
+.tadmenu-submenu-2>.tadmenu-item>.tadmenu-link {
+    padding-left: calc(1rem + var(--tadmenu-indent));
+    /* 從 16px 轉為 1rem */
+}
+
+/* ========================================
+   第三層浮動選單 - 使用 fixed 定位
+   ======================================== */
+.tadmenu-submenu-3 {
+    position: fixed;
+    min-width: 13.75rem;
+    /* 從 220px 轉為 13.75rem */
+    max-width: 18.75rem;
+    /* 已經是相對單位 */
+    background: #ffffff;
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.2), 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+    /* 從 px 轉為 rem */
+    border-radius: var(--tadmenu-border-radius);
+    border: 1px solid #d0d0d0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-0.625rem);
+    /* 從 -10px 轉為 -0.625rem */
+    transition: opacity var(--tadmenu-transition-duration) ease,
+        transform var(--tadmenu-transition-duration) ease,
+        visibility var(--tadmenu-transition-duration);
+    z-index: 99999;
+    pointer-events: none;
+}
+
+.tadmenu-submenu-3.tadmenu-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+    pointer-events: auto;
+}
+
+.tadmenu-submenu-3>.tadmenu-item>.tadmenu-link {
+    padding: 0.5rem 1rem;
+}
+
+.tadmenu-submenu-3>.tadmenu-item:first-child>.tadmenu-link {
+    border-radius: var(--tadmenu-border-radius) var(--tadmenu-border-radius) 0 0;
+}
+
+.tadmenu-submenu-3>.tadmenu-item:last-child>.tadmenu-link {
+    border-radius: 0 0 var(--tadmenu-border-radius) var(--tadmenu-border-radius);
+}
+
+/* 新視窗指示器 */
+.tadmenu-new-window {
+    margin-left: 0.375rem;
+    /* 從 6px 轉為 0.375rem */
+    font-size: 0.625rem;
+    /* 從 10px 轉為 0.625rem */
+    opacity: 0.7;
+}
+
+/* 螢幕閱讀器專用文字 */
+.tadmenu-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ========================================
+   響應式設計 - 行動裝置
+   ======================================== */
+
+@media (max-width: 768px) {
+    .tadmenu {
+        max-width: 100%;
+        font-size: inherit;
+    }
+
+    /* 第三層在手機上改為展開式 */
+    .tadmenu-submenu-3 {
+        position: static !important;
+        min-width: auto;
+        max-width: none;
+        box-shadow: none;
+        border-radius: 0;
+        border: none;
+        background: transparent;
+        transform: none !important;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transition: max-height var(--tadmenu-transition-duration) ease-out;
+    }
+
+    .tadmenu-submenu-3.tadmenu-visible {
+        transform: none !important;
+    }
+
+    .tadmenu-submenu-3>.tadmenu-item>.tadmenu-link {
+        padding-left: calc(1rem + var(--tadmenu-indent) * 2);
+        /* 從 16px 轉為 1rem */
+    }
+
+    .tadmenu-submenu-3>.tadmenu-item:first-child>.tadmenu-link,
+    .tadmenu-submenu-3>.tadmenu-item:last-child>.tadmenu-link {
+        border-radius: 0;
+    }
+
+    /* 觸控目標 */
+    .tadmenu-link {
+        min-height: 3.25rem;
+        /* 從 52px 轉為 3.25rem */
+        padding: 0.875rem 1rem;
+        /* 從 14px 16px 轉為 0.875rem 1rem */
+    }
+}
+
+/* 高對比模式 */
+@media (prefers-contrast: high) {
+    .tadmenu-link {
+        border: 2px solid currentColor;
+    }
+
+    .tadmenu-submenu-3 {
+        border: 2px solid #000;
+    }
+}
+
+/* 減少動態效果 */
+@media (prefers-reduced-motion: reduce) {
+
+    .tadmenu-arrow,
+    .tadmenu-submenu-2,
+    .tadmenu-submenu-3,
+    .tadmenu-link {
+        transition: none !important;
+    }
+}
+
+/* ========================================
+   高亮效果
+   ======================================== */
+
+/* 高亮狀態 */
+.tadmenu-highlight {
+    position: relative;
+    animation: tadmenu-pulse 0.6s ease-in-out 3;
+    background-color: #fff3cd !important;
+    box-shadow:
+        inset 0.25rem 0 0 0 #ffc107,
+        /* 從 4px 轉為 0.25rem */
+        0 0 0.5rem rgba(255, 193, 7, 0.4) !important;
+    /* 從 8px 轉為 0.5rem */
+}
+
+/* 高亮脈衝動畫 */
+@keyframes tadmenu-pulse {
+
+    0%,
+    100% {
+        box-shadow:
+            inset 0.25rem 0 0 0 #ffc107,
+            /* 從 4px 轉為 0.25rem */
+            0 0 0.5rem rgba(255, 193, 7, 0.4);
+        /* 從 8px 轉為 0.5rem */
+    }
+
+    50% {
+        box-shadow:
+            inset 0.25rem 0 0 0 #ffc107,
+            /* 從 4px 轉為 0.25rem */
+            0 0 1rem rgba(255, 193, 7, 0.8);
+        /* 從 16px 轉為 1rem */
+    }
+}
+
+/* 持續高亮（不閃爍） */
+.tadmenu-highlight-static {
+    background-color: #fff3cd !important;
+    box-shadow: inset 0.25rem 0 0 0 #ffc107 !important;
+    /* 從 4px 轉為 0.25rem */
+}
+
+/* 深色主題高亮 */
+@media (prefers-color-scheme: dark) {
+    .tadmenu-highlight {
+        background-color: #664d03 !important;
+        box-shadow:
+            inset 0.25rem 0 0 0 #ffca2c,
+            /* 從 4px 轉為 0.25rem */
+            0 0 0.5rem rgba(255, 202, 44, 0.4) !important;
+        /* 從 8px 轉為 0.5rem */
+    }
+}
+
+/* 減少動態效果時，不使用動畫 */
+@media (prefers-reduced-motion: reduce) {
+    .tadmenu-highlight {
+        animation: none !important;
+        box-shadow:
+            inset 0.25rem 0 0 0 #ffc107,
+            /* 從 4px 轉為 0.25rem */
+            0 0 0 0.1875rem rgba(255, 193, 7, 0.5) !important;
+        /* 從 3px 轉為 0.1875rem */
+    }
+}
+
+/* ========================================
+   骨架屏樣式
+   ======================================== */
+
+.tadmenu-skeleton {
+    padding: 0.5rem 0;
+}
+
+.tadmenu-skeleton ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.tadmenu-skeleton-item {
+    padding: 0.5rem 1rem;
+    margin-bottom: 2px;
+}
+
+.tadmenu-skeleton-item span {
+    display: block;
+    height: 1.2em;
+    background: linear-gradient(90deg,
+            #e8e8e8 25%,
+            #f5f5f5 50%,
+            #e8e8e8 75%);
+    background-size: 200% 100%;
+    animation: tadmenu-skeleton-shimmer 1.5s infinite;
+    border-radius: 4px;
+    width: 70%;
+}
+
+.tadmenu-skeleton-item:nth-child(2) span {
+    width: 85%;
+}
+
+.tadmenu-skeleton-item:nth-child(3) span {
+    width: 60%;
+}
+
+.tadmenu-skeleton-item:nth-child(4) span {
+    width: 75%;
+}
+
+.tadmenu-skeleton-item:nth-child(5) span {
+    width: 65%;
+}
+
+@keyframes tadmenu-skeleton-shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* 減少動態效果 */
+@media (prefers-reduced-motion: reduce) {
+    .tadmenu-skeleton-item span {
+        animation: none;
+        background: #e8e8e8;
+    }
+}
+
+/* 深色模式骨架屏 */
+@media (prefers-color-scheme: dark) {
+    .tadmenu-skeleton-item span {
+        background: linear-gradient(90deg,
+                #2a2a2a 25%,
+                #3a3a3a 50%,
+                #2a2a2a 75%);
+        background-size: 200% 100%;
+    }
+}

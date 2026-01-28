@@ -465,7 +465,7 @@
   background-color: #000;
   position: relative;
   padding: 0;
-  font-size: 10px;
+  font-size: 0.625rem;
   line-height: 1;
   font-weight: normal;
   font-style: normal;
@@ -622,15 +622,15 @@ body.vjs-pip-window .video-js {
 }
 
 .vjs-no-js {
-  padding: 20px;
+  padding: 1.25rem;
   color: #fff;
   background-color: #000;
-  font-size: 18px;
+  font-size: 1.125rem;
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;
-  width: 300px;
-  height: 150px;
-  margin: 0px auto;
+  width: 18.75rem;
+  height: 9.375rem;
+  margin: 0 auto;
 }
 
 .vjs-no-js a,
@@ -733,7 +733,7 @@ body.vjs-pip-window .video-js {
 .vjs-modal-dialog .vjs-modal-dialog-content {
   font-size: 1.2em;
   line-height: 1.5;
-  padding: 20px 24px;
+  padding: 1.25rem 1.5rem;
   z-index: 1;
 }
 

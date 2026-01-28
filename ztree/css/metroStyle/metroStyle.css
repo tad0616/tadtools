@@ -10,22 +10,21 @@ website:    http://code.google.com/p/jquerytree/
 
 .ztree * {padding:0; margin:0;  font-family: Verdana, Arial, Helvetica, AppleGothic, sans-serif}
 .ztree {margin:0; padding:5px; color:#333}
-.ztree li{padding:0; margin:0; list-style:none; line-height:17px; text-align:left; white-space:nowrap; outline:0}
+.ztree li{padding:0; margin:0; list-style:none; line-height:1.0625rem; text-align:left; white-space:nowrap; outline:0}
 .ztree li ul{ margin:0; padding:0 0 0 18px}
 .ztree li ul.line{ background:url(./img/line_conn.png) 0 0 repeat-y;}
 
-.ztree li a {padding-right:3px; margin:0; cursor:pointer; height:21px; color:#333; background-color: transparent; text-decoration:none; vertical-align:top; display: inline-block}
+.ztree li a {padding-right:3px; margin:0; cursor:pointer; height:1.3125rem; color:#333; background-color: transparent; text-decoration:none; vertical-align:top; display: inline-block}
 .ztree li a:hover {text-decoration:underline}
-.ztree li a.curSelectedNode {padding-top:0px; background-color:#e5e5e5; color:black; height:21px; opacity:0.8;}
-.ztree li a.curSelectedNode_Edit {padding-top:0px; background-color:#e5e5e5; color:black; height:21px; border:1px #666 solid; opacity:0.8;}
-.ztree li a.tmpTargetNode_inner {padding-top:0px; background-color:#aaa; color:white; height:21px; border:1px #666 solid;
+.ztree li a.curSelectedNode {padding-top:0px; background-color:#e5e5e5; color:black; height:1.3125rem; opacity:0.8;}
+.ztree li a.curSelectedNode_Edit {padding-top:0px; background-color:#e5e5e5; color:black; height:1.3125rem; border:1px #666 solid; opacity:0.8;}
+.ztree li a.tmpTargetNode_inner {padding-top:0px; background-color:#aaa; color:white; height:1.3125rem; border:1px #666 solid;
   opacity:0.8; filter:alpha(opacity=80)}
-.ztree li a.tmpTargetNode_prev {}
-.ztree li a.tmpTargetNode_next {}
+
 .ztree li a input.rename {height:14px; width:80px; padding:0; margin:0;
    border:1px #585956 solid; *border:0px}
-.ztree li span {line-height:21px; margin-right:2px}
-.ztree li span.button {line-height:0; margin:0; padding: 0; width:21px; height:21px; display: inline-block; vertical-align:middle;
+.ztree li span {line-height:1.3125rem; margin-right:2px}
+.ztree li span.button {line-height:0; margin:0; padding: 0; width:1.3125rem; height:1.3125rem; display: inline-block; vertical-align:middle;
   border:0 none; cursor: pointer;outline:none;
   background-color:transparent; background-repeat:no-repeat; background-attachment: scroll;
   background-image:url("./img/metro.png"); *background-image:url("./img/metro.gif")}

@@ -7,8 +7,7 @@
 .fancybox-wrap iframe,
 .fancybox-wrap object,
 .fancybox-nav,
-.fancybox-nav span,
-.fancybox-tmp
+.fancybox-nav span
 {
 	padding: 0;
 	margin: 0;
@@ -60,9 +59,9 @@
 
 .fancybox-error {
 	color: #444;
-	font: 14px/20px "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font: 0.875rem/1.5 "Helvetica Neue",Helvetica,Arial,sans-serif;
 	margin: 0;
-	padding: 15px;
+	padding: 0.9375rem;
 	white-space: nowrap;
 }
 
@@ -156,11 +155,13 @@
 
 .fancybox-tmp {
 	position: absolute;
-	top: -99999px;
-	left: -99999px;
-	max-width: 99999px;
-	max-height: 99999px;
+	top: -6250rem; /* 約 100000px，使用相對單位 rem */
+	left: -6250rem;
+	max-width: none !important; /* 移除硬編碼的像素限制，改為無限制以實踐相對寬度 */
+	max-height: none !important;
 	overflow: visible !important;
+	visibility: hidden; /* WCAG AAA: 隱藏暫存內容，避免螢幕閱讀器讀取 */
+	pointer-events: none; /* 避免攔截點擊事件 */
 }
 
 /* Overlay helper */
@@ -203,7 +204,7 @@
 
 .fancybox-title {
 	visibility: hidden;
-	font: normal 13px/20px "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font: normal 0.8125rem/1.5 "Helvetica Neue",Helvetica,Arial,sans-serif;
 	position: relative;
 	text-shadow: none;
 	z-index: 8050;
@@ -225,16 +226,16 @@
 .fancybox-title-float-wrap .child {
 	display: inline-block;
 	margin-right: -100%;
-	padding: 2px 20px;
+	padding: 0.125rem 1.25rem;
 	background: transparent; /* Fallback for web browsers that doesn't support RGBa */
 	background: rgba(0, 0, 0, 0.8);
-	-webkit-border-radius: 15px;
-	   -moz-border-radius: 15px;
-	        border-radius: 15px;
-	text-shadow: 0 1px 2px #222;
+	-webkit-border-radius: 0.9375rem;
+	   -moz-border-radius: 0.9375rem;
+	        border-radius: 0.9375rem;
+	text-shadow: 0 0.0625rem 0.125rem #222;
 	color: #FFF;
 	font-weight: bold;
-	line-height: 24px;
+	line-height: 1.5;
 	white-space: nowrap;
 }
 

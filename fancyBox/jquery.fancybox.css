@@ -89,7 +89,7 @@ body.compensate-for-scrollbar {
     -webkit-font-smoothing: subpixel-antialiased;
     height: 44px;
     left: 0;
-    line-height: 44px;
+    line-height: 2.75rem;
     min-width: 44px;
     mix-blend-mode: difference;
     padding: 0 10px;
@@ -291,7 +291,7 @@ body.compensate-for-scrollbar {
 .fancybox-error {
     background: #fff;
     cursor: default;
-    max-width: 400px;
+    max-width: 25rem;
     padding: 40px;
     width: 100%;
 }
@@ -299,7 +299,7 @@ body.compensate-for-scrollbar {
 .fancybox-error p {
     color: #444;
     font-size: 16px;
-    line-height: 20px;
+    line-height: 1.25rem;
     margin: 0;
     padding: 0;
 }
@@ -702,7 +702,7 @@ body.compensate-for-scrollbar {
     display: inline-block;
     font-size: 14px;
     font-weight: 700;
-    line-height: 40px;
+    line-height: 2.5rem;
     margin: 0 5px 10px 5px;
     min-width: 130px;
     padding: 0 15px;
@@ -880,7 +880,7 @@ body.compensate-for-scrollbar {
 }
 
 /* Styling for Small-Screen Devices */
-@media all and (max-width: 576px) {
+@media all and (max-width: 36rem) {
     .fancybox-thumbs {
         width: 110px;
     }

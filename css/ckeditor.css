@@ -57,7 +57,7 @@ ol.dot-num li:before {
   counter-increment: dot-num-list;
   content: counter(dot-num-list, decimal) ". ";
   position: absolute;
-  left: -30px;
+  left: -1.875rem;
 }
 
 ol.brackets-num {
@@ -72,7 +72,7 @@ ol.brackets-num li:before {
   counter-increment: brackets-num-list;
   content: "(" counter(brackets-num-list, decimal) ") ";
   position: absolute;
-  left: -30px;
+  left: -1.875rem;
 }
 /*
 .img-box-1-5 img,
@@ -155,4 +155,61 @@ ol.brackets-num li:before {
   content: counter(level3, upper-alpha) ". ";
   text-decoration: none;
   margin-right: 0.5em;
+}
+
+/* 清除 Bootstrap 的 list 樣式干擾 */
+.paper-list, .paper-list ol, .paper-list li {
+  list-style: none !important;
+  margin: 0;
+  padding-left: 0em !important;
+}
+
+/* 第一層 */
+.paper-list {
+  counter-reset: paper-level1;
+  list-style-type: cjk-ideographic;
+  margin-left: 2rem;
+}
+.paper-list > li {
+  counter-increment: paper-level1;
+  list-style-type: none;
+  position: relative;
+}
+.paper-list > li::before {
+  content: counter(paper-level1, cjk-ideographic) "、";
+  font-weight: normal;
+  position: absolute;
+  left: -2.5rem;
+}
+
+/* 第二層 - 往右縮排2個字元 */
+.paper-list > li > ol {
+  counter-reset: paper-level2;
+  padding-left: 2em !important; /* 修改：增加2em的縮排 */
+}
+.paper-list > li > ol > li {
+  counter-increment: paper-level2;
+  position: relative; /* 新增：確保相對定位 */
+}
+.paper-list > li > ol > li::before {
+  content: "(" counter(paper-level2, cjk-ideographic) ") ";
+  font-style: normal;
+  position: absolute; /* 新增：絕對定位 */
+  left: -2.5em; /* 新增：調整位置 */
+}
+
+/* 第三層 - 往右縮排4個字元 */
+.paper-list > li > ol > li > ol {
+  counter-reset: paper-level3;
+  padding-left: 2em !important; /* 修改：增加2em的縮排 */
+}
+.paper-list > li > ol > li > ol > li {
+  counter-increment: paper-level3;
+  position: relative; /* 新增：確保相對定位 */
+}
+.paper-list > li > ol > li > ol > li::before {
+  content: counter(paper-level3) "、";
+  text-decoration: none;
+  position: absolute; /* 新增：絕對定位 */
+  left: -2em; /* 新增：調整位置 */
 }

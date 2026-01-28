@@ -4,6 +4,22 @@ namespace XoopsModules\Tadtools;
 
 xoops_loadLanguage('main', 'tadtools');
 
+if (!defined('_TAD_BACK_PAGE')) {
+    define('_TAD_BACK_PAGE', '上一頁');
+}
+if (!defined('_TAD_NEXT_PAGE')) {
+    define('_TAD_NEXT_PAGE', '下一頁');
+}
+if (!defined('_TAD_FIRST_PAGE')) {
+    define('_TAD_FIRST_PAGE', '第一頁');
+}
+if (!defined('_TAD_LAST_PAGE')) {
+    define('_TAD_LAST_PAGE', '最後頁');
+}
+if (!defined('_TAD_CURRENT_PAGE')) {
+    define('_TAD_CURRENT_PAGE', '目前頁次');
+}
+
 /*
 PageBar Class Definition
 
@@ -173,10 +189,12 @@ class PageBar
         $bar_center = '';
         for ($i = $start; $i <= $end; $i++) {
             $active  = $i == $this->current ? ' active' : '';
-            $sr_only = $i == $this->current ? '<span class="sr-only">(current)</span>' : '';
+            $aria_current = $i == $this->current ? ' aria-current="page"' : '';
+            $sr_only = $i == $this->current ? '<span class="sr-only">(' . _TAD_CURRENT_PAGE . ')</span>' : '';
             $bar_center .= sprintf(
-                '<li class="page-item%s"><a class="page-link" href="%s%s%s%s=%d%s" title="%d">%d%s</a></li>',
+                '<li class="page-item%s"%s><a class="page-link" href="%s%s%s%s=%d%s">%d%s</a></li>',
                 $active,
+                $aria_current,
                 $this->to_page,
                 $this->query_str,
                 $this->glue,
@@ -184,61 +202,60 @@ class PageBar
                 $i,
                 $loadtime,
                 $i,
-                $i,
                 $sr_only
             );
         }
 
         $bar_left = $this->current <= 1
-        ? '<li class="page-item disabled"><a class="page-link disabled" href="#">&lsaquo;</a></li>'
-        : sprintf(
-            '<li class="page-item"><a class="page-link" href="%s%s%s%s=%d%s" title="%s">&lsaquo;</a></li>',
-            $this->to_page,
-            $this->query_str,
-            $this->glue,
-            $this->url_page,
-            $this->current - 1,
-            $loadtime,
-            _TAD_BACK_PAGE
-        );
+            ? '<li class="page-item disabled"><a class="page-link disabled" href="#" aria-disabled="true"><span aria-hidden="true">&lsaquo;</span></a></li>'
+            : sprintf(
+                '<li class="page-item"><a class="page-link" href="%s%s%s%s=%d%s"><span aria-hidden="true">&lsaquo;</span><span class="sr-only">%s</span></a></li>',
+                $this->to_page,
+                $this->query_str,
+                $this->glue,
+                $this->url_page,
+                $this->current - 1,
+                $loadtime,
+                _TAD_BACK_PAGE
+            );
 
         $bar_first = $this->current <= 1
-        ? '<li class="page-item disabled"><a class="page-link disabled" href="#">&laquo;</a></li>'
-        : sprintf(
-            '<li class="page-item"><a class="page-link" href="%s%s%s%s=1%s" title="%s">&laquo;</a></li>',
-            $this->to_page,
-            $this->query_str,
-            $this->glue,
-            $this->url_page,
-            $loadtime,
-            _TAD_FIRST_PAGE
-        );
+            ? '<li class="page-item disabled"><a class="page-link disabled" href="#" aria-disabled="true"><span aria-hidden="true">&laquo;</span></a></li>'
+            : sprintf(
+                '<li class="page-item"><a class="page-link" href="%s%s%s%s=1%s"><span aria-hidden="true">&laquo;</span><span class="sr-only">%s</span></a></li>',
+                $this->to_page,
+                $this->query_str,
+                $this->glue,
+                $this->url_page,
+                $loadtime,
+                _TAD_FIRST_PAGE
+            );
 
         $bar_right = $this->current >= $this->pTotal
-        ? '<li class="page-item disabled"><a class="page-link disabled" href="#">&rsaquo;</a></li>'
-        : sprintf(
-            '<li class="page-item"><a class="page-link" href="%s%s%s%s=%d%s" title="%s">&rsaquo;</a></li>',
-            $this->to_page,
-            $this->query_str,
-            $this->glue,
-            $this->url_page,
-            $this->current + 1,
-            $loadtime,
-            _TAD_NEXT_PAGE
-        );
+            ? '<li class="page-item disabled"><a class="page-link disabled" href="#" aria-disabled="true"><span aria-hidden="true">&rsaquo;</span></a></li>'
+            : sprintf(
+                '<li class="page-item"><a class="page-link" href="%s%s%s%s=%d%s"><span aria-hidden="true">&rsaquo;</span><span class="sr-only">%s</span></a></li>',
+                $this->to_page,
+                $this->query_str,
+                $this->glue,
+                $this->url_page,
+                $this->current + 1,
+                $loadtime,
+                _TAD_NEXT_PAGE
+            );
 
         $bar_last = $this->current >= $this->pTotal
-        ? '<li class="page-item disabled"><a class="page-link disabled" href="#">&raquo;</a></li>'
-        : sprintf(
-            '<li class="page-item"><a class="page-link" href="%s%s%s%s=%d%s" title="%s">&raquo;</a></li>',
-            $this->to_page,
-            $this->query_str,
-            $this->glue,
-            $this->url_page,
-            $this->pTotal,
-            $loadtime,
-            _TAD_LAST_PAGE
-        );
+            ? '<li class="page-item disabled"><a class="page-link disabled" href="#" aria-disabled="true"><span aria-hidden="true">&raquo;</span></a></li>'
+            : sprintf(
+                '<li class="page-item"><a class="page-link" href="%s%s%s%s=%d%s"><span aria-hidden="true">&raquo;</span><span class="sr-only">%s</span></a></li>',
+                $this->to_page,
+                $this->query_str,
+                $this->glue,
+                $this->url_page,
+                $this->pTotal,
+                $loadtime,
+                _TAD_LAST_PAGE
+            );
 
         return array(
             'center' => $bar_center,

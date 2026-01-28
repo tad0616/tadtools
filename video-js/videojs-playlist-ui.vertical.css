@@ -67,7 +67,7 @@
     text-overflow: ellipsis;
     overflow: hidden;
     line-height: 1.2rem;
-    font-size: 0.925rem;;
+    font-size: 0.925rem;
 }
 
 .vjs-playlist .vjs-playlist-description {
@@ -93,9 +93,7 @@
     background-color: #c1ddfd
 }
 
-.vjs-playlist .vjs-selected img {
-    /* opacity: .2 */
-}
+
 
 .vjs-playlist .vjs-selected .vjs-playlist-duration {
     display: none
@@ -116,11 +114,11 @@
 
 .vjs-playlist-vertical img {
     /* width: 100%; */
-    min-height: 54px
+    min-height: 3.375rem
 }
 
 .vjs-playlist-vertical .vjs-playlist-item {
-    margin-bottom: 5px
+    margin-bottom: 0.3125rem
 }
 
 .vjs-playlist-vertical .vjs-playlist-thumbnail {
@@ -133,7 +131,7 @@
 }
 
 .vjs-playlist-vertical .vjs-playlist-thumbnail-placeholder {
-    height: 100px
+    height: 6.25rem
 }
 
 .vjs-playlist-horizontal {
@@ -196,19 +194,13 @@
     font-size: 0.875em
 }
 
-.vjs-playlist .vjs-playlist-description {
-    /* height: 42px;
-    line-height: 21px */
-}
+
 
 .vjs-mouse.vjs-playlist {
     font-size: 0.9375em
 }
 
-.vjs-mouse.vjs-playlist .vjs-playlist-description {
-    /* height: 45px;
-    line-height: 23px */
-}
+
 
 @media (min-width: 600px) {
     .vjs-mouse.vjs-playlist {
@@ -216,8 +208,8 @@
     }
 
     .vjs-mouse.vjs-playlist .vjs-playlist-description {
-        height: 51px;
-        line-height: 26px
+        height: 3.1875rem;
+        line-height: 1.625rem
     }
 
     .vjs-playlist .vjs-playlist-name {
@@ -240,7 +232,7 @@
 
 @media (min-width: 521px) {
     .vjs-playlist img {
-        min-height: 85px
+        min-height: 5.3125rem
     }
 }
 

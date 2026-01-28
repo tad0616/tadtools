@@ -11,6 +11,7 @@ define('_TAD_FIRST_PAGE', 'First');
 define('_TAD_LAST_PAGE', 'End');
 define('_TAD_GO_BACK_PAGE', 'Previous %s Page(s)');
 define('_TAD_GO_NEXT_PAGE', 'Next %s Page(s)');
+define('_TAD_CURRENT_PAGE', 'Current Page');
 define('_TAD_TOOLBAR', '(Total %s) Page %s :');
 define('_TAD_EXPAND_ALL', 'Expand all');
 define('_TAD_CONTACT_ALL', 'Contact all');
@@ -120,6 +121,7 @@ define('_TDC_COL_ID', 'Identifier');
 //TadUpFiles.php
 define('_TUF_PERMISSION_NOTE', 'If not checked, all open downloads');
 define('_TUF_FILE_DOES_NOT_EXIST', 'The original file does not exist and cannot be downloaded.');
+define('_TUF_DOWNLOAD', 'download: ');
 
 //TadModData.php
 define('_TM_FILE_UPLOAD', 'File Upload');
@@ -155,3 +157,5 @@ define('_FAILED_TO_GET_RESULT', 'Failed to get result: ');
 define('_DATABASE_ERROR', 'Database Error: ');
 
 define('TADTOOLS_SLIDE_IMG', 'Sliding Image');
+
+define('_TAD_O_NAV_ZONE', 'Main Navigation Zone');

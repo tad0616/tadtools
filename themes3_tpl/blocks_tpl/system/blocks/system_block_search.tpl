@@ -22,7 +22,7 @@
     </form>
 
     <p class="text-right text-end">
-        <a href="<{$xoops_url}>/search.php" title="<{$block.lang_advsearch}>">
+        <a href="<{$xoops_url}>/search.php">
             <{$block.lang_advsearch}>
         </a>
     </p>

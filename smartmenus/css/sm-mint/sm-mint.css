@@ -9,9 +9,9 @@
   padding-right: 58px;
   color: #333;
   font-family: Arial, sans-serif;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: normal;
-  line-height: 17px;
+  line-height: 1.1rem;
   text-decoration: none;
 }
 .sm-mint a.current {

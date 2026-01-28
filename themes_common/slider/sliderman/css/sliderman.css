@@ -1,4 +1,4 @@
-#slider_container_3 { float: left; padding: 0; width: 960px; border: 1px #333333 solid; }
+#slider_container_3 { float: left; padding: 0; width: 60rem; border: 1px #333333 solid; }
 
 .SliderName_3 {
 	float: left;
@@ -7,8 +7,8 @@
 
 .SliderNamePrev_3 {
 	background: url(../img/left.png) no-repeat left center;
-	width: 50px;
-	height: 150px;
+	width: 3.125rem;
+	height: 9.375rem;
 	display: block;
 	position: absolute;
 	top: 0;
@@ -18,8 +18,8 @@
 
 .SliderNameNext_3 {
 	background: url(../img/right.png) no-repeat right center;
-	width: 50px;
-	height: 150px;
+	width: 3.125rem;
+	height: 9.375rem;
 	display: block;
 	position: absolute;
 	top: 0;
@@ -31,14 +31,14 @@
 	padding: 1px;
 	font-family: Tahoma,Arial,Helvetica;
 	font-size: 0.75em;
-	line-height: 30px;
-	letter-spacing: 1px;
+	line-height: 1.875rem;
+	letter-spacing: 0.0625rem;
 	text-align: center;
 	color: #ffffff;
 	text-shadow: 0 1px 3px #000000;
 }
 
-#SliderNameNavigation_3 { margin: 0; padding: 10px 0 0 0; height: 16px; text-align: center; overflow-y: hidden; }
+#SliderNameNavigation_3 { margin: 0; padding: 0.625rem 0 0 0; height: 1rem; text-align: center; overflow-y: hidden; }
 
 #SliderNameNavigation_3 a:link, #SliderNameNavigation_3 a:active, #SliderNameNavigation_3 a:visited, #SliderNameNavigation_3 a:hover{
 	margin: 0;
@@ -55,8 +55,8 @@
 #SliderNameNavigation_3 a img
 {
 	border: none;
-	width: 16px;
-	height: 16px;
+	width: 1rem;
+	height: 1rem;
 	background: url(../img/bullet.png) no-repeat center center;
 }
 

@@ -9,9 +9,9 @@
   padding-right: 58px;
   color: #555555;
   font-family: "Lucida Sans Unicode", "Lucida Sans", "Lucida Grande", Arial, sans-serif;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: normal;
-  line-height: 17px;
+  line-height: 1.1rem;
   text-decoration: none;
 }
 .sm-simple a.current {

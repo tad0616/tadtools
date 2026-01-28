@@ -16,11 +16,11 @@
 	top: -28000px;
 	display: none;
 
-	max-width: 280px;
+	max-width: 20rem;
 	min-width: 50px;
 
 	font-size: 0.8em;
-	line-height: 12px;
+	line-height: 0.85714rem;
 
 	direction: ltr;
 
@@ -85,20 +85,20 @@
 				width: 18px;
 				height: 14px;
 
-				line-height: 14px;
+				line-height: 1rem;
 				text-align: center;
 				text-indent: 0;
-				font: normal bold 10px/13px Tahoma,sans-serif;
+				font: normal bold 0.71429rem/0.92857rem Tahoma,sans-serif;
 
 				color: inherit;
 				background: transparent none no-repeat -100em -100em;
 			}
 
 /* Applied to 'focused' tooltips e.g. most recently displayed/interacted with */
-.qtip-focus{}
+
 
 /* Applied on hover of tooltips i.e. added/removed on mouseenter/mouseleave respectively */
-.qtip-hover{}
+
 
 /* Default tooltip style */
 .qtip-default{
@@ -270,7 +270,7 @@
 
 	.qtip-youtube .qtip-content{
 		padding: .75em;
-		font: 12px arial,sans-serif;
+		font: 0.85714rem arial,sans-serif;
 
 		filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr=#4a4a4a,EndColorStr=#000000);
 		-ms-filter: "progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr=#4a4a4a,EndColorStr=#000000);";
@@ -369,7 +369,7 @@
 	font-size: 0.8em;
 	font-family: 'Lucida Grande', sans-serif;
 	font-weight: bold;
-	line-height: 16px;
+	line-height: 1.14286rem;
 	text-shadow: 0 1px black;
 }
 
@@ -439,7 +439,7 @@
 .qtip-bootstrap{
 	/** Taken from Bootstrap body */
 	font-size: 0.9em;
-	line-height: 20px;
+	line-height: 1.42857rem;
 	color: #333333;
 
 	/** Taken from Bootstrap .popover */
@@ -464,7 +464,7 @@
 		margin: 0;
 		font-size: 0.9em;
 		font-weight: normal;
-		line-height: 18px;
+		line-height: 1.28571rem;
 		background-color: #f7f7f7;
 		border-bottom: 1px solid #ebebeb;
 		-webkit-border-radius: 5px 5px 0 0;
@@ -520,7 +520,7 @@
 			float: right;
 			font-size: 1.25em;
 			font-weight: bold;
-			line-height: 18px;
+			line-height: 1.28571rem;
 			color: #000000;
 			text-shadow: 0 1px 0 #ffffff;
 			opacity: 0.2;

@@ -16,7 +16,7 @@ table.treetable span.indenter {
   -moz-box-sizing: content-box;
   box-sizing: content-box;
 
-  width: 19px;
+  width: 1.1875rem;
 }
 
 table.treetable span.indenter a {
@@ -24,5 +24,5 @@ table.treetable span.indenter a {
   background-repeat: no-repeat;
   display: inline-block;
   text-decoration: none;
-  width: 19px;
+  width: 1.1875rem;
 }

@@ -9,11 +9,11 @@ body {
 
 #main {
   background: #fff;
-  border-left: 20px solid #eee;
-  border-right: 20px solid #eee;
+  border-left: 1.25rem solid #eee;
+  border-right: 1.25rem solid #eee;
   margin: 0 auto;
-  max-width: 800px;
-  padding: 20px;
+  max-width: 50rem;
+  padding: 1.25rem;
 }
 
 pre.listing {

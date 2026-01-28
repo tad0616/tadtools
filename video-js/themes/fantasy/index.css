@@ -6,18 +6,18 @@
 /* by tad */
 
 .vjs-theme-fantasy .vjs-big-play-button {
-  width: 90px;
-  height: 90px;
+  width: 5.625rem;
+  height: 5.625rem;
   background: none;
-  line-height: 95px;
+  line-height: 5.9375rem;
   font-size: 5rem;
   border: none;
   top: 50%;
   left: 50%;
-  margin-top: -45px;
-  margin-left: -45px;
+  margin-top: -2.8125rem;
+  margin-left: -2.8125rem;
   color: var(--vjs-theme-fantasy--secondary);
-  border-radius: 90px;
+  border-radius: 5.625rem;
   border: 0.4vw solid #4c7faf;
   background: var(--vjs-theme-fantasy--primary);
 }
@@ -47,15 +47,15 @@
 }
 
 .vjs-theme-fantasy .vjs-control-bar {
-  height: 50px;
+  height: 3.125rem;
 }
 
 .vjs-theme-fantasy .vjs-button>.vjs-icon-placeholder::before {
-  line-height: 50px;
+  line-height: 3.125rem;
 }
 
 .vjs-theme-fantasy .vjs-time-control {
-  line-height: 50px;
+  line-height: 3.125rem;
 }
 
 /* Play Button */
@@ -91,14 +91,14 @@
   border-radius: 1em;
   box-sizing: content-box;
   -moz-box-sizing: border-box;
-  border: 3px solid var(--vjs-theme-fantasy--secondary);
-  top: 2px;
-  left: 9px;
+  border: 0.1875rem solid var(--vjs-theme-fantasy--secondary);
+  top: 0.125rem;
+  left: 0.5625rem;
   line-height: 1.3;
 }
 
 .vjs-theme-fantasy .vjs-play-control:hover .vjs-icon-placeholder::before {
-  border: 3px solid var(--vjs-theme-fantasy--secondary);
+  border: 0.1875rem solid var(--vjs-theme-fantasy--secondary);
 }
 
 .vjs-theme-fantasy .vjs-play-progress {
@@ -110,7 +110,7 @@
   width: 0.8em;
   content: '';
   background-color: var(--vjs-theme-fantasy--primary);
-  border: 4px solid var(--vjs-theme-fantasy--secondary);
+  border: 0.25rem solid var(--vjs-theme-fantasy--secondary);
   border-radius: 0.8em;
   top: -0.25em;
 }

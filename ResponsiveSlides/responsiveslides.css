@@ -11,6 +11,7 @@
 
 .rslides li {
   -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   position: absolute;
   display: none;
   width: 100%;
@@ -36,17 +37,17 @@
   margin: 0 auto;
 }
 
-.rslides_container {
-  margin-bottom: 0px;
-  position: relative;
-  float: left;
-  width: 100%;
-}
-
 #wrapper {
   float: left;
   width: 100%;
-  margin-bottom: 50px;
+  margin-bottom: 3.125rem;
+}
+
+.rslides_container {
+  margin-bottom: 0;
+  position: relative;
+  float: left;
+  width: 100%;
 }
 
 .centered-btns_nav {
@@ -55,13 +56,13 @@
   top: 50%;
   left: 0;
   opacity: 0.7;
-  text-indent: -9999px;
+  text-indent: -624.9375rem;
   overflow: hidden;
   text-decoration: none;
-  height: 61px;
-  width: 38px;
+  height: 3.8125rem;
+  width: 2.375rem;
   background: transparent url("images/themes.gif") no-repeat left top;
-  margin-top: -45px;
+  margin-top: -2.8125rem;
 }
 
 .centered-btns_nav:active {
@@ -85,7 +86,7 @@
   opacity: 0;
   filter: alpha(opacity=1);
   width: 48%;
-  text-indent: -9999px;
+  text-indent: -624.9375rem;
   overflow: hidden;
   height: 91%;
 }
@@ -99,13 +100,13 @@
   position: absolute;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   opacity: 0.6;
-  text-indent: -9999px;
+  text-indent: -624.9375rem;
   overflow: hidden;
   top: 0;
   bottom: 0;
   left: 0;
   background: #000 url("images/themes.gif") no-repeat left 50%;
-  width: 38px;
+  width: 2.375rem;
 }
 
 .large-btns_nav:active {
@@ -127,7 +128,7 @@
 .centered-btns_tabs,
 .transparent-btns_tabs,
 .large-btns_tabs {
-  margin-top: 10px;
+  margin-top: 0.625rem;
   text-align: center;
 }
 
@@ -136,30 +137,26 @@
 .large-btns_tabs li {
   display: inline;
   float: none;
-  _float: left;
-  *float: left;
-  margin-right: 5px;
+  margin-right: 0.3125rem;
   list-style: none;
 }
 
 .centered-btns_tabs a,
 .transparent-btns_tabs a,
 .large-btns_tabs a {
-  text-indent: -9999px;
+  text-indent: -624.9375rem;
   overflow: hidden;
-  -webkit-border-radius: 15px;
-  -moz-border-radius: 15px;
-  border-radius: 15px;
+  -webkit-border-radius: 0.9375rem;
+  -moz-border-radius: 0.9375rem;
+  border-radius: 0.9375rem;
   background: #ccc;
   background: rgba(0, 0, 0, .2);
   display: inline-block;
-  _display: block;
-  *display: block;
   -webkit-box-shadow: inset 0 0 2px 0 rgba(0, 0, 0, .3);
   -moz-box-shadow: inset 0 0 2px 0 rgba(0, 0, 0, .3);
   box-shadow: inset 0 0 2px 0 rgba(0, 0, 0, .3);
-  width: 9px;
-  height: 9px;
+  width: 0.5625rem;
+  height: 0.5625rem;
 }
 
 .centered-btns_here a,
@@ -170,7 +167,7 @@
 }
 
 .callbacks_container {
-  margin-bottom: 50px;
+  /* margin-bottom: 50px; */
   position: relative;
   float: left;
   width: 100%;
@@ -214,7 +211,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 10px 20px;
+  padding: 0.625rem 1.25rem;
   margin: 0;
   max-width: none;
 }
@@ -227,13 +224,13 @@
   left: 0;
   opacity: 0.5;
   z-index: 3;
-  text-indent: -9999px;
+  text-indent: -624.9375rem;
   overflow: hidden;
   text-decoration: none;
-  height: 61px;
-  width: 38px;
+  height: 3.8125rem;
+  width: 2.375rem;
   background: transparent url("images/themes.gif") no-repeat left top;
-  margin-top: -45px;
+  margin-top: -2.8125rem;
 }
 
 .callbacks_nav:active {
@@ -266,9 +263,9 @@
   -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .3), inset 0 0 5px rgba(0, 0, 0, 1.0);
   font-size: 1.125em;
   list-style: none;
-  margin: 0 auto 50px;
-  max-width: 540px;
-  padding: 10px 0;
+  margin: 0 auto 3.125rem;
+  max-width: 33.75rem;
+  padding: 0.625rem 0;
   text-align: center;
   width: 100%;
 }
@@ -282,8 +279,8 @@
 
 .callbacks_tabs a {
   width: auto;
-  line-height: 20px;
-  padding: 9px 20px;
+  line-height: 1.25rem;
+  padding: 0.5625rem 1.25rem;
   height: auto;
   background: transparent;
   display: inline;
@@ -301,7 +298,7 @@
 
 @media screen and (max-width: 600px) {
   h1 {
-    font: 24px/50px "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font: 1.5rem/2.1 "Helvetica Neue", Helvetica, Arial, sans-serif;
   }
 
   .callbacks_nav {
@@ -314,7 +311,7 @@
   display: block;
   position: absolute;
   z-index: 2;
-  padding: 10px 20px;
+  padding: 0.625rem 1.25rem;
 
   text-shadow: none;
   color: #fff;

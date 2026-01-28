@@ -1,18 +1,18 @@
 .my-form {
   counter-reset: number;
-  border-radius: 4px;
-  border: 1px solid rgb(114, 177, 250);
+  border-radius: 0.25rem;
+  border: 0.0625rem solid rgb(114, 177, 250);
   background: rgb(235, 241, 248);
-  padding: 10px;
+  padding: 0.625rem;
 }
 
 .my-row {
-  padding: 6px 0px;
+  padding: 0.375rem 0;
   display: block;
 }
 
 .my-label {
-  margin: 6px 0px;
+  margin: 0.375rem 0;
   font-weight: bold;
   display: block;
   font-size: 1rem;
@@ -25,20 +25,20 @@
 }
 
 .my-content {
-  padding-left: 12px;
+  padding-left: 0.75rem;
 }
 
 .my-input {
-  padding: 2px 4px;
+  padding: 0.125rem 0.25rem;
   font-size: 0.975rem;
   height: unset;
   color: #222224;
   background-color: #fff;
   background-image: none;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  border: 0.0625rem solid #ccc;
+  border-radius: 0.25rem;
+  -webkit-box-shadow: inset 0 0.0625rem 0.0625rem rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 0.0625rem 0.0625rem rgba(0, 0, 0, 0.075);
   -webkit-transition: border-color ease-in-out 0.15s,
     -webkit-box-shadow ease-in-out 0.15s;
   -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
@@ -48,14 +48,14 @@
 .my-input:focus {
   border-color: #66afe9;
   outline: 0;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
-    0 0 8px rgba(102, 175, 233, 0.6);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
-    0 0 8px rgba(102, 175, 233, 0.6);
+  -webkit-box-shadow: inset 0 0.0625rem 0.0625rem rgba(0, 0, 0, 0.075),
+    0 0 0.5rem rgba(102, 175, 233, 0.6);
+  box-shadow: inset 0 0.0625rem 0.0625rem rgba(0, 0, 0, 0.075),
+    0 0 0.5rem rgba(102, 175, 233, 0.6);
 }
 
 .my-text {
-  padding: 7px 4px;
+  padding: 0.4375rem 0.25rem;
   font-size: 1rem;
   height: unset;
   color: #555;
@@ -86,9 +86,9 @@ textarea.my-input {
 
 .my-help {
   color: rgb(7, 143, 161);
-  border-bottom: 1px dashed rgb(228, 110, 110);
-  padding-top: 3px;
-  margin-left: 20px;
+  border-bottom: 0.0625rem dashed rgb(228, 110, 110);
+  padding-top: 0.1875rem;
+  margin-left: 1.25rem;
   display: inline-block;
 }
 
@@ -96,17 +96,17 @@ textarea.my-input {
   font-family: "FontAwesome";
   font-size: 1.1rem;
   content: "\f0a5  ";
-  margin-right: 4px;
+  margin-right: 0.25rem;
 }
 
 .my-example {
   color: white;
   background-color: rgb(39, 78, 128);
-  padding: 4px;
-  margin-top: 10px;
+  padding: 0.25rem;
+  margin-top: 0.625rem;
   display: block;
   font-family: Arial, Helvetica, sans-serif;
-  border-radius: 4px;
+  border-radius: 0.25rem;
   width: 80%;
   line-height: 1.5;
 }
@@ -116,5 +116,5 @@ textarea.my-input {
   background-color: white;
   font-weight: bold;
   content: "   example  ";
-  margin-right: 4px;
+  margin-right: 0.25rem;
 }

@@ -554,25 +554,25 @@ pre code {
 
 @media (min-width: 576px) {
   .container, .container-sm {
-    max-width: 540px;
+    max-width: 38.57143rem;
   }
 }
 
 @media (min-width: 768px) {
   .container, .container-sm, .container-md {
-    max-width: 720px;
+    max-width: 51.42857rem;
   }
 }
 
 @media (min-width: 992px) {
   .container, .container-sm, .container-md, .container-lg {
-    max-width: 960px;
+    max-width: 68.57143rem;
   }
 }
 
 @media (min-width: 1200px) {
   .container, .container-sm, .container-md, .container-lg, .container-xl {
-    max-width: 1140px;
+    max-width: 81.42857rem;
   }
 }
 
@@ -5923,7 +5923,7 @@ a.close.disabled {
 .toast {
   -ms-flex-preferred-size: 350px;
   flex-basis: 350px;
-  max-width: 350px;
+  max-width: 25rem;
   font-size: 0.875rem;
   background-color: rgba(255, 255, 255, 0.85);
   background-clip: padding-box;
@@ -6166,7 +6166,7 @@ a.close.disabled {
 
 @media (min-width: 576px) {
   .modal-dialog {
-    max-width: 500px;
+    max-width: 35.71429rem;
     margin: 1.75rem auto;
   }
   .modal-dialog-scrollable {
@@ -6185,20 +6185,20 @@ a.close.disabled {
     height: min-content;
   }
   .modal-sm {
-    max-width: 300px;
+    max-width: 21.42857rem;
   }
 }
 
 @media (min-width: 992px) {
   .modal-lg,
   .modal-xl {
-    max-width: 800px;
+    max-width: 57.14286rem;
   }
 }
 
 @media (min-width: 1200px) {
   .modal-xl {
-    max-width: 1140px;
+    max-width: 81.42857rem;
   }
 }
 
@@ -6305,7 +6305,7 @@ a.close.disabled {
 }
 
 .tooltip-inner {
-  max-width: 200px;
+  max-width: 14.28571rem;
   padding: 0.25rem 0.5rem;
   color: #fff;
   text-align: center;
@@ -6319,7 +6319,7 @@ a.close.disabled {
   left: 0;
   z-index: 1060;
   display: block;
-  max-width: 276px;
+  max-width: 19.71429rem;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-style: normal;
   font-weight: 400;

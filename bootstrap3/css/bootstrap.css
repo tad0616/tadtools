@@ -1,4 +1,4 @@
-/*!
+﻿/*!
  * Bootstrap v3.4.1 (https://getbootstrap.com/)
  * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
@@ -2713,7 +2713,7 @@ textarea.form-control {
   input[type="time"].form-control,
   input[type="datetime-local"].form-control,
   input[type="month"].form-control {
-    line-height: 34px;
+    line-height: 2.42857rem;
   }
   input[type="date"].input-sm,
   input[type="time"].input-sm,
@@ -2723,7 +2723,7 @@ textarea.form-control {
   .input-group-sm input[type="time"],
   .input-group-sm input[type="datetime-local"],
   .input-group-sm input[type="month"] {
-    line-height: 30px;
+    line-height: 2.14286rem;
   }
   input[type="date"].input-lg,
   input[type="time"].input-lg,
@@ -2733,7 +2733,7 @@ textarea.form-control {
   .input-group-lg input[type="time"],
   .input-group-lg input[type="datetime-local"],
   .input-group-lg input[type="month"] {
-    line-height: 46px;
+    line-height: 3.28571rem;
   }
 }
 .form-group {
@@ -2813,7 +2813,7 @@ fieldset[disabled] .checkbox-inline {
 }
 select.input-sm {
   height: 30px;
-  line-height: 30px;
+  line-height: 2.14286rem;
 }
 textarea.input-sm,
 select[multiple].input-sm {
@@ -2828,7 +2828,7 @@ select[multiple].input-sm {
 }
 .form-group-sm select.form-control {
   height: 30px;
-  line-height: 30px;
+  line-height: 2.14286rem;
 }
 .form-group-sm textarea.form-control,
 .form-group-sm select[multiple].form-control {
@@ -2850,7 +2850,7 @@ select[multiple].input-sm {
 }
 select.input-lg {
   height: 46px;
-  line-height: 46px;
+  line-height: 3.28571rem;
 }
 textarea.input-lg,
 select[multiple].input-lg {
@@ -2865,7 +2865,7 @@ select[multiple].input-lg {
 }
 .form-group-lg select.form-control {
   height: 46px;
-  line-height: 46px;
+  line-height: 3.28571rem;
 }
 .form-group-lg textarea.form-control,
 .form-group-lg select[multiple].form-control {
@@ -2892,7 +2892,7 @@ select[multiple].input-lg {
   display: block;
   width: 34px;
   height: 34px;
-  line-height: 34px;
+  line-height: 2.42857rem;
   text-align: center;
   pointer-events: none;
 }
@@ -2901,14 +2901,14 @@ select[multiple].input-lg {
 .form-group-lg .form-control + .form-control-feedback {
   width: 46px;
   height: 46px;
-  line-height: 46px;
+  line-height: 3.28571rem;
 }
 .input-sm + .form-control-feedback,
 .input-group-sm + .form-control-feedback,
 .form-group-sm .form-control + .form-control-feedback {
   width: 30px;
   height: 30px;
-  line-height: 30px;
+  line-height: 2.14286rem;
 }
 .has-success .help-block,
 .has-success .control-label,
@@ -3921,7 +3921,7 @@ select.input-group-lg > .form-control,
 select.input-group-lg > .input-group-addon,
 select.input-group-lg > .input-group-btn > .btn {
   height: 46px;
-  line-height: 46px;
+  line-height: 3.28571rem;
 }
 textarea.input-group-lg > .form-control,
 textarea.input-group-lg > .input-group-addon,
@@ -3944,7 +3944,7 @@ select.input-group-sm > .form-control,
 select.input-group-sm > .input-group-addon,
 select.input-group-sm > .input-group-btn > .btn {
   height: 30px;
-  line-height: 30px;
+  line-height: 2.14286rem;
 }
 textarea.input-group-sm > .form-control,
 textarea.input-group-sm > .input-group-addon,
@@ -4351,7 +4351,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   height: 50px;
   padding: 15px 15px;
   font-size: 18px;
-  line-height: 20px;
+  line-height: 1.42857rem;
 }
 .navbar-brand:hover,
 .navbar-brand:focus {
@@ -4401,7 +4401,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar-nav > li > a {
   padding-top: 10px;
   padding-bottom: 10px;
-  line-height: 20px;
+  line-height: 1.42857rem;
 }
 @media (max-width: 767px) {
   .navbar-nav .open .dropdown-menu {
@@ -4419,7 +4419,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     padding: 5px 15px 5px 25px;
   }
   .navbar-nav .open .dropdown-menu > li > a {
-    line-height: 20px;
+    line-height: 1.42857rem;
   }
   .navbar-nav .open .dropdown-menu > li > a:hover,
   .navbar-nav .open .dropdown-menu > li > a:focus {
@@ -5212,7 +5212,7 @@ a.thumbnail.active {
   width: 0%;
   height: 100%;
   font-size: 12px;
-  line-height: 20px;
+  line-height: 1.42857rem;
   color: #fff;
   text-align: center;
   background-color: #337ab7;
@@ -6164,7 +6164,7 @@ button.close {
   border-bottom-color: #000;
 }
 .tooltip-inner {
-  max-width: 200px;
+  max-width: 14.28571rem;
   padding: 3px 8px;
   color: #fff;
   text-align: center;
@@ -6184,7 +6184,7 @@ button.close {
   left: 0;
   z-index: 1060;
   display: none;
-  max-width: 276px;
+  max-width: 19.71429rem;
   padding: 1px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-style: normal;

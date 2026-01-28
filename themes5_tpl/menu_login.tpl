@@ -9,7 +9,7 @@
                         <{if $login_text|default:false}><{$login_text|default:''}><{else}>
                         <{$smarty.const.TF_USER_ENTER}><{/if}>
                     </legend>
-                    <{if $login_description|default:false}><div class="alert alert-warning" style="font-size: 0.825rem;"><{$login_description|default:''}></div><{/if}>
+                    <{if $login_description|default:false}><div class="alert alert-warning" role="alert" style="font-size: 0.825rem;"><{$login_description|default:''}></div><{/if}>
                     <div class="form-group row mb-3">
                         <label class="col-md-4 col-form-label text-sm-end" for="uname">
                             <{$smarty.const.TF_USER_S_ID}>
@@ -45,13 +45,13 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <a href="<{$xoops_url}>/register.php">
-                                <span class="fa fa-pencil"></span>
+                                <span class="fa fa-pencil" aria-hidden="true"></span>
                                 <{$smarty.const.TF_USER_REGIST}>
                             </a>
                         </div>
                         <div class="col-md-6">
                             <a href="<{$xoops_url}>/user.php#lost">
-                                <span class="fa fa-magnifying-glass"></span>
+                                <span class="fa fa-magnifying-glass" aria-hidden="true"></span>
                                 <{$smarty.const.TF_USER_FORGET_PASS}>
                             </a>
                         </div>
@@ -67,15 +67,15 @@
                 <{foreach from=$tlogin item=login}>
                     <{if $tlogin && $tlogin|@count < 4}>
                         <div class="col-12">
-                            <a href="<{$login.link}>" class="btn me-2" style="display: block; margin: 4px; border: none; ">
-                                <img src="<{$login.img}>" alt="<{$login.text}>" title="<{$login.text}>" style="width: 32px;height: 32px;object-fit: contain;">
+                            <a href="<{$login.link}>" class="btn me-2" style="display: flex; align-items: center; margin: 4px; border: none; min-height: 44px;">
+                                <img src="<{$login.img}>" alt="<{$login.text}>" style="width: 44px;height: 44px;object-fit: contain;" class="me-2">
                                 <{$login.text}>
                             </a>
                         </div>
                     <{else}>
                         <div class="col-12">
-                            <a href="<{$login.link}>" class="btn bg-white me-2" style="display: inline-flex;justify-content: center;align-items: center;width: 36px;height: 36px;padding: 0;margin: 3px;background-color: white;border: none;cursor: pointer;">
-                                <img src="<{$login.img}>" alt="<{$login.text}>" title="<{$login.text}>" style="width: 32px;height: 32px;object-fit: contain;">
+                            <a href="<{$login.link}>" class="btn bg-white me-2" title="<{$login.text}>" aria-label="<{$login.text}>" style="display: inline-flex;justify-content: center;align-items: center;width: 44px;height: 44px;padding: 0;margin: 3px;background-color: white;border: 1px solid #ddd;cursor: pointer;">
+                                <img src="<{$login.img}>" alt="" style="width: 38px;height: 38px;object-fit: contain;">
                             </a>
                         </div>
                     <{/if}>
@@ -86,7 +86,7 @@
 
         <li>
             <a href="<{$xoops_url}>/modules/tadtools/ajax_file.php?op=remove_json" title="重整畫面圖示">
-                <i class="fa fa-refresh"></i> 重取設定
+                <i class="fa fa-refresh" aria-hidden="true"></i> 重取設定
             </a>
         </li>
     </ul>

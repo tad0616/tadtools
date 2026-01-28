@@ -2,171 +2,171 @@
 
 /* websites (pictures and movies) */
 a.iconize[href *="youtube.com/watch?"], a.iconize[href *="sevenload.com/videos/"], a.iconize[href *="metacafe.com/watch/"] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/film.png') no-repeat center left;
 }
 
 a.iconize[href *="flickr.com/photos/"], a.iconize[href *="zooomr.com"], a.iconize[href *="imageshack.us"], a.iconize[href *="bubbleshare.com"], a.iconize[href *="sevenload.com/bilder/"] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/pic.png') no-repeat center left;
 }
 
 /* extensions */
 
 a.iconize[href$='.doc'], a.iconize[href$='.rtf'], a.iconize[href$='.docx'] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/doc.png') no-repeat center left;
 }
 
 a.iconize[href$='.txt'] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/txt.png') no-repeat center left;
 }
 
 a.iconize[href$='.xls'],a.iconize[href$='.xlsx'] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/xls.png') no-repeat center left;
 }
 
 a.iconize[href$='.rss'], a.iconize[href$='.atom'] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/feed.png') no-repeat center left;
 }
 
 a.iconize[href$='.opml'] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/opml.png') no-repeat center left;
 }
 
 a.iconize[href$='.phps'] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/phps.png') no-repeat center left;
 }
 
 a.iconize[href$='.phps'] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/phps.png') no-repeat center left;
 }
 
 a.iconize[href$='.torrent'] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/torrent.png') no-repeat center left;
 }
 
 a.iconize[href$='.vcard'] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/vcard.png') no-repeat center left;
 }
 
 a.iconize[href$='.exe'] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/exe.png') no-repeat center left;
 }
 
 a.iconize[href$='.dmg'], a.iconize[href$='.app'] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/dmg.png') no-repeat center left;
 }
 
 a.iconize[href$='.pps'],a.iconize[href$='.ppt'],a.iconize[href$='.pptx'] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/pps.png') no-repeat center left;
 }
 
 a.iconize[href$='.pdf'] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/pdf.png') no-repeat center left;
 }
 
 a.iconize[href$='.xpi'] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/plugin.png') no-repeat center left;
 }
 
 a.iconize[href$='.fla'], a.iconize[href$='.swf'] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/flash.png') no-repeat center left;
 }
 
 a.iconize[href$='.zip'], a.iconize[href$='.rar'], a.iconize[href$='.gzip'], a.iconize[href$='.bzip'], a.iconize[href$='.ace'], a.iconize[href$='.7z'] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/archive.png') no-repeat center left;
 }
 
 a.iconize[href$='.ical'] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/ical.png') no-repeat center left;
 }
 
 a.iconize[href$='.css'] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/css.png') no-repeat center left;
 }
 
 a.iconize[href$='.ttf'] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/ttf.png') no-repeat center left;
 }
 
 a.iconize[href$='.jpg'], a.iconize[href$='.gif'], a.iconize[href$='.png'], a.iconize[href$='.bmp'], a.iconize[href$='.jpeg'], a.iconize[href$='.svg'], a.iconize[href$='.eps'] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/pic.png') no-repeat center left;
 }
 
 a.iconize[href$='.mov'], a.iconize[href$='.wmv'], a.iconize[href$='.mp4'], a.iconize[href$='.3gp'], a.iconize[href$='.avi'], a.iconize[href$='.mpg'] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/film.png') no-repeat center left;
 }
 
 a.iconize[href$='.mp3'], a.iconize[href$='.wav'], a.iconize[href$='.ogg'], a.iconize[href$='.wma'], a.iconize[href$='.m4a'] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/music.png') no-repeat center left;
 }
 
 /* messenger */
 a.iconize[href ^="aim:"] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
     background: transparent url('../images/mimetype/aim.png') no-repeat center left;
 }
 
 a.iconize[href ^="msnim:"] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
     background: transparent url('../images/mimetype/msn.png') no-repeat center left;
 }
 
 a.iconize[href ^="xmpp:"] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
     background: transparent url('../images/mimetype/jabber.png') no-repeat center left;
 }
 
 a.iconize[href *="icq.com"] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/icq.png') no-repeat center left;
 }
 
 a.iconize[href *="edit.yahoo.com/config/send_webmesg?"] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/yim.png') no-repeat center left;
 }
 
 a.iconize[href ^="callto:"] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
     background: transparent url('../images/mimetype/call.png') no-repeat center left;
 }
 
 a.iconize[href ^="skype:"] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
     background: transparent url('../images/mimetype/skype.png') no-repeat center left;
 }
 
 a.iconize[href ^="gg:"] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
     background: transparent url('../images/mimetype/gadugadu.png') no-repeat center left;
 }
 
 /* email */
 a.iconize[href ^="mailto:"] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
     background: transparent url('../images/mimetype/mailto.png') no-repeat center left;
 }
 
@@ -178,16 +178,16 @@ a.iconize[href ^="mailto:"] {
 }
 
 a.iconize[href$='.ods'],a.iconize[href$='.sxc'] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/ooo_calc.png') no-repeat center left;
 }
 
 a.iconize[href$='.odt'],a.iconize[href$='.sxw'] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/ooo_writer.png') no-repeat center left;
 }
 
 a.iconize[href$='.odp'],a.iconize[href$='.sxi'] {
-	padding: 5px 0px 5px 20px;
+	padding: 0.3125rem 0 0.3125rem 1.25rem;
 	background: transparent url('../images/mimetype/ooo_impress.png') no-repeat center left;
 }

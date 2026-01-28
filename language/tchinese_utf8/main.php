@@ -11,6 +11,7 @@ define('_TAD_FIRST_PAGE', '第一頁');
 define('_TAD_LAST_PAGE', '最後頁');
 define('_TAD_GO_BACK_PAGE', '前 %s 頁');
 define('_TAD_GO_NEXT_PAGE', '後 %s 頁');
+define('_TAD_CURRENT_PAGE', '目前頁次');
 define('_TAD_TOOLBAR', '共 %s 頁，目前在第 %s 頁：');
 define('_TAD_EXPAND_ALL', '展開');
 define('_TAD_CONTACT_ALL', '闔起');
@@ -126,6 +127,7 @@ define('_TDC_COL_ID', '程式辨識碼');
 //TadUpFiles.php
 define('_TUF_PERMISSION_NOTE', '不選即全部開放下載：');
 define('_TUF_FILE_DOES_NOT_EXIST', '原始檔案不存在，無法下載。');
+define('_TUF_DOWNLOAD', '下載：');
 
 //TadModData.php
 define('_TM_FILE_UPLOAD', '檔案上傳');
@@ -160,3 +162,5 @@ define('_FAILED_TO_GET_RESULT', '無法取得結果：');
 define('_DATABASE_ERROR', '資料庫錯誤：');
 
 define('TADTOOLS_SLIDE_IMG', '滑動圖');
+
+define('_TAD_O_NAV_ZONE', '主要導覽區');

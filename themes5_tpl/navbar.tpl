@@ -7,12 +7,14 @@
 </script>
 
 <!-- <{$navbar_pos|default:''}> -->
-<nav role="navigation" id="main-nav">
+<nav role="navigation" id="main-nav" tabindex="-1" aria-label="<{$smarty.const._TAD_O_NAV_ZONE|default:'主要導覽區'}>">
+    <a accesskey="U" href="#main-nav" title="<{$smarty.const._TAD_ZAV_ZONE|default:'移至主要導覽區'}>" id="xoops_theme_nav_key" style="color: transparent; font-size: 0.1rem; position: absolute; top: 0; left: 0; width: 1px; height: 1px; overflow: hidden; display: block;">:::</a>
 
-    <!-- Mobile menu toggle button (hamburger/x icon) -->
-    <input id="main-menu-state" type="checkbox" />
-    <label class="main-menu-btn" for="main-menu-state">
-    <span class="main-menu-btn-icon"></span> Toggle main menu visibility
+
+    <input id="main-menu-state" type="checkbox" style="display: none;" aria-hidden="true" />
+    <label class="main-menu-btn" for="main-menu-state" tabindex="0" role="button" onkeypress="if(event.keyCode==13 || event.keyCode==32) {document.getElementById('main-menu-state').click(); return false;}">
+        <span class="main-menu-btn-icon"></span>
+        <span class="visually-hidden">切換選單顯示狀態</span>
     </label>
 
 
@@ -29,7 +31,7 @@
     <{/if}>
 
 
-    <ul id="main-menu" class="sm sm-mint d-md-flex flex-md-wrap">
+    <ul id="main-menu" class="sm sm-mint d-md-flex flex-md-wrap" role="menubar">
         <{if $show_sitename==0 or $show_sitename==''}>
             <li>
                 <a href="<{$xoops_url}>/index.php"><i class="fa fa-home" aria-hidden="true"></i> <{$smarty.const._TAD_HOME}></a>
@@ -40,21 +42,23 @@
             <{include file="$xoops_rootpath/uploads/docs_top_menu_b4.tpl"}>
         <{/if}>
         <{include file="$xoops_rootpath/modules/tadtools/themes5_tpl/menu_my.tpl"}>
-        <li class="flex-grow-1 hide-in-phone">
-            <a accesskey="U" href="#xoops_theme_nav_key" title="<{$smarty.const._TAD_ZAV_ZONE}>" id="xoops_theme_nav_key" style="color: transparent; font-size: 0.625rem;" class="disabled">:::</a>
-        </li>
+
+        <!-- 讓選項靠右的填充項目 -->
+        <li class="flex-grow-1 d-none d-md-block" aria-hidden="true"></li>
+
+
 
         <{if $xoops_isadmin|default:false}>
             <li>
-                <a href="<{$xoops_url}>/modules/tad_themes/admin/dropdown.php" title="<{$smarty.const._TAD_MENU_CONFIG}>"><i class="fa fa-plus-circle"></i><span class="sr-only visually-hidden"><{$smarty.const._TAD_MENU_CONFIG}></span></a>
+                <a href="<{$xoops_url}>/modules/tad_themes/admin/dropdown.php" title="<{$smarty.const._TAD_MENU_CONFIG}>"><i class="fa fa-plus-circle" aria-hidden="true"></i><span class="sr-only visually-hidden"><{$smarty.const._TAD_MENU_CONFIG}></span></a>
             </li>
             <{if $xoops_dirname=="" || $xoops_dirname=="system"}>
                 <li>
-                    <a href="<{$xoops_url}>/admin.php" title="<{$smarty.const.TF_MODULE_CONFIG}>"><span class="fa fa-wrench"></span></a>
+                    <a href="<{$xoops_url}>/admin.php" title="<{$smarty.const.TF_MODULE_CONFIG}>"><span class="fa fa-wrench" aria-hidden="true"></span><span class="visually-hidden"><{$smarty.const.TF_MODULE_CONFIG}></span></a>
                 </li>
             <{else}>
                 <li>
-                    <a href="<{$xoops_url}>/modules/<{$xoops_dirname|default:''}>/admin/index.php" title="<{$smarty.const.TF_MODULE_CONFIG}>"><span class="fa fa-wrench"></span></a>
+                    <a href="<{$xoops_url}>/modules/<{$xoops_dirname|default:''}>/admin/index.php" title="<{$smarty.const.TF_MODULE_CONFIG}>" role="menuitem"><span class="fa fa-wrench" aria-hidden="true"></span><span class="visually-hidden"><{$smarty.const.TF_MODULE_CONFIG}></span></a>
                 </li>
             <{/if}>
         <{/if}>
@@ -77,7 +81,7 @@
         <{else}>
             <li>
                 <a href="<{$xoops_url}>/modules/tadtools/ajax_file.php?op=remove_json" title="重取設定">
-                    <i class="fa fa-refresh" title="重整畫面圖示"></i><span class="sr-only visually-hidden">重新取得佈景設定</span>
+                    <i class="fa fa-refresh" aria-hidden="true"></i><span class="sr-only visually-hidden">重新取得佈景設定</span>
                 </a>
             </li>
         <{/if}>
@@ -102,6 +106,18 @@
         }
     });
 
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const mainMenuState = document.getElementById('main-menu-state');
+            if (mainMenuState && mainMenuState.checked) {
+                mainMenuState.checked = false;
+                const menuBtn = document.querySelector('.main-menu-btn');
+                if (menuBtn) menuBtn.focus();
+            }
+        }
+    });
+
+
     $(document).ready(function(){
         if($( window ).width() > 768){
             $('li.hide-in-phone').show();
@@ -117,4 +133,82 @@
             $('li.hide-in-phone').hide();
         }
     });
+
+    // 鍵盤導覽邏輯
+    $(function() {
+        const $menu = $('#main-menu');
+
+        // 為所有連結加上 role="menuitem"
+        $menu.find('a').attr('role', 'menuitem');
+
+        $menu.on('keydown', 'a', function(e) {
+            const $this = $(this);
+            const $li = $this.parent();
+            const isVertical = $(window).width() <= 768;
+            const $allVisibleLinks = $menu.find('a:visible');
+            const currentIndex = $allVisibleLinks.index($this);
+
+            let $nextFocus = null;
+
+            switch(e.key) {
+                case 'ArrowRight':
+                    if (isVertical) {
+                        // 垂直模式：右鍵展開子選單
+                        if ($this.hasClass('has-submenu')) {
+                            $menu.smartmenus('itemActivate', $this);
+                            $nextFocus = $this.next('ul').find('a').first();
+                        }
+                    } else {
+                        // 水平模式：右鍵下一個
+                        $nextFocus = $allVisibleLinks.eq(currentIndex + 1);
+                    }
+                    break;
+                case 'ArrowLeft':
+                    if (isVertical) {
+                        // 垂直模式：左鍵收合
+                        if ($this.closest('ul').not('#main-menu')) {
+                            $nextFocus = $this.closest('ul').prev('a');
+                            $menu.smartmenus('menuHide', $this.closest('ul'));
+                        }
+                    } else {
+                        // 水平模式：左鍵上一個
+                        $nextFocus = $allVisibleLinks.eq(currentIndex - 1);
+                    }
+                    break;
+                case 'ArrowDown':
+                    if (isVertical) {
+                        $nextFocus = $allVisibleLinks.eq(currentIndex + 1);
+                    } else {
+                        // 水平模式：下鍵展開或下一個
+                        if ($this.hasClass('has-submenu')) {
+                            $menu.smartmenus('itemActivate', $this);
+                            $nextFocus = $this.next('ul').find('a').first();
+                        } else {
+                            $nextFocus = $allVisibleLinks.eq(currentIndex + 1);
+                        }
+                    }
+                    break;
+                case 'ArrowUp':
+                    $nextFocus = $allVisibleLinks.eq(currentIndex - 1);
+                    break;
+                case 'Home':
+                    $nextFocus = $allVisibleLinks.first();
+                    break;
+                case 'End':
+                    $nextFocus = $allVisibleLinks.last();
+                    break;
+                case 'Escape':
+                    $menu.smartmenus('menuHideAll');
+                    break;
+                default:
+                    return; // 讓其他鍵正常運作
+            }
+
+            if ($nextFocus && $nextFocus.length) {
+                e.preventDefault();
+                $nextFocus.focus();
+            }
+        });
+    });
+
 </script>

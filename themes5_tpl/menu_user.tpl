@@ -11,7 +11,7 @@
     <{/if}>
     <li>
         <a href="<{$xoops_url}>/modules/tadtools/ajax_file.php?op=remove_json" title="重整畫面圖示">
-            <i class="fa fa-refresh" title="重整畫面圖示"></i> 重取設定
+            <i class="fa fa-refresh" aria-hidden="true"></i> 重取設定
         </a>
     </li>
     <{foreach from=$user_menu_var item=user_menu}>

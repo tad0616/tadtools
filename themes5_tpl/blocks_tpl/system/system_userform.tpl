@@ -4,7 +4,7 @@
   </div>
 <{/if}>
 
-<fieldset class="border border-info rounded px-3 pt-1 pb-3 bg-info-subtle text-center my-3 mx-auto" style="max-width: 400px;">
+<fieldset class="border border-info rounded px-3 pt-1 pb-3 bg-info-subtle text-center my-3 mx-auto" style="max-width: 25rem;">
     <legend class="float-none w-auto border border-info py-1 px-3 bg-light-subtle fs-6 rounded">
         <{$lang_login|default:''}>
     </legend>

@@ -752,27 +752,27 @@ progress {
 
 @media (min-width: 576px) {
   .container-sm, .container {
-    max-width: 540px;
+    max-width: 38.57143rem;
   }
 }
 @media (min-width: 768px) {
   .container-md, .container-sm, .container {
-    max-width: 720px;
+    max-width: 51.42857rem;
   }
 }
 @media (min-width: 992px) {
   .container-lg, .container-md, .container-sm, .container {
-    max-width: 960px;
+    max-width: 68.57143rem;
   }
 }
 @media (min-width: 1200px) {
   .container-xl, .container-lg, .container-md, .container-sm, .container {
-    max-width: 1140px;
+    max-width: 81.42857rem;
   }
 }
 @media (min-width: 1400px) {
   .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
-    max-width: 1320px;
+    max-width: 94.28571rem;
   }
 }
 :root {
@@ -5384,7 +5384,7 @@ textarea.form-control-lg {
   --bs-toast-padding-x: 0.75rem;
   --bs-toast-padding-y: 0.5rem;
   --bs-toast-spacing: 1.5rem;
-  --bs-toast-max-width: 350px;
+  --bs-toast-max-width: 25rem;
   --bs-toast-font-size: 0.875rem;
   --bs-toast-color: ;
   --bs-toast-bg: rgba(var(--bs-body-bg-rgb), 0.85);
@@ -5450,7 +5450,7 @@ textarea.form-control-lg {
 
 .modal {
   --bs-modal-zindex: 1055;
-  --bs-modal-width: 500px;
+  --bs-modal-width: 35.71429rem;
   --bs-modal-padding: 1rem;
   --bs-modal-margin: 0.5rem;
   --bs-modal-color: var(--bs-body-color);
@@ -5609,18 +5609,18 @@ textarea.form-control-lg {
     margin-left: auto;
   }
   .modal-sm {
-    --bs-modal-width: 300px;
+    --bs-modal-width: 21.42857rem;
   }
 }
 @media (min-width: 992px) {
   .modal-lg,
   .modal-xl {
-    --bs-modal-width: 800px;
+    --bs-modal-width: 57.14286rem;
   }
 }
 @media (min-width: 1200px) {
   .modal-xl {
-    --bs-modal-width: 1140px;
+    --bs-modal-width: 81.42857rem;
   }
 }
 .modal-fullscreen {
@@ -5744,7 +5744,7 @@ textarea.form-control-lg {
 }
 .tooltip {
   --bs-tooltip-zindex: 1080;
-  --bs-tooltip-max-width: 200px;
+  --bs-tooltip-max-width: 14.28571rem;
   --bs-tooltip-padding-x: 0.5rem;
   --bs-tooltip-padding-y: 0.25rem;
   --bs-tooltip-margin: ;
@@ -5846,7 +5846,7 @@ textarea.form-control-lg {
 
 .popover {
   --bs-popover-zindex: 1070;
-  --bs-popover-max-width: 276px;
+  --bs-popover-max-width: 19.71429rem;
   --bs-popover-font-size: 0.875rem;
   --bs-popover-bg: var(--bs-body-bg);
   --bs-popover-border-width: var(--bs-border-width);

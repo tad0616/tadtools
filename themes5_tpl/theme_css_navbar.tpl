@@ -4,15 +4,19 @@
   background: transparent;
 }
 .sm-mint a, .sm-mint a:hover, .sm-mint a:focus, .sm-mint a:active {
-  padding: <{$navbar_py|default:''}>px <{$navbar_px|default:''}>px;
+  padding: <{if $navbar_py < 13}>13<{else}><{$navbar_py|default:13}><{/if}>px <{$navbar_px|default:20}>px;
   /* make room for the toggle button (sub indicator) */
   padding-right: 58px;
-  color: <{$navbar_color|default:''}>;
+  color: <{$navbar_color|default:'#000'}>;
   font-family: <{if $font_family|default:false}><{$font_family|default:''}>, <{/if}>;
-  font-size: <{$navbar_font_size|default:''}>rem;
+  font-size: <{$navbar_font_size|default:1}>rem;
   font-weight: normal;
-  line-height: 17px;
+  line-height: 1.5;
   text-decoration: none;
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+  min-height: 44px; /* WCAG 2.5.5 AAA */
 }
 .sm-mint a.current {
   font-weight: bold;
@@ -124,10 +128,10 @@
     background: transparent;
   }
   .sm-mint a, .sm-mint a:hover, .sm-mint a:focus, .sm-mint a:active, .sm-mint a.highlighted {
-    padding: <{$navbar_py|default:''}>px <{$navbar_px|default:''}>px;
-    color: <{$navbar_color|default:''}>;
-    border-radius: 4px 4px 0 0;
+    padding: <{if $navbar_py < 13}>13<{else}><{$navbar_py|default:13}><{/if}>px <{$navbar_px|default:20}>px;
+    color: <{$navbar_color|default:'#000'}>;
     border-radius: 0;
+    min-height: 44px; /* WCAG 2.5.5 AAA */
   }
   .sm-mint a:hover, .sm-mint a:focus, .sm-mint a:active {
     background: <{$navbar_hover|default:''}>;
@@ -426,12 +430,12 @@
 
 .main-menu-btn {
   float: right;
-  margin: 5px 10px;
+  margin: 2px 10px;
   position: relative;
   display: inline-block;
-  width: 29px;
-  height: 29px;
-  text-indent: 29px;
+  width: 44px; /* WCAG 2.5.5 AAA */
+  height: 44px; /* WCAG 2.5.5 AAA */
+  text-indent: 44px;
   white-space: nowrap;
   overflow: hidden;
   cursor: pointer;

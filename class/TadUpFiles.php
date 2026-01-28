@@ -2096,9 +2096,11 @@ class TadUpFiles
 
                     $item_h = !empty($show_description) ? $h + $this->desc_height : $h;
 
-                    $all_files .= ($show_mode === 'small') ? "<a href='{$linkto}#{$description}' data-toggle='tooltip' data-placement='top' title='{$description}' class='iconize $fext {$fancyboxset}' {$rel}>&nbsp;</a> " : "
+                    $bs_data = $_SESSION['bootstrap'] == 5 ? "data-bs-toggle='tooltip' data-bs-placement='top' data-bs-original-title='{$description}'" : "data-toggle='tooltip' data-placement='top' data-original-title='{$description}'";
+
+                    $all_files .= ($show_mode === 'small') ? "<a href='{$linkto}#{$description}' {$bs_data} class='iconize $fext {$fancyboxset}' {$rel}><span class='sr-only visually-hidden'>" . _TUF_DOWNLOAD . "{$description}</span></a> " : "
                     <li class='tuf-icon-item' style='width:{$w}px;height:{$item_h}px;float:left;list-style:none;{$this->other_css}'>
-                    <a href='{$linkto}' class='thumbnail $fext {$fancyboxset}' target='{$target}' {$rel} style=\"display:inline-block; width: {$w}px; height: {$h}px; overflow: hidden; background-image: url('{$thumb_pic}'); background-size: {$bgs}; background-repeat: no-repeat; background-position: center center; margin-bottom: 4px; {$thumb_css}\" title='{$description}'>&nbsp;</a>{$show_description_txt}
+                    <a href='{$linkto}' class='thumbnail $fext {$fancyboxset}' target='{$target}' {$rel} style=\"display:inline-block; width: {$w}px; height: {$h}px; overflow: hidden; background-image: url('{$thumb_pic}'); background-size: {$bgs}; background-repeat: no-repeat; background-position: center center; margin-bottom: 4px; {$thumb_css}\"><span class='sr-only visually-hidden'>" . _TUF_DOWNLOAD . "{$description}</span></a>{$show_description_txt}
                     </li>";
                 }
 

@@ -1,0 +1,152 @@
+{
+  "menuItems": [
+    {
+      "id": "home",
+      "text": "首頁",
+      "link": "/",
+      "icon": "fa-solid fa-house",
+      "textColor": "#333333",
+      "bgColor": "#ffffff",
+      "fontSize": "16px",
+      "newWindow": false
+    },
+    {
+      "id": "products",
+      "text": "產品服務",
+      "link": "#",
+      "icon": "fa-solid fa-box",
+      "textColor": "#333333",
+      "bgColor": "#ffffff",
+      "fontSize": "16px",
+      "newWindow": false,
+      "children": [
+        {
+          "id": "software",
+          "text": "軟體開發",
+          "link": "/products/software",
+          "icon": "fa-solid fa-code",
+          "textColor": "#555555",
+          "bgColor": "#f8f9fa",
+          "fontSize": "15px",
+          "newWindow": false,
+          "children": [
+            {
+              "id": "web-dev",
+              "text": "網站開發",
+              "link": "/products/software/web",
+              "icon": "fa-solid fa-globe",
+              "textColor": "#666666",
+              "bgColor": "#ffffff",
+              "fontSize": "14px",
+              "newWindow": false
+            },
+            {
+              "id": "app-dev",
+              "text": "APP 開發",
+              "link": "/products/software/app",
+              "icon": "fa-solid fa-mobile-screen",
+              "textColor": "#666666",
+              "bgColor": "#ffffff",
+              "fontSize": "14px",
+              "newWindow": false
+            },
+            {
+              "id": "api-dev",
+              "text": "API 整合服務",
+              "link": "/products/software/api",
+              "icon": "fa-solid fa-plug",
+              "textColor": "#666666",
+              "bgColor": "#ffffff",
+              "fontSize": "14px",
+              "newWindow": true
+            }
+          ]
+        },
+        {
+          "id": "design",
+          "text": "設計服務",
+          "link": "/products/design",
+          "icon": "fa-solid fa-palette",
+          "textColor": "#555555",
+          "bgColor": "#f8f9fa",
+          "fontSize": "15px",
+          "newWindow": false,
+          "children": [
+            {
+              "id": "ui-design",
+              "text": "UI/UX 設計",
+              "link": "/products/design/ui",
+              "icon": "fa-solid fa-wand-magic-sparkles",
+              "textColor": "#666666",
+              "bgColor": "#ffffff",
+              "fontSize": "14px",
+              "newWindow": false
+            },
+            {
+              "id": "graphic-design",
+              "text": "平面設計",
+              "link": "/products/design/graphic",
+              "icon": "fa-solid fa-image",
+              "textColor": "#666666",
+              "bgColor": "#ffffff",
+              "fontSize": "14px",
+              "newWindow": false
+            }
+          ]
+        },
+        {
+          "id": "consulting",
+          "text": "顧問諮詢",
+          "link": "/products/consulting",
+          "icon": "fa-solid fa-comments",
+          "textColor": "#555555",
+          "bgColor": "#f8f9fa",
+          "fontSize": "15px",
+          "newWindow": false
+        }
+      ]
+    },
+    {
+      "id": "about",
+      "text": "關於我們",
+      "link": "#",
+      "icon": "fa-solid fa-building",
+      "textColor": "#333333",
+      "bgColor": "#ffffff",
+      "fontSize": "16px",
+      "newWindow": false,
+      "children": [
+        {
+          "id": "company",
+          "text": "公司簡介",
+          "link": "/about/company",
+          "icon": "fa-solid fa-info-circle",
+          "textColor": "#555555",
+          "bgColor": "#f8f9fa",
+          "fontSize": "15px",
+          "newWindow": false
+        },
+        {
+          "id": "team",
+          "text": "團隊成員",
+          "link": "/about/team",
+          "icon": "fa-solid fa-users",
+          "textColor": "#555555",
+          "bgColor": "#f8f9fa",
+          "fontSize": "15px",
+          "newWindow": false
+        }
+      ]
+    },
+    {
+      "id": "contact",
+      "text": "聯絡我們",
+      "link": "/contact",
+      "icon": "fa-solid fa-envelope",
+      "textColor": "#ffffff",
+      "bgColor": "#0d6efd",
+      "fontSize": "16px",
+      "newWindow": false
+    }
+  ]
+}

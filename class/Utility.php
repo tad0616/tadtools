@@ -1,7 +1,9 @@
 <?php
+
 namespace XoopsModules\Tadtools;
 
 require XOOPS_ROOT_PATH . '/modules/tadtools/vendor/autoload.php';
+
 use phpseclib3\Net\SSH2;
 use Xmf\Request;
 
@@ -174,30 +176,39 @@ class Utility
         }
 
         // Extract existing links and tags
-        $value = preg_replace_callback('~(<a .*?>.*?</a>|<.*?>)~i', function ($match) use (&$links) {return '<' . array_push($links, $match[1]) . '>';}, $value);
+        $value = preg_replace_callback('~(<a .*?>.*?</a>|<.*?>)~i', function ($match) use (&$links) {
+            return '<' . array_push($links, $match[1]) . '>';
+        }, $value);
 
         // Extract text links for each protocol
         foreach ((array) $protocols as $protocol) {
             switch ($protocol) {
                 case 'http':
-                case 'https':$value = preg_replace_callback('~(?:(https?)://([^\s<]+)|(www\.[^\s<]+?\.[^\s<]+))(?<![\.,:])~i', function ($match) use ($protocol, &$links, $attr) {
+                case 'https':
+                    $value = preg_replace_callback('~(?:(https?)://([^\s<]+)|(www\.[^\s<]+?\.[^\s<]+))(?<![\.,:])~i', function ($match) use ($protocol, &$links, $attr) {
                         if ($match[1]) {
                             $protocol = $match[1];
                         }
-                        $link = $match[2] ?: $match[3];return '<' . array_push($links, "<a $attr href=\"$protocol://$link\" target=\"_blank\">$protocol://$link</a>") . '>';
+                        $link = $match[2] ?: $match[3];
+                        return '<' . array_push($links, "<a $attr href=\"$protocol://$link\" target=\"_blank\">$protocol://$link</a>") . '>';
                     }, $value);
                     break;
                 // case 'mail':$value = preg_replace_callback('~([^\s<]+?@[^\s<]+?\.[^\s<]+)(?<![\.,:])~', function ($match) use (&$links, $attr) {return '<' . array_push($links, "<a $attr href=\"mailto:{$match[1]}\">{$match[1]}</a>") . '>';}, $value);
                 //     break;
                 // case 'twitter':$value = preg_replace_callback('~(?<!\w)[@#](\w++)~', function ($match) use (&$links, $attr) {return '<' . array_push($links, "<a $attr href=\"https://twitter.com/" . ($match[0][0] == '@' ? '' : 'search/%23') . $match[1] . "\">{$match[0]}</a>") . '>';}, $value);
                 //     break;
-                default: $value = preg_replace_callback('~' . preg_quote($protocol, '~') . '://([^\s<]+?)(?<![\.,:])~i', function ($match) use ($protocol, &$links, $attr) {return '<' . array_push($links, "<a $attr href=\"$protocol://{$match[1]}\">{$match[1]}</a>") . '>';}, $value);
+                default:
+                    $value = preg_replace_callback('~' . preg_quote($protocol, '~') . '://([^\s<]+?)(?<![\.,:])~i', function ($match) use ($protocol, &$links, $attr) {
+                        return '<' . array_push($links, "<a $attr href=\"$protocol://{$match[1]}\">{$match[1]}</a>") . '>';
+                    }, $value);
                     break;
             }
         }
 
         // Insert all link
-        return preg_replace_callback('/<(\d+)>/', function ($match) use (&$links) {return $links[$match[1] - 1];}, $value);
+        return preg_replace_callback('/<(\d+)>/', function ($match) use (&$links) {
+            return $links[$match[1] - 1];
+        }, $value);
     }
 
     // XOOPS表單安全檢查
@@ -308,7 +319,6 @@ class Utility
                         } else {
                             $version = [];
                         }
-
                     }
                 } else {
                     if (strpos($ver, '-') === false) {
@@ -328,7 +338,6 @@ class Utility
                         list($version, $version_status) = explode('-', $ver);
                         $version                        = explode('.', $version);
                     }
-
                 }
                 break;
         }
@@ -338,7 +347,6 @@ class Utility
         $version[2]  = isset($version[2]) ? $version[2] : 0;
         $int_version = (int) $version[0] * 10000 + (int) $version[1] * 100 + (int) $version[2];
         return $int_version;
-
     }
 
     public static function get_theme_version($dirname)
@@ -358,7 +366,6 @@ class Utility
 
         // 2.4
         return $version;
-
     }
 
     // 格式化版本
@@ -398,11 +405,9 @@ class Utility
                 } else {
                     $version = implode('.', $v);
                 }
-
         }
 
         return $version;
-
     }
 
     //建立目錄
@@ -722,7 +727,6 @@ class Utility
         $show_sql   = ($isAdmin or $in_admin or $force) ? "<div style=\"margin-top:4px;border:1px solid pink;padding:4px;border-radius:5px;\">$sql</div>" : '';
 
         throw new \Exception($xoopsDB->error() . ($callerInfo ? " in {$callerInfo}{$show_sql}" : ''));
-
     }
 
     //載入 bootstrap，目前僅後台用得到
@@ -1464,7 +1468,7 @@ class Utility
     public static function vita_get_url_content($url)
     {
         $file_contents = '';
-        $timeout       = 5;
+        $timeout       = 30;
         // 使用 cURL 作为首选方法
         if (function_exists('curl_init')) {
             $ch = curl_init();
@@ -1473,6 +1477,7 @@ class Utility
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
             curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
 
@@ -1746,7 +1751,6 @@ class Utility
         $module_id = $xoopsModule->mid();
         $sql       = "DELETE FROM `" . $xoopsDB->prefix('group_permission') . "` WHERE `gperm_modid` = '$module_id' AND `gperm_itemid`='$itemid' AND `gperm_name`='$gperm_name'";
         $xoopsDB->queryF($sql) or self::web_error($sql, __FILE__, __LINE__);
-
     }
 
     // 高亮度語法
@@ -1765,7 +1769,6 @@ class Utility
 
         $prism_setup = ($line_numbers) ? 'class="line-numbers"' : '';
         $xoopsTpl->assign('prism_setup', $prism_setup);
-
     }
 
     /**
@@ -1861,7 +1864,8 @@ class Utility
             // 檢查參數數量
             $placeholderCount = substr_count($sql, '?');
             if ($placeholderCount !== count($params)) {
-                throw new \Exception(sprintf(_NUMBER_PARAMETER_NOT_MATCH,
+                throw new \Exception(sprintf(
+                    _NUMBER_PARAMETER_NOT_MATCH,
                     $placeholderCount,
                     count($params)
                 ));
@@ -1869,7 +1873,8 @@ class Utility
 
             // 檢查類型字串長度
             if (strlen($types) !== count($params)) {
-                throw new \Exception(sprintf(_TYPES_LENGTH_NOT_MATCH,
+                throw new \Exception(sprintf(
+                    _TYPES_LENGTH_NOT_MATCH,
                     count($params),
                     strlen($types)
                 ));
@@ -1916,7 +1921,6 @@ class Utility
             }
 
             return true;
-
         } catch (\Exception $e) {
             if ($debug) {
                 error_log(_DATABASE_ERROR . $e->getMessage() . ($callerInfo ? " in $callerInfo" : ''));
@@ -1927,7 +1931,6 @@ class Utility
             }
 
             return false;
-
         } finally {
             // 釋放資源
             if ($stmt instanceof mysqli_stmt) {
@@ -2234,5 +2237,4 @@ class Utility
             return $ssh;
         }
     }
-
 }

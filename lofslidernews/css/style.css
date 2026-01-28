@@ -5,7 +5,7 @@
 .lof-slidecontent {
 	position: relative;
 	overflow: hidden;
-	border: #F4F4F4 solid 1px;
+	border: #F4F4F4 solid 0.0625rem;
 }
 
 .lof-slidecontent .preload {
@@ -28,8 +28,8 @@
 .lof-slidecontent .sliders-wrapper {
 	position: relative;
 	height: 100%;
-	width: 900px;
-	z-index: 3px;
+	width: 56.25rem;
+	z-index: 3;
 	overflow: hidden;
 }
 
@@ -61,18 +61,18 @@
 .lof-slidecontent .navigator-content {
 	position: absolute;
 	background: none repeat scroll 0 0 #000000;
-	border-radius: 5px 5px 5px 5px;
-	bottom: 10px;
-	padding: 5px 15px;
+	border-radius: 0.3125rem;
+	bottom: 0.625rem;
+	padding: 0.3125rem 0.9375rem;
 	position: absolute;
-	right: 10px;
+	right: 0.625rem;
 }
 
 .lof-slidecontent .navigator-wrapper {
 	position: relative;
 	z-index: 10;
-	height: 180px;
-	width: 310px;
+	height: 11.25rem;
+	width: 19.375rem;
 	overflow: hidden;
 	color: #FFF;
 	float: left
@@ -114,27 +114,27 @@ ul.sliders-wrap-inner li img {
 }
 
 .lof-slidecontent .slider-description {
-	z-index: 100px;
+	z-index: 100;
 	position: absolute;
-	bottom: 15px;
-	left: 20px;
-	width: 350px;
+	bottom: 0.9375rem;
+	left: 1.25rem;
+	width: 21.875rem;
 	background: url(../images/bg_trans.png);
-	height: 100px;
-	padding: 10px;
+	height: 6.25rem;
+	padding: 0.625rem;
 	color: #FFFFFF;
 }
 
 .lof-slidecontent .slider-description h4 {
 	font-size: 0.875em;
-	margin: 10px 0;
+	margin: 0.625rem 0;
 	padding: 0;
 }
 
 .lof-slidecontent .slider-description .slider-meta a {
 	margin: 0;
 	font-size: 0.92em;
-	padding: 2px 3px;
+	padding: 0.125rem 0.1875rem;
 	font-family: "Trebuchet MS", Trebuchet, Arial, Verdana, sans-serif;
 	text-transform: uppercase;
 	text-decoration: none;
@@ -156,10 +156,10 @@ ul.sliders-wrap-inner li img {
 .navigator-wrapper {
 	color: #FFFFFF;
 	float: left;
-	height: 180px;
+	height: 11.25rem;
 	overflow: hidden;
 	position: relative;
-	width: 310px;
+	width: 19.375rem;
 	z-index: 100;
 }
 
@@ -185,7 +185,7 @@ ul.sliders-wrap-inner li img {
 
 .lof-slidecontent ul.navigator-wrap-inner li span {
 	display: block;
-	padding: 11px;
+	padding: 0.6875rem;
 	position: relative;
 	line-height: 0.5em
 }
@@ -195,7 +195,8 @@ ul.sliders-wrap-inner li img {
 	background: #FFF;
 	color: #000;
 	display: block;
-	-moz-transition: background-color 0.8s
+	-moz-transition: background-color 0.8s;
+	transition: background-color 0.8s;
 }
 
 
@@ -203,14 +204,14 @@ ul.sliders-wrap-inner li img {
 .lof-slidecontent .button-next,
 .lof-slidecontent .button-previous {
 	display: block;
-	width: 20px;
+	width: 1.25rem;
 	color: #FFF;
 	cursor: pointer;
 	position: absolute;
 	height: 100%;
 	z-index: 40;
 	top: 0;
-	text-indent: -999px;
+	text-indent: -62.4375rem;
 
 }
 
@@ -226,9 +227,8 @@ ul.sliders-wrap-inner li img {
 
 .lof-slidecontent .button-control {
 	float: left;
-	height: 30px;
-	width: 28px;
-	cursor: hand;
+	height: 1.875rem;
+	width: 1.75rem;
 	cursor: pointer
 }
 
@@ -243,6 +243,6 @@ ul.sliders-wrap-inner li img {
 .lof-slidecontent .slider-content {
 	color: #ffffff;
 	font-size: 0.75em;
-	margin-top: 3px;
+	margin-top: 0.1875rem;
 	line-height: 180%;
 }

@@ -24,8 +24,8 @@
 
 /*** alter arrow directions ***/
 .sf-vertical.sf-arrows > li > .sf-with-ul:after {
-  margin-top: -5px;
-  margin-right: -3px;
+  margin-top: -0.3125rem;
+  margin-right: -0.1875rem;
   border-color: transparent;
   border-left-color: #dFeEFF; /* edit this to suit design (no rgba in IE8) */
   border-left-color: rgba(255,255,255,.5);

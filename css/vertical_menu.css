@@ -13,8 +13,8 @@ ol.vertical_menu {
 ul.border,
 ol.border {
     background: #fff;
-    border: 1px solid rgb(210, 213, 214);
-    border-radius: 5px;
+    border: 0.0625rem solid rgb(210, 213, 214);
+    border-radius: 0.3125rem;
 }
 
 ul.num,
@@ -35,8 +35,8 @@ ol.num>li a:first-child:before {
     overflow: hidden;
     position: relative;
     text-decoration: none;
-    padding: 8px 6px;
-    border-bottom: 1px dotted #cfcfcf;
+    padding: 0.5rem 0.375rem;
+    border-bottom: 0.0625rem dotted #cfcfcf;
     -webkit-transition: all 0.2s linear;
     -moz-transition: all 0.2s linear;
     -o-transition: all 0.2s linear;
@@ -66,16 +66,16 @@ ol.num>li a:first-child:before {
 .vertical_menu em {
     font-size: 0.7em;
     background: #ea4f35;
-    padding: 3px 5px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
+    padding: 0.1875rem 0.3125rem;
+    -webkit-border-radius: 0.625rem;
+    -moz-border-radius: 0.625rem;
+    border-radius: 0.625rem;
     font-style: normal;
     color: #fff;
-    margin-top: 17px;
-    margin-right: 15px;
-    line-height: 10px;
-    height: 10px;
+    margin-top: 1.0625rem;
+    margin-right: 0.9375rem;
+    line-height: 0.625rem;
+    height: 0.625rem;
     float: right;
 }
 

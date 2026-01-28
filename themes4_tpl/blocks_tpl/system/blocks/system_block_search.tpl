@@ -10,7 +10,7 @@
     </form>
 
     <p class="text-right">
-        <a href="<{$xoops_url}>/search.php" title="<{$block.lang_advsearch}>">
+        <a href="<{$xoops_url}>/search.php">
             <{$block.lang_advsearch}>
         </a>
     </p>

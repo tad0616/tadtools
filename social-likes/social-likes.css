@@ -1,18 +1,18 @@
 .share-buttons {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 0.625rem;
 }
 
 .share-buttons button {
     border: none;
     color: white;
-    padding: 2px;
+    padding: 0.125rem;
     cursor: pointer;
     border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    font-size: 20px;
+    width: 2rem;
+    height: 2rem;
+    font-size: 1.25rem;
     transition: opacity 0.3s;
 }
 
