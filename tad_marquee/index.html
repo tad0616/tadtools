@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TadMarquee v2.0.7 使用說明</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Segoe UI', 'Noto Sans TC', sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      color: #1e1e2e;
+      background: #f5f5f7;
+    }
+
+    /* ── Layout ── */
+    .page-wrap {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      width: 230px;
+      min-width: 230px;
+      background: #1a1a2e;
+      color: #cdd6f4;
+      overflow-y: auto;
+      padding: 24px 0 40px;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar-logo {
+      padding: 0 20px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 12px;
+    }
+    .sidebar-logo h1 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #cba6f7;
+      letter-spacing: 0.5px;
+    }
+    .sidebar-logo .version {
+      font-size: 12px;
+      color: #a6adc8;
+      margin-top: 2px;
+    }
+    .sidebar nav a {
+      display: block;
+      padding: 7px 20px;
+      color: #a6adc8;
+      text-decoration: none;
+      font-size: 13px;
+      border-left: 3px solid transparent;
+      transition: all 0.2s;
+    }
+    .sidebar nav a:hover,
+    .sidebar nav a.active {
+      color: #cba6f7;
+      border-left-color: #cba6f7;
+      background: rgba(203,166,247,0.08);
+    }
+    .sidebar nav .nav-group {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #585b70;
+      padding: 16px 20px 4px;
+    }
+
+    /* ── Main ── */
+    .main {
+      flex: 1;
+      min-width: 0;
+      padding: 40px 48px 80px;
+      max-width: 960px;
+    }
+
+    /* ── Section ── */
+    .section {
+      margin-bottom: 64px;
+      scroll-margin-top: 24px;
+    }
+    .section-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: #1e1e2e;
+      border-bottom: 3px solid #cba6f7;
+      padding-bottom: 8px;
+      margin-bottom: 24px;
+    }
+    .sub-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: #313244;
+      margin: 28px 0 12px;
+    }
+    p { margin-bottom: 12px; color: #45475a; }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+      border-radius: 16px;
+      padding: 40px 48px;
+      margin-bottom: 48px;
+      color: #fff;
+    }
+    .hero h2 { font-size: 32px; font-weight: 800; margin-bottom: 8px; }
+    .hero p  { color: rgba(255,255,255,0.75); font-size: 15px; margin: 0; }
+    .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 12px;
+      color: #fff;
+    }
+
+    /* ── Demo Marquee ── */
+    .demo-wrap {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .demo-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #888;
+      padding: 8px 14px;
+      background: #f8f8f8;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .demo-area { padding: 16px; }
+
+    /* 跑馬燈容器 */
+    .mq-h {
+      width: 100%;
+      height: 44px;
+      background: #1a1a2e;
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+    .mq-v {
+      width: 100%;
+      height: 110px;
+      background: #0f3460;
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ── Tables ── */
+    .tbl-wrap { overflow-x: auto; margin-bottom: 20px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+    th {
+      background: #1a1a2e;
+      color: #cba6f7;
+      text-align: left;
+      padding: 10px 14px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    td {
+      padding: 9px 14px;
+      border-bottom: 1px solid #e8e8ee;
+      color: #45475a;
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: #fafafa; }
+    code {
+      font-family: 'Cascadia Code', 'Fira Code', monospace;
+      font-size: 12.5px;
+      background: #eff1f5;
+      color: #d20f39;
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+
+    /* ── Code Block ── */
+    pre {
+      background: #1e1e2e;
+      color: #cdd6f4;
+      border-radius: 10px;
+      padding: 20px 24px;
+      overflow-x: auto;
+      font-size: 13px;
+      line-height: 1.65;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    pre code {
+      background: none;
+      color: inherit;
+      padding: 0;
+      font-size: inherit;
+    }
+    .kw  { color: #cba6f7; }
+    .str { color: #a6e3a1; }
+    .cm  { color: #585b70; font-style: italic; }
+    .fn  { color: #89b4fa; }
+    .num { color: #fab387; }
+    .key { color: #f38ba8; }
+
+    /* ── Position Diagram ── */
+    .pos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .pos-card {
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .pos-card-title {
+      background: #f0f0f5;
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #555;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .pos-diagram {
+      font-family: monospace;
+      font-size: 12px;
+      padding: 14px 16px;
+      color: #333;
+      line-height: 1.8;
+      background: #fafafa;
+    }
+    .pos-btn {
+      display: inline-block;
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      line-height: 22px;
+      text-align: center;
+      font-size: 10px;
+    }
+    .pos-btn-rect {
+      display: inline-block;
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      border-radius: 0;
+      width: 28px;
+      height: 20px;
+      line-height: 20px;
+      text-align: center;
+      font-size: 10px;
+      vertical-align: middle;
+    }
+    .mq-band {
+      display: inline-block;
+      background: #1a1a2e;
+      color: #fff;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 3px;
+      vertical-align: middle;
+    }
+
+    /* ── DOM Tree ── */
+    .dom-tree {
+      background: #1e1e2e;
+      color: #cdd6f4;
+      border-radius: 10px;
+      padding: 20px 24px;
+      font-family: 'Cascadia Code', monospace;
+      font-size: 12.5px;
+      line-height: 1.9;
+      overflow-x: auto;
+      margin-bottom: 20px;
+    }
+    .dom-tag   { color: #89b4fa; }
+    .dom-cls   { color: #a6e3a1; }
+    .dom-attr  { color: #fab387; }
+    .dom-cm    { color: #585b70; font-style: italic; }
+
+    /* ── Keyboard Table ── */
+    kbd {
+      display: inline-block;
+      background: #e8e8ee;
+      border: 1px solid #ccc;
+      border-bottom-width: 2px;
+      border-radius: 4px;
+      padding: 1px 7px;
+      font-size: 12px;
+      font-family: monospace;
+      color: #333;
+    }
+
+    /* ── WCAG Table ── */
+    .badge-level {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .level-aaa { background: #cba6f7; color: #1e1e2e; }
+    .level-aa  { background: #89b4fa; color: #1e1e2e; }
+    .level-a   { background: #a6e3a1; color: #1e1e2e; }
+
+    /* ── Changelog ── */
+    .changelog-item {
+      display: flex;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid #e8e8ee;
+    }
+    .changelog-item:last-child { border-bottom: none; }
+    .cl-ver {
+      min-width: 72px;
+      font-weight: 700;
+      font-size: 13px;
+      color: #cba6f7;
+      padding-top: 2px;
+    }
+    .cl-body { flex: 1; }
+    .cl-body ul { padding-left: 18px; color: #45475a; font-size: 13.5px; }
+    .cl-body li { margin-bottom: 4px; }
+
+    /* ── Callout ── */
+    .callout {
+      border-left: 4px solid #cba6f7;
+      background: #f5f0ff;
+      border-radius: 0 8px 8px 0;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      font-size: 13.5px;
+      color: #45475a;
+    }
+    .callout.info  { border-color: #89b4fa; background: #eff6ff; }
+    .callout.warn  { border-color: #fab387; background: #fff7f0; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .main { padding: 24px 20px 60px; }
+      .hero { padding: 28px 24px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- ══ Sidebar ══════════════════════════════════════════════ -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <h1>TadMarquee</h1>
+      <div class="version">v2.0.7 · WCAG AAA</div>
+    </div>
+    <nav>
+      <div class="nav-group">入門</div>
+      <a href="#intro">簡介</a>
+      <a href="#quickstart">快速開始</a>
+
+      <div class="nav-group">設定</div>
+      <a href="#options-basic">基本選項</a>
+      <a href="#options-items">項目格式</a>
+      <a href="#options-style">樣式選項</a>
+      <a href="#options-a11y">無障礙選項</a>
+      <a href="#options-responsive">響應式選項</a>
+
+      <div class="nav-group">暫停按鈕</div>
+      <a href="#pause-options">按鈕選項</a>
+      <a href="#pause-position">位置設定</a>
+      <a href="#pause-icon">圖示邏輯</a>
+
+      <div class="nav-group">API</div>
+      <a href="#api-control">播放控制</a>
+      <a href="#api-update">內容更新</a>
+      <a href="#api-style">樣式更新</a>
+      <a href="#api-query">查詢狀態</a>
+      <a href="#api-callback">回呼函式</a>
+
+      <div class="nav-group">參考</div>
+      <a href="#keyboard">鍵盤操作</a>
+      <a href="#wcag">無障礙說明</a>
+      <a href="#dom">DOM 結構</a>
+      <a href="#examples">完整範例</a>
+      <a href="#changelog">版本記錄</a>
+    </nav>
+  </aside>
+
+  <!-- ══ Main ══════════════════════════════════════════════════ -->
+  <main class="main">
+
+    <!-- Hero -->
+    <div class="hero">
+      <h2>TadMarquee</h2>
+      <p>符合 WCAG 2.1 / 2.3 AAA 無障礙標準的跑馬燈套件</p>
+      <div class="badge-row">
+        <span class="badge">📦 v2.0.7</span>
+        <span class="badge">♿ WCAG AAA</span>
+        <span class="badge">⌨️ 鍵盤友善</span>
+        <span class="badge">📱 響應式</span>
+        <span class="badge">🔁 無縫循環</span>
+        <span class="badge">⏸ 暫停按鈕</span>
+      </div>
+    </div>
+
+    <!-- ── 1. 簡介 ── -->
+    <section class="section" id="intro">
+      <h2 class="section-title">簡介</h2>
+      <p>TadMarquee 是一套純 JavaScript 跑馬燈套件，無需任何外部依賴，支援四方向捲動、無縫循環播放，並完整符合 WCAG AAA 無障礙標準。</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>特色</th><th>說明</th></tr></thead>
+          <tbody>
+            <tr><td>四方向捲動</td><td>left、right、up、down</td></tr>
+            <tr><td>無縫循環</td><td>第 N 則後自動接回第 1 則，不跳動</td></tr>
+            <tr><td>暫停按鈕</td><td>6 種位置，含 input-group 並排模式</td></tr>
+            <tr><td>鍵盤導航</td><td>方向鍵、Home/End、Space/Enter、Escape</td></tr>
+            <tr><td>螢幕閱讀器</td><td>ARIA 標籤、即時播報、複本隱藏</td></tr>
+            <tr><td>響應式速度</td><td>依螢幕寬度自動調整捲動速度</td></tr>
+            <tr><td>reduced-motion</td><td>尊重系統動畫偏好設定</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── 2. 快速開始 ── -->
+    <section class="section" id="quickstart">
+      <h2 class="section-title">快速開始</h2>
+
+      <h3 class="sub-title">引入檔案</h3>
+      <pre><code><span class="cm">&lt;!-- CSS --&gt;</span>
+<span class="key">&lt;link</span> <span class="fn">rel</span>=<span class="str">"stylesheet"</span> <span class="fn">href</span>=<span class="str">"tad_marquee.css"</span><span class="key">&gt;</span>
+<span class="cm">&lt;!-- JS --&gt;</span>
+<span class="key">&lt;script</span> <span class="fn">src</span>=<span class="str">"tad_marquee.js"</span><span class="key">&gt;&lt;/script&gt;</span></code></pre>
+
+      <h3 class="sub-title">HTML 容器</h3>
+      <pre><code><span class="key">&lt;div</span> <span class="fn">id</span>=<span class="str">"my-marquee"</span> <span class="fn">style</span>=<span class="str">"width:100%; height:44px;"</span><span class="key">&gt;&lt;/div&gt;</span></code></pre>
+
+      <h3 class="sub-title">初始化</h3>
+      <pre><code><span class="kw">const</span> marquee = <span class="kw">new</span> <span class="fn">TadMarquee</span>(<span class="str">'my-marquee'</span>, {
+direction: <span class="str">'left'</span>,
+speed: <span class="num">60</span>,
+items: [
+  { type: <span class="str">'text'</span>, content: <span class="str">'第一則公告'</span> },
+  { type: <span class="str">'text'</span>, content: <span class="str">'第二則公告'</span> },
+  { type: <span class="str">'text'</span>, content: <span class="str">'第三則公告'</span> }
+]
+});</code></pre>
+
+      <h3 class="sub-title">即時展示</h3>
+      <div class="demo-wrap">
+        <div class="demo-label">水平左捲 · 右側暫停按鈕</div>
+        <div class="demo-area">
+          <div id="demo-h" class="mq-h"></div>
+        </div>
+      </div>
+      <div class="demo-wrap">
+        <div class="demo-label">垂直向上捲 · 左側暫停按鈕</div>
+        <div class="demo-area">
+          <div id="demo-v" class="mq-v"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 3. 基本選項 ── -->
+    <section class="section" id="options-basic">
+      <h2 class="section-title">基本選項</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>選項</th><th>型別</th><th>預設值</th><th>說明</th></tr></thead>
+          <tbody>
+            <tr><td><code>direction</code></td><td>string</td><td><code>'right'</code></td><td>捲動方向：<code>left</code>、<code>right</code>、<code>up</code>、<code>down</code></td></tr>
+            <tr><td><code>speed</code></td><td>number</td><td><code>50</code></td><td>捲動速度（px/秒）</td></tr>
+            <tr><td><code>items</code></td><td>array</td><td><code>[]</code></td><td>內容項目陣列</td></tr>
+            <tr><td><code>gap</code></td><td>number</td><td><code>20</code></td><td>項目間距（px）</td></tr>
+            <tr><td><code>loop</code></td><td>boolean</td><td><code>true</code></td><td>是否循環播放</td></tr>
+            <tr><td><code>autoStart</code></td><td>boolean</td><td><code>true</code></td><td>是否自動開始</td></tr>
+            <tr><td><code>className</code></td><td>string</td><td><code>''</code></td><td>附加至容器的 CSS 類別</td></tr>
+            <tr><td><code>containerStyle</code></td><td>string|object</td><td><code>{}</code></td><td>容器行內樣式</td></tr>
+            <tr><td><code>pauseOnHover</code></td><td>boolean</td><td><code>true</code></td><td>滑鼠移入時暫停</td></tr>
+            <tr><td><code>pauseOnFocus</code></td><td>boolean</td><td><code>true</code></td><td>鍵盤聚焦時暫停</td></tr>
+            <tr><td><code>keyboardControl</code></td><td>boolean</td><td><code>true</code></td><td>啟用鍵盤控制</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── 4. 項目格式 ── -->
+    <section class="section" id="options-items">
+      <h2 class="section-title">項目格式</h2>
+
+      <h3 class="sub-title">文字</h3>
+      <pre><code>{ type: <span class="str">'text'</span>, content: <span class="str">'公告內容'</span>,
+style: <span class="str">'color:red; font-weight:bold'</span>, <span class="cm">// 可選</span>
+className: <span class="str">'my-class'</span> }             <span class="cm">// 可選</span></code></pre>
+
+      <h3 class="sub-title">圖片</h3>
+      <pre><code>{ type: <span class="str">'image'</span>, content: <span class="str">'https://example.com/img.png'</span>,
+alt: <span class="str">'圖片說明'</span>, text: <span class="str">'附加文字'</span> }</code></pre>
+
+      <h3 class="sub-title">HTML</h3>
+      <pre><code>{ type: <span class="str">'html'</span>, content: <span class="str">'&lt;strong&gt;重要&lt;/strong&gt; 公告'</span> }</code></pre>
+
+      <h3 class="sub-title">含連結（任何類型皆可加）</h3>
+      <pre><code>{ type: <span class="str">'text'</span>, content: <span class="str">'點我前往'</span>,
+link: <span class="str">'https://example.com'</span>,
+target: <span class="str">'_blank'</span>,
+rel: <span class="str">'noopener noreferrer'</span>,
+ariaLabel: <span class="str">'前往範例網站（另開新視窗）'</span> }</code></pre>
+    </section>
+
+    <!-- ── 5. 樣式選項 ── -->
+    <section class="section" id="options-style">
+      <h2 class="section-title">樣式選項</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>選項</th><th>型別</th><th>說明</th></tr></thead>
+          <tbody>
+            <tr><td><code>itemStyle</code></td><td>string|object</td><td>全域項目行內樣式，支援 CSS 字串或 JS 物件</td></tr>
+            <tr><td><code>itemClassName</code></td><td>string</td><td>全域項目 CSS 類別</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout info">
+        💡 個別項目的 <code>style</code> / <code>className</code> 會<strong>疊加</strong>於全域設定之上，不會覆蓋。
+      </div>
+      <pre><code><span class="cm">// CSS 字串格式</span>
+itemStyle: <span class="str">'color:#fff; font-size:15px; padding:0 8px'</span>
+
+<span class="cm">// JS 物件格式</span>
+itemStyle: { color: <span class="str">'#fff'</span>, fontSize: <span class="str">'15px'</span>, padding: <span class="str">'0 8px'</span> }</code></pre>
+    </section>
+
+    <!-- ── 6. 無障礙選項 ── -->
+    <section class="section" id="options-a11y">
+      <h2 class="section-title">無障礙選項</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>選項</th><th>型別</th><th>預設值</th><th>說明</th></tr></thead>
+          <tbody>
+            <tr><td><code>ariaLabel</code></td><td>string</td><td><code>'跑馬燈內容'</code></td><td>容器的 <code>aria-label</code></td></tr>
+            <tr><td><code>ariaLive</code></td><td>string</td><td><code>'polite'</code></td><td><code>aria-live</code> 屬性值</td></tr>
+            <tr><td><code>announceItems</code></td><td>boolean</td><td><code>true</code></td><td>是否向螢幕閱讀器播報操作狀態</td></tr>
+            <tr><td><code>respectReducedMotion</code></td><td>boolean</td><td><code>true</code></td><td>尊重系統 <code>prefers-reduced-motion</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── 7. 響應式選項 ── -->
+    <section class="section" id="options-responsive">
+      <h2 class="section-title">響應式選項</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>斷點</th><th>螢幕寬度</th><th>速度倍率</th></tr></thead>
+          <tbody>
+            <tr><td><code>mobile</code></td><td>&lt; 480px</td><td>× 0.6</td></tr>
+            <tr><td><code>tablet</code></td><td>&lt; 768px</td><td>× 0.8</td></tr>
+            <tr><td><code>desktop</code></td><td>&lt; 1024px</td><td>× 1.0</td></tr>
+            <tr><td><code>large</code></td><td>≥ 1024px</td><td>× 1.2</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <pre><code>responsiveBreakpoints: {
+mobile:  <span class="num">480</span>,
+tablet:  <span class="num">768</span>,
+desktop: <span class="num">1024</span>
+}</code></pre>
+    </section>
+
+    <!-- ── 8. 暫停按鈕選項 ── -->
+    <section class="section" id="pause-options">
+      <h2 class="section-title">暫停按鈕選項</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>選項</th><th>型別</th><th>預設值</th><th>說明</th></tr></thead>
+          <tbody>
+            <tr><td><code>showPauseButton</code></td><td>boolean</td><td><code>true</code></td><td>是否顯示暫停按鈕</td></tr>
+            <tr><td><code>pauseButtonPosition</code></td><td>string</td><td><code>'bottom-right'</code></td><td>按鈕位置（見下方）</td></tr>
+            <tr><td><code>pauseButtonLabel.pause</code></td><td>string</td><td><code>'暫停跑馬燈'</code></td><td>播放中時的 aria-label</td></tr>
+            <tr><td><code>pauseButtonLabel.resume</code></td><td>string</td><td><code>'繼續跑馬燈'</code></td><td>暫停中時的 aria-label</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── 9. 位置設定 ── -->
+    <section class="section" id="pause-position">
+      <h2 class="section-title">位置設定</h2>
+
+      <h3 class="sub-title">角落模式（浮動圓形按鈕）</h3>
+      <p>按鈕以 <code>position: absolute</code> 疊加在跑馬燈內部四個角落，不影響容器尺寸。</p>
+      <div class="pos-grid">
+        <div class="pos-card">
+          <div class="pos-card-title">top-left / top-right</div>
+          <div class="pos-diagram">
+┌─<span class="pos-btn">▐▐</span>──────────────────<span class="pos-btn">▐▐</span>─┐<br>
+│ &nbsp;&nbsp;<span class="mq-band">跑馬燈內容捲動中...</span>&nbsp;&nbsp; │<br>
+│ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; │<br>
+└────────────────────────────┘
+          </div>
+        </div>
+        <div class="pos-card">
+          <div class="pos-card-title">bottom-left / bottom-right</div>
+          <div class="pos-diagram">
+┌────────────────────────────┐<br>
+│ &nbsp;&nbsp;<span class="mq-band">跑馬燈內容捲動中...</span>&nbsp;&nbsp; │<br>
+│ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; │<br>
+└─<span class="pos-btn">▐▐</span>──────────────────<span class="pos-btn">▐▐</span>─┘
+          </div>
+        </div>
+      </div>
+
+      <h3 class="sub-title">並排模式（input-group 矩形按鈕）</h3>
+      <p>在容器外自動插入 <code>.tad-marquee-root</code> flex 外層，按鈕與跑馬燈並排，高度自動撐滿。</p>
+      <div class="pos-grid">
+        <div class="pos-card">
+          <div class="pos-card-title">left</div>
+          <div class="pos-diagram">
+┌──────┬──────────────────────┐<br>
+│<span class="pos-btn-rect">▐▐</span>&nbsp;&nbsp;&nbsp;│<span class="mq-band">跑馬燈內容捲動中...</span>&nbsp;&nbsp;│<br>
+└──────┴──────────────────────┘
+          </div>
+        </div>
+        <div class="pos-card">
+          <div class="pos-card-title">right</div>
+          <div class="pos-diagram">
+┌──────────────────────┬──────┐<br>
+│<span class="mq-band">跑馬燈內容捲動中...</span>&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;<span class="pos-btn-rect">▐▐</span>│<br>
+└──────────────────────┴──────┘
+          </div>
+        </div>
+      </div>
+      <div class="callout warn">
+        ⚠️ 並排模式會在原始容器外自動插入 <code>.tad-marquee-root</code>，呼叫 <code>destroy()</code> 時會自動還原 DOM 結構。
+      </div>
+    </section>
+
+    <!-- ── 10. 圖示邏輯 ── -->
+    <section class="section" id="pause-icon">
+      <h2 class="section-title">圖示切換邏輯</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>狀態</th><th>圖示</th><th>aria-label</th><th>aria-pressed</th><th>背景色</th></tr></thead>
+          <tbody>
+            <tr><td>播放中</td><td>▐▐ 暫停</td><td><code>pauseButtonLabel.pause</code></td><td><code>false</code></td><td>半透明黑</td></tr>
+            <tr><td>暫停中</td><td>▶ 播放</td><td><code>pauseButtonLabel.resume</code></td><td><code>true</code></td><td>深綠色</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── 11. API 播放控制 ── -->
+    <section class="section" id="api-control">
+      <h2 class="section-title">API：播放控制</h2>
+      <p>所有方法皆回傳 <code>this</code>，支援鏈式呼叫。</p>
+      <pre><code>marquee.<span class="fn">start</span>()    <span class="cm">// 開始播放</span>
+marquee.<span class="fn">stop</span>()     <span class="cm">// 停止播放並重置狀態</span>
+marquee.<span class="fn">pause</span>()    <span class="cm">// 暫停（保持目前位置）</span>
+marquee.<span class="fn">resume</span>()   <span class="cm">// 從暫停處繼續</span></code></pre>
+    </section>
+
+    <!-- ── 12. API 內容更新 ── -->
+    <section class="section" id="api-update">
+      <h2 class="section-title">API：內容更新</h2>
+      <pre><code><span class="cm">// 更換所有項目</span>
+marquee.<span class="fn">updateItems</span>([
+{ type: <span class="str">'text'</span>, content: <span class="str">'新公告一'</span> },
+{ type: <span class="str">'text'</span>, content: <span class="str">'新公告二'</span> }
+]);
+
+<span class="cm">// 修改捲動速度</span>
+marquee.<span class="fn">setSpeed</span>(<span class="num">80</span>);
+
+<span class="cm">// 修改捲動方向（會重建 DOM 結構）</span>
+marquee.<span class="fn">changeDirection</span>(<span class="str">'up'</span>);</code></pre>
+    </section>
+
+    <!-- ── 13. API 樣式更新 ── -->
+    <section class="section" id="api-style">
+      <h2 class="section-title">API：樣式更新</h2>
+      <pre><code><span class="cm">// 合併更新（預設）</span>
+marquee.<span class="fn">setItemStyle</span>(<span class="str">'color:red; font-size:18px'</span>);
+marquee.<span class="fn">setItemStyle</span>({ color: <span class="str">'red'</span> });
+
+<span class="cm">// 完全取代</span>
+marquee.<span class="fn">setItemStyle</span>({ color: <span class="str">'blue'</span> }, <span class="kw">false</span>);
+
+<span class="cm">// 更換 CSS 類別</span>
+marquee.<span class="fn">setItemClassName</span>(<span class="str">'new-class'</span>, <span class="str">'old-class'</span>);</code></pre>
+    </section>
+
+    <!-- ── 14. API 查詢 ── -->
+    <section class="section" id="api-query">
+      <h2 class="section-title">API：查詢狀態</h2>
+      <pre><code><span class="cm">// 取得所有設定</span>
+<span class="kw">const</span> opts = marquee.<span class="fn">getOptions</span>();
+
+<span class="cm">// 取得執行狀態</span>
+<span class="kw">const</span> status = marquee.<span class="fn">getStatus</span>();
+<span class="cm">// 回傳：{
+//   isRunning, isPaused, isPausedByUser,
+//   direction, speed, itemCount, isSingleItem,
+//   prefersReducedMotion, currentBreakpoint,
+//   loopSize, inlineMode
+// }</span>
+
+<span class="cm">// 銷毀並還原 DOM</span>
+marquee.<span class="fn">destroy</span>();</code></pre>
+    </section>
+
+    <!-- ── 15. 回呼函式 ── -->
+    <section class="section" id="api-callback">
+      <h2 class="section-title">回呼函式</h2>
+      <pre><code><span class="kw">new</span> <span class="fn">TadMarquee</span>(<span class="str">'my-marquee'</span>, {
+<span class="fn">onStart</span>:            () => console.<span class="fn">log</span>(<span class="str">'開始播放'</span>),
+<span class="fn">onStop</span>:             () => console.<span class="fn">log</span>(<span class="str">'停止播放'</span>),
+<span class="fn">onPause</span>:            () => console.<span class="fn">log</span>(<span class="str">'已暫停'</span>),
+<span class="fn">onResume</span>:           () => console.<span class="fn">log</span>(<span class="str">'已繼續'</span>),
+<span class="fn">onDirectionChange</span>:  (dir) => console.<span class="fn">log</span>(<span class="str">'方向：'</span>, dir),
+<span class="fn">onBreakpointChange</span>: (bp)  => console.<span class="fn">log</span>(<span class="str">'斷點：'</span>, bp)
+});</code></pre>
+    </section>
+
+    <!-- ── 16. 鍵盤操作 ── -->
+    <section class="section" id="keyboard">
+      <h2 class="section-title">鍵盤操作</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>按鍵</th><th>功能</th></tr></thead>
+          <tbody>
+            <tr><td><kbd>Tab</kbd></td><td>將焦點移至暫停按鈕或內部連結</td></tr>
+            <tr><td><kbd>Space</kbd> / <kbd>Enter</kbd></td><td>切換暫停／繼續（焦點在容器上時）</td></tr>
+            <tr><td><kbd>→</kbd> / <kbd>↓</kbd></td><td>聚焦下一個項目</td></tr>
+            <tr><td><kbd>←</kbd> / <kbd>↑</kbd></td><td>聚焦上一個項目</td></tr>
+            <tr><td><kbd>Home</kbd></td><td>聚焦第一個項目</td></tr>
+            <tr><td><kbd>End</kbd></td><td>聚焦最後一個項目</td></tr>
+            <tr><td><kbd>Escape</kbd></td><td>移除焦點，離開跑馬燈</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout info">
+        💡 焦點移入暫停按鈕時，<kbd>Enter</kbd>/<kbd>Space</kbd> 由瀏覽器原生行為觸發按鈕點擊，不會與容器層的鍵盤事件衝突。
+      </div>
+    </section>
+
+    <!-- ── 17. 無障礙說明 ── -->
+    <section class="section" id="wcag">
+      <h2 class="section-title">無障礙設計說明</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>WCAG 準則</th><th>等級</th><th>實作方式</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>1.3.1 資訊與關係</td>
+              <td><span class="badge-level level-a">A</span></td>
+              <td><code>role="region"</code>、<code>role="list"</code>、<code>role="listitem"</code>、<code>aria-label</code></td>
+            </tr>
+            <tr>
+              <td>1.4.3 色彩對比</td>
+              <td><span class="badge-level level-aa">AA</span></td>
+              <td>暫停按鈕白色圖示對半透明黑底，對比度 &gt; 4.5:1</td>
+            </tr>
+            <tr>
+              <td>2.1.1 鍵盤</td>
+              <td><span class="badge-level level-a">A</span></td>
+              <td>所有功能均可透過鍵盤操作，無滑鼠陷阱</td>
+            </tr>
+            <tr>
+              <td>2.2.2 暫停、停止、隱藏</td>
+              <td><span class="badge-level level-a">A</span></td>
+              <td>提供可見暫停按鈕，使用者可隨時暫停捲動</td>
+            </tr>
+            <tr>
+              <td>2.3.3 動畫（三閃或低於閾值）</td>
+              <td><span class="badge-level level-aaa">AAA</span></td>
+              <td>尊重 <code>prefers-reduced-motion</code>，偵測到時自動暫停</td>
+            </tr>
+            <tr>
+              <td>2.4.11 焦點外觀</td>
+              <td><span class="badge-level level-aa">AA</span></td>
+              <td>焦點時顯示 3px 黃色外框 + 光暈效果</td>
+            </tr>
+            <tr>
+              <td>2.5.5 目標尺寸</td>
+              <td><span class="badge-level level-aaa">AAA</span></td>
+              <td>並排按鈕 40px 寬、角落按鈕 32px，觸控友善</td>
+            </tr>
+            <tr>
+              <td>4.1.2 名稱、角色、值</td>
+              <td><span class="badge-level level-a">A</span></td>
+              <td><code>aria-pressed</code>、<code>aria-label</code> 動態更新反映按鈕狀態</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 class="sub-title">螢幕閱讀器行為</h3>
+      <ul style="padding-left:20px; color:#45475a; line-height:2;">
+        <li>複本項目（無縫循環用）統一設定 <code>aria-hidden="true"</code> 及 <code>tabindex="-1"</code></li>
+        <li>鍵盤導航僅能聚焦<strong>原始組</strong>的項目，不會重複播報</li>
+        <li>操作（暫停、繼續、方向變更）透過 <code>role="status"</code> 的隱藏元素即時播報</li>
+      </ul>
+    </section>
+
+    <!-- ── 18. DOM 結構 ── -->
+    <section class="section" id="dom">
+      <h2 class="section-title">DOM 結構說明</h2>
+
+      <h3 class="sub-title">角落模式</h3>
+      <div class="dom-tree">
+<span class="dom-tag">#my-marquee</span><span class="dom-cls">.tad-marquee-container</span>  <span class="dom-cm">← 原始容器（position: relative）</span>
+├── <span class="dom-tag">div</span><span class="dom-cls">.tad-marquee-wrapper</span>        <span class="dom-cm">← 捲動內容（position: absolute）</span>
+│     ├── <span class="dom-tag">div</span><span class="dom-cls">.tad-marquee-item</span>      <span class="dom-cm">← 原始項目（可被 AT 讀取）</span>
+│     ├── <span class="dom-tag">div</span><span class="dom-cls">.tad-marquee-gap</span>
+│     ├── <span class="dom-tag">div</span><span class="dom-cls">.tad-marquee-item</span>
+│     ├── <span class="dom-tag">div</span><span class="dom-cls">.tad-marquee-gap</span>
+│     ├── <span class="dom-tag">div</span><span class="dom-cls">.tad-marquee-item</span> <span class="dom-attr">aria-hidden="true"</span>  <span class="dom-cm">← 複本</span>
+│     └── <span class="dom-cm">...</span>
+└── <span class="dom-tag">button</span><span class="dom-cls">.tad-marquee-pause-btn</span>   <span class="dom-cm">← 浮動圓形按鈕（position: absolute）</span>
+      </div>
+
+      <h3 class="sub-title">並排模式（left / right）</h3>
+      <div class="dom-tree">
+<span class="dom-tag">div</span><span class="dom-cls">.tad-marquee-root.tad-marquee-inline</span>  <span class="dom-cm">← 自動插入外層（display: flex）</span>
+├── <span class="dom-tag">button</span><span class="dom-cls">.tad-marquee-pause-btn</span>  <span class="dom-cm">← 左側按鈕（position: left 時）</span>
+├── <span class="dom-tag">#my-marquee</span><span class="dom-cls">.tad-marquee-container</span>  <span class="dom-cm">← 原始容器（flex: 1）</span>
+│     └── <span class="dom-tag">div</span><span class="dom-cls">.tad-marquee-wrapper</span>
+│           └── <span class="dom-cm">...（同上）</span>
+└── <span class="dom-tag">button</span><span class="dom-cls">.tad-marquee-pause-btn</span>  <span class="dom-cm">← 右側按鈕（position: right 時）</span>
+      </div>
+    </section>
+
+    <!-- ── 19. 完整範例 ── -->
+    <section class="section" id="examples">
+      <h2 class="section-title">完整範例</h2>
+
+      <h3 class="sub-title">範例一：水平左捲 + 右側暫停按鈕</h3>
+      <pre><code><span class="key">&lt;div</span> <span class="fn">id</span>=<span class="str">"marquee-h"</span> <span class="fn">style</span>=<span class="str">"height:44px; background:#1a1a2e;"</span><span class="key">&gt;&lt;/div&gt;</span>
+<span class="key">&lt;script&gt;</span>
+<span class="kw">new</span> <span class="fn">TadMarquee</span>(<span class="str">'marquee-h'</span>, {
+direction: <span class="str">'left'</span>,
+speed: <span class="num">60</span>,
+pauseButtonPosition: <span class="str">'right'</span>,
+itemStyle: <span class="str">'color:#fff; font-size:15px; padding:0 8px'</span>,
+items: [
+  { type: <span class="str">'text'</span>, content: <span class="str">'📢 系統將於今晚 23:00 進行維護'</span> },
+  { type: <span class="str">'text'</span>, content: <span class="str">'🎉 新功能上線：支援深色模式'</span> },
+  { type: <span class="str">'text'</span>, content: <span class="str">'📌 請更新您的密碼以確保帳號安全'</span> },
+  { type: <span class="str">'text'</span>, content: <span class="str">'🔔 活動報名截止日期：2026/03/31'</span> },
+  { type: <span class="str">'text'</span>, content: <span class="str">'✅ 服務恢復正常，感謝您的耐心等候'</span> }
+]
+});
+<span class="key">&lt;/script&gt;</span></code></pre>
+
+      <h3 class="sub-title">範例二：垂直向上捲 + 左側暫停按鈕</h3>
+      <pre><code><span class="key">&lt;div</span> <span class="fn">id</span>=<span class="str">"marquee-v"</span> <span class="fn">style</span>=<span class="str">"height:120px; background:#0f3460;"</span><span class="key">&gt;&lt;/div&gt;</span>
+<span class="key">&lt;script&gt;</span>
+<span class="kw">new</span> <span class="fn">TadMarquee</span>(<span class="str">'marquee-v'</span>, {
+direction: <span class="str">'up'</span>,
+speed: <span class="num">40</span>,
+gap: <span class="num">16</span>,
+pauseButtonPosition: <span class="str">'left'</span>,
+itemStyle: { color: <span class="str">'#e0e0e0'</span>, fontSize: <span class="str">'14px'</span>, padding: <span class="str">'6px 12px'</span> },
+items: [
+  { type: <span class="str">'text'</span>, content: <span class="str">'第一則：超出容器寬度時會自動換行顯示'</span> },
+  { type: <span class="str">'text'</span>, content: <span class="str">'第二則：系統更新通知'</span> },
+  { type: <span class="str">'text'</span>, content: <span class="str">'第三則：活動資訊'</span> },
+  { type: <span class="str">'text'</span>, content: <span class="str">'第四則：重要提醒事項'</span> },
+  { type: <span class="str">'text'</span>, content: <span class="str">'第五則：聯絡客服請撥 0800-000-000'</span> }
+]
+});
+<span class="key">&lt;/script&gt;</span></code></pre>
+
+      <h3 class="sub-title">範例三：含連結 + 角落暫停按鈕 + 回呼</h3>
+      <pre><code><span class="kw">new</span> <span class="fn">TadMarquee</span>(<span class="str">'marquee-link'</span>, {
+direction: <span class="str">'left'</span>,
+pauseButtonPosition: <span class="str">'bottom-right'</span>,
+pauseButtonLabel: { pause: <span class="str">'Pause'</span>, resume: <span class="str">'Play'</span> },
+items: [
+  { type: <span class="str">'text'</span>, content: <span class="str">'🔗 查看最新公告'</span>,
+    link: <span class="str">'https://example.com'</span>,
+    ariaLabel: <span class="str">'查看最新公告（另開新視窗）'</span> },
+  { type: <span class="str">'html'</span>,
+    content: <span class="str">'&lt;span style="color:#ff6b6b"&gt;⚠️ 緊急通知&lt;/span&gt;：請立即更新系統'</span> }
+],
+<span class="fn">onPause</span>:  () => console.<span class="fn">log</span>(<span class="str">'使用者暫停'</span>),
+<span class="fn">onResume</span>: () => console.<span class="fn">log</span>(<span class="str">'使用者繼續'</span>)
+});</code></pre>
+
+      <h3 class="sub-title">範例四：動態更新內容</h3>
+      <pre><code><span class="kw">const</span> marquee = <span class="kw">new</span> <span class="fn">TadMarquee</span>(<span class="str">'my-marquee'</span>, {
+direction: <span class="str">'left'</span>,
+items: [{ type: <span class="str">'text'</span>, content: <span class="str">'初始內容'</span> }]
+});
+
+<span class="cm">// 3 秒後更換內容</span>
+<span class="fn">setTimeout</span>(() => {
+marquee.<span class="fn">updateItems</span>([
+  { type: <span class="str">'text'</span>, content: <span class="str">'更新後的第一則'</span> },
+  { type: <span class="str">'text'</span>, content: <span class="str">'更新後的第二則'</span> }
+]);
+}, <span class="num">3000</span>);
+
+marquee.<span class="fn">setSpeed</span>(<span class="num">100</span>);
+console.<span class="fn">log</span>(marquee.<span class="fn">getStatus</span>());</code></pre>
+    </section>
+
+    <!-- ── 20. 版本記錄 ── -->
+    <section class="section" id="changelog">
+      <h2 class="section-title">版本異動記錄</h2>
+      <div class="changelog-item">
+        <div class="cl-ver">v2.0.7</div>
+        <div class="cl-body"><ul>
+          <li><code>pauseButtonPosition</code> 新增 <code>'left'</code>、<code>'right'</code> 並排模式</li>
+          <li>並排模式自動插入 <code>.tad-marquee-root</code> flex 外層容器</li>
+          <li>並排按鈕改為矩形、高度撐滿、含分隔線，視覺融入 input-group</li>
+          <li><code>destroy()</code> 支援還原並排 DOM 結構</li>
+          <li>新增 <code>isInlineMode()</code> 工具函式，統一判斷並排模式</li>
+        </ul></div>
+      </div>
+      <div class="changelog-item">
+        <div class="cl-ver">v2.0.6</div>
+        <div class="cl-body"><ul>
+          <li>新增浮動暫停按鈕，符合 WCAG 2.3.3 AAA「充足時間」準則</li>
+          <li>支援 <code>top/bottom-left/right</code> 四角落位置</li>
+          <li>圖示動態切換（▐▐ / ▶），<code>aria-pressed</code> 狀態同步</li>
+          <li>焦點樣式：3px 黃色外框 + 光暈</li>
+        </ul></div>

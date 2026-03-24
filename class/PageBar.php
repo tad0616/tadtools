@@ -74,7 +74,7 @@ class PageBar
     // 目前頁數顏色
     public $act_color = '#990000';
     public $query_str; // 存放 URL 參數列
-    //指定頁面
+                       //指定頁面
     public $to_page;
     //其他連結參數
     public $url_other;
@@ -101,7 +101,7 @@ class PageBar
 
     public function init()
     {
-        $this->used_query = array($this->url_page);
+        $this->used_query = [$this->url_page];
         $this->query_str  = $this->processQuery($this->used_query);
         $this->glue       = ('' == $this->query_str) ? '?' : '&';
         $this->limit      = empty($this->limit) ? 10 : $this->limit;
@@ -122,7 +122,7 @@ class PageBar
         $QUERY_STRING = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '';
         // 使用 parse_str() 來解析查詢字符串
         parse_str($QUERY_STRING, $query_vars);
-        $filtered_vars = array();
+        $filtered_vars = [];
 
         foreach ($query_vars as $key => $value) {
             // 檢查鍵是否在 used_query 中
@@ -188,11 +188,11 @@ class PageBar
 
         $bar_center = '';
         for ($i = $start; $i <= $end; $i++) {
-            $active  = $i == $this->current ? ' active' : '';
+            $active       = $i == $this->current ? ' active' : '';
             $aria_current = $i == $this->current ? ' aria-current="page"' : '';
-            $sr_only = $i == $this->current ? '<span class="sr-only">(' . _TAD_CURRENT_PAGE . ')</span>' : '';
+            $sr_only      = $i == $this->current ? '<span class="sr-only">(' . _TAD_CURRENT_PAGE . ')</span>' : '';
             $bar_center .= sprintf(
-                '<li class="page-item%s"%s><a class="page-link" href="%s%s%s%s=%d%s">%d%s</a></li>',
+                '<li class="page-item%s"%s><a class="page-link" aria-label="第' . $i . '頁" href="%s%s%s%s=%d%s">%d%s</a></li>',
                 $active,
                 $aria_current,
                 $this->to_page,
@@ -207,69 +207,69 @@ class PageBar
         }
 
         $bar_left = $this->current <= 1
-            ? '<li class="page-item disabled"><a class="page-link disabled" href="#" aria-disabled="true"><span aria-hidden="true">&lsaquo;</span></a></li>'
-            : sprintf(
-                '<li class="page-item"><a class="page-link" href="%s%s%s%s=%d%s"><span aria-hidden="true">&lsaquo;</span><span class="sr-only">%s</span></a></li>',
-                $this->to_page,
-                $this->query_str,
-                $this->glue,
-                $this->url_page,
-                $this->current - 1,
-                $loadtime,
-                _TAD_BACK_PAGE
-            );
+        ? '<li class="page-item disabled"><a class="page-link disabled" href="#" aria-disabled="true" aria-label="上一頁"><span aria-hidden="true">&lsaquo;</span></a></li>'
+        : sprintf(
+            '<li class="page-item"><a class="page-link" href="%s%s%s%s=%d%s"><span aria-hidden="true" aria-label="上一頁">&lsaquo;</span><span class="sr-only">%s</span></a></li>',
+            $this->to_page,
+            $this->query_str,
+            $this->glue,
+            $this->url_page,
+            $this->current - 1,
+            $loadtime,
+            _TAD_BACK_PAGE
+        );
 
         $bar_first = $this->current <= 1
-            ? '<li class="page-item disabled"><a class="page-link disabled" href="#" aria-disabled="true"><span aria-hidden="true">&laquo;</span></a></li>'
-            : sprintf(
-                '<li class="page-item"><a class="page-link" href="%s%s%s%s=1%s"><span aria-hidden="true">&laquo;</span><span class="sr-only">%s</span></a></li>',
-                $this->to_page,
-                $this->query_str,
-                $this->glue,
-                $this->url_page,
-                $loadtime,
-                _TAD_FIRST_PAGE
-            );
+        ? '<li class="page-item disabled"><a class="page-link disabled" href="#" aria-disabled="true" aria-label="回到第1頁"><span aria-hidden="true">&laquo;</span></a></li>'
+        : sprintf(
+            '<li class="page-item"><a class="page-link" href="%s%s%s%s=1%s"><span aria-hidden="true" aria-label="回到第1頁">&laquo;</span><span class="sr-only">%s</span></a></li>',
+            $this->to_page,
+            $this->query_str,
+            $this->glue,
+            $this->url_page,
+            $loadtime,
+            _TAD_FIRST_PAGE
+        );
 
         $bar_right = $this->current >= $this->pTotal
-            ? '<li class="page-item disabled"><a class="page-link disabled" href="#" aria-disabled="true"><span aria-hidden="true">&rsaquo;</span></a></li>'
-            : sprintf(
-                '<li class="page-item"><a class="page-link" href="%s%s%s%s=%d%s"><span aria-hidden="true">&rsaquo;</span><span class="sr-only">%s</span></a></li>',
-                $this->to_page,
-                $this->query_str,
-                $this->glue,
-                $this->url_page,
-                $this->current + 1,
-                $loadtime,
-                _TAD_NEXT_PAGE
-            );
+        ? '<li class="page-item disabled"><a class="page-link disabled" href="#" aria-disabled="true" aria-label="下一頁"><span aria-hidden="true">&rsaquo;</span></a></li>'
+        : sprintf(
+            '<li class="page-item"><a class="page-link" href="%s%s%s%s=%d%s"><span aria-hidden="true" aria-label="下一頁">&rsaquo;</span><span class="sr-only">%s</span></a></li>',
+            $this->to_page,
+            $this->query_str,
+            $this->glue,
+            $this->url_page,
+            $this->current + 1,
+            $loadtime,
+            _TAD_NEXT_PAGE
+        );
 
         $bar_last = $this->current >= $this->pTotal
-            ? '<li class="page-item disabled"><a class="page-link disabled" href="#" aria-disabled="true"><span aria-hidden="true">&raquo;</span></a></li>'
-            : sprintf(
-                '<li class="page-item"><a class="page-link" href="%s%s%s%s=%d%s"><span aria-hidden="true">&raquo;</span><span class="sr-only">%s</span></a></li>',
-                $this->to_page,
-                $this->query_str,
-                $this->glue,
-                $this->url_page,
-                $this->pTotal,
-                $loadtime,
-                _TAD_LAST_PAGE
-            );
-
-        return array(
-            'center' => $bar_center,
-            'left' => $bar_first . $bar_left,
-            'right' => $bar_right . $bar_last,
-            'current' => $this->current,
-            'total' => $this->pTotal,
-            'start' => ($this->current - 1) * $this->limit + 1,
-            'end' => min($this->current * $this->limit, $this->total),
-            'bar_first' => $bar_first,
-            'bar_left' => $bar_left,
-            'bar_right' => $bar_right,
-            'bar_last' => $bar_last,
-            'sql' => $this->sqlQuery(),
+        ? '<li class="page-item disabled"><a class="page-link disabled" href="#" aria-disabled="true" aria-label="跳到最後一頁"><span aria-hidden="true">&raquo;</span></a></li>'
+        : sprintf(
+            '<li class="page-item"><a class="page-link" href="%s%s%s%s=%d%s"><span aria-hidden="true" aria-label="跳到最後一頁">&raquo;</span><span class="sr-only">%s</span></a></li>',
+            $this->to_page,
+            $this->query_str,
+            $this->glue,
+            $this->url_page,
+            $this->pTotal,
+            $loadtime,
+            _TAD_LAST_PAGE
         );
+
+        return [
+            'center'    => $bar_center,
+            'left'      => $bar_first . $bar_left,
+            'right'     => $bar_right . $bar_last,
+            'current'   => $this->current,
+            'total'     => $this->pTotal,
+            'start'     => ($this->current - 1) * $this->limit + 1,
+            'end'       => min($this->current * $this->limit, $this->total),
+            'bar_first' => $bar_first,
+            'bar_left'  => $bar_left,
+            'bar_right' => $bar_right,
+            'bar_last'  => $bar_last,
+            'sql'       => $this->sqlQuery(),
+        ];
     }
 }

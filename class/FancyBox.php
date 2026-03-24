@@ -17,19 +17,19 @@ class FancyBox
     //建構函數
     public function __construct($name = '', $width = '90%', $height = null, $show_jquery = true, $show_js = true)
     {
-        $this->name = $name;
+        $this->name  = $name;
         $this->width = $width;
 
         if (null === $height) {
             $this->autoSize = 'true';
-            $this->height = '90%';
+            $this->height   = '90%';
         } else {
             $this->autoSize = 'false';
-            $this->height = $height;
+            $this->height   = $height;
         }
 
         $this->show_jquery = $show_jquery;
-        $this->show_js = $show_js;
+        $this->show_js     = $show_js;
     }
 
     public function set_type($value = '')
@@ -52,16 +52,16 @@ class FancyBox
             overlay : {closeClick: false}
         }' : '';
 
-        $type_opt = $this->type ? "type: '{$this->type}'," : '';
-        $autoPlay = $auto_play ? 'autoPlay: true,' : '';
+        $type_opt  = $this->type ? "type: '{$this->type}'," : '';
+        $autoPlay  = $auto_play ? 'autoPlay: true,' : '';
         $playSpeed = $playSpeed ? "playSpeed: {$playSpeed}," : '';
 
         $jquery = $this->show_jquery ? Utility::get_jquery() : '';
 
         if ($xoTheme and !$return) {
             $xoTheme->addScript('modules/tadtools/fancyBox/lib/jquery.mousewheel.pack.js');
-            $xoTheme->addScript('modules/tadtools/fancyBox/source/jquery.fancybox.js');
-            $xoTheme->addStylesheet('modules/tadtools/fancyBox/source/jquery.fancybox.css?t=' . time());
+            $xoTheme->addScript('modules/tadtools/fancyBox/source/jquery.fancybox.js?t=20260320');
+            $xoTheme->addStylesheet('modules/tadtools/fancyBox/source/jquery.fancybox.css?t=20260317');
 
             $xoTheme->addScript('', null, "
                 jQuery(document).ready(function(){
@@ -83,8 +83,8 @@ class FancyBox
             ");
         } else {
             $js = $this->show_js ? "<script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/fancyBox/lib/jquery.mousewheel.pack.js'></script>
-            <script type='text/javascript' language='javascript' src='" . XOOPS_URL . "/modules/tadtools/fancyBox/source/jquery.fancybox.js'></script>
-            <link rel='stylesheet' href='" . XOOPS_URL . "/modules/tadtools/fancyBox/source/jquery.fancybox.css?t=20260115' type='text/css' media='screen' />" : '';
+            <script type='text/javascript' language='javascript' src='" . XOOPS_URL . "/modules/tadtools/fancyBox/source/jquery.fancybox.js?t=20260320'></script>
+            <link rel='stylesheet' href='" . XOOPS_URL . "/modules/tadtools/fancyBox/source/jquery.fancybox.css?t=20260317' type='text/css' media='screen' />" : '';
 
             $fancybox = "
             {$jquery}
@@ -128,13 +128,13 @@ class FancyBox
             overlay : {closeClick: false}
         }' : '';
 
-        $autoPlay = $autoPlay ? 'autoPlay: true,' : '';
+        $autoPlay  = $autoPlay ? 'autoPlay: true,' : '';
         $playSpeed = $playSpeed ? "playSpeed: {$playSpeed}," : '';
 
         if ($xoTheme) {
             $xoTheme->addScript('modules/tadtools/fancyBox/lib/jquery.mousewheel-3.0.6.pack.js');
-            $xoTheme->addScript('modules/tadtools/fancyBox/source/jquery.fancybox.js?v=2.1.4');
-            $xoTheme->addStylesheet('modules/tadtools/fancyBox/source/jquery.fancybox.css?v=2.1.4&t=' . time());
+            $xoTheme->addScript('modules/tadtools/fancyBox/source/jquery.fancybox.js?t=20260320');
+            $xoTheme->addStylesheet('modules/tadtools/fancyBox/source/jquery.fancybox.css?t=20260317');
             $xoTheme->addStylesheet('modules/tadtools/fancyBox/source/helpers/jquery.fancybox-buttons.css?v=1.0.5');
             $xoTheme->addScript('modules/tadtools/fancyBox/source/helpers/jquery.fancybox-buttons.js?v=1.0.5');
             $xoTheme->addStylesheet('modules/tadtools/fancyBox/source/helpers/jquery.fancybox-thumbs.css?v=1.0.7');
@@ -175,8 +175,8 @@ class FancyBox
             ");
         } else {
             $js = $this->show_js ? "<script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/fancyBox/lib/jquery.mousewheel-3.0.6.pack.js'></script>
-            <script type='text/javascript' language='javascript' src='" . XOOPS_URL . "/modules/tadtools/fancyBox/source/jquery.fancybox.js?v=2.1.4'></script>
-            <link rel='stylesheet' href='" . XOOPS_URL . "/modules/tadtools/fancyBox/source/jquery.fancybox.css?v=2.1.4&t=" . time() . "' type='text/css' media='screen' />
+            <script type='text/javascript' language='javascript' src='" . XOOPS_URL . "/modules/tadtools/fancyBox/source/jquery.fancybox.js?t=20260320'></script>
+            <link rel='stylesheet' href='" . XOOPS_URL . "/modules/tadtools/fancyBox/source/jquery.fancybox.css?t=20260317' type='text/css' media='screen' />
             <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/fancyBox/source/helpers/jquery.fancybox-buttons.css?v=1.0.5' />
             <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/fancyBox/source/helpers/jquery.fancybox-buttons.js?v=1.0.5'></script>
             <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/fancyBox/source/helpers/jquery.fancybox-thumbs.css?v=1.0.7' />

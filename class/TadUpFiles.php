@@ -184,6 +184,7 @@ class TadUpFiles
     public $show_height     = 120;
     public $desc_height     = 140;
     public $background_size = 'contain';
+    public $show_number     = false;
 
     public $showFancyBox = true;
     public $download_url = '';
@@ -561,7 +562,7 @@ class TadUpFiles
                         </div>";
 
                         //有編輯框
-                        $thumb_style = "<div style='text-align: center;'><img src='{$thumb_pic}' alt='{$file_name}'></div>";
+                        $thumb_style = "<div style='text-align: center;'><a href='{$_SERVER['PHP_SELF']}?op=tufdl&fn={$original_filename}&files_sn=$files_sn'><img src='{$thumb_pic}' alt='{$file_name}'></a></div>";
                         //無編輯框
                         $thumb_style2 = "<a class='thumbnail $fext' style='display:inline-block; width:{$this->thumb_width};height:{$this->thumb_height};overflow:hidden;background-color: transparent; background-image:url({$thumb_pic});background-position:{$this->thumb_position};background-repeat:{$this->thumb_repeat};background-size:{$this->thumb_size}; margin-bottom: 4px;' title='{$description}'></a>";
                     } else {
@@ -1555,7 +1556,7 @@ class TadUpFiles
         }
 
         if (empty($del_what)) {
-            return false;
+            die('無刪除條件');
         }
 
         $sql    = "SELECT * FROM `{$this->TadUpFilesTblName}` WHERE {$del_what}";
@@ -1571,10 +1572,10 @@ class TadUpFiles
 
                 if (!empty($trash_can_table)) {
                     $sql = 'REPLACE INTO `' . $this->prefix($trash_can_table) . '` SELECT * FROM `' . $this->TadUpFilesTblName . '` WHERE `files_sn` = ?';
-                    Utility::query($sql, 'i', [$files_sn], null, null, $this->mysqli) or Utility::web_error($sql, __FILE__, __LINE__);
+                    Utility::query($sql, 'i', [$files_sn], null, null, $this->mysqli) or die($sql);
                 }
                 $del_sql = 'DELETE FROM `' . $this->TadUpFilesTblName . '` WHERE `files_sn` = ?';
-                Utility::query($del_sql, 'i', [$files_sn], null, null, $this->mysqli) or Utility::web_error($del_sql, __FILE__, __LINE__);
+                Utility::query($del_sql, 'i', [$files_sn], null, null, $this->mysqli) or die($del_sql);
 
                 if ($kind === 'img') {
                     $image_dir = empty($sub_dir) ? $this->image_dir : $sub_dir;
@@ -1649,7 +1650,6 @@ class TadUpFiles
     //取得檔案
     public function get_file($files_sn = '', $limit = null, $path = null, $hash = false, $desc_as_name = false, $keyword = '', $only_keyword = false, $target = '_self', $my_where = '', $file_sn_key = true)
     {
-        global $xoopsDB;
         $files = [];
 
         $and_sort = (!empty($this->sort)) ? " and `sort`='{$this->sort}'" : '';
@@ -1714,6 +1714,7 @@ class TadUpFiles
             $files[$key]['hash_filename']     = $hash_filename;
             $files[$key]['upload_date']       = $upload_date;
             $files[$key]['uid']               = $uid;
+            $files[$key]['ext']               = mb_strtolower(array_pop(explode('.', $original_filename)));
 
             $uid_name = \XoopsUser::getUnameFromId($uid, 1);
             if (empty($uid_name)) {
@@ -1783,7 +1784,8 @@ class TadUpFiles
 
                 // 2025/09/25 為無障礙修改
                 $files[$key]['url']                = "<a href='{$dl_url}' class='$fext' $onclick title='{$description}' {$rel} class='{$fancyboxset}' data-fancybox-type='iframe'>{$show_file_name}</a>";
-                $files[$key]['link']               = "<a href='{$dl_url}' class='$fext' $onclick target='{$target}'>{$show_file_name}</a>";
+                $title                             = $fext == 'pdf' ? "title='另開新視窗'" : "";
+                $files[$key]['link']               = "<a href='{$dl_url}' class='$fext' $onclick target='{$target}' $title>{$show_file_name}</a>";
                 $files[$key]['path']               = "{$dl_url}";
                 $files[$key]['dl_url']             = $dl_url;
                 $files[$key]['original_file_path'] = $this->TadUpFilesUrl . "/{$file_name}";
@@ -1869,7 +1871,7 @@ class TadUpFiles
 
                 $files[$i]['link'] = "<a href='{$dl_url}' title='{$description}' rel='lytebox'><img src='{$pic_name}' alt='{$description}' title='{$description}' rel='lytebox'></a>";
                 $files[$i]['path'] = $pic_name;
-                $files[$i]['url']  = "<a href='{$dl_url}' title='{$description}' target='_blank'>{$description}</a>";
+                $files[$i]['url']  = "<a href='{$dl_url}' title='{$description} (另開新視窗)' target='_blank'>{$description}</a>";
 
                 $files[$i]['tb_link'] = "<a href='{$dl_url}' title='{$description}' rel='lytebox'><img src='$thumb_pic' alt='{$description}' title='{$description}'></a>";
                 $files[$i]['tb_path'] = $thumb_pic;
@@ -1877,7 +1879,7 @@ class TadUpFiles
             } else {
                 // 2025/09/25 為無障礙修改
                 $of                = \urlencode($original_filename);
-                $files[$i]['link'] = "<a href='{$dl_url}' class='$fext' onclick=\"{$this->dl_function_name}($files_sn, '$of')\">{$original_filename}</a>";
+                $files[$i]['link'] = "<a href='{$dl_url}' class='$fext' onclick=\"{$this->dl_function_name}($files_sn, '$of');\">{$original_filename}</a>";
                 $files[$i]['path'] = "{$dl_url}";
             }
             $i++;
@@ -1955,6 +1957,7 @@ class TadUpFiles
     public function show_files($upname = '', $thumb = true, $show_mode = '', $show_description = false, $show_dl = false, $limit = null, $path = null, $hash = false, $playSpeed = 0, $desc_as_name = false, $keyword = '', $only_keyword = false, $target = '_self')
     {
         global $xoTheme;
+
         $this->upname = $upname;
         $all_files    = '';
         if ($xoTheme) {
@@ -2041,7 +2044,7 @@ class TadUpFiles
                                 $rel         = "data-fancybox-type='iframe'";
                             } else {
                                 $fancyboxset = '';
-                                $rel         = 'onclick="' . $this->dl_function_name . '(' . $files_sn . ', \'' . $description . '\')"';
+                                $rel         = 'onclick="' . $this->dl_function_name . '(' . $files_sn . ', \'' . $file_info['original_filename'] . '\')"';
                             }
                             $linkto = XOOPS_URL . "/modules/tadtools/video.php?file_name={$file_info['original_file_path']}";
                         } elseif ($fext === 'pdf' && $this->pdf_force_dl != 1) {
@@ -2059,7 +2062,7 @@ class TadUpFiles
                             }
                         } else {
                             $fancyboxset = '';
-                            $rel         = 'onclick="' . $this->dl_function_name . '(' . $files_sn . ', \'' . $description . '\')"';
+                            $rel         = 'onclick="' . $this->dl_function_name . '(' . $files_sn . ', \'' . $file_info['original_filename'] . '\')"';
                         }
                         $thumb_css = $this->thumb_css == '' ? 'background-color: tranparent;' : $this->thumb_css;
                     } else {
@@ -2088,7 +2091,13 @@ class TadUpFiles
                     $show_dl_txt = ($show_dl) ? "<span class='label label-info'>{$file_info['counter']}</span>" : '';
 
                     //描述顯示
-                    $show_description_txt = ($show_description) ? "<div class='file_description' style='font-weight: normal; font-size: 0.8em; word-break: break-all; line-height: 1.2; margin: 4px auto 4px 0px; text-align: left;'>{$i}) {$description} {$show_dl_txt}</div>" : (string) ($show_dl_txt);
+                    if ($show_description) {
+                        $show_description_txt = $this->show_number ? "圖{$i}" : "<div class='file_description' style='font-weight: normal; font-size: 0.8em; word-break: break-all; line-height: 1.2; margin: 4px auto 4px 0px; text-align: left;'>{$i}) {$description} {$show_dl_txt}</div>";
+                    } else {
+                        $show_description_txt = (string) ($show_dl_txt);
+                    }
+
+                    $description = $this->show_number ? "圖{$i}" : $description;
 
                     $w   = (int) $this->show_width;
                     $h   = (int) $this->show_height;
@@ -2096,11 +2105,13 @@ class TadUpFiles
 
                     $item_h = !empty($show_description) ? $h + $this->desc_height : $h;
 
-                    $bs_data = $_SESSION['bootstrap'] == 5 ? "data-bs-toggle='tooltip' data-bs-placement='top' data-bs-original-title='{$description}'" : "data-toggle='tooltip' data-placement='top' data-original-title='{$description}'";
+                    $dl_or_view = $fancyboxset ? '於彈跳視窗觀看：' : '下載：';
 
-                    $all_files .= ($show_mode === 'small') ? "<a href='{$linkto}#{$description}' {$bs_data} class='iconize $fext {$fancyboxset}' {$rel}><span class='sr-only visually-hidden'>" . _TUF_DOWNLOAD . "{$description}</span></a> " : "
+                    $bs_data = $_SESSION['bootstrap'] == 5 ? "data-bs-toggle='tooltip' data-bs-placement='top' data-bs-original-title='{$description}'" : "data-toggle='tooltip' data-placement='top' data-original-title='{$description}'";
+                    $title   = $fext == 'pdf' ? "title='另開新視窗'" : "";
+                    $all_files .= ($show_mode === 'small') ? "<a href='{$linkto}#{$description}' {$bs_data} class='iconize $fext {$fancyboxset}' {$rel}><span class='sr-only visually-hidden'>{$dl_or_view}{$description}</span></a> " : "
                     <li class='tuf-icon-item' style='width:{$w}px;height:{$item_h}px;float:left;list-style:none;{$this->other_css}'>
-                    <a href='{$linkto}' class='thumbnail $fext {$fancyboxset}' target='{$target}' {$rel} style=\"display:inline-block; width: {$w}px; height: {$h}px; overflow: hidden; background-image: url('{$thumb_pic}'); background-size: {$bgs}; background-repeat: no-repeat; background-position: center center; margin-bottom: 4px; {$thumb_css}\"><span class='sr-only visually-hidden'>" . _TUF_DOWNLOAD . "{$description}</span></a>{$show_description_txt}
+                    <a href='{$linkto}' class='thumbnail $fext {$fancyboxset}' target='{$target}' $title {$rel} style=\"display:inline-block; width: {$w}px; height: {$h}px; overflow: hidden; background-image: url('{$thumb_pic}'); background-size: {$bgs}; background-repeat: no-repeat; background-position: center center; margin-bottom: 4px; {$thumb_css}\"><span class='sr-only visually-hidden'>{$dl_or_view}{$description}</span></a>{$show_description_txt}
                     </li>";
                 }
 

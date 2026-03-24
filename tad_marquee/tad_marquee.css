@@ -1,0 +1,277 @@
+/**
+ * TadMarquee 預設樣式 - 符合 WCAG 2.2 AA / AAA
+ * 版本: 2.0.8
+ * 此檔案由 tad_marquee.js 的 createDefaultCSS() 獨立而來
+ * 已優化以符合 WCAG 2.2 AA 級標準，暫停按鈕預設置於頂部控制列
+ * 焦點順序（WCAG 2.4.3 AA）：暫停／播放 → 內容項目，依上至下、左至右
+ */
+
+/* ===== 容器 ===== */
+.tad-marquee-container {
+  position: relative;
+  overflow: hidden;
+  /* background: #ffffff;
+  border: 2px solid #000000; 增加邊框寬度以提高可見性 */
+  border-radius: 4px;
+  line-height: 1.5rem; /* 改為相對單位 */
+}
+
+.tad-marquee-container:focus {
+  outline: 4px solid #0057b3; /* 更高對比度的輪廓顏色 */
+  outline-offset: 2px;
+}
+
+.tad-marquee-container:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.tad-marquee-container:focus-visible {
+  outline: 4px solid #0057b3; /* 更高對比度的輪廓顏色 */
+  outline-offset: 2px;
+}
+
+.tad-marquee-container.tad-marquee-paused {
+  background: #fffacd;
+  border-color: #000000;
+}
+
+/* ===== 頂部模式外層包裹（WCAG 2.4.3 AA 焦點順序） ===== */
+/*
+ * DOM 焦點順序：
+ *   [1] .tad-marquee-controls > button.tad-marquee-pause-btn  ← Tab 停靠第 1 位
+ *   [2] .tad-marquee-wrapper  > .tad-marquee-item[tabindex=0] ← Tab 停靠第 2+ 位
+ *
+ * 依上至下、左至右，符合 WCAG 2.4.3（焦點順序）AA 級要求
+ */
+.tad-marquee-root.tad-marquee-top {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* ===== 頂部控制列 ===== */
+.tad-marquee-controls {
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  /* 確保控制列本身不可聚焦（焦點留給內部按鈕） */
+  outline: none;
+}
+
+/* ===== 頂部模式暫停按鈕 ===== */
+.tad-marquee-root.tad-marquee-top .tad-marquee-pause-btn {
+  /* 位置由 JS 設定為 static，此處補充對齊樣式 */
+  flex-shrink: 0;
+  /* WCAG 2.5.5：最小目標尺寸 44×36px 已由 JS 設定 */
+}
+
+/* ===== 控制列狀態文字（選用：可由 JS 動態插入） ===== */
+.tad-marquee-controls-label {
+  font-size: 0.8125rem; /* 13px */
+  color: rgba(0, 0, 0, 0.65);
+  user-select: none;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 深色模式下控制列 */
+@media (prefers-color-scheme: dark) {
+  .tad-marquee-controls {
+    background: rgba(255, 255, 255, 0.06);
+    border-bottom-color: rgba(255, 255, 255, 0.12);
+  }
+
+  .tad-marquee-controls-label {
+    color: rgba(255, 255, 255, 0.65);
+  }
+}
+
+/* ===== 內容包裹層 ===== */
+.tad-marquee-wrapper {
+  will-change: transform;
+  /* letter-spacing: 0.12em; 增加字母間距以提高可讀性 */
+  word-spacing: 0.16em; /* 增加單詞間距以提高可讀性 */
+}
+
+/* ===== 項目 ===== */
+.tad-marquee-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.25rem; /* 改為相對單位 */
+  text-decoration: none;
+  color: #000000;
+  background: transparent;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  vertical-align: middle;
+  border-radius: 4px;
+  min-height: 2rem; /* 改為相對單位 */
+  min-width: 3rem; /* 改為相對單位 */
+  /* font-size: 1rem; 改為相對單位 */
+   /* font-weight: 500;稍微加粗字體以提高可讀性 */
+}
+
+.tad-marquee-item:hover {
+  background-color: #d4e9ff; /* 更高對比度的懸停背景色 */
+  color: #000000;
+  text-decoration: underline; /* 增加懸停時的下劃線以提高可識別性 */
+}
+
+.tad-marquee-item:focus {
+  outline: 4px solid #0057b3; /* 更高對比度的輪廓顏色 */
+  outline-offset: 2px;
+  background-color: #b8daff; /* 更高對比度的聚焦背景色 */
+  color: #000000;
+  z-index: 1;
+  text-decoration: underline; /* 增加聚焦時的下劃線 */
+}
+
+.tad-marquee-item:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.tad-marquee-item:active {
+  background-color: #9cc3ff; /* 更高對比度的活動狀態背景色 */
+  color: #000000;
+}
+
+.tad-marquee-item img {
+  max-height: 100%;
+  vertical-align: middle;
+  alt: attr(alt); /* 確保圖片有替代文本 */
+}
+
+/* ===== 螢幕閱讀器專用 ===== */
+.tad-marquee-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ===== 響應式設計 ===== */
+@media (max-width: 768px) {
+  .tad-marquee-item {
+    padding: 0.75rem 1rem; /* 改為相對單位 */
+    font-size: 1rem; /* 改為相對單位 */
+  }
+}
+
+@media (max-width: 480px) {
+  .tad-marquee-item {
+    padding: 0.75rem 1rem; /* 改為相對單位 */
+    font-size: 1rem; /* 改為相對單位 */
+  }
+}
+
+/* ===== 尊重用戶的動畫偏好 ===== */
+@media (prefers-reduced-motion: reduce) {
+  .tad-marquee-wrapper {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  /* 確保在減少動畫模式下內容仍然可見 */
+  .tad-marquee-container {
+    overflow: auto;
+  }
+
+  .tad-marquee-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  /* 頂部模式：減少動畫時控制列仍保持可見 */
+  .tad-marquee-root.tad-marquee-top .tad-marquee-controls {
+    opacity: 1;
+  }
+}
+
+/* ===== 高對比度模式支援 ===== */
+@media (prefers-contrast: high) {
+  .tad-marquee-container {
+    border: 3px solid;
+  }
+
+  .tad-marquee-controls {
+    border-bottom: 2px solid;
+  }
+
+  .tad-marquee-item:focus {
+    outline-width: 5px;
+    outline-style: solid;
+  }
+
+  .tad-marquee-item {
+    border: 1px solid currentColor; /* 在高對比度模式下為項目添加邊框 */
+  }
+
+  .tad-marquee-pause-btn:focus-visible {
+    outline: 4px solid !important;
+    outline-offset: 2px !important;
+  }
+}
+
+/* ===== 深色模式支援 ===== */
+@media (prefers-color-scheme: dark) {
+  .tad-marquee-container {
+    background: #121212; /* 不使用純黑，減少視覺疲勞 */
+    border-color: #ffffff;
+    color: #ffffff;
+  }
+
+  .tad-marquee-item {
+    color: #ffffff;
+  }
+
+  .tad-marquee-item:hover {
+    background-color: #2a2a2a; /* 更高對比度的深色模式懸停背景 */
+    color: #ffffff;
+  }
+
+  .tad-marquee-item:focus {
+    background-color: #3a3a3a; /* 更高對比度的深色模式聚焦背景 */
+    outline-color: #4d9fff; /* 更高對比度的深色模式輪廓顏色 */
+    color: #ffffff;
+  }
+
+  .tad-marquee-item:active {
+    background-color: #454545; /* 更高對比度的深色模式活動狀態背景 */
+  }
+}
+
+/* ===== 文字間距控制 ===== */
+.tad-marquee-text-spacing {
+  text-align: left; /* 確保文本左對齊，提高可讀性 */
+  line-height: 1.5rem; /* 改為相對單位 */
+  margin: 0.5rem 0; /* 改為相對單位 */
+}
+
+/* ===== 確保鍵盤操作可見性 ===== */
+.tad-marquee-keyboard-focus {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 0.5rem 0.75rem; /* 改為相對單位 */
+  background: #0057b3;
+  color: #ffffff;
+  text-align: center;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+  font-size: 1rem; /* 改為相對單位 */
+}
+
+.tad-marquee-container:focus .tad-marquee-keyboard-focus {
+  transform: translateY(0);
+}

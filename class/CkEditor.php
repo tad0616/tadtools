@@ -20,6 +20,7 @@ class CkEditor
     public $Style         = [];
     public $Modal_ID      = '';
     public $placeholder   = '';
+    public $wcag          = true;
 
     //建構函數
     public function __construct($xoopsDirName = '', $ColName = '', $Value = '', $subDir = '')
@@ -165,12 +166,12 @@ class CkEditor
         $codemirror           = $TadToolsModuleConfig['use_codemirror'] ? ',codemirror' : '';
 
         $bs      = $_SESSION['bootstrap'] ? $_SESSION['bootstrap'] : 5;
-        $ck_wcag = $TadToolsModuleConfig['ck_wcag'] ? "
+        $ck_wcag = $TadToolsModuleConfig['ck_wcag'] && $this->wcag == true ? "
         forcePasteAsPlainText: true,
         pasteFromWordRemoveStyles: true,
         pasteFromWordRemoveFontStyles: true,
         " : '';
-// extraPlugins:a11ychecker
+
         $editor_setup = "{$demopublickey_js}
         CKEDITOR.replace('{$this->ColID}' , {
         skin : 'moono' ,
@@ -181,7 +182,7 @@ class CkEditor
         $stylesSet
         $ck_wcag
         contentsCss : ['" . XOOPS_URL . "/modules/tadtools/bootstrap{$bs}/css/bootstrap.css', '" . XOOPS_URL . "/modules/tadtools/css/fonts.css', '" . XOOPS_URL . "/modules/tadtools/css/ckeditor.css?t=20260127', '" . XOOPS_URL . "/modules/tadtools/css/fontawesome6/css/all.min.css'{$other_css}],
-        extraPlugins: 'balloonpanel,autogrow,editorplaceholder,pasteUploadImage,sourcearea,font,syntaxhighlight,dialog,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak,ckeditorfa,prism,codesnippet,undo,autoembed,autolink,clipboard,toolbar,button,dialogui,notification,textmatch,embed,embedbase,widgetselection,notificationaggregator,embedsemantic,panel,floatpanel,menu{$codemirror}{$extra_uploadcare}',
+        extraPlugins: 'autogrow,editorplaceholder,pasteUploadImage,sourcearea,font,syntaxhighlight,dialog,eqneditor,quicktable,imagerotate,fakeobjects,widget,lineutils,widgetbootstrap,widgettemplatemenu,pagebreak,ckeditorfa,prism,codesnippet,undo,autoembed,autolink,clipboard,toolbar,button,dialogui,notification,textmatch,embed,embedbase,widgetselection,notificationaggregator,embedsemantic,panel,floatpanel,menu{$codemirror}{$extra_uploadcare}',
         {$uploadcare_setup}
         filebrowserBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=file&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',
         filebrowserImageBrowseUrl : '" . XOOPS_URL . '/modules/tadtools/elFinder/elfinder.php?type=image&subDir=' . $this->subDir . '&mod_dir=' . $this->xoopsDirName . "',

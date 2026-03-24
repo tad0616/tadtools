@@ -20,6 +20,7 @@
     a:hover {
         color:<{$hover_color|default:''}>;
     }
+
     #nav-container, #nav-wrapper {
         <{if $navbar_pos=='fixed-bottom'}>
             position: fixed;
@@ -63,7 +64,7 @@
     <{include file="$xoops_rootpath/modules/tadtools/themes5_tpl/theme_css_blocks.tpl"}>
 
     /* theme_css_navbar.tpl */
+    <{*
     <{include file="$xoops_rootpath/modules/tadtools/themes5_tpl/theme_css_navbar.tpl"}>
-
+    *}>
 </style>
-<!--導覽工具列、區塊標題CSS設定 by hc-->

@@ -42,7 +42,7 @@ define('_MI_TADTOOLS_INSERT_SPACING_DESC', '顯示文章時會自動在中文和
 define('_MI_TADTOOLS_LINKIFY', '將網址轉為連結');
 define('_MI_TADTOOLS_LINKIFY_DESC', '自動將內文的網址轉換成連結');
 define('_MI_TADTOOLS_PDF_FORCE_DL', 'PDF 檔是否強制下載？');
-define('_MI_TADTOOLS_PDF_FORCE_DL_DESC', '若要符合無障礙 2.1，請選「是」，若想直接線上預覽請選「否」');
+define('_MI_TADTOOLS_PDF_FORCE_DL_DESC', '<span style="color:red">若要符合無障礙，請選「是」</span>，若想直接線上預覽請選「否」');
 
 define('_MI_TADTOOLS_TEST_MODE', '開發測試模式是否僅開放給管理者');
 define('_MI_TADTOOLS_TEST_MODE_DESC', '建議選「是」，此選項一般使用者用不到，僅開發者會使用');
@@ -51,4 +51,4 @@ define('_MI_TADTOOLS_FACEBOOK_APP_ID', 'FaceBook 的 App ID（推文工具會用
 define('_MI_TADTOOLS_FACEBOOK_APP_ID_DESC', '可至 https://developers.facebook.com/apps 申請並取得 App ID');
 
 define('_MI_TADTOOLS_CK_WCAG', 'CK編輯器貼上時符合無障礙規範');
-define('_MI_TADTOOLS_CK_WCAG_DESC', '建議選「是」，貼上時，會以純文字貼上，避免違反無障礙規範');
+define('_MI_TADTOOLS_CK_WCAG_DESC', '<span style="color:red">若要符合無障礙，請選「是」</span>，選「是」，貼上時，會以純文字貼上，避免違反無障礙規範');

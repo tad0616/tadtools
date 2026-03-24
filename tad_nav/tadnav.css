@@ -1,0 +1,568 @@
+/* ==============================================
+   TadNav v1.8.7
+   修正：
+   1. 桌機版子選單互斥（同層只開一個）
+   2. 手機版強制單欄手風琴，多層縮排色彩區隔
+   3. WCAG 1.4.10 流動排版修正
+============================================== */
+
+:root {
+  --tadnav-font-family:             inherit;
+  --tadnav-inner-max-width:         100%;
+  --tadnav-nav-min-height:          52px;
+  --tadnav-nav-bg:                  transparent;
+  --tadnav-nav-shadow:              none;
+  --tadnav-brand-color:             #ffffff;
+
+  --tadnav-focus-color:             #ffdd00;
+  --tadnav-focus-shadow-color:      #000000;
+  --tadnav-focus-width:             3px;
+
+  --tadnav-item-color:              #ffffff;
+  --tadnav-item-bg:                 transparent;
+  --tadnav-item-font-size:          1rem;
+  --tadnav-item-padding-x:          1rem;
+  --tadnav-item-padding-y:          0px;
+  --tadnav-item-hover-bg:           rgba(255,255,255,0.14);
+  --tadnav-item-hover-color:        #ffffff;
+  --tadnav-item-accent:             rgba(255,255,255,0.75);
+
+  --tadnav-sub-bg:                  #ffffff;
+  --tadnav-sub-shadow:              0 6px 24px rgba(0,0,0,0.13);
+  --tadnav-sub-border:              #2e86c1;
+  --tadnav-sub-divider:             #f0f4f8;
+  --tadnav-sub-divider-width:       1px;
+  --tadnav-sub-min-width:           220px;
+
+  --tadnav-sub-item-color:          #1a3a5c;
+  --tadnav-sub-item-bg:             transparent;
+  --tadnav-sub-item-font-size:      0.88rem;
+  --tadnav-sub-item-padding-x:      1.1rem;
+  --tadnav-sub-item-padding-y:      0.6rem;
+  --tadnav-sub-item-hover-bg:       #eaf4fd;
+  --tadnav-sub-item-hover-color:    #1a5276;
+
+  --tadnav-scroll-btn-bg:           #f0f4f8;
+  --tadnav-scroll-btn-hover-bg:     #dbeaf7;
+  --tadnav-scroll-btn-color:        #1a5276;
+  --tadnav-scroll-btn-height:       28px;
+
+  --tadnav-toggle-color:            #ffffff;
+  --tadnav-toggle-hover-bg:         rgba(255,255,255,0.15);
+
+  /* 手機版各層背景色 */
+  --tadnav-mobile-bg:               rgba(0,0,0,0.55);
+  --tadnav-mobile-sub-l1-bg:        rgba(0,0,0,0.18);
+  --tadnav-mobile-sub-l2-bg:        rgba(0,0,0,0.28);
+  --tadnav-mobile-sub-l3-bg:        rgba(0,0,0,0.36);
+  --tadnav-mobile-sub-border:       rgba(255,255,255,0.30);
+  --tadnav-mobile-sub-color:        rgba(255,255,255,0.92);
+  --tadnav-mobile-item-border:      rgba(255,255,255,0.10);
+
+  --tadnav-accordion-max-height:    9999px;
+}
+
+/* ── Reset ─────────────────────────────────── */
+.tadnav-wrapper *,
+.tadnav-wrapper *::before,
+.tadnav-wrapper *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+.tadnav-wrapper {
+  background:  var(--tadnav-nav-bg);
+  box-shadow:  var(--tadnav-nav-shadow);
+  position:    relative;
+  z-index:     99999;
+  font-family: var(--tadnav-font-family);
+}
+
+/* ── Inner ──────────────────────────────────── */
+.tadnav-inner {
+  display:    flex;
+  align-items: stretch;
+  width:      100%;
+  max-width:  var(--tadnav-inner-max-width);
+  margin:     0 auto;
+  padding:    0 1rem;
+  min-height: var(--tadnav-nav-min-height);
+}
+
+/* ── Brand ──────────────────────────────────── */
+.tadnav-brand {
+  display:     flex;
+  align-items: center;
+  gap:         0.5rem;
+  color:       var(--tadnav-brand-color);
+  font-size:   var(--tadnav-item-font-size);
+  font-weight: 700;
+  padding:     0 1rem 0 0;
+  white-space: nowrap;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.tadnav-brand:focus-visible {
+  outline:    var(--tadnav-focus-width) solid var(--tadnav-focus-color);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 calc(var(--tadnav-focus-width) + 2px) var(--tadnav-focus-shadow-color);
+  border-radius: 3px;
+}
+
+/* ── Hamburger Toggle ───────────────────────── */
+.tadnav-toggle {
+  display:        none;
+  flex-direction: column;
+  justify-content: center;
+  gap:            5px;
+  background:     transparent;
+  border:         none;
+  cursor:         pointer;
+  padding:        0.5rem;
+  margin-left:    auto;
+  border-radius:  6px;
+  transition:     background 0.2s;
+  flex-shrink:    0;
+}
+.tadnav-toggle:hover { background: var(--tadnav-toggle-hover-bg); }
+.tadnav-toggle:focus-visible {
+  outline:    var(--tadnav-focus-width) solid var(--tadnav-focus-color);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 calc(var(--tadnav-focus-width) + 2px) var(--tadnav-focus-shadow-color);
+  background: var(--tadnav-toggle-hover-bg);
+}
+.tadnav-toggle .bar {
+  display:       block;
+  width:         22px;
+  height:        2px;
+  background:    var(--tadnav-toggle-color);
+  border-radius: 2px;
+  transition:    transform 0.25s, opacity 0.25s;
+}
+.tadnav-toggle[aria-expanded="true"] .bar:nth-child(1) { transform: translateY(7px)  rotate(45deg); }
+.tadnav-toggle[aria-expanded="true"] .bar:nth-child(2) { opacity: 0; }
+.tadnav-toggle[aria-expanded="true"] .bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ══════════════════════════════════════════════
+ * 桌機版：頂層 Menu
+ * ══════════════════════════════════════════════ */
+.tadnav-menu {
+  display:     flex;
+  align-items: stretch;
+  list-style:  none;
+  flex:        1;
+  flex-wrap:   nowrap;
+  overflow:    hidden;
+}
+.tadnav-menu.tadnav-menu-wrap {
+  flex-wrap:    wrap;
+  align-items:  flex-start;
+  overflow:     visible;
+  align-content: flex-start;
+}
+.tadnav-menu.tadnav-menu-scroll {
+  overflow-x:    auto;
+  overflow-y:    visible;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-behavior: smooth;
+}
+.tadnav-menu.tadnav-menu-scroll::-webkit-scrollbar { display: none; }
+.tadnav-menu > li.tadnav-spacer { flex-grow: 1; pointer-events: none; }
+.tadnav-menu > li {
+  position:    relative;
+  display:     flex;
+  align-items: stretch;
+  flex-shrink: 0;
+}
+
+/* ── 頂層按鈕 ───────────────────────────────── */
+.tadnav-menu > li > a[role="menuitem"],
+.tadnav-menu > li > button.tadnav-submenu-toggle {
+  display:     flex;
+  align-items: center;
+  gap:         0.4rem;
+  padding:     var(--tadnav-item-padding-y) var(--tadnav-item-padding-x);
+  color:       var(--tadnav-item-color);
+  background:  var(--tadnav-item-bg);
+  font-size:   var(--tadnav-item-font-size);
+  font-weight: 500;
+  text-decoration: none;
+  border:      none;
+  cursor:      pointer;
+  white-space: nowrap;
+  transition:  background 0.18s, color 0.18s;
+  border-bottom: 3px solid transparent;
+  position:    relative;
+  z-index:     1;
+}
+.tadnav-menu > li > a[role="menuitem"]:hover,
+.tadnav-menu > li > button.tadnav-submenu-toggle:hover,
+.tadnav-menu > li > button.tadnav-submenu-toggle[aria-expanded="true"] {
+  background:   var(--tadnav-item-hover-bg);
+  color:        var(--tadnav-item-hover-color);
+  border-bottom-color: var(--tadnav-item-accent);
+  outline:      none;
+}
+.tadnav-menu > li > a[role="menuitem"]:focus-visible,
+.tadnav-menu > li > button.tadnav-submenu-toggle:focus-visible {
+  outline:    var(--tadnav-focus-width) solid var(--tadnav-focus-color);
+  outline-offset: -2px;
+  box-shadow: inset 0 0 0 calc(var(--tadnav-focus-width) + 2px) var(--tadnav-focus-shadow-color);
+  background: var(--tadnav-item-hover-bg);
+  color:      var(--tadnav-item-hover-color);
+}
+
+/* ── 箭頭 ───────────────────────────────────── */
+.tadnav-arrow {
+  display:     inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size:   0.7em;
+  transition:  transform 0.2s;
+  margin-left: 0.1rem;
+  flex-shrink: 0;
+}
+.tadnav-arrow::after {
+  content:     "\f078";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+}
+button[aria-expanded="true"] > .tadnav-arrow { transform: rotate(180deg); }
+.tadnav-submenu .tadnav-arrow::after { content: "\f054"; }
+.tadnav-submenu button[aria-expanded="true"] > .tadnav-arrow { transform: rotate(90deg); }
+
+/* ══════════════════════════════════════════════
+ * 桌機版：子選單面板
+ * ══════════════════════════════════════════════ */
+.tadnav-submenu {
+  position:   absolute;
+  top:        100%;
+  left:       0;
+  min-width:  var(--tadnav-sub-min-width);
+  background: var(--tadnav-sub-bg);
+  border-radius: 0 0 8px 8px;
+  box-shadow: var(--tadnav-sub-shadow);
+  list-style: none;
+  z-index:    99999;
+  border-top: 3px solid var(--tadnav-sub-border);
+  overflow:   visible;
+
+  opacity:    0;
+  visibility: hidden;
+  transform:  translateY(-6px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+}
+.tadnav-submenu[data-open="true"] {
+  opacity:    1;
+  visibility: visible;
+  transform:  translateY(0);
+  pointer-events: auto;
+}
+.tadnav-submenu > li { position: relative; z-index: auto; }
+.tadnav-submenu > li:hover,
+.tadnav-submenu > li:focus-within { z-index: 1; }
+
+/* ── 捲動按鈕 ───────────────────────────────── */
+.tadnav-scroll-btn {
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  width:           100%;
+  height:          var(--tadnav-scroll-btn-height);
+  background:      var(--tadnav-scroll-btn-bg);
+  color:           var(--tadnav-scroll-btn-color);
+  cursor:          pointer;
+  border:          none;
+  font-size:       0.75rem;
+  user-select:     none;
+  transition:      background 0.15s;
+  list-style:      none;
+}
+.tadnav-scroll-btn:hover,
+.tadnav-scroll-btn:focus-visible { background: var(--tadnav-scroll-btn-hover-bg); outline: none; }
+.tadnav-scroll-btn:focus-visible {
+  outline:        var(--tadnav-focus-width) solid var(--tadnav-focus-color);
+  outline-offset: -2px;
+}
+.tadnav-scroll-btn[aria-disabled="true"] { opacity: 0.3; cursor: default; pointer-events: none; }
+.tadnav-scroll-up   { border-radius: 0; }
+.tadnav-scroll-down { border-radius: 0 0 8px 8px; }
+
+/* ── is-right ───────────────────────────────── */
+.tadnav-menu > li.is-right > .tadnav-submenu { left: auto; right: 0; }
+
+/* ── 巢狀子選單（第二層以上，桌機） ─────────── */
+.tadnav-submenu .tadnav-submenu {
+  top:           0;
+  left:          100%;
+  border-radius: 0 8px 8px 8px;
+  border-top:    none;
+  border-left:   3px solid var(--tadnav-sub-border);
+  z-index:       100000;
+}
+.tadnav-menu > li.is-right .tadnav-submenu .tadnav-submenu {
+  left:          auto;
+  right:         100%;
+  border-radius: 8px 0 8px 8px;
+  border-left:   none;
+  border-right:  3px solid var(--tadnav-sub-border);
+}
+
+/* ── 碰撞偵測翻轉 ───────────────────────────── */
+.tadnav-submenu.tadnav-flip-x-root { left: auto; right: 0; }
+.tadnav-submenu.tadnav-flip-y-root {
+  top:           auto;
+  bottom:        100%;
+  border-radius: 8px 8px 0 0;
+  border-top:    none;
+  border-bottom: 3px solid var(--tadnav-sub-border);
+  transform:     translateY(6px);
+}
+.tadnav-submenu.tadnav-flip-y-root[data-open="true"] { transform: translateY(0); }
+.tadnav-submenu .tadnav-submenu.tadnav-flip-x {
+  left:          auto;
+  right:         100%;
+  border-radius: 8px 0 8px 8px;
+  border-left:   none;
+  border-right:  3px solid var(--tadnav-sub-border);
+}
+.tadnav-submenu .tadnav-submenu.tadnav-flip-y { top: auto; bottom: 0; }
+
+/* ── 子選單項目（桌機） ─────────────────────── */
+.tadnav-submenu > li > a[role="menuitem"],
+.tadnav-submenu > li > button.tadnav-submenu-toggle {
+  display:     flex;
+  align-items: center;
+  gap:         0.5rem;
+  width:       100%;
+  padding:     var(--tadnav-sub-item-padding-y) var(--tadnav-sub-item-padding-x);
+  color:       var(--tadnav-sub-item-color);
+  background:  var(--tadnav-sub-item-bg);
+  font-size:   var(--tadnav-sub-item-font-size);
+  text-decoration: none;
+  border:      none;
+  cursor:      pointer;
+  text-align:  left;
+  white-space: nowrap;
+  transition:  background 0.15s, color 0.15s;
+  border-bottom-width: var(--tadnav-sub-divider-width);
+  border-bottom-style: solid;
+  border-bottom-color: var(--tadnav-sub-divider);
+  position:    relative;
+  z-index:     1;
+  scroll-margin-top:    4rem;
+  scroll-margin-bottom: 1rem;
+}
+.tadnav-submenu > li:last-child > a[role="menuitem"],
+.tadnav-submenu > li:last-child > button.tadnav-submenu-toggle { border-bottom: none; }
+.tadnav-submenu > li > a[role="menuitem"]:hover,
+.tadnav-submenu > li > button.tadnav-submenu-toggle:hover,
+.tadnav-submenu > li > button.tadnav-submenu-toggle[aria-expanded="true"] {
+  background: var(--tadnav-sub-item-hover-bg);
+  color:      var(--tadnav-sub-item-hover-color);
+  outline:    none;
+}
+.tadnav-submenu > li > a[role="menuitem"]:focus-visible,
+.tadnav-submenu > li > button.tadnav-submenu-toggle:focus-visible {
+  outline:    var(--tadnav-focus-width) solid var(--tadnav-focus-shadow-color);
+  outline-offset: -2px;
+  box-shadow: inset 0 0 0 calc(var(--tadnav-focus-width) + 2px) var(--tadnav-focus-color);
+  background: var(--tadnav-sub-item-hover-bg);
+  color:      var(--tadnav-sub-item-hover-color);
+}
+
+/* ── Skip Link ──────────────────────────────── */
+.skip-link {
+  position:   absolute;
+  top:        -100%;
+  left:       1rem;
+  background: var(--tadnav-sub-border);
+  color:      #fff;
+  padding:    0.5rem 1rem;
+  border-radius: 0 0 6px 6px;
+  font-size:  0.9rem;
+  z-index:    100000;
+  text-decoration: none;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top:        0;
+  outline:    var(--tadnav-focus-width) solid var(--tadnav-focus-color);
+  box-shadow: 0 0 0 calc(var(--tadnav-focus-width) + 2px) var(--tadnav-focus-shadow-color);
+}
+
+/* ══════════════════════════════════════════════
+ * 手機 / 放大 400% 模式
+ * 核心：強制單欄手風琴，多層縮排色彩區隔
+ * ══════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* ── 顯示漢堡按鈕 ── */
+  .tadnav-toggle { display: flex; }
+
+  /* ── Inner 改為換行排列 ── */
+  .tadnav-inner {
+    flex-wrap:   wrap;
+    padding:     0.5rem 1rem;
+    align-items: center;
+  }
+  .tadnav-brand { flex: 1; }
+
+  /* ══ 頂層選單：垂直單欄 ══ */
+  .tadnav-menu {
+    display:        none;         /* 預設隱藏 */
+    flex-direction: column;
+    width:          100%;
+    padding:        0.25rem 0 0.5rem;
+    flex:           none;
+    overflow:       visible;      /* 允許子選單展開 */
+    flex-wrap:      nowrap;
+    background:     var(--tadnav-mobile-bg);
+  }
+  .tadnav-menu[data-mobile-open="true"] { display: flex; }
+
+  /* ── 所有 li 強制 100% 寬、取消絕對定位 ── */
+  .tadnav-menu > li,
+  .tadnav-submenu > li {
+    width:    100% !important;
+    position: static !important;
+    display:  block !important;
+  }
+  .tadnav-menu > li.tadnav-spacer { display: none !important; }
+
+  /* ══ 頂層項目按鈕 ══ */
+  .tadnav-menu > li > a[role="menuitem"],
+  .tadnav-menu > li > button.tadnav-submenu-toggle {
+    display:         flex;
+    width:           100%;
+    padding:         0.8rem 1.1rem;
+    border-bottom:   1px solid var(--tadnav-mobile-item-border);
+    border-left:     none;
+    justify-content: flex-start;
+    font-size:       var(--tadnav-item-font-size);
+    white-space:     normal;
+    word-break:      break-word;
+    scroll-margin-top: 3rem;
+  }
+  .tadnav-menu > li > button.tadnav-submenu-toggle > .tadnav-arrow {
+    margin-left: auto;
+  }
+
+  /* ══════════════════════════════════════════
+   * ★★★ 手風琴子選單：完全覆蓋桌機版樣式 ★★★
+   * 所有層級統一處理
+   * ══════════════════════════════════════════ */
+  .tadnav-submenu,
+  .tadnav-submenu .tadnav-submenu,
+  .tadnav-submenu .tadnav-submenu .tadnav-submenu {
+    /* 覆蓋桌機絕對定位 */
+    position:       static !important;
+    top:            auto !important;
+    left:           auto !important;
+    right:          auto !important;
+    bottom:         auto !important;
+    float:          none !important;
+
+    /* 覆蓋桌機動畫狀態 */
+    opacity:        1 !important;
+    visibility:     visible !important;
+    transform:      none !important;
+    pointer-events: auto !important;
+
+    /* 手風琴收合 */
+    max-height:     0;
+    overflow:       hidden;
+    transition:     max-height 0.32s ease;
+
+    /* 外觀重設 */
+    box-shadow:     none !important;
+    border:         none !important;
+    border-radius:  0 !important;
+    min-width:      0 !important;
+    width:          100% !important;
+    z-index:        auto !important;
+    display:        block !important;  /* 不用 flex，用 block + max-height */
+  }
+
+  /* ★ 展開狀態 */
+  .tadnav-submenu[data-open="true"],
+  .tadnav-submenu .tadnav-submenu[data-open="true"],
+  .tadnav-submenu .tadnav-submenu .tadnav-submenu[data-open="true"] {
+    max-height: var(--tadnav-accordion-max-height);
+  }
+
+  /* ── 捲動按鈕隱藏 ── */
+  .tadnav-scroll-btn { display: none !important; }
+
+  /* ══ 第一層子選單（L1）：淺色背景 ══ */
+  .tadnav-menu > li > .tadnav-submenu {
+    background:   var(--tadnav-mobile-sub-l1-bg) !important;
+    border-left:  3px solid rgba(255,255,255,0.25) !important;
+    margin-left:  0.75rem !important;
+  }
+  .tadnav-menu > li > .tadnav-submenu > li > a[role="menuitem"],
+  .tadnav-menu > li > .tadnav-submenu > li > button.tadnav-submenu-toggle {
+    padding-left: 1.5rem;
+    font-size:    0.95rem;
+  }
+
+  /* ══ 第二層子選單（L2）：中色背景 ══ */
+  .tadnav-menu > li > .tadnav-submenu > li > .tadnav-submenu {
+    background:   var(--tadnav-mobile-sub-l2-bg) !important;
+    border-left:  3px solid rgba(255,255,255,0.18) !important;
+    margin-left:  0.75rem !important;
+  }
+  .tadnav-menu > li > .tadnav-submenu > li > .tadnav-submenu > li > a[role="menuitem"],
+  .tadnav-menu > li > .tadnav-submenu > li > .tadnav-submenu > li > button.tadnav-submenu-toggle {
+    padding-left: 2.25rem;
+    font-size:    0.9rem;
+  }
+
+  /* ══ 第三層子選單（L3）：深色背景 ══ */
+  .tadnav-menu > li > .tadnav-submenu > li > .tadnav-submenu > li > .tadnav-submenu {
+    background:   var(--tadnav-mobile-sub-l3-bg) !important;
+    border-left:  3px solid rgba(255,255,255,0.12) !important;
+    margin-left:  0.75rem !important;
+  }
+  .tadnav-menu > li > .tadnav-submenu > li > .tadnav-submenu > li > .tadnav-submenu > li > a[role="menuitem"],
+  .tadnav-menu > li > .tadnav-submenu > li > .tadnav-submenu > li > .tadnav-submenu > li > button.tadnav-submenu-toggle {
+    padding-left: 3rem;
+    font-size:    0.85rem;
+  }
+
+  /* ══ 子選單內所有項目按鈕通用樣式 ══ */
+  .tadnav-submenu > li > a[role="menuitem"],
+  .tadnav-submenu > li > button.tadnav-submenu-toggle {
+    display:         flex !important;
+    width:           100% !important;
+    color:           var(--tadnav-mobile-sub-color) !important;
+    background:      transparent !important;
+    border-bottom:   1px solid var(--tadnav-mobile-item-border) !important;
+    border-radius:   0 !important;
+    white-space:     normal !important;
+    word-break:      break-word !important;
+    text-align:      left !important;
+    padding-top:     0.65rem !important;
+    padding-bottom:  0.65rem !important;
+    padding-right:   1.1rem !important;
+    justify-content: flex-start !important;
+    scroll-margin-top:    3rem;
+    scroll-margin-bottom: 1rem;
+  }
+  .tadnav-submenu > li > button.tadnav-submenu-toggle > .tadnav-arrow {
+    margin-left: auto !important;
+  }
+  /* 子選單箭頭改為上下方向 */
+  .tadnav-submenu .tadnav-arrow::after {
+    content: "\f078" !important;
+  }
+  .tadnav-submenu button[aria-expanded="true"] > .tadnav-arrow {
+    transform: rotate(180deg) !important;
+  }
+
+  /* ── is-right 在手機模式下重設 ── */
+  .tadnav-menu > li.is-right > .tadnav-submenu,
+  .tadnav-menu > li.is-right .tadnav-submenu .tadnav-submenu {
+    left:  auto !important;
+    right: auto !important;
+  }
+}

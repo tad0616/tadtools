@@ -1,4 +1,5 @@
 <{if $xoBlocks.canvas_right|default:null}>
+    <h2 class="sr-only visually-hidden">右下區域內容</h2>
     <div class="rightBlock" style="<{if $rightBlocks2|default:false}><{$rightBlocks2|default:''}>;<{/if}>width:100%;">
         <div class="row">
         <{foreach item=block from=$xoBlocks.canvas_right|default:null}>

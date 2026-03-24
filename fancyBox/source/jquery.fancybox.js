@@ -137,11 +137,11 @@
 
 			// HTML templates
 			tpl: {
-				wrap     : '<div class="fancybox-wrap" tabIndex="-1"><div class="fancybox-skin"><div class="fancybox-outer"><div class="fancybox-inner"></div></div></div></div>',
+				wrap     : '<div class="fancybox-wrap" tabIndex="-1" role="dialog" aria-modal="true"><div class="fancybox-skin"><div class="fancybox-outer"><div class="fancybox-inner"></div></div></div></div>',
 				image    : '<img class="fancybox-image" src="{href}" alt="" />',
 				iframe   : '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen' + (IE ? ' allowtransparency="true"' : '') + '></iframe>',
 				error    : '<p class="fancybox-error">The requested content cannot be loaded.<br/>Please try again later.</p>',
-				closeBtn : '<a title="Close" class="fancybox-item fancybox-close" href="javascript:;"></a>',
+				closeBtn : '<a role="button" aria-label="關閉" title="關閉" class="fancybox-item fancybox-close" href="javascript:;"></a>',
 				next     : '<a title="Next" class="fancybox-nav fancybox-next" href="javascript:;"><span></span></a>',
 				prev     : '<a title="Previous" class="fancybox-nav fancybox-prev" href="javascript:;"><span></span></a>',
 				loading  : '<div id="fancybox-loading"><div></div></div>'
@@ -687,6 +687,32 @@
 				D.bind('keydown.fb', function (e) {
 					var code   = e.which || e.keyCode,
 						target = e.target || e.srcElement;
+
+					// Trap Tab key focus inside the modal (WCAG 2.4.3)
+					if (code === 9 && F.isOpen && F.wrap) {
+						var focusableStr = [
+							'a[href]', 'area[href]',
+							'input:not([disabled]):not([type="hidden"])',
+							'select:not([disabled])', 'textarea:not([disabled])',
+							'button:not([disabled])', 'iframe', 'object', 'embed',
+							'[contenteditable]', '[tabindex]:not([tabindex^="-"])'
+						].join(',');
+
+						var $focusable = F.wrap.find('*:visible').filter(focusableStr).filter(function() {
+							return $(this).css('visibility') !== 'hidden';
+						});
+
+						if ($focusable.length) {
+							var idx = $focusable.index(document.activeElement);
+							e.preventDefault();
+							if (e.shiftKey) {
+								$focusable.eq(idx <= 0 ? $focusable.length - 1 : idx - 1).focus();
+							} else {
+								$focusable.eq(idx < 0 || idx >= $focusable.length - 1 ? 0 : idx + 1).focus();
+							}
+						}
+						return false;
+					}
 
 					// Skip esc key if loading, because showLoading will cancel preloading
 					if (code === 27 && F.coming) {
@@ -1468,6 +1494,22 @@
 
 			F.trigger('afterShow');
 
+			// Auto-focus: move focus into the modal after opening (WCAG 2.4.3)
+			if (F.wrap) {
+				var $closeBtn = F.wrap.find('.fancybox-close').first();
+				var $firstFocus = $closeBtn.length ? $closeBtn : F.wrap.find(
+					'a[href], button:not([disabled]), [tabindex]:not([tabindex^="-"])'
+				).first();
+				if ($firstFocus.length) {
+					$firstFocus.focus();
+				} else {
+					F.wrap.focus();
+				}
+				// Set aria-label from title/caption for screen readers
+				var label = (current.title || '').replace(/<[^>]*>/g, '') || '圖片';
+				F.wrap.attr('aria-label', label);
+			}
+
 			// Stop the slideshow if this is the last item
 			if (!current.loop && current.index === current.group.length - 1) {
 
@@ -1482,6 +1524,12 @@
 
 		_afterZoomOut: function ( obj ) {
 			obj = obj || F.current;
+
+			// Back-focus: return focus to the element that triggered the modal (WCAG 2.4.3)
+			var $trigger = obj && obj.element;
+			if ($trigger && $trigger.length && $trigger.is(':visible')) {
+				$trigger.focus();
+			}
 
 			$('.fancybox-wrap').trigger('onReset').remove();
 

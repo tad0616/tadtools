@@ -5,7 +5,7 @@
         </div>
 
         <div class="col-xl-<{$rb_width|default:''}>" id="xoops_theme_right_zone">
-            <a accesskey="R" href="#xoops_theme_right_zone" title="<{$smarty.const._TAD_RIGHT_ZONE}>" id="xoops_theme_right_zone_key" style="color: transparent; font-size: 0.625rem; position: absolute;">:::</a>
+            <a accesskey="B"  tabindex="-1" href="#xoops_theme_right_zone" id="xoops_theme_right_zone_key" class="sr-only-focusable" aria-label="跳到右邊區域">:::</a>
             <div id="xoops_theme_right" style="<{$rightBlocks|default:''}>">
                 <{if $xoBlocks.canvas_left|default:null}>
                     <{include file="$xoops_rootpath/modules/tadtools/themes5_tpl/leftBlock.tpl"}>

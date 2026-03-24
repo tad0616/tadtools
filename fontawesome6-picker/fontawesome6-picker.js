@@ -1,4 +1,4 @@
-(function($) {
+(function ($) {
     // 用來存儲圖示的陣列
     let icons = [];
     let initialized = false;
@@ -24,14 +24,14 @@
         // 使用 Promise 來處理非同步載入
         return new Promise((resolve, reject) => {
             // 讀取免費圖示
-            $.get(basePath + 'free.txt', function(freeData) {
+            $.get(basePath + 'free.txt', function (freeData) {
                 const freeIcons = freeData.split(',').map(name => ({
                     name: name.trim(),
                     type: 'fa-solid'
                 }));
 
                 // 讀取品牌圖示
-                $.get(basePath + 'brands.txt', function(brandData) {
+                $.get(basePath + 'brands.txt', function (brandData) {
                     const brandIcons = brandData.split(',').map(name => ({
                         name: name.trim(),
                         type: 'fa-brands'
@@ -56,6 +56,12 @@
                                 </div>
                             </div>
                             <div class="icon-picker-icons" style="display:grid; grid-template-columns:repeat(5,1fr); gap:10px; max-height:300px; overflow-y:auto;">
+                                <!-- 添加「无」图示 -->
+                                <div class="icon-item icon-clear" data-icon="" data-type=""
+                                    style="padding:10px; text-align:center; cursor:pointer; border:1px solid #eee;">
+                                    <i class="fa-solid fa-circle-xmark" style="font-size:20px; color:red;"></i>
+                                    <div class="icon-name" style="font-size:12px; margin-top:5px;">無</div>
+                                </div>
                                 ${icons.map(icon => `
                                     <div class="icon-item" data-icon="${icon.name}" data-type="${icon.type}"
                                         style="padding:10px; text-align:center; cursor:pointer; border:1px solid #eee;">
@@ -93,15 +99,15 @@
         let $currentInput = null;
 
         // 切換顯示名稱
-        $('.icon-display-toggle input').off('change').on('change', function() {
+        $('.icon-display-toggle input').off('change').on('change', function () {
             const showNames = $(this).prop('checked');
             $('.icon-name').toggle(showNames);
         });
 
         // 搜尋功能
-        $('.icon-picker-search input').off('input').on('input', function() {
+        $('.icon-picker-search input').off('input').on('input', function () {
             const searchTerm = $(this).val().toLowerCase();
-            $('.icon-picker-icons .icon-item').each(function() {
+            $('.icon-picker-icons .icon-item').each(function () {
                 const $item = $(this);
                 const iconName = $item.find('.icon-name').text().toLowerCase();
                 if (iconName.includes(searchTerm)) {
@@ -113,12 +119,35 @@
         });
 
         // 選擇圖示
-        $('.icon-item').off('click').on('click', function() {
+        $('.icon-item').off('click').on('click', function () {
             if ($currentInput) {
-                const iconName = $(this).attr('data-icon');
-                const iconType = $(this).attr('data-type');
-                if (iconName && iconType) {
+                const iconName = $(this).attr('data-icon'); // 获取图示名称
+                const iconType = $(this).attr('data-type'); // 获取图示类型（例如 fa-solid 或 fa-brands）
+
+                // 判断是否点击的是「无」图示
+                if ($(this).hasClass('icon-clear')) {
+                    // 清空输入框的值
+                    $currentInput.val('');
+
+                    // 更新显示的图示为默认状态
+                    const $iconDisplay = $currentInput.siblings('.icon-display');
+                    if ($iconDisplay.length) {
+                        $iconDisplay.html('<i class="fa-solid fa-circle-question" style="font-size:20px;"></i>');
+                    }
+
+                    // 关闭图示选择器
+                    closePicker();
+                } else if (iconName && iconType) {
+                    // 更新隐藏的输入框的值
                     $currentInput.val(`${iconType} fa-${iconName}`);
+
+                    // 更新显示的图示
+                    const $iconDisplay = $currentInput.siblings('.icon-display'); // 找到对应的显示区域
+                    if ($iconDisplay.length) {
+                        $iconDisplay.html(`<i class="${iconType} fa-${iconName}" style="font-size:20px;"></i>`);
+                    }
+
+                    // 关闭图示选择器
                     closePicker();
                 }
             }
@@ -139,20 +168,20 @@
         $('.icon-picker-close button, .icon-picker-backdrop').off('click').on('click', closePicker);
 
         // 使用事件委派來處理 icon-picker-input 的 focus 事件
-        $(document).off('focus.iconPicker', '.icon-picker-input').on('focus.iconPicker', '.icon-picker-input', function() {
+        $(document).off('focus.iconPicker', '.icon-picker-input').on('focus.iconPicker', '.icon-picker-input', function () {
             $currentInput = $(this);
             $picker.show();
             $backdrop.show();
         });
 
         // 防止點擊選擇器時關閉
-        $picker.off('click').on('click', function(e) {
+        $picker.off('click').on('click', function (e) {
             e.stopPropagation();
         });
     }
 
     // 插件定義
-    $.fn.iconPicker = function(path = '', options = {}) {
+    $.fn.iconPicker = function (path = '', options = {}) {
         // 標記這些輸入框
         this.addClass('icon-picker-input');
 
@@ -165,7 +194,7 @@
     };
 
     // 新增重新初始化方法
-    $.fn.iconPicker.reinitialize = function() {
+    $.fn.iconPicker.reinitialize = function () {
         if (initialized && basePath) {
             bindEvents();
         }

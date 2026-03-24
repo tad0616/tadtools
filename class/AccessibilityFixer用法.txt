@@ -1,0 +1,18 @@
+// ① 靜態快捷：零設定，一行搞定
+$fixed = AccessibilityFixer::of($content);
+
+// ② 靜態工廠：make() 建立實例，再鏈式設定
+$fixed = AccessibilityFixer::make()
+    ->setBaseFontSize(18)
+    ->setNewWindowLabel('Opens in new window')
+    ->fix($content);
+
+// ③ 靜態工廠 + 建立時傳規則開關
+$fixed = AccessibilityFixer::make([
+        AccessibilityFixer::RULE_ABBR => false,
+    ])
+    ->fix($content);
+
+// ④ 傳統實例化（原本的方式，依然支援）
+$fixer = new AccessibilityFixer();
+$fixed = $fixer->fix($content);

@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tad Carousel — 使用說明文件</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;900&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ── 設計語言：精緻印刷風，墨水黑底、金色點綴 ── */
+    :root {
+      --ink: #0d0d0d;
+      --paper: #f5f1eb;
+      --gold: #c9a84c;
+      --gold-light: #e8c97a;
+      --accent: #e05a2b;
+      --muted: #6b6560;
+      --code-bg: #1a1a1a;
+      --code-text: #e8e0d4;
+      --code-key: #c9a84c;
+      --code-str: #7ec987;
+      --code-cmt: #6b7280;
+      --border: #d4cfc8;
+      --success: #2d7a4f;
+      --warn: #b45309;
+      --section-bg: #faf7f3;
+      --font-serif: 'Noto Serif TC', serif;
+      --font-sans: 'Noto Sans TC', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.75;
+    }
+
+    /* ── 側邊導覽列 ── */
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 260px;
+      height: 100vh;
+      background: var(--ink);
+      color: var(--paper);
+      overflow-y: auto;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar__logo {
+      padding: 2rem 1.5rem 1.5rem;
+      border-bottom: 1px solid rgba(201,168,76,.25);
+    }
+
+    .sidebar__logo h1 {
+      font-family: var(--font-serif);
+      font-weight: 900;
+      font-size: 1.35rem;
+      color: var(--gold);
+      letter-spacing: .04em;
+      line-height: 1.2;
+    }
+
+    .sidebar__logo p {
+      font-size: .72rem;
+      color: rgba(245,241,235,.45);
+      margin-top: .35rem;
+      font-family: var(--font-mono);
+      letter-spacing: .08em;
+    }
+
+    .sidebar__nav {
+      flex: 1;
+      padding: 1.25rem 0;
+    }
+
+    .sidebar__section-label {
+      font-size: .65rem;
+      font-family: var(--font-mono);
+      letter-spacing: .15em;
+      color: var(--gold);
+      text-transform: uppercase;
+      padding: 1rem 1.5rem .35rem;
+    }
+
+    .sidebar__link {
+      display: block;
+      padding: .45rem 1.5rem;
+      font-size: .85rem;
+      color: rgba(245,241,235,.65);
+      text-decoration: none;
+      transition: color .15s, background .15s;
+      border-left: 2px solid transparent;
+    }
+
+    .sidebar__link:hover,
+    .sidebar__link.is-active {
+      color: var(--paper);
+      background: rgba(201,168,76,.1);
+      border-left-color: var(--gold);
+    }
+
+    /* ── 主要內容區 ── */
+    .main {
+      margin-left: 260px;
+      min-height: 100vh;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 5rem 4rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 40px,
+          rgba(201,168,76,.03) 40px,
+          rgba(201,168,76,.03) 41px
+        );
+    }
+
+    .hero__eyebrow {
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      letter-spacing: .2em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .hero h2 {
+      font-family: var(--font-serif);
+      font-weight: 900;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      line-height: 1.1;
+      color: var(--paper);
+      max-width: 700px;
+      position: relative;
+    }
+
+    .hero h2 em {
+      font-style: normal;
+      color: var(--gold);
+    }
+
+    .hero__desc {
+      margin-top: 1.5rem;
+      max-width: 560px;
+      color: rgba(245,241,235,.7);
+      font-size: 1.05rem;
+      position: relative;
+    }
+
+    .hero__badges {
+      margin-top: 2rem;
+      display: flex;
+      gap: .75rem;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .3rem .85rem;
+      border-radius: 2px;
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      letter-spacing: .05em;
+    }
+
+    .badge--gold { background: var(--gold); color: var(--ink); font-weight: 600; }
+    .badge--outline { border: 1px solid rgba(201,168,76,.4); color: var(--gold); }
+
+    /* ── 區塊通用 ── */
+    .section {
+      padding: 4rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section:last-child { border-bottom: none; }
+    .section--alt { background: var(--section-bg); }
+
+    .section__label {
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      letter-spacing: .2em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: .75rem;
+    }
+
+    .section h2 {
+      font-family: var(--font-serif);
+      font-weight: 900;
+      font-size: 1.9rem;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+      color: var(--ink);
+    }
+
+    .section h3 {
+      font-family: var(--font-serif);
+      font-weight: 600;
+      font-size: 1.25rem;
+      margin: 2rem 0 .75rem;
+      color: var(--ink);
+    }
+
+    .section p {
+      color: #3d3830;
+      margin-bottom: 1rem;
+      max-width: 680px;
+    }
+
+    /* ── 程式碼區塊 ── */
+    pre {
+      background: var(--code-bg);
+      color: var(--code-text);
+      border-radius: 6px;
+      padding: 1.5rem;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: .82rem;
+      line-height: 1.7;
+      margin: 1.25rem 0;
+      border: 1px solid rgba(255,255,255,.06);
+      position: relative;
+    }
+
+    pre .c { color: var(--code-cmt); font-style: italic; }
+    pre .k { color: var(--code-key); }
+    pre .s { color: var(--code-str); }
+    pre .t { color: #7eb8d4; }
+    pre .n { color: #d4a5f5; }
+    pre .p { color: rgba(232,224,212,.4); }
+
+    .pre-label {
+      font-family: var(--font-mono);
+      font-size: .68rem;
+      letter-spacing: .12em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: .4rem;
+    }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: .85em;
+      background: rgba(201,168,76,.12);
+      color: #8a6a1a;
+      padding: .1em .4em;
+      border-radius: 3px;
+    }
+
+    /* ── 選項表格 ── */
+    .options-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .875rem;
+      margin: 1.25rem 0;
+    }
+
+    .options-table th {
+      text-align: left;
+      padding: .65rem 1rem;
+      background: var(--ink);
+      color: var(--gold);
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .options-table td {
+      padding: .65rem 1rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    .options-table tr:last-child td { border-bottom: none; }
+    .options-table tr:nth-child(even) td { background: rgba(0,0,0,.02); }
+
+    .options-table td code {
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    .type-badge {
+      display: inline-block;
+      padding: .1em .45em;
+      border-radius: 2px;
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .04em;
+    }
+    .type-bool { background: #dbeafe; color: #1d4ed8; }
+    .type-num  { background: #dcfce7; color: #166534; }
+    .type-str  { background: #fef9c3; color: #854d0e; }
+    .type-fn   { background: #fce7f3; color: #9d174d; }
+    .type-obj  { background: #ede9fe; color: #6d28d9; }
+    .type-null { background: #f3f4f6; color: #4b5563; }
+
+    /* ── 無障礙說明區塊 ── */
+    .a11y-card {
+      background: var(--ink);
+      color: var(--paper);
+      border-radius: 8px;
+      padding: 2rem;
+      margin: 1.5rem 0;
+    }
+
+    .a11y-card h3 {
+      font-family: var(--font-serif);
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .a11y-card p { color: rgba(245,241,235,.8); max-width: none; margin-bottom: .75rem; }
+    .a11y-card p:last-child { margin-bottom: 0; }
+
+    /* ── 焦點順序圖示 ── */
+    .focus-diagram {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      flex-wrap: wrap;
+      margin: 1.25rem 0;
+      padding: 1.5rem;
+      background: var(--section-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+
+    .focus-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .35rem;
+    }
+
+    .focus-step__num {
+      width: 1.8rem;
+      height: 1.8rem;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--ink);
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .focus-step__label {
+      font-size: .72rem;
+      color: var(--muted);
+      text-align: center;
+      font-family: var(--font-mono);
+      line-height: 1.3;
+    }
+
+    .focus-step--highlight .focus-step__num {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .focus-step--highlight .focus-step__label {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .focus-arrow {
+      color: var(--border);
+      font-size: 1.1rem;
+      align-self: center;
+      margin-top: -.8rem;
+    }
+
+    /* ── Fix 說明卡 ── */
+    .fix-card {
+      border-left: 4px solid var(--accent);
+      background: #fff8f5;
+      padding: 1.25rem 1.5rem;
+      margin: 1.25rem 0;
+      border-radius: 0 6px 6px 0;
+    }
+
+    .fix-card__title {
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      letter-spacing: .12em;
+      color: var(--accent);
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: .5rem;
+    }
+
+    .fix-card p { margin-bottom: 0; max-width: none; color: #4a3020; }
+
+    /* ── 鍵盤快捷鍵表 ── */
+    .kbd-table { display: flex; flex-direction: column; gap: .5rem; margin: 1rem 0; }
+    .kbd-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: .65rem 1rem;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+    .kbd-keys { display: flex; gap: .35rem; min-width: 120px; }
+    kbd {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: .2em .55em;
+      background: var(--ink);
+      color: var(--paper);
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .03em;
+      min-width: 2rem;
+    }
+    .kbd-desc { font-size: .875rem; color: #3d3830; }
+
+    /* ── 方法卡片 ── */
+    .method-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+      margin: 1.25rem 0;
+    }
+
+    .method-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.25rem;
+    }
+
+    .method-card__name {
+      font-family: var(--font-mono);
+      font-size: .9rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: .35rem;
+    }
+
+    .method-card__name span { color: var(--gold); }
+    .method-card p { font-size: .85rem; color: var(--muted); margin: 0; max-width: none; }
+
+    /* ── 即時展示 ── */
+    .demo-box {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 1.5rem 0;
+    }
+
+    .demo-box__label {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .65rem 1rem;
+      background: var(--ink);
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      letter-spacing: .1em;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+
+    .demo-box__dot {
+      width: .5rem; height: .5rem;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .demo-box__content { padding: 2rem; }
+
+    /* ── Carousel 示範樣式 ── */
+    .demo-carousel-wrap { position: relative; }
+
+    .demo-slide {
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--paper);
+    }
+
+    .demo-slide:nth-child(1) { background: linear-gradient(135deg, #1a1a2e, #16213e); }
+    .demo-slide:nth-child(2) { background: linear-gradient(135deg, #2d1b00, #4a3000); }
+    .demo-slide:nth-child(3) { background: linear-gradient(135deg, #0d2818, #1a4030); }
+    .demo-slide:nth-child(4) { background: linear-gradient(135deg, #1a0d2e, #2d1a4a); }
+
+    /* ── 版本/更新紀錄 ── */
+    .changelog-entry {
+      display: flex;
+      gap: 1.5rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .changelog-entry:last-child { border-bottom: none; }
+    .changelog-version {
+      font-family: var(--font-mono);
+      font-size: .8rem;
+      color: var(--gold);
+      font-weight: 700;
+      min-width: 70px;
+    }
+    .changelog-date { font-size: .8rem; color: var(--muted); min-width: 90px; }
+    .changelog-desc { font-size: .875rem; color: #3d3830; }
+
+    /* ── 響應式 ── */
+    @media (max-width: 900px) {
+      .sidebar { width: 220px; }
+      .main { margin-left: 220px; }
+      .section { padding: 2.5rem 2rem; }
+      .hero { padding: 3rem 2rem 2.5rem; }
+    }
+
+    @media (max-width: 640px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; }
+      .section { padding: 2rem 1.25rem; }
+      .hero { padding: 2.5rem 1.25rem 2rem; }
+      .method-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── 側邊導覽列 ── -->
+<nav class="sidebar" aria-label="文件導覽">
+  <div class="sidebar__logo">
+    <h1>Tad Carousel</h1>
+    <p>v1.0.0 · WCAG 2.3 AAA</p>
+  </div>
+  <div class="sidebar__nav">
+    <div class="sidebar__section-label">入門</div>
+    <a href="#overview"   class="sidebar__link">概覽</a>
+    <a href="#install"    class="sidebar__link">安裝</a>
+    <a href="#quickstart" class="sidebar__link">快速開始</a>
+
+    <div class="sidebar__section-label">設定</div>
+    <a href="#options"    class="sidebar__link">選項參考</a>
+    <a href="#responsive" class="sidebar__link">響應式設定</a>
+    <a href="#a11y-opts"  class="sidebar__link">無障礙文字</a>
+
+    <div class="sidebar__section-label">互動</div>
+    <a href="#api"        class="sidebar__link">API 方法</a>
+    <a href="#events"     class="sidebar__link">事件</a>
+    <a href="#keyboard"   class="sidebar__link">鍵盤操作</a>
+
+    <div class="sidebar__section-label">無障礙</div>
+    <a href="#a11y"       class="sidebar__link">無障礙說明</a>
+    <a href="#wcag2433"   class="sidebar__link">WCAG 2.4.3 修正</a>
+
+    <div class="sidebar__section-label">其他</div>
+    <a href="#examples"   class="sidebar__link">完整範例</a>
+    <a href="#changelog"  class="sidebar__link">更新紀錄</a>
+  </div>
+</nav>
+
+<!-- ── 主要內容 ── -->
+<main class="main">
+
+  <!-- Hero -->
+  <header class="hero">
+    <p class="hero__eyebrow">文件 · Documentation</p>
+    <h2>Tad <em>Carousel</em><br>使用說明</h2>
+    <p class="hero__desc">
+      現代化、無障礙輪播元件。零依賴、純 JavaScript，
+      完整支援 WCAG 2.3 AAA 無障礙標準。
+    </p>
+    <div class="hero__badges">
+      <span class="badge badge--gold">v1.0.0</span>
+      <span class="badge badge--outline">WCAG 2.3 AAA</span>
+      <span class="badge badge--outline">Zero Dependencies</span>
+      <span class="badge badge--outline">MIT License</span>
+    </div>
+  </header>
+
+  <!-- ── 概覽 ── -->
+  <section class="section" id="overview">
+    <p class="section__label">Overview</p>
+    <h2>概覽</h2>
+    <p>
+      Tad Carousel 是一套輕量、無依賴的輪播（Carousel）元件，以無障礙設計為核心，
+      支援鍵盤操作、觸控拖曳、自動播放、響應式斷點，並遵循 WCAG 2.3 AAA 規範。
+    </p>
+    <p>
+      元件以 UMD 格式封裝，可在 CommonJS、AMD 或純瀏覽器環境直接使用，不需安裝任何框架或套件管理工具。
+    </p>
+
+    <h3>主要特色</h3>
+    <ul style="list-style:none; display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap:.75rem; margin:1rem 0;">
+      <li style="display:flex; gap:.6rem; align-items:flex-start; padding:.75rem 1rem; background:#fff; border:1px solid var(--border); border-radius:4px; font-size:.875rem;">
+        <span style="color:var(--gold); font-size:1rem; flex-shrink:0;">✦</span>
+        <span>零外部依賴，檔案體積極小</span>
+      </li>
+      <li style="display:flex; gap:.6rem; align-items:flex-start; padding:.75rem 1rem; background:#fff; border:1px solid var(--border); border-radius:4px; font-size:.875rem;">
+        <span style="color:var(--gold); font-size:1rem; flex-shrink:0;">✦</span>
+        <span>完整 WCAG 2.3 AAA 無障礙支援</span>
+      </li>
+      <li style="display:flex; gap:.6rem; align-items:flex-start; padding:.75rem 1rem; background:#fff; border:1px solid var(--border); border-radius:4px; font-size:.875rem;">
+        <span style="color:var(--gold); font-size:1rem; flex-shrink:0;">✦</span>
+        <span>觸控與滑鼠拖曳支援</span>
+      </li>
+      <li style="display:flex; gap:.6rem; align-items:flex-start; padding:.75rem 1rem; background:#fff; border:1px solid var(--border); border-radius:4px; font-size:.875rem;">
+        <span style="color:var(--gold); font-size:1rem; flex-shrink:0;">✦</span>
+        <span>響應式斷點設定</span>
+      </li>
+      <li style="display:flex; gap:.6rem; align-items:flex-start; padding:.75rem 1rem; background:#fff; border:1px solid var(--border); border-radius:4px; font-size:.875rem;">
+        <span style="color:var(--gold); font-size:1rem; flex-shrink:0;">✦</span>
+        <span>深色模式、高對比模式自動適應</span>
+      </li>
+      <li style="display:flex; gap:.6rem; align-items:flex-start; padding:.75rem 1rem; background:#fff; border:1px solid var(--border); border-radius:4px; font-size:.875rem;">
+        <span style="color:var(--gold); font-size:1rem; flex-shrink:0;">✦</span>
+        <span>減少動態效果（prefers-reduced-motion）</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ── 安裝 ── -->
+  <section class="section section--alt" id="install">
+    <p class="section__label">Installation</p>
+    <h2>安裝</h2>
+
+    <h3>方式一：直接引入檔案</h3>
+    <p>將 <code>tad_carousel.css</code> 與 <code>tad_carousel.js</code> 放置於專案目錄，然後在 HTML 中引入：</p>
+
+    <p class="pre-label">HTML</p>
+    <pre>&lt;<span class="t">head</span>&gt;
+  <span class="c">&lt;!-- 引入樣式 --&gt;</span>
+  &lt;<span class="t">link</span> <span class="k">rel</span>=<span class="s">"stylesheet"</span> <span class="k">href</span>=<span class="s">"tad_carousel.css"</span>&gt;
+&lt;/<span class="t">head</span>&gt;
+&lt;<span class="t">body</span>&gt;
+  <span class="c">&lt;!-- 頁面內容 --&gt;</span>
+
+  <span class="c">&lt;!-- 在 &lt;/body&gt; 前引入腳本 --&gt;</span>
+  &lt;<span class="t">script</span> <span class="k">src</span>=<span class="s">"tad_carousel.js"</span>&gt;&lt;/<span class="t">script</span>&gt;
+&lt;/<span class="t">body</span>&gt;</pre>
+
+    <h3>方式二：CommonJS（Node.js / Webpack）</h3>
+    <p class="pre-label">JavaScript</p>
+    <pre><span class="k">const</span> <span class="n">TadCarousel</span> = <span class="k">require</span>(<span class="s">'./tad_carousel'</span>);</pre>
+
+    <h3>方式三：ES Module（搭配打包工具）</h3>
+    <p class="pre-label">JavaScript</p>
+    <pre><span class="k">import</span> <span class="n">TadCarousel</span> <span class="k">from</span> <span class="s">'./tad_carousel'</span>;</pre>
+  </section>
+
+  <!-- ── 快速開始 ── -->
+  <section class="section" id="quickstart">
+    <p class="section__label">Quick Start</p>
+    <h2>快速開始</h2>
+
+    <h3>步驟一：撰寫 HTML 結構</h3>
+    <p>在容器元素內直接放置輪播項目，元件將自動包裝為正確的 DOM 結構。</p>
+    <p class="pre-label">HTML</p>
+    <pre>&lt;<span class="t">div</span> <span class="k">id</span>=<span class="s">"myCarousel"</span>&gt;
+  &lt;<span class="t">div</span>&gt;&lt;<span class="t">img</span> <span class="k">src</span>=<span class="s">"slide1.jpg"</span> <span class="k">alt</span>=<span class="s">"第一張投影片說明"</span>&gt;&lt;/<span class="t">div</span>&gt;
+  &lt;<span class="t">div</span>&gt;&lt;<span class="t">img</span> <span class="k">src</span>=<span class="s">"slide2.jpg"</span> <span class="k">alt</span>=<span class="s">"第二張投影片說明"</span>&gt;&lt;/<span class="t">div</span>&gt;
+  &lt;<span class="t">div</span>&gt;&lt;<span class="t">img</span> <span class="k">src</span>=<span class="s">"slide3.jpg"</span> <span class="k">alt</span>=<span class="s">"第三張投影片說明"</span>&gt;&lt;/<span class="t">div</span>&gt;
+&lt;/<span class="t">div</span>&gt;</pre>
+
+    <h3>步驟二：初始化元件</h3>
+    <p class="pre-label">JavaScript</p>
+    <pre><span class="k">const</span> carousel = <span class="k">new</span> <span class="n">TadCarousel</span>(<span class="s">'#myCarousel'</span>, {
+  items: <span class="k">1</span>,
+  nav: <span class="k">true</span>,
+  dots: <span class="k">true</span>
+});</pre>
+
+    <h3>帶自動播放的基本範例</h3>
+    <p class="pre-label">JavaScript</p>
+    <pre><span class="k">const</span> carousel = <span class="k">new</span> <span class="n">TadCarousel</span>(<span class="s">'#myCarousel'</span>, {
+  items: <span class="k">1</span>,
+  autoplay: <span class="k">true</span>,        <span class="c">// 啟用自動播放</span>
+  autoplayTimeout: <span class="k">4000</span>, <span class="c">// 每 4 秒切換</span>
+  loop: <span class="k">true</span>,             <span class="c">// 循環播放</span>
+  nav: <span class="k">true</span>,
+  dots: <span class="k">true</span>
+});</pre>
+
+    <div class="fix-card">
+      <div class="fix-card__title">⚠ 無障礙注意事項</div>
+      <p>啟用 <code>autoplay: true</code> 時，請確保使用最新修正版的 <code>tad_carousel.js</code>（v1.0.0 修正版），
+      暫停／播放按鈕將自動被設為輪播內第一個焦點位置，符合 WCAG 2.4.3 焦點順序規範。</p>
+    </div>
+  </section>
+
+  <!-- ── 選項參考 ── -->
+  <section class="section section--alt" id="options">
+    <p class="section__label">Configuration</p>
+    <h2>選項參考</h2>
+
+    <h3>基本選項</h3>
+    <table class="options-table">
+      <thead>
+        <tr>
+          <th>選項名稱</th>
+          <th>型別</th>
+          <th>預設值</th>
+          <th>說明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>items</code></td>
+          <td><span class="type-badge type-num">number</span></td>
+          <td><code>1</code></td>
+          <td>每頁同時顯示的投影片數量</td>
+        </tr>
+        <tr>
+          <td><code>gap</code></td>
+          <td><span class="type-badge type-num">number</span></td>
+          <td><code>16</code></td>
+          <td>投影片之間的間距（單位：px）</td>
+        </tr>
+        <tr>
+          <td><code>loop</code></td>
+          <td><span class="type-badge type-bool">boolean</span></td>
+          <td><code>false</code></td>
+          <td>到達末端時是否循環回到開頭</td>
+        </tr>
+        <tr>
+          <td><code>startIndex</code></td>
+          <td><span class="type-badge type-num">number</span></td>
+          <td><code>0</code></td>
+          <td>初始顯示的頁面索引（從 0 起算）</td>
+        </tr>
+        <tr>
+          <td><code>rtl</code></td>
+          <td><span class="type-badge type-bool">boolean</span></td>
+          <td><code>false</code></td>
+          <td>啟用從右到左（RTL）方向</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>導航與指示器</h3>
+    <table class="options-table">
+      <thead>
+        <tr><th>選項名稱</th><th>型別</th><th>預設值</th><th>說明</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>nav</code></td>
+          <td><span class="type-badge type-bool">boolean</span></td>
+          <td><code>true</code></td>
+          <td>顯示上一張／下一張導航按鈕</td>
+        </tr>
+        <tr>
+          <td><code>dots</code></td>
+          <td><span class="type-badge type-bool">boolean</span></td>
+          <td><code>true</code></td>
+          <td>顯示分頁圓點指示器</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>自動播放</h3>
+    <table class="options-table">
+      <thead>
+        <tr><th>選項名稱</th><th>型別</th><th>預設值</th><th>說明</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>autoplay</code></td>
+          <td><span class="type-badge type-bool">boolean</span></td>
+          <td><code>false</code></td>
+          <td>啟用自動播放功能。啟用後將顯示暫停／播放按鈕（符合 WCAG 2.2.2）</td>
+        </tr>
+        <tr>
+          <td><code>autoplayTimeout</code></td>
+          <td><span class="type-badge type-num">number</span></td>
+          <td><code>5000</code></td>
+          <td>自動播放切換間隔（毫秒）</td>
+        </tr>
+        <tr>
+          <td><code>autoplayPauseOnHover</code></td>
+          <td><span class="type-badge type-bool">boolean</span></td>
+          <td><code>true</code></td>
+          <td>滑鼠懸停或焦點進入時自動暫停播放</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>拖曳</h3>
+    <table class="options-table">
+      <thead>
+        <tr><th>選項名稱</th><th>型別</th><th>預設值</th><th>說明</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>touchDrag</code></td>
+          <td><span class="type-badge type-bool">boolean</span></td>
+          <td><code>true</code></td>
+          <td>啟用觸控拖曳切換</td>
+        </tr>
+        <tr>
+          <td><code>mouseDrag</code></td>
+          <td><span class="type-badge type-bool">boolean</span></td>
+          <td><code>true</code></td>
+          <td>啟用滑鼠拖曳切換</td>
+        </tr>
+        <tr>
+          <td><code>dragThreshold</code></td>
+          <td><span class="type-badge type-num">number</span></td>
+          <td><code>50</code></td>
+          <td>觸發切換所需的最小拖曳距離（px）</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>回呼函式</h3>
+    <table class="options-table">
+      <thead>
+        <tr><th>選項名稱</th><th>型別</th><th>說明</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>onInit</code></td>
+          <td><span class="type-badge type-fn">function</span></td>
+          <td>元件初始化完成時呼叫</td>
+        </tr>
+        <tr>
+          <td><code>onChange</code></td>
+          <td><span class="type-badge type-fn">function</span></td>
+          <td>投影片開始切換時呼叫。傳入 <code>{ from, to }</code></td>
+        </tr>
+        <tr>
+          <td><code>onChanged</code></td>
+          <td><span class="type-badge type-fn">function</span></td>
+          <td>投影片切換動畫結束後呼叫。傳入 <code>{ index }</code></td>
+        </tr>
+        <tr>
+          <td><code>onDrag</code></td>
+          <td><span class="type-badge type-fn">function</span></td>
+          <td>開始拖曳時呼叫</td>
+        </tr>
+        <tr>
+          <td><code>onDragged</code></td>
+          <td><span class="type-badge type-fn">function</span></td>
+          <td>拖曳結束時呼叫</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ── 響應式 ── -->
+  <section class="section" id="responsive">
+    <p class="section__label">Responsive</p>
+    <h2>響應式設定</h2>
+    <p>
+      透過 <code>responsive</code> 選項，可依視窗寬度（斷點）設定不同的顯示數量。
+      物件的 key 為最大寬度（px），value 為該斷點的設定覆蓋值。
+    </p>
+    <p class="pre-label">JavaScript</p>
+    <pre><span class="k">new</span> <span class="n">TadCarousel</span>(<span class="s">'#carousel'</span>, {
+  items: <span class="k">4</span>,           <span class="c">// 桌機顯示 4 張</span>
+  responsive: {
+    <span class="k">1024</span>: { items: <span class="k">3</span> },  <span class="c">// ≤ 1024px 顯示 3 張</span>
+    <span class="k">768</span>:  { items: <span class="k">2</span> },  <span class="c">// ≤ 768px  顯示 2 張</span>
+    <span class="k">480</span>:  { items: <span class="k">1</span> }   <span class="c">// ≤ 480px  顯示 1 張</span>
+  }
+});</pre>
+  </section>
+
+  <!-- ── 無障礙文字 ── -->
+  <section class="section section--alt" id="a11y-opts">
+    <p class="section__label">Accessibility Text</p>
+    <h2>無障礙文字設定</h2>
+    <p>
+      透過 <code>a11y</code> 選項可自訂所有提供給輔助技術（螢幕閱讀器）的文字說明。
+      <code>%d</code> 為當前編號佔位符，<code>%t</code> 為總數佔位符。
+    </p>
+    <p class="pre-label">JavaScript</p>
+    <pre><span class="k">new</span> <span class="n">TadCarousel</span>(<span class="s">'#carousel'</span>, {
+  a11y: {
+    prevText:       <span class="s">'上一張'</span>,              <span class="c">// 上一張按鈕的 aria-label</span>
+    nextText:       <span class="s">'下一張'</span>,              <span class="c">// 下一張按鈕的 aria-label</span>
+    dotText:        <span class="s">'前往第 %d 張'</span>,        <span class="c">// 圓點按鈕的 aria-label</span>
+    slideText:      <span class="s">'第 %d 張，共 %t 張'</span>,  <span class="c">// 投影片的 aria-label</span>
+    pauseText:      <span class="s">'暫停自動播放'</span>,        <span class="c">// 暫停按鈕的 aria-label</span>
+    playText:       <span class="s">'開始自動播放'</span>,        <span class="c">// 播放按鈕的 aria-label</span>
+    carouselLabel:  <span class="s">'輪播區域'</span>             <span class="c">// 輪播容器的 aria-label</span>
+  }
+});</pre>
+  </section>
+
+  <!-- ── API 方法 ── -->
+  <section class="section" id="api">
+    <p class="section__label">API</p>
+    <h2>公開方法</h2>
+    <div class="method-grid">
+      <div class="method-card">
+        <div class="method-card__name">carousel<span>.goTo(index)</span></div>
+        <p>前往指定的頁面索引（從 0 起算）</p>
+      </div>
+      <div class="method-card">
+        <div class="method-card__name">carousel<span>.next()</span></div>
+        <p>前往下一頁。若已是最後一頁，依 <code>loop</code> 設定決定是否循環</p>
+      </div>
+      <div class="method-card">
+        <div class="method-card__name">carousel<span>.prev()</span></div>
+        <p>前往上一頁。若已是第一頁，依 <code>loop</code> 設定決定是否循環</p>
+      </div>
+      <div class="method-card">
+        <div class="method-card__name">carousel<span>.toggleAutoplay()</span></div>
+        <p>切換自動播放的暫停／播放狀態</p>
+      </div>
+      <div class="method-card">
+        <div class="method-card__name">carousel<span>.refresh()</span></div>
+        <p>重新計算尺寸與布局，通常在容器尺寸改變後手動呼叫</p>
+      </div>
+      <div class="method-card">
+        <div class="method-card__name">carousel<span>.destroy()</span></div>
+        <p>銷毀輪播實例，移除所有事件監聽器並還原原始 DOM</p>
+      </div>
+      <div class="method-card">
+        <div class="method-card__name">carousel<span>.getCurrentIndex()</span></div>
+        <p>回傳當前顯示的頁面索引（number）</p>
+      </div>
+      <div class="method-card">
+        <div class="method-card__name">carousel<span>.getPageCount()</span></div>
+        <p>回傳總頁數（number）</p>
+      </div>
+    </div>
+
+    <h3>使用範例</h3>
+    <p class="pre-label">JavaScript</p>
+    <pre><span class="k">const</span> carousel = <span class="k">new</span> <span class="n">TadCarousel</span>(<span class="s">'#carousel'</span>);
+
+<span class="c">// 跳至第 3 頁（索引 2）</span>
+carousel.goTo(<span class="k">2</span>);
+
+<span class="c">// 取得當前狀態</span>
+<span class="k">console</span>.log(carousel.getCurrentIndex()); <span class="c">// 2</span>
+<span class="k">console</span>.log(carousel.getPageCount());    <span class="c">// 投影片總數</span>
+
+<span class="c">// 銷毀（例如元件卸載時）</span>
+carousel.destroy();</pre>
+  </section>
+
+  <!-- ── 事件 ── -->
+  <section class="section section--alt" id="events">
+    <p class="section__label">Events</p>
+    <h2>自訂事件</h2>
+    <p>
+      除了回呼函式，元件也會在輪播容器元素上觸發對應的 <code>CustomEvent</code>，
+      可使用 <code>addEventListener</code> 監聽。
+    </p>
+    <table class="options-table">
+      <thead>
+        <tr><th>事件名稱</th><th>觸發時機</th><th>detail 屬性</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>tadcarousel:oninit</code></td>
+          <td>元件初始化完成</td>
+          <td><code>{ carousel }</code></td>
+        </tr>
+        <tr>
+          <td><code>tadcarousel:onchange</code></td>
+          <td>投影片開始切換</td>
+          <td><code>{ carousel, from, to }</code></td>
+        </tr>
+        <tr>
+          <td><code>tadcarousel:onchanged</code></td>
+          <td>切換動畫結束</td>
+          <td><code>{ carousel, index }</code></td>
+        </tr>
+        <tr>
+          <td><code>tadcarousel:ondrag</code></td>
+          <td>開始拖曳</td>
+          <td><code>{ carousel }</code></td>
+        </tr>
+        <tr>
+          <td><code>tadcarousel:ondragged</code></td>
+          <td>拖曳結束</td>
+          <td><code>{ carousel }</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="pre-label">JavaScript — 監聽自訂事件</p>
+    <pre><span class="k">const</span> el = document.querySelector(<span class="s">'#carousel'</span>);
+
+el.addEventListener(<span class="s">'tadcarousel:onchanged'</span>, (e) => {
+  <span class="k">const</span> { index } = e.detail;
+  <span class="k">console</span>.log(<span class="s">`切換至第 ${index + 1} 頁`</span>);
+});</pre>
+  </section>
+
+  <!-- ── 鍵盤操作 ── -->
+  <section class="section" id="keyboard">
+    <p class="section__label">Keyboard</p>
+    <h2>鍵盤操作</h2>
+    <p>Tad Carousel 完整支援鍵盤操作，符合 WCAG 2.1.1 鍵盤無障礙要求。</p>
+
+    <h3>在輪播區域內</h3>
+    <div class="kbd-table">
+      <div class="kbd-row">
+        <div class="kbd-keys"><kbd>←</kbd></div>
+        <span class="kbd-desc">前往上一頁</span>
+      </div>
+      <div class="kbd-row">
+        <div class="kbd-keys"><kbd>→</kbd></div>
+        <span class="kbd-desc">前往下一頁</span>
+      </div>
+      <div class="kbd-row">
+        <div class="kbd-keys"><kbd>Home</kbd></div>
+        <span class="kbd-desc">跳至第一頁</span>
+      </div>
+      <div class="kbd-row">
+        <div class="kbd-keys"><kbd>End</kbd></div>
+        <span class="kbd-desc">跳至最後一頁</span>
+      </div>
+    </div>
+
+    <h3>在分頁圓點（Tablist）中</h3>
+    <div class="kbd-table">
+      <div class="kbd-row">
+        <div class="kbd-keys"><kbd>←</kbd> <kbd>↑</kbd></div>
+        <span class="kbd-desc">選擇上一個圓點</span>
+      </div>
+      <div class="kbd-row">
+        <div class="kbd-keys"><kbd>→</kbd> <kbd>↓</kbd></div>
+        <span class="kbd-desc">選擇下一個圓點</span>
+      </div>
+      <div class="kbd-row">
+        <div class="kbd-keys"><kbd>Home</kbd></div>
+        <span class="kbd-desc">移至第一個圓點</span>
+      </div>
+      <div class="kbd-row">
+        <div class="kbd-keys"><kbd>End</kbd></div>
+        <span class="kbd-desc">移至最後一個圓點</span>
+      </div>
+    </div>
+
+    <h3>Tab 焦點遊走順序（autoplay 啟用時）</h3>
+    <div class="focus-diagram">
+      <div class="focus-step focus-step--highlight">
+        <div class="focus-step__num">1</div>
+        <div class="focus-step__label">暫停／播放<br>按鈕</div>
+      </div>
+      <span class="focus-arrow">→</span>
+      <div class="focus-step">
+        <div class="focus-step__num">2</div>
+        <div class="focus-step__label">上一張<br>按鈕</div>
+      </div>
+      <span class="focus-arrow">→</span>
+      <div class="focus-step">
+        <div class="focus-step__num">3</div>
+        <div class="focus-step__label">投影片內容<br>可聚焦元素</div>
+      </div>
+      <span class="focus-arrow">→</span>
+      <div class="focus-step">
+        <div class="focus-step__num">4</div>
+        <div class="focus-step__label">下一張<br>按鈕</div>
+      </div>
+      <span class="focus-arrow">→</span>
+      <div class="focus-step">
+        <div class="focus-step__num">5</div>
+        <div class="focus-step__label">分頁<br>圓點</div>
+      </div>
+    </div>
+    <p style="font-size:.85rem; color:var(--muted);">
+      ① 暫停／播放按鈕為第一個焦點，符合 WCAG 2.4.3 由左至右、由上而下的焦點順序要求。
+    </p>
+  </section>
+
+  <!-- ── 無障礙說明 ── -->
+  <section class="section section--alt" id="a11y">
+    <p class="section__label">Accessibility</p>
+    <h2>無障礙設計說明</h2>
+
+    <div class="a11y-card">
+      <h3>ARIA 結構</h3>
+      <p>輪播容器被標記為 <code>role="region"</code> 搭配 <code>aria-roledescription="輪播"</code>，讓螢幕閱讀器能正確識別此為輪播區塊。</p>
+      <p>每個投影片具備 <code>role="group"</code> 與 <code>aria-roledescription="投影片"</code>，並以 <code>aria-label</code> 標示序號（如「第 1 張，共 4 張」）。</p>
+      <p>目前不可見的投影片會設置 <code>aria-hidden="true"</code> 與 <code>inert</code> 屬性，使其對輔助技術完全隱藏，並阻止鍵盤焦點進入。</p>
+    </div>
+
+    <div class="a11y-card" style="margin-top:1rem;">
+      <h3>即時播報區域（Live Region）</h3>
+      <p>元件內含一個 <code>aria-live</code> 區域，在投影片切換時播報當前頁面資訊（如「第 2 頁，共 4 頁」），確保螢幕閱讀器使用者能即時得知狀態變化。</p>
+    </div>
+
+    <div class="a11y-card" style="margin-top:1rem;">
+      <h3>分頁指示器 Tablist 模式</h3>
+      <p>圓點指示器實作為 <code>role="tablist"</code>，每個圓點為 <code>role="tab"</code>，並以 <code>aria-selected</code> 標示當前選取狀態。非作用中的圓點設置 <code>tabindex="-1"</code>，符合 Tablist 的 Roving Tabindex 模式。</p>
+    </div>
+
+    <div class="a11y-card" style="margin-top:1rem;">
+      <h3>其他無障礙考量</h3>
+      <p><strong>prefers-reduced-motion：</strong>系統開啟「減少動態效果」時，切換動畫將自動停用。</p>
+      <p><strong>prefers-color-scheme：</strong>深色模式下自動切換為高可讀性的配色方案。</p>
+      <p><strong>prefers-contrast：</strong>高對比模式下按鈕與指示器使用純黑／純白配色。</p>
+      <p><strong>focus-visible：</strong>所有互動元件以 <code>:focus-visible</code> 顯示清晰的 3px 焦點框，不影響滑鼠使用者的視覺體驗。</p>
+    </div>
+  </section>
+
+  <!-- ── WCAG 2.4.3 修正 ── -->
+  <section class="section" id="wcag2433">
+    <p class="section__label">Bug Fix · WCAG 2.4.3</p>
+    <h2>WCAG 2.4.3 焦點順序修正</h2>
+
+    <p>
+      指引 2.4：可導覽 — 成功準則 2.4.3 焦點順序（GN1240300E）要求：
+      互動元件的放置順序應按照內容的序列及關連性，鍵盤焦點遊走順序須符合由左至右、由上而下的邏輯順序。
+    </p>
+
+    <h3>問題描述</h3>
+    <p>原始版本存在兩個不符合規範的問題：</p>
+
+    <div class="fix-card">
+      <div class="fix-card__title">問題 1 — 容器 tabindex="0" 造成多餘焦點停駐</div>
+      <p>
+        <code>_setupA11y()</code> 在輪播容器 <code>&lt;div&gt;</code> 上設置 <code>tabindex="0"</code>，
+        使容器本身成為一個無意義的 Tab 停駐點。使用者按 Tab 鍵進入輪播時，第一個焦點落在無操作意義的容器上，
+        而非第一個可互動的元件。
+      </p>
+    </div>
+
+    <div class="fix-card">
+      <div class="fix-card__title">問題 2 — 暫停／播放按鈕在 DOM 末端，焦點順序錯誤</div>
+      <p>
+        <code>_buildStructure()</code> 最後才呼叫 <code>_buildAutoplayToggle()</code>，
+        導致暫停按鈕在 DOM 順序中排在上一張、下一張、所有圓點之後（最後一個焦點）。
+        此按鈕控制整個輪播的播放狀態，應為進入輪播後的第一個焦點。
+      </p>
+    </div>
+
+    <div class="fix-card">
+      <div class="fix-card__title">問題 3 — 可見投影片未設 tabindex，Tab 鍵跳過圖片內容</div>
+      <p>
+        <code>_updateItemsState()</code> 僅透過 <code>inert</code> 隱藏不可見項目，
+        但可見投影片的 <code>&lt;li&gt;</code> 項目從未設置 <code>tabindex</code>。
+        若投影片內容為純圖片（無連結），Tab 鍵會直接從暫停按鈕跳至上一張按鈕，
+        使「投影片」從焦點序列中消失，不符合「由上而下、左至右」的預期順序
+        （暫停→<strong>投影片</strong>→上一張→下一張→圓點）。
+      </p>
+    </div>
+
+    <h3>修正方式</h3>
+
+    <p class="pre-label">修正 1 — _setupA11y() 移除容器 tabindex</p>
+    <pre><span class="c">// ❌ 原始程式碼</span>
+<span class="k">if</span> (!element.hasAttribute(<span class="s">'tabindex'</span>)) {
+    element.setAttribute(<span class="s">'tabindex'</span>, <span class="s">'0'</span>);
+}
+
+<span class="c">// ✅ 修正後：移除容器 tabindex，焦點應由子元件接管</span>
+element.removeAttribute(<span class="s">'tabindex'</span>);</pre>
+
+    <p class="pre-label">修正 2 — _buildStructure() 暫停鈕優先插入 DOM，軌道次之，導航鍵最後</p>
+    <pre><span class="c">// ❌ 原始程式碼（autoplayToggle 最後建立）</span>
+trackContainer.appendChild(track);
+element.appendChild(trackContainer);
+<span class="k">if</span> (options.nav)     <span class="k">this</span>._buildNav();
+<span class="k">if</span> (options.dots)    <span class="k">this</span>._buildDots();
+<span class="k">if</span> (options.autoplay) <span class="k">this</span>._buildAutoplayToggle(); <span class="c">// ← 最後，焦點排末位</span>
+
+<span class="c">// ✅ 修正後：① autoplayToggle 最先 → ② trackContainer（投影片）→ ③ nav（上一張／下一張）→ ④ dots</span>
+<span class="k">if</span> (options.autoplay) <span class="k">this</span>._buildAutoplayToggle(); <span class="c">// ← ① 暫停／播放，焦點排首位</span>
+trackContainer.appendChild(track);
+element.appendChild(trackContainer);                 <span class="c">// ← ② 投影片（可見項目設 tabindex="0"）</span>
+<span class="k">if</span> (options.nav)     <span class="k">this</span>._buildNav();              <span class="c">// ← ③ 上一張 → 下一張</span>
+<span class="k">if</span> (options.dots)    <span class="k">this</span>._buildDots();             <span class="c">// ← ④ 分頁圓點</span></pre>
+
+    <p class="pre-label">修正 4 — _updateItemsState() 可見投影片加入 tabindex="0"</p>
+    <pre><span class="c">// ❌ 原始程式碼（投影片項目從未設 tabindex，Tab 鍵直接跳過投影片）</span>
+<span class="k">if</span> (!isVisible) {
+    item.setAttribute(<span class="s">'inert'</span>, <span class="s">''</span>);
+} <span class="k">else</span> {
+    item.removeAttribute(<span class="s">'inert'</span>);
+}
+
+<span class="c">// ✅ 修正後：可見投影片設 tabindex="0"，成為焦點順序中的 ② 投影片 停駐點</span>
+<span class="k">if</span> (!isVisible) {
+    item.setAttribute(<span class="s">'inert'</span>, <span class="s">''</span>);
+    item.removeAttribute(<span class="s">'tabindex'</span>);      <span class="c">// 隱藏項目不可聚焦</span>
+} <span class="k">else</span> {
+    item.removeAttribute(<span class="s">'inert'</span>);
+    item.setAttribute(<span class="s">'tabindex'</span>, <span class="s">'0'</span>);   <span class="c">// 可見項目可聚焦</span>
+}</pre>
+
+    <p class="pre-label">修正 3 — tad_carousel.css 視覺位置配合調整</p>
+    <pre><span class="c">/* ❌ 原始：按鈕位於右下角，與「由上而下」邏輯相矛盾 */</span>
+.tad-carousel__autoplay-toggle {
+    <span class="k">bottom</span>: 0.5rem;
+    <span class="k">right</span>: 0.5rem;
+}
+
+<span class="c">/* ✅ 修正：按鈕移至右上角，視覺位置與焦點順序一致 */</span>
+.tad-carousel__autoplay-toggle {
+    <span class="k">top</span>: 0.5rem;
+    <span class="k">right</span>: 0.5rem;
+}</pre>
+
+    <h3>修正後的焦點順序</h3>
+    <div class="focus-diagram">
+      <div class="focus-step focus-step--highlight">
+        <div class="focus-step__num">①</div>
+        <div class="focus-step__label">暫停／播放<br><small>右上角</small></div>
+      </div>
+      <span class="focus-arrow">→</span>
+      <div class="focus-step">
+        <div class="focus-step__num">②</div>
+        <div class="focus-step__label">投影片<br><small>中間內容</small></div>
+      </div>
+      <span class="focus-arrow">→</span>
+      <div class="focus-step">
+        <div class="focus-step__num">③</div>
+        <div class="focus-step__label">上一張<br><small>左側</small></div>
+      </div>
+      <span class="focus-arrow">→</span>
+      <div class="focus-step">
+        <div class="focus-step__num">④</div>
+        <div class="focus-step__label">下一張<br><small>右側</small></div>
+      </div>
+      <span class="focus-arrow">→</span>
+      <div class="focus-step">
+        <div class="focus-step__num">⑤</div>
+        <div class="focus-step__label">分頁圓點<br><small>下方</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 完整範例 ── -->
+  <section class="section section--alt" id="examples">
+    <p class="section__label">Examples</p>
+    <h2>完整範例</h2>
+
+    <h3>範例一：基本輪播</h3>
+    <p class="pre-label">HTML + JavaScript</p>
+    <pre>&lt;<span class="t">div</span> <span class="k">id</span>=<span class="s">"carousel-basic"</span>&gt;
+  &lt;<span class="t">div</span>&gt;投影片一&lt;/<span class="t">div</span>&gt;
+  &lt;<span class="t">div</span>&gt;投影片二&lt;/<span class="t">div</span>&gt;
+  &lt;<span class="t">div</span>&gt;投影片三&lt;/<span class="t">div</span>&gt;
+&lt;/<span class="t">div</span>&gt;
+
+&lt;<span class="t">script</span>&gt;
+<span class="k">new</span> <span class="n">TadCarousel</span>(<span class="s">'#carousel-basic'</span>, {
+  items: <span class="k">1</span>,
+  nav: <span class="k">true</span>,
+  dots: <span class="k">true</span>,
+  loop: <span class="k">true</span>
+});
+&lt;/<span class="t">script</span>&gt;</pre>
+
+    <h3>範例二：自動播放（WCAG 修正版）</h3>
+    <p class="pre-label">HTML + JavaScript</p>
+    <pre>&lt;<span class="t">div</span> <span class="k">id</span>=<span class="s">"carousel-auto"</span>&gt;
+  &lt;<span class="t">div</span>&gt;投影片一&lt;/<span class="t">div</span>&gt;
+  &lt;<span class="t">div</span>&gt;投影片二&lt;/<span class="t">div</span>&gt;
+  &lt;<span class="t">div</span>&gt;投影片三&lt;/<span class="t">div</span>&gt;
+&lt;/<span class="t">div</span>&gt;
+
+&lt;<span class="t">script</span>&gt;
+<span class="c">// autoplay: true 時，暫停/播放鈕自動成為第一個焦點（WCAG 2.4.3）</span>
+<span class="k">new</span> <span class="n">TadCarousel</span>(<span class="s">'#carousel-auto'</span>, {
+  autoplay: <span class="k">true</span>,
+  autoplayTimeout: <span class="k">4000</span>,
+  autoplayPauseOnHover: <span class="k">true</span>,
+  loop: <span class="k">true</span>,
+  nav: <span class="k">true</span>,
+  dots: <span class="k">true</span>
+});
+&lt;/<span class="t">script</span>&gt;</pre>
+
+    <h3>範例三：多張顯示 + 響應式</h3>
+    <p class="pre-label">JavaScript</p>
+    <pre><span class="k">new</span> <span class="n">TadCarousel</span>(<span class="s">'#carousel-multi'</span>, {
+  items: <span class="k">3</span>,
+  gap: <span class="k">20</span>,
+  nav: <span class="k">true</span>,
+  dots: <span class="k">true</span>,
+  responsive: {
+    <span class="k">1024</span>: { items: <span class="k">2</span> },
+    <span class="k">600</span>:  { items: <span class="k">1</span> }
+  }
+});</pre>
+
+    <h3>範例四：事件監聽</h3>
+    <p class="pre-label">JavaScript</p>
+    <pre><span class="k">const</span> carousel = <span class="k">new</span> <span class="n">TadCarousel</span>(<span class="s">'#carousel'</span>, {
+  onChange: (e) => <span class="k">console</span>.log(<span class="s">`切換中: ${e.from} → ${e.to}`</span>),
+  onChanged: (e) => <span class="k">console</span>.log(<span class="s">`已切換至: ${e.index}`</span>)
+});
+
+<span class="c">// 也可透過 CustomEvent 監聽</span>
+document.querySelector(<span class="s">'#carousel'</span>)
+  .addEventListener(<span class="s">'tadcarousel:onchanged'</span>, (e) => {
+    updateExternalCounter(e.detail.index);
+  });</pre>
+
+    <h3>範例五：程式化控制</h3>
+    <p class="pre-label">JavaScript</p>
+    <pre><span class="k">const</span> carousel = <span class="k">new</span> <span class="n">TadCarousel</span>(<span class="s">'#carousel'</span>);
+
+<span class="c">// 外部按鈕控制</span>
+document.querySelector(<span class="s">'#btnNext'</span>)
+  .addEventListener(<span class="s">'click'</span>, () => carousel.next());
+
+document.querySelector(<span class="s">'#btnPrev'</span>)
+  .addEventListener(<span class="s">'click'</span>, () => carousel.prev());
+
+<span class="c">// 動態跳至特定頁</span>
+carousel.goTo(<span class="k">2</span>); <span class="c">// 跳至第 3 頁（index = 2）</span></pre>
+  </section>
+
+  <!-- ── 更新紀錄 ── -->
+  <section class="section" id="changelog">
+    <p class="section__label">Changelog</p>
+    <h2>更新紀錄</h2>
+
+    <div class="changelog-entry">
+      <span class="changelog-version">v1.0.0</span>
+      <span class="changelog-date">修正版</span>
+      <div class="changelog-desc">
+        <strong>WCAG 2.4.3 無障礙修正：</strong>
+        <ul style="margin-top:.5rem; padding-left:1.25rem; font-size:.875rem;">
+          <li>移除輪播容器的 <code>tabindex="0"</code>，消除多餘焦點停駐點</li>
+          <li>自動播放暫停／播放按鈕調整為輪播內 DOM 第一個元素，成為鍵盤進入輪播後的第一個焦點</li>
+          <li>CSS 暫停／播放按鈕視覺位置由右下調整為右上，與焦點順序（由上而下）保持一致</li>
+          <li>可見投影片 <code>&lt;li&gt;</code> 項目加入 <code>tabindex="0"</code>，成為焦點順序中的第二停駐點；切換時同步移除舊項目的 <code>tabindex</code>，確立完整焦點序列：<strong>暫停→投影片→上一張→下一張→圓點</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="changelog-entry">
+      <span class="changelog-version">v1.0.0</span>
+      <span class="changelog-date">初始版本</span>
+      <div class="changelog-desc">
+        初始發布。包含基本輪播功能、觸控拖曳、自動播放、響應式支援、WCAG AAA 無障礙基礎實作。
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // 側邊欄高亮當前區段
+  const links = document.querySelectorAll('.sidebar__link');
+  const sections = document.querySelectorAll('section[id], header[id]');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove('is-active'));
+        const active = document.querySelector(`.sidebar__link[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('is-active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

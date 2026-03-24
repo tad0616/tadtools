@@ -8,13 +8,13 @@
 
 <!-- <{$navbar_pos|default:''}> -->
 <nav role="navigation" id="main-nav" tabindex="-1" aria-label="<{$smarty.const._TAD_O_NAV_ZONE|default:'主要導覽區'}>">
-    <a accesskey="U" href="#main-nav" title="<{$smarty.const._TAD_ZAV_ZONE|default:'移至主要導覽區'}>" id="xoops_theme_nav_key" style="color: transparent; font-size: 0.1rem; position: absolute; top: 0; left: 0; width: 1px; height: 1px; overflow: hidden; display: block;">:::</a>
+    <a accesskey="U" href="#main-nav" id="xoops_theme_nav_key" class="sr-only-focusable" aria-label="跳到上方導覽工具列">:::</a>
 
 
     <input id="main-menu-state" type="checkbox" style="display: none;" aria-hidden="true" />
     <label class="main-menu-btn" for="main-menu-state" tabindex="0" role="button" onkeypress="if(event.keyCode==13 || event.keyCode==32) {document.getElementById('main-menu-state').click(); return false;}">
         <span class="main-menu-btn-icon"></span>
-        <span class="visually-hidden">切換選單顯示狀態</span>
+        <span class="visually-hidden">切換導覽列選單顯示狀態</span>
     </label>
 
 
@@ -89,7 +89,7 @@
 </nav>
 
 <!-- $use_pin = <{$use_pin}> , $pin_zone = <{$pin_zone}> , $navbar_pos = <{$navbar_pos}> -->
-<{if $use_pin|default:false || $navbar_pos|default:'' == "fixed-top"}>
+<{if $use_pin|default:false && $pin_zone|default:false=='nav'}>
     <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/jquery.sticky/jquery.sticky.js"></script>
     <script type="text/javascript">
     $(document).ready(function(){
@@ -137,9 +137,82 @@
     // 鍵盤導覽邏輯
     $(function() {
         const $menu = $('#main-menu');
+        const $menuBtn = $('.main-menu-btn');
+        const $menuState = $('#main-menu-state');
+
+        // 儲存選單外的最後一個可聚焦元素
+        let $lastFocusBeforeMenu;
+
+        // 焦點陷阱相關變數
+        let $focusableElements;
+        let $firstFocusableElement;
+        let $lastFocusableElement;
 
         // 為所有連結加上 role="menuitem"
         $menu.find('a').attr('role', 'menuitem');
+
+        // 當選單狀態改變時
+        $menuState.on('change', function() {
+            if (this.checked) {
+                // 選單開啟時
+                $lastFocusBeforeMenu = $(document.activeElement);
+
+                // 延遲一下確保選單完全展開後再設置焦點陷阱
+                setTimeout(setupFocusTrap, 100);
+
+                // 將焦點移到選單的第一個項目
+                setTimeout(function() {
+                    $menu.find('a:visible').first().focus();
+                }, 150);
+            } else {
+                // 選單關閉時，將焦點返回到漢堡按鈕
+                $menuBtn.focus();
+            }
+        });
+
+        // 設置焦點陷阱
+        function setupFocusTrap() {
+            if (!$menuState.prop('checked')) return;
+
+            // 獲取選單中所有可聚焦元素
+            $focusableElements = $menu.find('a:visible, button:visible');
+
+            if ($focusableElements.length === 0) return;
+
+            $firstFocusableElement = $focusableElements.first();
+            $lastFocusableElement = $focusableElements.last();
+
+            // 添加文檔級別的事件處理器來捕獲Tab鍵
+            $(document).on('keydown.menuFocusTrap', handleTabKey);
+        }
+
+        // 處理Tab鍵，確保焦點不會離開選單
+        function handleTabKey(e) {
+            // 如果選單未開啟，不處理
+            if (!$menuState.prop('checked')) {
+                $(document).off('keydown.menuFocusTrap');
+                return;
+            }
+
+            // 檢查是否按下了Tab鍵
+            if (e.key === 'Tab' || e.keyCode === 9) {
+                // 如果按下Shift+Tab且焦點在第一個元素上
+                if (e.shiftKey && document.activeElement === $firstFocusableElement[0]) {
+                    e.preventDefault();
+                    $lastFocusableElement.focus();
+                }
+                // 如果按下Tab且焦點在最後一個元素上
+                else if (!e.shiftKey && document.activeElement === $lastFocusableElement[0]) {
+                    e.preventDefault();
+                    $firstFocusableElement.focus();
+                }
+            }
+        }
+
+        // 當選單關閉時，移除焦點陷阱
+        function removeFocusTrap() {
+            $(document).off('keydown.menuFocusTrap');
+        }
 
         $menu.on('keydown', 'a', function(e) {
             const $this = $(this);
@@ -198,7 +271,15 @@
                     $nextFocus = $allVisibleLinks.last();
                     break;
                 case 'Escape':
-                    $menu.smartmenus('menuHideAll');
+                    // 如果在子選單中，先關閉子選單
+                    if ($this.closest('ul').not('#main-menu').length) {
+                        $nextFocus = $this.closest('ul').prev('a');
+                        $menu.smartmenus('menuHide', $this.closest('ul'));
+                    } else {
+                        // 如果在主選單中，關閉整個選單
+                        $menuState.prop('checked', false).trigger('change');
+                        removeFocusTrap();
+                    }
                     break;
                 default:
                     return; // 讓其他鍵正常運作
@@ -209,6 +290,12 @@
                 $nextFocus.focus();
             }
         });
-    });
 
+        // 當視窗大小改變時，重新設置焦點陷阱
+        $(window).on('resize', function() {
+            if ($menuState.prop('checked')) {
+                setTimeout(setupFocusTrap, 100);
+            }
+        });
+    });
 </script>

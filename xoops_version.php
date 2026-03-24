@@ -26,15 +26,15 @@ $modversion['author_website_name'] = 'Tad';
 $modversion['min_php']             = '7.3';
 $modversion['min_xoops']           = '2.5.10';
 $modversion['min_db']              = [
-    'mysql' => '5.0.7',
+    'mysql'  => '5.0.7',
     'mysqli' => '5.0.7',
 ];
 
 //---paypal資訊---//
 $modversion['paypal'] = [
-    'business' => 'tad0616@gmail.com',
-    'item_name' => 'Donation : ' . _MI_TAD_WEB,
-    'amount' => 0,
+    'business'      => 'tad0616@gmail.com',
+    'item_name'     => 'Donation : ' . _MI_TAD_WEB,
+    'amount'        => 0,
     'currency_code' => 'USD',
 ];
 
@@ -51,7 +51,7 @@ $modversion['adminindex'] = 'admin/index.php';
 $modversion['adminmenu']  = 'admin/menu.php';
 
 //---使用者主選單設定---//
-$modversion['hasMain'] = 1;
+$modversion['hasMain'] = 0;
 
 //---安裝設定---//
 $modversion['onInstall']   = 'include/onInstall.php';
@@ -69,11 +69,11 @@ $modversion['config']                       = [
     ['name' => 'image_max_width', 'title' => '_MI_TADTOOLS_IMAGE_MAX_WIDTH', 'description' => '_MI_TADTOOLS_IMAGE_MAX_WIDTH_DESC', 'formtype' => 'textbox', 'valuetype' => 'int', 'default' => 1920],
     ['name' => 'image_max_height', 'title' => '_MI_TADTOOLS_IMAGE_MAX_HEIGHT', 'description' => '_MI_TADTOOLS_IMAGE_MAX_HEIGHT_DESC', 'formtype' => 'textbox', 'valuetype' => 'int', 'default' => 1920],
     ['name' => 'insert_spacing', 'title' => '_MI_TADTOOLS_INSERT_SPACING', 'description' => '_MI_TADTOOLS_INSERT_SPACING_DESC', 'formtype' => 'yesno', 'valuetype' => 'int', 'default' => 0],
-    ['name' => 'linkify', 'title' => '_MI_TADTOOLS_LINKIFY', 'description' => '_MI_TADTOOLS__MI_TADTOOLS_LINKIFY_DESC', 'formtype' => 'yesno', 'valuetype' => 'int', 'default' => 1],
-    ['name' => 'pdf_force_dl', 'title' => '_MI_TADTOOLS_PDF_FORCE_DL', 'description' => '_MI_TADTOOLS__MI_TADTOOLS_PDF_FORCE_DL_DESC', 'formtype' => 'yesno', 'valuetype' => 'int', 'default' => 0],
+    ['name' => 'linkify', 'title' => '_MI_TADTOOLS_LINKIFY', 'description' => '_MI_TADTOOLS_LINKIFY_DESC', 'formtype' => 'yesno', 'valuetype' => 'int', 'default' => 1],
+    ['name' => 'pdf_force_dl', 'title' => '_MI_TADTOOLS_PDF_FORCE_DL', 'description' => '_MI_TADTOOLS_PDF_FORCE_DL_DESC', 'formtype' => 'yesno', 'valuetype' => 'int', 'default' => 0],
     ['name' => 'test_mode', 'title' => '_MI_TADTOOLS_TEST_MODE', 'description' => '_MI_TADTOOLS_TEST_MODE_DESC', 'formtype' => 'yesno', 'valuetype' => 'int', 'default' => 1],
     ['name' => 'facebook_app_id', 'title' => '_MI_TADTOOLS_FACEBOOK_APP_ID', 'description' => '_MI_TADTOOLS_FACEBOOK_APP_ID_DESC', 'formtype' => 'textbox', 'valuetype' => 'text', 'default' => ''],
-    ['name' => 'ck_wcag', 'title' => '_MI_TADTOOLS_CK_WCAG', 'description' => '_MI_TADTOOLS__MI_TADTOOLS_CK_WCAG_DESC', 'formtype' => 'yesno', 'valuetype' => 'int', 'default' => 0],
+    ['name' => 'ck_wcag', 'title' => '_MI_TADTOOLS_CK_WCAG', 'description' => '_MI_TADTOOLS_CK_WCAG_DESC', 'formtype' => 'yesno', 'valuetype' => 'int', 'default' => 0],
 ];
 
 //---區塊設定 (索引為固定值，若欲刪除區塊記得補上索引，避免區塊重複)---//

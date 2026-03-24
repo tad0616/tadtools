@@ -1,0 +1,2939 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tad-slide v1.1 — 使用說明文件</title>
+    <style>
+      /* ══════════════════════════════════════════
+       tad-slide.css
+       ══════════════════════════════════════════ */
+
+      /* ── 容器 ── */
+      .tad-slide {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        margin: 0 auto;
+        background: #000;
+        isolation: isolate;
+      }
+
+      /* ── 投影片清單 ── */
+      .tad-slide__list {
+        position: relative;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+      }
+
+      /* ── 單張投影片 ── */
+      .tad-slide__item {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        opacity: 0;
+        visibility: hidden;
+        transition:
+          opacity 0.6s ease,
+          transform 0.6s ease,
+          visibility 0.6s;
+        will-change: opacity, transform;
+        pointer-events: none;
+      }
+      .tad-slide__item.is-active {
+        position: relative;
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        z-index: 2;
+      }
+      .tad-slide__item.is-prev {
+        position: absolute;
+        opacity: 0;
+        visibility: hidden;
+        z-index: 1;
+      }
+
+      /* ── 圖片 ── */
+      .tad-slide__item img {
+        display: block;
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+        object-fit: cover;
+        border: 0;
+        -webkit-user-drag: none;
+        user-select: none;
+      }
+
+      /* ── 說明文字 ── */
+      .tad-slide__caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 0.75rem 1rem;
+        background: rgba(0, 0, 0, 0.65);
+        color: #fff;
+        font-size: 0.95rem;
+        line-height: 1.5;
+      }
+
+      /* ══════════════════════════════════════════
+       過場特效
+       ══════════════════════════════════════════ */
+      [data-tad-effect="fade"] .tad-slide__item {
+        transform: none;
+      }
+
+      [data-tad-effect="slide"] .tad-slide__item {
+        transform: translateX(100%);
+      }
+      [data-tad-effect="slide"] .tad-slide__item.is-active {
+        transform: translateX(0);
+      }
+      [data-tad-effect="slide"] .tad-slide__item.is-prev {
+        transform: translateX(-100%);
+      }
+
+      [data-tad-effect="zoom"] .tad-slide__item {
+        transform: scale(1.08);
+      }
+      [data-tad-effect="zoom"] .tad-slide__item.is-active {
+        transform: scale(1);
+      }
+      [data-tad-effect="zoom"] .tad-slide__item.is-prev {
+        transform: scale(0.95);
+      }
+
+      [data-tad-effect="flip"] {
+        perspective: 1200px;
+      }
+      [data-tad-effect="flip"] .tad-slide__item {
+        transform: rotateY(90deg);
+      }
+      [data-tad-effect="flip"] .tad-slide__item.is-active {
+        transform: rotateY(0deg);
+      }
+      [data-tad-effect="flip"] .tad-slide__item.is-prev {
+        transform: rotateY(-90deg);
+      }
+
+      [data-tad-effect="cube"] {
+        perspective: 1000px;
+        transform-style: preserve-3d;
+      }
+      [data-tad-effect="cube"] .tad-slide__item {
+        transform: rotateX(90deg);
+        transform-origin: bottom center;
+      }
+      [data-tad-effect="cube"] .tad-slide__item.is-active {
+        transform: rotateX(0deg);
+      }
+      [data-tad-effect="cube"] .tad-slide__item.is-prev {
+        transform: rotateX(-90deg);
+        transform-origin: top center;
+      }
+
+      /* ══════════════════════════════════════════
+       進度條
+       ══════════════════════════════════════════ */
+      .tad-slide__progress {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 4px;
+        width: 0%;
+        background: #ffdd00;
+        z-index: 10;
+        transition: width linear;
+      }
+      .tad-slide--paused .tad-slide__progress {
+        transition: none;
+      }
+
+      /* ══════════════════════════════════════════
+       通用按鈕
+       ══════════════════════════════════════════ */
+      .tad-slide__btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 44px;
+        min-height: 44px;
+        padding: 0.3rem 0.75rem;
+        border: 2px solid transparent;
+        border-radius: 4px;
+        background: #333;
+        color: #fff;
+        font-size: 0.875rem;
+        font-family: inherit;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          border-color 0.2s;
+        white-space: nowrap;
+        line-height: 1;
+      }
+      .tad-slide__btn:hover {
+        background: #555;
+      }
+      .tad-slide__btn:focus-visible {
+        outline: 3px solid #ffdd00;
+        outline-offset: 2px;
+        border-color: #ffdd00;
+        background: #444;
+      }
+
+      /* ══════════════════════════════════════════
+       模式 A：bottom
+       ══════════════════════════════════════════ */
+      .tad-slide--nav-bottom .tad-slide__controls-bar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.6rem 0.5rem;
+        background: #1a1a1a;
+        flex-wrap: wrap;
+      }
+      .tad-slide--nav-bottom .tad-slide__pause {
+        background: #c0392b;
+        font-weight: 600;
+      }
+      .tad-slide--nav-bottom .tad-slide__pause:hover {
+        background: #e74c3c;
+      }
+      .tad-slide--nav-bottom .tad-slide__pause[aria-pressed="false"] {
+        background: #27ae60;
+      }
+      .tad-slide--nav-bottom .tad-slide__pause[aria-pressed="false"]:hover {
+        background: #2ecc71;
+      }
+
+      .tad-slide--nav-bottom .tad-slide__pager {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .tad-slide--nav-bottom .tad-slide__pager-btn {
+        position: relative;
+        display: block;
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        border: 2px solid transparent;
+        border-radius: 50%;
+        background: transparent;
+        cursor: pointer;
+      }
+      .tad-slide--nav-bottom .tad-slide__pager-btn::after {
+        content: "";
+        position: absolute;
+        inset: 50% auto auto 50%;
+        transform: translate(-50%, -50%);
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #aaa;
+        transition: background 0.2s;
+      }
+      .tad-slide--nav-bottom .tad-slide__pager-btn[aria-current="true"]::after,
+      .tad-slide--nav-bottom .tad-slide__pager-btn:hover::after {
+        background: #ffdd00;
+      }
+      .tad-slide--nav-bottom .tad-slide__pager-btn[aria-current="true"] {
+        border-color: #ffdd00;
+      }
+      .tad-slide--nav-bottom .tad-slide__pager-btn:focus-visible {
+        outline: 3px solid #ffdd00;
+        outline-offset: 2px;
+      }
+
+      /* ══════════════════════════════════════════
+       模式 B：sides
+       ══════════════════════════════════════════ */
+      .tad-slide--nav-sides .tad-slide__arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 20;
+        background: rgba(0, 0, 0, 0.45);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        min-height: 48px;
+        padding: 0;
+        color: #fff;
+        font-size: 1.4rem;
+        cursor: pointer;
+        opacity: 0;
+        transition:
+          opacity 0.25s,
+          background 0.2s,
+          border-color 0.2s;
+      }
+      .tad-slide--nav-sides:hover .tad-slide__arrow,
+      .tad-slide--nav-sides:focus-within .tad-slide__arrow {
+        opacity: 1;
+      }
+      .tad-slide--nav-sides .tad-slide__arrow:hover {
+        background: rgba(0, 0, 0, 0.75);
+        border-color: #ffdd00;
+      }
+      .tad-slide--nav-sides .tad-slide__arrow:focus-visible {
+        opacity: 1;
+        outline: 3px solid #ffdd00;
+        outline-offset: 2px;
+        border-color: #ffdd00;
+        background: rgba(0, 0, 0, 0.75);
+      }
+      .tad-slide--nav-sides .tad-slide__arrow--prev {
+        left: 0.75rem;
+      }
+      .tad-slide--nav-sides .tad-slide__arrow--next {
+        right: 0.75rem;
+      }
+
+      .tad-slide--nav-sides .tad-slide__pause-float {
+        position: absolute;
+        top: 0.75rem;
+        bottom: auto;
+        right: 0.75rem;
+        z-index: 20;
+        background: rgba(0, 0, 0, 0.55);
+        border: 2px solid rgba(255, 255, 255, 0.25);
+        border-radius: 4px;
+        min-width: 44px;
+        min-height: 44px;
+        padding: 0.25rem 0.6rem;
+        font-size: 0.78rem;
+        color: #fff;
+        opacity: 0;
+        transition:
+          opacity 0.25s,
+          background 0.2s;
+      }
+      .tad-slide--nav-sides:hover .tad-slide__pause-float,
+      .tad-slide--nav-sides:focus-within .tad-slide__pause-float {
+        opacity: 1;
+      }
+      .tad-slide--nav-sides .tad-slide__pause-float:hover {
+        background: rgba(0, 0, 0, 0.85);
+      }
+      .tad-slide--nav-sides .tad-slide__pause-float:focus-visible {
+        opacity: 1;
+        outline: 3px solid #ffdd00;
+        outline-offset: 2px;
+      }
+      .tad-slide--nav-sides .tad-slide__pause-float[aria-pressed="false"] {
+        border-color: #27ae60;
+        color: #2ecc71;
+      }
+
+      /* ══════════════════════════════════════════
+       模式 C：none
+       ══════════════════════════════════════════ */
+      .tad-slide--nav-none .tad-slide__pause-float {
+        position: absolute;
+        top: 0.75rem;
+        bottom: auto;
+        right: 0.75rem;
+        z-index: 20;
+        background: rgba(0, 0, 0, 0.55);
+        border: 2px solid rgba(255, 255, 255, 0.25);
+        border-radius: 4px;
+        min-width: 44px;
+        min-height: 44px;
+        padding: 0.25rem 0.6rem;
+        font-size: 0.78rem;
+        color: #fff;
+        opacity: 0;
+        transition:
+          opacity 0.25s,
+          background 0.2s;
+      }
+      .tad-slide--nav-none:hover .tad-slide__pause-float,
+      .tad-slide--nav-none:focus-within .tad-slide__pause-float {
+        opacity: 1;
+      }
+      .tad-slide--nav-none .tad-slide__pause-float:hover {
+        background: rgba(0, 0, 0, 0.85);
+      }
+      .tad-slide--nav-none .tad-slide__pause-float:focus-visible {
+        opacity: 1;
+        outline: 3px solid #ffdd00;
+        outline-offset: 2px;
+      }
+      .tad-slide--nav-none .tad-slide__pause-float[aria-pressed="false"] {
+        border-color: #27ae60;
+        color: #2ecc71;
+      }
+
+      /* ══════════════════════════════════════════
+       單張投影片模式
+       ══════════════════════════════════════════ */
+      .tad-slide--single .tad-slide__controls-bar,
+      .tad-slide--single .tad-slide__arrow,
+      .tad-slide--single .tad-slide__pause-float,
+      .tad-slide--single .tad-slide__progress {
+        display: none !important;
+      }
+
+      .tad-slide--single .tad-slide__item {
+        position: relative;
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transition: none;
+        transform: none;
+      }
+
+      /* ══════════════════════════════════════════
+       減少動態效果（WCAG 2.3.3 AAA）
+       ══════════════════════════════════════════ */
+      @media (prefers-reduced-motion: reduce) {
+        .tad-slide__item,
+        .tad-slide__progress {
+          transition: opacity 0.1s ease !important;
+          transform: none !important;
+        }
+        .tad-slide--nav-sides .tad-slide__arrow,
+        .tad-slide--nav-sides .tad-slide__pause-float,
+        .tad-slide--nav-none .tad-slide__pause-float {
+          opacity: 1;
+        }
+      }
+
+      /* ══════════════════════════════════════════
+       響應式
+       ══════════════════════════════════════════ */
+      @media (max-width: 600px) {
+        .tad-slide__caption {
+          font-size: 0.82rem;
+          padding: 0.5rem 0.75rem;
+        }
+        .tad-slide--nav-bottom .tad-slide__controls-bar {
+          gap: 0.3rem;
+          padding: 0.4rem;
+        }
+        .tad-slide__btn {
+          font-size: 0.8rem;
+          padding: 0.25rem 0.5rem;
+        }
+        .tad-slide--nav-sides .tad-slide__arrow {
+          width: 40px;
+          height: 40px;
+          font-size: 1.1rem;
+        }
+      }
+
+      /* ── 螢幕閱讀器專用 ── */
+      .tad-sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      /* ══════════════════════════════════════════
+       文件頁面樣式
+       ══════════════════════════════════════════ */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      :root {
+        --color-bg: #0f0f13;
+        --color-surface: #1a1a24;
+        --color-surface-2: #22222f;
+        --color-border: #2e2e3e;
+        --color-accent: #ffdd00;
+        --color-accent-2: #7ec8e3;
+        --color-text: #e2e2ee;
+        --color-muted: #888899;
+        --color-green: #2ecc71;
+        --color-red: #e74c3c;
+        --radius: 8px;
+        --radius-sm: 4px;
+        --font-mono: "Cascadia Code", "Fira Code", "Consolas", monospace;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: system-ui, "Segoe UI", sans-serif;
+        background: var(--color-bg);
+        color: var(--color-text);
+        margin: 0;
+        line-height: 1.7;
+        font-size: 1rem;
+      }
+
+      /* ── 跳至主內容 ── */
+      .skip-link {
+        position: absolute;
+        top: -100%;
+        left: 1rem;
+        padding: 0.5rem 1rem;
+        background: var(--color-accent);
+        color: #000;
+        font-weight: 700;
+        border-radius: var(--radius-sm);
+        z-index: 9999;
+        text-decoration: none;
+        transition: top 0.2s;
+      }
+      .skip-link:focus {
+        top: 1rem;
+      }
+
+      /* ── 頂部導覽列 ── */
+      .doc-header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(15, 15, 19, 0.92);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--color-border);
+        padding: 0 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+        min-height: 60px;
+      }
+      .doc-header__brand {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--color-accent);
+        text-decoration: none;
+        letter-spacing: 0.03em;
+      }
+      .doc-header__nav {
+        display: flex;
+        gap: 0.25rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        flex-wrap: wrap;
+      }
+      .doc-header__nav a {
+        display: block;
+        padding: 0.35rem 0.7rem;
+        color: var(--color-muted);
+        text-decoration: none;
+        font-size: 0.875rem;
+        border-radius: var(--radius-sm);
+        transition:
+          color 0.2s,
+          background 0.2s;
+      }
+      .doc-header__nav a:hover,
+      .doc-header__nav a:focus-visible {
+        color: var(--color-text);
+        background: var(--color-surface);
+      }
+      .doc-header__nav a:focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 2px;
+      }
+      .doc-header__badge {
+        background: var(--color-surface-2);
+        color: var(--color-accent-2);
+        font-size: 0.75rem;
+        padding: 0.2rem 0.6rem;
+        border-radius: 99px;
+        border: 1px solid var(--color-border);
+        font-family: var(--font-mono);
+      }
+
+      /* ── 版面 ── */
+      .doc-layout {
+        display: grid;
+        grid-template-columns: 220px 1fr;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      /* ── 側邊目錄 ── */
+      .doc-sidebar {
+        position: sticky;
+        top: 60px;
+        height: calc(100vh - 60px);
+        overflow-y: auto;
+        padding: 2rem 1rem 2rem 1.5rem;
+        border-right: 1px solid var(--color-border);
+        scrollbar-width: thin;
+      }
+      .doc-sidebar h3 {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--color-muted);
+        margin: 1.5rem 0 0.5rem;
+      }
+      .doc-sidebar h3:first-child {
+        margin-top: 0;
+      }
+      .doc-sidebar ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .doc-sidebar a {
+        display: block;
+        padding: 0.3rem 0.6rem;
+        color: var(--color-muted);
+        text-decoration: none;
+        font-size: 0.85rem;
+        border-radius: var(--radius-sm);
+        border-left: 2px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s,
+          background 0.2s;
+      }
+      .doc-sidebar a:hover,
+      .doc-sidebar a.is-active {
+        color: var(--color-text);
+        border-left-color: var(--color-accent);
+        background: var(--color-surface);
+      }
+      .doc-sidebar a:focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 2px;
+      }
+
+      /* ── 主內容 ── */
+      .doc-main {
+        padding: 3rem 3rem 6rem;
+        min-width: 0;
+      }
+
+      /* ── 區塊 ── */
+      .doc-section {
+        margin-bottom: 5rem;
+        scroll-margin-top: 80px;
+      }
+
+      /* ── 標題 ── */
+      .doc-main h1 {
+        font-size: 2.4rem;
+        font-weight: 800;
+        margin: 0 0 0.5rem;
+        line-height: 1.2;
+      }
+      .doc-main h1 span {
+        color: var(--color-accent);
+      }
+      .doc-main h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--color-accent);
+        margin: 0 0 1.25rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--color-border);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .doc-main h3 {
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: var(--color-accent-2);
+        margin: 2rem 0 0.75rem;
+      }
+      .doc-main p {
+        margin: 0 0 1rem;
+      }
+      .doc-main ul,
+      .doc-main ol {
+        padding-left: 1.5rem;
+        margin: 0 0 1rem;
+      }
+      .doc-main li {
+        margin-bottom: 0.35rem;
+      }
+
+      /* ── 程式碼 ── */
+      pre {
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius);
+        padding: 1.25rem 1.5rem;
+        overflow-x: auto;
+        margin: 0 0 1.5rem;
+        font-size: 0.875rem;
+        line-height: 1.65;
+        tab-size: 2;
+      }
+      code {
+        font-family: var(--font-mono);
+        font-size: 0.875em;
+      }
+      p code,
+      li code,
+      td code {
+        background: var(--color-surface-2);
+        color: var(--color-accent-2);
+        padding: 0.15em 0.45em;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--color-border);
+      }
+
+      /* 語法色彩 */
+      .tok-comment {
+        color: #5c6370;
+        font-style: italic;
+      }
+      .tok-keyword {
+        color: #c678dd;
+      }
+      .tok-string {
+        color: #98c379;
+      }
+      .tok-number {
+        color: #d19a66;
+      }
+      .tok-attr {
+        color: #e06c75;
+      }
+      .tok-fn {
+        color: #61afef;
+      }
+      .tok-tag {
+        color: #e06c75;
+      }
+
+      /* ── 提示框 ── */
+      .callout {
+        display: flex;
+        gap: 0.75rem;
+        padding: 1rem 1.25rem;
+        border-radius: var(--radius);
+        border-left: 4px solid;
+        margin: 0 0 1.5rem;
+        font-size: 0.9rem;
+      }
+      .callout__icon {
+        font-size: 1.1rem;
+        flex-shrink: 0;
+        line-height: 1.7;
+      }
+      .callout--info {
+        background: rgba(126, 200, 227, 0.08);
+        border-color: var(--color-accent-2);
+      }
+      .callout--warn {
+        background: rgba(255, 221, 0, 0.07);
+        border-color: var(--color-accent);
+      }
+      .callout--tip {
+        background: rgba(46, 204, 113, 0.08);
+        border-color: var(--color-green);
+      }
+      .callout--danger {
+        background: rgba(231, 76, 60, 0.08);
+        border-color: var(--color-red);
+      }
+
+      /* ── 選項表格 ── */
+      .options-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.875rem;
+        margin-bottom: 1.5rem;
+      }
+      .options-table th {
+        text-align: left;
+        padding: 0.6rem 0.9rem;
+        background: var(--color-surface);
+        color: var(--color-muted);
+        font-weight: 600;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        border-bottom: 1px solid var(--color-border);
+      }
+      .options-table td {
+        padding: 0.65rem 0.9rem;
+        border-bottom: 1px solid var(--color-border);
+        vertical-align: top;
+      }
+      .options-table tr:last-child td {
+        border-bottom: none;
+      }
+      .options-table tr:hover td {
+        background: var(--color-surface);
+      }
+      .opt-name {
+        color: var(--color-accent-2);
+        font-family: var(--font-mono);
+        white-space: nowrap;
+      }
+      .opt-type {
+        color: var(--color-muted);
+        font-family: var(--font-mono);
+        font-size: 0.8em;
+      }
+      .opt-default {
+        color: #d19a66;
+        font-family: var(--font-mono);
+        font-size: 0.85em;
+      }
+
+      /* ── 方法卡片 ── */
+      .method-card {
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius);
+        padding: 1.25rem 1.5rem;
+        margin-bottom: 1rem;
+      }
+      .method-card__sig {
+        font-family: var(--font-mono);
+        font-size: 0.95rem;
+        color: var(--color-accent-2);
+        margin-bottom: 0.5rem;
+      }
+      .method-card__sig strong {
+        color: #61afef;
+      }
+      .method-card p {
+        margin: 0;
+        color: var(--color-muted);
+        font-size: 0.9rem;
+      }
+
+      /* ── 鍵盤快捷鍵 ── */
+      .kbd-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.875rem;
+        margin-bottom: 1.5rem;
+      }
+      .kbd-table td {
+        padding: 0.55rem 0.9rem;
+        border-bottom: 1px solid var(--color-border);
+        vertical-align: middle;
+      }
+      .kbd-table tr:last-child td {
+        border-bottom: none;
+      }
+      .kbd-table tr:hover td {
+        background: var(--color-surface);
+      }
+      kbd {
+        display: inline-block;
+        padding: 0.15em 0.5em;
+        background: var(--color-surface-2);
+        border: 1px solid var(--color-border);
+        border-bottom-width: 2px;
+        border-radius: var(--radius-sm);
+        font-family: var(--font-mono);
+        font-size: 0.82em;
+        color: var(--color-text);
+        white-space: nowrap;
+      }
+
+      /* ── WCAG 徽章 ── */
+      .wcag-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+      }
+      .wcag-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.35rem 0.75rem;
+        border-radius: 99px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        border: 1px solid;
+      }
+      .wcag-badge--aaa {
+        background: rgba(46, 204, 113, 0.12);
+        border-color: var(--color-green);
+        color: var(--color-green);
+      }
+      .wcag-badge--aa {
+        background: rgba(126, 200, 227, 0.12);
+        border-color: var(--color-accent-2);
+        color: var(--color-accent-2);
+      }
+      .wcag-badge--note {
+        background: rgba(255, 221, 0, 0.1);
+        border-color: var(--color-accent);
+        color: var(--color-accent);
+      }
+
+      /* ── Demo 包裝 ── */
+      .demo-wrap {
+        max-width: 800px;
+        margin-bottom: 1rem;
+      }
+      .demo-label {
+        display: inline-block;
+        font-size: 0.78rem;
+        font-family: var(--font-mono);
+        background: var(--color-surface-2);
+        color: var(--color-accent);
+        padding: 0.2rem 0.6rem;
+        border-radius: var(--radius-sm);
+        margin-bottom: 0.75rem;
+        border: 1px solid var(--color-border);
+      }
+      .slide-placeholder {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      /* ── 步驟清單 ── */
+      .steps {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1.5rem;
+        counter-reset: step;
+      }
+      .steps li {
+        counter-increment: step;
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        align-items: flex-start;
+      }
+      .steps li::before {
+        content: counter(step);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        background: var(--color-accent);
+        color: #000;
+        font-weight: 700;
+        font-size: 0.9rem;
+        margin-top: 0.15rem;
+      }
+      .steps li > div {
+        flex: 1;
+      }
+      .steps li strong {
+        display: block;
+        margin-bottom: 0.25rem;
+      }
+
+      /* ── 特效格線 ── */
+      .effect-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+      .effect-name {
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        color: var(--color-accent);
+        margin-bottom: 0.5rem;
+      }
+
+      /* ── WCAG 條款列表 ── */
+      .wcag-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1.5rem;
+      }
+      .wcag-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--color-border);
+        font-size: 0.9rem;
+      }
+      .wcag-list li:last-child {
+        border-bottom: none;
+      }
+      .wcag-tag {
+        flex-shrink: 0;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 99px;
+        font-weight: 700;
+      }
+      .wcag-tag--aaa {
+        background: rgba(46, 204, 113, 0.15);
+        color: var(--color-green);
+        border: 1px solid var(--color-green);
+      }
+      .wcag-tag--aa {
+        background: rgba(126, 200, 227, 0.15);
+        color: var(--color-accent-2);
+        border: 1px solid var(--color-accent-2);
+      }
+
+      /* ── 頁尾 ── */
+      .doc-footer {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--color-muted);
+        font-size: 0.85rem;
+        border-top: 1px solid var(--color-border);
+      }
+
+      /* ── 響應式 ── */
+      @media (max-width: 900px) {
+        .doc-layout {
+          grid-template-columns: 1fr;
+        }
+        .doc-sidebar {
+          display: none;
+        }
+        .doc-main {
+          padding: 2rem 1.25rem 4rem;
+        }
+        .doc-header {
+          padding: 0 1rem;
+        }
+        .doc-main h1 {
+          font-size: 1.8rem;
+        }
+        .effect-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* ── 特效格線（防破版修正） ── */
+      .effect-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      /* 小螢幕強制單欄 */
+      @media (max-width: 900px) {
+        .effect-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .effect-name {
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        color: var(--color-accent);
+        margin-bottom: 0.5rem;
+        padding: 0.25rem 0;
+      }
+
+      /* slide-placeholder 統一高度，防止各卡片高度不一致造成破版 */
+      .slide-placeholder {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.85);
+        letter-spacing: 0.05em;
+        /* aspect-ratio 已在 inline style 設定，這裡不重複 */
+      }
+    </style>
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">跳至主要內容</a>
+
+    <!-- ══════════════════════════════════════════
+     頂部導覽列
+     ══════════════════════════════════════════ -->
+    <header class="doc-header" role="banner">
+      <a href="#" class="doc-header__brand" aria-label="tad-slide 首頁"
+        >🎠 tad-slide</a
+      >
+      <nav aria-label="文件導覽">
+        <ul class="doc-header__nav">
+          <li><a href="#section-intro">簡介</a></li>
+          <li><a href="#section-start">快速開始</a></li>
+          <li><a href="#section-markup">HTML 結構</a></li>
+          <li><a href="#section-navmode">導覽模式</a></li>
+          <li><a href="#section-effects">過場特效</a></li>
+          <li><a href="#section-options">選項參考</a></li>
+          <li><a href="#section-api">API</a></li>
+          <li><a href="#section-keyboard">鍵盤操作</a></li>
+          <li><a href="#section-wcag">無障礙</a></li>
+        </ul>
+      </nav>
+      <span class="doc-header__badge">v1.1.0</span>
+    </header>
+
+    <div class="doc-layout">
+      <!-- 側邊目錄 -->
+      <aside class="doc-sidebar" aria-label="頁面目錄">
+        <h3>入門</h3>
+        <ul>
+          <li><a href="#section-intro">簡介</a></li>
+          <li><a href="#section-start">快速開始</a></li>
+          <li><a href="#section-markup">HTML 結構</a></li>
+        </ul>
+        <h3>功能</h3>
+        <ul>
+          <li><a href="#section-navmode">導覽模式</a></li>
+          <li><a href="#section-effects">過場特效</a></li>
+          <li><a href="#section-single">單張模式</a></li>
+        </ul>
+        <h3>參考</h3>
+        <ul>
+          <li><a href="#section-options">所有選項</a></li>
+          <li><a href="#section-api">實例方法</a></li>
+          <li><a href="#section-callbacks">回呼函式</a></li>
+          <li><a href="#section-keyboard">鍵盤操作</a></li>
+        </ul>
+        <h3>無障礙</h3>
+        <ul>
+          <li><a href="#section-wcag">WCAG 說明</a></li>
+        </ul>
+      </aside>
+
+      <!-- 主內容 -->
+      <main class="doc-main" id="main-content">
+        <!-- ══════════════════════════════════════
+         § 簡介
+         ══════════════════════════════════════ -->
+        <section
+          class="doc-section"
+          id="section-intro"
+          aria-labelledby="h-intro"
+        >
+          <h1 id="h-intro"><span>tad-slide</span> 使用說明</h1>
+          <p>
+            一套輕量、無依賴的響應式輪播套件，靈感來自
+            ResponsiveSlides.js，並全面升級為符合
+            <strong>WCAG 2.3 AAA</strong>
+            無障礙標準。支援三種導覽模式、五種過場特效、鍵盤與觸控操作，以及單張圖片自動靜態模式。
+          </p>
+
+          <div class="wcag-badges">
+            <span class="wcag-badge wcag-badge--note">🚫 無依賴套件</span>
+            <span class="wcag-badge wcag-badge--note">⚡ Vanilla JS</span>
+            <span class="wcag-badge wcag-badge--aaa">✅ WCAG 2.3 AAA</span>
+            <span class="wcag-badge wcag-badge--aa">📱 RWD 響應式</span>
+            <span class="wcag-badge wcag-badge--aa">⌨️ 鍵盤可操作</span>
+            <span class="wcag-badge wcag-badge--aa">👆 觸控支援</span>
+            <span class="wcag-badge wcag-badge--aa">1️⃣ 單張自動靜態</span>
+          </div>
+
+          <div class="demo-wrap">
+            <div class="demo-label">
+              LIVE DEMO — navMode: 'bottom' / effect: 'slide'
+            </div>
+            <div
+              class="tad-slide"
+              id="demo-hero"
+              aria-label="tad-slide 主要示範"
+            >
+              <ul class="tad-slide__list">
+                <li class="tad-slide__item">
+                  <div
+                    class="slide-placeholder"
+                    style="
+                      background: linear-gradient(135deg, #1a1a2e, #16213e);
+                    "
+                  >
+                    🎠 tad-slide
+                  </div>
+                  <div class="tad-slide__caption">
+                    輕量 · 無依賴 · WCAG 2.3 AAA
+                  </div>
+                </li>
+                <li class="tad-slide__item">
+                  <div
+                    class="slide-placeholder"
+                    style="
+                      background: linear-gradient(135deg, #0f3460, #533483);
+                    "
+                  >
+                    ⌨️ 鍵盤友善
+                  </div>
+                  <div class="tad-slide__caption">
+                    完整鍵盤操作支援，符合無障礙標準
+                  </div>
+                </li>
+                <li class="tad-slide__item">
+                  <div
+                    class="slide-placeholder"
+                    style="
+                      background: linear-gradient(135deg, #1b4332, #2d6a4f);
+                    "
+                  >
+                    🎬 五種特效
+                  </div>
+                  <div class="tad-slide__caption">
+                    fade · slide · zoom · flip · cube
+                  </div>
+                </li>
+                <li class="tad-slide__item">
+                  <div
+                    class="slide-placeholder"
+                    style="
+                      background: linear-gradient(135deg, #7b2d00, #c0392b);
+                    "
+                  >
+                    📐 三種導覽模式
+                  </div>
+                  <div class="tad-slide__caption">
+                    bottom · sides · none，彈性配置
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════
+         § 快速開始
+         ══════════════════════════════════════ -->
+        <section
+          class="doc-section"
+          id="section-start"
+          aria-labelledby="h-start"
+        >
+          <h2 id="h-start">🚀 快速開始</h2>
+          <ol class="steps">
+            <li>
+              <div>
+                <strong>引入 CSS 與 JS 檔案</strong>
+                <pre><code><span class="tok-comment">&lt;!-- 放在 &lt;head&gt; --&gt;</span>
+<span class="tok-tag">&lt;link</span> rel=<span class="tok-string">"stylesheet"</span> href=<span class="tok-string">"tad-slide.css"</span><span class="tok-tag">&gt;</span>
+
+<span class="tok-comment">&lt;!-- 放在 &lt;/body&gt; 前 --&gt;</span>
+<span class="tok-tag">&lt;script</span> src=<span class="tok-string">"tad-slide.js"</span><span class="tok-tag">&gt;&lt;/script&gt;</span></code></pre>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>撰寫 HTML 結構</strong>
+                <pre><code><span class="tok-tag">&lt;div</span> class=<span class="tok-string">"tad-slide"</span> aria-label=<span class="tok-string">"圖片輪播"</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;ul</span> class=<span class="tok-string">"tad-slide__list"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;li</span> class=<span class="tok-string">"tad-slide__item"</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;img</span> src=<span class="tok-string">"1.jpg"</span> alt=<span class="tok-string">"圖片描述"</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;div</span> class=<span class="tok-string">"tad-slide__caption"</span><span class="tok-tag">&gt;</span>說明文字（選填）<span class="tok-tag">&lt;/div&gt;</span>
+    <span class="tok-tag">&lt;/li&gt;</span>
+    <span class="tok-tag">&lt;li</span> class=<span class="tok-string">"tad-slide__item"</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;img</span> src=<span class="tok-string">"2.jpg"</span> alt=<span class="tok-string">"圖片描述"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;/li&gt;</span>
+  <span class="tok-tag">&lt;/ul&gt;</span>
+<span class="tok-tag">&lt;/div&gt;</span></code></pre>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>初始化 JavaScript</strong>
+                <pre><code><span class="tok-tag">&lt;script&gt;</span>
+  <span class="tok-fn">tadSlide</span>(<span class="tok-string">'.tad-slide'</span>, {
+    <span class="tok-attr">navMode</span> : <span class="tok-string">'bottom'</span>,
+    <span class="tok-attr">effect</span>  : <span class="tok-string">'slide'</span>,
+    <span class="tok-attr">timeout</span> : <span class="tok-number">4000</span>,
+    <span class="tok-attr">speed</span>   : <span class="tok-number">600</span>,
+  });
+<span class="tok-tag">&lt;/script&gt;</span></code></pre>
+              </div>
+            </li>
+          </ol>
+          <div class="callout callout--tip">
+            <span class="callout__icon">💡</span>
+            <div>
+              <code>tadSlide()</code> 支援 CSS 選擇器字串或直接傳入 DOM
+              元素。若選擇器匹配多個元素，會自動批次初始化並回傳實例陣列。
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════
+         § HTML 結構
+         ══════════════════════════════════════ -->
+        <section
+          class="doc-section"
+          id="section-markup"
+          aria-labelledby="h-markup"
+        >
+          <h2 id="h-markup">🏗️ HTML 結構說明</h2>
+          <p>
+            tad-slide 使用語意化的 <code>&lt;ul&gt;</code> /
+            <code>&lt;li&gt;</code> 結構，每個
+            <code>.tad-slide__item</code> 內可放置任意 HTML 內容。
+          </p>
+
+          <h3>完整結構說明</h3>
+          <pre><code><span class="tok-comment">&lt;!--
+  .tad-slide     → 外層容器（必填）
+  aria-label     → 輪播名稱，供螢幕閱讀器識別（強烈建議填寫）
+--&gt;</span>
+<span class="tok-tag">&lt;div</span> class=<span class="tok-string">"tad-slide"</span> aria-label=<span class="tok-string">"產品圖片輪播"</span><span class="tok-tag">&gt;</span>
+
+  <span class="tok-comment">&lt;!-- .tad-slide__list → 投影片清單（必填） --&gt;</span>
+  <span class="tok-tag">&lt;ul</span> class=<span class="tok-string">"tad-slide__list"</span><span class="tok-tag">&gt;</span>
+
+    <span class="tok-comment">&lt;!-- .tad-slide__item → 單張投影片（建議 2 張以上） --&gt;</span>
+    <span class="tok-tag">&lt;li</span> class=<span class="tok-string">"tad-slide__item"</span><span class="tok-tag">&gt;</span>
+
+      <span class="tok-comment">&lt;!-- 圖片：alt 屬性必填（WCAG 1.1.1） --&gt;</span>
+      <span class="tok-tag">&lt;img</span> src=<span class="tok-string">"photo.jpg"</span> alt=<span class="tok-string">"圖片的具體描述"</span><span class="tok-tag">&gt;</span>
+
+      <span class="tok-comment">&lt;!-- .tad-slide__caption → 說明文字（選填） --&gt;</span>
+      <span class="tok-tag">&lt;div</span> class=<span class="tok-string">"tad-slide__caption"</span><span class="tok-tag">&gt;</span>說明文字<span class="tok-tag">&lt;/div&gt;</span>
+
+    <span class="tok-tag">&lt;/li&gt;</span>
+  <span class="tok-tag">&lt;/ul&gt;</span>
+<span class="tok-tag">&lt;/div&gt;</span></code></pre>
+
+          <h3>投影片內容不限圖片</h3>
+          <p>
+            每個 <code>.tad-slide__item</code> 內可放置任意
+            HTML，例如文字卡片、混合排版等：
+          </p>
+          <pre><code><span class="tok-tag">&lt;li</span> class=<span class="tok-string">"tad-slide__item"</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;div</span> style=<span class="tok-string">"padding:3rem;background:#1a1a2e;"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;h2&gt;</span>任意 HTML 內容<span class="tok-tag">&lt;/h2&gt;</span>
+    <span class="tok-tag">&lt;p&gt;</span>文字、按鈕、圖示都可以放在這裡。<span class="tok-tag">&lt;/p&gt;</span>
+    <span class="tok-tag">&lt;a</span> href=<span class="tok-string">"#"</span><span class="tok-tag">&gt;</span>了解更多<span class="tok-tag">&lt;/a&gt;</span>
+  <span class="tok-tag">&lt;/div&gt;</span>
+<span class="tok-tag">&lt;/li&gt;</span></code></pre>
+
+          <div class="callout callout--warn">
+            <span class="callout__icon">⚠️</span>
+            <div>
+              所有投影片的<strong>高度建議一致</strong>，否則切換時容器高度會跳動。使用
+              <code>aspect-ratio</code> 或固定 <code>height</code> 可確保穩定。
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════
+         § 導覽模式
+         ══════════════════════════════════════ -->
+        <section
+          class="doc-section"
+          id="section-navmode"
+          aria-labelledby="h-navmode"
+        >
+          <h2 id="h-navmode">🧭 導覽模式（navMode）</h2>
+          <p>
+            透過 <code>navMode</code> 選項控制導覽介面的呈現方式，共三種模式。
+          </p>
+
+          <h3><code>'bottom'</code> — 下方控制列（預設）</h3>
+          <p>
+            分頁點、上下張按鈕、暫停按鈕全部集中在輪播下方，適合一般內容頁面。
+          </p>
+          <div class="demo-wrap">
+            <div class="demo-label">navMode: 'bottom'</div>
+            <div class="tad-slide" id="demo-bottom" aria-label="底部導覽示範">
+              <ul class="tad-slide__list">
+                <li class="tad-slide__item">
+                  <div class="slide-placeholder" style="background: #2c3e50">
+                    Slide 1
+                  </div>
+                  <div class="tad-slide__caption">
+                    下方控制列：分頁點 + 上下張 + 暫停
+                  </div>
+                </li>
+                <li class="tad-slide__item">
+                  <div class="slide-placeholder" style="background: #8e44ad">
+                    Slide 2
+                  </div>
+                  <div class="tad-slide__caption">適合一般內容頁面</div>
+                </li>
+                <li class="tad-slide__item">
+                  <div class="slide-placeholder" style="background: #16a085">
+                    Slide 3
+                  </div>
+                  <div class="tad-slide__caption">所有控制集中在底部列</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <pre><code><span class="tok-fn">tadSlide</span>(<span class="tok-string">'#my-slider'</span>, {
+  <span class="tok-attr">navMode</span> : <span class="tok-string">'bottom'</span>,  <span class="tok-comment">// 預設值</span>
+  <span class="tok-attr">pager</span>   : <span class="tok-keyword">true</span>,    <span class="tok-comment">// 顯示分頁點（bottom 模式專屬）</span>
+  <span class="tok-attr">nav</span>     : <span class="tok-keyword">true</span>,    <span class="tok-comment">// 顯示上下張按鈕（bottom 模式專屬）</span>
+});</code></pre>
+
+          <h3><code>'sides'</code> — 左右浮動箭頭</h3>
+          <p>
+            箭頭浮動於輪播圖左右兩側，暫停按鈕浮動於右上角。滑鼠移入或鍵盤聚焦時才顯示，適合
+            Hero Banner。
+          </p>
+          <div class="demo-wrap">
+            <div class="demo-label">navMode: 'sides'</div>
+            <div class="tad-slide" id="demo-sides" aria-label="左右箭頭示範">
+              <ul class="tad-slide__list">
+                <li class="tad-slide__item">
+                  <div class="slide-placeholder" style="background: #7b2d00">
+                    Slide A
+                  </div>
+                  <div class="tad-slide__caption">
+                    滑鼠移入後，左右箭頭與暫停按鈕才會顯示
+                  </div>
+                </li>
+                <li class="tad-slide__item">
+                  <div class="slide-placeholder" style="background: #1a5276">
+                    Slide B
+                  </div>
+                  <div class="tad-slide__caption">
+                    適合 Hero Banner 全幅輪播
+                  </div>
+                </li>
+                <li class="tad-slide__item">
+                  <div class="slide-placeholder" style="background: #1e8449">
+                    Slide C
+                  </div>
+                  <div class="tad-slide__caption">鍵盤聚焦時按鈕同樣會顯示</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <pre><code><span class="tok-fn">tadSlide</span>(<span class="tok-string">'#my-slider'</span>, {
+  <span class="tok-attr">navMode</span> : <span class="tok-string">'sides'</span>,  <span class="tok-comment">// 左右浮動箭頭 + 右上角暫停</span>
+});</code></pre>
+
+          <h3><code>'none'</code> — 僅暫停按鈕</h3>
+          <p>
+            不顯示任何導覽控制，僅右上角保留浮動暫停按鈕。仍支援鍵盤
+            <kbd>←</kbd> <kbd>→</kbd> 與觸控滑動，適合背景輪播。
+          </p>
+          <div class="demo-wrap">
+            <div class="demo-label">navMode: 'none'</div>
+            <div class="tad-slide" id="demo-none" aria-label="純自動輪播示範">
+              <ul class="tad-slide__list">
+                <li class="tad-slide__item">
+                  <div
+                    class="slide-placeholder"
+                    style="
+                      background: linear-gradient(135deg, #0f3460, #533483);
+                    "
+                  >
+                    純自動播放
+                  </div>
+                  <div class="tad-slide__caption">
+                    無導覽按鈕，滑鼠移入後暫停按鈕才顯示
+                  </div>
+                </li>
+                <li class="tad-slide__item">
+                  <div
+                    class="slide-placeholder"
+                    style="
+                      background: linear-gradient(135deg, #1b4332, #2d6a4f);
+                    "
+                  >
+                    鍵盤仍可操作
+                  </div>
+                  <div class="tad-slide__caption">← → 鍵切換，Space 鍵暫停</div>
+                </li>
+                <li class="tad-slide__item">
+                  <div
+                    class="slide-placeholder"
+                    style="
+                      background: linear-gradient(135deg, #4a1942, #7b2d8b);
+                    "
+                  >
+                    觸控滑動
+                  </div>
+                  <div class="tad-slide__caption">支援左右滑動手勢</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <pre><code><span class="tok-fn">tadSlide</span>(<span class="tok-string">'#my-slider'</span>, {
+  <span class="tok-attr">navMode</span> : <span class="tok-string">'none'</span>,  <span class="tok-comment">// 僅右上角浮動暫停按鈕</span>
+});</code></pre>
+
+          <div class="callout callout--info">
+            <span class="callout__icon">ℹ️</span>
+            <div>
+              <code>sides</code> 與 <code>none</code> 模式的浮動按鈕在
+              <code>prefers-reduced-motion</code>
+              環境下會直接常駐顯示，確保使用者隨時可見控制元件。
+            </div>
+          </div>
+        </section>
+        <!-- ══════════════════════════════════════════
+     § 過場特效
+     ══════════════════════════════════════════ -->
+        <section
+          class="doc-section"
+          id="section-effects"
+          aria-labelledby="h-effects"
+        >
+          <h2 id="h-effects">🎬 過場特效（effect）</h2>
+          <p>
+            透過
+            <code>effect</code>
+            選項選擇切換動畫，共五種。以下為各效果的即時展示：
+          </p>
+
+          <div class="effect-grid">
+            <!-- fade -->
+            <div>
+              <div class="effect-name">effect: 'fade'（預設）</div>
+              <div class="tad-slide" id="demo-fade" aria-label="fade 特效示範">
+                <ul class="tad-slide__list">
+                  <li class="tad-slide__item">
+                    <div
+                      class="slide-placeholder"
+                      style="background: #2c3e50; aspect-ratio: 4/3"
+                    >
+                      淡入淡出
+                    </div>
+                  </li>
+                  <li class="tad-slide__item">
+                    <div
+                      class="slide-placeholder"
+                      style="background: #8e44ad; aspect-ratio: 4/3"
+                    >
+                      Fade
+                    </div>
+                  </li>
+                  <li class="tad-slide__item">
+                    <div
+                      class="slide-placeholder"
+                      style="background: #16a085; aspect-ratio: 4/3"
+                    >
+                      柔和過渡
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- slide -->
+            <div>
+              <div class="effect-name">effect: 'slide'</div>
+              <div
+                class="tad-slide"
+                id="demo-slide-fx"
+                aria-label="slide 特效示範"
+              >
+                <ul class="tad-slide__list">
+                  <li class="tad-slide__item">
+                    <div
+                      class="slide-placeholder"
+                      style="background: #c0392b; aspect-ratio: 4/3"
+                    >
+                      左右滑動
+                    </div>
+                  </li>
+                  <li class="tad-slide__item">
+                    <div
+                      class="slide-placeholder"
+                      style="background: #d35400; aspect-ratio: 4/3"
+                    >
+                      Slide
+                    </div>
+                  </li>
+                  <li class="tad-slide__item">
+                    <div
+                      class="slide-placeholder"
+                      style="background: #f39c12; aspect-ratio: 4/3"
+                    >
+                      水平位移
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- zoom -->
+            <div>
+              <div class="effect-name">effect: 'zoom'</div>
+              <div
+                class="tad-slide"
+                id="demo-zoom-fx"
+                aria-label="zoom 特效示範"
+              >
+                <ul class="tad-slide__list">
+                  <li class="tad-slide__item">
+                    <div
+                      class="slide-placeholder"
+                      style="background: #1abc9c; aspect-ratio: 4/3"
+                    >
+                      縮放淡入
+                    </div>
+                  </li>
+                  <li class="tad-slide__item">
+                    <div
+                      class="slide-placeholder"
+                      style="background: #3498db; aspect-ratio: 4/3"
+                    >
+                      Zoom
+                    </div>
+                  </li>
+                  <li class="tad-slide__item">
+                    <div
+                      class="slide-placeholder"
+                      style="background: #9b59b6; aspect-ratio: 4/3"
+                    >
+                      Scale 過渡
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- flip -->
+            <div>
+              <div class="effect-name">effect: 'flip'</div>
+              <div
+                class="tad-slide"
+                id="demo-flip-fx"
+                aria-label="flip 特效示範"
+              >
+                <ul class="tad-slide__list">
+                  <li class="tad-slide__item">
+                    <div
+                      class="slide-placeholder"
+                      style="background: #2980b9; aspect-ratio: 4/3"
+                    >
+                      水平翻轉
+                    </div>
+                  </li>
+                  <li class="tad-slide__item">
+                    <div
+                      class="slide-placeholder"
+                      style="background: #8e44ad; aspect-ratio: 4/3"
+                    >
+                      Flip
+                    </div>
+                  </li>
+                  <li class="tad-slide__item">
+                    <div
+                      class="slide-placeholder"
+                      style="background: #c0392b; aspect-ratio: 4/3"
+                    >
+                      Y 軸旋轉
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- cube -->
+            <div>
+              <div class="effect-name">effect: 'cube'</div>
+              <div
+                class="tad-slide"
+                id="demo-cube-fx"
+                aria-label="cube 特效示範"
+              >
+                <ul class="tad-slide__list">
+                  <li class="tad-slide__item">
+                    <div
+                      class="slide-placeholder"
+                      style="background: #16a085; aspect-ratio: 4/3"
+                    >
+                      立方體旋轉
+                    </div>
+                  </li>
+                  <li class="tad-slide__item">
+                    <div
+                      class="slide-placeholder"
+                      style="background: #d35400; aspect-ratio: 4/3"
+                    >
+                      Cube
+                    </div>
+                  </li>
+                  <li class="tad-slide__item">
+                    <div
+                      class="slide-placeholder"
+                      style="background: #2c3e50; aspect-ratio: 4/3"
+                    >
+                      X 軸翻轉
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- /.effect-grid -->
+
+          <div class="callout callout--info">
+            <span class="callout__icon">ℹ️</span>
+            <div>
+              當使用者系統開啟「減少動態效果」（<code
+                >prefers-reduced-motion: reduce</code
+              >）時， 所有特效會自動降級為簡單的
+              <strong>0.1s 淡入淡出</strong>，不會有位移或旋轉動畫。
+            </div>
+          </div>
+
+          <h3>五種特效對照表</h3>
+          <div style="overflow-x: auto">
+            <table aria-label="過場特效說明表">
+              <thead>
+                <tr>
+                  <th>effect 值</th>
+                  <th>動畫類型</th>
+                  <th>CSS 屬性</th>
+                  <th>適合場景</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>'fade'</code>（預設）</td>
+                  <td>淡入淡出</td>
+                  <td><code>opacity</code></td>
+                  <td>通用，最穩定，效能最佳</td>
+                </tr>
+                <tr>
+                  <td><code>'slide'</code></td>
+                  <td>水平滑動</td>
+                  <td><code>translateX</code></td>
+                  <td>新聞輪播、橫向內容</td>
+                </tr>
+                <tr>
+                  <td><code>'zoom'</code></td>
+                  <td>縮放淡入</td>
+                  <td><code>scale</code> + <code>opacity</code></td>
+                  <td>圖片展示、視覺強調</td>
+                </tr>
+                <tr>
+                  <td><code>'flip'</code></td>
+                  <td>Y 軸翻轉</td>
+                  <td><code>rotateY</code> + <code>perspective</code></td>
+                  <td>卡片翻面、互動感強</td>
+                </tr>
+                <tr>
+                  <td><code>'cube'</code></td>
+                  <td>X 軸立方體</td>
+                  <td><code>rotateX</code> + <code>perspective</code></td>
+                  <td>視覺衝擊、展示型頁面</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>設定方式</h3>
+          <pre><code><span class="tok-fn">tadSlide</span>(<span class="tok-string">'#my-slider'</span>, {
+  <span class="tok-attr">effect</span> : <span class="tok-string">'slide'</span>,  <span class="tok-comment">// 'fade' | 'slide' | 'zoom' | 'flip' | 'cube'</span>
+  <span class="tok-attr">speed</span>  : <span class="tok-number">600</span>,    <span class="tok-comment">// 動畫持續時間（毫秒），預設 600</span>
+});</code></pre>
+
+          <div class="callout callout--warn">
+            <span class="callout__icon">⚠️</span>
+            <div>
+              <code>'flip'</code> 與 <code>'cube'</code> 使用 3D
+              transform，在低階裝置上可能有效能問題。 若需要廣泛相容性，建議使用
+              <code>'fade'</code> 或 <code>'slide'</code>。
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════
+         § 單張模式
+         ══════════════════════════════════════ -->
+        <section
+          class="doc-section"
+          id="section-single"
+          aria-labelledby="h-single"
+        >
+          <h2 id="h-single">1️⃣ 單張靜態模式</h2>
+          <p>
+            當 <code>.tad-slide__list</code> 內只有一個
+            <code>.tad-slide__item</code> 時，tad-slide
+            會自動偵測並切換為靜態模式：不啟動計時器、不建立任何控制元件、不執行動畫。
+          </p>
+
+          <ul>
+            <li>自動套用 <code>.tad-slide--single</code> class</li>
+            <li>CSS 隱藏所有控制列、箭頭、進度條、暫停按鈕</li>
+            <li>投影片直接顯示，無任何過場效果</li>
+            <li>
+              即使選項設定了 <code>auto: true</code> 或
+              <code>navMode</code>，單張時一律忽略
+            </li>
+          </ul>
+
+          <div class="demo-wrap">
+            <div class="demo-label">單張投影片 — 自動靜態模式</div>
+            <div class="tad-slide" id="demo-single" aria-label="單張圖片展示">
+              <ul class="tad-slide__list">
+                <li class="tad-slide__item">
+                  <div
+                    class="slide-placeholder"
+                    style="
+                      background: linear-gradient(135deg, #1c2833, #2e4057);
+                    "
+                  >
+                    只有一張，不需要輪播
+                  </div>
+                  <div class="tad-slide__caption">
+                    單張模式：無進度條、無按鈕、無計時器，即使設定 navMode
+                    也不顯示
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <pre><code><span class="tok-comment">// 即使傳入任何選項，單張時一律靜態顯示</span>
+<span class="tok-fn">tadSlide</span>(<span class="tok-string">'#demo-single'</span>, {
+  <span class="tok-attr">navMode</span> : <span class="tok-string">'bottom'</span>,  <span class="tok-comment">// 單張時忽略</span>
+  <span class="tok-attr">auto</span>    : <span class="tok-keyword">true</span>,     <span class="tok-comment">// 單張時忽略</span>
+  <span class="tok-attr">effect</span>  : <span class="tok-string">'slide'</span>,  <span class="tok-comment">// 單張時忽略</span>
+});</code></pre>
+
+          <div class="callout callout--tip">
+            <span class="callout__icon">💡</span>
+            <div>
+              這個設計讓你可以在後端動態輸出投影片數量，不需要在模板層額外判斷「只有一張時要隱藏導覽」，tad-slide
+              會自動處理。
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════
+         § 所有選項
+         ══════════════════════════════════════ -->
+        <section
+          class="doc-section"
+          id="section-options"
+          aria-labelledby="h-options"
+        >
+          <h2 id="h-options">⚙️ 所有選項</h2>
+          <p>初始化時傳入選項物件，以下為完整參數說明：</p>
+
+          <pre><code><span class="tok-fn">tadSlide</span>(<span class="tok-string">'.tad-slide'</span>, {
+
+  <span class="tok-comment">// ── 播放控制 ──────────────────────────────────</span>
+  <span class="tok-attr">auto</span>          : <span class="tok-keyword">true</span>,        <span class="tok-comment">// 是否自動播放</span>
+  <span class="tok-attr">speed</span>         : <span class="tok-number">600</span>,         <span class="tok-comment">// 過場動畫時間（毫秒）</span>
+  <span class="tok-attr">timeout</span>       : <span class="tok-number">4000</span>,        <span class="tok-comment">// 自動切換間隔（毫秒）</span>
+  <span class="tok-attr">random</span>        : <span class="tok-keyword">false</span>,       <span class="tok-comment">// 隨機播放順序</span>
+  <span class="tok-attr">pauseOnHover</span>  : <span class="tok-keyword">true</span>,        <span class="tok-comment">// 滑鼠移入時暫停</span>
+
+  <span class="tok-comment">// ── 視覺效果 ──────────────────────────────────</span>
+  <span class="tok-attr">effect</span>        : <span class="tok-string">'fade'</span>,      <span class="tok-comment">// 'fade' | 'slide' | 'zoom' | 'flip' | 'cube'</span>
+
+  <span class="tok-comment">// ── 導覽模式 ──────────────────────────────────</span>
+  <span class="tok-attr">navMode</span>       : <span class="tok-string">'bottom'</span>,    <span class="tok-comment">// 'bottom' | 'sides' | 'none'</span>
+  <span class="tok-attr">pager</span>         : <span class="tok-keyword">true</span>,        <span class="tok-comment">// 顯示分頁點（僅 bottom 模式有效）</span>
+  <span class="tok-attr">nav</span>           : <span class="tok-keyword">true</span>,        <span class="tok-comment">// 顯示上下張按鈕（僅 bottom 模式有效）</span>
+
+  <span class="tok-comment">// ── 文字標籤 ──────────────────────────────────</span>
+  <span class="tok-attr">prevText</span>      : <span class="tok-string">'&#8249;'</span>,         <span class="tok-comment">// 上一張按鈕顯示文字（可含 HTML）</span>
+  <span class="tok-attr">nextText</span>      : <span class="tok-string">'&#8250;'</span>,         <span class="tok-comment">// 下一張按鈕顯示文字（可含 HTML）</span>
+  <span class="tok-attr">pauseText</span>     : <span class="tok-string">'⏸'</span>,         <span class="tok-comment">// 播放中時暫停按鈕顯示內容</span>
+  <span class="tok-attr">playText</span>      : <span class="tok-string">'▶'</span>,          <span class="tok-comment">// 已暫停時播放按鈕顯示內容</span>
+  <span class="tok-attr">pauseLabel</span>    : <span class="tok-string">'暫停輪播'</span>,   <span class="tok-comment">// 暫停按鈕 aria-label（播放中）</span>
+  <span class="tok-attr">playLabel</span>     : <span class="tok-string">'播放輪播'</span>,   <span class="tok-comment">// 暫停按鈕 aria-label（已暫停）</span>
+  <span class="tok-attr">prevLabel</span>     : <span class="tok-string">'上一張投影片'</span>, <span class="tok-comment">// 上一張按鈕 aria-label</span>
+  <span class="tok-attr">nextLabel</span>     : <span class="tok-string">'下一張投影片'</span>, <span class="tok-comment">// 下一張按鈕 aria-label</span>
+
+  <span class="tok-comment">// ── 無障礙 ────────────────────────────────────</span>
+  <span class="tok-attr">announceSlide</span> : <span class="tok-keyword">true</span>,        <span class="tok-comment">// 切換時透過 Live Region 通知螢幕閱讀器</span>
+
+  <span class="tok-comment">// ── 回呼函式 ──────────────────────────────────</span>
+  <span class="tok-attr">before</span>        : <span class="tok-keyword">null</span>,        <span class="tok-comment">// 切換前觸發 function(fromIndex, toIndex)</span>
+  <span class="tok-attr">after</span>         : <span class="tok-keyword">null</span>,        <span class="tok-comment">// 切換後觸發 function(fromIndex, toIndex)</span>
+
+});</code></pre>
+
+          <h3>選項速查表</h3>
+          <div style="overflow-x: auto">
+            <table class="options-table" aria-label="選項參數說明表">
+              <thead>
+                <tr>
+                  <th>選項名稱</th>
+                  <th>型別</th>
+                  <th>預設值</th>
+                  <th>說明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="opt-name">auto</td>
+                  <td class="opt-type">Boolean</td>
+                  <td class="opt-default">true</td>
+                  <td>是否自動播放；單張時自動忽略</td>
+                </tr>
+                <tr>
+                  <td class="opt-name">speed</td>
+                  <td class="opt-type">Number</td>
+                  <td class="opt-default">600</td>
+                  <td>過場動畫時間（毫秒）</td>
+                </tr>
+                <tr>
+                  <td class="opt-name">timeout</td>
+                  <td class="opt-type">Number</td>
+                  <td class="opt-default">4000</td>
+                  <td>自動切換間隔（毫秒）</td>
+                </tr>
+                <tr>
+                  <td class="opt-name">effect</td>
+                  <td class="opt-type">String</td>
+                  <td class="opt-default">'fade'</td>
+                  <td>
+                    <code>fade</code> / <code>slide</code> / <code>zoom</code> /
+                    <code>flip</code> / <code>cube</code>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="opt-name">navMode</td>
+                  <td class="opt-type">String</td>
+                  <td class="opt-default">'bottom'</td>
+                  <td>
+                    <code>bottom</code> / <code>sides</code> /
+                    <code>none</code>；單張時自動忽略
+                  </td>
+                </tr>
+                <tr>
+                  <td class="opt-name">pager</td>
+                  <td class="opt-type">Boolean</td>
+                  <td class="opt-default">true</td>
+                  <td>顯示分頁點（僅 <code>bottom</code> 模式有效）</td>
+                </tr>
+                <tr>
+                  <td class="opt-name">nav</td>
+                  <td class="opt-type">Boolean</td>
+                  <td class="opt-default">true</td>
+                  <td>顯示上下張按鈕（僅 <code>bottom</code> 模式有效）</td>
+                </tr>
+                <tr>
+                  <td class="opt-name">random</td>
+                  <td class="opt-type">Boolean</td>
+                  <td class="opt-default">false</td>
+                  <td>初始化時隨機排序投影片</td>
+                </tr>
+                <tr>
+                  <td class="opt-name">pauseOnHover</td>
+                  <td class="opt-type">Boolean</td>
+                  <td class="opt-default">true</td>
+                  <td>滑鼠移入時自動暫停</td>
+                </tr>
+                <tr>
+                  <td class="opt-name">announceSlide</td>
+                  <td class="opt-type">Boolean</td>
+                  <td class="opt-default">true</td>
+                  <td>切換時透過 Live Region 通知螢幕閱讀器</td>
+                </tr>
+                <tr>
+                  <td class="opt-name">prevText</td>
+                  <td class="opt-type">String</td>
+                  <td class="opt-default">'‹'</td>
+                  <td>上一張按鈕 innerHTML（可含 HTML 標籤）</td>
+                </tr>
+                <tr>
+                  <td class="opt-name">nextText</td>
+                  <td class="opt-type">String</td>
+                  <td class="opt-default">'›'</td>
+                  <td>下一張按鈕 innerHTML（可含 HTML 標籤）</td>
+                </tr>
+                <tr>
+                  <td class="opt-name">pauseText</td>
+                  <td class="opt-type">String</td>
+                  <td class="opt-default">'⏸'</td>
+                  <td>播放中時暫停按鈕顯示內容</td>
+                </tr>
+                <tr>
+                  <td class="opt-name">playText</td>
+                  <td class="opt-type">String</td>
+                  <td class="opt-default">'▶'</td>
+                  <td>已暫停時播放按鈕顯示內容</td>
+                </tr>
+                <tr>
+                  <td class="opt-name">pauseLabel</td>
+                  <td class="opt-type">String</td>
+                  <td class="opt-default">'暫停輪播'</td>
+                  <td>暫停按鈕的 <code>aria-label</code>（播放中狀態）</td>
+                </tr>
+                <tr>
+                  <td class="opt-name">playLabel</td>
+                  <td class="opt-type">String</td>
+                  <td class="opt-default">'播放輪播'</td>
+                  <td>暫停按鈕的 <code>aria-label</code>（已暫停狀態）</td>
+                </tr>
+                <tr>
+                  <td class="opt-name">prevLabel</td>
+                  <td class="opt-type">String</td>
+                  <td class="opt-default">'上一張投影片'</td>
+                  <td>上一張按鈕的 <code>aria-label</code></td>
+                </tr>
+                <tr>
+                  <td class="opt-name">nextLabel</td>
+                  <td class="opt-type">String</td>
+                  <td class="opt-default">'下一張投影片'</td>
+                  <td>下一張按鈕的 <code>aria-label</code></td>
+                </tr>
+                <tr>
+                  <td class="opt-name">before</td>
+                  <td class="opt-type">Function</td>
+                  <td class="opt-default">null</td>
+                  <td>切換前觸發，參數為 <code>(fromIndex, toIndex)</code></td>
+                </tr>
+                <tr>
+                  <td class="opt-name">after</td>
+                  <td class="opt-type">Function</td>
+                  <td class="opt-default">null</td>
+                  <td>切換後觸發，參數為 <code>(fromIndex, toIndex)</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════
+         § API 實例方法
+         ══════════════════════════════════════ -->
+        <section class="doc-section" id="section-api" aria-labelledby="h-api">
+          <h2 id="h-api">🔧 實例方法</h2>
+          <p>
+            <code>tadSlide()</code> 回傳實例物件，可呼叫以下方法進行程式化控制：
+          </p>
+
+          <pre><code><span class="tok-comment">// 取得實例</span>
+<span class="tok-keyword">const</span> slider = <span class="tok-fn">tadSlide</span>(<span class="tok-string">'#my-slider'</span>, { ... });
+
+<span class="tok-comment">// 呼叫方法</span>
+slider.<span class="tok-fn">next</span>();       <span class="tok-comment">// 下一張</span>
+slider.<span class="tok-fn">prev</span>();       <span class="tok-comment">// 上一張</span>
+slider.<span class="tok-fn">goTo</span>(<span class="tok-number">2</span>);     <span class="tok-comment">// 跳至第 3 張（索引從 0 開始）</span>
+slider.<span class="tok-fn">play</span>();       <span class="tok-comment">// 開始自動播放</span>
+slider.<span class="tok-fn">pause</span>();      <span class="tok-comment">// 暫停自動播放</span>
+slider.<span class="tok-fn">destroy</span>();    <span class="tok-comment">// 銷毀實例，還原 DOM</span></code></pre>
+
+          <div class="method-card">
+            <div class="method-card__sig"><strong>next</strong>()</div>
+            <p>切換至下一張投影片。若目前為最後一張，循環回第一張。</p>
+          </div>
+          <div class="method-card">
+            <div class="method-card__sig"><strong>prev</strong>()</div>
+            <p>切換至上一張投影片。若目前為第一張，循環至最後一張。</p>
+          </div>
+          <div class="method-card">
+            <div class="method-card__sig">
+              <strong>goTo</strong>( index: Number )
+            </div>
+            <p>
+              跳至指定索引的投影片（索引從
+              <code>0</code>
+              開始）。若傳入超出範圍的值，會自動取餘數循環。動畫進行中呼叫會被忽略，避免競態問題。
+            </p>
+          </div>
+          <div class="method-card">
+            <div class="method-card__sig"><strong>play</strong>()</div>
+            <p>
+              啟動自動播放計時器，並重設進度條動畫。若已在播放中，會先清除舊計時器再重新啟動。
+            </p>
+          </div>
+          <div class="method-card">
+            <div class="method-card__sig"><strong>pause</strong>()</div>
+            <p>
+              暫停自動播放計時器，並凍結進度條在目前位置。暫停狀態會同步更新暫停按鈕的
+              <code>aria-pressed</code> 與視覺樣式。
+            </p>
+          </div>
+          <div class="method-card">
+            <div class="method-card__sig"><strong>destroy</strong>()</div>
+            <p>
+              完整銷毀實例：清除計時器、移除所有由 JS 建立的 DOM
+              元素（控制列、進度條、Live Region）、還原投影片的 ARIA 屬性與
+              class，並移除容器上的模式 class。
+            </p>
+          </div>
+
+          <h3>多個實例的批次操作</h3>
+          <pre><code><span class="tok-comment">// 選擇器匹配多個元素時，回傳陣列</span>
+<span class="tok-keyword">const</span> sliders = <span class="tok-fn">tadSlide</span>(<span class="tok-string">'.tad-slide'</span>, { <span class="tok-attr">navMode</span>: <span class="tok-string">'bottom'</span> });
+
+<span class="tok-comment">// 批次暫停所有輪播</span>
+sliders.<span class="tok-fn">forEach</span>(s => s.<span class="tok-fn">pause</span>());
+
+<span class="tok-comment">// 單獨操作第二個實例</span>
+sliders[<span class="tok-number">1</span>].<span class="tok-fn">goTo</span>(<span class="tok-number">0</span>);</code></pre>
+        </section>
+
+        <!-- ══════════════════════════════════════
+         § 回呼函式
+         ══════════════════════════════════════ -->
+        <section
+          class="doc-section"
+          id="section-callbacks"
+          aria-labelledby="h-callbacks"
+        >
+          <h2 id="h-callbacks">🔔 回呼函式</h2>
+          <p>
+            <code>before</code> 與
+            <code>after</code>
+            兩個回呼讓你可以在投影片切換的前後執行自訂邏輯，兩者都接收相同的參數：
+          </p>
+
+          <ul>
+            <li>
+              <code>fromIndex</code>：離開的投影片索引（Number，從 0 開始）
+            </li>
+            <li><code>toIndex</code>：進入的投影片索引（Number，從 0 開始）</li>
+          </ul>
+
+          <pre><code><span class="tok-fn">tadSlide</span>(<span class="tok-string">'#my-slider'</span>, {
+
+  <span class="tok-comment">// 切換動畫開始前觸發</span>
+  <span class="tok-attr">before</span>: <span class="tok-keyword">function</span>(fromIndex, toIndex) {
+    console.<span class="tok-fn">log</span>(<span class="tok-string">`準備從第 <span class="tok-string">${fromIndex + 1}</span> 張切換至第 <span class="tok-string">${toIndex + 1}</span> 張`</span>);
+  },
+
+  <span class="tok-comment">// 切換動畫結束後觸發</span>
+  <span class="tok-attr">after</span>: <span class="tok-keyword">function</span>(fromIndex, toIndex) {
+    console.<span class="tok-fn">log</span>(<span class="tok-string">`已切換至第 <span class="tok-string">${toIndex + 1}</span> 張`</span>);
+
+    <span class="tok-comment">// 範例：同步更新頁面上的文字說明</span>
+    <span class="tok-keyword">const</span> captions = [<span class="tok-string">'第一章'</span>, <span class="tok-string">'第二章'</span>, <span class="tok-string">'第三章'</span>];
+    document.<span class="tok-fn">querySelector</span>(<span class="tok-string">'#chapter-title'</span>).textContent = captions[toIndex];
+  },
+
+});</code></pre>
+
+          <div class="callout callout--warn">
+            <span class="callout__icon">⚠️</span>
+            <div>
+              <code>before</code>
+              在動畫開始前觸發，此時新投影片尚未完全顯示。若需要操作已完全顯示的投影片
+              DOM，請使用 <code>after</code>。
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════
+         § 鍵盤操作
+         ══════════════════════════════════════ -->
+        <section
+          class="doc-section"
+          id="section-keyboard"
+          aria-labelledby="h-keyboard"
+        >
+          <h2 id="h-keyboard">⌨️ 鍵盤操作</h2>
+          <p>
+            當焦點位於輪播容器內部時，以下鍵盤快捷鍵均可使用，無論
+            <code>navMode</code> 為何種模式：
+          </p>
+
+          <table class="kbd-table" aria-label="鍵盤快捷鍵說明">
+            <tbody>
+              <tr>
+                <td style="width: 200px"><kbd>←</kbd> 或 <kbd>↑</kbd></td>
+                <td>切換至上一張投影片</td>
+              </tr>
+              <tr>
+                <td><kbd>→</kbd> 或 <kbd>↓</kbd></td>
+                <td>切換至下一張投影片</td>
+              </tr>
+              <tr>
+                <td><kbd>Space</kbd></td>
+                <td>切換暫停／播放狀態（焦點不在暫停按鈕上時有效）</td>
+              </tr>
+              <tr>
+                <td><kbd>Home</kbd></td>
+                <td>跳至第一張投影片</td>
+              </tr>
+              <tr>
+                <td><kbd>End</kbd></td>
+                <td>跳至最後一張投影片</td>
+              </tr>
+              <tr>
+                <td><kbd>Tab</kbd></td>
+                <td>依序聚焦至控制按鈕（瀏覽器預設行為）</td>
+              </tr>
+              <tr>
+                <td><kbd>Enter</kbd> / <kbd>Space</kbd></td>
+                <td>在按鈕上觸發點擊（瀏覽器預設行為）</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout callout--tip">
+            <span class="callout__icon">💡</span>
+            <div>
+              <code>sides</code> 與 <code>none</code> 模式下，鍵盤使用者可透過
+              <kbd>Tab</kbd> 將焦點移入輪播容器，此時浮動按鈕會自動顯示（CSS
+              <code>:focus-within</code> 觸發），確保完整的鍵盤可操作性。
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════════════════════════════════════
+         § 無障礙說明
+         ══════════════════════════════════════ -->
+        <section class="doc-section" id="section-wcag" aria-labelledby="h-wcag">
+          <h2 id="h-wcag">♿ 無障礙（WCAG）說明</h2>
+          <p>
+            tad-slide 在設計時即以 WCAG 2.3 AAA
+            為目標，以下列出各項對應的實作方式：
+          </p>
+
+          <ul class="wcag-list" aria-label="WCAG 條款對應說明">
+            <li>
+              <span class="wcag-tag wcag-tag--aa">1.1.1 A</span>
+              <div>
+                <strong>圖片替代文字</strong> — 要求每個
+                <code>&lt;img&gt;</code> 填寫有意義的
+                <code>alt</code> 屬性。tad-slide 不自動產生
+                alt，需由開發者提供。
+              </div>
+            </li>
+            <li>
+              <span class="wcag-tag wcag-tag--aa">1.3.1 A</span>
+              <div>
+                <strong>資訊與關係</strong> — 使用
+                <code>role="region"</code>、<code>role="group"</code>、<code
+                  >aria-roledescription="carousel / slide"</code
+                >
+                提供語意結構。
+              </div>
+            </li>
+            <li>
+              <span class="wcag-tag wcag-tag--aa">1.4.3 AA</span>
+              <div>
+                <strong>對比度（最低）</strong> — 說明文字背景
+                <code>rgba(0,0,0,0.65)</code> 搭配白色文字，對比度 ≥
+                4.5:1。按鈕焦點色 <code>#ffdd00</code> 對比度 ≥ 7:1。
+              </div>
+            </li>
+            <li>
+              <span class="wcag-tag wcag-tag--aa">2.1.1 A</span>
+              <div>
+                <strong>鍵盤可操作</strong> — 所有功能均可透過鍵盤完成：<kbd
+                  >←</kbd
+                ><kbd>→</kbd> 切換、<kbd>Space</kbd> 暫停、<kbd>Home</kbd
+                ><kbd>End</kbd> 跳轉。
+              </div>
+            </li>
+            <li>
+              <span class="wcag-tag wcag-tag--aa">2.2.2 A</span>
+              <div>
+                <strong>暫停、停止、隱藏</strong> —
+                所有自動播放模式均提供暫停按鈕，使用者可隨時停止輪播。
+              </div>
+            </li>
+            <li>
+              <span class="wcag-tag wcag-tag--aaa">2.2.3 AAA</span>
+              <div>
+                <strong>無時間限制</strong> —
+                暫停後輪播完全停止，不會自動恢復，直到使用者主動按下播放。
+              </div>
+            </li>
+            <li>
+              <span class="wcag-tag wcag-tag--aaa">2.3.3 AAA</span>
+              <div>
+                <strong>互動中的動畫</strong> — 偵測
+                <code>prefers-reduced-motion: reduce</code
+                >，自動將所有過場特效降級為簡單淡入淡出（0.1s），消除位移與旋轉動畫。
+              </div>
+            </li>
+            <li>
+              <span class="wcag-tag wcag-tag--aa">2.4.3 A</span>
+              <div>
+                <strong>焦點順序</strong> —
+                分頁點點擊後，焦點移至對應投影片元素，維持合理的焦點流向。
+              </div>
+            </li>
+            <li>
+              <span class="wcag-tag wcag-tag--aa">2.4.7 AA</span>
+              <div>
+                <strong>焦點可見</strong> — 所有可聚焦元素均有
+                <code>3px solid #ffdd00</code> 的高對比焦點框。
+              </div>
+            </li>
+            <li>
+              <span class="wcag-tag wcag-tag--aaa">2.4.12 AAA</span>
+              <div>
+                <strong>焦點外觀（增強）</strong> — 焦點框面積 ≥ 元素周長 ×
+                2px，對比度 ≥ 3:1，符合 AAA 增強標準。
+              </div>
+            </li>
+            <li>
+              <span class="wcag-tag wcag-tag--aa">2.5.8 AA</span>
+              <div>
+                <strong>最小觸控目標</strong> — 所有按鈕最小尺寸為
+                44×44px，分頁點使用透明擴充點擊區域達到此標準。
+              </div>
+            </li>
+            <li>
+              <span class="wcag-tag wcag-tag--aa">4.1.2 A</span>
+              <div>
+                <strong>名稱、角色、值</strong> — 暫停按鈕使用
+                <code>aria-pressed</code> 表達狀態；分頁點使用
+                <code>aria-current</code>；隱藏投影片設定
+                <code>aria-hidden="true"</code>。
+              </div>
+            </li>
+            <li>
+              <span class="wcag-tag wcag-tag--aa">4.1.3 AA</span>
+              <div>
+                <strong>狀態訊息</strong> — 每次切換透過
+                <code>aria-live="polite"</code> Live Region 向螢幕閱讀器播報「第
+                N 張，共 M 張：說明文字」。
+              </div>
+            </li>
+          </ul>
+
+          <div class="callout callout--danger">
+            <span class="callout__icon">🚨</span>
+            <div>
+              <strong>開發者責任</strong>：tad-slide 提供無障礙的互動框架，但
+              <strong>圖片的 <code>alt</code> 屬性</strong>與<strong
+                >容器的 <code>aria-label</code></strong
+              >
+              必須由開發者提供有意義的內容。空白或缺少這兩個屬性，將導致螢幕閱讀器使用者無法理解輪播內容。
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- 頁尾 -->
+    <footer class="doc-footer" role="contentinfo">
+      <p>
+        tad-slide v1.1.0 &nbsp;·&nbsp; Vanilla JS &nbsp;·&nbsp; WCAG 2.3 AAA
+        &nbsp;·&nbsp; MIT License
+      </p>
+    </footer>
+
+    <!-- ══════════════════════════════════════════
+     tad-slide.js（內嵌）
+     ══════════════════════════════════════════ -->
+    <script>
+      /*!
+       * tad-slide.js v1.1.0
+       * WCAG 2.3 AAA Compliant Responsive Carousel
+       * navMode: 'bottom' | 'sides' | 'none'
+       * Single-slide: auto static mode
+       */
+      (function (global) {
+        "use strict";
+
+        const DEFAULTS = {
+          auto: true,
+          speed: 600,
+          timeout: 4000,
+          effect: "fade",
+          random: false,
+          pauseOnHover: true,
+          announceSlide: true,
+          navMode: "bottom",
+          pager: true,
+          nav: true,
+          prevText: "&#8249;",
+          nextText: "&#8250;",
+          pauseText: "⏸",
+          playText: "▶",
+          pauseLabel: "暫停輪播",
+          playLabel: "播放輪播",
+          prevLabel: "上一張投影片",
+          nextLabel: "下一張投影片",
+          before: null,
+          after: null,
+        };
+
+        class TadSlide {
+          constructor(element, options) {
+            this.el = element;
+            this.opts = Object.assign({}, DEFAULTS, options);
+            this.items = [];
+            this.current = 0;
+            this.total = 0;
+            this.timer = null;
+            this.running = false;
+            this.paused = false;
+            this._init();
+          }
+
+          /* ── 初始化 ── */
+          _init() {
+            const el = this.el;
+            const opts = this.opts;
+
+            this.items = Array.from(el.querySelectorAll(".tad-slide__item"));
+            this.total = this.items.length;
+
+            if (this.total < 2) {
+              this._initSingle();
+              return;
+            }
+
+            if (opts.random) this._shuffle();
+
+            el.setAttribute("data-tad-effect", opts.effect);
+            this.items.forEach((item) => {
+              item.style.transitionDuration = opts.speed + "ms";
+            });
+
+            el.setAttribute("role", "region");
+            el.setAttribute("aria-roledescription", "carousel");
+            if (!el.getAttribute("aria-label") && this.total > 1) {
+              el.setAttribute("aria-label", "圖片輪播");
+            }
+
+            this.items.forEach((item, i) => {
+              item.setAttribute("role", "group");
+              item.setAttribute("aria-roledescription", "slide");
+              item.setAttribute(
+                "aria-label",
+                `第 ${i + 1} 張，共 ${this.total} 張`,
+              );
+              item.setAttribute("aria-hidden", i === 0 ? "false" : "true");
+              if (i === 0) item.classList.add("is-active");
+            });
+
+            el.classList.add(`tad-slide--nav-${opts.navMode}`);
+
+            this._buildProgress();
+            this._buildNav();
+            if (opts.announceSlide) this._buildLiveRegion();
+
+            if (opts.pauseOnHover) {
+              el.addEventListener("mouseenter", () => this._hoverPause(true));
+              el.addEventListener("mouseleave", () => this._hoverPause(false));
+            }
+            el.addEventListener("keydown", (e) => this._onKeydown(e));
+            this._initTouch();
+
+            if (opts.auto) this.play();
+          }
+
+          /* ── 單張靜態模式 ── */
+          _initSingle() {
+            const el = this.el;
+            el.classList.add("tad-slide--single");
+            el.setAttribute("role", "region");
+            if (!el.getAttribute("aria-label")) {
+              el.setAttribute("aria-label", "圖片展示");
+            }
+            if (this.items[0]) {
+              this.items[0].classList.add("is-active");
+              this.items[0].setAttribute("aria-hidden", "false");
+            }
+          }
+
+          /* ── 建立導覽 ── */
+          _buildNav() {
+            switch (this.opts.navMode) {
+              case "bottom":
+                this._buildNavBottom();
+                break;
+              case "sides":
+                this._buildNavSides();
+                break;
+              case "none":
+                this._buildNavNone();
+                break;
+            }
+          }
+
+          _buildNavBottom() {
+            const opts = this.opts;
+            const bar = document.createElement("div");
+            bar.className = "tad-slide__controls-bar";
+
+            if (opts.nav) {
+              this._prevBtn = this._makeBtn(
+                opts.prevText,
+                "tad-slide__btn tad-slide__arrow--prev",
+                opts.prevLabel,
+              );
+              this._prevBtn.addEventListener("click", () => this.prev());
+              bar.appendChild(this._prevBtn);
+            }
+
+            if (opts.pager) {
+              const pagerList = document.createElement("ul");
+              pagerList.className = "tad-slide__pager";
+              pagerList.setAttribute("role", "tablist");
+              pagerList.setAttribute("aria-label", "投影片選擇");
+              this._pagerBtns = this.items.map((_, i) => {
+                const li = document.createElement("li");
+                li.setAttribute("role", "presentation");
+                const btn = this._makeBtn(
+                  "",
+                  "tad-slide__pager-btn",
+                  `第 ${i + 1} 張投影片`,
+                );
+                btn.setAttribute("role", "tab");
+                btn.setAttribute("aria-current", i === 0 ? "true" : "false");
+                btn.addEventListener("click", () => {
+                  this.goTo(i);
+                  this.items[i].setAttribute("tabindex", "-1");
+                  this.items[i].focus({ preventScroll: true });
+                });
+                li.appendChild(btn);
+                pagerList.appendChild(li);
+                return btn;
+              });
+              bar.appendChild(pagerList);
+            }
+
+            if (opts.nav) {
+              this._nextBtn = this._makeBtn(
+                opts.nextText,
+                "tad-slide__btn tad-slide__arrow--next",
+                opts.nextLabel,
+              );
+              this._nextBtn.addEventListener("click", () => this.next());
+              bar.appendChild(this._nextBtn);
+            }
+
+            this._pauseBtn = this._makeBtn(
+              opts.pauseText,
+              "tad-slide__btn tad-slide__pause",
+              opts.pauseLabel,
+            );
+            this._pauseBtn.setAttribute("aria-pressed", "true");
+            this._pauseBtn.addEventListener("click", () => this._togglePause());
+            bar.appendChild(this._pauseBtn);
+
+            this.el.appendChild(bar);
+            this._bar = bar;
+          }
+
+          _buildNavSides() {
+            const opts = this.opts;
+            const list = this.el.querySelector(".tad-slide__list");
+
+            /*
+             * 暫停／播放按鈕：插入至投影片清單之前（DOM 第一個可聚焦元素）
+             * 焦點順序：暫停 → 圖片 → 左箭頭 → 右箭頭
+             * position: absolute 不影響視覺版面
+             */
+            this._pauseBtn = this._makeBtn(
+              opts.pauseText,
+              "tad-slide__btn tad-slide__pause-float",
+              opts.pauseLabel,
+            );
+            this._pauseBtn.setAttribute("aria-pressed", "true");
+            this._pauseBtn.addEventListener("click", () => this._togglePause());
+            this.el.insertBefore(this._pauseBtn, list);
+
+            /* 左箭頭（圖片之後） */
+            this._prevBtn = this._makeBtn(
+              opts.prevText,
+              "tad-slide__btn tad-slide__arrow tad-slide__arrow--prev",
+              opts.prevLabel,
+            );
+            this._prevBtn.addEventListener("click", () => this.prev());
+            this.el.appendChild(this._prevBtn);
+
+            /* 右箭頭（左箭頭之後） */
+            this._nextBtn = this._makeBtn(
+              opts.nextText,
+              "tad-slide__btn tad-slide__arrow tad-slide__arrow--next",
+              opts.nextLabel,
+            );
+            this._nextBtn.addEventListener("click", () => this.next());
+            this.el.appendChild(this._nextBtn);
+          }
+
+          _buildNavNone() {
+            const opts = this.opts;
+            const list = this.el.querySelector(".tad-slide__list");
+
+            /*
+             * 暫停／播放按鈕：插入至投影片清單之前（DOM 第一個可聚焦元素）
+             * 焦點順序：暫停 → 圖片
+             * position: absolute 不影響視覺版面
+             */
+            this._pauseBtn = this._makeBtn(
+              opts.pauseText,
+              "tad-slide__btn tad-slide__pause-float",
+              opts.pauseLabel,
+            );
+            this._pauseBtn.setAttribute("aria-pressed", "true");
+            this._pauseBtn.addEventListener("click", () => this._togglePause());
+            this.el.insertBefore(this._pauseBtn, list);
+          }
+
+          /* ── 進度條 ── */
+          _buildProgress() {
+            this._progressBar = document.createElement("div");
+            this._progressBar.className = "tad-slide__progress";
+            this._progressBar.setAttribute("aria-hidden", "true");
+            this.el.insertBefore(this._progressBar, this.el.firstChild);
+          }
+
+          _startProgress() {
+            if (!this._progressBar) return;
+            const bar = this._progressBar;
+            bar.style.transitionDuration = "0ms";
+            bar.style.width = "0%";
+            void bar.offsetWidth;
+            bar.style.transitionDuration = this.opts.timeout + "ms";
+            bar.style.width = "100%";
+          }
+
+          _stopProgress() {
+            if (!this._progressBar) return;
+            const bar = this._progressBar;
+            const w = getComputedStyle(bar).width;
+            bar.style.transitionDuration = "0ms";
+            bar.style.width = w;
+          }
+
+          /* ── Live Region ── */
+          _buildLiveRegion() {
+            this._liveRegion = document.createElement("div");
+            this._liveRegion.className = "tad-sr-only";
+            this._liveRegion.setAttribute("aria-live", "polite");
+            this._liveRegion.setAttribute("aria-atomic", "true");
+            this.el.appendChild(this._liveRegion);
+          }
+
+          /* ── 切換投影片 ── */
+          goTo(index) {
+            if (index === this.current || this.running) return;
+            const opts = this.opts;
+            const prev = this.current;
+            const next = (index + this.total) % this.total;
+
+            if (typeof opts.before === "function") opts.before(prev, next);
+
+            this.running = true;
+            this.current = next;
+
+            const prevItem = this.items[prev];
+            const nextItem = this.items[next];
+
+            prevItem.setAttribute("aria-hidden", "true");
+            nextItem.setAttribute("aria-hidden", "false");
+            prevItem.classList.add("is-prev");
+            prevItem.classList.remove("is-active");
+            nextItem.classList.add("is-active");
+
+            if (this._pagerBtns) {
+              this._pagerBtns[prev].setAttribute("aria-current", "false");
+              this._pagerBtns[next].setAttribute("aria-current", "true");
+            }
+
+            if (this._liveRegion) {
+              const caption = nextItem.querySelector(".tad-slide__caption");
+              const msg = caption
+                ? `第 ${next + 1} 張，共 ${this.total} 張：${caption.textContent.trim()}`
+                : `第 ${next + 1} 張，共 ${this.total} 張`;
+              this._liveRegion.textContent = "";
+              setTimeout(() => {
+                this._liveRegion.textContent = msg;
+              }, 50);
+            }
+
+            setTimeout(() => {
+              prevItem.classList.remove("is-prev");
+              this.running = false;
+              if (typeof opts.after === "function") opts.after(prev, next);
+              if (!this.paused && opts.auto) this._startProgress();
+            }, opts.speed + 50);
+          }
+
+          next() {
+            this.goTo(this.current + 1);
+          }
+          prev() {
+            this.goTo(this.current - 1);
+          }
+
+          /* ── 播放 / 暫停 ── */
+          play() {
+            if (this.timer) clearInterval(this.timer);
+            this.paused = false;
+            this.el.classList.remove("tad-slide--paused");
+            this.timer = setInterval(() => this.next(), this.opts.timeout);
+            this._startProgress();
+            this._updatePauseBtn();
+          }
+
+          pause() {
+            if (this.timer) clearInterval(this.timer);
+            this.timer = null;
+            this.paused = true;
+            this.el.classList.add("tad-slide--paused");
+            this._stopProgress();
+            this._updatePauseBtn();
+          }
+
+          _togglePause() {
+            this.paused ? this.play() : this.pause();
+          }
+
+          _updatePauseBtn() {
+            if (!this._pauseBtn) return;
+            const opts = this.opts;
+            if (this.paused) {
+              this._pauseBtn.setAttribute("aria-pressed", "false");
+              this._pauseBtn.setAttribute("aria-label", opts.playLabel);
+              this._pauseBtn.innerHTML = opts.playText;
+            } else {
+              this._pauseBtn.setAttribute("aria-pressed", "true");
+              this._pauseBtn.setAttribute("aria-label", opts.pauseLabel);
+              this._pauseBtn.innerHTML = opts.pauseText;
+            }
+          }
+
+          _hoverPause(isPausing) {
+            if (!this.opts.auto) return;
+            if (isPausing) {
+              if (this.timer) clearInterval(this.timer);
+              this._stopProgress();
+            } else {
+              if (!this.paused) this.play();
+            }
+          }
+
+          /* ── 鍵盤操作 ── */
+          _onKeydown(e) {
+            const onPauseBtn = document.activeElement === this._pauseBtn;
+            switch (e.key) {
+              case "ArrowLeft":
+              case "ArrowUp":
+                e.preventDefault();
+                this.prev();
+                break;
+              case "ArrowRight":
+              case "ArrowDown":
+                e.preventDefault();
+                this.next();
+                break;
+              case " ":
+                if (onPauseBtn) break;
+                e.preventDefault();
+                this._togglePause();
+                break;
+              case "Home":
+                e.preventDefault();
+                this.goTo(0);
+                break;
+              case "End":
+                e.preventDefault();
+                this.goTo(this.total - 1);
+                break;
+            }
+          }
+
+          /* ── 觸控滑動 ── */
+          _initTouch() {
+            let startX = 0,
+              startY = 0;
+            this.el.addEventListener(
+              "touchstart",
+              (e) => {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+              },
+              { passive: true },
+            );
+            this.el.addEventListener(
+              "touchend",
+              (e) => {
+                const dx = e.changedTouches[0].clientX - startX;
+                const dy = e.changedTouches[0].clientY - startY;
+                if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+                  dx < 0 ? this.next() : this.prev();
+                }
+              },
+              { passive: true },
+            );
+          }
+
+          /* ── 工具 ── */
+          _makeBtn(html, className, ariaLabel) {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = className;
+            btn.innerHTML = html;
+            if (ariaLabel) btn.setAttribute("aria-label", ariaLabel);
+            return btn;
+          }
+
+          _shuffle() {
+            const list = this.el.querySelector(".tad-slide__list");
+            for (let i = this.items.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              list.appendChild(this.items[j]);
+            }
+            this.items = Array.from(list.querySelectorAll(".tad-slide__item"));
+          }
+
+          /* ── 銷毀 ── */
+          destroy() {
+            this.pause();
+            [
+              this._bar,
+              this._prevBtn,
+              this._nextBtn,
+              this._pauseBtn,
+              this._progressBar,
+              this._liveRegion,
+            ].forEach((el) => el?.remove());
+            if (this._pagerBtns)
+              this._pagerBtns.forEach((b) => b.closest("li")?.remove());
+            this.items.forEach((item) => {
+              item.classList.remove("is-active", "is-prev");
+              [
+                "aria-hidden",
+                "role",
+                "aria-roledescription",
+                "aria-label",
+                "tabindex",
+              ].forEach((a) => item.removeAttribute(a));
+            });
+            this.el.classList.remove(
+              `tad-slide--nav-${this.opts.navMode}`,
+              "tad-slide--single",
+              "tad-slide--paused",
+            );
+          }
+        }
+
+        /* ── 工廠函式 ── */
+        function tadSlide(selector, options) {
+          const els =
+            typeof selector === "string"
+              ? Array.from(document.querySelectorAll(selector))
+              : [selector];
+          const instances = els.map((el) => new TadSlide(el, options));
+          return instances.length === 1 ? instances[0] : instances;
+        }
+
+        global.tadSlide = tadSlide;
+        global.TadSlide = TadSlide;
+      })(typeof window !== "undefined" ? window : this);
+    </script>
+
+    <!-- ══════════════════════════════════════════
+     初始化所有 Demo
+     ══════════════════════════════════════════ -->
+    <script>
+      // Hero
+      tadSlide("#demo-hero", {
+        navMode: "bottom",
+        effect: "slide",
+        timeout: 4000,
+        speed: 550,
+      });
+
+      // 導覽模式示範
+      tadSlide("#demo-bottom", {
+        navMode: "bottom",
+        effect: "slide",
+        timeout: 3500,
+        speed: 500,
+      });
+      tadSlide("#demo-sides", {
+        navMode: "sides",
+        effect: "zoom",
+        timeout: 3500,
+        speed: 600,
+      });
+      tadSlide("#demo-none", {
+        navMode: "none",
+        effect: "fade",
+        timeout: 4000,
+        speed: 700,
+      });
+
+      // 單張靜態示範
+      tadSlide("#demo-single", {
+        navMode: "bottom",
+        auto: true,
+        effect: "slide",
+      });
+
+      // 過場特效示範（全部用 sides 模式，小尺寸不佔空間）
+      tadSlide("#demo-fade", {
+        navMode: "sides",
+        effect: "fade",
+        timeout: 2500,
+        speed: 600,
+      });
+      tadSlide("#demo-slide-fx", {
+        navMode: "sides",
+        effect: "slide",
+        timeout: 2500,
+        speed: 500,
+      });
+      tadSlide("#demo-zoom-fx", {
+        navMode: "sides",
+        effect: "zoom",
+        timeout: 2500,
+        speed: 600,
+      });
+      tadSlide("#demo-flip-fx", {
+        navMode: "sides",
+        effect: "flip",
+        timeout: 2500,
+        speed: 600,
+      });
+      tadSlide("#demo-cube-fx", {
+        navMode: "sides",
+        effect: "cube",
+        timeout: 2500,
+        speed: 600,
+      });
+    </script>
+
+    <!-- ══════════════════════════════════════════
+     側邊目錄高亮（Intersection Observer）
+     ══════════════════════════════════════════ -->
+    <script>
+      (function () {
+        const links = document.querySelectorAll(".doc-sidebar a");
+        const sections = document.querySelectorAll(".doc-section");
+
+        if (!sections.length || !links.length) return;
+
+        const map = {};
+        links.forEach((a) => {
+          const id = a.getAttribute("href").replace("#", "");
+          map[id] = a;
+        });
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                links.forEach((a) => a.classList.remove("is-active"));
+                const active = map[entry.target.id];
+                if (active) active.classList.add("is-active");
+              }
+            });
+          },
+          { rootMargin: "-60px 0px -60% 0px", threshold: 0 },
+        );
+
+        sections.forEach((s) => observer.observe(s));
+      })();
+    </script>
+  </body>
+</html>

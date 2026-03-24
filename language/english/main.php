@@ -141,11 +141,12 @@ define('TADTOOLS_CHK_NEED_TITLE', 'Missing title check');
 define('TADTOOLS_CHK_IMG', 'Photo Check');
 define('TADTOOLS_CHK_BLOCKQUOTE', 'blockquote Check');
 define('TADTOOLS_CHK_UNABLE_TAG', 'Conversion of invalid labels');
-define('TADTOOLS_CHK_TH', 'Form Check');
+define('TADTOOLS_CHK_H1', 'H1 Check');
 define('TADTOOLS_CHK_A_EMPTY', 'empty link Check');
 define('TADTOOLS_CHK_HEAD_EMPTY', 'Title correction');
 define('TADTOOLS_CHK_LANG_ZH_TW', 'Correction of the same language system');
 define('TADTOOLS_CHK_NO_NEED', 'Useless syntax correction');
+define('TADTOOLS_CHK_H1_TO_P', 'Convert the H1 heading in the article to p.h1');
 
 define('_INVALID_SQL_QUERY', 'Invalid SQL query');
 define('_NUMBER_PARAMETER_NOT_MATCH', 'Parameter count mismatch. Expected %d, got %d');
@@ -159,3 +160,6 @@ define('_DATABASE_ERROR', 'Database Error: ');
 define('TADTOOLS_SLIDE_IMG', 'Sliding Image');
 
 define('_TAD_O_NAV_ZONE', 'Main Navigation Zone');
+
+define('TADTOOLS_CANT_DELETE', 'Unable to delete %s');
+define('TADTOOLS_CANT_WRITE', '%s does not have write permissions');

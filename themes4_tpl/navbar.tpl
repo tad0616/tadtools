@@ -21,7 +21,7 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <a accesskey="U" href="#main-nav" title="<{$smarty.const._TAD_ZAV_ZONE}>" id="xoops_theme_nav_key" style="color: transparent; font-size: 0.625rem; position: absolute;">:::</a>
+            <a accesskey="U" href="#main-nav" id="xoops_theme_nav_key" class="sr-only-focusable" aria-label="跳到上方導覽工具列">:::</a>
 
             <!-- Left nav -->
             <ul id="main-menu" class="nav navbar-nav mr-auto">

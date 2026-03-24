@@ -1,5 +1,6 @@
 
 <{if $xoBlocks.footer_left || $xoBlocks.footer_right || $xoBlocks.footer_center}>
+    <h3 class="sr-only visually-hidden">頁尾區域內容</h3>
     <div class="row">
         <{if $xoBlocks.footer_left|default:false}>
             <div class="col-xl footerLeftBlock" id="footerLeftBlock">

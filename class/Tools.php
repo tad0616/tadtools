@@ -1123,8 +1123,8 @@ class Tools
                 $slider_var[$i]['files_sn']          = $files_sn;
                 $slider_var[$i]['sort']              = $sort;
                 $slider_var[$i]['file_name']         = $file_name;
-                $slider_var[$i]['description']       = $description;
-                $slider_var[$i]['text_description']  = strip_tags($description);
+                $slider_var[$i]['description']       = trim($description);
+                $slider_var[$i]['text_description']  = strip_tags(trim($description));
                 $slider_var[$i]['original_filename'] = $original_filename;
                 $slider_var[$i]['sub_dir']           = $sub_dir;
                 $slider_var[$i]['file_url']          = XOOPS_URL . "/uploads/tad_themes{$sub_dir}/{$file_name}";

@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TadNav v1.5 — 使用說明文件</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="tadnav.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", Roboto, sans-serif;
+  background: #f0f2f5; color: #333; line-height: 1.75;
+}
+a { color: #2e86c1; }
+.container { max-width: 980px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+/* Hero */
+.hero { padding: 2.5rem 0 1.25rem; }
+.hero h1 { color: #1a5276; font-size: 2.3rem; margin-bottom: 0.2rem; }
+.hero h1 small { font-size: 0.42em; font-weight: 400; color: #999; vertical-align: middle; margin-left: 0.3rem; }
+.hero .lead { color: #555; font-size: 1.05rem; margin: 0.5rem 0 1.25rem; }
+.badge-row { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1.75rem; }
+.badge { display: inline-block; padding: 0.22em 0.8em; border-radius: 20px; font-size: 0.78rem; font-weight: 700; color: #fff; }
+.bg-green  { background: #27ae60; }
+.bg-blue   { background: #2e86c1; }
+.bg-orange { background: #e67e22; }
+.bg-purple { background: #8e44ad; }
+.bg-teal   { background: #16a085; }
+.bg-red    { background: #c0392b; }
+.bg-pink   { background: #d63384; }
+.bg-gray   { background: #7f8c8d; }
+
+/* TOC */
+.toc {
+  background: #fff; border-radius: 12px;
+  padding: 1.25rem 1.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  margin-bottom: 1.75rem;
+}
+.toc h2 { color: #1a5276; font-size: 1rem; margin-bottom: 0.65rem; }
+.toc ol { padding-left: 1.4rem; column-count: 2; column-gap: 2rem; }
+.toc li { margin-bottom: 0.3rem; font-size: 0.93rem; break-inside: avoid; }
+.toc a { color: #2e86c1; text-decoration: none; }
+.toc a:hover { text-decoration: underline; }
+@media (max-width: 600px) { .toc ol { column-count: 1; } }
+
+/* Section */
+.doc-section {
+  background: #fff; border-radius: 12px;
+  padding: 1.75rem 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  margin-bottom: 1.5rem;
+  scroll-margin-top: 1rem;
+}
+.doc-section h2 {
+  color: #1a5276; font-size: 1.3rem;
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e8f4fd;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.doc-section h3 { color: #2e86c1; font-size: 1rem; margin: 1.4rem 0 0.5rem; font-weight: 700; }
+.doc-section h4 { color: #555; font-size: 0.92rem; margin: 1rem 0 0.4rem; font-weight: 700; }
+.doc-section p  { margin-bottom: 0.75rem; color: #444; font-size: 0.95rem; }
+.doc-section ul,
+.doc-section ol { padding-left: 1.5rem; margin-bottom: 0.75rem; color: #444; font-size: 0.95rem; }
+.doc-section li { margin-bottom: 0.35rem; }
+
+/* Code */
+pre {
+  background: #1e293b; color: #e2e8f0;
+  padding: 1.2rem 1.4rem; border-radius: 8px;
+  overflow-x: auto; font-size: 0.84rem;
+  line-height: 1.8; margin: 0.75rem 0 1.1rem;
+  tab-size: 2;
+}
+code {
+  background: #e8f4fd; color: #1a5276;
+  padding: 0.15em 0.45em; border-radius: 4px;
+  font-size: 0.87em;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+pre code { background: none; color: inherit; padding: 0; font-size: inherit; }
+
+/* Table */
+.doc-table {
+  width: 100%; border-collapse: collapse;
+  margin: 0.75rem 0 1.1rem; font-size: 0.88rem;
+  display: block; overflow-x: auto;
+}
+.doc-table th,
+.doc-table td {
+  text-align: left; padding: 0.55rem 0.9rem;
+  border-bottom: 1px solid #eaeaea;
+  white-space: nowrap;
+}
+.doc-table td:last-child { white-space: normal; }
+.doc-table th { background: #f4f9fd; color: #1a5276; font-weight: 700; }
+.doc-table tr:last-child td { border-bottom: none; }
+.doc-table tr:hover td { background: #fafcff; }
+
+/* Callout */
+.callout {
+  border-left: 4px solid #2e86c1; background: #f0f8ff;
+  padding: 0.8rem 1.1rem; border-radius: 0 8px 8px 0;
+  margin: 0.75rem 0 1rem; font-size: 0.92rem; color: #1a5276;
+}
+.callout.warn  { border-color: #e67e22; background: #fff8f0; color: #7d4e00; }
+.callout.tip   { border-color: #27ae60; background: #f0fff4; color: #1a5e30; }
+.callout.info  { border-color: #8e44ad; background: #faf0ff; color: #5b2c8d; }
+.callout strong { font-weight: 700; }
+
+kbd {
+  display: inline-block; background: #f4f4f4;
+  border: 1px solid #ccc; border-radius: 4px;
+  padding: 0.1em 0.5em; font-size: 0.82em;
+  box-shadow: 0 1px 0 #bbb; color: #333; font-family: inherit;
+}
+
+/* Demo control bar */
+.demo-bar {
+  background: #f8f9fa; border: 1px solid #e8e8e8;
+  border-radius: 10px; padding: 1rem 1.25rem;
+  display: flex; align-items: center;
+  gap: 0.75rem; flex-wrap: wrap;
+  margin: 0.75rem 0 1rem;
+}
+.demo-bar label { font-size: 0.88rem; font-weight: 700; color: #1a5276; white-space: nowrap; }
+.btn-group { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.demo-btn {
+  padding: 0.38rem 0.95rem; border-radius: 6px;
+  border: 2px solid #2e86c1; background: #fff;
+  color: #2e86c1; font-size: 0.85rem; font-weight: 700;
+  cursor: pointer; transition: background 0.15s, color 0.15s;
+}
+.demo-btn:hover,
+.demo-btn.active { background: #2e86c1; color: #fff; }
+.demo-btn.green  { border-color: #27ae60; color: #27ae60; }
+.demo-btn.green:hover,
+.demo-btn.green.active { background: #27ae60; color: #fff; }
+.demo-status {
+  margin-left: auto; font-size: 0.84rem; color: #666;
+  background: #fff; border: 1px solid #e0e0e0;
+  padding: 0.3rem 0.85rem; border-radius: 20px; white-space: nowrap;
+}
+.demo-status span { font-weight: 700; color: #1a5276; }
+
+/* Theme panel */
+.theme-panel {
+  background: #f8f9fa; border: 1px solid #e8e8e8;
+  border-radius: 10px; padding: 1.25rem 1.5rem;
+  margin: 0.75rem 0 1rem;
+}
+.theme-panel h4 {
+  color: #1a5276; font-size: 0.88rem; font-weight: 700;
+  margin: 0 0 0.75rem; display: flex; align-items: center; gap: 0.4rem;
+}
+.theme-panel h4::before { content: ""; display: inline-block; width: 3px; height: 14px; background: #2e86c1; border-radius: 2px; }
+
+/* Preset buttons */
+.preset-row { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1rem; }
+.preset-btn {
+  padding: 0.4rem 1rem; border-radius: 8px;
+  border: 2px solid transparent; font-size: 0.83rem;
+  font-weight: 700; cursor: pointer; color: #fff;
+  transition: transform 0.12s, box-shadow 0.12s, outline 0.1s;
+}
+.preset-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+.preset-btn.active { outline: 3px solid #1a5276; outline-offset: 2px; }
+
+/* Color grid */
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 0.55rem; margin-bottom: 0.75rem;
+}
+.color-row {
+  display: flex; align-items: center; gap: 0.5rem;
+  background: #fff; border: 1px solid #eee;
+  border-radius: 7px; padding: 0.4rem 0.7rem;
+}
+.color-row label { font-size: 0.79rem; color: #555; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.color-row input[type="color"] { width: 32px; height: 24px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; padding: 1px; background: #fff; flex-shrink: 0; }
+.color-row input[type="text"]  { width: 72px; font-size: 0.75rem; border: 1px solid #ddd; border-radius: 4px; padding: 0.18rem 0.35rem; font-family: monospace; color: #333; }
+
+/* Size rows */
+.size-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.55rem; margin-bottom: 0.75rem; }
+.size-row {
+  display: flex; align-items: center; gap: 0.5rem;
+  background: #fff; border: 1px solid #eee;
+  border-radius: 7px; padding: 0.4rem 0.7rem;
+}
+.size-row label { font-size: 0.79rem; color: #555; white-space: nowrap; min-width: 90px; }
+.size-row input[type="range"] { flex: 1; accent-color: #2e86c1; }
+.size-val { font-size: 0.77rem; font-family: monospace; color: #1a5276; min-width: 40px; text-align: right; }
+
+/* Shadow / Width rows */
+.misc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.55rem; margin-bottom: 0.75rem; }
+.misc-row {
+  display: flex; align-items: center; gap: 0.6rem;
+  background: #fff; border: 1px solid #eee;
+  border-radius: 7px; padding: 0.4rem 0.7rem;
+}
+.misc-row label { font-size: 0.79rem; color: #555; flex: 1; }
+.misc-row input[type="checkbox"] { width: 15px; height: 15px; cursor: pointer; accent-color: #2e86c1; }
+.misc-row input[type="text"] { flex: 1; font-size: 0.79rem; border: 1px solid #ddd; border-radius: 4px; padding: 0.22rem 0.45rem; font-family: monospace; }
+
+.btn-row { display: flex; gap: 0.65rem; flex-wrap: wrap; margin-top: 0.85rem; }
+.apply-btn { padding: 0.5rem 1.4rem; background: #2e86c1; color: #fff; border: none; border-radius: 8px; font-size: 0.92rem; font-weight: 700; cursor: pointer; transition: background 0.15s; }
+.apply-btn:hover { background: #1a5276; }
+.reset-btn  { padding: 0.5rem 1.1rem; background: #fff; color: #7f8c8d; border: 2px solid #ddd; border-radius: 8px; font-size: 0.92rem; font-weight: 700; cursor: pointer; transition: border-color 0.15s; }
+.reset-btn:hover { border-color: #aaa; color: #555; }
+
+/* Version badge in table */
+.ver { display: inline-block; background: #e67e22; color: #fff; font-size: 0.7em; padding: 0.05em 0.45em; border-radius: 4px; vertical-align: middle; margin-left: 0.3rem; font-weight: 700; }
+.ver.new { background: #27ae60; }
+
+footer { text-align: center; padding: 3rem 1rem 2rem; color: #bbb; font-size: 0.85rem; }
+footer a { color: #2e86c1; }
+</style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">跳到主要內容</a>
+
+<!-- ===================== DEMO NAV ===================== -->
+<nav role="navigation" id="demo-nav" aria-label="主要導覽區" class="tadnav-wrapper">
+  <div class="tadnav-inner">
+    <div class="tadnav-brand">
+      <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+      臺南市校園網站
+    </div>
+    <button class="tadnav-toggle" aria-expanded="false"
+            aria-controls="main-menu" aria-label="開啟導覽列選單">
+      <span class="bar" aria-hidden="true"></span>
+      <span class="bar" aria-hidden="true"></span>
+      <span class="bar" aria-hidden="true"></span>
+    </button>
+    <ul id="main-menu" class="tadnav-menu" role="menubar" aria-label="主選單">
+      <li role="none">
+        <a href="#" role="menuitem"><i class="fa fa-home" aria-hidden="true"></i> 回首頁</a>
+      </li>
+      <li role="none">
+        <button class="tadnav-submenu-toggle" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-chalkboard-user" aria-hidden="true"></i> 相關服務
+          <span class="tadnav-arrow" aria-hidden="true"></span>
+        </button>
+        <ul class="tadnav-submenu" role="menu" aria-label="相關服務">
+          <li role="none"><a href="#" role="menuitem">提供學校主網站搬移至集中式服務</a></li>
+          <li role="none"><a href="#" role="menuitem">如何搬移網站到集中式？</a></li>
+          <li role="none"><a href="#" role="menuitem">集中式校網使用常見問題</a></li>
+          <li role="none"><a href="#" role="menuitem">網站套用 SSL 方法</a></li>
+          <li role="none">
+            <button class="tadnav-submenu-toggle" aria-haspopup="true" aria-expanded="false">
+              無障礙相關 <span class="tadnav-arrow" aria-hidden="true"></span>
+            </button>
+            <ul class="tadnav-submenu" role="menu" aria-label="無障礙相關">
+              <li role="none"><a href="#" role="menuitem">無障礙校網常見問題</a></li>
+              <li role="none"><a href="#" role="menuitem">WCAG 2.2 AA 編輯注意事項</a></li>
+              <li role="none">
+                <button class="tadnav-submenu-toggle" aria-haspopup="true" aria-expanded="false">
+                  更多資源 <span class="tadnav-arrow" aria-hidden="true"></span>
+                </button>
+                <ul class="tadnav-submenu" role="menu" aria-label="更多資源">
+                  <li role="none"><a href="#" role="menuitem">NCC 無障礙規範</a></li>
+                  <li role="none"><a href="#" role="menuitem">Freego 檢測工具</a></li>
+                  <li role="none"><a href="#" role="menuitem">NVDA 螢幕閱讀器</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li role="none">
+        <a href="#" role="menuitem"><i class="fa fa-sitemap" aria-hidden="true"></i> 網站地圖</a>
+      </li>
+      <li role="none">
+        <a href="#" role="menuitem"><i class="fa fa-comments" aria-hidden="true"></i> 討論區</a>
+      </li>
+      <li role="none">
+        <a href="#" role="menuitem"><i class="fa fa-list" aria-hidden="true"></i> 網站列表</a>
+      </li>
+      <li role="none">
+        <a href="#" role="menuitem"><i class="fa fa-plus" aria-hidden="true"></i> 立即申請</a>
+      </li>
+      <!-- Spacer：其後項目自動靠右 -->
+      <li class="tadnav-spacer" role="none" aria-hidden="true"></li>
+      <!-- 靠右項目（JS 自動標記 is-right，無需手寫 style）-->
+      <li role="none">
+        <button class="tadnav-submenu-toggle" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-user-circle" aria-hidden="true"></i> 歡迎：吳弘凱
+          <span class="tadnav-arrow" aria-hidden="true"></span>
+        </button>
+        <ul class="tadnav-submenu" role="menu" aria-label="使用者選單">
+          <li role="none"><a href="#" role="menuitem"><i class="fa fa-lock" aria-hidden="true"></i> 管理</a></li>
+          <li role="none"><a href="#" role="menuitem"><i class="fa fa-cog" aria-hidden="true"></i> 一般設定</a></li>
+          <li role="none"><a href="#" role="menuitem"><i class="fa fa-wrench" aria-hidden="true"></i> 線上安裝升級</a></li>
+          <li role="none"><a href="#" role="menuitem"><i class="fa fa-database" aria-hidden="true"></i> 資料庫管理</a></li>
+          <li role="none"><a href="#" role="menuitem"><i class="fa fa-envelope" aria-hidden="true"></i> 信件</a></li>
+          <li role="none"><a href="#" role="menuitem"><i class="fa fa-bell" aria-hidden="true"></i> 通知</a></li>
+          <li role="none"><a href="#" role="menuitem"><i class="fa fa-right-from-bracket" aria-hidden="true"></i> 登出</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ===================== MAIN ===================== -->
+<main id="main-content">
+<div class="container">
+
+  <!-- Hero -->
+  <div class="hero">
+    <h1>TadNav <small>v1.5.0</small></h1>
+    <p class="lead">現代化、零依賴、符合 WCAG 2.2 的無障礙導覽選單套件，以純 JavaScript 取代 SmartMenus jQuery。</p>
+    <div class="badge-row">
+      <span class="badge bg-green">零依賴</span>
+      <span class="badge bg-blue">WCAG 2.2</span>
+      <span class="badge bg-orange">多層巢狀</span>
+      <span class="badge bg-purple">Hover &amp; Click</span>
+      <span class="badge bg-teal">hoverClose</span>
+      <span class="badge bg-red">Spacer 靠右</span>
+      <span class="badge bg-pink">CSS 變數主題</span>
+      <span class="badge bg-gray">MIT License</span>
+    </div>
+  </div>
+
+  <!-- TOC -->
+  <nav class="toc" aria-label="文件目錄">
+    <h2>📋 目錄</h2>
+    <ol>
+      <li><a href="#sec-files">檔案結構</a></li>
+      <li><a href="#sec-quickstart">快速開始</a></li>
+      <li><a href="#sec-html">HTML 結構規則</a></li>
+      <li><a href="#sec-spacer">Spacer 自動靠右</a></li>
+      <li><a href="#sec-options">完整 API 參數</a></li>
+      <li><a href="#sec-theme">主題色彩系統</a></li>
+      <li><a href="#sec-theme-demo">主題互動展示</a></li>
+      <li><a href="#sec-trigger">trigger 模式</a></li>
+      <li><a href="#sec-hoverclose">hoverClose 控制</a></li>
+      <li><a href="#sec-methods">公開方法</a></li>
+      <li><a href="#sec-events">事件 Hook</a></li>
+      <li><a href="#sec-keyboard">鍵盤操作</a></li>
+      <li><a href="#sec-aria">無障礙 / ARIA</a></li>
+      <li><a href="#sec-faq">常見問題</a></li>
+      <li><a href="#sec-changelog">更新紀錄</a></li>
+    </ol>
+  </nav>
+
+  <!-- ① 檔案結構 -->
+  <div class="doc-section" id="sec-files">
+    <h2>📁 一、檔案結構</h2>
+    <pre><code>tadnav/
+├── tadnav.css      ← 套件樣式（CSS 變數主題系統）
+├── tadnav.js       ← 套件核心邏輯
+└── index.html      ← 本說明文件 &amp; 互動展示頁</code></pre>
+    <p>套件本身僅需 <code>tadnav.css</code> 與 <code>tadnav.js</code> 兩個檔案。
+       Font Awesome 為選用依賴，僅用於箭頭與圖示顯示。</p>
+  </div>
+
+  <!-- ② 快速開始 -->
+  <div class="doc-section" id="sec-quickstart">
+    <h2>🚀 二、快速開始</h2>
+
+    <h3>步驟 1：引入檔案</h3>
+    <pre><code>&lt;!-- Font Awesome（選用，用於箭頭圖示）--&gt;
+&lt;link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"&gt;
+
+&lt;!-- TadNav 樣式 --&gt;
+&lt;link rel="stylesheet" href="tadnav.css"&gt;
+
+&lt;!-- TadNav 核心（放在 &lt;/body&gt; 前）--&gt;
+&lt;script src="tadnav.js"&gt;&lt;/script&gt;</code></pre>
+
+    <h3>步驟 2：建立 HTML 結構</h3>
+    <pre><code>&lt;nav class="tadnav-wrapper" aria-label="主要導覽區"&gt;
+  &lt;div class="tadnav-inner"&gt;
+
+    &lt;!-- 品牌名稱（選用）--&gt;
+    &lt;div class="tadnav-brand"&gt;網站名稱&lt;/div&gt;
+
+    &lt;!-- 漢堡按鈕（手機版）--&gt;
+    &lt;button class="tadnav-toggle"
+            aria-expanded="false"
+            aria-controls="my-menu"
+            aria-label="切換選單顯示狀態"&gt;
+      &lt;span class="bar" aria-hidden="true"&gt;&lt;/span&gt;
+      &lt;span class="bar" aria-hidden="true"&gt;&lt;/span&gt;
+      &lt;span class="bar" aria-hidden="true"&gt;&lt;/span&gt;
+    &lt;/button&gt;
+
+    &lt;!-- 主選單 --&gt;
+    &lt;ul id="my-menu" class="tadnav-menu" role="menubar" aria-label="主選單"&gt;
+
+      &lt;!-- 一般連結 --&gt;
+      &lt;li role="none"&gt;
+        &lt;a href="/home" role="menuitem"&gt;首頁&lt;/a&gt;
+      &lt;/li&gt;
+
+      &lt;!-- 有子選單的項目 --&gt;
+      &lt;li role="none"&gt;
+        &lt;button class="tadnav-submenu-toggle" role="menuitem"
+                aria-haspopup="true" aria-expanded="false"&gt;
+          服務 &lt;span class="tadnav-arrow" aria-hidden="true"&gt;&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;ul class="tadnav-submenu" role="menu" aria-label="服務"&gt;
+          &lt;li role="none"&gt;&lt;a href="/svc1" role="menuitem"&gt;服務一&lt;/a&gt;&lt;/li&gt;
+          &lt;li role="none"&gt;&lt;a href="/svc2" role="menuitem"&gt;服務二&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+
+      &lt;!-- Spacer：其後項目靠右 --&gt;
+      &lt;li class="tadnav-spacer" role="none" aria-hidden="true"&gt;&lt;/li&gt;
+
+      &lt;!-- 靠右項目（JS 自動標記，無需手寫 style）--&gt;
+      &lt;li role="none"&gt;
+        &lt;a href="/login" role="menuitem"&gt;登入&lt;/a&gt;
+      &lt;/li&gt;
+
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/nav&gt;</code></pre>
+
+    <h3>步驟 3：初始化</h3>
+    <pre><code>document.addEventListener('DOMContentLoaded', function () {
+
+  var nav = new TadNav('#my-menu', {
+
+    // 展開方式
+    trigger:    'hover',   // 'hover'（預設）| 'click'
+    hoverClose: true,      // hover 模式下滑走是否收合
+
+    // 主題色彩（全部選用，未設定則使用 CSS 預設值）
+    theme: {
+      navBg:           '#2c3e50',
+      itemColor:       '#ffffff',
+      itemHoverBg:     'rgba(255,255,255,0.15)',
+      itemFontSize:    '0.95rem',
+      subBg:           '#ffffff',
+      subItemColor:    '#2c3e50',
+      subItemHoverBg:  '#f0f4f8',
+      subItemFontSize: '0.9rem',
+      subShadow:       '0 4px 16px rgba(0,0,0,0.12)',
+      innerMaxWidth:   '1200px',
+    }
+
+  });
+
+});</code></pre>
+  </div>
+
+  <!-- ③ HTML 結構規則 -->
+  <div class="doc-section" id="sec-html">
+    <h2>🏗️ 三、HTML 結構規則</h2>
+    <p>TadNav 依賴特定的 class 與 ARIA 屬性組合，請嚴格遵守以下規則：</p>
+    <table class="doc-table">
+      <thead>
+        <tr><th>元素</th><th>必要 Class</th><th>必要屬性</th><th>說明</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>&lt;nav&gt;</code></td><td><code>.tadnav-wrapper</code></td><td><code>aria-label</code></td><td>最外層容器，CSS 變數寫入此元素</td></tr>
+        <tr><td><code>&lt;div&gt;</code></td><td><code>.tadnav-inner</code></td><td>—</td><td>flex 排版容器，寬度由 <code>innerMaxWidth</code> 控制</td></tr>
+        <tr><td><code>&lt;div&gt;</code></td><td><code>.tadnav-brand</code></td><td>—</td><td>品牌名稱區塊（選用）</td></tr>
+        <tr><td><code>&lt;button&gt;</code></td><td><code>.tadnav-toggle</code></td><td><code>aria-expanded</code> <code>aria-controls</code> <code>aria-label</code></td><td>漢堡按鈕，手機版顯示</td></tr>
+        <tr><td><code>&lt;ul&gt;</code></td><td><code>.tadnav-menu</code></td><td><code>role="menubar"</code> <code>aria-label</code></td><td>頂層選單根節點，<code>id</code> 需對應 <code>aria-controls</code></td></tr>
+        <tr><td><code>&lt;li&gt;</code></td><td>—</td><td><code>role="none"</code></td><td>所有 <code>&lt;li&gt;</code> 皆須加此屬性</td></tr>
+        <tr><td><code>&lt;a&gt;</code></td><td>—</td><td><code>role="menuitem"</code></td><td>一般連結項目</td></tr>
+        <tr><td><code>&lt;button&gt;</code></td><td><code>.tadnav-submenu-toggle</code></td><td><code>role="menuitem"</code> <code>aria-haspopup="true"</code> <code>aria-expanded="false"</code></td><td>子選單觸發按鈕</td></tr>
+        <tr><td><code>&lt;span&gt;</code></td><td><code>.tadnav-arrow</code></td><td><code>aria-hidden="true"</code></td><td>箭頭指示器（Font Awesome 自動套用）</td></tr>
+        <tr><td><code>&lt;ul&gt;</code></td><td><code>.tadnav-submenu</code></td><td><code>role="menu"</code> <code>aria-label</code></td><td>子選單，必須緊接在 toggle 按鈕之後</td></tr>
+        <tr><td><code>&lt;li&gt;</code></td><td><code>.tadnav-spacer</code></td><td><code>role="none"</code> <code>aria-hidden="true"</code></td><td>靠右分隔點，其後項目自動靠右展開</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout tip">
+      <strong>巢狀子選單：</strong>子選單內可再放置 <code>.tadnav-submenu-toggle</code> + <code>.tadnav-submenu</code>，支援無限層巢狀，JS 會自動處理所有 ARIA 屬性。
+    </div>
+  </div>
+
+  <!-- ④ Spacer 靠右 -->
+  <div class="doc-section" id="sec-spacer">
+    <h2>📌 四、Spacer 自動靠右機制</h2>
+    <p>
+      在頂層 <code>&lt;ul&gt;</code> 中放置一個 <code>.tadnav-spacer</code>，
+      TadNav 初始化時會自動掃描並將其後所有 <code>&lt;li&gt;</code> 標記 <code>is-right</code>，
+      子選單自動靠右展開。<strong>完全不需手寫任何 <code>style</code> 屬性。</strong>
+    </p>
+
+    <h3>運作原理</h3>
+    <pre><code>&lt;!-- spacer 之前：靠左展開（預設）--&gt;
+&lt;li role="none"&gt;...&lt;/li&gt;
+&lt;li role="none"&gt;...&lt;/li&gt;
+
+&lt;!-- ★ Spacer --&gt;
+&lt;li class="tadnav-spacer" role="none" aria-hidden="true"&gt;&lt;/li&gt;
+
+&lt;!-- spacer 之後：JS 自動加上 is-right，子選單靠右展開 --&gt;
+&lt;li role="none"&gt;...&lt;/li&gt;   &lt;!-- → &lt;li class="is-right"&gt; --&gt;</code></pre>
+
+    <h3>巢狀子選單方向</h3>
+    <ul>
+      <li><strong>靠左項目</strong>的巢狀子選單：向右展開（<code>left: 100%</code>）</li>
+      <li><strong>靠右項目（is-right）</strong>的巢狀子選單：向左展開（<code>right: 100%</code>），避免超出視窗</li>
+    </ul>
+
+    <div class="callout">
+      <strong>動態更新：</strong>若動態新增或移除選單項目後，呼叫 <code>nav.refresh()</code> 即可重新掃描並更新 <code>is-right</code> 標記。
+    </div>
+  </div>
+
+  <!-- ⑤ 完整 API 參數 -->
+  <div class="doc-section" id="sec-options">
+    <h2>⚙️ 五、完整 API 參數</h2>
+    <pre><code>var nav = new TadNav('#my-menu', {
+
+  // ── 展開觸發 ──────────────────────────────
+  trigger:             'hover',   // 'hover'（預設）| 'click'
+  hoverClose:          true,      // hover 模式：滑走是否收合（預設 true）
+  hoverDelay:          200,       // 滑入後延遲展開 ms
+  hideDelay:           300,       // 滑出後延遲收合 ms（hoverClose:true 時有效）
+
+  // ── 響應式 ────────────────────────────────
+  breakpoint:          768,       // 切換漢堡選單的視窗寬度斷點 px
+
+  // ── 行為 ──────────────────────────────────
+  collisionDetection:  true,      // 子選單超出視窗時自動翻轉
+  closeOnOutsideClick: true,      // 點擊外部關閉
+  closeOnEsc:          true,      // Esc 鍵關閉
+
+  // ── 主題色彩（見第六節）──────────────────
+  theme: { ... },
+
+  // ── 事件回呼 ──────────────────────────────
+  onInit:             null,       // (instance) => {}
+  onOpen:             null,       // (submenu, triggerEl) => {}
+  onClose:            null,       // (submenu, triggerEl) => {}
+  onBreakpointChange: null,       // (isMobile) => {}
+  onDestroy:          null,       // () => {}
+
+});</code></pre>
+
+    <table class="doc-table">
+      <thead><tr><th>參數</th><th>類型</th><th>預設值</th><th>說明</th></tr></thead>
+      <tbody>
+        <tr><td><code>trigger</code></td><td>string</td><td><code>'hover'</code></td><td>展開觸發方式：<code>'hover'</code> 或 <code>'click'</code></td></tr>
+        <tr><td><code>hoverClose</code></td><td>boolean</td><td><code>true</code></td><td>hover 模式下，滑鼠移出是否自動收合</td></tr>
+        <tr><td><code>hoverDelay</code></td><td>number</td><td><code>200</code></td><td>滑鼠移入後延遲展開毫秒數</td></tr>
+        <tr><td><code>hideDelay</code></td><td>number</td><td><code>300</code></td><td>滑鼠移出後延遲收合毫秒數</td></tr>
+        <tr><td><code>breakpoint</code></td><td>number</td><td><code>768</code></td><td>視窗寬度 ≤ 此值時切換為漢堡模式</td></tr>
+        <tr><td><code>collisionDetection</code></td><td>boolean</td><td><code>true</code></td><td>子選單超出視窗邊界時自動翻轉方向</td></tr>
+        <tr><td><code>closeOnOutsideClick</code></td><td>boolean</td><td><code>true</code></td><td>點擊選單外部時關閉所有子選單</td></tr>
+        <tr><td><code>closeOnEsc</code></td><td>boolean</td><td><code>true</code></td><td>按 Esc 鍵時關閉所有子選單</td></tr>
+        <tr><td><code>theme</code></td><td>Object</td><td><code>{}</code></td><td>主題色彩物件，見第六節</td></tr>
+        <tr><td><code>onInit</code></td><td>Function</td><td><code>null</code></td><td>初始化完成後觸發，參數：<code>(instance)</code></td></tr>
+        <tr><td><code>onOpen</code></td><td>Function</td><td><code>null</code></td><td>子選單展開時觸發，參數：<code>(submenu, triggerEl)</code></td></tr>
+        <tr><td><code>onClose</code></td><td>Function</td><td><code>null</code></td><td>子選單收合時觸發，參數：<code>(submenu, triggerEl)</code></td></tr>
+        <tr><td><code>onBreakpointChange</code></td><td>Function</td><td><code>null</code></td><td>桌機 ↔ 手機切換時觸發，參數：<code>(isMobile)</code></td></tr>
+        <tr><td><code>onDestroy</code></td><td>Function</td><td><code>null</code></td><td><code>destroy()</code> 完成後觸發</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ⑥ 主題色彩系統 -->
+  <div class="doc-section" id="sec-theme">
+    <h2>🎨 六、主題色彩系統</h2>
+    <p>
+      TadNav 使用 <strong>CSS 自訂屬性（Custom Properties）</strong>管理所有顏色與尺寸。
+      <code>tadnav.css</code> 的 <code>:root</code> 定義預設值；
+      JS 初始化時若傳入 <code>theme</code> 物件，會將對應值寫入
+      <code>.tadnav-wrapper</code> 的 <code>inline style</code>，
+      覆寫預設值，<strong>支援同頁多個導覽列各自獨立主題</strong>。
+    </p>
+
+    <h3>theme 參數完整列表</h3>
+
+    <h4>📐 版面</h4>
+    <table class="doc-table">
+      <thead><tr><th>theme 屬性</th><th>CSS 變數</th><th>預設值</th><th>說明</th></tr></thead>
+      <tbody>
+        <tr><td><code>innerMaxWidth</code> <span class="ver new">v1.5</span></td><td><code>--tadnav-inner-max-width</code></td><td><code>100%</code></td><td>導覽列內容最大寬度，設 <code>'1200px'</code> 可置中限寬</td></tr>
+      </tbody>
+    </table>
+
+    <h4>🟦 導覽列</h4>
+    <table class="doc-table">
+      <thead><tr><th>theme 屬性</th><th>CSS 變數</th><th>預設值</th><th>說明</th></tr></thead>
+      <tbody>
+        <tr><td><code>navBg</code></td><td><code>--tadnav-nav-bg</code></td><td>藍色漸層</td><td>導覽列背景，支援純色、漸層、圖片</td></tr>
+        <tr><td><code>navShadow</code></td><td><code>--tadnav-nav-shadow</code></td><td>淡陰影</td><td>導覽列底部陰影</td></tr>
+        <tr><td><code>brandColor</code></td><td><code>--tadnav-brand-color</code></td><td><code>#ffffff</code></td><td>品牌文字顏色</td></tr>
+      </tbody>
+    </table>
+
+    <h4>🔤 頂層項目</h4>
+    <table class="doc-table">
+      <thead><tr><th>theme 屬性</th><th>CSS 變數</th><th>預設值</th><th>說明</th></tr></thead>
+      <tbody>
+        <tr><td><code>itemColor</code></td><td><code>--tadnav-item-color</code></td><td><code>#ffffff</code></td><td>頂層項目文字顏色</td></tr>
+        <tr><td><code>itemBg</code></td><td><code>--tadnav-item-bg</code></td><td><code>transparent</code></td><td>頂層項目背景</td></tr>
+        <tr><td><code>itemFontSize</code> <span class="ver new">v1.5</span></td><td><code>--tadnav-item-font-size</code></td><td><code>0.9rem</code></td><td>頂層項目文字大小</td></tr>
+        <tr><td><code>itemHoverBg</code></td><td><code>--tadnav-item-hover-bg</code></td><td>白色半透明</td><td>頂層項目 Hover / Active 背景</td></tr>
+        <tr><td><code>itemHoverColor</code></td><td><code>--tadnav-item-hover-color</code></td><td><code>#ffffff</code></td><td>頂層項目 Hover / Active 文字顏色</td></tr>
+        <tr><td><code>itemAccent</code></td><td><code>--tadnav-item-accent</code></td><td>白色半透明</td><td>頂層項目 Hover 底線強調色</td></tr>
+      </tbody>
+    </table>
+
+    <h4>📋 子選單面板</h4>
+    <table class="doc-table">
+      <thead><tr><th>theme 屬性</th><th>CSS 變數</th><th>預設值</th><th>說明</th></tr></thead>
+      <tbody>
+        <tr><td><code>subBg</code></td><td><code>--tadnav-sub-bg</code></td><td><code>#ffffff</code></td><td>子選單面板背景</td></tr>
+        <tr><td><code>subShadow</code> <span class="ver new">v1.5</span></td><td><code>--tadnav-sub-shadow</code></td><td>淡陰影</td><td>子選單陰影，傳入 <code>'none'</code> 可完全關閉</td></tr>
+        <tr><td><code>subBorder</code></td><td><code>--tadnav-sub-border</code></td><td><code>#2e86c1</code></td><td>子選單頂部 / 側邊強調線顏色</td></tr>
+        <tr><td><code>subDivider</code></td><td><code>--tadnav-sub-divider</code></td><td><code>#f0f4f8</code></td><td>子選單項目間分隔線顏色</td></tr>
+      </tbody>
+    </table>
+
+    <h4>🔤 子選單項目</h4>
+    <table class="doc-table">
+      <thead><tr><th>theme 屬性</th><th>CSS 變數</th><th>預設值</th><th>說明</th></tr></thead>
+      <tbody>
+        <tr><td><code>subItemColor</code></td><td><code>--tadnav-sub-item-color</code></td><td><code>#1a3a5c</code></td><td>子選單項目文字顏色</td></tr>
+        <tr><td><code>subItemBg</code></td><td><code>--tadnav-sub-item-bg</code></td><td><code>transparent</code></td><td>子選單項目背景</td></tr>
+        <tr><td><code>subItemFontSize</code> <span class="ver new">v1.5</span></td><td><code>--tadnav-sub-item-font-size</code></td><td><code>0.88rem</code></td><td>子選單項目文字大小</td></tr>
+        <tr><td><code>subItemHoverBg</code></td><td><code>--tadnav-sub-item-hover-bg</code></td><td><code>#eaf4fd</code></td><td>子選單項目 Hover 背景</td></tr>
+        <tr><td><code>subItemHoverColor</code></td><td><code>--tadnav-sub-item-hover-color</code></td><td><code>#1a5276</code></td><td>子選單項目 Hover 文字顏色</td></tr>
+      </tbody>
+    </table>
+
+    <h4>📱 漢堡按鈕 &amp; 手機版</h4>
+    <table class="doc-table">
+      <thead><tr><th>theme 屬性</th><th>CSS 變數</th><th>預設值</th><th>說明</th></tr></thead>
+      <tbody>
+        <tr><td><code>toggleColor</code></td><td><code>--tadnav-toggle-color</code></td><td><code>#ffffff</code></td><td>漢堡按鈕線條顏色</td></tr>
+        <tr><td><code>toggleHoverBg</code></td><td><code>--tadnav-toggle-hover-bg</code></td><td>白色半透明</td><td>漢堡按鈕 Hover 背景</td></tr>
+        <tr><td><code>mobileSubBg</code></td><td><code>--tadnav-mobile-sub-bg</code></td><td>黑色半透明</td><td>手機版子選單背景</td></tr>
+        <tr><td><code>mobileSubBorder</code></td><td><code>--tadnav-mobile-sub-border</code></td><td>白色半透明</td><td>手機版子選單左側邊框</td></tr>
+        <tr><td><code>mobileSubColor</code></td><td><code>--tadnav-mobile-sub-color</code></td><td>白色半透明</td><td>手機版子選單文字顏色</td></tr>
+        <tr><td><code>mobileItemBorder</code></td><td><code>--tadnav-mobile-item-border</code></td><td>白色半透明</td><td>手機版項目分隔線顏色</td></tr>
+      </tbody>
+    </table>
+
+    <h3>動態更換主題</h3>
+    <pre><code>// 部分更新（合併）
+nav.setTheme({
+  navBg:      '#2c3e50',
+  itemColor:  '#ecf0f1',
+});
+
+// 完全取代（先清除所有舊設定）
+nav.setTheme({
+  navBg:           '#ffffff',
+  itemColor:       '#333333',
+  itemHoverBg:     '#f0f0f0',
+  itemHoverColor:  '#000000',
+}, false);
+
+// 重設回 CSS 預設值
+nav.resetTheme();
+
+// 取得目前主題
+var current = nav.getTheme();
+console.log(current);</code></pre>
+  </div>
+
+  <!-- ⑦ 主題互動展示 -->
+  <div class="doc-section" id="sec-theme-demo">
+    <h2>🖌️ 七、主題互動展示</h2>
+    <p>以下控制項可即時調整上方導覽列的外觀，所有變更都透過 <code>nav.setTheme()</code> 套用。</p>
+
+    <div class="theme-panel">
+      <h4>預設主題</h4>
+      <div class="preset-row" id="preset-row"></div>
+
+      <h4>導覽列背景與文字</h4>
+      <div class="color-grid" id="grid-nav"></div>
+
+      <h4>頂層項目</h4>
+      <div class="size-grid" id="grid-item-size"></div>
+      <div class="color-grid" id="grid-item"></div>
+
+      <h4>子選單面板</h4>
+      <div class="misc-grid" id="grid-sub-misc"></div>
+      <div class="color-grid" id="grid-sub"></div>
+
+      <h4>子選單項目</h4>
+      <div class="size-grid" id="grid-sub-size"></div>
+      <div class="color-grid" id="grid-sub-item"></div>
+
+      <h4>版面寬度</h4>
+      <div class="misc-grid" id="grid-layout"></div>
+
+      <div class="btn-row">
+        <button class="apply-btn" onclick="applyCustomTheme()">套用設定</button>
+        <button class="reset-btn" onclick="resetTheme()">還原預設</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑧ trigger 模式 -->
+  <div class="doc-section" id="sec-trigger">
+    <h2>🖱️ 八、trigger 模式</h2>
+    <p>控制子選單的展開觸發方式，可在初始化時設定，也可執行期間動態切換。</p>
+
+    <table class="doc-table">
+      <thead><tr><th>模式</th><th>展開方式</th><th>適用情境</th></tr></thead>
+      <tbody>
+        <tr><td><code>'hover'</code>（預設）</td><td>滑鼠移入後延遲展開</td><td>一般網站導覽、桌機為主</td></tr>
+        <tr><td><code>'click'</code></td><td>點擊 toggle 按鈕展開</td><td>應用程式介面、觸控裝置、無障礙優先</td></tr>
+      </tbody>
+    </table>
+
+    <pre><code>// 初始化時設定
+var nav = new TadNav('#my-menu', { trigger: 'click' });
+
+// 執行期間動態切換
+nav.setTrigger('click');
+nav.setTrigger('hover');</code></pre>
+
+    <div class="demo-bar">
+      <label>展開模式：</label>
+      <div class="btn-group">
+        <button class="demo-btn active" id="btn-hover" onclick="switchTrigger('hover')">Hover 模式</button>
+        <button class="demo-btn"        id="btn-click" onclick="switchTrigger('click')">Click 模式</button>
+      </div>
+      <div class="demo-status">目前：<span id="current-trigger">hover</span></div>
+    </div>
+  </div>
+
+  <!-- ⑨ hoverClose -->
+  <div class="doc-section" id="sec-hoverclose">
+    <h2>🔒 九、hoverClose 控制</h2>
+    <p>
+      <code>hoverClose</code> 控制 <strong>hover 模式下，滑鼠離開後是否自動收合子選單</strong>。
+      在 <code>trigger: 'click'</code> 模式下此參數無作用。
+    </p>
+
+    <table class="doc-table">
+      <thead><tr><th>值</th><th>行為</th><th>適用情境</th></tr></thead>
+      <tbody>
+        <tr><td><code>true</code>（預設）</td><td>滑走後自動收合</td><td>一般網站導覽</td></tr>
+        <tr><td><code>false</code></td><td>滑走不收合，需點擊外部或按 Esc 關閉</td><td>複雜多層選單、需仔細閱讀選項時</td></tr>
+      </tbody>
+    </table>
+
+    <pre><code>// 滑入展開，滑走不收合
+var nav = new TadNav('#my-menu', {
+  trigger:    'hover',
+  hoverClose: false
+});
+
+// 執行期間動態切換
+nav.setHoverClose(false);  // 關閉自動收合
+nav.setHoverClose(true);   // 恢復自動收合</code></pre>
+
+    <div class="callout warn">
+      <strong>注意：</strong>使用 <code>hoverClose: false</code> 時，請確保
+      <code>closeOnOutsideClick: true</code>（預設已開啟），
+      否則使用者將難以關閉展開的子選單。
+    </div>
+
+    <div class="demo-bar">
+      <label>hoverClose：</label>
+      <div class="btn-group">
+        <button class="demo-btn green active" id="btn-hc-true"  onclick="switchHoverClose(true)">true（滑走收合）</button>
+        <button class="demo-btn green"        id="btn-hc-false" onclick="switchHoverClose(false)">false（滑走不收合）</button>
+      </div>
+      <div class="demo-status">目前：<span id="current-hc">true</span></div>
+    </div>
+  </div>
+
+  <!-- ⑩ 公開方法 -->
+  <div class="doc-section" id="sec-methods">
+    <h2>🔧 十、公開方法</h2>
+    <table class="doc-table">
+      <thead><tr><th>方法</th><th>參數</th><th>說明</th></tr></thead>
+      <tbody>
+        <tr><td><code>open(submenu)</code></td><td>HTMLElement</td><td>手動展開指定子選單</td></tr>
+        <tr><td><code>close(submenu)</code></td><td>HTMLElement</td><td>手動收合指

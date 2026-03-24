@@ -1,5 +1,5 @@
 /**
- * jGrowl 1.4.5
+ * jGrowl 1.4.5 記得複製一份至 /xoops_lib/Frameworks/jquery/plugins
  *
  * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
  * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
@@ -155,115 +155,114 @@
  * - Namespaced all events
  */
 
- // Support for UMD style
+// Support for UMD style
 // Based on UMDjs (https://github.com/umdjs/umd/blob/master/templates/jqueryPlugin.js)
 (function (factory) {
-    if (typeof define === 'function' && define.amd) {
-        define(['jquery'], factory);
-    } else if (typeof module === 'object' && module.exports) {
-        module.exports = function( root, jQuery ) {
-            if ( jQuery === undefined ) {
-                if ( typeof window !== 'undefined' ) {
-                    jQuery = require('jquery');
-                }
-                else {
-                    jQuery = require('jquery')(root);
-                }
-            }
-            factory(jQuery);
-            return jQuery;
-        };
-    } else {
-        factory(jQuery);
-    }
+	if (typeof define === 'function' && define.amd) {
+		define(['jquery'], factory);
+	} else if (typeof module === 'object' && module.exports) {
+		module.exports = function (root, jQuery) {
+			if (jQuery === undefined) {
+				if (typeof window !== 'undefined') {
+					jQuery = require('jquery');
+				}
+				else {
+					jQuery = require('jquery')(root);
+				}
+			}
+			factory(jQuery);
+			return jQuery;
+		};
+	} else {
+		factory(jQuery);
+	}
 }(function ($) {
 
 	/** jGrowl Wrapper - Establish a base jGrowl Container for compatibility with older releases. **/
-	$.jGrowl = function( m , o ) {
+	$.jGrowl = function (m, o) {
 		// To maintain compatibility with older version that only supported one instance we'll create the base container.
-		if ( $('#jGrowl').length === 0 )
-			$('<div id="jGrowl"></div>').addClass( (o && o.position) ? o.position : $.jGrowl.defaults.position ).appendTo( (o && o.appendTo) ? o.appendTo : $.jGrowl.defaults.appendTo );
+		if ($('#jGrowl').length === 0)
+			$('<div id="jGrowl" role="alert" aria-live="polite"></div>').addClass((o && o.position) ? o.position : $.jGrowl.defaults.position).appendTo((o && o.appendTo) ? o.appendTo : $.jGrowl.defaults.appendTo);
 
 		// Create a notification on the container.
-		$('#jGrowl').jGrowl(m,o);
+		$('#jGrowl').jGrowl(m, o);
 	};
 
-
 	/** Raise jGrowl Notification on a jGrowl Container **/
-	$.fn.jGrowl = function( m , o ) {
+	$.fn.jGrowl = function (m, o) {
 		// Short hand for passing in just an object to this method
-		if ( o === undefined && $.isPlainObject(m) ) {
+		if (o === undefined && $.isPlainObject(m)) {
 			o = m;
 			m = o.message;
 		}
 
-		if ( $.isFunction(this.each) ) {
+		if ($.isFunction(this.each)) {
 			var args = arguments;
 
-			return this.each(function() {
+			return this.each(function () {
 				/** Create a jGrowl Instance on the Container if it does not exist **/
-				if ( $(this).data('jGrowl.instance') === undefined ) {
-					$(this).data('jGrowl.instance', $.extend( new $.fn.jGrowl(), { notifications: [], element: null, interval: null } ));
-					$(this).data('jGrowl.instance').startup( this );
+				if ($(this).data('jGrowl.instance') === undefined) {
+					$(this).data('jGrowl.instance', $.extend(new $.fn.jGrowl(), { notifications: [], element: null, interval: null }));
+					$(this).data('jGrowl.instance').startup(this);
 				}
 
 				/** Optionally call jGrowl instance methods, or just raise a normal notification **/
-				if ( $.isFunction($(this).data('jGrowl.instance')[m]) ) {
-					$(this).data('jGrowl.instance')[m].apply( $(this).data('jGrowl.instance') , $.makeArray(args).slice(1) );
+				if ($.isFunction($(this).data('jGrowl.instance')[m])) {
+					$(this).data('jGrowl.instance')[m].apply($(this).data('jGrowl.instance'), $.makeArray(args).slice(1));
 				} else {
-					$(this).data('jGrowl.instance').create( m , o );
+					$(this).data('jGrowl.instance').create(m, o);
 				}
 			});
 		}
 	};
 
-	$.extend( $.fn.jGrowl.prototype , {
+	$.extend($.fn.jGrowl.prototype, {
 
 		/** Default JGrowl Settings **/
 		defaults: {
-			pool:				0,
-			header:				'',
-			group:				'',
-			sticky:				false,
-			position:			'top-right',
-			appendTo:			'body',
-			glue:				'after',
-			theme:				'default',
-			themeState:			'highlight',
-			corners:			'10px',
-			check:				250,
-			life:				3000,
-			closeDuration:		'normal',
-			openDuration:		'normal',
-			easing:				'swing',
-			closer:				true,
-			closeTemplate:		'&times;',
-			closerTemplate:		'<div>[ close all ]</div>',
-			log:				function() {},
-			beforeOpen:			function() {},
-			afterOpen:			function() {},
-			open:				function() {},
-			beforeClose:		function() {},
-			close:				function() {},
-			click:				function() {},
-			animateOpen:		{
-				opacity:		'show'
+			pool: 0,
+			header: '',
+			group: '',
+			sticky: false,
+			position: 'top-right',
+			appendTo: 'body',
+			glue: 'after',
+			theme: 'default',
+			themeState: 'highlight',
+			corners: '10px',
+			check: 250,
+			life: 6000,
+			closeDuration: 'normal',
+			openDuration: 'normal',
+			easing: 'swing',
+			closer: true,
+			closeTemplate: '<span aria-hidden="true">&times;</span><span class="sr-only">關閉</span>',
+			closerTemplate: '<div title="關閉視窗" tabindex="0" role="button" aria-label="關閉所有通知">[ close all ]</div>',
+			log: function () { },
+			beforeOpen: function () { },
+			afterOpen: function () { },
+			open: function () { },
+			beforeClose: function () { },
+			close: function () { },
+			click: function () { },
+			animateOpen: {
+				opacity: 'show'
 			},
-			animateClose:		{
-				opacity:		'hide'
+			animateClose: {
+				opacity: 'hide'
 			}
 		},
 
 		notifications: [],
 
 		/** jGrowl Container Node **/
-		element:				null,
+		element: null,
 
 		/** Interval Function **/
-		interval:				null,
+		interval: null,
 
 		/** Create a Notification **/
-		create: function( message , options ) {
+		create: function (message, options) {
 			var o = $.extend({}, this.defaults, options);
 
 			/* To keep backward compatibility with 1.24 and earlier, honor 'speed' if the user has set it */
@@ -272,12 +271,12 @@
 				o.closeDuration = o.speed;
 			}
 
-			this.notifications.push({ message: message , options: o });
+			this.notifications.push({ message: message, options: o });
 
-			o.log.apply( this.element , [this.element,message,o] );
+			o.log.apply(this.element, [this.element, message, o]);
 		},
 
-		render: function( n ) {
+		render: function (n) {
 			var self = this;
 			var message = n.message;
 			var o = n.options;
@@ -287,89 +286,133 @@
 
 			var notification = $('<div/>')
 				.addClass('jGrowl-notification alert ' + o.themeState + ' ui-corner-all' + ((o.group !== undefined && o.group !== '') ? ' ' + o.group : ''))
-				.append($('<button/>').addClass('jGrowl-close').html(o.closeTemplate))
+				.attr({
+					'role': 'status',
+					'aria-live': 'assertive',
+					'tabindex': '0'
+				})
+				.append($('<button/>').addClass('jGrowl-close').attr({
+					'aria-label': '關閉通知',
+					'tabindex': '0',
+					'title': '關閉通知'
+				}).html(o.closeTemplate))
 				.append($('<div/>').addClass('jGrowl-header').html(o.header))
 				.append($('<div/>').addClass('jGrowl-message').html(message))
-				.data("jGrowl", o).addClass(o.theme).children('.jGrowl-close').bind("click.jGrowl", function() {
+				.data("jGrowl", o).addClass(o.theme).children('.jGrowl-close').bind("click.jGrowl", function () {
 					$(this).parent().trigger('jGrowl.beforeClose');
 					return false;
 				})
+				.bind("keypress.jGrowl", function (e) {
+					// 按Enter或空格鍵時關閉通知
+					if (e.which === 13 || e.which === 32) {
+						$(this).parent().trigger('jGrowl.beforeClose');
+						return false;
+					}
+				})
 				.parent();
 
-
 			/** Notification Actions **/
-			$(notification).bind("mouseover.jGrowl", function() {
-				$('.jGrowl-notification', self.element).data("jGrowl.pause", true);
-			}).bind("mouseout.jGrowl", function() {
-				$('.jGrowl-notification', self.element).data("jGrowl.pause", false);
-			}).bind('jGrowl.beforeOpen', function() {
-				if ( o.beforeOpen.apply( notification , [notification,message,o,self.element] ) !== false ) {
+			$(notification).bind("mouseover.jGrowl", function () {
+				// 滑鼠移動到通知上時，暫停關閉計時
+				$(this).data("jGrowl.pause", true);
+			}).bind("mouseout.jGrowl", function () {
+				// 滑鼠離開後，重設計時並在時間後關閉
+				$(this).data("jGrowl.pause", false);
+				// 重設關閉時間計時器
+				if (!o.sticky) {
+					$(this).data("jGrowl.created", new Date());
+				}
+			}).bind('jGrowl.beforeOpen', function () {
+				if (o.beforeOpen.apply(notification, [notification, message, o, self.element]) !== false) {
 					$(this).trigger('jGrowl.open');
 				}
-			}).bind('jGrowl.open', function() {
-				if ( o.open.apply( notification , [notification,message,o,self.element] ) !== false ) {
-					if ( o.glue == 'after' ) {
+			}).bind('jGrowl.open', function () {
+				if (o.open.apply(notification, [notification, message, o, self.element]) !== false) {
+					if (o.glue == 'after') {
 						$('.jGrowl-notification:last', self.element).after(notification);
 					} else {
 						$('.jGrowl-notification:first', self.element).before(notification);
 					}
 
-					$(this).animate(o.animateOpen, o.openDuration, o.easing, function() {
+					$(this).animate(o.animateOpen, o.openDuration, o.easing, function () {
 						// Fixes some anti-aliasing issues with IE filters.
 						if ($.support.opacity === false)
 							this.style.removeAttribute('filter');
 
-						if ( $(this).data("jGrowl") !== null && typeof $(this).data("jGrowl") !== 'undefined') // Happens when a notification is closing before it's open.
+						if ($(this).data("jGrowl") !== null && typeof $(this).data("jGrowl") !== 'undefined') // Happens when a notification is closing before it's open.
 							$(this).data("jGrowl").created = new Date();
 
 						$(this).trigger('jGrowl.afterOpen');
 					});
 				}
-			}).bind('jGrowl.afterOpen', function() {
-				o.afterOpen.apply( notification , [notification,message,o,self.element] );
-			}).bind('click', function() {
-				o.click.apply( notification, [notification,message,o,self.element] );
-			}).bind('jGrowl.beforeClose', function() {
-				if ( o.beforeClose.apply( notification , [notification,message,o,self.element] ) !== false )
+			}).bind('jGrowl.afterOpen', function () {
+				o.afterOpen.apply(notification, [notification, message, o, self.element]);
+
+				// 新增: 自動將焦點移至通知
+				$(this).focus();
+
+				// 新增: 當有焦點時暫停計時器
+				$(this).data("jGrowl.pause", true);
+			}).bind('click', function () {
+				o.click.apply(notification, [notification, message, o, self.element]);
+			}).bind('jGrowl.beforeClose', function () {
+				if (o.beforeClose.apply(notification, [notification, message, o, self.element]) !== false)
 					$(this).trigger('jGrowl.close');
-			}).bind('jGrowl.close', function() {
+			}).bind('jGrowl.close', function () {
 				// Pause the notification, lest during the course of animation another close event gets called.
 				$(this).data('jGrowl.pause', true);
-				$(this).animate(o.animateClose, o.closeDuration, o.easing, function() {
-					if ( $.isFunction(o.close) ) {
-						if ( o.close.apply( notification , [notification,message,o,self.element] ) !== false )
+				$(this).animate(o.animateClose, o.closeDuration, o.easing, function () {
+					if ($.isFunction(o.close)) {
+						if (o.close.apply(notification, [notification, message, o, self.element]) !== false)
 							$(this).remove();
 					} else {
 						$(this).remove();
 					}
 				});
+			}).bind('keydown.jGrowl', function (e) {
+				// 按Escape鍵關閉通知
+				if (e.keyCode === 27) {
+					$(this).trigger('jGrowl.beforeClose');
+					return false;
+				}
 			}).trigger('jGrowl.beforeOpen');
 
 			/** Optional Corners Plugin **/
-			if ( o.corners !== '' && $.fn.corner !== undefined ) $(notification).corner( o.corners );
+			if (o.corners !== '' && $.fn.corner !== undefined) $(notification).corner(o.corners);
 
 			/** Add a Global Closer if more than one notification exists **/
 			if ($('.jGrowl-notification:parent', self.element).length > 1 &&
-				$('.jGrowl-closer', self.element).length === 0 && this.defaults.closer !== false ) {
+				$('.jGrowl-closer', self.element).length === 0 && this.defaults.closer !== false) {
 				$(this.defaults.closerTemplate).addClass('jGrowl-closer ' + this.defaults.themeState + ' ui-corner-all').addClass(this.defaults.theme)
 					.appendTo(self.element).animate(this.defaults.animateOpen, this.defaults.speed, this.defaults.easing)
-					.bind("click.jGrowl", function() {
+					.bind("click.jGrowl", function () {
 						$(this).siblings().trigger("jGrowl.beforeClose");
 
-						if ( $.isFunction( self.defaults.closer ) ) {
-							self.defaults.closer.apply( $(this).parent()[0] , [$(this).parent()[0]] );
+						if ($.isFunction(self.defaults.closer)) {
+							self.defaults.closer.apply($(this).parent()[0], [$(this).parent()[0]]);
+						}
+					})
+					.bind("keypress.jGrowl", function (e) {
+						// 按Enter或空格鍵時關閉所有通知
+						if (e.which === 13 || e.which === 32) {
+							$(this).siblings().trigger("jGrowl.beforeClose");
+							if ($.isFunction(self.defaults.closer)) {
+								self.defaults.closer.apply($(this).parent()[0], [$(this).parent()[0]]);
+							}
+							return false;
 						}
 					});
 			}
 		},
 
 		/** Update the jGrowl Container, removing old jGrowl notifications **/
-		update: function() {
-			$(this.element).find('.jGrowl-notification:parent').each( function() {
+		update: function () {
+			$(this.element).find('.jGrowl-notification:parent').each(function () {
 				if ($(this).data("jGrowl") !== undefined && $(this).data("jGrowl").created !== undefined &&
-					($(this).data("jGrowl").created.getTime() + parseInt($(this).data("jGrowl").life, 10))  < (new Date()).getTime() &&
+					($(this).data("jGrowl").created.getTime() + parseInt($(this).data("jGrowl").life, 10)) < (new Date()).getTime() &&
 					$(this).data("jGrowl").sticky !== true &&
-					($(this).data("jGrowl.pause") === undefined || $(this).data("jGrowl.pause") !== true) ) {
+					($(this).data("jGrowl.pause") === undefined || $(this).data("jGrowl.pause") !== true) &&
+					!$(this).is(':focus')) { // 新增: 當元素具有焦點時不關閉
 
 					// Pause the notification, lest during the course of animation another close event gets called.
 					$(this).trigger('jGrowl.beforeClose');
@@ -377,20 +420,20 @@
 			});
 
 			if (this.notifications.length > 0 &&
-				(this.defaults.pool === 0 || $(this.element).find('.jGrowl-notification:parent').length < this.defaults.pool) )
-				this.render( this.notifications.shift() );
+				(this.defaults.pool === 0 || $(this.element).find('.jGrowl-notification:parent').length < this.defaults.pool))
+				this.render(this.notifications.shift());
 
-			if ($(this.element).find('.jGrowl-notification:parent').length < 2 ) {
-				$(this.element).find('.jGrowl-closer').animate(this.defaults.animateClose, this.defaults.speed, this.defaults.easing, function() {
+			if ($(this.element).find('.jGrowl-notification:parent').length < 2) {
+				$(this.element).find('.jGrowl-closer').animate(this.defaults.animateClose, this.defaults.speed, this.defaults.easing, function () {
 					$(this).remove();
 				});
 			}
 		},
 
 		/** Setup the jGrowl Notification Container **/
-		startup: function(e) {
+		startup: function (e) {
 			this.element = $(e).addClass('jGrowl').append('<div class="jGrowl-notification"></div>');
-			this.interval = setInterval( function() {
+			this.interval = setInterval(function () {
 				// some error in chage ^^
 				var instance = $(e).data('jGrowl.instance');
 				if (undefined !== instance) {
@@ -405,20 +448,20 @@
 		},
 
 		/** Shutdown jGrowl, removing it and clearing the interval **/
-		shutdown: function() {
-		    try {
-			$(this.element).removeClass('jGrowl')
-			    .find('.jGrowl-notification').trigger('jGrowl.close')
-			    .parent().empty();
-		    } catch (e) {
-			throw e;
-		    } finally {
-			clearInterval(this.interval);
-		    }
+		shutdown: function () {
+			try {
+				$(this.element).removeClass('jGrowl')
+					.find('.jGrowl-notification').trigger('jGrowl.close')
+					.parent().empty();
+			} catch (e) {
+				throw e;
+			} finally {
+				clearInterval(this.interval);
+			}
 		},
 
-		close: function() {
-			$(this.element).find('.jGrowl-notification').each(function(){
+		close: function () {
+			$(this.element).find('.jGrowl-notification').each(function () {
 				$(this).trigger('jGrowl.beforeClose');
 			});
 		}

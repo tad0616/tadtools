@@ -1,0 +1,248 @@
+/**
+ * Tad Carousel v1.0.0
+ * 現代化、無障礙輪播元件
+ * WCAG 2.3 AAA 相容
+ */
+
+/* ===== CSS 變數定義 ===== */
+:root {
+    --tad-carousel-transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --tad-carousel-gap: 1rem;
+    --tad-carousel-nav-size: 3rem;
+    --tad-carousel-nav-bg: rgba(0, 0, 0, 0.8);
+    --tad-carousel-nav-bg-hover: rgba(0, 0, 0, 1);
+    --tad-carousel-nav-color: #ffffff;
+    --tad-carousel-dot-size: 0.75rem;
+    --tad-carousel-dot-color: rgba(0, 0, 0, 0.3);
+    --tad-carousel-dot-active: #000000;
+    --tad-carousel-focus-outline: 3px solid #005fcc;
+    --tad-carousel-focus-offset: 2px;
+}
+
+/* ===== 主容器 ===== */
+.tad-carousel {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.tad-carousel[aria-busy="true"] {
+    cursor: wait;
+}
+
+/* ===== 軌道容器 ===== */
+.tad-carousel__track-container {
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.tad-carousel__track {
+    display: flex;
+    gap: var(--tad-carousel-gap);
+    transition: transform var(--tad-carousel-transition);
+    will-change: transform;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* 減少動態效果偏好 */
+@media (prefers-reduced-motion: reduce) {
+    .tad-carousel__track {
+        transition: none;
+    }
+}
+
+/* ===== 項目 ===== */
+.tad-carousel__item {
+    flex: 0 0 auto;
+    min-width: 0;
+}
+
+.tad-carousel__item>* {
+    max-width: 100%;
+    height: auto;
+}
+
+/* ===== 導航按鈕 ===== */
+.tad-carousel__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--tad-carousel-nav-size);
+    height: var(--tad-carousel-nav-size);
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: var(--tad-carousel-nav-bg);
+    color: var(--tad-carousel-nav-color);
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.tad-carousel__nav:hover {
+    background: var(--tad-carousel-nav-bg-hover);
+}
+
+.tad-carousel__nav:focus-visible {
+    outline: var(--tad-carousel-focus-outline);
+    outline-offset: var(--tad-carousel-focus-offset);
+}
+
+.tad-carousel__nav:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.tad-carousel__nav:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.tad-carousel__nav--prev {
+    left: 0.5rem;
+}
+
+.tad-carousel__nav--next {
+    right: 0.5rem;
+}
+
+/* 導航圖示 */
+.tad-carousel__nav-icon {
+    display: block;
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
+}
+
+/* ===== 分頁指示器 ===== */
+.tad-carousel__dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0;
+    list-style: none;
+}
+
+.tad-carousel__dot {
+    width: var(--tad-carousel-dot-size);
+    height: var(--tad-carousel-dot-size);
+    padding: 0;
+    border: 2px solid var(--tad-carousel-dot-active);
+    border-radius: 50%;
+    background: var(--tad-carousel-dot-color);
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.tad-carousel__dot:hover {
+    transform: scale(1.2);
+}
+
+.tad-carousel__dot:focus-visible {
+    outline: var(--tad-carousel-focus-outline);
+    outline-offset: var(--tad-carousel-focus-offset);
+}
+
+.tad-carousel__dot[aria-selected="true"],
+.tad-carousel__dot.is-active {
+    background: var(--tad-carousel-dot-active);
+}
+
+/* ===== 即時區域（螢幕閱讀器） ===== */
+.tad-carousel__live-region {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ===== 暫停/播放按鈕 =====
+ * WCAG 2.4.3 焦點順序：此按鈕為輪播內第一個焦點位置，
+ * 視覺位置移至右上角，與「由上而下」的鍵盤遊走順序一致。
+ */ 
+.tad-carousel__autoplay-toggle {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: var(--tad-carousel-nav-bg);
+    color: var(--tad-carousel-nav-color);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.tad-carousel__autoplay-toggle:hover {
+    background: var(--tad-carousel-nav-bg-hover);
+}
+
+.tad-carousel__autoplay-toggle:focus-visible {
+    outline: var(--tad-carousel-focus-outline);
+    outline-offset: var(--tad-carousel-focus-offset);
+}
+
+/* ===== 響應式設計 ===== */
+@media (max-width: 768px) {
+    :root {
+        --tad-carousel-nav-size: 2.5rem;
+        --tad-carousel-gap: 0.5rem;
+    }
+
+    .tad-carousel__nav--prev {
+        left: 0.25rem;
+    }
+
+    .tad-carousel__nav--next {
+        right: 0.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .tad-carousel__nav {
+        --tad-carousel-nav-size: 2rem;
+        font-size: 1rem;
+    }
+}
+
+/* ===== 高對比模式支援 ===== */
+@media (prefers-contrast: high) {
+    :root {
+        --tad-carousel-nav-bg: #000000;
+        --tad-carousel-nav-color: #ffffff;
+        --tad-carousel-dot-color: transparent;
+        --tad-carousel-dot-active: #000000;
+        --tad-carousel-focus-outline: 3px solid #ffffff;
+    }
+}
+
+/* ===== 深色模式支援 ===== */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --tad-carousel-nav-bg: rgba(255, 255, 255, 0.9);
+        --tad-carousel-nav-bg-hover: rgba(255, 255, 255, 1);
+        --tad-carousel-nav-color: #000000;
+        --tad-carousel-dot-color: rgba(255, 255, 255, 0.3);
+        --tad-carousel-dot-active: #ffffff;
+    }
+}

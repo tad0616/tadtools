@@ -1,4 +1,5 @@
 <{if $xoBlocks.page_topleft|default:false}>
+  <h2 class="sr-only visually-hidden">上中左區域內容</h2>
   <{foreach item=block from=$xoBlocks.page_topleft}>
     <{if $block.content|default:false}>
       <div class="centerLeftBlock">

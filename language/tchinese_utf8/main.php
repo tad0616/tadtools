@@ -146,11 +146,12 @@ define('TADTOOLS_CHK_NEED_TITLE', '缺少 title 檢查');
 define('TADTOOLS_CHK_IMG', '圖片檢查');
 define('TADTOOLS_CHK_BLOCKQUOTE', 'blockquote 檢查');
 define('TADTOOLS_CHK_UNABLE_TAG', '轉換無效標籤');
-define('TADTOOLS_CHK_TH', '表格檢查');
+define('TADTOOLS_CHK_H1', '標題1檢查');
 define('TADTOOLS_CHK_A_EMPTY', '空連結檢查');
 define('TADTOOLS_CHK_HEAD_EMPTY', '空標題修正');
 define('TADTOOLS_CHK_LANG_ZH_TW', '同語系修正');
 define('TADTOOLS_CHK_NO_NEED', '無用語法修正');
+define('TADTOOLS_CHK_H1_TO_P', '將文章內的 H1 標題轉換為 p.h1');
 
 define('_INVALID_SQL_QUERY', 'SQL 查詢語法不正確');
 define('_NUMBER_PARAMETER_NOT_MATCH', '參數數量不正確，應有 %d 個，實際有 %d 個');
@@ -164,3 +165,6 @@ define('_DATABASE_ERROR', '資料庫錯誤：');
 define('TADTOOLS_SLIDE_IMG', '滑動圖');
 
 define('_TAD_O_NAV_ZONE', '主要導覽區');
+
+define('TADTOOLS_CANT_DELETE', '無法刪除 %s');
+define('TADTOOLS_CANT_WRITE', '%s 無寫入權限');

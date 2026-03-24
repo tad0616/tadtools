@@ -1,0 +1,887 @@
+<!doctype html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TadLoop 使用說明 - 純 JavaScript 無縫跑馬燈</title>
+    <link rel="stylesheet" href="tad_loop.css" />
+    <style>
+        /* ─── Page Styles ─────────────────────────── */
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --bg: #f8f9fa;
+            --code-bg: #1e1e2e;
+            --code-fg: #cdd6f4;
+            --border: #dee2e6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family:
+                -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", Roboto,
+                sans-serif;
+            color: var(--primary);
+            background: var(--bg);
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .hero {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: #fff;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .hero .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-top: 10px;
+        }
+
+        /* Sections */
+        section {
+            padding: 40px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        section:last-child {
+            border-bottom: none;
+        }
+
+        section h2 {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        section h3 {
+            font-size: 1.15rem;
+            margin: 20px 0 10px;
+            color: var(--primary);
+        }
+
+        /* Code blocks */
+        pre {
+            background: var(--code-bg);
+            color: var(--code-fg);
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 15px 0;
+        }
+
+        code {
+            font-family: "Fira Code", "Source Code Pro", "Consolas", monospace;
+        }
+
+        p code,
+        li code {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.88em;
+            color: #c0392b;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.92rem;
+        }
+
+        th,
+        td {
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        th {
+            background: #e9ecef;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background: #f1f3f5;
+        }
+
+        /* Lists */
+        ul,
+        ol {
+            padding-left: 24px;
+            margin: 10px 0;
+        }
+
+        li {
+            margin: 6px 0;
+        }
+
+        /* Demo area */
+        .demo-area {
+            margin: 20px 0;
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* Demo items */
+        .demo-area .tad-loop {
+            border-bottom: none;
+        }
+
+        .demo-area .item {
+            min-width: 220px;
+            height: 80px;
+            font-size: 0.95rem;
+        }
+
+        .demo-area .item a {
+            padding: 10px 30px;
+        }
+
+        /* Demo controls panel */
+        .demo-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px;
+            background: #fff;
+            border-top: 1px solid var(--border);
+        }
+
+        .demo-controls button {
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: #fff;
+            cursor: pointer;
+            font-size: 0.88rem;
+            transition: all 0.15s;
+        }
+
+        .demo-controls button:hover {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        /* Focus order annotation box */
+        .focus-order-note {
+            background: #eaf4ff;
+            border-left: 4px solid #3498db;
+            border-radius: 0 6px 6px 0;
+            padding: 12px 16px;
+            margin: 16px 0;
+            font-size: 0.9rem;
+        }
+
+        .focus-order-note strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            pre {
+                font-size: 0.8rem;
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- HERO -->
+    <!-- ═══════════════════════════════════════════ -->
+    <header class="hero">
+        <h1>🔄 TadLoop</h1>
+        <p>純 JavaScript 無縫循環跑馬燈 / Marquee</p>
+        <span class="badge">v1.1.0 ・ 零依賴 ・ WCAG 2 AA</span>
+    </header>
+
+    <div class="container">
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- LIVE DEMO -->
+        <!-- ═══════════════════════════════════════════ -->
+        <section>
+            <h2>🎬 即時展示 Live Demo</h2>
+            <p>以下是一個實際運作的範例，可使用右上角的暫停按鈕或下方按鈕控制：</p>
+
+            <div class="demo-area">
+                <!--
+                  DOM 焦點順序示意（WCAG 2 AA SC 2.4.3）：
+                    [⏸ 暫停/播放]  ← 由 JS 插入為第一個子元素（右上角）
+                    [🔥 限時特惠]  [📦 滿$1000] … ← 原始項目連結
+                    [◀ 向左] [向右 ▶]  ← 由 JS 附加為最後子元素（下方）
+                -->
+                <div id="demo1" class="tad-loop">
+                    <div class="item-wrap">
+                        <div class="item active">
+                            <a href="#">🔥 限時特惠 全館 85 折</a>
+                        </div>
+                        <div class="item"><a href="#">📦 滿 $1000 免運費</a></div>
+                        <div class="item"><a href="#">🎁 新會員首購禮 $200</a></div>
+                        <div class="item"><a href="#">⭐ 年度會員獨享 VIP 折扣</a></div>
+                        <div class="item"><a href="#">🚀 新品上市 搶先體驗</a></div>
+                        <div class="item"><a href="#">💳 分期零利率 輕鬆購</a></div>
+                    </div>
+                </div>
+                <div class="demo-controls" role="group" aria-label="外部示範控制">
+                    <button onclick="demo1Instance.pause(true)">⏸ 暫停</button>
+                    <button onclick="demo1Instance.resume(true)">▶ 播放</button>
+                    <button onclick="demo1Instance.setVelocity(1)">🐢 慢速</button>
+                    <button onclick="demo1Instance.setVelocity(2)">🚶 正常</button>
+                    <button onclick="demo1Instance.setVelocity(5)">🚀 快速</button>
+                    <button onclick="demo1Instance.setDirection(true)">⬅ 向左</button>
+                    <button onclick="demo1Instance.setDirection(false)">➡ 向右</button>
+                    <button onclick="
+                demo1Instance.destroy();
+                this.textContent = '已銷毀 ✓';
+              ">
+                        🗑 銷毀
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- QUICK START -->
+        <!-- ═══════════════════════════════════════════ -->
+        <section>
+            <h2>⚡ 快速開始</h2>
+
+            <h3>1. 引入檔案</h3>
+            <pre><code>&lt;link rel="stylesheet" href="tad_loop.css"&gt;
+&lt;script src="tad_loop.js"&gt;&lt;/script&gt;</code></pre>
+
+            <h3>2. HTML 結構</h3>
+            <pre><code>&lt;div id="my-marquee" class="tad-loop"&gt;
+  &lt;div class="item-wrap"&gt;
+    &lt;div class="item"&gt;&lt;a href="#"&gt;項目 1&lt;/a&gt;&lt;/div&gt;
+    &lt;div class="item"&gt;&lt;a href="#"&gt;項目 2&lt;/a&gt;&lt;/div&gt;
+    &lt;div class="item"&gt;&lt;a href="#"&gt;項目 3&lt;/a&gt;&lt;/div&gt;
+    &lt;div class="item"&gt;&lt;a href="#"&gt;項目 4&lt;/a&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+            <h3>3. 初始化（含 WCAG 2 AA 無障礙設定）</h3>
+            <pre><code>var marquee = new TadLoop('#my-marquee', {
+  velocity: 2,
+  forward: true,
+  pauseOnHover: true,
+  // WCAG 2 AA 無障礙設定
+  ariaLabel: '促銷活動跑馬燈',
+  ariaLabelPause: '暫停跑馬燈',
+  ariaLabelPlay:  '播放跑馬燈',
+  ariaLabelPrev:  '向左捲動',
+  ariaLabelNext:  '向右捲動',
+  controlPosition: 'top-right'   // 暫停鍵置於右上角
+});</code></pre>
+        </section>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- OPTIONS -->
+        <!-- ═══════════════════════════════════════════ -->
+        <section>
+            <h2>⚙️ 設定選項 Options</h2>
+            <p>所有可用的設定參數一覽：</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>參數名稱</th>
+                        <th>型別</th>
+                        <th>預設值</th>
+                        <th>說明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>velocity</code></td>
+                        <td>Number</td>
+                        <td><code>2</code></td>
+                        <td>每幀移動的像素數（速度）</td>
+                    </tr>
+                    <tr>
+                        <td><code>forward</code></td>
+                        <td>Boolean</td>
+                        <td><code>true</code></td>
+                        <td><code>true</code> = 由右向左，<code>false</code> = 由左向右</td>
+                    </tr>
+                    <tr>
+                        <td><code>childNode</code></td>
+                        <td>String</td>
+                        <td><code>'.item'</code></td>
+                        <td>每個項目的 CSS 選擇器</td>
+                    </tr>
+                    <tr>
+                        <td><code>childWrapper</code></td>
+                        <td>String</td>
+                        <td><code>'.item-wrap'</code></td>
+                        <td>項目外層容器的 CSS 選擇器</td>
+                    </tr>
+                    <tr>
+                        <td><code>pauseOnHover</code></td>
+                        <td>Boolean</td>
+                        <td><code>true</code></td>
+                        <td>滑鼠移入時暫停動畫</td>
+                    </tr>
+                    <tr>
+                        <td><code>autoStart</code></td>
+                        <td>Boolean</td>
+                        <td><code>true</code></td>
+                        <td>是否自動開始動畫</td>
+                    </tr>
+                    <tr>
+                        <td><code>disableAnimation</code></td>
+                        <td>Boolean</td>
+                        <td><code>false</code></td>
+                        <td>完全停用動畫</td>
+                    </tr>
+                    <tr>
+                        <td><code>seamlessLoop</code></td>
+                        <td>Boolean</td>
+                        <td><code>true</code></td>
+                        <td>啟用無縫循環（複製項目）</td>
+                    </tr>
+                    <tr>
+                        <td><code>showControls</code></td>
+                        <td>Boolean</td>
+                        <td><code>true</code></td>
+                        <td>顯示暫停/播放切換按鈕</td>
+                    </tr>
+                    <tr>
+                        <td><code>showNavButtons</code></td>
+                        <td>Boolean</td>
+                        <td><code>true</code></td>
+                        <td>顯示向左／向右導航按鈕（SC 2.4.3）</td>
+                    </tr>
+                    <tr>
+                        <td><code>controlPosition</code></td>
+                        <td>String</td>
+                        <td><code>'top-right'</code></td>
+                        <td>
+                            暫停/播放按鈕的水平對齊：<code>top-right</code>（預設）、
+                            <code>top-left</code>。
+                            <strong>WCAG 2 AA：</strong>切換鈕一律置於跑馬燈最上方（SC 2.2.2 / 2.4.3）。
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>controlSize</code></td>
+                        <td>Number</td>
+                        <td><code>36</code></td>
+                        <td>按鈕大小（px）；建議不低於 44px（觸控目標，SC 2.5.5）</td>
+                    </tr>
+                    <tr>
+                        <td><code>useFontAwesome</code></td>
+                        <td>Boolean</td>
+                        <td><code>false</code></td>
+                        <td>使用 FontAwesome 圖示（需自行引入 FA）</td>
+                    </tr>
+                    <tr>
+                        <td><code>iconPause</code></td>
+                        <td>String</td>
+                        <td><code>'⏸'</code></td>
+                        <td>播放中時顯示的圖示（點擊可暫停）</td>
+                    </tr>
+                    <tr>
+                        <td><code>iconPlay</code></td>
+                        <td>String</td>
+                        <td><code>'▶'</code></td>
+                        <td>暫停中時顯示的圖示（點擊可播放）</td>
+                    </tr>
+                    <tr>
+                        <td><code>iconPrev</code></td>
+                        <td>String</td>
+                        <td><code>'◀'</code></td>
+                        <td>向左導航按鈕圖示</td>
+                    </tr>
+                    <tr>
+                        <td><code>iconNext</code></td>
+                        <td>String</td>
+                        <td><code>'▶'</code></td>
+                        <td>向右導航按鈕圖示</td>
+                    </tr>
+                    <tr>
+                        <td><code>ariaLabel</code></td>
+                        <td>String</td>
+                        <td><code>'Scrolling content'</code></td>
+                        <td>容器的 ARIA 標籤（SC 1.3.1 / 4.1.2）</td>
+                    </tr>
+                    <tr>
+                        <td><code>ariaLabelPause</code></td>
+                        <td>String</td>
+                        <td><code>'Pause scrolling'</code></td>
+                        <td>動畫播放中時，切換鈕的 aria-label（描述「將暫停」）</td>
+                    </tr>
+                    <tr>
+                        <td><code>ariaLabelPlay</code></td>
+                        <td>String</td>
+                        <td><code>'Play scrolling'</code></td>
+                        <td>動畫暫停中時，切換鈕的 aria-label（描述「將播放」）</td>
+                    </tr>
+                    <tr>
+                        <td><code>ariaLabelPrev</code></td>
+                        <td>String</td>
+                        <td><code>'Scroll left'</code></td>
+                        <td>向左按鈕的 aria-label</td>
+                    </tr>
+                    <tr>
+                        <td><code>ariaLabelNext</code></td>
+                        <td>String</td>
+                        <td><code>'Scroll right'</code></td>
+                        <td>向右按鈕的 aria-label</td>
+                    </tr>
+                    <tr>
+                        <td><code>ariaLive</code></td>
+                        <td>String</td>
+                        <td><code>'off'</code></td>
+                        <td>ARIA live 區域設定</td>
+                    </tr>
+                    <tr>
+                        <td><code>reduceMotion</code></td>
+                        <td>Boolean</td>
+                        <td><code>false</code></td>
+                        <td>強制減少動態（自動偵測 <code>prefers-reduced-motion</code>）</td>
+                    </tr>
+                    <tr>
+                        <td><code>onComplete</code></td>
+                        <td>Function</td>
+                        <td><code>null</code></td>
+                        <td>初始化完成後的回呼函式</td>
+                    </tr>
+                    <tr>
+                        <td><code>onPause</code></td>
+                        <td>Function</td>
+                        <td><code>null</code></td>
+                        <td>暫停時的回呼函式</td>
+                    </tr>
+                    <tr>
+                        <td><code>onResume</code></td>
+                        <td>Function</td>
+                        <td><code>null</code></td>
+                        <td>恢復播放時的回呼函式</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- API METHODS -->
+        <!-- ═══════════════════════════════════════════ -->
+        <section>
+            <h2>🛠 公開方法 API Methods</h2>
+            <p>透過實例呼叫以下方法來控制跑馬燈行為：</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>方法</th>
+                        <th>參數</th>
+                        <th>說明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>.pause(manual)</code></td>
+                        <td><code>manual</code>: Boolean</td>
+                        <td>暫停動畫。傳入 <code>true</code> 表示手動暫停（hover 不會自動恢復）</td>
+                    </tr>
+                    <tr>
+                        <td><code>.resume(manual)</code></td>
+                        <td><code>manual</code>: Boolean</td>
+                        <td>恢復動畫。傳入 <code>true</code> 表示手動恢復</td>
+                    </tr>
+                    <tr>
+                        <td><code>.toggle()</code></td>
+                        <td>無</td>
+                        <td>切換暫停/播放狀態</td>
+                    </tr>
+                    <tr>
+                        <td><code>.setVelocity(v)</code></td>
+                        <td><code>v</code>: Number</td>
+                        <td>動態設定速度（每幀像素數）</td>
+                    </tr>
+                    <tr>
+                        <td><code>.setDirection(forward)</code></td>
+                        <td><code>forward</code>: Boolean</td>
+                        <td><code>true</code>=向左，<code>false</code>=向右</td>
+                    </tr>
+                    <tr>
+                        <td><code>.destroy()</code></td>
+                        <td>無</td>
+                        <td>銷毀實例、移除事件監聽與複製的 DOM 元素</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>使用範例</h3>
+            <pre><code>var marquee = new TadLoop('#my-marquee', { velocity: 3 });
+
+// 暫停
+marquee.pause(true);
+
+// 恢復
+marquee.resume(true);
+
+// 切換
+marquee.toggle();
+
+// 加速
+marquee.setVelocity(5);
+
+// 改變方向
+marquee.setDirection(false); // 改為向右
+
+// 銷毀
+marquee.destroy();</code></pre>
+        </section>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- KEYBOARD -->
+        <!-- ═══════════════════════════════════════════ -->
+        <section>
+            <h2>⌨️ 鍵盤操作</h2>
+
+            <div class="focus-order-note">
+                <strong>♿ WCAG 2 AA 焦點順序（SC 2.4.3）</strong>
+                以 <kbd>Tab</kbd> 鍵依序聚焦：
+                <strong>⏸ 暫停/播放</strong> → 捲動項目連結 → <strong>◀ 向左</strong> → <strong>向右 ▶</strong>
+                —— 依上至下、左至右，與視覺呈現一致，輔助科技可正確報讀。
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>控制項</th>
+                        <th>按鍵</th>
+                        <th>功能</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>暫停/播放按鈕</td>
+                        <td><code>Tab</code> → <code>Space</code> 或 <code>Enter</code></td>
+                        <td>切換暫停／播放（按鈕位於跑馬燈最上方，為第一個 Tab 停點）</td>
+                    </tr>
+                    <tr>
+                        <td>捲動項目連結</td>
+                        <td><code>Tab</code></td>
+                        <td>焦點移入項目時動畫自動暫停；焦點離開後恢復播放</td>
+                    </tr>
+                    <tr>
+                        <td>◀ 向左按鈕</td>
+                        <td><code>Tab</code> → <code>Space</code> 或 <code>Enter</code></td>
+                        <td>自動暫停並將內容向左移動 20px（位於項目之後）</td>
+                    </tr>
+                    <tr>
+                        <td>向右 ▶ 按鈕</td>
+                        <td><code>Tab</code> → <code>Space</code> 或 <code>Enter</code></td>
+                        <td>自動暫停並將內容向右移動 20px</td>
+                    </tr>
+                    <tr>
+                        <td>容器（後備）</td>
+                        <td><code>←</code> / <code>→</code> 方向鍵</td>
+                        <td>暫停狀態下，於容器內任意位置微調捲動位置</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- ACCESSIBILITY -->
+        <!-- ═══════════════════════════════════════════ -->
+        <section>
+            <h2>♿ 無障礙特性 Accessibility（WCAG 2 AA）</h2>
+
+            <h3>焦點順序（SC 2.4.3 Focus Order）</h3>
+            <p>
+                控制按鈕依 DOM 順序排列，Tab 鍵焦點路徑為：
+                <strong>暫停/播放 → 捲動項目 → 向左 → 向右</strong>，
+                符合上至下、左至右的閱讀邏輯，輔助科技可正確報讀每個控制項的名稱與狀態。
+            </p>
+
+            <h3>暫停機制（SC 2.2.2 Pause, Stop, Hide）</h3>
+            <ul>
+                <li>✅ 暫停/播放切換按鈕置於跑馬燈區塊<strong>最上方</strong>，使用者進入區塊前即可暫停</li>
+                <li>✅ 鍵盤焦點移入捲動項目時，動畫<strong>自動暫停</strong>，焦點離開後恢復</li>
+                <li>✅ 滑鼠移入時暫停（<code>pauseOnHover: true</code>）</li>
+                <li>✅ 自動偵測 <code>prefers-reduced-motion</code> 系統設定，停用動畫</li>
+            </ul>
+
+            <h3>名稱、角色、值（SC 4.1.2 Name, Role, Value）</h3>
+            <ul>
+                <li>✅ 容器具有 <code>role="region"</code>、<code>aria-label</code>、<code>aria-live</code></li>
+                <li>
+                    ✅ 切換按鈕使用單一按鈕搭配 <code>aria-pressed</code>（<code>true</code>=已暫停）
+                    與動態 <code>aria-label</code>（描述「下一步動作」），螢幕閱讀器報讀清晰
+                </li>
+                <li>✅ 向左／向右按鈕各有明確的 <code>aria-label</code>（可本地化）</li>
+                <li>✅ 複製項目標記為 <code>aria-hidden="true"</code>，複製項目內的連結設為 <code>tabindex="-1"</code></li>
+            </ul>
+
+            <h3>焦點可見性（SC 2.4.7 Focus Visible）</h3>
+            <ul>
+                <li>✅ 所有按鈕具有高對比度 <code>:focus-visible</code> 輪廓（#005fcc，對比 7.6:1）</li>
+                <li>✅ 項目連結具有 <code>:focus-visible</code> 輪廓</li>
+                <li>✅ 支援 Windows 高對比模式（<code>forced-colors: active</code>）</li>
+            </ul>
+
+            <h3>色彩對比（SC 1.4.3 Contrast）</h3>
+            <ul>
+                <li>✅ 一般項目：深色文字 #1a1a1a 於 #d3d0d0 背景，對比約 7.3:1（通過 AA）</li>
+                <li>✅ 高亮項目：白色文字 #fff 於 #c0392b 背景，對比約 4.6:1（通過 AA）</li>
+                <li>✅ 按鈕圖示：#1a1a1a 於白色半透明背景，對比 16:1</li>
+            </ul>
+        </section>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- MIGRATION -->
+        <!-- ═══════════════════════════════════════════ -->
+        <section>
+            <h2>🔄 從 jQuery grouploop 遷移</h2>
+            <p>如果你原本使用 jQuery 版本的 grouploop，以下是遷移對照：</p>
+
+            <h3>Before (jQuery)</h3>
+            <pre><code>$('.promo-carousel').grouploop({
+  velocity: 2,
+  forward: true,
+  pauseOnHover: true
+});</code></pre>
+
+            <h3>After (TadLoop)</h3>
+            <pre><code>var marquee = new TadLoop('.promo-carousel', {
+  velocity: 2,
+  forward: true,
+  pauseOnHover: true,
+  // 加入 WCAG 2 AA 無障礙標籤
+  ariaLabel: '促銷活動跑馬燈',
+  ariaLabelPause: '暫停跑馬燈',
+  ariaLabelPlay:  '播放跑馬燈'
+});</code></pre>
+
+            <h3>主要差異</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>項目</th>
+                        <th>jQuery grouploop</th>
+                        <th>TadLoop</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>依賴</td>
+                        <td>需要 jQuery</td>
+                        <td>零依賴</td>
+                    </tr>
+                    <tr>
+                        <td>初始化方式</td>
+                        <td><code>$(selector).grouploop(opts)</code></td>
+                        <td><code>new TadLoop(selector, opts)</code></td>
+                    </tr>
+                    <tr>
+                        <td>控制方式</td>
+                        <td>無公開 API</td>
+                        <td>完整公開 API（pause / resume / toggle / destroy 等）</td>
+                    </tr>
+                    <tr>
+                        <td>暫停按鈕位置</td>
+                        <td>無</td>
+                        <td>固定於跑馬燈最上方（WCAG 2 AA SC 2.2.2）</td>
+                    </tr>
+                    <tr>
+                        <td>焦點順序</td>
+                        <td>不支援</td>
+                        <td>暫停/播放 → 項目 → 向左 → 向右（SC 2.4.3）</td>
+                    </tr>
+                    <tr>
+                        <td>鍵盤焦點暫停</td>
+                        <td>不支援</td>
+                        <td>焦點移入項目時自動暫停（SC 2.2.2 / 2.1.1）</td>
+                    </tr>
+                    <tr>
+                        <td>FontAwesome</td>
+                        <td>預設使用</td>
+                        <td>可選，預設使用 emoji 文字</td>
+                    </tr>
+                    <tr>
+                        <td>CSS 寬度</td>
+                        <td>需手動設定 <code>width: 200%/400%</code></td>
+                        <td>自動使用 <code>width: max-content</code></td>
+                    </tr>
+                    <tr>
+                        <td>銷毀/清理</td>
+                        <td>不支援</td>
+                        <td><code>.destroy()</code> 完整清理</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- ADVANCED -->
+        <!-- ═══════════════════════════════════════════ -->
+        <section>
+            <h2>🧪 進階用法</h2>
+
+            <h3>搭配 FontAwesome</h3>
+            <pre><code>&lt;!-- 引入 FontAwesome --&gt;
+&lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"&gt;
+
+&lt;script&gt;
+var marquee = new TadLoop('#my-marquee', {
+  useFontAwesome: true  // 使用 FA 圖示
+});
+&lt;/script&gt;</code></pre>
+
+            <h3>自訂回呼函式</h3>
+            <pre><code>var marquee = new TadLoop('#my-marquee', {
+  onComplete: function() {
+    console.log('TadLoop 初始化完成！');
+  },
+  onPause: function() {
+    console.log('動畫已暫停');
+  },
+  onResume: function() {
+    console.log('動畫已恢復');
+  }
+});</code></pre>
+
+            <h3>多個實例</h3>
+            <pre><code>var marquee1 = new TadLoop('#marquee-top', {
+  velocity: 1,
+  forward: true,
+  ariaLabel: '頂部促銷跑馬燈',
+  ariaLabelPause: '暫停頂部跑馬燈',
+  ariaLabelPlay:  '播放頂部跑馬燈'
+});
+
+var marquee2 = new TadLoop('#marquee-bottom', {
+  velocity: 3,
+  forward: false,
+  controlPosition: 'top-left',
+  ariaLabel: '底部公告跑馬燈',
+  ariaLabelPause: '暫停底部跑馬燈',
+  ariaLabelPlay:  '播放底部跑馬燈'
+});</code></pre>
+
+            <h3>不自動播放（手動控制）</h3>
+            <pre><code>var marquee = new TadLoop('#my-marquee', {
+  autoStart: false,
+  showControls: true,
+  ariaLabel: '促銷跑馬燈（未播放）'
+});
+
+// 在某個事件後啟動
+document.getElementById('startBtn').addEventListener('click', function() {
+  marquee.resume(true);
+});</code></pre>
+        </section>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- BROWSER SUPPORT -->
+        <!-- ═══════════════════════════════════════════ -->
+        <section>
+            <h2>🌐 瀏覽器支援</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>瀏覽器</th>
+                        <th>最低版本</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Chrome</td><td>49+</td></tr>
+                    <tr><td>Firefox</td><td>44+</td></tr>
+                    <tr><td>Safari</td><td>10+</td></tr>
+                    <tr><td>Edge</td><td>14+</td></tr>
+                    <tr><td>iOS Safari</td><td>10+</td></tr>
+                    <tr><td>Android Chrome</td><td>49+</td></tr>
+                </tbody>
+            </table>
+            <p>
+                核心技術需求：<code>requestAnimationFrame</code>、<code>CSS transform</code>、<code>Object.assign</code>（或 polyfill）。
+            </p>
+        </section>
+    </div>
+
+    <footer>
+        <p>
+            TadLoop v1.1.0 — 純 JavaScript 無縫循環跑馬燈 — 零依賴 · WCAG 2 AA · MIT License
+        </p>
+    </footer>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SCRIPTS -->
+    <!-- ═══════════════════════════════════════════ -->
+    <script src="tad_loop.js"></script>
+    <script>
+        var demo1Instance = new TadLoop("#demo1", {
+            velocity: 2,
+            forward: true,
+            pauseOnHover: true,
+            seamlessLoop: true,
+            // ── WCAG 2 AA 無障礙標籤 ──────────────────────
+            ariaLabel:      '促銷活動跑馬燈',
+            ariaLabelPause: '暫停跑馬燈',
+            ariaLabelPlay:  '播放跑馬燈',
+            ariaLabelPrev:  '向左捲動',
+            ariaLabelNext:  '向右捲動',
+            // ── 切換鈕置於右上角（最上方，符合 SC 2.2.2 / 2.4.3） ──
+            controlPosition: 'top-right',
+            onComplete: function () {
+                console.log("TadLoop Demo initialized!");
+            },
+        });
+    </script>
+</body>
+
+</html>

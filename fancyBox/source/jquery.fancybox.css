@@ -7,7 +7,8 @@
 .fancybox-wrap iframe,
 .fancybox-wrap object,
 .fancybox-nav,
-.fancybox-nav span
+.fancybox-nav span,
+.fancybox-tmp
 {
 	padding: 0;
 	margin: 0;
@@ -30,9 +31,9 @@
 	background: #f9f9f9;
 	color: #444;
 	text-shadow: none;
-	-webkit-border-radius: 4px;
-	   -moz-border-radius: 4px;
-	        border-radius: 4px;
+	-webkit-border-radius: 0.25rem;
+	   -moz-border-radius: 0.25rem;
+	        border-radius: 0.25rem;
 }
 
 .fancybox-opened {
@@ -40,9 +41,9 @@
 }
 
 .fancybox-opened .fancybox-skin {
-	-webkit-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-	   -moz-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-	        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+	-webkit-box-shadow: 0 0.625rem 1.5625rem rgba(0, 0, 0, 0.5);
+	   -moz-box-shadow: 0 0.625rem 1.5625rem rgba(0, 0, 0, 0.5);
+	        box-shadow: 0 0.625rem 1.5625rem rgba(0, 0, 0, 0.5);
 }
 
 .fancybox-outer, .fancybox-inner {
@@ -59,7 +60,9 @@
 
 .fancybox-error {
 	color: #444;
-	font: 0.875rem/1.5 "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size: 0.875rem;
+	line-height: 1.25rem;
 	margin: 0;
 	padding: 0.9375rem;
 	white-space: nowrap;
@@ -84,26 +87,26 @@
 	position: fixed;
 	top: 50%;
 	left: 50%;
-	margin-top: -22px;
-	margin-left: -22px;
-	background-position: 0 -108px;
+	margin-top: -1.375rem;
+	margin-left: -1.375rem;
+	background-position: 0 -6.75rem;
 	opacity: 0.8;
 	cursor: pointer;
 	z-index: 8060;
 }
 
 #fancybox-loading div {
-	width: 44px;
-	height: 44px;
+	width: 2.75rem;
+	height: 2.75rem;
 	background: url(fancybox_loading.gif) center center no-repeat;
 }
 
 .fancybox-close {
 	position: absolute;
-	top: -18px;
-	right: -18px;
-	width: 36px;
-	height: 36px;
+	top: -1.125rem;
+	right: -1.125rem;
+	width: 2.25rem;
+	height: 2.25rem;
 	cursor: pointer;
 	z-index: 8040;
 }
@@ -131,22 +134,22 @@
 .fancybox-nav span {
 	position: absolute;
 	top: 50%;
-	width: 36px;
-	height: 34px;
-	margin-top: -18px;
+	width: 2.25rem;
+	height: 2.125rem;
+	margin-top: -1.125rem;
 	cursor: pointer;
 	z-index: 8040;
 	visibility: hidden;
 }
 
 .fancybox-prev span {
-	left: 10px;
-	background-position: 0 -36px;
+	left: 0.625rem;
+	background-position: 0 -2.25rem;
 }
 
 .fancybox-next span {
-	right: 10px;
-	background-position: 0 -72px;
+	right: 0.625rem;
+	background-position: 0 -4.5rem;
 }
 
 .fancybox-nav:hover span {
@@ -155,13 +158,11 @@
 
 .fancybox-tmp {
 	position: absolute;
-	top: -6250rem; /* 約 100000px，使用相對單位 rem */
-	left: -6250rem;
-	max-width: none !important; /* 移除硬編碼的像素限制，改為無限制以實踐相對寬度 */
-	max-height: none !important;
+	top: -99999rem;
+	left: -99999rem;
+	max-width: 99999rem;
+	max-height: 99999rem;
 	overflow: visible !important;
-	visibility: hidden; /* WCAG AAA: 隱藏暫存內容，避免螢幕閱讀器讀取 */
-	pointer-events: none; /* 避免攔截點擊事件 */
 }
 
 /* Overlay helper */
@@ -204,7 +205,10 @@
 
 .fancybox-title {
 	visibility: hidden;
-	font: normal 0.8125rem/1.5 "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size: 0.8125rem;
+	line-height: 1.25rem;
+	font-weight: normal;
 	position: relative;
 	text-shadow: none;
 	z-index: 8050;
@@ -218,7 +222,7 @@
 	position: absolute;
 	bottom: 0;
 	right: 50%;
-	margin-bottom: -35px;
+	margin-bottom: -2.1875rem;
 	z-index: 8050;
 	text-align: center;
 }
@@ -235,18 +239,18 @@
 	text-shadow: 0 0.0625rem 0.125rem #222;
 	color: #FFF;
 	font-weight: bold;
-	line-height: 1.5;
+	line-height: 1.5rem;
 	white-space: nowrap;
 }
 
 .fancybox-title-outside-wrap {
 	position: relative;
-	margin-top: 10px;
+	margin-top: 0.625rem;
 	color: #fff;
 }
 
 .fancybox-title-inside-wrap {
-	padding-top: 10px;
+	padding-top: 0.625rem;
 }
 
 .fancybox-title-over-wrap {
@@ -254,7 +258,7 @@
 	bottom: 0;
 	left: 0;
 	color: #fff;
-	padding: 10px;
+	padding: 0.625rem;
 	background: #000;
 	background: rgba(0, 0, 0, .8);
 }
@@ -266,11 +270,11 @@
 
 	#fancybox-loading, .fancybox-close, .fancybox-prev span, .fancybox-next span {
 		background-image: url(fancybox_sprite@2x.png);
-		background-size: 44px 152px; /*The size of the normal image, half the size of the hi-res image*/
+		background-size: 2.75rem 9.5rem; /*The size of the normal image, half the size of the hi-res image*/
 	}
 
 	#fancybox-loading div {
 		background-image: url(fancybox_loading@2x.gif);
-		background-size: 24px 24px; /*The size of the normal image, half the size of the hi-res image*/
+		background-size: 1.5rem 1.5rem; /*The size of the normal image, half the size of the hi-res image*/
 	}
 }

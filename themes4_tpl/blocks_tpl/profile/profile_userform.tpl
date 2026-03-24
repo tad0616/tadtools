@@ -1,32 +1,92 @@
-<h2 style="display:none;">Login</h2>
-<fieldset class="pad10">
-    <legend class="bold"><{$lang_login|default:''}></legend>
-    <form action="user.php" method="post">
-        <label for="uname"><{$lang_username|default:''}></label> <input type="text" id="uname" title="uname" name="uname" size="26" maxlength="25" value=""/><br><br>
-        <label for="pass"><{$lang_password|default:''}></label> <input type="password" id="pass" title="pass" name="pass" size="21" maxlength="32"/><br><br>
-        <{if isset($lang_rememberme)}>
-            <input type="checkbox" id="rememberme" title="rememberme" name="rememberme" value="On" checked/>
-            <label for="rememberme"><{$lang_rememberme|default:''}></label>
-            <br>
-            <br>
-        <{/if}>
+<{if $page_header|default:true}>
+  <div class="page-header">
+    <h1 class="text-center"><{$lang_login|default:''}></h1>
+  </div>
+<{/if}>
 
-        <input type="hidden" name="op" value="login"/>
-        <input type="hidden" name="xoops_redirect" value="<{$redirect_page|default:''}>"/>
-        <input type="submit" title="login" value="<{$lang_login|default:''}>"/>
-    </form>
-    <br>
-    <a name="lost">&nbsp;</a>
+<fieldset class="border border-info rounded px-3 pt-1 pb-3 bg-info-subtle text-center my-3 mx-auto" style="max-width: 25rem;">
+    <legend class="float-none w-auto border border-info py-1 px-3 bg-light-subtle fs-6 rounded">
+        <{$lang_login|default:''}>
+    </legend>
 
-    <div><{$lang_notregister|default:''}><br></div>
+    <!-- 無障礙提示區 -->
+    <div id="loginMsg" class="text-danger mb-2" aria-live="assertive"></div>
+
+    <form id="loginForm" action="<{$xoops_url}>/user.php" method="post" role="form">
+      <div class="form-group row mb-3">
+        <div class="col-sm-12">
+          <div class="input-group">
+              <label for="uname" class="input-group-text"><{$lang_username|default:''}></label>
+              <input type="text" name="uname" id="uname" class="form-control" maxlength="25" value="" aria-required="true">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row mb-3">
+        <div class="col-sm-12">
+          <div class="input-group">
+            <label for="pass" class="input-group-text"><{$lang_password|default:''}></label>
+            <input type="password" name="pass" id="pass" class="form-control" maxlength="32" aria-required="true">
+          </div>
+        </div>
+      </div>
+
+      <{if isset($lang_rememberme)}>
+        <div class="form-check mb-3 mx-auto">
+          <input class="form-check-input" type="checkbox" name="rememberme" id="rememberme" value="On">
+          <label class="form-check-label" for="rememberme">
+            <{$lang_rememberme|default:''}>
+          </label>
+        </div>
+      <{/if}>
+
+      <input type="hidden" name="op" value="login">
+      <input type="hidden" name="xoops_redirect" value="<{$redirect_page|default:''}>">
+
+      <div class="text-center">
+        <button type="submit" id="submit" class="btn btn-primary btn-lg">
+          <i class="fa-solid fa-user-lock" aria-hidden="true"></i> <{$lang_login|default:''}>
+        </button>
+      </div>
+  </form>
 </fieldset>
 
-<br>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
 
-<fieldset class="pad10">
-    <legend class="bold"><{$lang_lostpassword|default:''}></legend>
-    <div><br><{$lang_noproblem|default:''}></div>
-    <form action="lostpass.php" method="post">
-        <label for="email"><{$lang_youremail|default:''}></label> <input type="text" id="email" title="email" name="email" size="26" maxlength="60"/>&nbsp;&nbsp;<input type="hidden" name="op" value="mailpasswd"/><input type="hidden" name="t" value="<{$mailpasswd_token|default:''}>"/><input type="submit" title="sendpassword" value="<{$lang_sendpassword|default:''}>"/>
-    </form>
-</fieldset>
+  const uname = document.getElementById("uname");
+  const pass = document.getElementById("pass");
+  const form = document.getElementById("loginForm");
+  const msg  = document.getElementById("loginMsg");
+
+  // 進入頁面焦點放在帳號
+  uname.focus();
+
+  form.addEventListener("submit", function(e){
+
+    msg.textContent = "";
+
+    if(uname.value.trim() === ""){
+        e.preventDefault();
+        msg.textContent = "請輸入帳號";
+        uname.focus();
+        return false;
+    }
+
+    if(pass.value.trim() === ""){
+        e.preventDefault();
+        msg.textContent = "請輸入密碼";
+        pass.focus();
+        return false;
+    }
+
+  });
+
+  // 若頁面重新載入且帳密被清空，視為登入失敗
+  if(uname.value === "" && pass.value === "" && document.referrer.includes("user.php")){
+      msg.textContent = "帳號或密碼錯誤，請重新輸入";
+      uname.focus();
+  }
+
+});
+</script>

@@ -1,0 +1,184 @@
+/* ============================================
+   TadLoop — Pure JavaScript Marquee/Carousel
+   WCAG 2 AA compliant styles  (v 1.1.0)
+   ============================================ */
+
+/* ─── Container ─────────────────────────────── */
+
+.tad-loop {
+  border-bottom: 1px solid #eee;
+  overflow: hidden;
+  position: relative;   /* anchor for absolutely-positioned control bars */
+}
+
+/* ─── Item wrapper ───────────────────────────── */
+
+.tad-loop .item-wrap {
+  transform: translateX(0px);
+  width: max-content;
+  position: relative;
+  white-space: nowrap;
+  display: flex;
+  will-change: transform;
+}
+
+/* ─── Individual item ────────────────────────── */
+
+.tad-loop .item {
+  background: #d3d0d0;
+  border-right: 1px solid #eee;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  min-width: 200px;
+}
+
+.tad-loop .item a {
+  text-decoration: none;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* SC 1.4.3: #fff on #d3d0d0 is ~1.5:1 — use dark text for AA compliance */
+  color: #1a1a1a;
+  font-weight: bold;
+  line-height: 1.4;
+  height: 100%;
+  padding: 10px 20px;
+  white-space: nowrap;
+}
+
+.tad-loop .item.active {
+  background: #c0392b;
+}
+
+.tad-loop .item.active a {
+  /* #fff on #c0392b = 4.6:1 — passes AA (SC 1.4.3) */
+  color: #fff;
+}
+
+/* ─── Control bars ───────────────────────────────────────────────────────────
+   SC 2.4.3 Focus Order:
+     DOM order  =  .tadloop-controls--top  →  .item-wrap  →  .tadloop-controls--bottom
+     Tab order  =  toggle button           →  item links  →  ◀ prev  →  next ▶
+
+   Both bars use position:absolute so they overlay the scrolling items without
+   adding extra height to the component, and without disrupting the DOM order
+   that drives the correct tab sequence.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* Shared bar base — set by JS via inline style; class provided for overrides */
+.tadloop-controls {
+  /* intentionally minimal — JS positions each bar */
+}
+
+/* TOP bar: houses the pause/play toggle (always first in DOM) */
+.tadloop-controls--top {
+  position: absolute;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  padding: 6px 8px;
+  gap: 4px;
+  /* Default right-aligned; JS sets left/right based on controlPosition option */
+  right: 0;
+}
+
+/* BOTTOM bar: houses ◀ Prev and Next ▶ (always last in DOM) */
+.tadloop-controls--bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 8px;
+  /* pointer-events:none lets the bar itself pass through clicks to items;
+     individual buttons restore pointer-events */
+  pointer-events: none;
+}
+
+.tadloop-controls--bottom .tadloop-btn {
+  pointer-events: all;
+}
+
+/* ─── Buttons (shared) ───────────────────────── */
+
+.tadloop-btn {
+  /* SC 1.4.3: color #1a1a1a on rgba(255,255,255,0.82) ≈ 16:1 — passes AAA */
+  background-color: rgba(255, 255, 255, 0.82);
+  color: #1a1a1a;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.22);
+  transition: background-color 0.2s ease;
+  font-size: 0.875rem;
+  line-height: 1;
+}
+
+.tadloop-btn:hover {
+  background-color: rgba(255, 255, 255, 0.97);
+}
+
+.tadloop-btn:active {
+  transform: scale(0.94);
+}
+
+/* SC 2.4.7 Focus Visible — clear, high-contrast focus ring on all buttons */
+.tadloop-btn:focus-visible {
+  outline: 3px solid #005fcc;   /* #005fcc on white = 7.6:1 — passes AAA */
+  outline-offset: 3px;
+  background-color: rgba(255, 255, 255, 0.97);
+}
+
+/* Fallback for browsers that don't support :focus-visible */
+.tadloop-btn:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ─── Item links: focus indicator (SC 2.4.7) ──── */
+
+.tad-loop .item a:focus-visible {
+  /* Visible focus ring that contrasts with both light and dark item backgrounds */
+  outline: 3px solid #005fcc;
+  outline-offset: -3px;
+  border-radius: 2px;
+}
+
+.tad-loop .item a:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ─── Reduced Motion (SC 2.3.3 / 1.4.3) ──────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .tad-loop .item-wrap {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .tadloop-btn {
+    transition: none;
+  }
+}
+
+/* ─── High contrast mode support ──────────────── */
+
+@media (forced-colors: active) {
+  .tadloop-btn {
+    border: 2px solid ButtonText;
+    forced-color-adjust: auto;
+  }
+}

@@ -154,61 +154,79 @@ class Utility
         return $str;
     }
 
-    // 將網址轉為連結
-    public static function linkify($value, $protocols = ['http', 'mail'], array $attributes = [])
+// 將網址轉為 icon 連結（網址文字保持原樣）
+    public static function linkify($value, $protocols = ['http'], array $attributes = [])
     {
         $TadToolsXoopsModuleConfig = self::TadToolsXoopsModuleConfig();
-
         if (!$TadToolsXoopsModuleConfig['linkify']) {
             return $value;
         }
+        if (strpos($value, 'fa-arrow-up-right-from-square') !== false) {
+            return $value;
+        }
+        if ($TadToolsXoopsModuleConfig['insert_spacing']) {
+            $value = self::insert_spacing($value);
+        }
 
-        // Link attributes
         $attr = '';
         foreach ($attributes as $key => $val) {
             $attr .= ' ' . $key . '="' . htmlentities($val) . '"';
         }
 
+        // 避免處理已存在 HTML tag
         $links = [];
+        $value = preg_replace_callback(
+            '~(<a .*?>.*?</a>|<.*?>)~i',
+            function ($match) use (&$links) {
+                return '<' . array_push($links, $match[1]) . '>';
+            },
+            $value
+        );
 
-        if ($TadToolsXoopsModuleConfig['insert_spacing']) {
-            $value = self::insert_spacing($value);
-        }
+        // ✅ 改良：只匹配合法的 URL ASCII 字元，排除中文與全形符號
+        $value = preg_replace_callback(
+            '~(?:(https?)://([^\s<（）【】「」『』、。，！？；：…\p{Han}]+)|(www\.[^\s<（）【】「」『』、。，！？；：…\p{Han}]+?\.[^\s<（）【】「」『』、。，！？；：…\p{Han}]+))~iu',
+            function ($match) use (&$links, $attr) {
+                $protocol = $match[1] ?: 'http';
+                $link     = $match[2] ?: $match[3];
 
-        // Extract existing links and tags
-        $value = preg_replace_callback('~(<a .*?>.*?</a>|<.*?>)~i', function ($match) use (&$links) {
-            return '<' . array_push($links, $match[1]) . '>';
-        }, $value);
+                // 移除結尾常見 ASCII 標點
+                $link = rtrim($link, '.,;:!?\'"`');
 
-        // Extract text links for each protocol
-        foreach ((array) $protocols as $protocol) {
-            switch ($protocol) {
-                case 'http':
-                case 'https':
-                    $value = preg_replace_callback('~(?:(https?)://([^\s<]+)|(www\.[^\s<]+?\.[^\s<]+))(?<![\.,:])~i', function ($match) use ($protocol, &$links, $attr) {
-                        if ($match[1]) {
-                            $protocol = $match[1];
-                        }
-                        $link = $match[2] ?: $match[3];
-                        return '<' . array_push($links, "<a $attr href=\"$protocol://$link\" target=\"_blank\">$protocol://$link</a>") . '>';
-                    }, $value);
-                    break;
-                // case 'mail':$value = preg_replace_callback('~([^\s<]+?@[^\s<]+?\.[^\s<]+)(?<![\.,:])~', function ($match) use (&$links, $attr) {return '<' . array_push($links, "<a $attr href=\"mailto:{$match[1]}\">{$match[1]}</a>") . '>';}, $value);
-                //     break;
-                // case 'twitter':$value = preg_replace_callback('~(?<!\w)[@#](\w++)~', function ($match) use (&$links, $attr) {return '<' . array_push($links, "<a $attr href=\"https://twitter.com/" . ($match[0][0] == '@' ? '' : 'search/%23') . $match[1] . "\">{$match[0]}</a>") . '>';}, $value);
-                //     break;
-                default:
-                    $value = preg_replace_callback('~' . preg_quote($protocol, '~') . '://([^\s<]+?)(?<![\.,:])~i', function ($match) use ($protocol, &$links, $attr) {
-                        return '<' . array_push($links, "<a $attr href=\"$protocol://{$match[1]}\">{$match[1]}</a>") . '>';
-                    }, $value);
-                    break;
-            }
-        }
+                // 處理括號平衡（右括號多於左括號時逐一移除）
+                while (
+                    substr($link, -1) === ')' &&
+                    substr_count($link, '(') < substr_count($link, ')')
+                ) {
+                    $link = substr($link, 0, -1);
+                }
+                while (
+                    substr($link, -1) === ']' &&
+                    substr_count($link, '[') < substr_count($link, ']')
+                ) {
+                    $link = substr($link, 0, -1);
+                }
 
-        // Insert all link
-        return preg_replace_callback('/<(\d+)>/', function ($match) use (&$links) {
-            return $links[$match[1] - 1];
-        }, $value);
+                $url  = $protocol . '://' . $link;
+                $html = $url .
+                    ' <a' . $attr . ' href="' . $url . '" target="_blank" rel="noopener noreferrer" ' .
+                    'title="另開新視窗" ' .
+                    'aria-label="外部連結（另開新視窗）">' .
+                    '<i class="fa-solid fa-arrow-up-right-from-square linkify-external"></i>' .
+                    '</a>';
+                return '<' . array_push($links, $html) . '>';
+            },
+            $value
+        );
+
+        // 還原 HTML
+        return preg_replace_callback(
+            '/<(\d+)>/',
+            function ($match) use (&$links) {
+                return $links[$match[1] - 1];
+            },
+            $value
+        );
     }
 
     // XOOPS表單安全檢查
@@ -1346,7 +1364,7 @@ class Utility
 
         self::get_jquery();
 
-        $options = !in_array('index.php', $interface_menu) ? "<li><a href='index.php' title='" . _TAD_HOME . "'><i class=\"fa fa-home\" aria-hidden=\"true\"></i>" : '';
+        $options = !in_array('index.php', $interface_menu) ? "<li><a href='index.php'><i class=\"fa fa-home\" aria-hidden=\"true\"></i><span class=\"sr-only visually-hidden\">" . _TAD_HOME . "</span></a></li>" : '';
 
         if (is_array($interface_menu)) {
             $basename = basename($_SERVER['SCRIPT_NAME']);
@@ -1642,6 +1660,12 @@ class Utility
                 $imagethumbPath = $imagePath;
             }
 
+            // 確保目標目錄存在
+            $thumbDir = dirname($imagethumbPath);
+            if (!file_exists($thumbDir)) {
+                self::mk_dir($thumbDir);
+            }
+
             // 根據不同的圖片類型，使用不同的函數保存縮圖
             switch ($imageType) {
                 case IMAGETYPE_JPEG:
@@ -1666,6 +1690,12 @@ class Utility
             imagedestroy($image);
             imagedestroy($newImage);
         } else {
+            // 確保目標目錄存在
+            $thumbDir = dirname($imagethumbPath);
+            if (!file_exists($thumbDir)) {
+                self::mk_dir($thumbDir);
+            }
+
             \copy($imagePath, $imagethumbPath);
         }
 
@@ -2237,4 +2267,26 @@ class Utility
             return $ssh;
         }
     }
+
+    public static function del_theme_json($theme_name = '')
+    {
+        global $xoopsConfig;
+        if (empty($theme_name)) {
+            $theme_name = $xoopsConfig['theme_set'];
+        }
+
+        // $theme_json_file = XOOPS_VAR_PATH . "/data/theme_{$theme_name}.json";
+        $theme_json_file = XOOPS_VAR_PATH . "/data/{$theme_name}_setup.json";
+
+        if (file_exists($theme_json_file)) {
+            if (!is_writable($theme_json_file)) {
+                throw new \Exception(sprintf(TADTOOLS_CANT_WRITE, $theme_json_file));
+            }
+
+            if (!unlink($theme_json_file)) {
+                throw new \Exception(sprintf(TADTOOLS_CANT_DELETE, $theme_json_file));
+            }
+        }
+    }
+
 }

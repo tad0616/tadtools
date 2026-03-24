@@ -34,7 +34,7 @@ class EasyResponsiveTabs
         $jquery          = Utility::get_jquery();
         $responsive_tabs = '';
         if ($xoTheme) {
-            $xoTheme->addScript('modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js');
+            $xoTheme->addScript('modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js?v=20260323');
             $xoTheme->addScript('modules/tadtools/jqueryCookie/js.cookie.min.js');
             $xoTheme->addStylesheet('modules/tadtools/Easy-Responsive-Tabs/css/easy-responsive-tabs.css');
             $cookie_name = mb_substr($this->name, 1) . '_baseURI';
@@ -70,7 +70,7 @@ class EasyResponsiveTabs
         } else {
             $responsive_tabs = "
                 {$jquery}
-                <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js'></script>
+                <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js?v=20260323'></script>
                 <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='" . XOOPS_URL . "/modules/tadtools/Easy-Responsive-Tabs/css/easy-responsive-tabs.css' >
                 ";
 
@@ -116,7 +116,7 @@ class EasyResponsiveTabs
         $jquery          = Utility::get_jquery();
         $responsive_tabs = '';
         if ($xoTheme) {
-            $xoTheme->addScript('modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js');
+            $xoTheme->addScript('modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js?v=20260323');
             $xoTheme->addScript('modules/tadtools/jqueryCookie/js.cookie.min.js');
             $xoTheme->addStylesheet('modules/tadtools/Easy-Responsive-Tabs/css/easy-responsive-tabs.css');
             $cookie_name = mb_substr($this->name, 1) . '_baseURI';
@@ -151,7 +151,7 @@ class EasyResponsiveTabs
         } else {
             $responsive_tabs = "
                 {$jquery}
-                <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js'></script>
+                <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js?v=20260323'></script>
                 <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='" . XOOPS_URL . "/modules/tadtools/Easy-Responsive-Tabs/css/easy-responsive-tabs.css' >
                 ";
 

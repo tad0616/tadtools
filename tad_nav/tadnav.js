@@ -1,0 +1,993 @@
+/**
+ * TadNav v1.8.7
+ * 修正：
+ *   1. 桌機版：hover/click 開啟子選單前先關閉同層其他子選單（互斥）
+ *   2. 手機版：強制單欄手風琴，同層互斥
+ *   3. WCAG 1.4.10：focusin 時 scrollIntoView
+ */
+(function (root, factory) {
+  if (typeof define === "function" && define.amd) { define([], factory); }
+  else if (typeof module === "object" && module.exports) { module.exports = factory(); }
+  else { root.TadNav = factory(); }
+})(typeof self !== "undefined" ? self : this, function () {
+  "use strict";
+
+  const THEME_MAP = {
+    fontFamily:           "--tadnav-font-family",
+    innerMaxWidth:        "--tadnav-inner-max-width",
+    navMinHeight:         "--tadnav-nav-min-height",
+    navBg:                "--tadnav-nav-bg",
+    navShadow:            "--tadnav-nav-shadow",
+    brandColor:           "--tadnav-brand-color",
+    focusColor:           "--tadnav-focus-color",
+    focusShadowColor:     "--tadnav-focus-shadow-color",
+    focusWidth:           "--tadnav-focus-width",
+    itemColor:            "--tadnav-item-color",
+    itemBg:               "--tadnav-item-bg",
+    itemFontSize:         "--tadnav-item-font-size",
+    itemPaddingX:         "--tadnav-item-padding-x",
+    itemPaddingY:         "--tadnav-item-padding-y",
+    itemHoverBg:          "--tadnav-item-hover-bg",
+    itemHoverColor:       "--tadnav-item-hover-color",
+    itemAccent:           "--tadnav-item-accent",
+    subBg:                "--tadnav-sub-bg",
+    subShadow:            "--tadnav-sub-shadow",
+    subBorder:            "--tadnav-sub-border",
+    subDivider:           "--tadnav-sub-divider",
+    subDividerWidth:      "--tadnav-sub-divider-width",
+    subMinWidth:          "--tadnav-sub-min-width",
+    subScrollBtnBg:       "--tadnav-scroll-btn-bg",
+    subScrollBtnHoverBg:  "--tadnav-scroll-btn-hover-bg",
+    subScrollBtnColor:    "--tadnav-scroll-btn-color",
+    subScrollBtnHeight:   "--tadnav-scroll-btn-height",
+    subItemColor:         "--tadnav-sub-item-color",
+    subItemBg:            "--tadnav-sub-item-bg",
+    subItemFontSize:      "--tadnav-sub-item-font-size",
+    subItemPaddingX:      "--tadnav-sub-item-padding-x",
+    subItemPaddingY:      "--tadnav-sub-item-padding-y",
+    subItemHoverBg:       "--tadnav-sub-item-hover-bg",
+    subItemHoverColor:    "--tadnav-sub-item-hover-color",
+    toggleColor:          "--tadnav-toggle-color",
+    toggleHoverBg:        "--tadnav-toggle-hover-bg",
+    mobileSubBg:          "--tadnav-mobile-bg",
+    mobileSubBorder:      "--tadnav-mobile-sub-border",
+    mobileSubColor:       "--tadnav-mobile-sub-color",
+    mobileItemBorder:     "--tadnav-mobile-item-border",
+  };
+
+  class TadNav {
+    static _instances = [];
+    static _globalListenersAttached = false;
+
+    constructor(selector, options = {}) {
+      this.menu =
+        typeof selector === "string"
+          ? document.querySelector(selector)
+          : selector;
+
+      if (!this.menu) {
+        console.error("TadNav: element not found:", selector);
+        return;
+      }
+
+      this.options = Object.assign({
+        trigger:             "hover",
+        hoverClose:          true,
+        hoverDelay:          200,
+        hideDelay:           300,
+        breakpoint:          768,
+        collisionDetection:  true,
+        closeOnOutsideClick: true,
+        closeOnEsc:          true,
+        subScrollItems:      "auto",
+        subScrollStep:       3,
+        subScrollMargin:     16,
+        topOverflow:         "wrap",
+        theme:               {},
+        onInit:              null,
+        onOpen:              null,
+        onClose:             null,
+        onBreakpointChange:  null,
+        onDestroy:           null,
+      }, options);
+
+      this._hoverTimers      = new Map();
+      this._eventListeners   = [];
+      this._customListeners  = {};
+      this._isMobile         = false;
+      this._destroyed        = false;
+      this._scrollStates     = new Map();
+      this._focusTrapHandler = null;
+      this._lastInteractionWasKeyboard = false;
+
+      this._wrapper =
+        this.menu.closest(".tadnav-wrapper") || this.menu.parentElement;
+      this.toggleBtn = this._wrapper
+        ? this._wrapper.querySelector(".tadnav-toggle")
+        : null;
+
+      this._init();
+      TadNav._instances.push(this);
+      if (!TadNav._globalListenersAttached)
+        TadNav._attachGlobalListeners();
+    }
+
+    // =============================================
+    // Init
+    // =============================================
+    _init() {
+      this._applyTheme(this.options.theme);
+      this._createLiveRegion();
+      this._markRightItems();
+      this._setupARIA();
+      this._applyTopOverflow();
+      this._bindEvents();
+      this._checkBreakpoint();
+      requestAnimationFrame(() => this._markRightItems());
+      if (this.options.onInit) this.options.onInit(this);
+      this._emit("init", { instance: this });
+    }
+
+    // =============================================
+    // 頂層溢出模式
+    // =============================================
+    _applyTopOverflow() {
+      this.menu.classList.remove("tadnav-menu-wrap", "tadnav-menu-scroll");
+      switch (this.options.topOverflow) {
+        case "wrap":
+          this.menu.classList.add("tadnav-menu-wrap");
+          break;
+        case "scroll":
+          this.menu.classList.add("tadnav-menu-scroll");
+          this._on(this.menu, "wheel", e => {
+            if (this._isMobile) return;
+            e.preventDefault();
+            this.menu.scrollLeft += e.deltaY;
+          }, { passive: false });
+          break;
+      }
+    }
+
+    // =============================================
+    // 子選單捲動（桌機版專用）
+    // =============================================
+    _checkSubOverflow(sub) {
+      if (this.options.subScrollItems === 0) return;
+      if (this._isMobile) return;
+      if (this._scrollStates.has(sub)) return;
+
+      const subRect   = sub.getBoundingClientRect();
+      const vh        = window.innerHeight;
+      const margin    = this.options.subScrollMargin;
+      const overflows = subRect.bottom > vh - margin;
+
+      if (this.options.subScrollItems === "auto") {
+        if (!overflows) return;
+      } else {
+        const itemCount = sub.querySelectorAll(":scope > li:not(.tadnav-scroll-btn)").length;
+        if (itemCount <= this.options.subScrollItems && !overflows) return;
+      }
+      this._wrapSubScroll(sub);
+    }
+
+    _wrapSubScroll(sub) {
+      const items = Array.from(sub.querySelectorAll(":scope > li:not(.tadnav-scroll-btn)"));
+      if (items.length < 2) return;
+      const itemH = items[0].getBoundingClientRect().height;
+      if (itemH <= 0) return;
+      const visibleN = this._calcVisibleItems(sub, itemH, items.length);
+      if (visibleN >= items.length) return;
+
+      const upBtn = document.createElement("li");
+      upBtn.className = "tadnav-scroll-btn tadnav-scroll-up";
+      upBtn.setAttribute("role", "button");
+      upBtn.setAttribute("tabindex", "0");
+      upBtn.setAttribute("aria-label", "向上捲動");
+      upBtn.setAttribute("aria-disabled", "true");
+      upBtn.innerHTML = '<i class="fa-solid fa-chevron-up" aria-hidden="true"></i>';
+
+      const downBtn = document.createElement("li");
+      downBtn.className = "tadnav-scroll-btn tadnav-scroll-down";
+      downBtn.setAttribute("role", "button");
+      downBtn.setAttribute("tabindex", "0");
+      downBtn.setAttribute("aria-label", "向下捲動");
+      downBtn.innerHTML = '<i class="fa-solid fa-chevron-down" aria-hidden="true"></i>';
+
+      sub.insertBefore(upBtn, sub.firstChild);
+      sub.appendChild(downBtn);
+
+      const state = {
+        currentIndex: 0, upBtn, downBtn,
+        totalItems: items.length, items, visibleN, itemH,
+        scrollListeners: [],
+      };
+      this._scrollStates.set(sub, state);
+
+      const scroll = dir => {
+        if (this._isMobile) return;
+        const s = this._scrollStates.get(sub);
+        if (!s) return;
+        const max = s.totalItems - s.visibleN;
+        s.items.forEach(li => {
+          const nested = li.querySelector(':scope > .tadnav-submenu[data-open="true"]');
+          if (nested) this._closeSubmenu(nested);
+        });
+        s.currentIndex = dir === "up"
+          ? Math.max(0, s.currentIndex - this.options.subScrollStep)
+          : Math.min(max, s.currentIndex + this.options.subScrollStep);
+        this._applySubScroll(sub);
+      };
+
+      const onUpClick   = () => scroll("up");
+      const onDownClick = () => scroll("down");
+      const onUpKey     = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); scroll("up"); } };
+      const onDownKey   = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); scroll("down"); } };
+      const onWheel     = e => {
+        if (this._isMobile) return;
+        e.preventDefault(); e.stopPropagation();
+        scroll(e.deltaY > 0 ? "down" : "up");
+      };
+
+      upBtn.addEventListener("click",    onUpClick);
+      downBtn.addEventListener("click",  onDownClick);
+      upBtn.addEventListener("keydown",  onUpKey);
+      downBtn.addEventListener("keydown", onDownKey);
+      sub.addEventListener("wheel",      onWheel, { passive: false });
+
+      state.scrollListeners.push(
+        { el: upBtn,   ev: "click",   fn: onUpClick },
+        { el: downBtn, ev: "click",   fn: onDownClick },
+        { el: upBtn,   ev: "keydown", fn: onUpKey },
+        { el: downBtn, ev: "keydown", fn: onDownKey },
+        { el: sub,     ev: "wheel",   fn: onWheel },
+      );
+      this._applySubScroll(sub);
+    }
+
+    _unwrapSubScroll(sub) {
+      const state = this._scrollStates.get(sub);
+      if (!state) return;
+      state.scrollListeners.forEach(({ el, ev, fn }) => el.removeEventListener(ev, fn));
+      state.items.forEach(li => { li.style.display = ""; });
+      state.upBtn.remove();
+      state.downBtn.remove();
+      this._scrollStates.delete(sub);
+    }
+
+    _calcVisibleItems(sub, itemH, totalItems) {
+      if (itemH <= 0) return 5;
+      const vh      = window.innerHeight;
+      const subTop  = sub.getBoundingClientRect().top;
+      const btnHStr = getComputedStyle(this._wrapper || document.documentElement)
+                        .getPropertyValue("--tadnav-scroll-btn-height").trim();
+      const btnH    = parseFloat(btnHStr) || 28;
+      const margin  = this.options.subScrollMargin;
+      if (this.options.subScrollItems !== "auto")
+        return Math.min(this.options.subScrollItems, totalItems);
+      const available = vh - subTop - (btnH * 2) - margin;
+      return Math.max(2, Math.min(Math.floor(available / itemH), totalItems));
+    }
+
+    _applySubScroll(sub) {
+      const state = this._scrollStates.get(sub);
+      if (!state) return;
+      const { currentIndex, items, totalItems, visibleN, upBtn, downBtn } = state;
+      items.forEach((li, i) => {
+        li.style.display = (i >= currentIndex && i < currentIndex + visibleN) ? "" : "none";
+      });
+      upBtn.setAttribute("aria-disabled",   currentIndex <= 0                     ? "true" : "false");
+      downBtn.setAttribute("aria-disabled", currentIndex >= totalItems - visibleN ? "true" : "false");
+    }
+
+    // =============================================
+    // aria-live
+    // =============================================
+    _createLiveRegion() {
+      if (this._liveRegion) return;
+      const el = document.createElement("div");
+      el.setAttribute("role", "status");
+      el.setAttribute("aria-live", "polite");
+      el.setAttribute("aria-atomic", "true");
+      el.style.cssText = "position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;";
+      document.body.appendChild(el);
+      this._liveRegion = el;
+    }
+
+    _announce(message) {
+      if (!this._liveRegion) return;
+      this._liveRegion.textContent = "";
+      requestAnimationFrame(() => { this._liveRegion.textContent = message; });
+    }
+
+    // =============================================
+    // 主題
+    // =============================================
+    _applyTheme(theme) {
+      if (!theme || typeof theme !== "object" || !this._wrapper) return;
+      Object.entries(theme).forEach(([key, value]) => {
+        const cssVar = THEME_MAP[key];
+        if (!cssVar) { console.warn(`TadNav: 未知的 theme 屬性 "${key}"`); return; }
+        if (value !== null && value !== undefined)
+          this._wrapper.style.setProperty(cssVar, String(value));
+      });
+    }
+
+    setTheme(newTheme, merge = true) {
+      if (!merge) this._clearTheme();
+      this.options.theme = merge ? Object.assign({}, this.options.theme, newTheme) : newTheme;
+      this._applyTheme(this.options.theme);
+      this._emit("themeChange", { theme: this.options.theme });
+    }
+
+    _clearTheme() {
+      if (!this._wrapper) return;
+      Object.values(THEME_MAP).forEach(v => this._wrapper.style.removeProperty(v));
+    }
+
+    resetTheme() {
+      this._clearTheme();
+      this.options.theme = {};
+      this._emit("themeChange", { theme: {} });
+    }
+
+    getTheme() { return Object.assign({}, this.options.theme); }
+
+    // =============================================
+    // Spacer / ARIA
+    // =============================================
+    _markRightItems() {
+      const items = Array.from(this.menu.querySelectorAll(":scope > li"));
+      items.forEach(li => li.classList.remove("is-right"));
+      const idx = items.findIndex(li => li.classList.contains("tadnav-spacer"));
+      if (idx !== -1) {
+        items.slice(idx + 1).forEach(li => li.classList.add("is-right"));
+        return;
+      }
+      const vw          = window.innerWidth;
+      const margin      = 8;
+      const cssMinWidth = getComputedStyle(this._wrapper || document.documentElement)
+        .getPropertyValue("--tadnav-sub-min-width").trim();
+      const subMinWidth = parseFloat(cssMinWidth) || 220;
+      items.forEach(li => {
+        if (li.classList.contains("tadnav-spacer")) return;
+        if (!li.querySelector(":scope > .tadnav-submenu")) return;
+        const liRect = li.getBoundingClientRect();
+        if (liRect.width === 0) return;
+        if (liRect.left + subMinWidth > vw - margin) li.classList.add("is-right");
+      });
+    }
+
+    _setupARIA() {
+      this.menu.querySelectorAll(".tadnav-submenu").forEach(sub => {
+        if (!sub.hasAttribute("data-open")) sub.setAttribute("data-open", "false");
+      });
+      this.menu.querySelectorAll(".tadnav-submenu-toggle").forEach(toggle => {
+        // ★ 移除 role="menuitem"：
+        //   <button> 本身具有原生 button 語義，若同時加上 role="menuitem"
+        //   會覆蓋 button 角色，導致螢幕報讀器僅播報「功能表項目 子功能表」，
+        //   不播報「按鈕」，也不播報 aria-expanded 的展開／收合狀態。
+        //   移除後，AT 可正確播報「[名稱] 按鈕 已收合／已展開」。
+        toggle.removeAttribute("role");
+
+        if (!toggle.hasAttribute("aria-expanded")) toggle.setAttribute("aria-expanded", "false");
+        if (!toggle.hasAttribute("aria-haspopup")) toggle.setAttribute("aria-haspopup", "true");
+        const sub = toggle.nextElementSibling;
+        if (sub?.classList.contains("tadnav-submenu")) {
+          const id = sub.id || "tadnav-sub-" + Math.random().toString(36).slice(2, 9);
+          sub.id = id;
+          toggle.setAttribute("aria-controls", id);
+        }
+      });
+      // ★ 初始化完成後同步 tabindex，確保所有收合子選單項目退出 Tab 順序
+      this._syncSubMenuTabindex();
+    }
+
+    // =============================================
+    // Events
+    // =============================================
+    _bindEvents() {
+      if (this.toggleBtn)
+        this._on(this.toggleBtn, "click", e => this._handleToggle(e));
+
+      if (this.options.trigger !== "click")
+        this._bindHoverEvents();
+
+      this._bindClickEvents();
+      this._on(this.menu, "keydown",  e => this._handleKeydown(e));
+      this._on(this.menu, "focusout", e => this._handleFocusOut(e));
+      this._on(this.menu, "focusin",  e => this._handleFocusIn(e));
+
+      this._on(document, "keydown",   () => { this._lastInteractionWasKeyboard = true; });
+      this._on(document, "mousedown", () => { this._lastInteractionWasKeyboard = false; });
+
+      this._resizeObserver = new ResizeObserver(() => {
+        this._checkBreakpoint();
+        this._markRightItems();
+        if (!this._isMobile) {
+          this.menu.querySelectorAll('.tadnav-submenu[data-open="true"]')
+            .forEach(s => this._detectCollision(s));
+        }
+      });
+      this._resizeObserver.observe(document.documentElement);
+    }
+
+    // ★ WCAG 1.4.10：焦點移入時確保可見
+    _handleFocusIn(e) {
+      const target = e.target;
+      if (!target || target.getAttribute("role") !== "menuitem") return;
+      requestAnimationFrame(() => {
+        if (document.activeElement === target)
+          target.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "smooth" });
+      });
+    }
+
+    _handleFocusOut(e) {
+      if (this._lastInteractionWasKeyboard) {
+        setTimeout(() => {
+          if (!this.menu.contains(document.activeElement)) {
+            // ★ 手機版：焦點逃逸時應關閉整個手機選單 overlay，
+            //   而非只關閉子選單（closeAll 不會收合 overlay）。
+            if (this._isMobile) {
+              this._closeMobileMenu();
+            } else {
+              this.closeAll();
+            }
+          }
+        }, 10);
+      }
+    }
+
+    // ★ 桌機版 hover：開啟前先關閉同層其他子選單
+    _bindHoverEvents() {
+      this.menu.querySelectorAll("li").forEach(li => {
+        const sub = li.querySelector(":scope > .tadnav-submenu");
+        if (!sub) return;
+        this._on(li, "mouseenter", () => {
+          if (this._isMobile || this.options.trigger === "click") return;
+          this._clearTimer(li);
+          this._hoverTimers.set(li, setTimeout(() => {
+            this._closeSiblingSubmenus(sub);   // ★ 關閉同層
+            this._openSubmenu(sub);
+          }, this.options.hoverDelay));
+        });
+        this._on(li, "mouseleave", () => {
+          if (this._isMobile || this.options.trigger === "click") return;
+          if (!this.options.hoverClose) { this._clearTimer(li); return; }
+          this._clearTimer(li);
+          this._hoverTimers.set(li,
+            setTimeout(() => this._closeSubmenu(sub), this.options.hideDelay)
+          );
+        });
+      });
+    }
+
+    // ★ click：開啟前先關閉同層其他子選單（桌機 + 手機均適用）
+    _bindClickEvents() {
+      this.menu.querySelectorAll(".tadnav-submenu-toggle").forEach(toggle => {
+        this._on(toggle, "click", e => {
+          e.preventDefault();
+          e.stopPropagation();
+          const sub = toggle.nextElementSibling;
+          if (!sub) return;
+          const isOpen = sub.getAttribute("data-open") === "true";
+          if (isOpen) {
+            this._closeSubmenu(sub, true);
+          } else {
+            this._closeSiblingSubmenus(sub);   // ★ 手風琴互斥
+            this._openSubmenu(sub);
+          }
+        });
+      });
+    }
+
+    _on(el, event, handler, opts) {
+      el.addEventListener(event, handler, opts);
+      this._eventListeners.push({ el, event, handler, opts });
+    }
+
+    _clearTimer(li) {
+      if (this._hoverTimers.has(li)) {
+        clearTimeout(this._hoverTimers.get(li));
+        this._hoverTimers.delete(li);
+      }
+    }
+
+    // =============================================
+    // Hamburger Toggle
+    // =============================================
+    _handleToggle(e) {
+      e.preventDefault();
+      const isOpen = this.toggleBtn.getAttribute("aria-expanded") === "true";
+      if (isOpen) {
+        this.toggleBtn.setAttribute("aria-expanded", "false");
+        // ★ 收合後 aria-label 改回「開啟」動作描述，
+        //   讓螢幕報讀器播報「開啟導覽列選單 按鈕」
+        this.toggleBtn.setAttribute("aria-label", "開啟導覽列選單");
+        this.menu.setAttribute("data-mobile-open", "false");
+        this.closeAll();
+        this._deactivateFocusTrap();
+        this.toggleBtn.focus();
+        this._announce("選單已收合");
+      } else {
+        this.toggleBtn.setAttribute("aria-expanded", "true");
+        // ★ 展開後 aria-label 改為「關閉」動作描述，
+        //   讓螢幕報讀器播報「關閉導覽列選單 按鈕」
+        this.toggleBtn.setAttribute("aria-label", "關閉導覽列選單");
+        this.menu.setAttribute("data-mobile-open", "true");
+        this._announce("選單已展開");
+        const first = this.menu.querySelector('[role="menuitem"]');
+        if (first) {
+          setTimeout(() => { first.focus(); this._activateFocusTrap(); }, 100);
+        } else {
+          this._activateFocusTrap();
+        }
+      }
+    }
+
+    // =============================================
+    // Public API
+    // =============================================
+    open(sub)  { this._openSubmenu(sub); }
+    close(sub) { this._closeSubmenu(sub); }
+
+    closeAll() {
+      this.menu.querySelectorAll('.tadnav-submenu[data-open="true"]')
+        .forEach(s => this._closeSubmenu(s));
+    }
+
+    setTrigger(mode) {
+      if (mode !== "hover" && mode !== "click") return;
+      this.options.trigger = mode;
+      this.closeAll();
+    }
+
+    setHoverClose(value) {
+      this.options.hoverClose = Boolean(value);
+      if (value) this.closeAll();
+    }
+
+    refresh() {
+      this._markRightItems();
+      this._setupARIA();
+      this._checkBreakpoint();
+    }
+
+    destroy() {
+      this._destroyed = true;
+      this.closeAll();
+      this._deactivateFocusTrap();
+      this._eventListeners.forEach(({ el, event, handler, opts }) =>
+        el.removeEventListener(event, handler, opts));
+      this._eventListeners = [];
+      this._hoverTimers.forEach(t => clearTimeout(t));
+      this._hoverTimers.clear();
+      this._scrollStates.forEach((_, sub) => this._unwrapSubScroll(sub));
+      this._scrollStates.clear();
+      if (this._resizeObserver) this._resizeObserver.disconnect();
+      if (this._liveRegion) { this._liveRegion.remove(); this._liveRegion = null; }
+      TadNav._instances = TadNav._instances.filter(i => i !== this);
+      if (this.options.onDestroy) this.options.onDestroy();
+      this._emit("destroy");
+    }
+
+    // =============================================
+    // Open / Close
+    // =============================================
+    _openSubmenu(sub) {
+      if (!sub) return;
+      const toggle = sub.previousElementSibling;
+      sub.classList.remove("tadnav-flip-x", "tadnav-flip-y", "tadnav-flip-x-root", "tadnav-flip-y-root");
+      sub.style.removeProperty("max-width");
+      sub.setAttribute("data-open", "true");
+      if (toggle?.hasAttribute("aria-expanded"))
+        toggle.setAttribute("aria-expanded", "true");
+
+      if (!this._isMobile) {
+        // 桌機版：碰撞偵測 + 捲動包裝
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            this._checkSubOverflow(sub);
+            if (this.options.collisionDetection) this._detectCollision(sub);
+          });
+        });
+      } else {
+        // 手機版：展開後捲動到 toggle 確保可見（WCAG 1.4.10）
+        requestAnimationFrame(() => {
+          if (toggle) toggle.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        });
+      }
+
+      // ★ 展開後同步：移除此子選單直接子項目的 tabindex="-1"
+      this._syncSubMenuTabindex();
+      const label = toggle?.textContent?.trim() || "子選單";
+      this._announce(`${label} 已展開`);
+      if (this.options.onOpen) this.options.onOpen(sub, toggle);
+      this._emit("open", { submenu: sub, trigger: toggle });
+    }
+
+    _closeSubmenu(sub, returnFocus = false) {
+      if (!sub) return;
+      const toggle = sub.previousElementSibling;
+
+      // 桌機版才需要拆掉捲動包裝
+      if (!this._isMobile) this._unwrapSubScroll(sub);
+
+      sub.setAttribute("data-open", "false");
+      sub.classList.remove("tadnav-flip-x", "tadnav-flip-y", "tadnav-flip-x-root", "tadnav-flip-y-root");
+      sub.style.removeProperty("max-width");
+
+      if (toggle?.hasAttribute("aria-expanded")) {
+        toggle.setAttribute("aria-expanded", "false");
+        if (returnFocus) toggle.focus();
+      }
+
+      // 遞迴關閉所有巢狀子選單
+      sub.querySelectorAll('.tadnav-submenu[data-open="true"]')
+         .forEach(n => this._closeSubmenu(n));
+
+      // ★ 收合後同步：將此子選單所有子項目設 tabindex="-1"
+      this._syncSubMenuTabindex();
+      const label = toggle?.textContent?.trim() || "子選單";
+      this._announce(`${label} 已收合`);
+      if (this.options.onClose) this.options.onClose(sub, toggle);
+      this._emit("close", { submenu: sub, trigger: toggle });
+    }
+
+    /**
+     * ★ 手風琴核心：關閉同層（同父 ul）的其他子選單
+     * 桌機 hover / click、手機 click 均呼叫此方法
+     */
+    _closeSiblingSubmenus(sub) {
+      const parentLi = sub.parentElement;        // 直屬 li
+      if (!parentLi) return;
+      const parentUl = parentLi.parentElement;   // 直屬 ul（同層容器）
+      if (!parentUl) return;
+      parentUl.querySelectorAll(':scope > li > .tadnav-submenu[data-open="true"]')
+        .forEach(s => { if (s !== sub) this._closeSubmenu(s); });
+    }
+
+    // =============================================
+    // Tab 順序管理（DOM 層級）
+    // =============================================
+    /**
+     * ★ 核心修正：在 DOM 層級用 tabindex="-1" 管理 Tab 順序。
+     *
+     * 手機版子選單以 max-height:0 + overflow:hidden 收合，視覺上隱藏，
+     * 但 <a>/<button> 元素仍在 DOM 中且原生 tabindex = 0，
+     * 瀏覽器 Tab 鍵會照常訪問它們，不管 focus trap 是否啟動。
+     *
+     * 此方法遍歷選單內全部可聚焦元素：
+     *   - 位於 data-open="false" 子選單中 → tabindex="-1"（移出 Tab 順序）
+     *   - 其他（頂層或已展開子選單中）   → 移除 tabindex（回復自然順序）
+     *
+     * 在 _setupARIA、_openSubmenu、_closeSubmenu 三處呼叫，
+     * 確保任何展開 / 收合操作後立即同步。
+     */
+    _syncSubMenuTabindex() {
+      this.menu.querySelectorAll(
+        'a[role="menuitem"], button.tadnav-submenu-toggle'
+      ).forEach(el => {
+        const closedParent = el.closest('.tadnav-submenu[data-open="false"]');
+        if (closedParent) {
+          el.setAttribute('tabindex', '-1');
+        } else {
+          el.removeAttribute('tabindex');
+        }
+      });
+    }
+
+    // =============================================
+    // Focus Trap
+    // =============================================
+    _getFocusableInMenu() {
+      const menuItems = Array.from(
+        this.menu.querySelectorAll('a[role="menuitem"], button.tadnav-submenu-toggle')
+      ).filter(el => {
+        // 手風琴收合中的子選單內項目不可 Tab
+        const closedParent = el.closest('.tadnav-submenu[data-open="false"]');
+        if (closedParent) return false;
+        const rect = el.getBoundingClientRect();
+        return rect.width > 0 && rect.height > 0;
+      });
+
+      // ★ 漢堡選單展開時，將關閉按鈕（tadnav-toggle）加入 Tab 循環首位。
+      //   toggleBtn 位於 <ul> 之外，不在 menuItems 內；若不納入，
+      //   鍵盤使用者永遠無法 Tab 到它，違反 WCAG 2.1.1。
+      if (
+        this.toggleBtn &&
+        this.menu.getAttribute("data-mobile-open") === "true"
+      ) {
+        return [this.toggleBtn, ...menuItems];
+      }
+
+      return menuItems;
+    }
+
+    _activateFocusTrap() {
+      if (this._focusTrapHandler) return;
+      this._focusTrapHandler = (e) => {
+        if (e.key !== "Tab") return;
+        const focusable = this._getFocusableInMenu();
+        if (focusable.length === 0) return;
+        const first  = focusable[0];
+        const last   = focusable[focusable.length - 1];
+        const active = document.activeElement;
+
+        // ★ 手機版：完全接管 Tab 焦點順序。
+        //   手機版子選單收合採 max-height:0 + overflow:hidden，
+        //   視覺上隱藏但 DOM 元素仍可被瀏覽器原生 Tab 鍵訪問，
+        //   因此必須攔截所有 Tab 事件，只在 _getFocusableInMenu()
+        //   回傳的可見項目間循環，防止焦點落入隱形項目或逃逸選單。
+        if (this._isMobile) {
+          e.preventDefault();
+          const idx = focusable.indexOf(active);
+          if (e.shiftKey) {
+            // Shift+Tab：往前循環（找不到則跳到最後一項）
+            const prev = idx <= 0 ? last : focusable[idx - 1];
+            prev.focus();
+          } else {
+            // Tab：往後循環（找不到或已是最後一項則跳回第一項）
+            const next = (idx === -1 || idx >= focusable.length - 1) ? first : focusable[idx + 1];
+            next.focus();
+          }
+          return;
+        }
+
+        // 桌機版（理論上不應啟用 trap，保留作為備援）
+        if (e.shiftKey) {
+          if (active === first || !this.menu.contains(active)) { e.preventDefault(); last.focus(); }
+        } else {
+          if (active === last  || !this.menu.contains(active)) { e.preventDefault(); first.focus(); }
+        }
+      };
+      document.addEventListener("keydown", this._focusTrapHandler, true);
+    }
+
+    _deactivateFocusTrap() {
+      if (this._focusTrapHandler) {
+        document.removeEventListener("keydown", this._focusTrapHandler, true);
+        this._focusTrapHandler = null;
+      }
+    }
+
+    // =============================================
+    // Close Mobile Menu
+    // =============================================
+    _closeMobileMenu() {
+      if (!this.toggleBtn) return;
+      if (this.toggleBtn.getAttribute("aria-expanded") !== "true") return;
+      this.toggleBtn.setAttribute("aria-expanded", "false");
+      // ★ 程式化關閉（Esc、焦點逃逸）時同樣重設 aria-label
+      this.toggleBtn.setAttribute("aria-label", "開啟導覽列選單");
+      this.menu.setAttribute("data-mobile-open", "false");
+      this.closeAll();
+      this._deactivateFocusTrap();
+      this.toggleBtn.focus();
+      this._announce("選單已收合");
+    }
+
+    // =============================================
+    // Collision Detection（桌機版）
+    // =============================================
+    _detectCollision(sub) {
+      if (!sub || this._isMobile) return;
+      const rect = sub.getBoundingClientRect();
+      const vw   = window.innerWidth;
+      const vh   = window.innerHeight;
+      const isRootLevel = sub.parentElement?.parentElement === this.menu;
+
+      // 水平翻轉
+      if (rect.right > vw - 4)
+        sub.classList.add(isRootLevel ? "tadnav-flip-x-root" : "tadnav-flip-x");
+
+      // 垂直翻轉
+      if (rect.bottom > vh - 4)
+        sub.classList.add(isRootLevel ? "tadnav-flip-y-root" : "tadnav-flip-y");
+
+      // 巢狀子選單遞迴偵測
+      sub.querySelectorAll(':scope > li > .tadnav-submenu[data-open="true"]')
+        .forEach(child => this._detectCollision(child));
+    }
+
+    // =============================================
+    // Keyboard Navigation
+    // =============================================
+    _handleKeydown(e) {
+      const target = e.target;
+      const key    = e.key;
+
+      // ESC：關閉最近的開啟子選單，或收合手機選單
+      if (key === "Escape" && this.options.closeOnEsc) {
+        const openSub = target.closest('.tadnav-submenu[data-open="true"]');
+        if (openSub) {
+          this._closeSubmenu(openSub, true);
+        } else {
+          const topSub = target.closest('.tadnav-menu > li > .tadnav-submenu[data-open="true"]');
+          if (topSub) {
+            this._closeSubmenu(topSub, true);
+          } else if (this._isMobile) {
+            this._closeMobileMenu();
+          } else {
+            this.closeAll();
+          }
+        }
+        e.preventDefault();
+        return;
+      }
+
+      if (!this._isMobile) {
+        this._handleDesktopKeydown(e, target, key);
+      } else {
+        this._handleMobileKeydown(e, target, key);
+      }
+    }
+
+    _handleDesktopKeydown(e, target, key) {
+      const li     = target.closest("li");
+      const sub    = li?.querySelector(":scope > .tadnav-submenu");
+      const inSub  = !!target.closest(".tadnav-submenu");
+      const isRoot = li?.parentElement === this.menu;
+
+      // 頂層：左右鍵切換項目
+      if (!inSub && isRoot) {
+        if (key === "ArrowRight" || key === "ArrowLeft") {
+          e.preventDefault();
+          const items = Array.from(
+            this.menu.querySelectorAll(
+              ":scope > li > [role='menuitem'], :scope > li > button.tadnav-submenu-toggle"
+            )
+          );
+          const idx  = items.indexOf(target);
+          const next = key === "ArrowRight"
+            ? items[(idx + 1) % items.length]
+            : items[(idx - 1 + items.length) % items.length];
+          next?.focus();
+        }
+        // 下鍵：進入子選單
+        if (key === "ArrowDown" && sub) {
+          e.preventDefault();
+          this._openSubmenu(sub);
+          setTimeout(() => sub.querySelector('[role="menuitem"]')?.focus(), 50);
+        }
+      } else if (inSub) {
+        // 子選單內：上下鍵切換
+        if (key === "ArrowDown" || key === "ArrowUp") {
+          e.preventDefault();
+          const parentSub = target.closest(".tadnav-submenu");
+          const items = Array.from(
+            parentSub.querySelectorAll(
+              ':scope > li:not(.tadnav-scroll-btn):not([style*="display: none"]) > [role="menuitem"], ' +
+              ':scope > li:not(.tadnav-scroll-btn):not([style*="display: none"]) > button.tadnav-submenu-toggle'
+            )
+          );
+          const idx  = items.indexOf(target);
+          const next = key === "ArrowDown"
+            ? items[(idx + 1) % items.length]
+            : items[(idx - 1 + items.length) % items.length];
+          next?.focus();
+        }
+        // 右鍵：展開巢狀子選單
+        if (key === "ArrowRight" && sub) {
+          e.preventDefault();
+          this._openSubmenu(sub);
+          setTimeout(() => sub.querySelector('[role="menuitem"]')?.focus(), 50);
+        }
+        // 左鍵：收合並回到父層
+        if (key === "ArrowLeft") {
+          e.preventDefault();
+          const parentSub = target.closest(".tadnav-submenu");
+          if (parentSub) this._closeSubmenu(parentSub, true);
+        }
+      }
+
+      // Home / End
+      if (key === "Home" || key === "End") {
+        e.preventDefault();
+        const parentSub = target.closest(".tadnav-submenu");
+        const container = parentSub || this.menu;
+        const items = Array.from(
+          container.querySelectorAll(
+            ':scope > li:not(.tadnav-scroll-btn) > [role="menuitem"], ' +
+            ':scope > li:not(.tadnav-scroll-btn) > button.tadnav-submenu-toggle'
+          )
+        );
+        if (key === "Home") items[0]?.focus();
+        else items[items.length - 1]?.focus();
+      }
+    }
+
+    _handleMobileKeydown(e, target, key) {
+      // 手機模式：上下鍵在可見項目間移動
+      if (key === "ArrowDown" || key === "ArrowUp") {
+        e.preventDefault();
+        const allItems = this._getFocusableInMenu();
+        const idx  = allItems.indexOf(target);
+        const next = key === "ArrowDown"
+          ? allItems[(idx + 1) % allItems.length]
+          : allItems[(idx - 1 + allItems.length) % allItems.length];
+        next?.focus();
+      }
+    }
+
+    // =============================================
+    // Breakpoint
+    // =============================================
+    _checkBreakpoint() {
+      const wasMobile = this._isMobile;
+      this._isMobile  = window.innerWidth < this.options.breakpoint;
+
+      if (wasMobile !== this._isMobile) {
+        // 切換模式時關閉所有子選單並清除捲動包裝
+        this.closeAll();
+        this._scrollStates.forEach((_, sub) => this._unwrapSubScroll(sub));
+
+        if (!this._isMobile) {
+          // 切回桌機：重設手機選單狀態
+          this.menu.setAttribute("data-mobile-open", "false");
+          if (this.toggleBtn)
+            this.toggleBtn.setAttribute("aria-expanded", "false");
+          this._deactivateFocusTrap();
+        }
+
+        if (this.options.onBreakpointChange)
+          this.options.onBreakpointChange(this._isMobile);
+        this._emit("breakpointChange", { isMobile: this._isMobile });
+      }
+    }
+
+    // =============================================
+    // Global Listeners（點擊外部關閉）
+    // =============================================
+    static _attachGlobalListeners() {
+      TadNav._globalListenersAttached = true;
+
+      document.addEventListener("click", e => {
+        TadNav._instances.forEach(inst => {
+          if (!inst.options.closeOnOutsideClick) return;
+          if (!inst.menu.contains(e.target) && !inst.toggleBtn?.contains(e.target)) {
+            inst.closeAll();
+          }
+        });
+      });
+
+      document.addEventListener("keydown", e => {
+        if (e.key === "Escape") {
+          TadNav._instances.forEach(inst => {
+            // ★ 改判斷選單是否實際開啟（data-mobile-open），
+            //   而非 _isMobile：瀏覽器縮放 200-400% 時 window.innerWidth
+            //   可能仍大於 breakpoint，使 _isMobile 為 false，
+            //   但漢堡選單仍可見，ESC 應能關閉。
+            if (inst.options.closeOnEsc &&
+                inst.menu.getAttribute("data-mobile-open") === "true") {
+              inst._closeMobileMenu();
+            }
+          });
+        }
+      });
+    }
+
+    // =============================================
+    // Custom Events
+    // =============================================
+    on(eventName, callback) {
+      if (!this._customListeners[eventName])
+        this._customListeners[eventName] = [];
+      this._customListeners[eventName].push(callback);
+      return this;
+    }
+
+    off(eventName, callback) {
+      if (!this._customListeners[eventName]) return this;
+      this._customListeners[eventName] =
+        this._customListeners[eventName].filter(fn => fn !== callback);
+      return this;
+    }
+
+    _emit(eventName, data = {}) {
+      const listeners = this._customListeners[eventName];
+      if (listeners) listeners.forEach(fn => fn(data));
+    }
+  }
+
+  return TadNav;
+});

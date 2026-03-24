@@ -8,7 +8,6 @@ use Xmf\Request;
 use XoopsModules\Tadtools\TadDataCenter;
 use XoopsModules\Tadtools\TadUpFiles;
 use XoopsModules\Tadtools\Utility;
-use XoopsModules\Tad_themes\Tools;
 
 require_once __DIR__ . '/tadtools_header.php';
 
@@ -28,16 +27,22 @@ $xoopsLogger->activated = false;
 
 switch ($op) {
     case 'remove_json':
-        xoops_loadLanguage('admin', 'tad_themes');
-        Tools::del_theme_json();
-        header("location:" . XOOPS_URL);
+        Utility::del_theme_json();
+        if (isset($_SERVER['HTTP_REFERER'])) {
+            header("location:{$_SERVER['HTTP_REFERER']}");
+        } else {
+            header("location:" . XOOPS_URL);
+        }
         exit;
 
     case 'remove_file':
         $TadUpFiles = new TadUpFiles($mod_name);
         $TadUpFiles->set_db_prefix($db_prefix);
-        if ($TadUpFiles->del_files($files_sn, '', false, $thumbs_dir)) {
+        $result = $TadUpFiles->del_files($files_sn, '', true, $thumbs_dir);
+        if (is_int($result)) {
             echo '1';
+        } else {
+            die($result);
         }
         exit;
 

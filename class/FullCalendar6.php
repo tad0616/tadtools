@@ -77,7 +77,7 @@ class FullCalendar6
             var calendarEl = document.getElementById('{$selector}');
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 locale: 'zh-tw',
-                buttonText:{today: '今天'},
+                buttonText:{today: '今天',prev:'上個月',next:'下個月'},
                 {$js_parameter}
                 {$get_event}
                 headerToolbar: {

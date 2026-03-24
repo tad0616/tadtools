@@ -5,6 +5,22 @@ body {
   overflow-x: hidden;
 }
 
+.sr-only-focusable{
+  position:absolute;
+  left:-9999px;
+}
+
+.sr-only-focusable:focus{
+  left:0;
+  background:#000;
+  color:#fff;
+}
+
+.linkify-external {
+  margin-left: 0.25em;
+  font-size: 0.9em;
+}
+
 #xoops_theme_center_zone {
   padding-bottom: 3rem;
 }
