@@ -10,7 +10,7 @@
     </legend>
 
     <!-- 無障礙提示區 -->
-    <div id="loginMsg" class="text-danger mb-2" aria-live="assertive"></div>
+    <div id="loginMsg" class="bg-danger text-white mb-2" aria-live="assertive"></div>
 
     <form id="loginForm" action="<{$xoops_url}>/user.php" method="post" role="form">
       <div class="form-group row mb-3">

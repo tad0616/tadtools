@@ -1,1 +1,3 @@
- <script>history.go(-1);</script>
+<?php
+include "../../mainfile.php";
+header("location:" . XOOPS_URL);

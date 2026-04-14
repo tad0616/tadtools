@@ -68,6 +68,17 @@
   /* WCAG 2.5.5：最小目標尺寸 44×36px 已由 JS 設定 */
 }
 
+/* 暫停按鈕預設不顯示 outline（由 JS focus 事件動態設定） */
+.tad-marquee-pause-btn {
+  outline: none;
+}
+
+/* 角落模式：按鈕在 overflow:hidden 容器內，焦點框向內縮（不被裁切） */
+.tad-marquee-container > .tad-marquee-pause-btn:focus-visible {
+  outline: 3px solid #ffdd00 !important;
+  outline-offset: -2px !important;
+}
+
 /* ===== 控制列狀態文字（選用：可由 JS 動態插入） ===== */
 .tad-marquee-controls-label {
   font-size: 0.8125rem; /* 13px */
@@ -181,15 +192,7 @@
     transition: none !important;
   }
 
-  /* 確保在減少動畫模式下內容仍然可見 */
-  .tad-marquee-container {
-    overflow: auto;
-  }
-
-  .tad-marquee-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-  }
+  /* 在減少動畫模式下保持原有的版面配置，由 JS 接管暫停與強制播放邏輯 */
 
   /* 頂部模式：減少動畫時控制列仍保持可見 */
   .tad-marquee-root.tad-marquee-top .tad-marquee-controls {
@@ -219,6 +222,12 @@
   .tad-marquee-pause-btn:focus-visible {
     outline: 4px solid !important;
     outline-offset: 2px !important;
+  }
+
+  /* 角落模式（在 overflow:hidden 內）：焦點框向內縮，不被容器裁切 */
+  .tad-marquee-container > .tad-marquee-pause-btn:focus-visible {
+    outline: 4px solid !important;
+    outline-offset: -3px !important;
   }
 }
 

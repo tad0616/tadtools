@@ -58,6 +58,7 @@
       this.timer = null;
       this.running = false;
       this.paused = false;
+      this._isManual = false;
 
       this._init();
     }
@@ -109,6 +110,7 @@
       /* 建立各元件 */
       this._buildProgress();
       this._buildNav();
+      this._updateNavLabels(0);
       if (opts.announceSlide) this._buildLiveRegion();
 
       /* 事件 */
@@ -172,14 +174,14 @@
       /* 上一張 */
       if (opts.nav) {
         this._prevBtn = this._makeBtn(opts.prevText, 'tad-slide__btn tad-slide__arrow--prev', opts.prevLabel);
-        this._prevBtn.addEventListener('click', () => this.prev());
+        this._prevBtn.addEventListener('click', () => this.prev(true));
         bar.appendChild(this._prevBtn);
       }
 
       /* 下一張 */
       if (opts.nav) {
         this._nextBtn = this._makeBtn(opts.nextText, 'tad-slide__btn tad-slide__arrow--next', opts.nextLabel);
-        this._nextBtn.addEventListener('click', () => this.next());
+        this._nextBtn.addEventListener('click', () => this.next(true));
         bar.appendChild(this._nextBtn);
       }
 
@@ -197,6 +199,7 @@
           btn.setAttribute('role', 'tab');
           btn.setAttribute('aria-current', i === 0 ? 'true' : 'false');
           btn.addEventListener('click', () => {
+            this._isManual = true;
             this.goTo(i);
             this.items[i].focus({ preventScroll: true });
           });
@@ -228,12 +231,12 @@
 
       /* 左箭頭（圖片之後） */
       this._prevBtn = this._makeBtn(opts.prevText, 'tad-slide__btn tad-slide__arrow tad-slide__arrow--prev', opts.prevLabel);
-      this._prevBtn.addEventListener('click', () => this.prev());
+      this._prevBtn.addEventListener('click', () => this.prev(true));
       this.el.appendChild(this._prevBtn);
 
       /* 右箭頭（左箭頭之後） */
       this._nextBtn = this._makeBtn(opts.nextText, 'tad-slide__btn tad-slide__arrow tad-slide__arrow--next', opts.nextLabel);
-      this._nextBtn.addEventListener('click', () => this.next());
+      this._nextBtn.addEventListener('click', () => this.next(true));
       this.el.appendChild(this._nextBtn);
     }
 
@@ -288,7 +291,7 @@
     _buildLiveRegion() {
       this._liveRegion = document.createElement('div');
       this._liveRegion.className = 'tad-sr-only';
-      this._liveRegion.setAttribute('aria-live', 'off'); // 從 'polite' 改為 'off'，避免自動搶讀
+      this._liveRegion.setAttribute('aria-live', 'polite');
       this._liveRegion.setAttribute('aria-atomic', 'true');
       this.el.appendChild(this._liveRegion);
     }
@@ -326,8 +329,8 @@
         this._pagerBtns[next].setAttribute('aria-current', 'true');
       }
 
-      /* 通知螢幕閱讀器 */
-      if (this._liveRegion) {
+      /* 通知螢幕閱讀器（僅手動操作時） */
+      if (this._liveRegion && this._isManual) {
         const caption = nextItem.querySelector('.tad-slide__caption');
         const msg = caption
           ? `第 ${next + 1} 張，共 ${this.total} 張：${caption.textContent.trim()}`
@@ -335,6 +338,10 @@
         this._liveRegion.textContent = '';
         setTimeout(() => { this._liveRegion.textContent = msg; }, 50);
       }
+      this._isManual = false;
+
+      /* 動態更新上一張 / 下一張按鈕的 aria-label */
+      this._updateNavLabels(next);
 
       setTimeout(() => {
         prevItem.classList.remove('is-prev');
@@ -344,8 +351,23 @@
       }, opts.speed + 50);
     }
 
-    next() { this.goTo(this.current + 1); }
-    prev() { this.goTo(this.current - 1); }
+    next(manual = false) { if (manual) this._isManual = true; this.goTo(this.current + 1); }
+    prev(manual = false) { if (manual) this._isManual = true; this.goTo(this.current - 1); }
+
+    /* 動態更新上一張 / 下一張按鈕的 aria-label */
+    _updateNavLabels(current) {
+      const t = this.total;
+      const prevIdx = (current - 1 + t) % t;
+      const nextIdx = (current + 1) % t;
+      if (this._prevBtn) {
+        this._prevBtn.setAttribute('aria-label',
+          `${this.opts.prevLabel}，第 ${prevIdx + 1} 張，共 ${t} 張`);
+      }
+      if (this._nextBtn) {
+        this._nextBtn.setAttribute('aria-label',
+          `${this.opts.nextLabel}，第 ${nextIdx + 1} 張，共 ${t} 張`);
+      }
+    }
 
     /* ────────────────────────────────────────
        播放 / 暫停
@@ -407,12 +429,12 @@
         case 'ArrowLeft':
         case 'ArrowUp':
           e.preventDefault();
-          this.prev();
+          this.prev(true);
           break;
         case 'ArrowRight':
         case 'ArrowDown':
           e.preventDefault();
-          this.next();
+          this.next(true);
           break;
         case ' ':
           if (onPauseBtn) break;
@@ -444,7 +466,7 @@
         const dx = e.changedTouches[0].clientX - startX;
         const dy = e.changedTouches[0].clientY - startY;
         if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > threshold) {
-          dx < 0 ? this.next() : this.prev();
+          dx < 0 ? this.next(true) : this.prev(true);
         }
       }, { passive: true });
     }

@@ -192,7 +192,7 @@ class PageBar
             $aria_current = $i == $this->current ? ' aria-current="page"' : '';
             $sr_only      = $i == $this->current ? '<span class="sr-only">(' . _TAD_CURRENT_PAGE . ')</span>' : '';
             $bar_center .= sprintf(
-                '<li class="page-item%s"%s><a class="page-link" aria-label="第' . $i . '頁" href="%s%s%s%s=%d%s">%d%s</a></li>',
+                '<li class="page-item%s"%s><a class="page-link" title="第' . $i . '頁" href="%s%s%s%s=%d%s">%d%s</a></li>',
                 $active,
                 $aria_current,
                 $this->to_page,

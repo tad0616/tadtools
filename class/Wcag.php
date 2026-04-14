@@ -14,18 +14,18 @@ class Wcag
     // -------------------------------------------------------------------------
     // 初始化旗標，避免重複建立設定
     // -------------------------------------------------------------------------
-    private static bool $initialized = false;
+    private static $initialized = false;
 
-    private static array $checkItems  = [];
-    private static array $checkTitles = [];
-    private static array $rules       = [];
+    private static $checkItems  = [];
+    private static $checkTitles = [];
+    private static $rules       = [];
 
     /**
      * 已知安全的 handler 白名單，對應 $rules 中的 func 鍵。
      * 避免動態字串呼叫任意方法（安全漏洞修正）。
      * 注意：不可在屬性預設值使用 self::class（非編譯期常數），改在 init() 中建立。
      */
-    private static array $handlerMap = [];
+    private static $handlerMap = [];
 
     // -------------------------------------------------------------------------
     // 語系設定
@@ -34,12 +34,12 @@ class Wcag
     /**
      * 當 <blockquote> 缺少 xml:lang 時，預設填入的語言代碼
      */
-    private static string $defaultLang = 'zh-TW';
+    private static $defaultLang = 'zh-TW';
 
     /**
      * 空連結補充文字的語言
      */
-    private static string $emptyAnchorLabel = '連至';
+    private static $emptyAnchorLabel = '連至';
 
     // -------------------------------------------------------------------------
     // 公開 API
@@ -56,12 +56,16 @@ class Wcag
     {
         self::init();
 
-        return match ($var) {
-            'checkItems'  => self::$checkItems,
-            'checkTitles' => self::$checkTitles,
-            'rules'       => self::$rules,
-            default       => throw new \InvalidArgumentException("未知的變數名稱：{$var}"),
-        };
+        switch ($var) {
+            case 'checkItems':
+                return self::$checkItems;
+            case 'checkTitles':
+                return self::$checkTitles;
+            case 'rules':
+                return self::$rules;
+            default:
+                throw new \InvalidArgumentException("未知的變數名稱：{$var}");
+        }
     }
 
     /**
@@ -255,11 +259,13 @@ class Wcag
             $value = (float) $matches[1][$sk];
             $unit  = strtolower($matches[2][$sk]);
 
-            $new_val = match ($unit) {
-                'pt'    => round($value / 12, 2),
-                'px'    => round($value / 16, 2),
-                default => self::convertFontNumber($matches[1][$sk]),
-            };
+            if ($unit === 'pt') {
+                $new_val = round($value / 12, 2);
+            } elseif ($unit === 'px') {
+                $new_val = round($value / 16, 2);
+            } else {
+                $new_val = self::convertFontNumber($matches[1][$sk]);
+            }
 
             $v = str_ireplace($s, "font-size: {$new_val}rem;", $v);
         }
@@ -288,11 +294,13 @@ class Wcag
             $value = (float) $matches[1][$sk];
             $unit  = strtolower($matches[2][$sk]);
 
-            $new_val = match ($unit) {
-                'pt'    => round($value / 12, 2),
-                'px'    => round($value / 16, 2),
-                default => 1.0,
-            };
+            if ($unit === 'pt') {
+                $new_val = round($value / 12, 2);
+            } elseif ($unit === 'px') {
+                $new_val = round($value / 16, 2);
+            } else {
+                $new_val = 1.0;
+            }
 
             $v = str_ireplace($s, "font: {$new_val}rem", $v);
         }
@@ -776,16 +784,16 @@ class Wcag
      *   基準 = 3，每差 1 個單位 = 0.2rem
      *   +N / -N 表示相對偏移
      */
-    private static function convertFontNumber(string | int | float $raw): float
+    private static function convertFontNumber($raw): float
     {
         $raw = (string) $raw;
 
-        if (str_contains($raw, '+')) {
+        if (strpos($raw, '+') !== false) {
             $num = (float) ltrim($raw, '+');
             return round(1 + 0.2 * $num, 2);
         }
 
-        if (str_contains($raw, '-')) {
+        if (strpos($raw, '-') !== false) {
             $num = (float) ltrim($raw, '-');
             return round(max(0.1, 1 - 0.2 * $num), 2); // 不低於 0.1rem
         }

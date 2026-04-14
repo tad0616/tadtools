@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="<{$xoops_url}>/modules/tadtools/tad_nav/tadnav.css?t=202603131240">
+<link rel="stylesheet" href="<{$xoops_url}>/modules/tadtools/tad_nav/tadnav.css?t=2026040910">
 
 <script>
     function tad_themes_popup(URL) {
@@ -6,8 +6,10 @@
     }
 </script>
 <!-- <{$navbar_pos|default:''}> -->
-<nav class="tadnav-wrapper" role="navigation" id="main-nav" tabindex="-1" aria-label="<{$smarty.const._TAD_O_NAV_ZONE|default:'主要導覽區'}>">
+<nav class="tadnav-wrapper" role="navigation" id="main-nav" tabindex="-1" aria-label="<{$smarty.const._TAD_O_NAV_ZONE|default:'導覽工具列'}>">
+    <{if !$hide_accesskey|default:false}>
     <a accesskey="U" href="#main-nav" id="xoops_theme_nav_key" class="sr-only-focusable" aria-label="跳到上方導覽工具列">:::</a>
+    <{/if}>
     <div class="tadnav-inner">
 
         <{if $show_sitename !='2' }>
@@ -85,11 +87,11 @@
     </div>
 </nav>
 
-<script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/tad_nav/tadnav.js?t=202603201139"></script>
+<script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/tad_nav/tadnav.js?t=2026040910"></script>
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function () {
         // 或指定 click 模式
-        var nav = new TadNav('#main-menu', { hoverClose: false, theme: {
+        var nav = new TadNav('#main-menu', { trigger: 'hover', hoverClose: true, theme: {
         navBg:           'transparent',
         fontFamily:      '<{$font_family|default:''}>',
         navShadow:       'none',

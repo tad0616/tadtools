@@ -7,7 +7,7 @@
 </script>
 
 <!-- <{$navbar_pos|default:''}> -->
-<nav role="navigation" id="main-nav" tabindex="-1" aria-label="<{$smarty.const._TAD_O_NAV_ZONE|default:'主要導覽區'}>">
+<nav role="navigation" id="main-nav" tabindex="-1" aria-label="<{$smarty.const._TAD_O_NAV_ZONE|default:'導覽工具列'}>">
     <a accesskey="U" href="#main-nav" id="xoops_theme_nav_key" class="sr-only-focusable" aria-label="跳到上方導覽工具列">:::</a>
 
 

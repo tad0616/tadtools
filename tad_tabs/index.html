@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tad Tabs — 無障礙頁籤套件使用說明</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="tad-tabs.css" />
+
+  <style>
+    /* ── Page Design Tokens ── */
+    :root {
+      --ink:        #0f172a;
+      --ink-2:      #334155;
+      --ink-3:      #64748b;
+      --surface:    #ffffff;
+      --surface-2:  #f8fafc;
+      --surface-3:  #f1f5f9;
+      --accent:     #1a56db;
+      --accent-2:   #7c3aed;
+      --accent-warm:#d97706;
+      --border:     #e2e8f0;
+      --code-bg:    #0f172a;
+      --code-text:  #e2e8f0;
+      --radius:     10px;
+      --shadow:     0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.05);
+      --shadow-lg:  0 8px 32px rgba(0,0,0,.10);
+    }
+
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html  { scroll-behavior: smooth; color-scheme: light; }
+    body  {
+      margin:      0;
+      font-family: 'DM Sans', sans-serif;
+      font-size:   1rem;
+      line-height: 1.7;
+      color:       var(--ink);
+      background:  var(--surface);
+    }
+    a { color: var(--accent); text-underline-offset: 3px; }
+    a:hover { color: var(--accent-2); }
+    p { margin: 0 0 1em; }
+    h1,h2,h3,h4 { line-height: 1.25; margin: 0 0 .5em; }
+    h1 { font-family: 'DM Serif Display', serif; font-weight: 400; }
+    h2 { font-family: 'DM Serif Display', serif; font-weight: 400; }
+    ul, ol { padding-left: 1.5em; margin: 0 0 1em; }
+    li { margin-bottom: .4em; }
+
+    /* ── Layout ── */
+    .page-header {
+      background:    var(--code-bg);
+      color:         #e2e8f0;
+      padding:       4rem 2rem 3rem;
+      text-align:    center;
+      position:      relative;
+      overflow:      hidden;
+    }
+    .page-header::before {
+      content:    '';
+      position:   absolute;
+      inset:      0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(26,86,219,.35) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .page-header h1 {
+      font-size:   3.5rem;
+      color:       #ffffff;
+      letter-spacing: -.02em;
+      position:    relative;
+    }
+    .page-header .tagline {
+      font-size:  1.125rem;
+      color:      #94a3b8;
+      max-width:  540px;
+      margin:     .5rem auto 1.5rem;
+      position:   relative;
+    }
+    .badge-row {
+      display:     flex;
+      gap:         .5rem;
+      justify-content: center;
+      flex-wrap:   wrap;
+      position:    relative;
+    }
+    .badge {
+      display:      inline-flex;
+      align-items:  center;
+      gap:          .3em;
+      padding:      .25em .75em;
+      border-radius: 999px;
+      font-size:    .75rem;
+      font-weight:  600;
+      letter-spacing: .04em;
+    }
+    .badge--blue   { background: rgba(59,130,246,.2); color: #93c5fd; border: 1px solid rgba(59,130,246,.3); }
+    .badge--green  { background: rgba(16,185,129,.2); color: #6ee7b7; border: 1px solid rgba(16,185,129,.3); }
+    .badge--purple { background: rgba(124,58,237,.2); color: #c4b5fd; border: 1px solid rgba(124,58,237,.3); }
+    .badge--amber  { background: rgba(217,119,6,.2);  color: #fcd34d; border: 1px solid rgba(217,119,6,.3); }
+
+    .toc-nav {
+      background:  var(--surface-2);
+      border-bottom: 1px solid var(--border);
+      padding:     .75rem 2rem;
+    }
+    .toc-nav ul {
+      list-style:   none;
+      padding:      0;
+      margin:       0;
+      display:      flex;
+      flex-wrap:    wrap;
+      gap:          .25rem 1.5rem;
+    }
+    .toc-nav li { margin: 0; }
+    .toc-nav a  {
+      text-decoration: none;
+      font-size:  .875rem;
+      font-weight: 500;
+      color:      var(--ink-2);
+      padding:    .25rem 0;
+      display:    block;
+    }
+    .toc-nav a:hover { color: var(--accent); }
+
+    .container {
+      max-width:  900px;
+      margin:     0 auto;
+      padding:    0 2rem;
+    }
+
+    section {
+      padding:    3rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    section:last-child { border-bottom: none; }
+
+    .section-label {
+      display:      inline-block;
+      font-size:    .6875rem;
+      font-weight:  700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color:        var(--accent);
+      margin-bottom: .5rem;
+    }
+
+    .section-title {
+      font-size:  2rem;
+      color:      var(--ink);
+      margin-bottom: .75rem;
+    }
+    .section-lead {
+      font-size:  1.0625rem;
+      color:      var(--ink-2);
+      max-width:  60ch;
+      margin-bottom: 2rem;
+    }
+
+    /* ── Demo Cards ── */
+    .demo-card {
+      background:  var(--surface);
+      border:      1px solid var(--border);
+      border-radius: var(--radius);
+      overflow:    hidden;
+      margin-bottom: 2rem;
+      box-shadow:  var(--shadow);
+    }
+    .demo-card-header {
+      display:      flex;
+      align-items:  center;
+      justify-content: space-between;
+      padding:      .875rem 1.25rem;
+      background:   var(--surface-2);
+      border-bottom: 1px solid var(--border);
+      font-size:    .875rem;
+      font-weight:  600;
+      color:        var(--ink-2);
+      gap:          1rem;
+    }
+    .demo-card-header .demo-type-badge {
+      font-size:   .6875rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color:       var(--ink-3);
+      background:  var(--surface-3);
+      padding:     .2em .6em;
+      border-radius: 4px;
+    }
+    .demo-card-body { padding: 1.5rem; }
+
+    /* ── Code Blocks ── */
+    pre {
+      background:   var(--code-bg);
+      color:        var(--code-text);
+      border-radius: var(--radius);
+      padding:      1.25rem 1.5rem;
+      overflow-x:   auto;
+      font-family:  'DM Mono', monospace;
+      font-size:    .8125rem;
+      line-height:  1.65;
+      margin:       1.25rem 0;
+    }
+    code {
+      font-family: 'DM Mono', monospace;
+      font-size:   .875em;
+      background:  var(--surface-3);
+      color:       var(--accent-2);
+      padding:     .1em .4em;
+      border-radius: 4px;
+    }
+    pre code {
+      background: none;
+      color:      inherit;
+      padding:    0;
+      font-size:  inherit;
+    }
+
+    /* Syntax colours */
+    .tok-tag    { color: #7dd3fc; }  /* element tag    */
+    .tok-attr   { color: #86efac; }  /* attribute name */
+    .tok-val    { color: #fca5a5; }  /* attribute value*/
+    .tok-key    { color: #c4b5fd; }  /* option key     */
+    .tok-str    { color: #fcd34d; }  /* string value   */
+    .tok-cmt    { color: #64748b; font-style: italic; }
+    .tok-fn     { color: #93c5fd; }  /* function/method*/
+    .tok-num    { color: #fb923c; }  /* number         */
+    .tok-kw     { color: #f472b6; }  /* keyword        */
+
+    /* ── Options / API Tables ── */
+    .data-table {
+      width:         100%;
+      border-collapse: collapse;
+      font-size:     .875rem;
+      margin:        1.25rem 0;
+    }
+    .data-table th {
+      background:   var(--surface-2);
+      padding:      .6rem 1rem;
+      text-align:   left;
+      font-weight:  600;
+      font-size:    .75rem;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color:        var(--ink-3);
+      border-bottom: 2px solid var(--border);
+    }
+    .data-table td {
+      padding:     .65rem 1rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: var(--surface-2); }
+    .data-table .td-name  { font-family: 'DM Mono', monospace; color: var(--accent-2); white-space: nowrap; }
+    .data-table .td-type  { font-family: 'DM Mono', monospace; color: var(--accent-warm); font-size: .8em; }
+    .data-table .td-def   { font-family: 'DM Mono', monospace; color: var(--ink-3); font-size: .8em; white-space: nowrap; }
+
+    /* ── Keyboard Reference ── */
+    .key-grid {
+      display:             grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap:                 .75rem;
+      margin:              1.25rem 0;
+    }
+    .key-item {
+      display:        flex;
+      align-items:    center;
+      gap:            .75rem;
+      padding:        .875rem 1rem;
+      background:     var(--surface-2);
+      border:         1px solid var(--border);
+      border-radius:  8px;
+      font-size:      .875rem;
+    }
+    .key-item kbd {
+      display:        inline-flex;
+      align-items:    center;
+      justify-content: center;
+      min-width:      2em;
+      padding:        .2em .5em;
+      background:     var(--surface);
+      border:         1px solid var(--border);
+      border-bottom:  2px solid #94a3b8;
+      border-radius:  5px;
+      font-family:    'DM Mono', monospace;
+      font-size:      .75rem;
+      font-style:     normal;
+      font-weight:    600;
+      white-space:    nowrap;
+      flex-shrink:    0;
+    }
+    .key-item .key-desc { color: var(--ink-2); }
+
+    /* ── Callout ── */
+    .callout {
+      border-left:  4px solid var(--accent);
+      background:   var(--surface-2);
+      padding:      1rem 1.25rem;
+      border-radius: 0 8px 8px 0;
+      font-size:    .9375rem;
+      margin:       1.25rem 0;
+    }
+    .callout--warn {
+      border-left-color: var(--accent-warm);
+    }
+    .callout--success {
+      border-left-color: #10b981;
+    }
+    .callout strong { display: block; margin-bottom: .25em; color: var(--ink); }
+
+    /* ── Checklist ── */
+    .checklist { list-style: none; padding: 0; }
+    .checklist li {
+      display:      flex;
+      align-items:  flex-start;
+      gap:          .5rem;
+      margin-bottom: .5rem;
+      font-size:    .9375rem;
+    }
+    .checklist li::before {
+      content:     '✓';
+      color:       #10b981;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top:  .1em;
+    }
+
+    /* ── Page footer ── */
+    .page-footer {
+      background:   var(--code-bg);
+      color:        #64748b;
+      text-align:   center;
+      padding:      2rem;
+      font-size:    .875rem;
+    }
+    .page-footer a { color: #94a3b8; }
+
+    /* ── Sample tab content ── */
+    .sample-content h3 { font-size: 1.125rem; margin: 0 0 .5rem; }
+    .sample-content p  { color: var(--ink-2); margin: 0; }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════
+     Page Header
+════════════════════════════════════════════════════ -->
+<header class="page-header" role="banner">
+  <h1>Tad Tabs</h1>
+  <p class="tagline">現代化、完全無障礙的頁籤與折疊面板套件<br>WCAG 2.2 AAA · ARIA 1.2 · 支援 NVDA / JAWS / VoiceOver</p>
+  <div class="badge-row">
+    <span class="badge badge--blue">WCAG 2.2 AAA</span>
+    <span class="badge badge--green">ARIA 1.2</span>
+    <span class="badge badge--purple">無相依套件</span>
+    <span class="badge badge--amber">v1.0.0</span>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════════════════════
+     Table of Contents Nav
+════════════════════════════════════════════════════ -->
+<nav class="toc-nav" aria-label="頁面導覽">
+  <ul>
+    <li><a href="#quick-start">快速開始</a></li>
+    <li><a href="#demo-default">水平頁籤</a></li>
+    <li><a href="#demo-vertical">垂直頁籤</a></li>
+    <li><a href="#demo-accordion">折疊面板</a></li>
+    <li><a href="#demo-responsive">響應式</a></li>
+    <li><a href="#options">選項參數</a></li>
+    <li><a href="#api">公開 API</a></li>
+    <li><a href="#keyboard">鍵盤操作</a></li>
+    <li><a href="#accessibility">無障礙說明</a></li>
+    <li><a href="#migration">從 easyResponsiveTabs 遷移</a></li>
+  </ul>
+</nav>
+
+<main id="main-content">
+
+<!-- ════════════════════════════════════════════════════
+     Quick Start
+════════════════════════════════════════════════════ -->
+<section id="quick-start">
+  <div class="container">
+    <span class="section-label">入門</span>
+    <h2 class="section-title">快速開始</h2>
+    <p class="section-lead">只需引入兩個檔案，在 HTML 加上 <code>data-tad</code> 屬性，即可自動初始化。</p>
+
+    <h3>1. 引入檔案</h3>
+<pre><code><span class="tok-tag">&lt;link</span> <span class="tok-attr">rel</span>=<span class="tok-val">"stylesheet"</span> <span class="tok-attr">href</span>=<span class="tok-val">"tad-tabs.css"</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;script</span> <span class="tok-attr">src</span>=<span class="tok-val">"tad-tabs.js"</span><span class="tok-tag">&gt;&lt;/script&gt;</span></code></pre>
+
+    <h3>2. HTML 結構</h3>
+<pre><code><span class="tok-cmt">&lt;!-- data-tad 屬性觸發自動初始化 --&gt;</span>
+<span class="tok-tag">&lt;div</span> <span class="tok-attr">id</span>=<span class="tok-val">"my-tabs"</span> <span class="tok-attr">data-tad</span><span class="tok-tag">&gt;</span>
+
+  <span class="tok-cmt">&lt;!-- 頁籤標題：直接子元素 &lt;ul&gt; --&gt;</span>
+  <span class="tok-tag">&lt;ul&gt;</span>
+    <span class="tok-tag">&lt;li&gt;</span>頁籤一<span class="tok-tag">&lt;/li&gt;</span>
+    <span class="tok-tag">&lt;li&gt;</span>頁籤二<span class="tok-tag">&lt;/li&gt;</span>
+    <span class="tok-tag">&lt;li&gt;</span>頁籤三<span class="tok-tag">&lt;/li&gt;</span>
+  <span class="tok-tag">&lt;/ul&gt;</span>
+
+  <span class="tok-cmt">&lt;!-- 頁籤內容：與 &lt;ul&gt; 同層的 &lt;div&gt;，順序對應 --&gt;</span>
+  <span class="tok-tag">&lt;div&gt;</span>頁籤一的內容<span class="tok-tag">&lt;/div&gt;</span>
+  <span class="tok-tag">&lt;div&gt;</span>頁籤二的內容<span class="tok-tag">&lt;/div&gt;</span>
+  <span class="tok-tag">&lt;div&gt;</span>頁籤三的內容<span class="tok-tag">&lt;/div&gt;</span>
+
+<span class="tok-tag">&lt;/div&gt;</span></code></pre>
+
+    <h3>3. 透過 JavaScript 初始化（可選）</h3>
+<pre><code><span class="tok-cmt">// 手動初始化單一元素</span>
+<span class="tok-kw">const</span> tabs = <span class="tok-kw">new</span> <span class="tok-fn">TadTabs</span>(<span class="tok-val">'#my-tabs'</span>, {
+  <span class="tok-key">type</span>:       <span class="tok-str">'default'</span>,  <span class="tok-cmt">// 'default' | 'vertical' | 'accordion'</span>
+  <span class="tok-key">activation</span>: <span class="tok-str">'manual'</span>,   <span class="tok-cmt">// 'manual' | 'auto'</span>
+  <span class="tok-key">activate</span>: <span class="tok-kw">function</span>(index, tabEl, panelEl) {
+    console.<span class="tok-fn">log</span>(<span class="tok-str">'已切換至頁籤'</span>, index);
+  }
+});
+
+<span class="tok-cmt">// 批次初始化所有含 data-tad 屬性的元素</span>
+TadTabs.<span class="tok-fn">init</span>();
+
+<span class="tok-cmt">// jQuery 方式</span>
+$(<span class="tok-str">'#my-tabs'</span>).<span class="tok-fn">tadTabs</span>({ type: <span class="tok-str">'vertical'</span> });</code></pre>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     Demo 1: 水平頁籤
+════════════════════════════════════════════════════ -->
+<section id="demo-default">
+  <div class="container">
+    <span class="section-label">範例</span>
+    <h2 class="section-title">水平頁籤（預設）</h2>
+    <p class="section-lead">螢幕寬度超過 768&nbsp;px 時顯示水平頁籤，低於時自動切換為折疊面板。</p>
+
+    <div class="demo-card">
+      <div class="demo-card-header">
+        互動示範
+        <span class="demo-type-badge">type: default</span>
+      </div>
+      <div class="demo-card-body">
+
+        <div id="demo1" data-tad data-tad-type="default">
+          <ul>
+            <li>🏠 首頁</li>
+            <li>📋 關於</li>
+            <li>⚙️ 設定</li>
+            <li>📞 聯絡</li>
+          </ul>
+          <div>
+            <div class="sample-content">
+              <h3>首頁內容</h3>
+              <p>這是首頁頁籤的內容區域。您可以在這裡放置任何 HTML 內容，包含圖片、表格、表單等。</p>
+              <p>試試使用鍵盤 <kbd>Tab</kbd> 鍵進行遊走：焦點會依序進入頁籤標題 → 首頁內容 → 下一個頁籤標題。</p>
+            </div>
+          </div>
+          <div>
+            <div class="sample-content">
+              <h3>關於我們</h3>
+              <p>這是關於頁籤的內容。Tad Tabs 是一個完全符合 WCAG 2.2 AAA 標準的頁籤套件，支援 NVDA、JAWS 等讀報軟體。</p>
+            </div>
+          </div>
+          <div>
+            <div class="sample-content">
+              <h3>設定</h3>
+              <p>這是設定頁籤的內容。您可以透過 CSS 自訂屬性輕鬆調整外觀。</p>
+              <p><a href="#options">查看所有設定選項 →</a></p>
+            </div>
+          </div>
+          <div>
+            <div class="sample-content">
+              <h3>聯絡我們</h3>
+              <p>這是聯絡頁籤的內容。底部有一個可互動的連結，測試 Tab 鍵是否可正確遊走至此連結後再跳出頁籤元件。</p>
+              <p><a href="#demo-vertical">前往垂直頁籤示範</a></p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <h3>HTML 程式碼</h3>
+<pre><code><span class="tok-tag">&lt;div</span> <span class="tok-attr">id</span>=<span class="tok-val">"demo1"</span> <span class="tok-attr">data-tad</span> <span class="tok-attr">data-tad-type</span>=<span class="tok-val">"default"</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;ul&gt;</span>
+    <span class="tok-tag">&lt;li&gt;</span>🏠 首頁<span class="tok-tag">&lt;/li&gt;</span>
+    <span class="tok-tag">&lt;li&gt;</span>📋 關於<span class="tok-tag">&lt;/li&gt;</span>
+    <span class="tok-tag">&lt;li&gt;</span>⚙️ 設定<span class="tok-tag">&lt;/li&gt;</span>
+  <span class="tok-tag">&lt;/ul&gt;</span>
+  <span class="tok-tag">&lt;div&gt;</span>首頁內容…<span class="tok-tag">&lt;/div&gt;</span>
+  <span class="tok-tag">&lt;div&gt;</span>關於內容…<span class="tok-tag">&lt;/div&gt;</span>
+  <span class="tok-tag">&lt;div&gt;</span>設定內容…<span class="tok-tag">&lt;/div&gt;</span>
+<span class="tok-tag">&lt;/div&gt;</span></code></pre>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     Demo 2: 垂直頁籤
+════════════════════════════════════════════════════ -->
+<section id="demo-vertical">
+  <div class="container">
+    <span class="section-label">範例</span>
+    <h2 class="section-title">垂直頁籤</h2>
+    <p class="section-lead">頁籤標題列顯示於左側，同樣在窄螢幕下自動切換為折疊面板。</p>
+
+    <div class="demo-card">
+      <div class="demo-card-header">
+        互動示範
+        <span class="demo-type-badge">type: vertical</span>
+      </div>
+      <div class="demo-card-body">
+
+        <div id="demo2" data-tad data-tad-type="vertical">
+          <ul>
+            <li>🍎 蘋果</li>
+            <li>🍋 檸檬</li>
+            <li>🫐 藍莓</li>
+            <li>🥭 芒果</li>
+          </ul>
+          <div>
+            <div class="sample-content">
+              <h3>蘋果</h3>
+              <p>蘋果（Malus domestica）是全球最廣泛栽培的水果之一，原產於中亞地區。富含膳食纖維、維生素 C 與多種抗氧化物質。</p>
+            </div>
+          </div>
+          <div>
+            <div class="sample-content">
+              <h3>檸檬</h3>
+              <p>檸檬（Citrus limon）是一種常見的柑橘類水果，以其酸味和濃郁香氣著稱，廣泛用於烹飪、飲料和甜點中。</p>
+            </div>
+          </div>
+          <div>
+            <div class="sample-content">
+              <h3>藍莓</h3>
+              <p>藍莓（Vaccinium corymbosum）含有豐富的花青素，是強效的抗氧化劑，有助於保護細胞、維持腦部健康。</p>
+            </div>
+          </div>
+          <div>
+            <div class="sample-content">
+              <h3>芒果</h3>
+              <p>芒果（Mangifera indica）被稱為「熱帶水果之王」，富含維生素 A、C 和葉酸，味道香甜濃郁。</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <h3>HTML 程式碼</h3>
+<pre><code><span class="tok-tag">&lt;div</span> <span class="tok-attr">data-tad</span> <span class="tok-attr">data-tad-type</span>=<span class="tok-val">"vertical"</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;ul&gt;</span>
+    <span class="tok-tag">&lt;li&gt;</span>蘋果<span class="tok-tag">&lt;/li&gt;</span>
+    <span class="tok-tag">&lt;li&gt;</span>檸檬<span class="tok-tag">&lt;/li&gt;</span>
+  <span class="tok-tag">&lt;/ul&gt;</span>
+  <span class="tok-tag">&lt;div&gt;</span>蘋果內容…<span class="tok-tag">&lt;/div&gt;</span>
+  <span class="tok-tag">&lt;div&gt;</span>檸檬內容…<span class="tok-tag">&lt;/div&gt;</span>
+<span class="tok-tag">&lt;/div&gt;</span></code></pre>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     Demo 3: 折疊面板
+════════════════════════════════════════════════════ -->
+<section id="demo-accordion">
+  <div class="container">
+    <span class="section-label">範例</span>
+    <h2 class="section-title">折疊面板（Accordion）</h2>
+    <p class="section-lead">永遠以折疊面板形式呈現，不受螢幕寬度影響。</p>
+
+    <div class="demo-card">
+      <div class="demo-card-header">
+        互動示範
+        <span class="demo-type-badge">type: accordion</span>
+      </div>
+      <div class="demo-card-body">
+
+        <div id="demo3" data-tad data-tad-type="accordion" data-tad-closed="accordion">
+          <ul>
+            <li>WCAG 2.2 AAA 是什麼？</li>
+            <li>如何支援鍵盤使用者？</li>
+            <li>如何支援讀報軟體（NVDA）？</li>
+            <li>可以自訂外觀嗎？</li>
+          </ul>
+          <div>
+            <div class="sample-content">
+              <p>WCAG（Web Content Accessibility Guidelines）是由 W3C 制定的網頁無障礙設計指引。2.2 版於 2023 年發布，分為 A、AA、AAA 三個等級，AAA 是最高標準，涵蓋焦點外觀（SC 2.4.13）、目標尺寸（SC 2.5.5）等要求。</p>
+            </div>
+          </div>
+          <div>
+            <div class="sample-content">
+              <p>Tad Tabs 完整實作 ARIA 1.2 頁籤模式，支援方向鍵切換頁籤、Tab 鍵以正確順序遊走、Home/End 直跳首末頁籤、Enter/Space 啟動頁籤，以及 Escape 收合折疊面板。</p>
+            </div>
+          </div>
+          <div>
+            <div class="sample-content">
+              <p>套件設定了正確的 <code>role</code>、<code>aria-selected</code>、<code>aria-expanded</code>、<code>aria-controls</code>、<code>aria-labelledby</code> 等 ARIA 屬性，確保 NVDA、JAWS、VoiceOver 能正確朗讀頁籤狀態與內容。</p>
+            </div>
+          </div>
+          <div>
+            <div class="sample-content">
+              <p>可以！所有顏色、字體、間距、邊框圓角都以 CSS 自訂屬性（CSS Custom Properties）定義，在 <code>.tad-tabs { }</code> 內覆寫即可完全自訂外觀，無需修改套件原始碼。</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <h3>可收合的折疊面板</h3>
+    <p>加上 <code>data-tad-closed="accordion"</code> 允許點擊已展開項目時收合。</p>
+
+<pre><code><span class="tok-tag">&lt;div</span>
+  <span class="tok-attr">data-tad</span>
+  <span class="tok-attr">data-tad-type</span>=<span class="tok-val">"accordion"</span>
+  <span class="tok-attr">data-tad-closed</span>=<span class="tok-val">"accordion"</span>
+<span class="tok-tag">&gt;</span>
+  ...
+<span class="tok-tag">&lt;/div&gt;</span></code></pre>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     Demo 4: 響應式
+════════════════════════════════════════════════════ -->
+<section id="demo-responsive">
+  <div class="container">
+    <span class="section-label">範例</span>
+    <h2 class="section-title">響應式自動切換</h2>
+    <p class="section-lead">透過 <code>data-tad-breakpoint</code> 自訂切換點。縮小瀏覽器視窗可觀察從頁籤切換為折疊面板的效果。</p>
+
+    <div class="demo-card">
+      <div class="demo-card-header">
+        互動示範（請縮放視窗觀察變化）
+        <span class="demo-type-badge">breakpoint: 900px</span>
+      </div>
+      <div class="demo-card-body">
+
+        <div id="demo4" data-tad data-tad-type="default" data-tad-breakpoint="900" data-tad-activation="auto">
+          <ul>
+            <li>簡介</li>
+            <li>功能特色</li>
+            <li>使用授權</li>
+          </ul>
+          <div>
+            <div class="sample-content">
+              <h3>Tad Tabs 簡介</h3>
+              <p>Tad Tabs 是以純 JavaScript（ES6+）撰寫的頁籤套件，不相依任何第三方函式庫。透過現代化的 ResizeObserver API 監聽容器尺寸，在視窗縮放時即時切換顯示模式。</p>
+            </div>
+          </div>
+          <div>
+            <div class="sample-content">
+              <h3>功能特色</h3>
+              <ul>
+                <li>水平頁籤、垂直頁籤、折疊面板三種模式</li>
+                <li>響應式自動切換，斷點可自訂</li>
+                <li>WCAG 2.2 AAA 完整合規</li>
+                <li>ARIA 1.2 頁籤模式與折疊面板模式</li>
+                <li>手動 / 自動兩種方向鍵行為</li>
+                <li>URL Hash 同步</li>
+                <li>jQuery 橋接（可選）</li>
+                <li>支援 destroy() 完整清除</li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <div class="sample-content">
+              <h3>使用授權</h3>
+              <p>Tad Tabs 採用 MIT 授權，可自由使用於個人與商業專案，修改後無需開放原始碼，唯需保留版權宣告。</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+<pre><code><span class="tok-cmt">&lt;!-- 視窗寬度 ≤ 900 px 時切換為折疊面板 --&gt;</span>
+<span class="tok-cmt">&lt;!-- data-tad-activation="auto" 啟用方向鍵自動切換頁籤 --&gt;</span>
+<span class="tok-tag">&lt;div</span>
+  <span class="tok-attr">data-tad</span>
+  <span class="tok-attr">data-tad-type</span>=<span class="tok-val">"default"</span>
+  <span class="tok-attr">data-tad-breakpoint</span>=<span class="tok-val">"900"</span>
+  <span class="tok-attr">data-tad-activation</span>=<span class="tok-val">"auto"</span>
+<span class="tok-tag">&gt;</span>
+  ...
+<span class="tok-tag">&lt;/div&gt;</span></code></pre>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     Options
+════════════════════════════════════════════════════ -->
+<section id="options">
+  <div class="container">
+    <span class="section-label">設定</span>
+    <h2 class="section-title">選項參數</h2>
+    <p class="section-lead">可透過 <strong>JavaScript 物件</strong>或 <strong>HTML data-* 屬性</strong>兩種方式傳入。</p>
+
+    <table class="data-table" aria-label="選項參數說明">
+      <thead>
+        <tr>
+          <th scope="col">JS 選項</th>
+          <th scope="col">data-* 屬性</th>
+          <th scope="col">型別</th>
+          <th scope="col">預設值</th>
+          <th scope="col">說明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="td-name">type</td>
+          <td class="td-name">data-tad-type</td>
+          <td class="td-type">string</td>
+          <td class="td-def">'default'</td>
+          <td>版型。<code>'default'</code>（水平）、<code>'vertical'</code>（垂直）、<code>'accordion'</code>（折疊）</td>
+        </tr>
+        <tr>
+          <td class="td-name">closed</td>
+          <td class="td-name">data-tad-closed</td>
+          <td class="td-type">bool|string</td>
+          <td class="td-def">false</td>
+          <td>初始是否收合。<code>false</code>、<code>true</code>、<code>'accordion'</code>（僅折疊模式下收合）、<code>'tabs'</code>（僅頁籤模式下收合）</td>
+        </tr>
+        <tr>
+          <td class="td-name">breakpoint</td>
+          <td class="td-name">data-tad-breakpoint</td>
+          <td class="td-type">number</td>
+          <td class="td-def">768</td>
+          <td>切換為折疊面板的視窗寬度（px）。type 為 <code>'accordion'</code> 時無效。</td>
+        </tr>
+        <tr>
+          <td class="td-name">activeIndex</td>
+          <td class="td-name">data-tad-active</td>
+          <td class="td-type">number</td>
+          <td class="td-def">0</td>
+          <td>初始啟用的頁籤索引（0 起算）。若 URL Hash 存在則優先使用 Hash。</td>
+        </tr>
+        <tr>
+          <td class="td-name">activation</td>
+          <td class="td-name">data-tad-activation</td>
+          <td class="td-type">string</td>
+          <td class="td-def">'manual'</td>
+          <td>方向鍵行為。<code>'manual'</code>：僅移動焦點，Enter/Space 啟動（推薦）；<code>'auto'</code>：移動焦點並立即切換。</td>
+        </tr>
+        <tr>
+          <td class="td-name">hash</td>
+          <td class="td-name">data-tad-hash</td>
+          <td class="td-type">boolean</td>
+          <td class="td-def">true</td>
+          <td>是否將當前啟用頁籤同步至 URL Hash，格式：<code>#容器id-索引</code>（1 起算）。</td>
+        </tr>
+        <tr>
+          <td class="td-name">activate</td>
+          <td class="td-name">—</td>
+          <td class="td-type">function</td>
+          <td class="td-def">null</td>
+          <td>頁籤切換後的回呼函式，接收 <code>(index, tabEl, panelEl)</code>，<code>this</code> 為實例。</td>
+        </tr>
+        <tr>
+          <td class="td-name">i18n.tablistLabel</td>
+          <td class="td-name">—</td>
+          <td class="td-type">string</td>
+          <td class="td-def">'頁籤導覽'</td>
+          <td>頁籤清單的 <code>aria-label</code>，供讀報軟體朗讀。</td>
+        </tr>
+        <tr>
+          <td class="td-name">i18n.accordionLabel</td>
+          <td class="td-name">—</td>
+          <td class="td-type">string</td>
+          <td class="td-def">'折疊面板'</td>
+          <td>折疊面板的標籤，供讀報軟體使用。</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     API
+════════════════════════════════════════════════════ -->
+<section id="api">
+  <div class="container">
+    <span class="section-label">程式介面</span>
+    <h2 class="section-title">公開 API</h2>
+
+    <table class="data-table" aria-label="公開方法說明">
+      <thead>
+        <tr>
+          <th scope="col">方法</th>
+          <th scope="col">回傳</th>
+          <th scope="col">說明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="td-name">activate(index)</td>
+          <td class="td-type">TadTabs</td>
+          <td>啟用指定索引的頁籤（0 起算）。可鏈式呼叫。</td>
+        </tr>
+        <tr>
+          <td class="td-name">next()</td>
+          <td class="td-type">TadTabs</td>
+          <td>啟用下一個頁籤（超過最後一個會繞回第一個）。</td>
+        </tr>
+        <tr>
+          <td class="td-name">prev()</td>
+          <td class="td-type">TadTabs</td>
+          <td>啟用上一個頁籤（超過第一個會繞回最後一個）。</td>
+        </tr>
+        <tr>
+          <td class="td-name">getActive()</td>
+          <td class="td-type">number</td>
+          <td>取得當前啟用的頁籤索引，無啟用時回傳 <code>-1</code>。</td>
+        </tr>
+        <tr>
+          <td class="td-name">length()</td>
+          <td class="td-type">number</td>
+          <td>取得頁籤總數。</td>
+        </tr>
+        <tr>
+          <td class="td-name">destroy()</td>
+          <td class="td-type">void</td>
+          <td>移除所有事件監聽器、清除注入的 ARIA 屬性與折疊面板按鈕，恢復原始 HTML。</td>
+        </tr>
+        <tr>
+          <td class="td-name">TadTabs.init(selector?)</td>
+          <td class="td-type">TadTabs[]</td>
+          <td>靜態方法：批次初始化符合選擇器的所有元素，預設選擇器為 <code>'[data-tad]'</code>。回傳實例陣列。</td>
+        </tr>
+        <tr>
+          <td class="td-name">TadTabs.version</td>
+          <td class="td-type">string</td>
+          <td>版本號字串，如 <code>'1.0.0'</code>。</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>JavaScript 使用範例</h3>
+<pre><code><span class="tok-kw">const</span> tabs = <span class="tok-kw">new</span> <span class="tok-fn">TadTabs</span>(<span class="tok-str">'#my-tabs'</span>, {
+  type: <span class="tok-str">'default'</span>,
+  activate(index, tabEl, panelEl) {
+    console.<span class="tok-fn">log</span>(`已切換至第 ${index + <span class="tok-num">1</span>} 個頁籤`);
+  }
+});
+
+<span class="tok-cmt">// 切換至第 3 個頁籤（索引 2）</span>
+tabs.<span class="tok-fn">activate</span>(<span class="tok-num">2</span>);
+
+<span class="tok-cmt">// 下一個 / 上一個（可鏈式）</span>
+tabs.<span class="tok-fn">next</span>().<span class="tok-fn">next</span>();
+
+<span class="tok-cmt">// 讀取當前索引</span>
+console.<span class="tok-fn">log</span>(tabs.<span class="tok-fn">getActive</span>());  <span class="tok-cmt">// → 4</span>
+
+<span class="tok-cmt">// 清除並重建</span>
+tabs.<span class="tok-fn">destroy</span>();
+<span class="tok-kw">const</span> newTabs = <span class="tok-kw">new</span> <span class="tok-fn">TadTabs</span>(<span class="tok-str">'#my-tabs'</span>, { type: <span class="tok-str">'accordion'</span> });</code></pre>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     Keyboard
+════════════════════════════════════════════════════ -->
+<section id="keyboard">
+  <div class="container">
+    <span class="section-label">鍵盤操作</span>
+    <h2 class="section-title">鍵盤導覽說明</h2>
+    <p class="section-lead">完整實作 ARIA APG 頁籤與折疊面板的鍵盤互動規範，並修正 DOM 結構造成的 Tab 順序問題。</p>
+
+    <h3>頁籤模式（水平 / 垂直）</h3>
+    <div class="key-grid">
+      <div class="key-item"><kbd>Tab</kbd>         <span class="key-desc">進入頁籤清單，焦點移至作用中頁籤</span></div>
+      <div class="key-item"><kbd>Tab</kbd>         <span class="key-desc">從作用中頁籤 → 進入作用中頁籤的內容區域</span></div>
+      <div class="key-item"><kbd>Tab</kbd>         <span class="key-desc">從作用中頁籤內容 → 移至下一個頁籤標題（若為最後一個則離開元件）</span></div>
+      <div class="key-item"><kbd>Shift</kbd>+<kbd>Tab</kbd> <span class="key-desc">從作用中頁籤內容 → 返回作用中頁籤標題</span></div>
+      <div class="key-item"><kbd>Shift</kbd>+<kbd>Tab</kbd> <span class="key-desc">從作用中頁籤的「下一個」標題 → 返回作用中頁籤內容</span></div>
+      <div class="key-item"><kbd>←</kbd><kbd>→</kbd>        <span class="key-desc">在頁籤標題間移動焦點（繞回）</span></div>
+      <div class="key-item"><kbd>↑</kbd><kbd>↓</kbd>        <span class="key-desc">垂直頁籤：上下移動焦點</span></div>
+      <div class="key-item"><kbd>Home</kbd>        <span class="key-desc">跳至第一個頁籤</span></div>
+      <div class="key-item"><kbd>End</kbd>         <span class="key-desc">跳至最後一個頁籤</span></div>
+      <div class="key-item"><kbd>Enter</kbd> / <kbd>Space</kbd> <span class="key-desc">啟用當前焦點所在的頁籤（manual 模式）</span></div>
+    </div>
+
+    <h3>折疊面板模式（Accordion）</h3>
+    <div class="key-grid">
+      <div class="key-item"><kbd>Tab</kbd>         <span class="key-desc">在各折疊按鈕及面板內容間依序遊走</span></div>
+      <div class="key-item"><kbd>↓</kbd>           <span class="key-desc">焦點移至下一個折疊按鈕（繞回）</span></div>
+      <div class="key-item"><kbd>↑</kbd>           <span class="key-desc">焦點移至上一個折疊按鈕（繞回）</span></div>
+      <div class="key-item"><kbd>Home</kbd>        <span class="key-desc">跳至第一個折疊按鈕</span></div>
+      <div class="key-item"><kbd>End</kbd>         <span class="key-desc">跳至最後一個折疊按鈕</span></div>
+      <div class="key-item"><kbd>Enter</kbd> / <kbd>Space</kbd> <span class="key-desc">展開 / 收合目前焦點所在的面板</span></div>
+      <div class="key-item"><kbd>Esc</kbd>         <span class="key-desc">收合目前展開的面板（需 closed 選項允許收合）</span></div>
+    </div>
+
+    <div class="callout callout--success">
+      <strong>✓ Tab 順序修正說明</strong>
+      原始 DOM 結構中，所有頁籤標題集中在 <code>&lt;ul&gt;</code> 前段，所有內容集中在後段，導致自然 Tab 順序為「所有標題 → 所有內容」。Tad Tabs 透過攔截 Tab 鍵事件，強制實現正確的遊走順序：<br><br>
+      <code>前方標題… → 作用中標題 → 作用中內容 → 後方標題… → 離開元件</code>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     Accessibility
+════════════════════════════════════════════════════ -->
+<section id="accessibility">
+  <div class="container">
+    <span class="section-label">無障礙</span>
+    <h2 class="section-title">無障礙設計說明</h2>
+
+    <h3>符合的 WCAG 2.2 成功準則</h3>
+    <ul class="checklist">
+      <li><strong>SC 1.3.1 資訊與關聯</strong> — role、aria-controls、aria-labelledby 正確關聯頁籤與內容</li>
+      <li><strong>SC 1.4.6 對比度（增強型）AAA</strong> — 文字與背景對比 ≥ 7:1</li>
+      <li><strong>SC 1.4.11 非文字對比</strong> — 邊框、圖示等 UI 元件對比 ≥ 3:1</li>
+      <li><strong>SC 2.1.1 鍵盤</strong> — 所有功能均可純鍵盤操作</li>
+      <li><strong>SC 2.1.3 鍵盤（無例外）AAA</strong> — 無任何功能需要滑鼠路徑移動</li>
+      <li><strong>SC 2.4.3 焦點順序</strong> — Tab 順序與視覺順序一致且符合邏輯</li>
+      <li><strong>SC 2.4.7 焦點可見</strong> — 所有互動元素具備明顯焦點指示器</li>
+      <li><strong>SC 2.4.11 焦點不被遮蔽（最低）AA</strong> — 焦點元素不被固定元素完全遮蓋</li>
+      <li><strong>SC 2.4.13 焦點外觀 AAA</strong> — 焦點指示器 ≥ 3px 外框，對比 ≥ 3:1</li>
+      <li><strong>SC 2.5.5 目標尺寸（增強型）AAA</strong> — 最小點擊目標 44×44 CSS px</li>
+      <li><strong>SC 2.3.3 動畫（三次閃爍）AAA</strong> — 尊重 prefers-reduced-motion，停用裝飾動畫</li>
+      <li><strong>SC 4.1.2 名稱、角色、值</strong> — 所有元件具備正確 ARIA 名稱與狀態</li>
+    </ul>
+
+    <h3>ARIA 屬性說明</h3>
+    <table class="data-table" aria-label="ARIA 屬性說明">
+      <thead>
+        <tr><th scope="col">元素</th><th scope="col">ARIA 屬性</th><th scope="col">說明</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="td-name">&lt;ul&gt;</td><td class="td-name">role="tablist"<br>aria-label<br>aria-orientation</td><td>宣告為頁籤清單；提供可讀標籤；宣告水平或垂直方向</td></tr>
+        <tr><td class="td-name">&lt;li&gt;</td><td class="td-name">role="tab"<br>aria-selected<br>aria-controls<br>tabindex</td><td>宣告為頁籤；選取狀態；控制哪個面板；roving tabindex</td></tr>
+        <tr><td class="td-name">&lt;div&gt;（面板）</td><td class="td-name">role="tabpanel"<br>aria-hidden<br>aria-labelledby<br>tabindex</td><td>宣告為面板；是否隱藏；由哪個頁籤標記；可聚焦</td></tr>
+        <tr><td class="td-name">&lt;button&gt;（折疊）</td><td class="td-name">aria-expanded<br>aria-controls</td><td>展開/收合狀態；控制哪個面板</td></tr>
+      </tbody>
+    </table>
+
+    <h3>讀報軟體（NVDA）使用提示</h3>
+    <div class="callout">
+      <strong>瀏覽模式 vs 焦點模式</strong>
+      NVDA 在進入頁籤元件時會自動切換至「焦點模式」（Forms Mode），此時方向鍵用於頁籤導覽而非虛擬游標移動。進入頁籤內容後可按 <kbd>Esc</kbd> 切換回瀏覽模式，使用方向鍵閱讀內容。
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     Migration
+════════════════════════════════════════════════════ -->
+<section id="migration">
+  <div class="container">
+    <span class="section-label">遷移指南</span>
+    <h2 class="section-title">從 easyResponsiveTabs 遷移</h2>
+    <p class="section-lead">Tad Tabs 提供 <code>easyResponsiveTabs</code> jQuery 相容介面，大多數情況只需更換引入檔案。</p>
+
+    <h3>方法一：直接替換（需 jQuery）</h3>
+    <p>將引入的 JS/CSS 換成 Tad Tabs，既有的 jQuery 呼叫方式完全相容：</p>
+<pre><code><span class="tok-cmt">&lt;!-- 舊 --&gt;</span>
+<span class="tok-tag">&lt;link</span> <span class="tok-attr">rel</span>=<span class="tok-val">"stylesheet"</span> <span class="tok-attr">href</span>=<span class="tok-val">"easy-responsive-tabs.css"</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;script</span> <span class="tok-attr">src</span>=<span class="tok-val">"easyResponsiveTabs.js"</span><span class="tok-tag">&gt;&lt;/script&gt;</span>
+
+<span class="tok-cmt">&lt;!-- 新：只換這兩行 --&gt;</span>
+<span class="tok-tag">&lt;link</span> <span class="tok-attr">rel</span>=<span class="tok-val">"stylesheet"</span> <span class="tok-attr">href</span>=<span class="tok-val">"tad-tabs.css"</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;script</span> <span class="tok-attr">src</span>=<span class="tok-val">"tad-tabs.js"</span><span class="tok-tag">&gt;&lt;/script&gt;</span></code></pre>
+
+<pre><code><span class="tok-cmt">// 既有呼叫方式無需更改：</span>
+$(<span class="tok-str">'#my-tabs'</span>).<span class="tok-fn">easyResponsiveTabs</span>({
+  type: <span class="tok-str">'default'</span>,
+  activate: <span class="tok-kw">function</span>() { ... }
+});</code></pre>
+
+    <h3>方法二：改用 Tad Tabs 原生 API</h3>
+    <p>建議逐步改用原生 API，以獲得完整功能並移除 jQuery 相依：</p>
+
+    <table class="data-table" aria-label="選項對照表">
+      <thead>
+        <tr>
+          <th scope="col">easyResponsiveTabs 選項</th>
+          <th scope="col">Tad Tabs 對應</th>
+          <th scope="col">說明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="td-name">type: 'default'</td>  <td class="td-name">type: 'default'</td>     <td>相同</td></tr>
+        <tr><td class="td-name">type: 'vertical'</td> <td class="td-name">type: 'vertical'</td>    <td>相同</td></tr>
+        <tr><td class="td-name">type: 'accordion'</td><td class="td-name">type: 'accordion'</td>   <td>相同</td></tr>
+        <tr><td class="td-name">closed: false</td>    <td class="td-name">closed: false</td>        <td>相同</td></tr>
+        <tr><td class="td-name">closed: 'accordion'</td><td class="td-name">closed: 'accordion'</td><td>相同</td></tr>
+        <tr><td class="td-name">activate: fn</td>     <td class="td-name">activate: fn</td>         <td>簽章改為 <code>(index, tabEl, panelEl)</code></td></tr>
+        <tr><td class="td-name">tabidentify: '…'</td> <td class="td-name">（不需要）</td>           <td>以容器 id 自動區分多實例</td></tr>
+        <tr><td class="td-name">activetab_bg</td>     <td class="td-name">CSS: --tad-bg-active</td> <td>改用 CSS 自訂屬性</td></tr>
+        <tr><td class="td-name">inactive_bg</td>      <td class="td-name">CSS: --tad-bg-inactive</td><td>改用 CSS 自訂屬性</td></tr>
+      </tbody>
+    </table>
+
+    <h3>HTML 結構變更</h3>
+    <p>不需要 <code>class="resp-tabs-list"</code> 或 <code>class="resp-tabs-container"</code>，直接使用乾淨的 <code>&lt;ul&gt;</code> 和 <code>&lt;div&gt;</code>：</p>
+<pre><code><span class="tok-cmt">&lt;!-- 舊結構 --&gt;</span>
+<span class="tok-tag">&lt;div</span> <span class="tok-attr">id</span>=<span class="tok-val">"my-tabs"</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;ul</span> <span class="tok-attr">class</span>=<span class="tok-val">"resp-tabs-list"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;li&gt;</span>頁籤一<span class="tok-tag">&lt;/li&gt;</span>
+  <span class="tok-tag">&lt;/ul&gt;</span>
+  <span class="tok-tag">&lt;div</span> <span class="tok-attr">class</span>=<span class="tok-val">"resp-tabs-container"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;div&gt;</span>內容一<span class="tok-tag">&lt;/div&gt;</span>
+  <span class="tok-tag">&lt;/div&gt;</span>
+<span class="tok-tag">&lt;/div&gt;</span>
+
+<span class="tok-cmt">&lt;!-- 新結構（推薦）--&gt;</span>
+<span class="tok-tag">&lt;div</span> <span class="tok-attr">id</span>=<span class="tok-val">"my-tabs"</span> <span class="tok-attr">data-tad</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;ul&gt;</span>
+    <span class="tok-tag">&lt;li&gt;</span>頁籤一<span class="tok-tag">&lt;/li&gt;</span>
+  <span class="tok-tag">&lt;/ul&gt;</span>
+  <span class="tok-tag">&lt;div&gt;</span>內容一<span class="tok-tag">&lt;/div&gt;</span>
+<span class="tok-tag">&lt;/div&gt;</span></code></pre>
+  </div>
+</section>
+
+</main>
+
+<!-- ════════════════════════════════════════════════════
+     Footer
+════════════════════════════════════════════════════ -->
+<footer class="page-footer" role="contentinfo">
+  <p>Tad Tabs v1.0.0 &nbsp;·&nbsp; MIT License &nbsp;·&nbsp;
+     <a href="#main-content">回到頂部 ↑</a></p>
+  <p style="margin-top:.5rem;font-size:.8125rem;">
+    本套件符合 WCAG 2.2 AAA 標準，已針對 NVDA、JAWS、VoiceOver 進行測試。
+  </p>
+</footer>
+
+<!-- ── 載入套件 ── -->
+<script src="tad-tabs.js"></script>
+
+<!-- ── 自訂佈景主題示範（覆寫 CSS 自訂屬性）── -->
+<style>
+  /* 為示範頁套用細微的外觀調整 */
+  .tad-tabs {
+    --tad-primary:       #1a56db;
+    --tad-primary-faint: #eff6ff;
+    --tad-bg-inactive:   #f8fafc;
+    --tad-radius:        8px;
+    --tad-radius-sm:     6px;
+  }
+  /* 示範頁的 kbd 元素 */
+  kbd {
+    display:        inline-flex;
+    align-items:    center;
+    padding:        .1em .45em;
+    font-family:    'DM Mono', monospace;
+    font-size:      .8em;
+    background:     var(--surface-3, #f1f5f9);
+    border:         1px solid var(--border, #e2e8f0);
+    border-bottom:  2px solid #94a3b8;
+    border-radius:  4px;
+    font-style:     normal;
+  }
+</style>
+
+</body>
+</html>

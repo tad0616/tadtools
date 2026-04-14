@@ -3,7 +3,7 @@ namespace XoopsModules\Tadtools;
 
 use XoopsModules\Tadtools\Utility;
 
-class EasyResponsiveTabs
+class TadTabs
 {
     public $name;
     public $my_function                 = '';
@@ -34,9 +34,9 @@ class EasyResponsiveTabs
         $jquery          = Utility::get_jquery();
         $responsive_tabs = '';
         if ($xoTheme) {
-            $xoTheme->addScript('modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js?v=2026031');
+            $xoTheme->addScript('modules/tadtools/tad_tabs/tad-tabs.js?v=2026032603');
             $xoTheme->addScript('modules/tadtools/jqueryCookie/js.cookie.min.js');
-            $xoTheme->addStylesheet('modules/tadtools/Easy-Responsive-Tabs/css/easy-responsive-tabs.css');
+            $xoTheme->addStylesheet('modules/tadtools/tad_tabs/tad-tabs.css');
             $cookie_name = mb_substr($this->name, 1) . '_baseURI';
             $xoTheme->addScript('', null, "
                 $(document).ready(function(){
@@ -70,8 +70,8 @@ class EasyResponsiveTabs
         } else {
             $responsive_tabs = "
                 {$jquery}
-                <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js?v=2026031'></script>
-                <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='" . XOOPS_URL . "/modules/tadtools/Easy-Responsive-Tabs/css/easy-responsive-tabs.css' >
+                <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/tad_tabs/tad-tabs.js?v=2026032603'></script>
+                <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='" . XOOPS_URL . "/modules/tadtools/tad_tabs/tad-tabs.css' >
                 ";
 
             $cookie_name = mb_substr($this->name, 1) . '_baseURI';
@@ -116,9 +116,9 @@ class EasyResponsiveTabs
         $jquery          = Utility::get_jquery();
         $responsive_tabs = '';
         if ($xoTheme) {
-            $xoTheme->addScript('modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js?v=2026031');
+            $xoTheme->addScript('modules/tadtools/tad_tabs/tad-tabs.js?v=2026032603');
             $xoTheme->addScript('modules/tadtools/jqueryCookie/js.cookie.min.js');
-            $xoTheme->addStylesheet('modules/tadtools/Easy-Responsive-Tabs/css/easy-responsive-tabs.css');
+            $xoTheme->addStylesheet('modules/tadtools/tad_tabs/tad-tabs.css');
             $cookie_name = mb_substr($this->name, 1) . '_baseURI';
             $xoTheme->addScript('', null, "
                 $(document).ready(function(){
@@ -151,8 +151,8 @@ class EasyResponsiveTabs
         } else {
             $responsive_tabs = "
                 {$jquery}
-                <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js?v=2026031'></script>
-                <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='" . XOOPS_URL . "/modules/tadtools/Easy-Responsive-Tabs/css/easy-responsive-tabs.css' >
+                <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/tad_tabs/tad-tabs.js?v=2026032603'></script>
+                <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='" . XOOPS_URL . "/modules/tadtools/tad_tabs/tad-tabs.css' >
                 ";
 
             $cookie_name = mb_substr($this->name, 1) . '_baseURI';
@@ -195,23 +195,30 @@ class EasyResponsiveTabs
 
 #若有更新，記得把 $currentTab.trigger('tabactivate', $currentTab); 移動到 if (historyApi) {} 之後
 /*
-use XoopsModules\Tadtools\EasyResponsiveTabs;
+use XoopsModules\Tadtools\TadTabs;
 
-$EasyResponsiveTabs = new EasyResponsiveTabs('#demoTab', $type = 'default, vertical, accordion', $activetab_bg = '#B5AC5F', $inactive_bg = '#E0D78C', $active_border_color = '#9C905C', $active_content_border_color = '#9C905C');
-$EasyResponsiveTabs->render();
+$TadTabs = new TadTabs('#demoTab', $type = 'default, vertical, accordion', $activetab_bg = '#B5AC5F', $inactive_bg = '#E0D78C', $active_border_color = '#9C905C', $active_content_border_color = '#9C905C');
+$TadTabs->render();
 
-<div id="demoTab">
-<ul class="resp-tabs-list vert">
-<li> .... </li>
-<li> .... </li>
-<li> .... </li>
+水平頁籤
+<div id="demo1" data-tad data-tad-type="default">
+<ul>
+<li>🏠 首頁</li>
+<li>📋 關於</li>
+<li>⚙️ 設定</li>
 </ul>
-
-<div class="resp-tabs-container vert">
-<div> ....... </div>
-<div> ....... </div>
-<div> ....... </div>
-</div>
+<div>首頁內容…</div>
+<div>關於內容…</div>
+<div>設定內容…</div>
 </div>
 
+垂直頁籤
+<div data-tad data-tad-type="vertical">
+<ul>
+<li>蘋果</li>
+<li>檸檬</li>
+</ul>
+<div>蘋果內容…</div>
+<div>檸檬內容…</div>
+</div>
  */

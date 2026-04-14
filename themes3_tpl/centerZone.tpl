@@ -1,4 +1,4 @@
-<a accesskey="C" href="#xoops_theme_center_zone" title="<{$smarty.const._TAD_CENTER_ZONE}>" id="xoops_theme_center_zone_key" class="sr-only-focusable" aria-label="跳到中間區域">:::</a>
+<a accesskey="C" href="#xoops_theme_center_zone" title="<{$smarty.const._TAD_CENTER_ZONE}>" id="xoops_theme_center_zone_key" class="sr-only-focusable" aria-label="跳到主內容區">:::</a>
 <div id="xoops_theme_center" style="<{$centerBlocksContent|default:''}>">
   <{include file="$xoops_rootpath/modules/tadtools/themes3_tpl/centerBlock.tpl"}>
   <div class="row">

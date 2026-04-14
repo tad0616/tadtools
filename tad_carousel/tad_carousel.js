@@ -518,19 +518,23 @@
                 case 'ArrowLeft':
                 case 'ArrowUp':
                     e.preventDefault();
+                    e.stopPropagation(); // 阻止冒泡至 _handleKeydown，避免再次呼叫 prev() 造成多跳一頁
                     newIndex = index > 0 ? index - 1 : dots.length - 1;
                     break;
                 case 'ArrowRight':
                 case 'ArrowDown':
                     e.preventDefault();
+                    e.stopPropagation(); // 阻止冒泡至 _handleKeydown，避免再次呼叫 next() 造成多跳一頁
                     newIndex = index < dots.length - 1 ? index + 1 : 0;
                     break;
                 case 'Home':
                     e.preventDefault();
+                    e.stopPropagation();
                     newIndex = 0;
                     break;
                 case 'End':
                     e.preventDefault();
+                    e.stopPropagation();
                     newIndex = dots.length - 1;
                     break;
                 default:
@@ -758,13 +762,14 @@
                 item.setAttribute('aria-hidden', !isVisible);
                 if (!isVisible) {
                     item.setAttribute('inert', '');
-                    // 隱藏項目移除 tabindex，避免成為多餘焦點停駐點
                     item.removeAttribute('tabindex');
                 } else {
                     item.removeAttribute('inert');
-                    // 可見投影片設為可聚焦（tabindex="0"），
-                    // 確保鍵盤焦點順序：暫停/播放 → 投影片 → 上一張 → 下一張 → 圓點
-                    item.setAttribute('tabindex', '0');
+                    // WCAG 2.1.2：僅讓「第一個」可見投影片成為 Tab 停駐點。
+                    // 若多張投影片同時可見（items > 1），每張都設 tabindex="0" 會造成
+                    // Tab 鍵在投影片區重複停駐（「遊走二次」），因此只有 startIndex
+                    // 的項目可被 Tab 聚焦，其餘可見項目設 tabindex="-1" 排除於 Tab 序列外。
+                    item.setAttribute('tabindex', index === startIndex ? '0' : '-1');
                 }
             });
         },

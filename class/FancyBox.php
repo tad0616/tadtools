@@ -52,6 +52,13 @@ class FancyBox
             overlay : {closeClick: false}
         }' : '';
 
+        $beforeShow = ",
+        beforeShow: function () {
+        var alt = this.element.data('alt');
+        this.inner.find('img')
+        .attr('alt', alt);
+        }";
+
         $type_opt  = $this->type ? "type: '{$this->type}'," : '';
         $autoPlay  = $auto_play ? 'autoPlay: true,' : '';
         $playSpeed = $playSpeed ? "playSpeed: {$playSpeed}," : '';
@@ -78,6 +85,7 @@ class FancyBox
                     closeEffect : 'none'
                     {$reload_code}
                     {$prevent_closed_outside_code}
+                    {$beforeShow}
                     });
                 });
             ");
@@ -103,6 +111,7 @@ class FancyBox
                     closeEffect : 'none'
                     {$reload_code}
                     {$prevent_closed_outside_code}
+                    {$beforeShow}
                 });
             });
             </script>

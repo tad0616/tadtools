@@ -97,7 +97,7 @@
                 itemClassName: options.itemClassName || '',
                 ariaLabel: options.ariaLabel || '跑馬燈內容',
                 ariaLive: options.ariaLive || 'off', // 從 'polite' 改為 'off'
-                respectReducedMotion: options.respectReducedMotion !== false,
+                respectReducedMotion: options.respectReducedMotion === true, // 預設改為 false，避免 Chrome 因為作業系統設定而預設不播放
                 announceItems: options.announceItems !== false,
                 keyboardControl: options.keyboardControl !== false,
                 minContrastRatio: options.minContrastRatio || 7,
@@ -205,8 +205,9 @@
                     display:    'flex',
                     flexDirection: 'row',
                     alignItems: 'stretch',
-                    width:      '100%',
-                    overflow:   'hidden'
+                    width:      '100%'
+                    // overflow: hidden 不設在 rootEl 層，以免焦點外框被裁切
+                    // 實際裁切由 marqueeEl 自身的 overflow: hidden 負責
                 });
 
                 // 將 container 的父節點插入 rootEl，container 移入 rootEl
@@ -346,7 +347,7 @@
                 justifyContent: 'center',
                 color:          '#ffffff',
                 transition:     'background 0.2s, box-shadow 0.2s',
-                outline:        'none',
+                // outline: 'none' 不設定，讓 CSS :focus-visible 規則在高對比模式下生效
                 lineHeight:     '1'
             });
 
@@ -413,13 +414,16 @@
             // ── Focus（WCAG 2.4.11 可見焦點）──────────────────────
             btn.addEventListener('focus', () => {
                 btn.style.outline      = '3px solid #ffdd00';
-                btn.style.outlineOffset = '2px';
+                // 角落模式：按鈕在 overflow:hidden 容器內，outline-offset 若為正值會被裁切
+                // → 改為負值（向內），確保焦點框完整顯示在按鈕範圍內
+                btn.style.outlineOffset = (inline || top) ? '2px' : '-2px';
                 btn.style.boxShadow    = (inline || top)
                     ? '0 0 0 3px rgba(255,221,0,0.5)'
-                    : '0 0 0 5px rgba(255,221,0,0.4)';
+                    : 'inset 0 0 0 3px rgba(255,221,0,0.35)';
             });
             btn.addEventListener('blur', () => {
-                btn.style.outline   = 'none';
+                btn.style.outline   = '';
+                btn.style.outlineOffset = '';
                 btn.style.boxShadow = (inline || top) ? 'none' : '0 1px 4px rgba(0,0,0,0.4)';
             });
 
@@ -430,11 +434,16 @@
 
             // ── 插入位置 ──────────────────────────────────────────
             if (inline) {
-                // 並排模式：插入 rootEl 的最前或最後
+                // 並排模式：暫停按鈕一律插入 DOM 第一位，確保 Tab 先到達按鈕（WCAG 2.2.2）
+                // 視覺位置由 CSS flex order 控制：left = order 0（最左），right = order 2（最右）
                 if (pos === 'left') {
+                    btn.style.order = '0';
                     this.rootEl.insertBefore(btn, this.rootEl.firstChild);
                 } else {
-                    this.rootEl.appendChild(btn);
+                    // right 模式：DOM 排第一（Tab 最先到），視覺靠右（order: 2）
+                    btn.style.order = '2';
+                    this.rootEl.insertBefore(btn, this.rootEl.firstChild);
+                    // container（marqueeEl）預設 order: 0，視覺上排在按鈕左方
                 }
             } else if (top) {
                 // 頂部模式：建立控制列容器，置於 rootEl 最頂端（DOM 第一位）
@@ -448,8 +457,10 @@
                 this.rootEl.insertBefore(ctrlBar, this.rootEl.firstChild);
                 this._ctrlBar = ctrlBar;
             } else {
-                // 角落模式：插入 marqueeEl 內部（absolute 定位）
-                this.marqueeEl.appendChild(btn);
+                // 角落模式：插入 marqueeEl 第一個子節點之前（即 wrapper 之前）
+                // 按鈕為 position: absolute，視覺位置不受 DOM 順序影響
+                // 但 Tab 焦點順序依 DOM 順序，因此暫停按鈕會先於跑馬燈項目被聚焦（WCAG 2.2.2）
+                this.marqueeEl.insertBefore(btn, this.wrapper);
             }
         }
 
@@ -475,9 +486,18 @@
         }
 
         _togglePauseByUser() {
+            if (!this.isRunning) {
+                this.start(true);
+                this.isPausedByUser = false;
+                this._updatePauseButton(false);
+                this.announceToScreenReader(this.options.pauseButtonLabel.resume);
+                this.triggerCallback('onResume');
+                return;
+            }
+
             const inline = isInlineMode(this.options.pauseButtonPosition);
             if (this.isPaused) {
-                this.resume();
+                this.resume(true);
                 this.isPausedByUser = false;
                 this._updatePauseButton(false);
                 this.announceToScreenReader(this.options.pauseButtonLabel.resume);
@@ -545,7 +565,7 @@
                     gap.setAttribute('aria-hidden', 'true');
                     if (vertical) {
                         gap.style.width   = '100%';
-                        gap.style.height  = this.options.gap + 'px';
+                        gap.style.height  = '1px';
                         gap.style.display = 'block';
                     } else {
                         gap.style.width      = this.options.gap + 'px';
@@ -565,6 +585,17 @@
 
         _measureAndClone(buildGroup, vertical) {
             if (!this.wrapper) return;
+
+            if (!vertical && this.wrapper.offsetHeight > 0) {
+                if (this.marqueeEl.offsetHeight < this.wrapper.offsetHeight) {
+                    this.marqueeEl.style.minHeight = Math.ceil(this.wrapper.offsetHeight) + 'px';
+                }
+            } else if (vertical && this.wrapper.offsetWidth > 0) {
+                if (this.marqueeEl.offsetWidth < this.wrapper.offsetWidth) {
+                    this.marqueeEl.style.minWidth = Math.ceil(this.wrapper.offsetWidth) + 'px';
+                }
+            }
+
             const containerSize = vertical
                 ? this.marqueeEl.offsetHeight
                 : this.marqueeEl.offsetWidth;
@@ -642,27 +673,29 @@
             if (!this.wrapper) return;
             const cr = this.marqueeEl.getBoundingClientRect();
 
+            const startVisible = !this.options.autoStart || this.prefersReducedMotion;
+
             switch (this.options.direction) {
                 case 'left':
-                    this.currentPosition = cr.width;
+                    this.currentPosition = startVisible ? 0 : cr.width;
                     this.wrapper.style.left      = this.currentPosition + 'px';
                     this.wrapper.style.top       = '50%';
                     this.wrapper.style.transform = 'translateY(-50%)';
                     break;
                 case 'right':
-                    this.currentPosition = -(this._loopSize || this.wrapper.offsetWidth);
+                    this.currentPosition = startVisible ? 0 : -(this._loopSize || this.wrapper.offsetWidth);
                     this.wrapper.style.left      = this.currentPosition + 'px';
                     this.wrapper.style.top       = '50%';
                     this.wrapper.style.transform = 'translateY(-50%)';
                     break;
                 case 'up':
-                    this.currentPosition = cr.height;
+                    this.currentPosition = startVisible ? 0 : cr.height;
                     this.wrapper.style.top       = this.currentPosition + 'px';
                     this.wrapper.style.left      = '0';
                     this.wrapper.style.transform = 'none';
                     break;
                 case 'down':
-                    this.currentPosition = -(this._loopSize || this.wrapper.offsetHeight);
+                    this.currentPosition = startVisible ? 0 : -(this._loopSize || this.wrapper.offsetHeight);
                     this.wrapper.style.top       = this.currentPosition + 'px';
                     this.wrapper.style.left      = '0';
                     this.wrapper.style.transform = 'none';
@@ -911,14 +944,17 @@
 
         // ==================== 公共 API ====================
 
-        start() {
+        start(force = false) {
             if (this.isRunning) return this;
-            if (this.prefersReducedMotion) {
+            if (this.prefersReducedMotion && !force) {
                 console.info('TadMarquee: 因用戶偏好設定，跑馬燈不會自動播放');
                 return this;
             }
             this.isRunning = true;
             this.isPausedByUser = false;
+            if (this.prefersReducedMotion && force) {
+                this.prefersReducedMotion = false;
+            }
             this._updatePauseButton(false);
             this.animate();
             this.triggerCallback('onStart');
@@ -943,13 +979,17 @@
             return this;
         }
 
-        resume() {
-            if (!this.isRunning || !this.isPaused) return this;
-            if (this.prefersReducedMotion) {
+        resume(force = false) {
+            if (!this.isRunning) return this.start(force);
+            if (!this.isPaused) return this;
+            if (this.prefersReducedMotion && !force) {
                 console.info('TadMarquee: 因用戶偏好設定，跑馬燈保持暫停');
                 return this;
             }
             this.isPaused = false;
+            if (this.prefersReducedMotion && force) {
+                this.prefersReducedMotion = false;
+            }
             return this;
         }
 

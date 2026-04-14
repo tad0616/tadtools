@@ -1,0 +1,479 @@
+/* =============================================================================
+   Tad Tabs v1.0.0  —  tad-tabs.css
+   WCAG 2.2 AAA compliant styles
+   ============================================================================= */
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   CSS Custom Properties (Design Tokens)
+   Override these on .tad-tabs {} or on a parent element to theme the widget.
+───────────────────────────────────────────────────────────────────────────── */
+.tad-tabs {
+  /* Brand colours */
+  --tad-primary:          #1a56db;   /* Active tab border + text */
+  --tad-primary-dark:     #1e3a8a;   /* Hover accent */
+  --tad-primary-faint:    #eff6ff;   /* Hover background */
+
+  /* Surfaces */
+  --tad-bg-active:        #ffffff;   /* Active tab + panel background */
+  --tad-bg-inactive:      #f8fafc;   /* Inactive tab background */
+  --tad-bg-hover:         #eff6ff;   /* Tab hover background */
+
+  /* Borders */
+  --tad-border:           #cbd5e1;   /* Default border */
+  --tad-border-active:    #1a56db;   /* Active tab border */
+
+  /* Typography */
+  --tad-text:             #1e293b;   /* Default text (contrast ≥ 7:1 on white → AAA) */
+  --tad-text-active:      #1a56db;   /* Active tab label */
+  --tad-text-muted:       #475569;   /* Inactive tab label (contrast ≥ 4.5:1 → AA) */
+  --tad-font-size:        0.875rem;  /* 14 px */
+  --tad-font-weight:      600;
+  --tad-font-family:      inherit;
+
+  /* Focus indicator — WCAG 2.4.13 AAA:
+     ≥ 2 px outline, 3:1 contrast against adjacent colours */
+  --tad-focus-ring:       #1a56db;
+  --tad-focus-ring-width: 3px;
+  --tad-focus-offset:     3px;
+
+  /* Sizing — WCAG 2.5.5 AAA: minimum 44 × 44 px touch target */
+  --tad-tab-min-height:   44px;
+  --tad-tab-min-width:    44px;
+  --tad-tab-padding:      0 1.25rem;
+
+  /* Layout */
+  --tad-radius:           6px;
+  --tad-radius-sm:        4px;
+  --tad-border-top-width: 3px;      /* Coloured accent stripe on active tab */
+  --tad-panel-padding:    1.25rem;
+
+  /* Animation */
+  --tad-duration:         0.18s;
+  --tad-easing:           ease;
+
+  /* Accordion */
+  --tad-acc-icon-size:    0.75rem;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Container
+───────────────────────────────────────────────────────────────────────────── */
+.tad-tabs {
+  display:       block;
+  width:         100%;
+  font-family:   var(--tad-font-family);
+  font-size:     var(--tad-font-size);
+  color:         var(--tad-text);
+  box-sizing:    border-box;
+}
+
+.tad-tabs *,
+.tad-tabs *::before,
+.tad-tabs *::after {
+  box-sizing: inherit;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Tab List  (role="tablist")
+───────────────────────────────────────────────────────────────────────────── */
+.tad-tabs > ul {
+  display:         flex;
+  flex-wrap:       wrap;
+  margin:          0;
+  padding:         0;
+  list-style:      none;
+  border-bottom:   1px solid var(--tad-border);
+  background:      var(--tad-bg-inactive);
+  border-radius:   var(--tad-radius) var(--tad-radius) 0 0;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Tab Items  (role="tab")
+───────────────────────────────────────────────────────────────────────────── */
+.tad-tab {
+  /* Reset */
+  display:        flex;
+  align-items:    center;
+  justify-content:center;
+  margin:         0;
+  padding:        var(--tad-tab-padding);
+  min-height:     var(--tad-tab-min-height);
+  min-width:      var(--tad-tab-min-width);
+
+  /* Visuals */
+  background:     var(--tad-bg-inactive);
+  color:          var(--tad-text-muted);
+  font-weight:    var(--tad-font-weight);
+  font-size:      var(--tad-font-size);
+  border:         1px solid transparent;
+  border-bottom:  none;
+  border-top:     var(--tad-border-top-width) solid transparent;
+  border-radius:  var(--tad-radius-sm) var(--tad-radius-sm) 0 0;
+  cursor:         pointer;
+  user-select:    none;
+  white-space:    nowrap;
+
+  position:       relative;
+  top:            1px;    /* Overlap the tablist bottom border when active */
+
+  transition:
+    background-color var(--tad-duration) var(--tad-easing),
+    color            var(--tad-duration) var(--tad-easing),
+    border-color     var(--tad-duration) var(--tad-easing);
+}
+
+.tad-tab:hover {
+  background: var(--tad-bg-hover);
+  color:      var(--tad-text);
+}
+
+/* Active tab */
+.tad-tab.tad-tab--active {
+  background:   var(--tad-bg-active);
+  color:        var(--tad-text-active);
+  border-color: var(--tad-border-active);
+  border-top-color: var(--tad-border-active);
+  border-bottom-color: var(--tad-bg-active); /* merge with panel */
+  font-weight:  700;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Tab Panels  (role="tabpanel")
+───────────────────────────────────────────────────────────────────────────── */
+.tad-panel {
+  padding:        var(--tad-panel-padding);
+  background:     var(--tad-bg-active);
+  border:         1px solid var(--tad-border);
+  border-top:     none;
+  border-radius:  0 0 var(--tad-radius) var(--tad-radius);
+}
+
+/* Panels are hidden via the HTML `hidden` attribute;
+   we only need to handle the active visible state */
+.tad-panel.tad-panel--active {
+  display: block;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Vertical Tabs  (.tad-tabs[data-tad-type="vertical"])
+───────────────────────────────────────────────────────────────────────────── */
+.tad-tabs[data-tad-type="vertical"].tad-mode-tabs > ul,
+.tad-tabs--vertical.tad-mode-tabs > ul {
+  flex-direction:  column;
+  flex-wrap:       nowrap;
+  float:           left;
+  width:           20%;
+  min-width:       140px;
+  border-bottom:   none;
+  border-right:    1px solid var(--tad-border);
+  border-radius:   var(--tad-radius) 0 0 var(--tad-radius);
+  background:      var(--tad-bg-inactive);
+}
+
+.tad-tabs[data-tad-type="vertical"].tad-mode-tabs .tad-tab,
+.tad-tabs--vertical.tad-mode-tabs .tad-tab {
+  border:         1px solid transparent;
+  border-right:   none;
+  border-left:    var(--tad-border-top-width) solid transparent;
+  border-top:     1px solid transparent;
+  border-radius:  var(--tad-radius-sm) 0 0 var(--tad-radius-sm);
+  justify-content: flex-start;
+  top:            0;
+  right:          -1px;
+  position:       relative;
+  white-space:    normal;
+  word-break:     break-word;
+}
+
+.tad-tabs[data-tad-type="vertical"].tad-mode-tabs .tad-tab.tad-tab--active,
+.tad-tabs--vertical.tad-mode-tabs .tad-tab.tad-tab--active {
+  border-color:       var(--tad-border-active);
+  border-left-color:  var(--tad-border-active);
+  border-right-color: var(--tad-bg-active);
+  z-index:            1;
+}
+
+.tad-tabs[data-tad-type="vertical"].tad-mode-tabs .tad-panel,
+.tad-tabs--vertical.tad-mode-tabs .tad-panel {
+  float:          left;
+  width:          calc(80% - 1px);
+  border:         1px solid var(--tad-border);
+  border-top:     1px solid var(--tad-border);
+  border-radius:  0 var(--tad-radius) var(--tad-radius) var(--tad-radius);
+  min-height:     200px;
+}
+
+/* Clearfix for float-based vertical layout */
+.tad-tabs[data-tad-type="vertical"].tad-mode-tabs::after,
+.tad-tabs--vertical.tad-mode-tabs::after {
+  content:  '';
+  display:  table;
+  clear:    both;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Accordion Headings + Buttons
+───────────────────────────────────────────────────────────────────────────── */
+.tad-acc-heading {
+  margin:  0;
+  padding: 0;
+}
+
+.tad-acc-btn {
+  /* Reset */
+  -webkit-appearance: none;
+  appearance:         none;
+  background:         var(--tad-bg-inactive);
+  border:             1px solid var(--tad-border);
+  border-top:         none;
+  border-radius:      0;
+  color:              var(--tad-text);
+  cursor:             pointer;
+  font-family:        var(--tad-font-family);
+  font-size:          var(--tad-font-size);
+  font-weight:        var(--tad-font-weight);
+
+  /* Layout */
+  display:            flex;
+  align-items:        center;
+  justify-content:    space-between;
+  width:              100%;
+  min-height:         var(--tad-tab-min-height);
+  padding:            0.625rem 1rem;
+  gap:                0.5rem;
+  text-align:         left;
+
+  transition:
+    background-color var(--tad-duration) var(--tad-easing),
+    color            var(--tad-duration) var(--tad-easing);
+}
+
+/* First accordion button gets a top border */
+.tad-acc-heading:first-of-type .tad-acc-btn {
+  border-top: 1px solid var(--tad-border);
+  border-radius: var(--tad-radius-sm) var(--tad-radius-sm) 0 0;
+}
+
+/* Last visible button → rounded bottom when closed */
+.tad-acc-heading:last-of-type .tad-acc-btn:not(.tad-acc-btn--active) {
+  border-radius: 0 0 var(--tad-radius-sm) var(--tad-radius-sm);
+}
+
+.tad-acc-btn:hover {
+  background: var(--tad-bg-hover);
+  color:      var(--tad-primary-dark);
+}
+
+.tad-acc-btn.tad-acc-btn--active {
+  background:   var(--tad-primary-faint);
+  color:        var(--tad-text-active);
+  border-color: var(--tad-border-active);
+  border-left:  var(--tad-border-top-width) solid var(--tad-border-active);
+  font-weight:  700;
+}
+
+.tad-acc-label {
+  flex: 1;
+}
+
+/* Chevron icon */
+.tad-acc-icon {
+  flex-shrink:  0;
+  display:      flex;
+  align-items:  center;
+  width:        var(--tad-acc-icon-size);
+  height:       var(--tad-acc-icon-size);
+  transition:   transform var(--tad-duration) var(--tad-easing);
+}
+
+.tad-acc-icon svg {
+  fill:   currentColor;
+  width:  100%;
+  height: 100%;
+}
+
+.tad-acc-btn--active .tad-acc-icon {
+  transform: rotate(180deg);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Accordion Panels
+───────────────────────────────────────────────────────────────────────────── */
+.tad-mode-accordion .tad-panel {
+  border:        1px solid var(--tad-border);
+  border-top:    none;
+  border-radius: 0;
+}
+
+.tad-mode-accordion .tad-panel.tad-panel--active {
+  border-left:  var(--tad-border-top-width) solid var(--tad-border-active);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Mode Visibility — showing/hiding tab list vs accordion buttons
+───────────────────────────────────────────────────────────────────────────── */
+
+/* In TAB mode: show tablist, hide accordion headings */
+.tad-mode-tabs .tad-acc-heading {
+  display: none !important;
+}
+
+.tad-mode-tabs > ul {
+  display: flex;
+}
+
+/* In ACCORDION mode: hide tablist, show accordion headings */
+.tad-mode-accordion > ul {
+  display: none !important;
+}
+
+.tad-mode-accordion .tad-acc-heading {
+  display: block;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Focus Styles  (WCAG 2.4.13 AAA)
+   Requirements:
+     • Focus indicator area ≥ perimeter of unfocused component × 2 CSS px
+     • Contrast ≥ 3:1 between focused/unfocused states
+     • Not entirely enclosed by component borders
+───────────────────────────────────────────────────────────────────────────── */
+
+/* Use :focus-visible to avoid showing outlines on mouse clicks */
+.tad-tab:focus-visible,
+.tad-acc-btn:focus-visible,
+.tad-panel:focus-visible {
+  outline:        var(--tad-focus-ring-width) solid var(--tad-focus-ring);
+  outline-offset: var(--tad-focus-offset);
+  z-index:        2;
+}
+
+/* Fallback for browsers that don't support :focus-visible */
+.tad-tab:focus:not(:focus-visible),
+.tad-acc-btn:focus:not(:focus-visible),
+.tad-panel:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Legacy :focus for maximum compatibility */
+.tad-tab:focus,
+.tad-acc-btn:focus,
+.tad-panel:focus {
+  outline:        var(--tad-focus-ring-width) solid var(--tad-focus-ring);
+  outline-offset: var(--tad-focus-offset);
+  z-index:        2;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Transitions / Animation
+───────────────────────────────────────────────────────────────────────────── */
+
+/* Panel reveal animation (tab mode) */
+@keyframes tad-panel-in {
+  from {
+    opacity:   0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity:   1;
+    transform: translateY(0);
+  }
+}
+
+.tad-panel.tad-panel--active {
+  animation: tad-panel-in var(--tad-duration) var(--tad-easing) both;
+}
+
+/* Accordion panel height animation is handled by toggling hidden
+   for simplicity and SR compatibility; override here if slide is wanted */
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Reduced Motion  (WCAG 2.3.3 AAA)
+   Disable non-essential animations for users who prefer it.
+───────────────────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .tad-tabs,
+  .tad-tabs * {
+    animation-duration:        0.001ms !important;
+    animation-iteration-count: 1       !important;
+    transition-duration:       0.001ms !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   High Contrast Mode  (WCAG 1.4.11 Non-text Contrast)
+   Windows Forced Colours / High Contrast mode support.
+───────────────────────────────────────────────────────────────────────────── */
+@media (forced-colors: active) {
+  .tad-tab,
+  .tad-acc-btn {
+    border-color:        ButtonText;
+    forced-color-adjust: none;
+  }
+
+  .tad-tab.tad-tab--active,
+  .tad-acc-btn.tad-acc-btn--active {
+    border-color:     Highlight;
+    background-color: Highlight;
+    color:            HighlightText;
+  }
+
+  .tad-tab:focus-visible,
+  .tad-acc-btn:focus-visible,
+  .tad-panel:focus-visible {
+    outline: var(--tad-focus-ring-width) solid Highlight;
+  }
+
+  .tad-acc-icon svg {
+    fill: ButtonText;
+  }
+
+  .tad-acc-btn--active .tad-acc-icon svg {
+    fill: HighlightText;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Responsive breakpoint (default: ≤768 px)
+   Note: actual switching logic is in JS via ResizeObserver.
+   These rules are fallbacks for no-JS environments.
+───────────────────────────────────────────────────────────────────────────── */
+@media only screen and (max-width: 768px) {
+  /* Vertical layout resets to stacked on small screens */
+  .tad-tabs[data-tad-type="vertical"] > ul,
+  .tad-tabs--vertical > ul {
+    float:  none;
+    width:  100%;
+    border-right:  none;
+    border-bottom: 1px solid var(--tad-border);
+  }
+
+  .tad-tabs[data-tad-type="vertical"] .tad-panel,
+  .tad-tabs--vertical .tad-panel {
+    float:  none;
+    width:  100%;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Utility: full-width tabs
+   Add class .tad-tabs--fill to make tabs evenly share all available width.
+───────────────────────────────────────────────────────────────────────────── */
+.tad-tabs--fill > ul {
+  flex-wrap: nowrap;
+}
+
+.tad-tabs--fill .tad-tab {
+  flex:            1;
+  justify-content: center;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Utility: small tabs  (.tad-tabs--sm)
+───────────────────────────────────────────────────────────────────────────── */
+.tad-tabs--sm {
+  --tad-tab-min-height: 36px;
+  --tad-font-size:      0.8125rem;
+  --tad-tab-padding:    0 0.875rem;
+  --tad-panel-padding:  0.875rem;
+}

@@ -154,6 +154,116 @@ class Utility
         return $str;
     }
 
+    /**
+     * 檢查並優化HTML中連結的title屬性
+     * 如果title為空或包含連結文字，重新產生title，避免螢幕閱讀軟體重複念出
+     *
+     * @param string $content HTML內容
+     * @return string 修改後的HTML內容
+     */
+    public static function check_title($content)
+    {
+        // 如果內容為空或不含連結，直接返回
+        if (empty($content) || strpos($content, '<a ') === false) {
+            return $content;
+        }
+
+        // 使用DOMDocument解析HTML
+        $dom = new \DOMDocument();
+
+        // 設定一些選項以處理可能的HTML錯誤
+        libxml_use_internal_errors(true);
+
+        // 添加一個基本的HTML結構，避免解析問題
+        $dom->loadHTML('<?xml encoding="UTF-8"><div>' . $content . '</div>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+
+        // 獲取所有連結
+        $links = $dom->getElementsByTagName('a');
+
+        // 用於追蹤是否有修改
+        $modified = false;
+
+        // 檢查每個連結
+        foreach ($links as $link) {
+            // 獲取連結文字
+            $linkText = trim($link->textContent);
+
+            // 獲取連結URL
+            $href = $link->getAttribute('href');
+
+            // 獲取原始title
+            $title = $link->getAttribute('title');
+
+            // 檢查title是否為空或包含連結文字
+            $needNewTitle = empty($title) || strpos($title, $linkText) !== false;
+
+            // 檢查是否連接到另一個視窗
+            $target         = $link->getAttribute('target');
+            $opensNewWindow = ($target && ($target === '_blank' || $target === '_new'));
+
+            // 檢查是否為檔案連結
+            $fileExtensions = [
+                'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx',
+                'odt', 'ods', 'odp', 'odg', 'odf', // 開放文檔格式
+                'txt', 'rtf', 'csv',
+                'zip', 'rar', '7z', 'tar', 'gz',
+                'jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg',
+                'mp3', 'mp4', 'wav', 'ogg', 'avi', 'mov', 'wmv', 'flv',
+            ];
+
+            $fileExtension = '';
+            if ($href && preg_match('/\.([a-zA-Z0-9]+)(\?.*)?$/i', $href, $matches)) {
+                $fileExtension = strtolower($matches[1]);
+            }
+
+            $isFile = in_array($fileExtension, $fileExtensions);
+
+            // 需要重新產生title
+            if ($needNewTitle) {
+                $newTitle = '';
+
+                if ($isFile && $opensNewWindow) {
+                    // 同時是檔案且開新視窗
+                    $newTitle = "{$fileExtension}格式（另開新視窗）";
+                } elseif ($isFile) {
+                    // 只是檔案
+                    $newTitle = "{$fileExtension}格式";
+                } elseif ($opensNewWindow) {
+                    // 只是開新視窗
+                    $newTitle = "另開新視窗";
+                }
+
+                // 如果title有變更，更新它
+                if ($newTitle !== $title) {
+                    if (!empty($newTitle)) {
+                        $link->setAttribute('title', $newTitle);
+                    } else {
+                        // 如果沒有需要添加的資訊，移除title屬性
+                        $link->removeAttribute('title');
+                    }
+                    $modified = true;
+                }
+            }
+        }
+
+        // 如果有修改，返回修改後的HTML
+        if ($modified) {
+            // 提取body內容
+            $body = $dom->getElementsByTagName('div')->item(0);
+
+            // 將DOM轉換回HTML字符串
+            $newContent = $dom->saveHTML($body);
+
+            // 移除包裹的div標籤
+            $newContent = preg_replace('/^<div>|<\/div>$/i', '', $newContent);
+
+            return $newContent;
+        }
+
+        // 沒有修改，返回原始內容
+        return $content;
+    }
+
 // 將網址轉為 icon 連結（網址文字保持原樣）
     public static function linkify($value, $protocols = ['http'], array $attributes = [])
     {
@@ -1486,7 +1596,7 @@ class Utility
     public static function vita_get_url_content($url)
     {
         $file_contents = '';
-        $timeout       = 30;
+        $timeout       = 10;
         // 使用 cURL 作为首选方法
         if (function_exists('curl_init')) {
             $ch = curl_init();
@@ -1545,14 +1655,24 @@ class Utility
     //複製檔案
     public static function copyemz($file1, $file2)
     {
-        $contentx   = self::vita_get_url_content($file1);
+        $contentx = self::vita_get_url_content($file1);
+        $status   = false;
+
+        // 確保目標目錄存在
+        $dir = dirname($file2);
+        if (!is_dir($dir)) {
+            self::mk_dir($dir);
+        }
+
+        // 嘗試開啟檔案，並檢查結果
         $openedfile = fopen($file2, 'wb');
-        fwrite($openedfile, $contentx);
-        fclose($openedfile);
-        if (false === $contentx) {
-            $status = false;
+        if ($openedfile !== false) {
+            fwrite($openedfile, $contentx);
+            fclose($openedfile);
+            $status = ($contentx !== false);
         } else {
-            $status = true;
+            // 記錄錯誤
+            error_log("無法開啟檔案進行寫入: $file2");
         }
 
         return $status;

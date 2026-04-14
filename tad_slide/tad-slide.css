@@ -308,12 +308,8 @@
   padding: 0.25rem 0.6rem;
   font-size: 0.78rem;
   color: #fff;
-  opacity: 0;
-  transition: opacity 0.25s, background 0.2s;
-}
-.tad-slide--nav-sides:hover .tad-slide__pause-float,
-.tad-slide--nav-sides:focus-within .tad-slide__pause-float {
   opacity: 1;
+  transition: background 0.2s;
 }
 .tad-slide--nav-sides .tad-slide__pause-float:hover {
   background: rgba(0, 0, 0, 0.85);
@@ -346,12 +342,8 @@
   padding: 0.25rem 0.6rem;
   font-size: 0.78rem;
   color: #fff;
-  opacity: 0;
-  transition: opacity 0.25s, background 0.2s;
-}
-.tad-slide--nav-none:hover .tad-slide__pause-float,
-.tad-slide--nav-none:focus-within .tad-slide__pause-float {
   opacity: 1;
+  transition: background 0.2s;
 }
 .tad-slide--nav-none .tad-slide__pause-float:hover {
   background: rgba(0, 0, 0, 0.85);
@@ -375,9 +367,7 @@
     transition: opacity 0.1s ease !important;
     transform: none !important;
   }
-  .tad-slide--nav-sides .tad-slide__arrow,
-  .tad-slide--nav-sides .tad-slide__pause-float,
-  .tad-slide--nav-none .tad-slide__pause-float {
+  .tad-slide--nav-sides .tad-slide__arrow {
     opacity: 1; /* 減少動態時直接顯示，不做淡入 */
   }
   /* 減少動態：箭頭 hover 不位移 */
@@ -451,9 +441,9 @@
   pointer-events: none;  /* 允許點擊穿透到連結 */
 }
 
-/* 為焦點狀態添加額外視覺指示 */
+/* 為焦點狀態添加額外視覺指示，顯示一個進入符號 */
 .tad-slide__item a:focus-visible::before {
-  content: "↵";          /* 顯示一個進入符號 */
+  /* content: "↵";
   position: absolute;
   top: 50%;
   left: 50%;
@@ -468,7 +458,7 @@
   text-align: center;
   border-radius: 50%;
   z-index: 6;
-  pointer-events: none;  /* 允許點擊穿透到連結 */
+  pointer-events: none; */
 }
 
 .tad-slide__item a img {

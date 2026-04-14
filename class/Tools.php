@@ -2,8 +2,25 @@
 
 namespace XoopsModules\Tadtools;
 
+use XoopsModules\School\School_content;
+use XoopsModules\School\School_department;
+use XoopsModules\School\School_zone;
+
+if (!class_exists('XoopsModules\School\School_content') and \file_exists(XOOPS_ROOT_PATH . '/modules/school/preloads/autoloader.php')) {
+    require XOOPS_ROOT_PATH . '/modules/school/preloads/autoloader.php';
+}
+
 use XoopsModules\Tadtools\Utility;
+
+if (!class_exists('XoopsModules\Tadtools\Utility')) {
+    require XOOPS_ROOT_PATH . '/modules/tadtools/preloads/autoloader.php';
+}
+
 use XoopsModules\Tad_login\Tools as TadLoginTools;
+
+if (!class_exists('XoopsModules\Tad_login\Tools')) {
+    require XOOPS_ROOT_PATH . '/modules/tad_login/preloads/autoloader.php';
+}
 
 /*
 Update Class Definition
@@ -364,7 +381,6 @@ class Tools
                 } elseif (!empty($def_config['logo_right'])) {
                     $logo_place .= "right:{$def_config['logo_right']}%;";
                 }
-
             }
             $json_theme_config_arr['logo_place'] = $logo_place;
 
@@ -498,7 +514,6 @@ class Tools
                         } else {
                             $json_theme_config_arr[$config_item] = $db_as_def ? $json_theme_config_arr[$config_item] : $val_arr['default'];
                         }
-
                     }
                 }
                 // echo "2=>{$json_theme_config_arr['bg_color']}<br>";
@@ -544,7 +559,6 @@ class Tools
                                 $json_theme_config_arr[$k]['fa_content_desc']   = isset($config['fa_content_desc']) ? $config['fa_content_desc'] : '';
                                 $json_theme_config_arr[$k]['menu_content']      = isset(${$config2_name . '_menu_content'}) ? ${$config2_name . '_menu_content'} : '';
                                 $json_theme_config_arr[$k]['menu_content_desc'] = isset($config['menu_content_desc']) ? $config['menu_content_desc'] : '';
-
                             } elseif ($config['type'] == "padding_margin") {
                                 $json_theme_config_arr[$k]['mt'] = ${$config2_name . '_mt'};
                                 $json_theme_config_arr[$k]['mb'] = ${$config2_name . '_mb'};
@@ -552,14 +566,12 @@ class Tools
                         }
                         $json_theme_config_arr['config2'] = $config2;
                     }
-
                 }
             }
 
             // 滑動圖
             $slider_var                          = self::get_theme_slide_items($theme_name);
             $json_theme_config_arr['slider_var'] = $slider_var;
-
         } else {
             $json_theme_config_arr['theme_kind'] = 'xoops';
         }
@@ -610,7 +622,6 @@ class Tools
             if (empty($theme_config['theme_id'])) {
                 $theme_config['use_default_config'] = true;
             }
-
         } else {
             $theme_config['use_default_config'] = true;
         }
@@ -619,10 +630,9 @@ class Tools
     }
 
     public static function theme_type($id = "", $other_menu = true)
-    {
-    }
+    {}
 
-    public static function get_theme_menu_items($id = "", $menu_var_kind = 'my_menu')
+    public static function get_theme_menu_items($id = "", $menu_var_kind = 'my_menu', $only_enable = true)
     {
         global $xoopsDB, $xoopsUser;
 
@@ -645,11 +655,11 @@ class Tools
         // 預先獲取所有子菜單項目
         $all_menu_items = [];
         $moduleHandler  = xoops_getHandler('module');
-
-        $sql = 'SELECT `menuid`, `itemname`, `itemurl`, `target`, `icon`, `link_cate_name`,
-                `link_cate_sn`, `read_group`, `of_level`
+        $where          = $only_enable ? "WHERE `status` = 1" : '';
+        $sql            = 'SELECT `menuid`, `itemname`, `itemurl`, `target`, `icon`, `link_cate_name`,
+                `link_cate_sn`, `read_group`, `of_level`, `status`
                 FROM `' . $xoopsDB->prefix('tad_themes_menu') . '`
-                WHERE `status` = 1
+                ' . $where . '
                 ORDER BY `of_level`, `position`';
 
         $result = $xoopsDB->query($sql);
@@ -682,8 +692,9 @@ class Tools
         if (!isset($menu_hierarchy[$parent_id])) {
             return [];
         }
-
-        $menu = [];
+        $schoolModule  = $moduleHandler->getByDirname('school');
+        $TadNewsModule = $moduleHandler->getByDirname('tadnews');
+        $menu          = [];
         foreach ($menu_hierarchy[$parent_id] as $item) {
             // 檢查讀取權限
             $read_group       = empty($item['read_group']) ? '1,2,3' : $item['read_group'];
@@ -696,12 +707,19 @@ class Tools
             // 處理特殊類別
             if (!empty($item['link_cate_name'])) {
                 if ($item['link_cate_name'] === 'tadnews_page_cate') {
-                    $TadNewsModule = $moduleHandler->getByDirname('tadnews');
                     if (!$TadNewsModule) {
                         continue;
                     }
+                } elseif ($item['link_cate_name'] === 'school_introduction' || $item['link_cate_name'] === 'school_department') {
+                    if (!$schoolModule) {
+                        continue;
+                    }
+                } elseif ($item['link_cate_name'] === 'school_zone') {
+                    if (!$schoolModule) {
+                        continue;
+                    }
                 }
-                $custom_menu = self::get_custom_menu_items($item['link_cate_name'], $item['link_cate_sn']);
+                $custom_menu = self::get_tad_custom_menu_items($item['link_cate_name'], $item['link_cate_sn']);
                 $sub_menu    = self::buildMenuTree($item['menuid'], $menu_hierarchy, $User_Groups, $moduleHandler);
                 $submenu     = array_merge($custom_menu, $sub_menu);
             } else {
@@ -709,14 +727,17 @@ class Tools
             }
 
             $menu[] = [
-                'id'         => $item['menuid'],
-                'title'      => $item['itemname'],
-                'url'        => ($item['itemurl'] == '' || $item['itemurl'] == '#') ? '' : $item['itemurl'],
-                'target'     => $item['target'],
-                'icon'       => str_replace(['icon-'], ['fa-'], $item['icon']),
-                'img'        => '',
-                'read_group' => $read_group_array,
-                'submenu'    => $submenu,
+                'id'             => $item['menuid'],
+                'title'          => $item['itemname'],
+                'url'            => ($item['itemurl'] == '' || $item['itemurl'] == '#') ? '' : $item['itemurl'],
+                'target'         => $item['target'],
+                'icon'           => str_replace(['icon-'], ['fa-'], $item['icon']),
+                'img'            => '',
+                'status'         => $item['status'],
+                'link_cate_name' => $item['link_cate_name'],
+                'link_cate_sn'   => $item['link_cate_sn'],
+                'read_group'     => $read_group_array,
+                'submenu'        => $submenu,
             ];
         }
 
@@ -724,7 +745,7 @@ class Tools
     }
 
     //取得其他模組單元的選單
-    public static function get_custom_menu_items($link_cate_name, $link_cate_sn)
+    public static function get_tad_custom_menu_items($link_cate_name, $link_cate_sn)
     {
         global $xoopsDB;
         $i        = 0;
@@ -746,6 +767,87 @@ class Tools
                     $sub_menu[$link_cate_name . $i]['submenu'] = "";
                     $i++;
                 }
+                break;
+
+            case "school_zone":
+                $zone     = School_zone::get(['enable' => 1, 'id' => $link_cate_sn], ['all_page']);
+                $sub_menu = [];
+                foreach ($zone['all_page'] as $page) {
+                    if ($page['enable'] == 1) {
+                        $page_icon = isset($page['info']['icon']) ? $page['info']['icon'] : "fa-solid fa-caret-right";
+                        $submenu   = [];
+                        $j         = 0;
+                        foreach ($page['all_content'] as $content) {
+                            if ($content['enable'] == 1) {
+                                $content_icon = isset($content['info']['icon']) ? $content['info']['icon'] : $page_icon;
+
+                                $submenu[$link_cate_name . $j]['id']      = $j;
+                                $submenu[$link_cate_name . $j]['title']   = $content['title'];
+                                $submenu[$link_cate_name . $j]['url']     = XOOPS_URL . "/modules/school/index.php?department_id=0&zone_id=$link_cate_sn&page_id={$page['id']}&content_id={$content['id']}&type={$page['type']}";
+                                $submenu[$link_cate_name . $j]['target']  = "_self";
+                                $submenu[$link_cate_name . $j]['icon']    = $content_icon;
+                                $submenu[$link_cate_name . $j]['submenu'] = "";
+                                $j++;
+                            }
+                        }
+
+                        $sub_menu[$link_cate_name . $i]['id']      = $j;
+                        $sub_menu[$link_cate_name . $i]['title']   = $page['title'];
+                        $sub_menu[$link_cate_name . $i]['url']     = XOOPS_URL . "/modules/school/index.php?department_id=0&zone_id=$link_cate_sn&page_id={$page['id']}&type={$page['type']}";
+                        $sub_menu[$link_cate_name . $i]['target']  = "_self";
+                        $sub_menu[$link_cate_name . $i]['icon']    = $page_icon;
+                        $sub_menu[$link_cate_name . $i]['submenu'] = $submenu;
+                        $i++;
+                    }
+                }
+
+                break;
+
+            case "school_introduction":
+                $school_pages = School_content::get_all(['department_id' => 0, 'enable' => 1, 'page_id' => $link_cate_sn], ['icon'], ['id', 'title', 'info'], ['sort' => 'asc'], 'id');
+                // http://localhost/modules/school/index.php?department_id=&page_id=23&content_id=38&type=introduction
+                foreach ($school_pages as $id => $page) {
+                    $sub_menu[$link_cate_name . $i]['id']      = $i;
+                    $sub_menu[$link_cate_name . $i]['title']   = $page['title'];
+                    $sub_menu[$link_cate_name . $i]['url']     = XOOPS_URL . "/modules/school/index.php?department_id=0&page_id={$link_cate_sn}&content_id={$id}&type=introduction";
+                    $sub_menu[$link_cate_name . $i]['target']  = "_self";
+                    $sub_menu[$link_cate_name . $i]['icon']    = !empty($page['info']['icon']) ? $page['info']['icon'] : '';
+                    $sub_menu[$link_cate_name . $i]['submenu'] = "";
+                    $i++;
+                }
+                break;
+            case "school_department":
+                $departments = School_department::get_all(['enable' => 1], ['all_page'], [], ['sort' => 'asc'], 'id');
+                foreach ($departments as $department_id => $department) {
+                    if ($department['enable'] == 1) {
+                        $submenu = [];
+                        $j       = 0;
+                        foreach ($department['all_page'] as $page) {
+                            if ($page['enable'] == 1) {
+                                $page_icon = isset($page['info']['icon']) ? $page['info']['icon'] : "fa-solid fa-caret-right";
+
+                                $submenu[$link_cate_name . $j]['id']      = $j;
+                                $submenu[$link_cate_name . $j]['title']   = $page['title'];
+                                $submenu[$link_cate_name . $j]['url']     = XOOPS_URL . "/modules/school/index.php?department_id=$department_id&page_id={$page['id']}";
+                                $submenu[$link_cate_name . $j]['target']  = "_self";
+                                $submenu[$link_cate_name . $j]['icon']    = $page_icon;
+                                $submenu[$link_cate_name . $j]['submenu'] = "";
+                                $j++;
+                            }
+                        }
+
+                        $icon = isset($department['info']['icon']) ? $department['info']['icon'] : "fa-solid fa-caret-right";
+
+                        $sub_menu[$link_cate_name . $i]['id']      = $i;
+                        $sub_menu[$link_cate_name . $i]['title']   = $department['title'];
+                        $sub_menu[$link_cate_name . $i]['url']     = XOOPS_URL . "/modules/school/index.php?department_id=$department_id";
+                        $sub_menu[$link_cate_name . $i]['target']  = "_self";
+                        $sub_menu[$link_cate_name . $i]['icon']    = $icon;
+                        $sub_menu[$link_cate_name . $i]['submenu'] = $submenu;
+                        $i++;
+                    }
+                }
+                // Utility::dd($sub_menu);
                 break;
         }
 
@@ -1135,6 +1237,5 @@ class Tools
             }
         }
         return $slider_var;
-
     }
 }
