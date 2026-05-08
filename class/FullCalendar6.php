@@ -80,8 +80,16 @@ class FullCalendar6
                 buttonText:{today: '今天',prev:'上個月',next:'下個月'},
                 {$js_parameter}
                 {$get_event}
+                customButtons: {
+                    myToday: {
+                        text: '今天',
+                        click: function() {
+                        calendar.today();
+                        }
+                    }
+                },
                 headerToolbar: {
-                    left: 'prev,today,next',
+                    left: 'prev,myToday,next',
                     center: 'title',
                     right: ''
                 },

@@ -22,15 +22,15 @@ use InvalidArgumentException;
  * @author     Your Team
  * @version    1.0.0
  * @license    MIT
- * @requires   PHP 8.1+、ext-dom、ext-mbstring
+ * @requires   PHP 7.3+、ext-dom、ext-mbstring
  *
  * ──────────────────────────────────────────────────────────
  *  涵蓋規範
  * ──────────────────────────────────────────────────────────
- *  [1.1.1  A  ] 圖片補全 alt；裝飾圖加 role="presentation"
+ *  [1.1.1  A  ] 圖片補全 alt；裝飾圖加 role="presentation"；圖片加 class="img-fluid"
  *  [1.3.1  A  ] <b>→<strong>、<i>→<em>；表格 scope / aria-label
  *  [1.4.4  AA ] CSS 絕對單位（px/pt…）→ 相對單位（rem）
- *  [2.4.4  AA ] 連結文字=URL → 移除超連結；另開視窗加 title
+ *  [2.4.4  AA ] 連結文字=URL → 移除超連結；另開視窗加 title；連結目的地為檔案時 title 加上 (xxx格式)
  *  [2.4.9  AAA] 含糊連結文字加 aria-label 警示
  *  [3.1.4  AAA] <abbr> 補全 title 屬性
  *  [安全性    ] target="_blank" 補上 rel="noopener noreferrer"
@@ -54,8 +54,8 @@ class AccessibilityFixer
     //  預設設定
     // ──────────────────────────────────────────────────────────
 
-    /** @var array<string, bool>  各規則開關（true = 啟用）*/
-    private array $rules = [
+    /** @var array  各規則開關（true = 啟用）*/
+    private $rules = [
         self::RULE_LINKS         => true,
         self::RULE_AMBIGUOUS     => true,
         self::RULE_IMAGES        => true,
@@ -67,13 +67,13 @@ class AccessibilityFixer
     ];
 
     /** @var int  rem 換算基準（預設瀏覽器 16px = 1rem）*/
-    private int $baseFontSizePx = 16;
+    private $baseFontSizePx = 16;
 
     /** @var string  另開新視窗的提示文字 */
-    private string $newWindowLabel = '另開新視窗';
+    private $newWindowLabel = '另開新視窗';
 
-    /** @var array<string>  含糊連結文字清單（中英文）*/
-    private array $ambiguousLinkTexts = [
+    /** @var array  含糊連結文字清單（中英文）*/
+    private $ambiguousLinkTexts = [
         // 中文
         '點此', '按此', '點我', '這裡', '此處', '點擊', '按這裡',
         '更多', '更多資訊', '詳細', '了解更多', '查看更多', '繼續閱讀', '閱讀更多',
@@ -83,8 +83,8 @@ class AccessibilityFixer
         'details', 'link', 'click', 'download', 'go', 'info', 'continue',
     ];
 
-    /** @var array<string>  CSS 中需轉換單位的屬性名稱清單 */
-    private array $cssTargetProps = [
+    /** @var array  CSS 中需轉換單位的屬性名稱清單 */
+    private $cssTargetProps = [
         'font-size',
         'line-height',
         'max-width',
@@ -97,8 +97,8 @@ class AccessibilityFixer
     //  修正日誌（每次呼叫 fix() 後可透過 getLogs() 讀取）
     // ──────────────────────────────────────────────────────────
 
-    /** @var array<array{rule:string, message:string}>  修正項目日誌 */
-    private array $logs = [];
+    /** @var array  修正項目日誌 */
+    private $logs = [];
 
     // ════════════════════════════════════════════════════════════
     //  靜態呼叫介面
@@ -107,7 +107,7 @@ class AccessibilityFixer
     /**
      * 靜態工廠：建立實例，支援後續鏈式設定
      *
-     * @param  array<string, bool> $options  選擇性規則開關
+     * @param  array $options  選擇性規則開關
      * @return static
      *
      * @example
@@ -121,7 +121,7 @@ class AccessibilityFixer
      *   $fixed = AccessibilityFixer::make([AccessibilityFixer::RULE_ABBR => false])
      *       ->fix($content);
      */
-    public static function make(array $options = []): static
+    public static function make(array $options = [])
     {
         return new static($options);
     }
@@ -138,7 +138,7 @@ class AccessibilityFixer
      * @example
      *   $fixed = AccessibilityFixer::of($content);
      */
-    public static function of(string $content): string
+    public static function of(string $content)
     {
         return (new static())->fix($content);
     }
@@ -150,7 +150,7 @@ class AccessibilityFixer
     /**
      * 建構子
      *
-     * @param array<string, bool> $options  選擇性覆蓋規則開關，格式同 self::$rules
+     * @param array $options  選擇性覆蓋規則開關，格式同 self::$rules
      *
      * @example
      *   // 停用含糊連結檢查
@@ -168,10 +168,10 @@ class AccessibilityFixer
      *
      * @param  string $rule     規則識別碼（使用 self::RULE_* 常數）
      * @param  bool   $enabled  true = 啟用；false = 停用
-     * @return static           支援鏈式呼叫（Method Chaining）
+     * @return $this           支援鏈式呼叫（Method Chaining）
      * @throws InvalidArgumentException  當規則識別碼不存在時
      */
-    public function setRule(string $rule, bool $enabled): static
+    public function setRule(string $rule, bool $enabled)
     {
         if (!array_key_exists($rule, $this->rules)) {
             throw new InvalidArgumentException(
@@ -186,9 +186,9 @@ class AccessibilityFixer
      * 設定 rem 換算基準（瀏覽器根元素字型大小）
      *
      * @param  int    $px  根元素字型大小（px），預設 16
-     * @return static
+     * @return $this
      */
-    public function setBaseFontSize(int $px): static
+    public function setBaseFontSize(int $px)
     {
         if ($px <= 0) {
             throw new InvalidArgumentException('baseFontSize 必須為正整數。');
@@ -201,9 +201,9 @@ class AccessibilityFixer
      * 設定「另開新視窗」提示文字（支援多語系）
      *
      * @param  string $label  提示文字，例如 'Opens in new window'
-     * @return static
+     * @return $this
      */
-    public function setNewWindowLabel(string $label): static
+    public function setNewWindowLabel(string $label)
     {
         $this->newWindowLabel = $label;
         return $this;
@@ -213,9 +213,9 @@ class AccessibilityFixer
      * 新增含糊連結文字到清單
      *
      * @param  string[] $words  額外的含糊文字（不區分大小寫）
-     * @return static
+     * @return $this
      */
-    public function addAmbiguousTexts(array $words): static
+    public function addAmbiguousTexts(array $words)
     {
         foreach ($words as $word) {
             $lower = mb_strtolower(trim($word), 'UTF-8');
@@ -230,9 +230,9 @@ class AccessibilityFixer
      * 新增需轉換單位的 CSS 屬性名稱
      *
      * @param  string[] $props  屬性名稱，如 ['letter-spacing', 'word-spacing']
-     * @return static
+     * @return $this
      */
-    public function addCssTargetProps(array $props): static
+    public function addCssTargetProps(array $props)
     {
         foreach ($props as $prop) {
             $prop = strtolower(trim($prop));
@@ -253,7 +253,7 @@ class AccessibilityFixer
      * @param  string $content  WYSIWYG 輸出的 HTML 片段
      * @return string           修正後的 HTML 片段
      */
-    public function fix(string $content): string
+    public function fix(string $content)
     {
         // 重置本次執行的日誌
         $this->logs = [];
@@ -262,7 +262,9 @@ class AccessibilityFixer
             return $content;
         }
 
-        [$dom, $xpath] = $this->buildDom($content);
+        $result = $this->buildDom($content);
+        $dom    = $result[0];
+        $xpath  = $result[1];
 
         // 依序執行已啟用的修正規則
         if ($this->rules[self::RULE_LINKS]) {
@@ -303,9 +305,9 @@ class AccessibilityFixer
     /**
      * 取得最後一次 fix() 執行的修正日誌
      *
-     * @return array<array{rule:string, message:string}>
+     * @return array
      */
-    public function getLogs(): array
+    public function getLogs()
     {
         return $this->logs;
     }
@@ -313,9 +315,9 @@ class AccessibilityFixer
     /**
      * 取得目前所有規則的啟用狀態
      *
-     * @return array<string, bool>
+     * @return array
      */
-    public function getRules(): array
+    public function getRules()
     {
         return $this->rules;
     }
@@ -328,9 +330,10 @@ class AccessibilityFixer
      * [WCAG 2.4.4] 連結修正
      *   Rule 1：連結文字 = URL → 移除 <a>，只保留純文字
      *   Rule 2：target 非 _self → title 加上「另開新視窗」
+     *   Rule 3：連結目的地為檔案 → title 加上「(xxx格式)」
      *   Rule +：target="_blank" → 補 rel="noopener noreferrer"
      */
-    private function fixLinks(DOMDocument $dom, DOMXPath $xpath): void
+    private function fixLinks(DOMDocument $dom, DOMXPath $xpath)
     {
         $links = $xpath->query('//a[@href]');
         if (!$links) {
@@ -352,14 +355,25 @@ class AccessibilityFixer
                 continue;
             }
 
+            // Rule 3：判斷連結目的地是否為已知檔案格式
+            // Utility::fileExtensions() 回傳副檔名字串（如 'pdf'）或 false
+            $fileExt = Utility::fileExtensions($href);
+
             // Rule 2：target 非 _self（會另開視窗）
             if (!empty($target) && $target !== '_self') {
                 $title = $link->getAttribute('title');
 
                 if (mb_strpos($title, $this->newWindowLabel, 0, 'UTF-8') === false) {
+                    // 組合基礎 title（先加「另開新視窗」）
                     $newTitle = empty(trim($title))
-                    ? $this->newWindowLabel
-                    : trim($title) . '（' . $this->newWindowLabel . '）';
+                        ? $this->newWindowLabel
+                        : trim($title) . '（' . $this->newWindowLabel . '）';
+
+                    // Rule 3 延伸：若同時也是檔案，附加「(xxx格式)」
+                    if ($fileExt !== false) {
+                        $newTitle .= '（' . mb_strtoupper($fileExt, 'UTF-8') . '格式）';
+                        $this->log(self::RULE_LINKS, "連結目的地為 {$fileExt} 格式，title 補上格式說明：{$href}");
+                    }
 
                     $link->setAttribute('title', $newTitle);
                     $this->log(self::RULE_LINKS, "連結加上「{$this->newWindowLabel}」提示：{$href}");
@@ -381,13 +395,27 @@ class AccessibilityFixer
                         $this->log(self::RULE_LINKS, 'target="_blank" 補上 rel=' . implode(',', $added));
                     }
                 }
+            } elseif ($fileExt !== false) {
+                // Rule 3（單獨）：非另開視窗、但目的地是檔案 → title 加上格式說明
+                $title = $link->getAttribute('title');
+                $formatLabel = mb_strtoupper($fileExt, 'UTF-8') . '格式';
+
+                // 若 title 尚未含格式說明才補上
+                if (mb_strpos($title, $formatLabel, 0, 'UTF-8') === false) {
+                    $newTitle = empty(trim($title))
+                        ? '（' . $formatLabel . '）'
+                        : trim($title) . '（' . $formatLabel . '）';
+
+                    $link->setAttribute('title', $newTitle);
+                    $this->log(self::RULE_LINKS, "連結目的地為 {$fileExt} 格式，title 補上格式說明：{$href}");
+                }
             }
         }
 
         // 執行 Rule 1 的節點替換
         foreach ($replaceWithText as $link) {
             $textNode = $dom->createTextNode($link->getAttribute('href'));
-            $link->parentNode?->replaceChild($textNode, $link);
+            $link->parentNode ? $link->parentNode->replaceChild($textNode, $link) : null;
         }
     }
 
@@ -395,7 +423,7 @@ class AccessibilityFixer
      * [WCAG 2.4.9 AAA] 含糊連結文字修正
      *   連結文字本身無法說明目的地時，加上 aria-label 提示。
      */
-    private function fixAmbiguousLinks(DOMXPath $xpath): void
+    private function fixAmbiguousLinks(DOMXPath $xpath)
     {
         $links = $xpath->query('//a[@href]');
         if (!$links) {
@@ -428,8 +456,9 @@ class AccessibilityFixer
      *   - 補全缺少的 alt 屬性
      *   - 裝飾性圖片（alt=""）補 role="presentation"
      *   - 移除與 alt 完全相同的 title（避免重複朗讀）
+     *   - 圖片一律加上 class="img-fluid"（Bootstrap 響應式縮放）
      */
-    private function fixImages(DOMXPath $xpath): void
+    private function fixImages(DOMXPath $xpath)
     {
         $images = $xpath->query('//img');
         if (!$images) {
@@ -440,6 +469,7 @@ class AccessibilityFixer
             /** @var DOMElement $img */
             $src = $img->getAttribute('src');
 
+            // 補全缺少的 alt 屬性
             if (!$img->hasAttribute('alt')) {
                 $img->setAttribute('alt', '');
                 $this->log(self::RULE_IMAGES, "圖片補全 alt=\"\"：{$src}");
@@ -447,14 +477,26 @@ class AccessibilityFixer
 
             $alt = $img->getAttribute('alt');
 
+            // 裝飾性圖片（alt=""）補 role="presentation"
             if ($alt === '' && !$img->hasAttribute('role')) {
                 $img->setAttribute('role', 'presentation');
                 $this->log(self::RULE_IMAGES, "裝飾性圖片加上 role=\"presentation\"：{$src}");
             }
 
+            // 移除與 alt 完全相同的 title（避免螢幕閱讀器重複朗讀）
             if (!empty($alt) && $img->getAttribute('title') === $alt) {
                 $img->removeAttribute('title');
                 $this->log(self::RULE_IMAGES, "移除與 alt 重複的 title：{$src}");
+            }
+
+            // 圖片一律補上 class="img-fluid"（Bootstrap 響應式縮放）
+            // 若已有 class 屬性則附加，已含 img-fluid 則跳過
+            $existingClass = $img->getAttribute('class');
+            $classArr      = array_values(array_filter(preg_split('/\s+/', $existingClass) ?: []));
+            if (!in_array('img-fluid', $classArr, true)) {
+                $classArr[] = 'img-fluid';
+                $img->setAttribute('class', implode(' ', $classArr));
+                $this->log(self::RULE_IMAGES, "圖片加上 class=\"img-fluid\"：{$src}");
             }
         }
     }
@@ -465,7 +507,7 @@ class AccessibilityFixer
      *   - <tbody> 列首 <th> 補 scope="row"
      *   - 無標籤的表格補 aria-label
      */
-    private function fixTables(DOMXPath $xpath): void
+    private function fixTables(DOMXPath $xpath)
     {
         $tables = $xpath->query('//table');
         if (!$tables) {
@@ -506,7 +548,7 @@ class AccessibilityFixer
      *   - <b> → <strong>
      *   - 無 class 且無 aria-hidden 的 <i> → <em>
      */
-    private function fixSemantic(DOMDocument $dom, DOMXPath $xpath): void
+    private function fixSemantic(DOMDocument $dom, DOMXPath $xpath)
     {
         $bNodes = iterator_to_array($xpath->query('//b') ?: new DOMNodeList());
         foreach ($bNodes as $node) {
@@ -527,7 +569,7 @@ class AccessibilityFixer
      * [WCAG 3.1.4 AAA] 縮寫語意修正
      *   <abbr> 若缺 title，加上提示提醒補充
      */
-    private function fixAbbr(DOMXPath $xpath): void
+    private function fixAbbr(DOMXPath $xpath)
     {
         $abbrs = $xpath->query('//abbr[not(@title)]');
         if (!$abbrs) {
@@ -545,7 +587,7 @@ class AccessibilityFixer
     /**
      * [WCAG 1.4.4] Inline Style CSS 單位相對化
      */
-    private function fixInlineStyles(DOMXPath $xpath): void
+    private function fixInlineStyles(DOMXPath $xpath)
     {
         $nodes = $xpath->query('//*[@style]');
         if (!$nodes) {
@@ -566,7 +608,7 @@ class AccessibilityFixer
     /**
      * [WCAG 1.4.4] <style> 標籤 CSS 單位相對化
      */
-    private function fixStyleTags(DOMXPath $xpath): void
+    private function fixStyleTags(DOMXPath $xpath)
     {
         $styleTags = $xpath->query('//style');
         if (!$styleTags) {
@@ -597,9 +639,9 @@ class AccessibilityFixer
     /**
      * 載入 HTML 片段並回傳 [DOMDocument, DOMXPath]
      *
-     * @return array{DOMDocument, DOMXPath}
+     * @return array
      */
-    private function buildDom(string $html): array
+    private function buildDom(string $html)
     {
         $dom = new DOMDocument('1.0', 'UTF-8');
         libxml_use_internal_errors(true);
@@ -615,7 +657,7 @@ class AccessibilityFixer
     /**
      * 從 DOM 取出修正結果 HTML
      */
-    private function extractHtml(DOMDocument $dom): string
+    private function extractHtml(DOMDocument $dom)
     {
         $root = $dom->getElementById('a11y-root');
         if (!$root) {
@@ -641,31 +683,46 @@ class AccessibilityFixer
      *   cm → cm × (96/2.54) ÷ base
      *   mm → mm × (96/25.4) ÷ base
      */
-    private function convertCssUnits(string $css): string
+    private function convertCssUnits(string $css)
     {
         $propsPattern = implode('|', array_map('preg_quote', $this->cssTargetProps));
         $base         = $this->baseFontSizePx;
 
+        $self = $this; // 用於閉包中訪問 $this
+
         return preg_replace_callback(
             '/(' . $propsPattern . ')\s*:\s*([^;}\'"]+)/i',
-            static function (array $matches) use ($base): string {
+            function (array $matches) use ($base, $self) {
                 $prop  = $matches[1];
                 $value = $matches[2];
 
                 $converted = preg_replace_callback(
                     '/([\d]*\.?[\d]+)\s*(px|pt|pc|in|cm|mm)\b/i',
-                    static function (array $m) use ($base): string {
+                    function (array $m) use ($base) {
                         $val  = (float) $m[1];
                         $unit = strtolower($m[2]);
 
-                        $px = match ($unit) {
-                            'px' => $val,
-                            'pt' => $val * (4 / 3),
-                            'pc' => $val * 16,
-                            'in' => $val * 96,
-                            'cm' => $val * (96 / 2.54),
-                            'mm' => $val * (96 / 25.4),
-                        };
+                        $px = 0;
+                        switch ($unit) {
+                            case 'px':
+                                $px = $val;
+                                break;
+                            case 'pt':
+                                $px = $val * (4 / 3);
+                                break;
+                            case 'pc':
+                                $px = $val * 16;
+                                break;
+                            case 'in':
+                                $px = $val * 96;
+                                break;
+                            case 'cm':
+                                $px = $val * (96 / 2.54);
+                                break;
+                            case 'mm':
+                                $px = $val * (96 / 25.4);
+                                break;
+                        }
 
                         $rem       = $px / $base;
                         $formatted = rtrim(rtrim(number_format($rem, 4, '.', ''), '0'), '.');
@@ -684,7 +741,7 @@ class AccessibilityFixer
     /**
      * 替換 DOM 元素標籤，保留所有屬性與子節點
      */
-    private function replaceElement(DOMDocument $dom, DOMNode $node, string $newTag): void
+    private function replaceElement(DOMDocument $dom, DOMNode $node, string $newTag)
     {
         if (!$node->parentNode) {
             return;
@@ -708,7 +765,7 @@ class AccessibilityFixer
     /**
      * 記錄修正項目到 logs
      */
-    private function log(string $rule, string $message): void
+    private function log(string $rule, string $message)
     {
         $this->logs[] = ['rule' => $rule, 'message' => $message];
     }

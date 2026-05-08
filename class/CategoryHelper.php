@@ -22,13 +22,13 @@ class CategoryHelper
     // 取得完整的分類路徑
     public function getCategoryPath($cate_id, $count_table = '', $includeSelf = true)
     {
-        $arr = array(
-            0 => array(
-                $this->idField => '',
-                $this->nameField => "<i class='fa fa-home'></i>",
-                'sub' => $this->getSubCategories(0),
-            ),
-        );
+        $arr = [
+            0 => [
+                $this->idField   => '',
+                $this->nameField => "<i class='fa fa-home'></i><span class='sr-only visually-hidden'>" . _TAD_HOME . "</span>",
+                'sub'            => $this->getSubCategories(0),
+            ],
+        ];
 
         if (!empty($cate_id)) {
             $path = $this->getCategoryPathIds($cate_id);
@@ -51,13 +51,13 @@ class CategoryHelper
     protected function getCategoryPathIds($cate_id)
     {
         global $xoopsDB;
-        $path      = array();
+        $path      = [];
         $currentId = $cate_id;
 
         while ($currentId != 0) {
             $path[]    = $currentId;
             $sql       = "SELECT `{$this->parentField}` FROM `" . $xoopsDB->prefix($this->table) . "` WHERE `{$this->idField}` = ?";
-            $result    = Utility::query($sql, 'i', array($currentId));
+            $result    = Utility::query($sql, 'i', [$currentId]);
             $row       = $xoopsDB->fetchRow($result);
             $currentId = isset($row[0]) ? $row[0] : 0;
         }
@@ -70,8 +70,8 @@ class CategoryHelper
     {
         global $xoopsDB;
         $sql        = "SELECT `{$this->idField}`, `{$this->nameField}` FROM `" . $xoopsDB->prefix($this->table) . "` WHERE `{$this->parentField}` = ?";
-        $result     = Utility::query($sql, 'i', array($cate_id));
-        $categories = array();
+        $result     = Utility::query($sql, 'i', [$cate_id]);
+        $categories = [];
         while ($row = $xoopsDB->fetchRow($result)) {
             $categories[$row[0]] = $row[1];
         }
@@ -84,7 +84,7 @@ class CategoryHelper
     {
         global $xoopsDB;
         $sql    = "SELECT * FROM `" . $xoopsDB->prefix($this->table) . "` WHERE `{$this->idField}` = ?";
-        $result = Utility::query($sql, 'i', array($cate_id));
+        $result = Utility::query($sql, 'i', [$cate_id]);
 
         $data             = $xoopsDB->fetchArray($result);
         $counter          = $this->getCategoryCount($count_table);
@@ -95,7 +95,7 @@ class CategoryHelper
     }
 
     //放在分類底下的數量
-    function getCategoryCount($count_table = '')
+    public function getCategoryCount($count_table = '')
     {
         global $xoopsDB;
         $countTable = empty($count_table) ? $this->table : $count_table;

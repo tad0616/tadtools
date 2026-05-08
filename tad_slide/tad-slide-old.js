@@ -387,65 +387,15 @@
     next(manual = false) { if (manual) this._isManual = true; this.goTo(this.current + 1); }
     prev(manual = false) { if (manual) this._isManual = true; this.goTo(this.current - 1); }
 
-    /* 取得指定索引投影片的最佳描述文字。
-       優先順序：圖片 alt → 連結 title/aria-label → caption 文字。
-       供 _updateNavLabels 組合上一張/下一張的 aria-label 使用。
-       @param {number} index 投影片索引
-       @returns {string} 描述文字（可能為空字串）
-    */
-    _getSlideLabel(index) {
-      const item = this.items[index];
-      if (!item) return '';
-
-      // ① 圖片 alt（最具描述性）
-      const img = item.querySelector('img');
-      if (img) {
-        const alt = (img.getAttribute('alt') || '').trim();
-        if (alt) return alt;
-      }
-
-      // ② 連結的 title 或 aria-label
-      const link = item.querySelector('a');
-      if (link) {
-        const label = (
-          link.getAttribute('aria-label') ||
-          link.getAttribute('title') || ''
-        ).trim();
-        if (label) return label;
-      }
-
-      // ③ caption 說明文字
-      const caption = item.querySelector('.tad-slide__caption');
-      if (caption) {
-        const text = caption.textContent.trim();
-        if (text) return text;
-      }
-
-      return '';
-    }
-
-    /* 更新上一張 / 下一張按鈕的 aria-label。
-       將目標投影片的描述文字附加於方向語意後，
-       例如「上一張，校園生活」/「下一張，運動會」，
-       讓使用者在尚未切換前即可預知目標投影片內容（WCAG AAA）。
-       若無描述則退回預設的 prevLabel / nextLabel。 */
+    /* 更新上一張 / 下一張按鈕的 aria-label
+       只保留方向語意（「上一張」/「下一張」），
+       移除「第 X 張，共 X 張」序號，避免聚焦時重複報讀無關資訊。 */
     _updateNavLabels(current) {
-      const prevIdx = (current - 1 + this.total) % this.total;
-      const nextIdx = (current + 1) % this.total;
-
       if (this._prevBtn) {
-        const prevDesc = this._getSlideLabel(prevIdx);
-        this._prevBtn.setAttribute(
-          'aria-label',
-          prevDesc ? `${this.opts.prevLabel}，${prevDesc}` : this.opts.prevLabel
-        );
+        this._prevBtn.setAttribute('aria-label', this.opts.prevLabel);
       }
       if (this._nextBtn) {
-        const nextDesc = this._getSlideLabel(nextIdx);
-        this._nextBtn.setAttribute(
-          'aria-label',
-          nextDesc ? `${this.opts.nextLabel}，${nextDesc}` : this.opts.nextLabel
-        );
+        this._nextBtn.setAttribute('aria-label', this.opts.nextLabel);
       }
     }
 

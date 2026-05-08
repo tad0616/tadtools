@@ -1,5 +1,6 @@
 <?php
 
+use XoopsModules\School\Tools as SchoolTools;
 use XoopsModules\Tadtools\Tools;
 use XoopsModules\Tadtools\Utility;
 use XoopsModules\Tad_login\Tools as TadLoginTools;
@@ -214,10 +215,9 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         $def_mod_menu      = ($SchoolXoopsModule && $SchoolXoopsModule->getVar('isactive') == 1) ? Tools::get_module_menu_item($i, 'school') : [];
         $i++;
         $mod_menu = Tools::get_module_menu_item($i);
-        // if (!empty($mod_menu)) {
-        //     if (empty($my_menu)) {
-        //         $my_menu = array();
-        //     }
+        if ($SchoolXoopsModule && $SchoolXoopsModule->getVar('isactive') == 1) {
+            SchoolTools::get_session();
+        }
 
         $my_menu = array_merge((Array) $my_menu, (Array) $def_mod_menu, (Array) $mod_menu);
         // }

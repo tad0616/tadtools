@@ -1,6 +1,6 @@
 <{if $page_header|default:true}>
   <div class="page-header">
-    <h1 class="text-center"><{$lang_login|default:''}></h1>
+    <h2 class="text-center"><{$lang_login|default:''}></h2>
   </div>
 <{/if}>
 
@@ -10,7 +10,7 @@
     </legend>
 
     <!-- 無障礙提示區 -->
-    <div id="loginMsg" class="bg-danger text-white mb-2" aria-live="assertive"></div>
+    <div id="loginMsg" class="text-white mb-2 p-2" role="alert" aria-live="assertive" style="background-color:#910613;"></div>
 
     <form id="loginForm" action="<{$xoops_url}>/user.php" method="post" role="form">
       <div class="form-group row mb-3">
@@ -44,7 +44,7 @@
       <input type="hidden" name="xoops_redirect" value="<{$redirect_page|default:''}>">
 
       <div class="text-center">
-        <button type="submit" id="submit" class="btn btn-primary btn-lg">
+        <button type="submit" id="submit" class="btn btn-primary btn-lg" style="background-color: #03347c;">
           <i class="fa-solid fa-user-lock" aria-hidden="true"></i> <{$lang_login|default:''}>
         </button>
       </div>
@@ -63,17 +63,30 @@ document.addEventListener("DOMContentLoaded", function() {
 
     msg.textContent = "";
 
+    // 確保沒有舊的錯誤訊息
+    msg.classList.remove("active");
+
     if(uname.value.trim() === ""){
         e.preventDefault();
         msg.textContent = "請輸入帳號";
-        uname.focus();
+        // 添加active類以確保讀屏軟體識別變化
+        msg.classList.add("active");
+        // 短暫延遲以確保讀屏軟體能識別到內容變化
+        setTimeout(() => {
+            uname.focus();
+        }, 100);
         return false;
     }
 
     if(pass.value.trim() === ""){
         e.preventDefault();
         msg.textContent = "請輸入密碼";
-        pass.focus();
+        // 添加active類以確保讀屏軟體識別變化
+        msg.classList.add("active");
+        // 短暫延遲以確保讀屏軟體能識別到內容變化
+        setTimeout(() => {
+            pass.focus();
+        }, 100);
         return false;
     }
 
@@ -82,8 +95,23 @@ document.addEventListener("DOMContentLoaded", function() {
   // 若頁面重新載入且帳密被清空，視為登入失敗
   if(uname.value === "" && pass.value === "" && document.referrer.includes("user.php")){
       msg.textContent = "帳號或密碼錯誤，請重新輸入";
+      msg.classList.add("active");
       uname.focus();
   }
 
 });
 </script>
+
+<style>
+/* 確保錯誤提示區即使為空也有最小高度，保持佈局穩定 */
+#loginMsg {
+  min-height: 1.5rem;
+  border-radius: 4px;
+  display: none;
+}
+
+/* 當有錯誤訊息時顯示 */
+#loginMsg.active {
+  display: block;
+}
+</style>

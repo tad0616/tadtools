@@ -4,6 +4,7 @@ namespace XoopsModules\Tadtools;
 
 use XoopsModules\School\School_content;
 use XoopsModules\School\School_department;
+use XoopsModules\School\School_page;
 use XoopsModules\School\School_zone;
 
 if (!class_exists('XoopsModules\School\School_content') and \file_exists(XOOPS_ROOT_PATH . '/modules/school/preloads/autoloader.php')) {
@@ -657,10 +658,10 @@ class Tools
         $moduleHandler  = xoops_getHandler('module');
         $where          = $only_enable ? "WHERE `status` = 1" : '';
         $sql            = 'SELECT `menuid`, `itemname`, `itemurl`, `target`, `icon`, `link_cate_name`,
-                `link_cate_sn`, `read_group`, `of_level`, `status`
-                FROM `' . $xoopsDB->prefix('tad_themes_menu') . '`
-                ' . $where . '
-                ORDER BY `of_level`, `position`';
+        `link_cate_sn`, `read_group`, `of_level`, `status`
+        FROM `' . $xoopsDB->prefix('tad_themes_menu') . '`
+        ' . $where . '
+        ORDER BY `of_level`, `position`';
 
         $result = $xoopsDB->query($sql);
 
@@ -718,6 +719,10 @@ class Tools
                     if (!$schoolModule) {
                         continue;
                     }
+                } elseif ($item['link_cate_name'] === 'school_page') {
+                    if (!$schoolModule) {
+                        continue;
+                    }
                 }
                 $custom_menu = self::get_tad_custom_menu_items($item['link_cate_name'], $item['link_cate_sn']);
                 $sub_menu    = self::buildMenuTree($item['menuid'], $menu_hierarchy, $User_Groups, $moduleHandler);
@@ -769,6 +774,21 @@ class Tools
                 }
                 break;
 
+            case "school_page":
+                $link_cate_sn = (int) $link_cate_sn;
+                $page         = School_page::get(['id' => $link_cate_sn, 'enable' => 1], ['all_content']);
+                // Utility::dd($page);
+                foreach ($page['all_content'] as $content) {
+                    $sub_menu[$link_cate_name . $i]['id']      = $content['id'];
+                    $sub_menu[$link_cate_name . $i]['title']   = $content['title'];
+                    $sub_menu[$link_cate_name . $i]['url']     = XOOPS_URL . "/modules/school/index.php?department_id={$page['department_id']}&zone_id={$page['zone_id']}&page_id={$link_cate_sn}&content_id={$content['id']}&type={$page['type']}";
+                    $sub_menu[$link_cate_name . $i]['target']  = "_self";
+                    $sub_menu[$link_cate_name . $i]['icon']    = $content['info']['icon'];
+                    $sub_menu[$link_cate_name . $i]['submenu'] = "";
+                    $i++;
+                }
+                break;
+
             case "school_zone":
                 $zone     = School_zone::get(['enable' => 1, 'id' => $link_cate_sn], ['all_page']);
                 $sub_menu = [];
@@ -778,7 +798,7 @@ class Tools
                         $submenu   = [];
                         $j         = 0;
                         foreach ($page['all_content'] as $content) {
-                            if ($content['enable'] == 1) {
+                            if (isset($content['enable']) and $content['enable']) {
                                 $content_icon = isset($content['info']['icon']) ? $content['info']['icon'] : $page_icon;
 
                                 $submenu[$link_cate_name . $j]['id']      = $j;
@@ -820,20 +840,81 @@ class Tools
                 $departments = School_department::get_all(['enable' => 1], ['all_page'], [], ['sort' => 'asc'], 'id');
                 foreach ($departments as $department_id => $department) {
                     if ($department['enable'] == 1) {
-                        $submenu = [];
-                        $j       = 0;
+                        // 建立兩個數組，一個存儲所有頁面，一個存儲父頁面的子頁面映射
+                        $all_pages           = [];
+                        $parent_children_map = [];
+                        $parent_pages        = [];
+
+                        // 第一步：收集所有頁面信息，並識別父頁面
                         foreach ($department['all_page'] as $page) {
                             if ($page['enable'] == 1) {
-                                $page_icon = isset($page['info']['icon']) ? $page['info']['icon'] : "fa-solid fa-caret-right";
+                                $all_pages[$page['id']] = $page;
 
-                                $submenu[$link_cate_name . $j]['id']      = $j;
-                                $submenu[$link_cate_name . $j]['title']   = $page['title'];
-                                $submenu[$link_cate_name . $j]['url']     = XOOPS_URL . "/modules/school/index.php?department_id=$department_id&page_id={$page['id']}";
-                                $submenu[$link_cate_name . $j]['target']  = "_self";
-                                $submenu[$link_cate_name . $j]['icon']    = $page_icon;
-                                $submenu[$link_cate_name . $j]['submenu'] = "";
-                                $j++;
+                                if ($page['type'] == 'parent') {
+                                    $parent_pages[$page['id']] = $page;
+                                    // 初始化子頁面數組
+                                    $parent_children_map[$page['id']] = [];
+                                }
                             }
+                        }
+
+                        // 第二步：將子頁面添加到對應的父頁面中
+                        foreach ($all_pages as $page) {
+                            if (!empty($page['info']['parent'])) {
+                                $parent_id = $page['info']['parent'];
+                                if (isset($parent_children_map[$parent_id])) {
+                                    $parent_children_map[$parent_id][] = $page;
+                                }
+                            }
+                        }
+
+                        // 第三步：構建菜單項目
+                        $submenu = [];
+                        $j       = 0;
+
+                        // 處理頂級頁面（沒有父頁面或父頁面不存在）
+                        foreach ($all_pages as $page) {
+                            // 跳過有父頁面的子頁面，它們將在父頁面的子菜單中處理
+                            if (!empty($page['info']['parent']) && isset($parent_pages[$page['info']['parent']])) {
+                                continue;
+                            }
+
+                            $page_icon = isset($page['info']['icon']) ? $page['info']['icon'] : "fa-solid fa-caret-right";
+
+                            // 建立頁面菜單項
+                            $page_menu_item = [
+                                'id'    => $j,
+                                'title' => $page['title'],
+                                'url'   => XOOPS_URL . "/modules/school/index.php?department_id=$department_id&page_id={$page['id']}",
+                                'target'  => "_self",
+                                'icon'    => $page_icon,
+                                'submenu' => "",
+                            ];
+
+                            // 如果是父頁面，添加子頁面
+                            if ($page['type'] == 'parent' && isset($parent_children_map[$page['id']]) && !empty($parent_children_map[$page['id']])) {
+                                $child_menu = [];
+                                $k          = 0;
+
+                                foreach ($parent_children_map[$page['id']] as $child_page) {
+                                    $child_icon = isset($child_page['info']['icon']) ? $child_page['info']['icon'] : $page_icon;
+
+                                    $child_menu[$k] = [
+                                        'id'    => $k,
+                                        'title' => $child_page['title'],
+                                        'url'   => XOOPS_URL . "/modules/school/index.php?department_id=$department_id&page_id={$child_page['id']}",
+                                        'target'  => "_self",
+                                        'icon'    => $child_icon,
+                                        'submenu' => "",
+                                    ];
+                                    $k++;
+                                }
+
+                                $page_menu_item['submenu'] = $child_menu;
+                            }
+
+                            $submenu[$link_cate_name . $j] = $page_menu_item;
+                            $j++;
                         }
 
                         $icon = isset($department['info']['icon']) ? $department['info']['icon'] : "fa-solid fa-caret-right";
@@ -847,7 +928,6 @@ class Tools
                         $i++;
                     }
                 }
-                // Utility::dd($sub_menu);
                 break;
         }
 

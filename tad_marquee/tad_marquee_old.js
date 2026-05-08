@@ -109,8 +109,8 @@
                 // 支援：'top'（預設，WCAG 2.2.2/2.4.3 AA 建議）| 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left' | 'left' | 'right'
                 pauseButtonPosition: options.pauseButtonPosition || 'top',
                 pauseButtonLabel: options.pauseButtonLabel || {
-                    pause:  '已繼續播放，按下可暫停',
-                    resume: '已暫停，按下播放繼續'
+                    pause:  '暫停跑馬燈',
+                    resume: '繼續跑馬燈'
                 },
                 ...options
             };
@@ -484,9 +484,7 @@
                 this.start(true);
                 this.isPausedByUser = false;
                 this._updatePauseButton(false);
-                if (document.activeElement !== this.pauseBtn) {
-                    this.announceToScreenReader(this.options.pauseButtonLabel.pause);
-                }
+                this.announceToScreenReader(this.options.pauseButtonLabel.resume);
                 this.triggerCallback('onResume');
                 return;
             }
@@ -496,17 +494,13 @@
                 this.resume(true);
                 this.isPausedByUser = false;
                 this._updatePauseButton(false);
-                if (document.activeElement !== this.pauseBtn) {
-                    this.announceToScreenReader(this.options.pauseButtonLabel.pause);
-                }
+                this.announceToScreenReader(this.options.pauseButtonLabel.resume);
                 this.triggerCallback('onResume');
             } else {
                 this.pause();
                 this.isPausedByUser = true;
                 this._updatePauseButton(true);
-                if (document.activeElement !== this.pauseBtn) {
-                    this.announceToScreenReader(this.options.pauseButtonLabel.resume);
-                }
+                this.announceToScreenReader(this.options.pauseButtonLabel.pause);
                 this.triggerCallback('onPause');
             }
         }

@@ -201,31 +201,16 @@ class Utility
             $target         = $link->getAttribute('target');
             $opensNewWindow = ($target && ($target === '_blank' || $target === '_new'));
 
-            // 檢查是否為檔案連結
-            $fileExtensions = [
-                'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx',
-                'odt', 'ods', 'odp', 'odg', 'odf', // 開放文檔格式
-                'txt', 'rtf', 'csv',
-                'zip', 'rar', '7z', 'tar', 'gz',
-                'jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg',
-                'mp3', 'mp4', 'wav', 'ogg', 'avi', 'mov', 'wmv', 'flv',
-            ];
-
-            $fileExtension = '';
-            if ($href && preg_match('/\.([a-zA-Z0-9]+)(\?.*)?$/i', $href, $matches)) {
-                $fileExtension = strtolower($matches[1]);
-            }
-
-            $isFile = in_array($fileExtension, $fileExtensions);
+            $fileExtension = self::fileExtensions($href);
 
             // 需要重新產生title
             if ($needNewTitle) {
                 $newTitle = '';
 
-                if ($isFile && $opensNewWindow) {
+                if ($fileExtension && $opensNewWindow) {
                     // 同時是檔案且開新視窗
                     $newTitle = "{$fileExtension}格式（另開新視窗）";
-                } elseif ($isFile) {
+                } elseif ($fileExtension) {
                     // 只是檔案
                     $newTitle = "{$fileExtension}格式";
                 } elseif ($opensNewWindow) {
@@ -262,6 +247,62 @@ class Utility
 
         // 沒有修改，返回原始內容
         return $content;
+    }
+
+    /**
+     * 檢查URL是否為檔案連結（特定擴展名）
+     *
+     * @param string $url 要檢查的URL或檔案路徑
+     * @param array $extensions 可選的自定義擴展名數組，默認為常見檔案格式
+     * @return bool 如果URL指向指定擴展名的檔案則返回true，否則返回false
+     */
+    public static function fileExtensions($url, $extensions = [])
+    {
+        // 默認檔案副檔名清單
+        $defaultExtensions = [
+            // 文件格式
+            'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'odt', 'ods', 'odp',
+            // 壓縮檔
+            'zip', 'rar', '7z', 'tar', 'gz', 'bz2',
+            // 圖片格式
+            'jpg', 'jpeg', 'png', 'gif', 'bmp', 'tif', 'tiff', 'webp', 'svg',
+            // 音訊格式
+            'mp3', 'wav', 'ogg', 'flac', 'aac', 'm4a',
+            // 視訊格式
+            'mp4', 'avi', 'mov', 'wmv', 'flv', 'mkv', 'webm',
+            // 程式碼與文本格式
+            'txt', 'csv', 'xml', 'json', 'js', 'css',
+            // 字型格式
+            'ttf', 'otf', 'woff', 'woff2', 'eot',
+        ];
+
+        // 合併自定義擴展名
+        $fileExtensions = !empty($extensions) ? $extensions : $defaultExtensions;
+
+        // 從URL中取得檔案名
+        $parsedUrl = parse_url($url);
+        $path      = isset($parsedUrl['path']) ? $parsedUrl['path'] : $url;
+
+        // 取得副檔名，忽略查詢字串與錨點部分
+        $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+
+        // 檢查副檔名是否在清單中
+        if (!empty($extension) && in_array($extension, $fileExtensions, true)) {
+            return $extension;
+        }
+
+        // 若從 path 取不到副檔名，再檢查 query 字串結尾是否符合副檔名格式
+        // 例如：?file=report.pdf 或 ?src=image.jpg
+        if (isset($parsedUrl['query'])) {
+            if (preg_match('/\.([a-zA-Z0-9]+)$/', $parsedUrl['query'], $matches)) {
+                $extensionFromQuery = strtolower($matches[1]);
+                if (in_array($extensionFromQuery, $fileExtensions, true)) {
+                    return $extensionFromQuery;
+                }
+            }
+        }
+
+        return false;
     }
 
 // 將網址轉為 icon 連結（網址文字保持原樣）

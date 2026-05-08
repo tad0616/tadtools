@@ -199,13 +199,14 @@ class TadUpFiles
     public $thumb_title;
     public $thumb_desc;
 
-    public $tag              = '';
-    public $require          = '';
-    public $max_size         = '';
-    public $pdf_force_dl     = false;
-    public $reload           = false;
-    public $show_path        = false;
-    public $dl_function_name = 'downloadFile';
+    public $tag                = '';
+    public $require            = '';
+    public $max_size           = '';
+    public $pdf_force_dl       = false;
+    public $reload             = false;
+    public $show_path          = false;
+    public $dl_function_name   = 'downloadFile';
+    public $showDownloadFileJs = true;
 
     public function __construct($dir = '', $subdir = '', $file = '/file', $image = '/image', $thumbs = '/image/.thumbs')
     {
@@ -542,6 +543,7 @@ class TadUpFiles
 
                 // $fileidname = str_replace('.', '', $file_name);
                 $file_name = $this->hash ? $hash_filename : $file_name;
+                $img_size  = '';
 
                 if ($thumb) {
                     if ($kind === 'file') {
@@ -569,6 +571,14 @@ class TadUpFiles
                         $thumb_style2 = "<a class='thumbnail $fext' style='display:inline-block; width:{$this->thumb_width};height:{$this->thumb_height};overflow:hidden;background-color: transparent; background-image:url({$thumb_pic});background-position:{$this->thumb_position};background-repeat:{$this->thumb_repeat};background-size:{$this->thumb_size}; margin-bottom: 4px;' title='{$description}'></a>";
                     } else {
                         $thumb_pic = "{$this->TadUpFilesThumbUrl}/{$file_name}";
+
+                        $img_path = "{$this->TadUpFilesImgDir}/{$file_name}";
+                        if (file_exists($img_path)) {
+                            $size_info = getimagesize($img_path);
+                            if ($size_info) {
+                                $img_size = "<span class='badge badge-success bg-success text-white' style='margin-right: 5px; font-weight: normal;'>{$size_info[0]} x {$size_info[1]}</span>";
+                            }
+                        }
 
                         $thumb_tool = "
                         <table class='table'>
@@ -638,8 +648,9 @@ class TadUpFiles
                         {$thumb_tool}
                     </td>
                     <td>
-                    {$filename_label}
-                    <textarea name='{$this->upname}_save_description[$files_sn]' rows=2 class='form-control'>{$description}</textarea>
+                    {$img_size}{$filename_label}
+                    <textarea name='{$this->upname}_save_description[$files_sn]' id='description_{$files_sn}' rows=2 class='form-control'>{$description}</textarea>
+                    <input type='hidden' class='exist_files' data-files_sn='{$files_sn}' value='{$original_filename}'>
                     $permission
                     </td>
                 </tr>";
@@ -1558,7 +1569,7 @@ class TadUpFiles
         }
 
         if (empty($del_what)) {
-            die('無刪除條件');
+            return;
         }
 
         $sql    = "SELECT * FROM `{$this->TadUpFilesTblName}` WHERE {$del_what}";
@@ -1711,9 +1722,9 @@ class TadUpFiles
             $files[$key]['hash_filename']     = $hash_filename;
             $files[$key]['upload_date']       = $upload_date;
             $files[$key]['uid']               = $uid;
-            
-            $ext_arr                          = explode('.', $original_filename);
-            $files[$key]['ext']               = $original_filename ? mb_strtolower(array_pop($ext_arr)) : '';
+
+            $ext_arr            = explode('.', $original_filename);
+            $files[$key]['ext'] = $original_filename ? mb_strtolower(array_pop($ext_arr)) : '';
 
             $uid_name = \XoopsUser::getUnameFromId($uid, 1);
             if (empty($uid_name)) {
@@ -1780,8 +1791,9 @@ class TadUpFiles
                 $file_name                = $this->hash ? $hash_filename : $file_name;
 
                 // 2025/09/25 為無障礙修改
-                $files[$key]['url']                = "<a href='{$dl_url}' class='$fext' $onclick title='{$description}' {$rel} class='{$fancyboxset}' data-fancybox-type='iframe'>{$show_file_name}</a>";
-                $title                             = $fext == 'pdf' ? "title='PDF格式下載'" : "";
+                $files[$key]['url'] = "<a href='{$dl_url}' class='$fext' $onclick title='{$description}' {$rel} class='{$fancyboxset}' data-fancybox-type='iframe'>{$show_file_name}</a>";
+                // $title                          = $fext == 'pdf' ? "title='PDF格式下載'" : "";
+                $title                             = "title='{$fext}格式下載'";
                 $files[$key]['link']               = "<a href='{$dl_url}' class='$fext' $onclick target='{$target}' $title>{$show_file_name}</a>";
                 $files[$key]['path']               = "{$dl_url}";
                 $files[$key]['dl_url']             = $dl_url;
@@ -2104,21 +2116,33 @@ class TadUpFiles
                     $dl_or_view = $fancyboxset ? '於彈跳視窗觀看：' : '下載：';
 
                     $bs_data = $_SESSION['bootstrap'] == 5 ? "data-bs-toggle='tooltip' data-bs-placement='top' data-bs-original-title='{$description}'" : "data-toggle='tooltip' data-placement='top' data-original-title='{$description}'";
+
                     if ($fext === 'jpg' or $fext === 'gif' or $fext === 'png' or $fext === 'jpeg') {
-                        $title = "aria-label='{$dl_or_view}{$description}' title='{$description}'";
+                        $title = "aria-label='{$dl_or_view}{$description}'";
                     } else {
-                        $title = $fext == 'pdf' ? "title='PDF格式下載'" : "";
+                        // $title = $fext == 'pdf' ? "title='PDF格式下載'" : "";
+                        $filename = str_replace(".{$fext}", "", $file_info['original_filename']);
+                        $title    = "title='{$filename} ({$fext}格式)'";
                     }
-                    $all_files .= ($show_mode === 'small') ? "<a href='{$linkto}#{$description}' {$bs_data} class='iconize $fext {$fancyboxset}' {$rel}><span class='sr-only visually-hidden'>{$dl_or_view}{$description}</span></a> " : "
-                    <li class='tuf-icon-item' style='width:{$w}px;height:{$item_h}px;float:left;list-style:none;{$this->other_css}'>
-                    <a href='{$linkto}' class='thumbnail $fext {$fancyboxset}' target='{$target}' $title {$rel} style=\"display:inline-block; width: {$w}px; height: {$h}px; overflow: hidden; margin-bottom: 4px; {$thumb_css}\"><img src='{$thumb_pic}' alt='{$description}' style='width: 100%; height: 100%; object-fit: {$bgs};'></a>{$show_description_txt}
-                    </li>";
+
+                    if ($show_mode === 'small') {
+                        $all_files .= "<a href='{$linkto}#{$description}' {$bs_data} class='iconize $fext {$fancyboxset}' {$rel}><span class='sr-only visually-hidden'>{$dl_or_view}{$description}</span></a> ";
+                    } else {
+                        $all_files .= "
+                        <li class='tuf-icon-item' style='width:{$w}px;height:{$item_h}px;float:left;list-style:none;{$this->other_css}'>
+                        <a href='{$linkto}' class='thumbnail $fext {$fancyboxset}' target='{$target}' $title {$rel} style=\"display:inline-block; width: {$w}px; height: {$h}px; overflow: hidden; margin-bottom: 4px; {$thumb_css}\"><img src='{$thumb_pic}' alt='{$description}' style='width: 100%; height: 100%; object-fit: {$bgs};'>
+                        </a>{$show_description_txt}
+                        </li>";
+                    }
+
                 }
 
                 $i++;
             }
 
-            $download_file_js = $this->downloadFileJs($path);
+            if ($this->showDownloadFileJs) {
+                $download_file_js = $this->downloadFileJs($path);
+            }
 
             if ($show_mode === 'file_url') {
                 $all_files .= "</ul>";

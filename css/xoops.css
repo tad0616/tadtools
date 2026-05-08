@@ -5,15 +5,15 @@ body {
   overflow-x: hidden;
 }
 
-.sr-only-focusable{
-  position:absolute;
-  left:-9999px;
+.sr-only-focusable {
+  position: absolute;
+  left: -9999px;
 }
 
-.sr-only-focusable:focus{
-  left:0;
-  background:#000;
-  color:#fff;
+.sr-only-focusable:focus {
+  left: 0;
+  background: #000;
+  color: #fff;
 }
 
 .linkify-external {
@@ -53,12 +53,14 @@ a.tad_block_config:hover {
 }
 
 /* jGrowl Box style */
-div.center div.jGrowl-notification, div.center div.jGrowl-closer {
+div.center div.jGrowl-notification,
+div.center div.jGrowl-closer {
   margin-left: auto;
   margin-right: auto;
 }
 
-div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
+div.jGrowl div.jGrowl-notification,
+div.jGrowl div.jGrowl-closer {
   background-color: #ffffff;
   color: #3b2001;
   width: 100%;
@@ -91,9 +93,12 @@ div.jGrowl div.jGrowl-notification button.jGrowl-close {
   cursor: pointer;
   background-color: #ceda8f;
   border: 0.1875rem solid #729932;
-  width: 2.5rem; /* 設定寬度 */
-  height: 2.5rem; /* 設定高度 */
-  border-radius: 50%; /* 設定圓角為50%使其成為圓形 */
+  width: 2.5rem;
+  /* 設定寬度 */
+  height: 2.5rem;
+  /* 設定高度 */
+  border-radius: 50%;
+  /* 設定圓角為50%使其成為圓形 */
 }
 
 div.jGrowl div.jGrowl-closer {
@@ -110,28 +115,38 @@ div.jGrowl div.jGrowl-closer {
   position: relative;
   margin: 1.25rem 0;
 }
+
 .toolbar_bootstrap_nav ul {
   margin: 0;
   padding: 0;
 }
+
 .toolbar_bootstrap_nav li {
   margin: 0 0.3125rem 0.625rem 0;
   padding: 0;
   list-style: none;
   display: inline-block;
 }
+
 .toolbar_bootstrap_nav a {
   padding: 0.1875rem 0.75rem;
   text-decoration: none;
   color: #404a50;
   line-height: 100%;
 }
+
 .toolbar_bootstrap_nav a:hover {
   color: #1c55be;
   background: #f5f9fc;
 }
+
 .toolbar_bootstrap_nav .current a {
   background: #404a50;
   color: #fff;
   border-radius: 0.3125rem;
+}
+
+.fc-myToday-button {
+  background-color: #070724 ! important;
+  color: #fffb04 ! important;
 }

@@ -1,9 +1,12 @@
 /**
- * TadNav v1.8.7
+ * TadNav v1.8.8
  * 修正：
  *   1. 桌機版：hover/click 開啟子選單前先關閉同層其他子選單（互斥）
  *   2. 手機版：強制單欄手風琴，同層互斥
  *   3. WCAG 1.4.10：focusin 時 scrollIntoView
+ *   4. Alt+U 便捷鍵：將焦點目標改為 #main-nav-skip，
+ *      避免焦點落在 nav 容器導致 AT 朗讀整個導覽列；
+ *      同時在焦點離開選單後清空 live region，防止殘留文字被重播
  */
 (function (root, factory) {
   if (typeof define === "function" && define.amd) { define([], factory); }
@@ -99,6 +102,8 @@
       this._scrollStates     = new Map();
       this._focusTrapHandler = null;
       this._lastInteractionWasKeyboard = false;
+      // 程式化批次操作時暫停 aria-live 播報，避免干擾鍵盤導覽
+      this._suppressAnnounce = false;
 
       this._wrapper =
         this.menu.closest(".tadnav-wrapper") || this.menu.parentElement;
@@ -288,13 +293,18 @@
       el.setAttribute("role", "status");
       el.setAttribute("aria-live", "polite");
       el.setAttribute("aria-atomic", "true");
+      // aria-relevant="additions" 限制僅新增內容才播報，
+      // 清空文字（刪除）時不觸發 AT"空白”播報
+      el.setAttribute("aria-relevant", "additions");
       el.style.cssText = "position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;";
       document.body.appendChild(el);
       this._liveRegion = el;
     }
 
     _announce(message) {
-      if (!this._liveRegion) return;
+      // 程式化批次操作期間（互斥關閉、focusout 觸發）暫停播報，
+      // 避免 Alt+U 跳到導覽列時螢幕報讀器持續播報子選單狀態
+      if (!this._liveRegion || this._suppressAnnounce) return;
       this._liveRegion.textContent = "";
       requestAnimationFrame(() => { this._liveRegion.textContent = message; });
     }
@@ -454,21 +464,32 @@
           if (!this.menu.contains(active) && active !== this.toggleBtn) {
             // ★ 改用 data-mobile-open（而非 _isMobile）判斷選單是否展開，
             //   確保 200-400% 縮放時仍能正確關閉。
+            // ★ 焦點因 Alt+U 等便捷鍵離開選單時，程式化關閉不需播報，
+            //   以免 aria-live 的播報蓋過焦點目標的播報
+            this._suppressAnnounce = true;
             if (this.menu.getAttribute("data-mobile-open") === "true") {
               this._closeMobileMenu();
             } else {
               this.closeAll();
             }
+            // ★ 關閉完成後立即清空 live region 殘留文字，
+            //   防止 AT 在焦點移到新目標（如 #main-nav-skip）時
+            //   重新播報 live region 中的削除前殘留內容
+            if (this._liveRegion) this._liveRegion.textContent = "";
+            this._suppressAnnounce = false;
           } else if (active) {
             // 焦點還在選單內，檢查所有已展開的子選單
             // 若焦點不在該子選單及其所屬的 <li> 內（亦即離開了該項目層級），則將其收合
+            // 同樣靜音，避免焦點在選單內移動時觸發不必要的播報
+            this._suppressAnnounce = true;
             this.menu.querySelectorAll('.tadnav-submenu[data-open="true"]').forEach(sub => {
               const parentLi = sub.parentElement;
-              // 當焦點從子選單離開時，自動收合該子選單，避免遮擋網頁內容
+              // 當焦點從子選單離開時，自動收合該子選單，避免遺擋網頁內容
               if (parentLi && !parentLi.contains(active)) {
                 this._closeSubmenu(sub);
               }
             });
+            this._suppressAnnounce = false;
           }
         }, 10);
       }
@@ -575,8 +596,11 @@
     close(sub) { this._closeSubmenu(sub); }
 
     closeAll() {
+      // 批次關閉時靜音，避免每個子選單各自觸發 aria-live 播報
+      this._suppressAnnounce = true;
       this.menu.querySelectorAll('.tadnav-submenu[data-open="true"]')
         .forEach(s => this._closeSubmenu(s));
+      this._suppressAnnounce = false;
     }
 
     setTrigger(mode) {
@@ -688,8 +712,11 @@
       if (!parentLi) return;
       const parentUl = parentLi.parentElement;   // 直屬 ul（同層容器）
       if (!parentUl) return;
+      // 互斥關閉同層選單時靜音，使用者正在開啟的選單才需要播報
+      this._suppressAnnounce = true;
       parentUl.querySelectorAll(':scope > li > .tadnav-submenu[data-open="true"]')
         .forEach(s => { if (s !== sub) this._closeSubmenu(s); });
+      this._suppressAnnounce = false;
     }
 
     // =============================================
@@ -974,8 +1001,13 @@
         if (!this._isMobile) {
           // 切回桌機：重設手機選單狀態
           this.menu.setAttribute("data-mobile-open", "false");
-          if (this.toggleBtn)
+          if (this.toggleBtn) {
             this.toggleBtn.setAttribute("aria-expanded", "false");
+            // ★ 同步 aria-label：確保名稱與 aria-expanded 狀態一致，
+            //   避免 200-400% 縮放後切回桌機時，aria-label 殘留「關閉導覽列選單」
+            //   而 aria-expanded 已為 false，造成輔助工具判讀混淆（WCAG 4.1.2）
+            this.toggleBtn.setAttribute("aria-label", "開啟導覽列選單");
+          }
           this._deactivateFocusTrap();
         }
 

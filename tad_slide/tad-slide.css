@@ -9,7 +9,7 @@
   width: 100%;
   overflow: hidden;
   margin: 0 auto;
-  background: #fcfcfc;
+  background: #ffffff;
   isolation: isolate;
 }
 
@@ -68,9 +68,10 @@
   left: 0;
   right: 0;
   padding: 0.75rem 1rem;
-  background: rgba(0, 0, 0, 0.65);
-  color: #fff;
-  font-size: 0.95rem;
+  background: rgba(0, 0, 0, 0.75); /* 提高不透明度以確保對比度 */
+  color: #ffffff;
+  font-size: 1rem; /* 增加字體大小以提高可讀性 */
+  font-weight: 500; /* 加粗以提高對比度 */
   line-height: 1.5;
 }
 
@@ -107,7 +108,7 @@
   left: 0;
   height: 4px;
   width: 0%;
-  background: #00000022;
+  background: rgba(0, 0, 0, 0.45); /* 提高對比度 */
   z-index: 10;
   transition: width linear;
 }
@@ -116,7 +117,7 @@
 }
 
 /* ============================================
-   通用按鈕樣式
+   通用按鈕樣式 - WCAG 2.3 AAA 符合標準
    ============================================ */
 .tad-slide__btn {
   display: inline-flex;
@@ -124,24 +125,71 @@
   justify-content: center;
   min-width: 44px;
   min-height: 44px;
-  padding: 0.3rem 0.75rem;
+  padding: 0.5rem 1rem;
   border: 2px solid transparent;
   border-radius: 4px;
-  background: #333;
-  color: #fff;
-  font-size: 0.875rem;
+  background: #121212; /* 深色背景確保7:1對比度 */
+  color: #ffffff;
+  font-size: 1rem; /* 增加字體大小至少 16px */
+  font-weight: 500; /* 稍微加粗，提高可讀性 */
   font-family: inherit;
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
   white-space: nowrap;
-  line-height: 1;
+  line-height: 1.5; /* 提高行高改善可讀性 */
+  text-align: center;
+  position: relative;
+  margin: 0.25rem; /* 確保按鈕間有足夠間距 */
 }
-.tad-slide__btn:hover { background: #555; }
+
+/* 懸停狀態 - 確保對比度仍達標 */
+.tad-slide__btn:hover {
+  background: #2a2a2a;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+/* 焦點狀態 - 多重視覺提示 */
 .tad-slide__btn:focus-visible {
-  outline: 3px solid #ffdd00;
-  outline-offset: 2px;
-  border-color: #ffdd00;
-  background: #444;
+  outline: 3px solid #ffcc00; /* 更亮的黃色以提高對比度 */
+  outline-offset: 3px;
+  border-color: #ffcc00;
+  background: #121212;
+  box-shadow: 0 0 0 2px rgba(255, 204, 0, 0.5), 0 0 10px rgba(255, 204, 0, 0.4);
+  text-decoration: underline; /* 額外的焦點指示 */
+}
+
+/* 停用狀態 */
+.tad-slide__btn:disabled,
+.tad-slide__btn[aria-disabled="true"] {
+  opacity: 0.7; /* 提高不透明度以確保對比度 */
+  cursor: not-allowed;
+  background: #333333;
+  color: #ffffff; /* 改為白色以確保對比度 */
+  box-shadow: none;
+}
+
+/* 確保所有交互狀態下都有足夠的觸控區域 */
+.tad-slide__btn::before {
+  content: '';
+  position: absolute;
+  inset: -5px; /* 擴大點擊區域 */
+  z-index: -1;
+}
+
+/* 按鈕內容間距 */
+.tad-slide__btn > * {
+  margin: 0 0.25rem;
+}
+
+/* 支援高對比模式 */
+@media (forced-colors: active) {
+  .tad-slide__btn {
+    border: 2px solid ButtonText;
+  }
+  .tad-slide__btn:focus-visible {
+    outline: 3px solid ButtonFace;
+    outline-offset: 3px;
+  }
 }
 
 /* ============================================
@@ -154,7 +202,7 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 0.6rem 0.5rem;
-  background: #1a1a1a;
+  background: #0d0d0d; /* 更深的背景色確保對比度 */
 }
 
 /* 暫停按鈕（獨立置於輪播頂部，橫跨整個寬度） */
@@ -166,10 +214,10 @@
   min-height: 44px;
   padding: 0.4rem 1rem;
   border-radius: 0;
-  background: #c0392b;
+  background: #a12116; /* 提高對比度的紅色 */
   font-weight: 600;
-  font-size: 0.875rem;
-  color: #fff;
+  font-size: 1rem; /* 增加到16px */
+  color: #ffffff;
   cursor: pointer;
   border: none;
   border-bottom: 2px solid transparent;
@@ -177,16 +225,16 @@
   position: relative;
   z-index: 15;
 }
-.tad-slide--nav-bottom .tad-slide__pause:hover { background: #e74c3c; }
+.tad-slide--nav-bottom .tad-slide__pause:hover { background: #c0392b; }
 .tad-slide--nav-bottom .tad-slide__pause:focus-visible {
-  outline: 3px solid #ffdd00;
+  outline: 3px solid #ffcc00; /* 更亮的黃色 */
   outline-offset: 2px;
-  border-color: #ffdd00;
-  background: #a93226;
+  border-color: #ffcc00;
+  background: #7d190e; /* 更深的背景色確保對比度 */
 }
-.tad-slide--nav-bottom .tad-slide__pause[data-playing="false"] { background: #27ae60; }
-.tad-slide--nav-bottom .tad-slide__pause[data-playing="false"]:hover { background: #2ecc71; }
-.tad-slide--nav-bottom .tad-slide__pause[data-playing="false"]:focus-visible { background: #1e8449; }
+.tad-slide--nav-bottom .tad-slide__pause[data-playing="false"] { background: #1a7740; } /* 深綠色 */
+.tad-slide--nav-bottom .tad-slide__pause[data-playing="false"]:hover { background: #219653; }
+.tad-slide--nav-bottom .tad-slide__pause[data-playing="false"]:focus-visible { background: #145a31; }
 
 /* 分頁點（底部列版） */
 .tad-slide--nav-bottom .tad-slide__pager {
@@ -213,17 +261,17 @@
   position: absolute;
   inset: 50% auto auto 50%;
   transform: translate(-50%, -50%);
-  width: 10px;
-  height: 10px;
+  width: 12px; /* 增加尺寸 */
+  height: 12px; /* 增加尺寸 */
   border-radius: 50%;
-  background: #aaa;
+  background: #999999; /* 提高對比度的灰色 */
   transition: background 0.2s;
 }
 .tad-slide--nav-bottom .tad-slide__pager-btn[aria-current="true"]::after,
-.tad-slide--nav-bottom .tad-slide__pager-btn:hover::after { background: #ffdd00; }
-.tad-slide--nav-bottom .tad-slide__pager-btn[aria-current="true"] { border-color: #ffdd00; }
+.tad-slide--nav-bottom .tad-slide__pager-btn:hover::after { background: #ffcc00; } /* 更亮的黃色 */
+.tad-slide--nav-bottom .tad-slide__pager-btn[aria-current="true"] { border-color: #ffcc00; }
 .tad-slide--nav-bottom .tad-slide__pager-btn:focus-visible {
-  outline: 3px solid #ffdd00;
+  outline: 3px solid #ffcc00;
   outline-offset: 2px;
 }
 
@@ -237,9 +285,9 @@
   top: 50%;
   transform: translateY(-50%);
   z-index: 20;
-  background: none;
+  background-color: rgba(0, 0, 0, 0.5); /* 添加半透明背景以提高對比度 */
   border: none;
-  border-radius: 0;
+  border-radius: 4px;
   width: 72px;
   height: 72px;
   min-width: 72px;
@@ -248,20 +296,20 @@
   cursor: pointer;
   /* 滑入顯示 */
   opacity: 0;
-  transition: opacity 0.3s, transform 0.25s;
+  transition: opacity 0.3s, transform 0.25s, background-color 0.2s;
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.75));
 }
-/* SVG 箭頭圖示 */
+/* SVG 箭頭圖示 - 修改為更粗的線條以提高可見度 */
 .tad-slide--nav-sides .tad-slide__arrow--prev {
   left: 0.5rem;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='15 18 9 12 15 6'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='15 18 9 12 15 6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 56px 56px;
 }
 .tad-slide--nav-sides .tad-slide__arrow--next {
   right: 0.5rem;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 18 15 12 9 6'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 18 15 12 9 6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 56px 56px;
@@ -274,19 +322,22 @@
 /* hover 時箭頭微移動 + 黃色 + 加強陰影 */
 .tad-slide--nav-sides .tad-slide__arrow--prev:hover {
   transform: translateY(-50%) translateX(-4px);
+  background-color: rgba(0, 0, 0, 0.8); /* 深色背景 */
   filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.9));
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffdd00' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='15 18 9 12 15 6'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffcc00' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='15 18 9 12 15 6'/%3E%3C/svg%3E");
 }
 .tad-slide--nav-sides .tad-slide__arrow--next:hover {
   transform: translateY(-50%) translateX(4px);
+  background-color: rgba(0, 0, 0, 0.8); /* 深色背景 */
   filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.9));
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffdd00' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 18 15 12 9 6'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffcc00' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 18 15 12 9 6'/%3E%3C/svg%3E");
 }
 .tad-slide--nav-sides .tad-slide__arrow:focus-visible {
   opacity: 1;
-  outline: 3px solid #ffdd00;
+  outline: 3px solid #ffcc00;
   outline-offset: 4px;
   border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.8); /* 深色背景確保對比度 */
 }
 
 /* sides 模式的暫停按鈕：
@@ -299,29 +350,30 @@
   bottom: auto;
   right: 0.75rem;
   z-index: 20;
-  background: rgba(0, 0, 0, 0.55);
-  border: 2px solid rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.75); /* 提高不透明度 */
+  border: 2px solid rgba(255, 255, 255, 0.4); /* 提高對比度 */
   border-radius: 4px;
   width: auto;
   min-width: 44px;
   min-height: 44px;
   padding: 0.25rem 0.6rem;
-  font-size: 0.78rem;
-  color: #fff;
+  font-size: 0.875rem; /* 至少14px */
+  font-weight: 500; /* 加粗 */
+  color: #ffffff;
   opacity: 1;
   transition: background 0.2s;
 }
 .tad-slide--nav-sides .tad-slide__pause-float:hover {
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.9);
 }
 .tad-slide--nav-sides .tad-slide__pause-float:focus-visible {
   opacity: 1;
-  outline: 3px solid #ffdd00;
+  outline: 3px solid #ffcc00;
   outline-offset: 2px;
 }
 .tad-slide--nav-sides .tad-slide__pause-float[data-playing="false"] {
-  border-color: #27ae60;
-  color: #2ecc71;
+  border-color: #1a7740;
+  color: #4ade80; /* 更亮的綠色 */
 }
 
 /* ============================================
@@ -334,28 +386,29 @@
   bottom: auto;
   right: 0.75rem;
   z-index: 20;
-  background: rgba(0, 0, 0, 0.55);
-  border: 2px solid rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.75); /* 提高不透明度 */
+  border: 2px solid rgba(255, 255, 255, 0.4); /* 提高對比度 */
   border-radius: 4px;
   min-width: 44px;
   min-height: 44px;
   padding: 0.25rem 0.6rem;
-  font-size: 0.78rem;
-  color: #fff;
+  font-size: 0.875rem; /* 至少14px */
+  font-weight: 500; /* 加粗 */
+  color: #ffffff;
   opacity: 1;
   transition: background 0.2s;
 }
 .tad-slide--nav-none .tad-slide__pause-float:hover {
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.9);
 }
 .tad-slide--nav-none .tad-slide__pause-float:focus-visible {
   opacity: 1;
-  outline: 3px solid #ffdd00;
+  outline: 3px solid #ffcc00;
   outline-offset: 2px;
 }
 .tad-slide--nav-none .tad-slide__pause-float[data-playing="false"] {
-  border-color: #27ae60;
-  color: #2ecc71;
+  border-color: #1a7740;
+  color: #4ade80; /* 更亮的綠色 */
 }
 
 /* ============================================
@@ -381,11 +434,16 @@
    響應式
    ============================================ */
 @media (max-width: 600px) {
-  .tad-slide__caption { font-size: 0.82rem; padding: 0.5rem 0.75rem; }
+  .tad-slide__caption { font-size: 0.875rem; font-weight: 500; padding: 0.5rem 0.75rem; } /* 確保小屏幕上字體仍然可讀 */
   .tad-slide--nav-bottom .tad-slide__controls-bar { gap: 0.3rem; padding: 0.4rem; }
-  .tad-slide--nav-bottom .tad-slide__pause { font-size: 0.8rem; min-height: 40px; }
-  .tad-slide__btn { font-size: 0.8rem; padding: 0.25rem 0.5rem; }
-  .tad-slide--nav-sides .tad-slide__arrow { width: 52px; height: 52px; background-size: 40px 40px; }
+  .tad-slide--nav-bottom .tad-slide__pause { font-size: 0.875rem; min-height: 40px; } /* 至少14px */
+  .tad-slide__btn { font-size: 0.875rem; font-weight: 500; padding: 0.25rem 0.5rem; } /* 確保加粗 */
+  .tad-slide--nav-sides .tad-slide__arrow {
+    width: 52px;
+    height: 52px;
+    background-size: 40px 40px;
+    background-color: rgba(0, 0, 0, 0.6); /* 確保小屏幕上也有足夠對比度 */
+  }
 }
 
 /* ── 螢幕閱讀器專用隱藏 ── */
@@ -425,40 +483,22 @@
   position: relative;    /* 為偽元素定位提供參考 */
 }
 
-/* 改善輪播圖片連結的焦點樣式 */
+/* 改善輪播投影片本身與圖片連結的焦點樣式 */
+.tad-slide__item:focus-visible,
 .tad-slide__item a:focus-visible {
   outline: none;         /* 移除預設外框 */
 }
 
 /* 使用偽元素創建更明顯的焦點指示器 */
+.tad-slide__item:focus-visible::after,
 .tad-slide__item a:focus-visible::after {
   content: "";
   position: absolute;
   inset: 0;              /* 覆蓋整個連結區域 */
   z-index: 5;            /* 確保在圖片上方 */
-  box-shadow: inset 0 0 0 4px #ffdd00, inset 0 0 0 6px rgba(0, 0, 0, 0.5); /* 雙層外框效果 */
+  box-shadow: inset 0 0 0 4px #ffcc00, inset 0 0 0 6px rgba(0, 0, 0, 0.7); /* 調整對比度 */
   border-radius: 2px;    /* 輕微圓角 */
   pointer-events: none;  /* 允許點擊穿透到連結 */
-}
-
-/* 為焦點狀態添加額外視覺指示，顯示一個進入符號 */
-.tad-slide__item a:focus-visible::before {
-  /* content: "↵";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(0, 0, 0, 0.7);
-  color: #ffdd00;
-  font-size: 2rem;
-  font-weight: bold;
-  width: 80px;
-  height: 80px;
-  line-height: 80px;
-  text-align: center;
-  border-radius: 50%;
-  z-index: 6;
-  pointer-events: none; */
 }
 
 .tad-slide__item a img {

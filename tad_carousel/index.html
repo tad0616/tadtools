@@ -1124,8 +1124,8 @@ el.addEventListener(<span class="s">'tadcarousel:onchanged'</span>, (e) => {
     </div>
 
     <div class="a11y-card" style="margin-top:1rem;">
-      <h3>分頁指示器 Tablist 模式</h3>
-      <p>圓點指示器實作為 <code>role="tablist"</code>，每個圓點為 <code>role="tab"</code>，並以 <code>aria-selected</code> 標示當前選取狀態。非作用中的圓點設置 <code>tabindex="-1"</code>，符合 Tablist 的 Roving Tabindex 模式。</p>
+      <h3>分頁指示器標示</h3>
+      <p>每個圓點指示器為一般按鈕，並以 <code>aria-current="true"</code> 標示當前選取狀態。非作用中的圓點設置 <code>tabindex="-1"</code>，避免產生多餘的 Tab 停駐點。</p>
     </div>
 
     <div class="a11y-card" style="margin-top:1rem;">

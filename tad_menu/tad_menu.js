@@ -90,6 +90,88 @@ class TadMenu {
             accent: '#6c757d',
             highlight: { bgColor: '#e9ecef', borderColor: '#6c757d' },
             borderColor: '#dee2e6'
+        },
+
+        'aaa-ocean-blue': {
+            name: '海洋藍 AAA',
+            level1: { textColor: '#0b1d3a', bgColor: '#f0f8ff', hoverBg: '#dff0fc', fontSize: '1.1em' },
+            level2: { textColor: '#122b55', bgColor: '#f7fbff', hoverBg: '#e5f2fd', fontSize: '1em' },
+            level3: { textColor: '#193870', bgColor: '#ffffff', hoverBg: '#f0f8ff', fontSize: '0.95em' },
+            accent: '#005fa3',
+            highlight: { bgColor: '#fff5cc', borderColor: '#7a5c00' },
+            borderColor: '#bcd7f0'
+        },
+        'aaa-forest-green': {
+            name: '森林綠 AAA',
+            level1: { textColor: '#0c2a1e', bgColor: '#edf8f2', hoverBg: '#d8f0e3', fontSize: '1.1em' },
+            level2: { textColor: '#1a4535', bgColor: '#f5fbf8', hoverBg: '#e3f5ec', fontSize: '1em' },
+            level3: { textColor: '#1e5c45', bgColor: '#ffffff', hoverBg: '#edf8f2', fontSize: '0.95em' },
+            accent: '#1a7a45',
+            highlight: { bgColor: '#c8f0d8', borderColor: '#0e6633' },
+            borderColor: '#a8dfc2'
+        },
+        'aaa-warm-orange': {
+            name: '暖陽橘 AAA',
+            level1: { textColor: '#3d1f00', bgColor: '#fff7ee', hoverBg: '#ffe8cc', fontSize: '1.1em' },
+            level2: { textColor: '#5a3000', bgColor: '#fffbf5', hoverBg: '#fff0d9', fontSize: '1em' },
+            level3: { textColor: '#7a4500', bgColor: '#ffffff', hoverBg: '#fff7ee', fontSize: '0.95em' },
+            accent: '#b84500',
+            highlight: { bgColor: '#ffe8cc', borderColor: '#8a3300' },
+            borderColor: '#ffd0a0'
+        },
+        'aaa-elegant-purple': {
+            name: '優雅紫 AAA',
+            level1: { textColor: '#260a40', bgColor: '#f7f0fd', hoverBg: '#ecdafc', fontSize: '1.1em' },
+            level2: { textColor: '#380f5c', bgColor: '#fbf5fe', hoverBg: '#f3e8fd', fontSize: '1em' },
+            level3: { textColor: '#4a1878', bgColor: '#ffffff', hoverBg: '#f7f0fd', fontSize: '0.95em' },
+            accent: '#6b1fa0',
+            highlight: { bgColor: '#ecdafc', borderColor: '#4a1878' },
+            borderColor: '#d5b5f0'
+        },
+        'aaa-tech-dark': {
+            name: '科技黑 AAA',
+            level1: { textColor: '#f0f0f0', bgColor: '#0d0d22', hoverBg: '#1a1a38', fontSize: '1.1em' },
+            level2: { textColor: '#e8e8e8', bgColor: '#101028', hoverBg: '#1c1c3f', fontSize: '1em' },
+            level3: { textColor: '#d8d8d8', bgColor: '#08080f', hoverBg: '#0d0d22', fontSize: '0.95em' },
+            accent: '#00c4ee',
+            highlight: { bgColor: '#1a1a38', borderColor: '#00c4ee' },
+            borderColor: '#252545'
+        },
+        'aaa-sakura-pink': {
+            name: '櫻花粉 AAA',
+            level1: { textColor: '#500f25', bgColor: '#fef5f7', hoverBg: '#fce6eb', fontSize: '1.1em' },
+            level2: { textColor: '#6b1832', bgColor: '#fef9fa', hoverBg: '#fdeef2', fontSize: '1em' },
+            level3: { textColor: '#861e3d', bgColor: '#ffffff', hoverBg: '#fef5f7', fontSize: '0.95em' },
+            accent: '#c8004a',
+            highlight: { bgColor: '#fce6eb', borderColor: '#861e3d' },
+            borderColor: '#f5c5d2'
+        },
+        'aaa-classic-gray': {
+            name: '經典灰 AAA',
+            level1: { textColor: '#1a1e20', bgColor: '#f8f9fa', hoverBg: '#ebedee', fontSize: '1.1em' },
+            level2: { textColor: '#282d30', bgColor: '#fcfcfd', hoverBg: '#eef0f1', fontSize: '1em' },
+            level3: { textColor: '#38403a', bgColor: '#ffffff', hoverBg: '#f8f9fa', fontSize: '0.95em' },
+            accent: '#3d4f5c',
+            highlight: { bgColor: '#e8eaec', borderColor: '#3d4f5c' },
+            borderColor: '#d0d3d5'
+        },
+        'aaa-amber-gold': {
+            name: '琥珀金 AAA',
+            level1: { textColor: '#2a1c05', bgColor: '#fdf9ee', hoverBg: '#f8f0d5', fontSize: '1.1em' },
+            level2: { textColor: '#3e2a08', bgColor: '#fefcf5', hoverBg: '#fbf5df', fontSize: '1em' },
+            level3: { textColor: '#543a0c', bgColor: '#ffffff', hoverBg: '#fdf9ee', fontSize: '0.95em' },
+            accent: '#9e6f00',
+            highlight: { bgColor: '#f5eccf', borderColor: '#7a5500' },
+            borderColor: '#ead8a0'
+        },
+        'aaa-bootstrap-light': {
+            name: '雅致白 AAA',
+            level1: { textColor: '#111315', bgColor: '#ffffff', hoverBg: '#f3f4f5', fontSize: '1.1em' },
+            level2: { textColor: '#1a1e22', bgColor: '#f5f6f7', hoverBg: '#e8eaec', fontSize: '1em' },
+            level3: { textColor: '#2c3338', bgColor: '#ffffff', hoverBg: '#f5f6f7', fontSize: '0.95em' },
+            accent: '#2c3e50',
+            highlight: { bgColor: '#e8eaec', borderColor: '#2c3e50' },
+            borderColor: '#ced2d6'
         }
     };
 
@@ -309,6 +391,25 @@ class TadMenu {
         return TadMenu.themes['ocean-blue'];
     }
 
+    /**
+     * 判斷目前選用的主題是否為 AAA 無障礙等級主題。
+     * 判斷規則：
+     *   - 字串主題：key 以 "aaa-" 開頭（如 'aaa-ocean-blue'）
+     *   - 物件主題：name 屬性包含 "AAA"（如 { name: '自訂 AAA', ... }）
+     * @returns {boolean}
+     */
+    isAaaTheme() {
+        const theme = this.options.theme;
+        if (!theme) return false;
+        if (typeof theme === 'string') {
+            return theme.startsWith('aaa-');
+        }
+        if (typeof theme === 'object' && theme !== null) {
+            return typeof theme.name === 'string' && theme.name.includes('AAA');
+        }
+        return false;
+    }
+
     applyTheme(items, theme) {
         this.currentTheme = this.resolveTheme(theme);
         return this.applyThemeToItems(items, 1);
@@ -490,26 +591,60 @@ class TadMenu {
         a.href = item.link || '#';
         a.setAttribute('role', 'menuitem');
 
+        // 「另開新視窗」標示策略：
+        //   AAA 主題 → 文字直接顯示於選項後，符合 WCAG 2.4.4 / 3.2.4 AAA 要求
+        //   一般主題 → 維持寫入 title 屬性（原有行為）
+        let newWindowLabel = '';
         if (item.newWindow) {
             a.setAttribute('target', '_blank');
-            a.setAttribute('title', '另開新視窗');
             a.setAttribute('rel', 'noopener noreferrer');
+
+            const extPart = (item.ext && typeof item.ext === 'string' && item.ext.trim() !== '')
+                ? `（${item.ext.toUpperCase()}格式）`
+                : '';
+
+            if (this.isAaaTheme()) {
+                // AAA 主題：僅保留格式資訊在 title（若有），
+                // 「另開新視窗」改為顯示於連結文字後
+                if (extPart) {
+                    a.setAttribute('title', extPart);
+                }
+                newWindowLabel = `另開新視窗${extPart}`;
+            } else {
+                // 非 AAA 主題：沿用原本 title 屬性的方式
+                a.setAttribute('title', `另開新視窗${extPart}`);
+            }
         }
 
         if (item.bgColor) a.style.backgroundColor = item.bgColor;
         if (item.textColor) a.style.color = item.textColor;
         if (item.fontSize) a.style.fontSize = item.fontSize;
 
-        a.innerHTML = this.buildLinkInner(item, false);
+        a.innerHTML = this.buildLinkInner(item, false, newWindowLabel);
         return a;
     }
 
-    buildLinkInner(item, hasArrow) {
+    /**
+     * 產生選單項目連結的內部 HTML。
+     * @param {object}  item           — 選單項目資料
+     * @param {boolean} hasArrow       — 是否顯示展開箭頭（展開按鈕用）
+     * @param {string}  [newWindowLabel=''] — AAA 主題時顯示於文字後的「另開新視窗」說明
+     */
+    buildLinkInner(item, hasArrow, newWindowLabel = '') {
         let html = '';
         if (item.icon) {
             html += `<span class="tadmenu-icon" aria-hidden="true"><i class="${item.icon}"></i></span>`;
         }
         html += `<span class="tadmenu-text">${item.text || ''}</span>`;
+        if (newWindowLabel) {
+            // ★ AAA 主題：「另開新視窗」說明文字直接顯示於連結文字後，
+            //   讓螢幕報讀器與視覺使用者均能立即獲知此行為，
+            //   避免資訊僅藏於 title 屬性而被忽略（WCAG 2.4.4 AAA）。
+            //   外層 span 使用 class 以便 CSS 控制樣式（縮小字體、弱化色彩等）。
+            html += `<span class="tadmenu-new-window" aria-label="，${newWindowLabel}">` +
+                    `<span aria-hidden="true">（${newWindowLabel}）</span>` +
+                    `</span>`;
+        }
         if (hasArrow) {
             html += `<span class="tadmenu-arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>`;
         }

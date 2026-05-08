@@ -1,5 +1,5 @@
 <div class="page-header">
-  <h1><{$lang_login|default:''}></h1>
+  <h2><{$lang_login|default:''}></h2>
 </div>
 <form action="user.php" method="post" class="form-horizontal" role="form">
     <div class="form-group">

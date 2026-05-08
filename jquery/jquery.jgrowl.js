@@ -182,7 +182,7 @@
 	$.jGrowl = function (m, o) {
 		// To maintain compatibility with older version that only supported one instance we'll create the base container.
 		if ($('#jGrowl').length === 0)
-			$('<div id="jGrowl" role="alert" aria-live="polite"></div>').addClass((o && o.position) ? o.position : $.jGrowl.defaults.position).appendTo((o && o.appendTo) ? o.appendTo : $.jGrowl.defaults.appendTo);
+			$('<div id="jGrowl" aria-live="polite"></div>').addClass((o && o.position) ? o.position : $.jGrowl.defaults.position).appendTo((o && o.appendTo) ? o.appendTo : $.jGrowl.defaults.appendTo);
 
 		// Create a notification on the container.
 		$('#jGrowl').jGrowl(m, o);
@@ -231,7 +231,7 @@
 			themeState: 'highlight',
 			corners: '10px',
 			check: 250,
-			life: 6000,
+			life: 500,
 			closeDuration: 'normal',
 			openDuration: 'normal',
 			easing: 'swing',
@@ -264,6 +264,18 @@
 		/** Create a Notification **/
 		create: function (message, options) {
 			var o = $.extend({}, this.defaults, options);
+			// ⭐ 若為 sticky（dialog），先關閉其他 sticky
+			if (o.sticky) {
+				$(this.element).find('.jGrowl-notification').each(function () {
+					var data = $(this).data("jGrowl");
+					if (data && data.sticky) {
+						$(this).trigger('jGrowl.beforeClose');
+					}
+				});
+			}
+
+			// ⭐ 新增：記錄觸發前的焦點
+			o._previousFocus = document.activeElement;
 
 			/* To keep backward compatibility with 1.24 and earlier, honor 'speed' if the user has set it */
 			if (typeof o.speed !== 'undefined') {
@@ -276,40 +288,74 @@
 			o.log.apply(this.element, [this.element, message, o]);
 		},
 
-		render: function (n) {
+				render: function (n) {
 			var self = this;
 			var message = n.message;
 			var o = n.options;
+			// ⭐ 新增唯一ID
+			var uid = 'jgrowl-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+			var headerId = uid + '-header';
+			var messageId = uid + '-message';
+			// ✅ 新增：鍵盤提示文字 ID
+			var keyHintId = uid + '-keyhint';
 
 			// Support for jQuery theme-states, if this is not used it displays a widget header
 			o.themeState = (o.themeState === '') ? '' : 'ui-state-' + o.themeState;
 
+			// ✅ 依模式決定提示文字
+			//    sticky (alertdialog)：Tab 鍵循環焦點，Enter/空白鍵 或 Esc 鍵關閉
+			//    toast  (status)     ：Enter/空白鍵 或 Esc 鍵關閉，會自動消失
+			var keyHintText = o.sticky
+				? '對話框已開啟。請使用 Tab 鍵在選項間移動焦點。按下 Enter 鍵或空白鍵確認，按下 Escape 鍵關閉此對話框。'
+				: '通知已出現。按下 Enter 鍵、空白鍵或 Escape 鍵可立即關閉，或等待通知自動消失。';
+
+			var $keyHint = $('<div/>')
+				.addClass('sr-only')
+				.attr('id', keyHintId)
+				.text(keyHintText);
+
 			var notification = $('<div/>')
 				.addClass('jGrowl-notification alert ' + o.themeState + ' ui-corner-all' + ((o.group !== undefined && o.group !== '') ? ' ' + o.group : ''))
 				.attr({
-					'role': 'status',
-					'aria-live': 'assertive',
-					'tabindex': '0'
+					'role': o.sticky ? 'alertdialog' : 'status',
+					'aria-live': o.sticky ? 'assertive' : 'polite',
+					'aria-modal': o.sticky ? 'true' : 'false',
+					'tabindex': o.sticky ? '-1' : '0',
+					'aria-labelledby': o.header ? headerId : undefined,
+					// ✅ aria-describedby 同時串接訊息區塊與鍵盤提示，讓螢幕報讀器一次唸出
+					'aria-describedby': messageId + ' ' + keyHintId,
+					'aria-label': (!o.header && o.sticky) ? '系統訊息' : undefined
 				})
 				.append($('<button/>').addClass('jGrowl-close').attr({
 					'aria-label': '關閉通知',
 					'tabindex': '0',
 					'title': '關閉通知'
 				}).html(o.closeTemplate))
-				.append($('<div/>').addClass('jGrowl-header').html(o.header))
-				.append($('<div/>').addClass('jGrowl-message').html(message))
-				.data("jGrowl", o).addClass(o.theme).children('.jGrowl-close').bind("click.jGrowl", function () {
-					$(this).parent().trigger('jGrowl.beforeClose');
+				.append($('<div/>').addClass('jGrowl-header').attr('id', headerId).html(o.header))
+				.append($('<div/>').addClass('jGrowl-message').attr('id', messageId).html(message))
+				// ✅ 將鍵盤提示區塊插入通知框（視覺隱藏，螢幕報讀器可讀）
+				.append($keyHint)
+				.data("jGrowl", o)
+				.addClass(o.theme);
+
+			// ⭐ header 為空時移除 aria-labelledby
+			if (!o.header) {
+				notification.removeAttr('aria-labelledby');
+			}
+
+			// --- 以下維持原有程式碼不變 ---
+
+			notification.find('.jGrowl-close').on("click.jGrowl", function () {
+				$(this).parent().trigger('jGrowl.beforeClose');
+				return false;
+			});
+
+			notification.on("keypress.jGrowl", function (e) {
+				if (e.which === 13 || e.which === 32) {
+					$(this).trigger('jGrowl.beforeClose');
 					return false;
-				})
-				.bind("keypress.jGrowl", function (e) {
-					// 按Enter或空格鍵時關閉通知
-					if (e.which === 13 || e.which === 32) {
-						$(this).parent().trigger('jGrowl.beforeClose');
-						return false;
-					}
-				})
-				.parent();
+				}
+			});
 
 			/** Notification Actions **/
 			$(notification).bind("mouseover.jGrowl", function () {
@@ -348,20 +394,83 @@
 			}).bind('jGrowl.afterOpen', function () {
 				o.afterOpen.apply(notification, [notification, message, o, self.element]);
 
-				// 新增: 自動將焦點移至通知
-				$(this).focus();
+				var $notif = $(this);
 
-				// 新增: 當有焦點時暫停計時器
-				$(this).data("jGrowl.pause", true);
+				// ⭐ modal 才鎖焦點
+				if (o.sticky) {
+
+					var $container = $(self.element);
+
+					// ⭐ 隱藏背景（但保留 jGrowl 自己）
+					$('body > *').not($container).each(function () {
+						var $el = $(this);
+						$el.data('jg-old-aria-hidden', $el.attr('aria-hidden'));
+						$el.attr('aria-hidden', 'true');
+					});
+
+					var focusable = $notif.find(
+						'a[href]:not([tabindex="-1"]), ' +
+						'button:not(:disabled):not([tabindex="-1"]), ' +
+						'input:not(:disabled):not([type="hidden"]):not([tabindex="-1"]), ' +
+						'select:not(:disabled):not([tabindex="-1"]), ' +
+						'textarea:not(:disabled):not([tabindex="-1"]), ' +
+						'[tabindex]:not([tabindex="-1"])'
+					);
+
+					var first = focusable.first();
+					var last = focusable.last();
+
+					(first.length ? first : $notif).focus();
+
+					$notif.on('keydown.jGrowlTrap', function (e) {
+						if (e.key === 'Tab') {
+							if (e.shiftKey) {
+								if (document.activeElement === first[0]) {
+									e.preventDefault();
+									last.focus();
+								}
+							} else {
+								if (document.activeElement === last[0]) {
+									e.preventDefault();
+									first.focus();
+								}
+							}
+						}
+					});
+
+					$notif.data("jGrowl.pause", true);
+				} else {
+					// toast 模式：只 focus，不鎖
+					$notif.focus();
+				}
 			}).bind('click', function () {
 				o.click.apply(notification, [notification, message, o, self.element]);
 			}).bind('jGrowl.beforeClose', function () {
 				if (o.beforeClose.apply(notification, [notification, message, o, self.element]) !== false)
 					$(this).trigger('jGrowl.close');
 			}).bind('jGrowl.close', function () {
+				// ⭐ 移除 focus trap
+				$(this).off('keydown.jGrowlTrap');
 				// Pause the notification, lest during the course of animation another close event gets called.
 				$(this).data('jGrowl.pause', true);
 				$(this).animate(o.animateClose, o.closeDuration, o.easing, function () {
+					// ⭐ 還原背景
+					$('body > *').each(function () {
+						var $el = $(this);
+						var old = $el.data('jg-old-aria-hidden');
+
+						if (old === undefined) {
+							$el.removeAttr('aria-hidden');
+						} else {
+							$el.attr('aria-hidden', old);
+							$el.removeData('jg-old-aria-hidden');
+						}
+					});
+
+					// ⭐ 還原焦點
+					if (o._previousFocus && typeof o._previousFocus.focus === 'function') {
+						try { o._previousFocus.focus(); } catch (e) { }
+					}
 					if ($.isFunction(o.close)) {
 						if (o.close.apply(notification, [notification, message, o, self.element]) !== false)
 							$(this).remove();

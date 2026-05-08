@@ -492,7 +492,14 @@
           if (!this.options.hoverClose) { this._clearTimer(li); return; }
           this._clearTimer(li);
           this._hoverTimers.set(li,
-            setTimeout(() => this._closeSubmenu(sub), this.options.hideDelay)
+            setTimeout(() => {
+              // ★ 增加判斷：若游標正停留在該子選單內的表單中，則不關閉
+              const active = document.activeElement;
+              if (sub.contains(active) && active.closest("form")) {
+                return;
+              }
+              this._closeSubmenu(sub);
+            }, this.options.hideDelay)
           );
         });
       });

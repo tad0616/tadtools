@@ -17,17 +17,20 @@
 }
 
 .tad-marquee-container:focus {
-  outline: 4px solid #0057b3; /* 更高對比度的輪廓顏色 */
-  outline-offset: 2px;
+  outline: 5px solid #d93025 !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 3px #ffffff, 0 0 0 8px #d93025 !important;
 }
 
 .tad-marquee-container:focus:not(:focus-visible) {
-  outline: none;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .tad-marquee-container:focus-visible {
-  outline: 4px solid #0057b3; /* 更高對比度的輪廓顏色 */
-  outline-offset: 2px;
+  outline: 5px solid #d93025 !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 3px #ffffff, 0 0 0 8px #d93025 !important;
 }
 
 .tad-marquee-container.tad-marquee-paused {
@@ -68,15 +71,29 @@
   /* WCAG 2.5.5：最小目標尺寸 44×36px 已由 JS 設定 */
 }
 
-/* 暫停按鈕預設不顯示 outline（由 JS focus 事件動態設定） */
+/* 暫停按鈕預設不顯示 outline，由焦點狀態動態設定 */
 .tad-marquee-pause-btn {
   outline: none;
 }
 
+/* 暫停按鈕的焦點狀態：加上極度顯著框線與高對比背景，徹底解決提示不明顯的問題 */
+.tad-marquee-pause-btn:focus,
+.tad-marquee-pause-btn:focus-visible {
+  outline: 4px solid #d93025 !important;
+  outline-offset: 3px !important;
+  background-color: #ffdd00 !important;
+  color: #000000 !important;
+  box-shadow: 0 0 0 3px #ffffff, 0 0 0 7px #d93025 !important;
+}
+
 /* 角落模式：按鈕在 overflow:hidden 容器內，焦點框向內縮（不被裁切） */
+.tad-marquee-container > .tad-marquee-pause-btn:focus,
 .tad-marquee-container > .tad-marquee-pause-btn:focus-visible {
-  outline: 3px solid #ffdd00 !important;
-  outline-offset: -2px !important;
+  outline: 4px solid #d93025 !important;
+  outline-offset: -4px !important;
+  background-color: #ffdd00 !important;
+  color: #000000 !important;
+  box-shadow: inset 0 0 0 3px #ffffff, inset 0 0 0 7px #d93025 !important;
 }
 
 /* ===== 控制列狀態文字（選用：可由 JS 動態插入） ===== */
@@ -134,12 +151,13 @@
 }
 
 .tad-marquee-item:focus {
-  outline: 4px solid #0057b3; /* 更高對比度的輪廓顏色 */
-  outline-offset: 2px;
-  background-color: #b8daff; /* 更高對比度的聚焦背景色 */
-  color: #000000;
-  z-index: 1;
-  text-decoration: underline; /* 增加聚焦時的下劃線 */
+  outline: 4px solid #d93025 !important; 
+  outline-offset: -4px !important; /* 改為向內畫框，避免被父元素 overflow: hidden 切斷 */
+  background-color: #ffdd00 !important; /* 極高對比度的聚焦背景色 */
+  color: #000000 !important;
+  z-index: 10 !important;
+  text-decoration: underline !important; 
+  box-shadow: inset 0 0 0 3px #ffffff, inset 0 0 0 7px #d93025 !important; /* 陰影也改為向內 */
 }
 
 .tad-marquee-item:focus:not(:focus-visible) {
@@ -211,23 +229,25 @@
   }
 
   .tad-marquee-item:focus {
-    outline-width: 5px;
-    outline-style: solid;
+    outline: 5px solid !important;
+    outline-offset: -5px !important; /* 同樣改為向外改向內 */
   }
 
   .tad-marquee-item {
     border: 1px solid currentColor; /* 在高對比度模式下為項目添加邊框 */
   }
 
+  .tad-marquee-pause-btn:focus,
   .tad-marquee-pause-btn:focus-visible {
-    outline: 4px solid !important;
-    outline-offset: 2px !important;
+    outline: 5px solid !important;
+    outline-offset: 4px !important;
   }
 
   /* 角落模式（在 overflow:hidden 內）：焦點框向內縮，不被容器裁切 */
+  .tad-marquee-container > .tad-marquee-pause-btn:focus,
   .tad-marquee-container > .tad-marquee-pause-btn:focus-visible {
-    outline: 4px solid !important;
-    outline-offset: -3px !important;
+    outline: 5px solid !important;
+    outline-offset: -5px !important;
   }
 }
 

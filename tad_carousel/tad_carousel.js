@@ -254,15 +254,13 @@
 
             var dotsContainer = document.createElement('div');
             dotsContainer.className = 'tad-carousel__dots';
-            dotsContainer.setAttribute('role', 'tablist');
             dotsContainer.setAttribute('aria-label', '投影片選擇');
 
             for (var i = 0; i < pageCount; i++) {
                 var dot = document.createElement('button');
                 dot.type = 'button';
                 dot.className = 'tad-carousel__dot';
-                dot.setAttribute('role', 'tab');
-                dot.setAttribute('aria-selected', i === state.currentIndex ? 'true' : 'false');
+                dot.setAttribute('aria-current', i === state.currentIndex ? 'true' : 'false');
                 dot.setAttribute('aria-label', formatText(options.a11y.dotText, i + 1));
                 dot.setAttribute('tabindex', i === state.currentIndex ? '0' : '-1');
                 dot.setAttribute('data-index', i);
@@ -282,7 +280,6 @@
             toggle.type = 'button';
             toggle.className = 'tad-carousel__autoplay-toggle';
             toggle.setAttribute('aria-label', options.a11y.pauseText);
-            toggle.setAttribute('aria-pressed', 'false');
             toggle.innerHTML =
                 '<svg class="tad-carousel__nav-icon" viewBox="0 0 24 24" aria-hidden="true">' +
                 '<path class="pause-icon" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>' +
@@ -617,8 +614,7 @@
                             var dot = document.createElement('button');
                             dot.type = 'button';
                             dot.className = 'tad-carousel__dot';
-                            dot.setAttribute('role', 'tab');
-                            dot.setAttribute('aria-selected', index === state.currentIndex ? 'true' : 'false');
+                            dot.setAttribute('aria-current', index === state.currentIndex ? 'true' : 'false');
                             dot.setAttribute('aria-label', formatText(options.a11y.dotText, index + 1));
                             dot.setAttribute('tabindex', index === state.currentIndex ? '0' : '-1');
                             dot.addEventListener('click', function () {
@@ -741,7 +737,7 @@
 
             dom.dots.forEach(function (dot, index) {
                 var isActive = index === state.currentIndex;
-                dot.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                dot.setAttribute('aria-current', isActive ? 'true' : 'false');
                 dot.setAttribute('tabindex', isActive ? '0' : '-1');
                 if (isActive) {
                     dot.classList.add('is-active');
@@ -765,11 +761,11 @@
                     item.removeAttribute('tabindex');
                 } else {
                     item.removeAttribute('inert');
-                    // WCAG 2.1.2：僅讓「第一個」可見投影片成為 Tab 停駐點。
-                    // 若多張投影片同時可見（items > 1），每張都設 tabindex="0" 會造成
-                    // Tab 鍵在投影片區重複停駐（「遊走二次」），因此只有 startIndex
-                    // 的項目可被 Tab 聚焦，其餘可見項目設 tabindex="-1" 排除於 Tab 序列外。
-                    item.setAttribute('tabindex', index === startIndex ? '0' : '-1');
+                    // 移除容器的 tabindex="0" 設定，避免外層 li 成為焦點停駐點。
+                    // 若內部有連結 (a標籤)，鍵盤 Tab 會直接聚焦於內層連結，
+                    // 搭配 item 本身的 role="group" 與 aria-label，螢幕閱讀器會正確報讀群組並接著報讀連結，
+                    // 如此可完全解決「焦點遊走兩次、重複報讀資訊」的問題。
+                    item.removeAttribute('tabindex');
                 }
             });
         },
@@ -897,7 +893,6 @@
                 state.isAutoplayPaused = true;
 
                 dom.autoplayToggle.setAttribute('aria-label', options.a11y.playText);
-                dom.autoplayToggle.setAttribute('aria-pressed', 'true');
                 dom.autoplayToggle.querySelector('.pause-icon').style.display = 'none';
                 dom.autoplayToggle.querySelector('.play-icon').style.display = 'block';
             } else {
@@ -905,7 +900,6 @@
                 state.isAutoplayPaused = false;
 
                 dom.autoplayToggle.setAttribute('aria-label', options.a11y.pauseText);
-                dom.autoplayToggle.setAttribute('aria-pressed', 'false');
                 dom.autoplayToggle.querySelector('.pause-icon').style.display = 'block';
                 dom.autoplayToggle.querySelector('.play-icon').style.display = 'none';
             }

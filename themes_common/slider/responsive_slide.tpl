@@ -1,6 +1,6 @@
 <{if $slider_var|default:false}>
-    <link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tadtools/tad_slide/tad-slide.css?t=2026032602" >
-    <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/tad_slide/tad-slide.js?t=2026032602"></script>
+    <link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tadtools/tad_slide/tad-slide.css?t=20260504" >
+    <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/tad_slide/tad-slide.js?t=20260504"></script>
 
     <div id="my-slider" class="tad-slide" <{if $slider_var|@count >1}>aria-label="圖片輪播"<{/if}>>
         <ul class="tad-slide__list">

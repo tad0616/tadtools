@@ -8315,7 +8315,7 @@
             html.push("<th".concat(Utils.sprintf(' title="%s"', column.titleTooltip)), column.checkbox || column.radio ? Utils.sprintf(' class="bs-checkbox %s"', column['class'] || '') : classes || class_, Utils.sprintf(' style="%s"', halign + style + csses.join('; ') || undefined), Utils.sprintf(' rowspan="%s"', column.rowspan), Utils.sprintf(' colspan="%s"', column.colspan), Utils.sprintf(' data-field="%s"', column.field),
             // If `column` is not the first element of `this.options.columns[0]`, then className 'data-not-first-th' should be added.
             j === 0 && i > 0 ? ' data-not-first-th' : '', data_.length > 0 ? data_.join(' ') : '', '>');
-            html.push(Utils.sprintf('<div class="th-inner %s">', _this2.options.sortable && column.sortable ? "sortable".concat(columnHalign === 'center' ? ' sortable-center' : '', " both") : ''));
+            html.push(Utils.sprintf('<div class="th-inner %s"%s>', _this2.options.sortable && column.sortable ? "sortable".concat(columnHalign === 'center' ? ' sortable-center' : '', " both") : '', _this2.options.sortable && column.sortable ? ' tabindex="0"' : ''));
             var text = _this2.options.escape && _this2.options.escapeTitle ? Utils.escapeHTML(column.title) : column.title;
             var title = text;
             if (column.checkbox) {
@@ -8350,7 +8350,10 @@
         this.$header.find('th[data-field]').each(function (i, el) {
           $(el).data(visibleColumns[$(el).data('field')]);
         });
-        this.$container.off('click', '.th-inner').on('click', '.th-inner', function (e) {
+        this.$container.off('click keydown', '.th-inner').on('click keydown', '.th-inner', function (e) {
+          if (e.type === 'keydown' && e.keyCode !== 13 && e.keyCode !== 32) {
+            return;
+          }
           var $this = $(e.currentTarget);
           if (_this2.options.detailView && !$this.parent().hasClass('bs-checkbox')) {
             if ($this.closest('.bootstrap-table')[0] !== _this2.$container[0]) {
@@ -8358,6 +8361,9 @@
             }
           }
           if (_this2.options.sortable && $this.parent().data().sortable) {
+            if (e.type === 'keydown') {
+              e.preventDefault();
+            }
             _this2.onSort(e);
           }
         });

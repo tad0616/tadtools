@@ -15,14 +15,13 @@ class SweetAlert2
     private $cancelButtonColor  = '#8c8c8c';
     private $closeOnConfirm     = 'false';
     private $allowOutsideClick  = 'true';
-    private $complete           = _TAD_DEL_CONFIRM_COMPLETE;
-    private $complete_txt       = _TAD_DEL_CONFIRM_COMPLETE_TXT;
-    private $confirmButtonText  = _TAD_DEL_CONFIRM_BTN;
+    private $confirmButtonText  = '確定刪除！';
 
     //建構函數
     public function __construct($show_jquery = true)
     {
         $this->show_jquery = $show_jquery;
+        xoops_loadLanguage('main', 'tadtools');
     }
 
     //設定變數
@@ -54,36 +53,8 @@ class SweetAlert2
             $parm_var = $var;
         }
 
-        if ($xoTheme) {
-            $xoTheme->addStylesheet('modules/tadtools/sweet-alert/sweetalert2.min.css');
-            $xoTheme->addScript('modules/tadtools/sweet-alert/sweetalert2.all.min.js');
-
-            $xoTheme->addScript('', null, "
-            function {$func_name}($parm_var){
-                swal.fire({
-                    title: '$title',
-                    text: '$text',
-                    html: '{$this->html}',
-                    timer: $this->timer,
-                    showConfirmButton: $this->showConfirmButton,
-                    showCancelButton: $this->showCancelButton,
-                    confirmButtonColor: '{$this->confirmButtonColor}',
-                    confirmButtonText: '{$this->confirmButtonText}',
-                    cancelButtonColor: '{$this->cancelButtonColor}',
-                    closeOnConfirm: $this->closeOnConfirm,
-                    allowOutsideClick: $this->allowOutsideClick
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        location.href=$href;
-                    }
-            });
-            ");
-        } else {
-            $main = "
-            {$jquery}
-            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/sweet-alert/sweetalert2.min.css' />
-            <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/sweet-alert/sweetalert2.all.min.js'></script>
-            <script type='text/javascript'>
+        if ($func_name) {
+            $func = "
             function {$func_name}($parm_var){
                 swal.fire({
                     title: '$title',
@@ -103,9 +74,23 @@ class SweetAlert2
                     }
                 });
             }
-            </script>
-
             ";
+        } else {
+            $func = '';
+        }
+
+        if ($xoTheme) {
+            $xoTheme->addStylesheet('modules/tadtools/sweet-alert/sweetalert2.min.css');
+            $xoTheme->addScript('modules/tadtools/sweet-alert/sweetalert2.all.min.js');
+            $xoTheme->addScript('', null, $func);
+        } else {
+            $main = "
+            {$jquery}
+            <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/sweet-alert/sweetalert2.min.css' />
+            <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/sweet-alert/sweetalert2.all.min.js'></script>
+            <script type='text/javascript'>
+            $func
+            </script>";
 
             return $main;
         }

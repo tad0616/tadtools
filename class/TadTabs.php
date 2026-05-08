@@ -34,7 +34,7 @@ class TadTabs
         $jquery          = Utility::get_jquery();
         $responsive_tabs = '';
         if ($xoTheme) {
-            $xoTheme->addScript('modules/tadtools/tad_tabs/tad-tabs.js?v=2026032603');
+            $xoTheme->addScript('modules/tadtools/tad_tabs/tad-tabs.js?v=20260503');
             $xoTheme->addScript('modules/tadtools/jqueryCookie/js.cookie.min.js');
             $xoTheme->addStylesheet('modules/tadtools/tad_tabs/tad-tabs.css');
             $cookie_name = mb_substr($this->name, 1) . '_baseURI';
@@ -70,7 +70,7 @@ class TadTabs
         } else {
             $responsive_tabs = "
                 {$jquery}
-                <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/tad_tabs/tad-tabs.js?v=2026032603'></script>
+                <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/tad_tabs/tad-tabs.js?v=20260503'></script>
                 <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='" . XOOPS_URL . "/modules/tadtools/tad_tabs/tad-tabs.css' >
                 ";
 
@@ -116,7 +116,7 @@ class TadTabs
         $jquery          = Utility::get_jquery();
         $responsive_tabs = '';
         if ($xoTheme) {
-            $xoTheme->addScript('modules/tadtools/tad_tabs/tad-tabs.js?v=2026032603');
+            $xoTheme->addScript('modules/tadtools/tad_tabs/tad-tabs.js?v=20260503');
             $xoTheme->addScript('modules/tadtools/jqueryCookie/js.cookie.min.js');
             $xoTheme->addStylesheet('modules/tadtools/tad_tabs/tad-tabs.css');
             $cookie_name = mb_substr($this->name, 1) . '_baseURI';
@@ -151,7 +151,7 @@ class TadTabs
         } else {
             $responsive_tabs = "
                 {$jquery}
-                <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/tad_tabs/tad-tabs.js?v=2026032603'></script>
+                <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/tad_tabs/tad-tabs.js?v=20260503'></script>
                 <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='" . XOOPS_URL . "/modules/tadtools/tad_tabs/tad-tabs.css' >
                 ";
 

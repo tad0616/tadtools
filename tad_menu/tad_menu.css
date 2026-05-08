@@ -59,7 +59,7 @@
 /* 高對比焦點指示器 - WCAG AAA */
 .tadmenu-link:focus {
     outline: var(--tadmenu-focus-outline-width) solid var(--tadmenu-focus-color);
-    outline-offset: -3px;
+    outline-offset: calc(-2px - var(--tadmenu-focus-outline-width));
     z-index: 10;
 }
 
@@ -69,7 +69,7 @@
 
 .tadmenu-link:focus-visible {
     outline: var(--tadmenu-focus-outline-width) solid var(--tadmenu-focus-color);
-    outline-offset: -3px;
+    outline-offset: calc(-2px - var(--tadmenu-focus-outline-width));
     z-index: 10;
 }
 
