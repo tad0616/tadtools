@@ -64,13 +64,20 @@
                 iconPause: '⏸',           // Pause icon (text fallback)
                 iconPlay: '▶',            // Play icon (text fallback)
                 iconPrev: '◀',            // Left nav icon
-                iconNext: '▶',            // Right nav icon (mirrored semantics)
+                iconNext: '▶︎',            // Right nav icon — uses variation selector to differ from iconPlay
                 useFontAwesome: false,    // Use FontAwesome icons
                 // Localised ARIA labels ─ override for your language
-                ariaLabelPause: '暫停',  // label when animation is playing
-                ariaLabelPlay: '播放',    // label when animation is paused
-                ariaLabelPrev: '向左捲動',       // left/back button
-                ariaLabelNext: '向右捲動',      // right/forward button
+                ariaLabelPause: '暫停捲動',   // label when animation is playing (action = pause)
+                ariaLabelPlay: '播放捲動',     // label when animation is paused  (action = play)
+                ariaLabelPrev: '向左捲動',    // left/back button
+                ariaLabelNext: '向右捲動',    // right/forward button
+                // Status announcements read by screen readers via aria-live
+                ariaStatusPaused: '跑馬燈已暫停',   // announced when paused
+                ariaStatusPlaying: '跑馬燈播放中',  // announced when resumed
+                ariaStatusPrev: '改為向左捲動',      // announced after prev button (playing) / 內容向左移動 (paused)
+                ariaStatusNext: '改為向右捲動',      // announced after next button (playing) / 內容向右移動 (paused)
+                ariaLabelSuffix_paused: '（已暫停）', // appended to container aria-label
+                ariaLabelSuffix_playing: '',           // appended to container aria-label when playing
                 onComplete: null,         // Callback after initialization
                 onPause: null,            // Callback when paused
                 onResume: null,           // Callback when resumed
@@ -130,6 +137,20 @@
             el.style.position = 'relative';
         }
         el.style.overflow = 'hidden';
+
+        // ── ARIA Live Status Region (SC 4.1.3 / AAA) ────────────────────────
+        // A visually hidden element with aria-live="polite" that NVDA, JAWS, and
+        // VoiceOver will announce whenever its text content changes.
+        // This decouples the announcement from focus position — users hear state
+        // changes even when they are not focused on the button.
+        var liveEl = document.createElement('span');
+        liveEl.setAttribute('aria-live', 'polite');
+        liveEl.setAttribute('aria-atomic', 'true');
+        liveEl.style.cssText =
+            'position:absolute;width:1px;height:1px;padding:0;margin:-1px;' +
+            'overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;';
+        el.appendChild(liveEl);
+        this._liveEl = liveEl;
 
         // ── ARIA on container (SC 1.3.1, 4.1.2) ────────────────────────────
         el.setAttribute('role', 'region');
@@ -295,6 +316,15 @@
             'color:#1a1a1a;font-size:' + Math.round(btnSize * 0.38) + 'px;' +
             'flex-shrink:0;';
 
+        // 方向按鈕：方形圓角 + 深色底，與圓形的播放/暫停按鈕明顯區別
+        var navBtnBase =
+            'background-color:rgba(44,62,80,0.82);border:none;border-radius:6px;' +
+            'width:' + btnSize + 'px;height:' + btnSize + 'px;' +
+            'cursor:pointer;display:flex;align-items:center;justify-content:center;' +
+            'box-shadow:0 2px 6px rgba(0,0,0,0.30);transition:background-color 0.2s ease;' +
+            'color:#fff;font-size:' + Math.round(btnSize * 0.38) + 'px;' +
+            'flex-shrink:0;';
+
         // ── Helper: attach hover styles ──────────────────────────────────────
         function addHover(btn) {
             btn.addEventListener('mouseenter', function () {
@@ -305,8 +335,16 @@
             });
         }
 
-        // ════════════════════════════════════════════════════════════════════
-        // 1. TOP BAR — Pause/Play toggle button
+        // ── Helper: attach hover styles for nav buttons ──────────────────────
+        function addNavHover(btn) {
+            btn.addEventListener('mouseenter', function () {
+                btn.style.backgroundColor = 'rgba(44,62,80,1)';
+            });
+            btn.addEventListener('mouseleave', function () {
+                btn.style.backgroundColor = 'rgba(44,62,80,0.82)';
+            });
+        }
+
         //    Placed FIRST in DOM so it is the FIRST focusable element (SC 2.4.3).
         //    Also satisfies SC 2.2.2: user can pause moving content before
         //    encountering the items.
@@ -327,14 +365,34 @@
         toggleBtn.className = 'tadloop-btn tadloop-toggle';
         toggleBtn.style.cssText = btnBase;
 
-        // SC 4.1.2 Name, Role, Value:
-        //   aria-label  describes the ACTION the button will perform (toggle convention).
-        //   aria-pressed reflects the CURRENT state (true = animation is stopped).
+        // SC 4.1.2 Name, Role, Value — NVDA-safe pattern:
+        //   aria-label  = fixed noun describing the CONTROL (not the action).
+        //                 NVDA reads: "跑馬燈播放控制 切換按鈕 未按下/已按下"
+        //   aria-pressed = current STATE: false = playing, true = paused.
+        //   aria-describedby = hidden span that names the next ACTION.
+        //                 NVDA reads the description after the role+state,
+        //                 giving: "…切換按鈕 已按下  暫停"
+        // This avoids the confusing reading of "暫停 切換按鈕 已按下"
+        // which mixes action-verb label with a pressed-state that means the opposite.
+        var toggleLabel = opts.ariaLabelToggle || '跑馬燈播放控制';
+        toggleBtn.setAttribute('aria-label', toggleLabel);
+
         var isPlaying = opts.autoStart && !opts.disableAnimation && !opts.reduceMotion;
-        toggleBtn.setAttribute('aria-label', isPlaying
-            ? (opts.ariaLabelPause || 'Pause scrolling')
-            : (opts.ariaLabelPlay  || 'Play scrolling'));
         toggleBtn.setAttribute('aria-pressed', isPlaying ? 'false' : 'true');
+
+        // Hidden description span — updated on state change
+        var toggleDescId = 'tadloop-toggle-desc-' + Math.random().toString(36).slice(2, 8);
+        var toggleDesc = document.createElement('span');
+        toggleDesc.id = toggleDescId;
+        toggleDesc.style.cssText =
+            'position:absolute;width:1px;height:1px;padding:0;margin:-1px;' +
+            'overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;';
+        toggleDesc.textContent = isPlaying
+            ? (opts.ariaLabelPause || '暫停捲動')
+            : (opts.ariaLabelPlay  || '播放捲動');
+        el.appendChild(toggleDesc);
+        toggleBtn.setAttribute('aria-describedby', toggleDescId);
+        this._toggleDesc = toggleDesc;
 
         if (opts.useFontAwesome) {
             toggleBtn.innerHTML = isPlaying
@@ -371,35 +429,54 @@
             var prevBtn = document.createElement('button');
             prevBtn.type = 'button';
             prevBtn.className = 'tadloop-btn tadloop-prev';
-            prevBtn.style.cssText = btnBase + 'pointer-events:all;';
-            prevBtn.setAttribute('aria-label', opts.ariaLabelPrev || 'Scroll left');
+            prevBtn.style.cssText = navBtnBase + 'pointer-events:all;';
+            prevBtn.setAttribute('aria-label', opts.ariaLabelPrev || '向左捲動');
+            // aria-pressed: true = currently running leftward (forward:true)
+            prevBtn.setAttribute('aria-pressed', opts.forward ? 'true' : 'false');
             if (opts.useFontAwesome) {
                 prevBtn.innerHTML = '<i class="fa-solid fa-chevron-left" aria-hidden="true"></i>';
             } else {
                 prevBtn.textContent = opts.iconPrev || '◀';
             }
             prevBtn.addEventListener('click', function () {
-                // Auto-pause on navigation so item positions are predictable
-                if (!self._animationPaused) { self.pause(true); }
-                self._moveContent('left');
+                if (self._shouldNavSwitchDirection()) {
+                    self.setDirection(true);    // 向左播放（內容往左移）
+                    self._restartAnimation();
+                    self._prevBtn.setAttribute('aria-pressed', 'true');
+                    self._nextBtn.setAttribute('aria-pressed', 'false');
+                    self._announce(opts.ariaStatusPrev || '改為向左捲動');
+                } else {
+                    self._moveContent('left');
+                    self._announce(opts.ariaStatusPrev || '內容向左移動');
+                }
             });
-            addHover(prevBtn);
+            addNavHover(prevBtn);
 
             var nextBtn = document.createElement('button');
             nextBtn.type = 'button';
             nextBtn.className = 'tadloop-btn tadloop-next';
-            nextBtn.style.cssText = btnBase + 'pointer-events:all;';
-            nextBtn.setAttribute('aria-label', opts.ariaLabelNext || 'Scroll right');
+            nextBtn.style.cssText = navBtnBase + 'pointer-events:all;';
+            nextBtn.setAttribute('aria-label', opts.ariaLabelNext || '向右捲動');
+            // aria-pressed: true = currently running rightward (forward:false)
+            nextBtn.setAttribute('aria-pressed', (!opts.forward) ? 'true' : 'false');
             if (opts.useFontAwesome) {
                 nextBtn.innerHTML = '<i class="fa-solid fa-chevron-right" aria-hidden="true"></i>';
             } else {
                 nextBtn.textContent = opts.iconNext || '▶';
             }
             nextBtn.addEventListener('click', function () {
-                if (!self._animationPaused) { self.pause(true); }
-                self._moveContent('right');
+                if (self._shouldNavSwitchDirection()) {
+                    self.setDirection(false);   // 向右播放（內容往右移）
+                    self._restartAnimation();
+                    self._prevBtn.setAttribute('aria-pressed', 'false');
+                    self._nextBtn.setAttribute('aria-pressed', 'true');
+                    self._announce(opts.ariaStatusNext || '改為向右捲動');
+                } else {
+                    self._moveContent('right');
+                    self._announce(opts.ariaStatusNext || '內容向右移動');
+                }
             });
-            addHover(nextBtn);
+            addNavHover(nextBtn);
 
             bottomBar.appendChild(prevBtn);
             bottomBar.appendChild(nextBtn);
@@ -427,17 +504,22 @@
      */
     TadLoop.prototype._updateControlState = function () {
         if (!this._toggleBtn) return;
-        var isPaused = this._animationPaused || this._manuallyPaused;
+        // isPaused = user explicitly paused; hover/focus pauses do NOT change the button state.
+        var isPaused = this._manuallyPaused;
         var opts = this.options;
 
-        // aria-pressed="true"  → animation is stopped (button was "pressed/engaged")
-        // aria-pressed="false" → animation is playing  (button is in default state)
+        // aria-pressed: true = paused (button is "engaged"), false = playing
         this._toggleBtn.setAttribute('aria-pressed', isPaused ? 'true' : 'false');
-        // aria-label names the next ACTION, making the button self-describing
-        this._toggleBtn.setAttribute('aria-label', isPaused
-            ? (opts.ariaLabelPlay  || 'Play scrolling')
-            : (opts.ariaLabelPause || 'Pause scrolling'));
 
+        // aria-describedby span: describes the next ACTION (what pressing will do)
+        // NVDA reads: "跑馬燈播放控制 切換按鈕 已按下  播放捲動"
+        if (this._toggleDesc) {
+            this._toggleDesc.textContent = isPaused
+                ? (opts.ariaLabelPlay  || '播放捲動')
+                : (opts.ariaLabelPause || '暫停捲動');
+        }
+
+        // Update visible icon
         if (opts.useFontAwesome) {
             this._toggleBtn.innerHTML = isPaused
                 ? '<i class="fa-solid fa-play"  aria-hidden="true"></i>'
@@ -491,7 +573,6 @@
 
     /** Hover resume */
     TadLoop.prototype._onMouseLeave = function () {
-        var self = this;
         this._isHovered = false;
         if (
             !this._wasPausedBeforeHover &&
@@ -499,8 +580,7 @@
             !this.options.disableAnimation &&
             !this.options.reduceMotion
         ) {
-            this._animationPaused = false;
-            this._rafId = requestAnimationFrame(function () { self._animate(); });
+            this._restartAnimation();
         }
     };
 
@@ -539,8 +619,7 @@
                     !self.options.disableAnimation &&
                     !self.options.reduceMotion
                 ) {
-                    self._animationPaused = false;
-                    self._rafId = requestAnimationFrame(function () { self._animate(); });
+                    self._restartAnimation();
                     self._updateControlState();
                 }
             }
@@ -553,14 +632,45 @@
         }
     };
 
+    TadLoop.prototype._shouldNavSwitchDirection = function () {
+        if (this.options.disableAnimation || this.options.reduceMotion || this._manuallyPaused) {
+            return false;
+        }
+        return !this._animationPaused || this._isHovered || this._focusPaused;
+    };
+
+    TadLoop.prototype._restartAnimation = function () {
+        var self = this;
+        if (this.options.disableAnimation || this.options.reduceMotion || this._destroyed) return;
+        if (this._rafId) cancelAnimationFrame(this._rafId);
+        this._animationPaused = false;
+        this._rafId = requestAnimationFrame(function () { self._animate(); });
+    };
+
     TadLoop.prototype._moveContent = function (direction) {
-        var amount = 20;
+        var amount = 60;
         if (direction === 'left') {
-            this._offset += amount;
-        } else {
             this._offset -= amount;
+        } else {
+            this._offset += amount;
         }
         this._wrapper.style.transform = 'translateX(' + this._offset + 'px)';
+    };
+
+    /**
+     * Announce a message to screen readers via the aria-live region.
+     * Uses a brief clear→set cycle so repeated identical strings still trigger
+     * a new announcement in NVDA (which suppresses duplicate text changes).
+     * SC 4.1.3 Status Messages (AAA).
+     */
+    TadLoop.prototype._announce = function (msg) {
+        var liveEl = this._liveEl;
+        if (!liveEl) return;
+        liveEl.textContent = '';          // clear first so NVDA re-fires on repeat
+        var self = this;
+        setTimeout(function () {
+            if (!self._destroyed) liveEl.textContent = msg;
+        }, 50);
     };
 
     // ─── Public API ──────────────────────────────────────────────────────────
@@ -573,8 +683,13 @@
         if (manual) this._manuallyPaused = true;
         this._animationPaused = true;
         if (this._rafId) cancelAnimationFrame(this._rafId);
-        this.el.setAttribute('aria-label', this.options.ariaLabel + ' (paused)');
+        // SC 4.1.3: update container label with localised suffix
+        var suffix = this.options.ariaLabelSuffix_paused !== undefined
+            ? this.options.ariaLabelSuffix_paused : '（已暫停）';
+        this.el.setAttribute('aria-label', this.options.ariaLabel + suffix);
         this._updateControlState();
+        // Announce to NVDA/JAWS even when focus is elsewhere
+        this._announce(this.options.ariaStatusPaused || '跑馬燈已暫停');
         if (typeof this.options.onPause === 'function') {
             this.options.onPause.call(this.el);
         }
@@ -585,18 +700,20 @@
      * @param {boolean} manual - true when triggered by user (button / API call)
      */
     TadLoop.prototype.resume = function (manual) {
-        var self = this;
         if (this.options.disableAnimation || this.options.reduceMotion) return;
         if (manual) {
             this._manuallyPaused = false;
             this._focusPaused = false;
         }
         if (!this._isHovered) {
-            this._animationPaused = false;
-            this._rafId = requestAnimationFrame(function () { self._animate(); });
+            this._restartAnimation();
         }
-        this.el.setAttribute('aria-label', this.options.ariaLabel + ' (playing)');
+        var suffix = this.options.ariaLabelSuffix_playing !== undefined
+            ? this.options.ariaLabelSuffix_playing : '';
+        this.el.setAttribute('aria-label', this.options.ariaLabel + suffix);
         this._updateControlState();
+        // Announce to NVDA/JAWS even when focus is elsewhere
+        this._announce(this.options.ariaStatusPlaying || '跑馬燈播放中');
         if (typeof this.options.onResume === 'function') {
             this.options.onResume.call(this.el);
         }
@@ -604,7 +721,10 @@
 
     /** Toggle pause / resume */
     TadLoop.prototype.toggle = function () {
-        if (this._animationPaused || this._manuallyPaused) {
+        // Use _manuallyPaused as the authoritative user-intent flag.
+        // _animationPaused can be true due to hover or focus — those should not
+        // prevent the user from toggling back to "playing" via the button.
+        if (this._manuallyPaused) {
             this.resume(true);
         } else {
             this.pause(true);
@@ -616,9 +736,36 @@
         this.options.velocity = v;
     };
 
-    /** @param {boolean} forward true = right-to-left, false = left-to-right */
+    /** @param {boolean} forward true = content moves left, false = content moves right */
     TadLoop.prototype.setDirection = function (forward) {
+        var self = this;
+        var wasForward = this.options.forward;
+        if (wasForward === forward) return;   // 方向未改變，不需處理
+
         this.options.forward = forward;
+
+        // 校正 offset 至新方向的合法起始範圍，避免新方向的邊界條件立刻觸發 reset
+        // forward=true  合法範圍：(-half, 0]  → 確保 offset <= 0
+        // forward=false 合法範圍：[-half, 0)  → 確保 offset <= -1（不讓 >0 立刻 reset）
+        var half = this._totalContentWidth / 2;
+        if (forward) {
+            // 切到向左跑：offset 必須是負值
+            if (this._offset >= 0) {
+                this._offset = -1;
+            }
+        } else {
+            // 切到向右跑：offset 必須小於 0，且不能超出 -half
+            if (this._offset <= -half) {
+                this._offset = -half + 1;
+            }
+        }
+        this._wrapper.style.transform = 'translateX(' + this._offset + 'px)';
+
+        // 若動畫正在播放，取消舊 rAF 並重新啟動，確保新方向立刻生效
+        if (!this._animationPaused && !this.options.disableAnimation && !this.options.reduceMotion) {
+            if (this._rafId) cancelAnimationFrame(this._rafId);
+            this._rafId = requestAnimationFrame(function () { self._animate(); });
+        }
     };
 
     /** Destroy instance and clean up all DOM mutations and event listeners */
@@ -643,6 +790,12 @@
         }
         if (this._bottomBar && this._bottomBar.parentNode) {
             this._bottomBar.parentNode.removeChild(this._bottomBar);
+        }
+        if (this._liveEl && this._liveEl.parentNode) {
+            this._liveEl.parentNode.removeChild(this._liveEl);
+        }
+        if (this._toggleDesc && this._toggleDesc.parentNode) {
+            this._toggleDesc.parentNode.removeChild(this._toggleDesc);
         }
 
         // Remove cloned items

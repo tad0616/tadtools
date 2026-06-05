@@ -28,8 +28,9 @@ $xoopsLogger->activated = false;
 switch ($op) {
     case 'remove_json':
         Utility::del_theme_json();
-        if (isset($_SERVER['HTTP_REFERER'])) {
-            header("location:{$_SERVER['HTTP_REFERER']}");
+        $referer = $_SERVER['HTTP_REFERER'] ?? '';
+        if (strpos($referer, XOOPS_URL) === 0) {
+            header("location:{$referer}");
         } else {
             header("location:" . XOOPS_URL);
         }
@@ -52,10 +53,16 @@ switch ($op) {
 }
 
 $dcq_op    = Request::getString('dcq_op');
-$dirname   = Request::getString('dirname');
 $col_name  = Request::getString('col_name');
 $col_sn    = Request::getInt('col_sn');
 $data_name = Request::getString('data_name');
+$dirname   = Request::getString('dirname');
+
+// 盡早驗證，不要等到 switch 之後
+if ($dirname !== '' && !preg_match('/^[a-zA-Z0-9_]+$/', $dirname)) {
+    die('Invalid dirname');
+}
+
 switch ($dcq_op) {
     case 'save_dcq_sort':
         $col_ids = Request::getArray('col_ids');
@@ -77,7 +84,12 @@ switch ($dcq_op) {
             $sql = 'DELETE FROM `' . $xoopsDB->prefix("{$dirname}_data_center") . "` WHERE `data_name`=? AND `col_name`=? AND `col_sn`=?";
             Utility::query($sql, 'ssi', [$data_name, $col_name, $col_sn]) or die(' (' . date('Y-m-d H:i:s') . ')' . $sql);
         }
-        header("location:{$_SERVER['HTTP_REFERER']}");
+        $referer = $_SERVER['HTTP_REFERER'] ?? '';
+        if (strpos($referer, XOOPS_URL) === 0) {
+            header("location:{$referer}");
+        } else {
+            header("location:" . XOOPS_URL);
+        }
         exit;
 
     case 'del_dcq_col':
@@ -89,13 +101,16 @@ switch ($dcq_op) {
         $sql = 'DELETE FROM `' . $xoopsDB->prefix("{$dirname}_data_center") . "` WHERE `data_name`=?";
         Utility::query($sql, 's', [$col_name . '_' . $col_sn . '_dcq_' . $col_id]) or die(' (' . date('Y-m-d H:i:s') . ')' . $sql);
 
-        header("location:{$_SERVER['HTTP_REFERER']}");
+        $referer = $_SERVER['HTTP_REFERER'] ?? '';
+        if (strpos($referer, XOOPS_URL) === 0) {
+            header("location:{$referer}");
+        } else {
+            header("location:" . XOOPS_URL);
+        }
         exit;
 
     case 'saveCustomSetupFormVal':
         $TadDataCenter = new TadDataCenter($dirname);
         $TadDataCenter->set_col($col_name, $col_sn);
         $TadDataCenter->saveData();
-        // header("location:{$_SERVER['HTTP_REFERER']}");
-        // exit;
 }

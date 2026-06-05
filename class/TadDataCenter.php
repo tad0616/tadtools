@@ -129,13 +129,13 @@ class TadDataCenter
     public $col_id;
     public $attr_merge = true;
     public $col_kind   = [
-        'radio' => ['form_tag' => 'input', 'type' => 'radio'],
+        'radio'    => ['form_tag' => 'input', 'type' => 'radio'],
         'checkbox' => ['form_tag' => 'input', 'type' => 'checkbox'],
-        'select' => ['form_tag' => 'select', 'type' => 'select'],
+        'select'   => ['form_tag' => 'select', 'type' => 'select'],
         'textarea' => ['form_tag' => 'textarea', 'type' => 'textarea'],
-        'hidden' => ['form_tag' => 'input', 'type' => 'hidden'],
-        'const' => ['form_tag' => 'input', 'type' => 'hidden'],
-        'text' => ['form_tag' => 'input', 'type' => 'text'],
+        'hidden'   => ['form_tag' => 'input', 'type' => 'hidden'],
+        'const'    => ['form_tag' => 'input', 'type' => 'hidden'],
+        'text'     => ['form_tag' => 'input', 'type' => 'text'],
     ];
 
     public function __construct($module_dirname = '')
@@ -152,6 +152,11 @@ class TadDataCenter
     //設定模組名稱
     public function set_module_dirname($module_dirname = '')
     {
+        // SQL Injection 防護：驗證 module_dirname 只能包含字母、數字、下劃線
+        if (!empty($module_dirname) && !preg_match('/^[a-zA-Z0-9_]+$/', $module_dirname)) {
+            throw new \InvalidArgumentException('Invalid module_dirname: ' . htmlspecialchars($module_dirname, ENT_QUOTES, 'UTF-8'));
+        }
+
         $this->module_dirname = $module_dirname;
         $this->set_mid();
     }
@@ -375,7 +380,7 @@ class TadDataCenter
                     if ($require) {
                         $TadUpFiles->set_var('require', true);
                     }
-                    //必填
+                                                             //必填
                     $TadUpFiles->set_var("show_tip", false); //不顯示提示
                     $TadUpFiles->set_col($this->ans_col_name, $this->ans_col_sn);
                     $form = $TadUpFiles->upform('list', $file_name, $maxlength, true, implode(',', $options), true, '', true);
@@ -466,7 +471,7 @@ class TadDataCenter
                 (`mid`, `col_name`, `col_sn`, `data_name`, `data_value`, `data_sort`, `col_id`, `sort`, `update_time`)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())';
 
-                Utility::query($sql, 'isissisis',
+                Utility::query($sql, 'isissisi',
                     [$this->mid, $this->col_name, $this->col_sn, $name, "files=" . implode(',', $files_sn_arr), $data_sort, $col_id, $sort]) or Utility::web_error($sql, __FILE__, __LINE__, true);
                 $sort++;
             }
