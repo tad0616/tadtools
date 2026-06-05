@@ -6,7 +6,7 @@
         <!-- Sheet Css -->
         <link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{$xoops_url}>/xoops.css">
         <!-- XOOPS theme Sheet Css -->
-        <link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{$xoops_url}>/themes/<{$theme_name|default:''}>/css/xoops.css">
+        <link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="<{$xoops_url}>/themes/<{$theme_name|default:''}>/css/xoops.css?t=20260521">
         <link href="<{$xoops_url}>/modules/tadtools/bootstrap3/css/bootstrap.css" rel="stylesheet" media="all">
         <!-- theme_color= <{$theme_color|default:''}> -->
 <{if $theme_color|default:false and $theme_color!="bootstrap3"}>

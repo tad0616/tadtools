@@ -3,14 +3,14 @@ use Xmf\Request;
 use XoopsModules\Tadtools\Utility;
 
 require_once __DIR__ . '/tadtools_header.php';
-$demo = Request::getString('demo');
-$size = Request::getFloat('size', '1.5');
-$font = Request::getString('font');
-$title_font = Request::getString('title_font', $font);
-$demo_title = Request::getString('demo_title', '台式麵包熱量排行榜曝光 最肥不是奶酥麵包…');
+$demo         = Request::getString('demo');
+$size         = Request::getFloat('size', '1.5');
+$font         = Request::getString('font');
+$title_font   = Request::getString('title_font', $font);
+$demo_title   = Request::getString('demo_title', '台式麵包熱量排行榜曝光 最肥不是奶酥麵包…');
 $demo_content = Request::getString('demo_content', '台式麵包鬆軟好入口、組織細膩，內餡又豐富可口，讓不少人非常喜愛，不過營養師就公開了市面上常見販售的台式麵包熱量，第一名並非奶酥麵包或菠蘿麵包，而是由熱量高達565大卡的蔥花肉鬆捲奪得冠軍。');
-$otf_arr = ['BoTa', 'Chalk', 'KingnamMaiyuan', 'Mamelon', 'MamelonHi', 'PangPangZhuRouTi', 'PoSuiLingHaoZi', 'TanugoTangGuoShouXieTiBold', 'TanugoTangGuoShouXieTiRegular', 'WuXinShouXieTi', 'YOzShouXieTi', 'YouZi'];
-$fonts = Utility::$fonts;
+$otf_arr      = ['BoTa', 'Chalk', 'KingnamMaiyuan', 'Mamelon', 'MamelonHi', 'PangPangZhuRouTi', 'PoSuiLingHaoZi', 'TanugoTangGuoShouXieTiBold', 'TanugoTangGuoShouXieTiRegular', 'WuXinShouXieTi', 'YOzShouXieTi', 'YouZi'];
+$fonts        = Utility::$fonts;
 
 // $fonts = [
 //     '851DianJiWenZiTi' => '851電機文字',
@@ -106,7 +106,7 @@ if ($font) {
 
     $bpmfvs = strpos($font, 'Bpmf') !== false ? "| <a href='https://buttaiwan.github.io/bpmfvs/' target='_blank'>選破音字</a>" : '';
 
-    $title_size = $size * 1.5;
+    $title_size        = $size * 1.5;
     $title_font_select = '';
     foreach ($fonts as $font_family => $font_title) {
         $selected = $font_family == $title_font ? 'selected' : '';
@@ -168,13 +168,13 @@ if ($font) {
     </form>
     ";
 
-    echo Utility::html5($data, false, true, '4', true, 'container', $title = '線上字型大量文字預覽', '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/modules/tadtools/css/xoops.css">');
+    echo Utility::html5($data, false, true, '4', true, 'container', $title = '線上字型大量文字預覽', '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/modules/tadtools/css/xoops.css?t=20260521">');
 
 } else {
 
     $title_arr = [];
     if (empty($demo)) {
-        $sql = 'SELECT `title` FROM `' . $xoopsDB->prefix('newblocks') . '` WHERE `title` != ? AND `visible` = ?';
+        $sql    = 'SELECT `title` FROM `' . $xoopsDB->prefix('newblocks') . '` WHERE `title` != ? AND `visible` = ?';
         $result = Utility::query($sql, 'si', ['', 1]) or Utility::web_error($sql, __FILE__, __LINE__);
 
         while (list($title) = $xoopsDB->fetchRow($result)) {
@@ -230,7 +230,7 @@ if ($font) {
     }
     $data .= "</tr>";
 
-    $i = 1;
+    $i   = 1;
     $url = "https://cdn.jsdelivr.net/gh/tadlearn/webfonts/fonts";
     foreach ($fonts as $font_family => $font_title) {
         $file_name = in_array($font_family, $otf_arr) ? "{$url}/{$font_family}.otf" : "{$url}/{$font_family}.ttf";
@@ -282,7 +282,7 @@ if ($font) {
     // }
     // $data .= '];';
 
-    echo Utility::html5($data, false, true, '4', true, 'container-fluid', $title = '線上字型一覽', '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/modules/tadtools/css/xoops.css">');
+    echo Utility::html5($data, false, true, '4', true, 'container-fluid', $title = '線上字型一覽', '<link rel="stylesheet" type="text/css" media="all" title="Style sheet" href="' . XOOPS_URL . '/modules/tadtools/css/xoops.css?t=20260521">');
 
 }
 

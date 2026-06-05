@@ -387,9 +387,48 @@
     next(manual = false) { if (manual) this._isManual = true; this.goTo(this.current + 1); }
     prev(manual = false) { if (manual) this._isManual = true; this.goTo(this.current - 1); }
 
-    /* 更新上一張 / 下一張按鈕的 aria-label
-       只保留方向語意（「上一張」/「下一張」），
-       移除「第 X 張，共 X 張」序號，避免聚焦時重複報讀無關資訊。 */
+    /* 取得指定索引投影片的最佳描述文字。
+       優先順序：圖片 alt → 連結 title/aria-label → caption 文字。
+       供 _updateNavLabels 組合上一張/下一張的 aria-label 使用。
+       @param {number} index 投影片索引
+       @returns {string} 描述文字（可能為空字串）
+    */
+    _getSlideLabel(index) {
+      const item = this.items[index];
+      if (!item) return '';
+
+      // ① 圖片 alt（最具描述性）
+      const img = item.querySelector('img');
+      if (img) {
+        const alt = (img.getAttribute('alt') || '').trim();
+        if (alt) return alt;
+      }
+
+      // ② 連結的 title 或 aria-label
+      const link = item.querySelector('a');
+      if (link) {
+        const label = (
+          link.getAttribute('aria-label') ||
+          link.getAttribute('title') || ''
+        ).trim();
+        if (label) return label;
+      }
+
+      // ③ caption 說明文字
+      const caption = item.querySelector('.tad-slide__caption');
+      if (caption) {
+        const text = caption.textContent.trim();
+        if (text) return text;
+      }
+
+      return '';
+    }
+
+    /* 更新上一張 / 下一張按鈕的 aria-label。
+       僅保留簡潔的方向語意（如「上一張投影片」/「下一張投影片」），
+       不附加目標投影片的圖片描述，避免螢幕閱讀器在聚焦按鈕時
+       就預先朗讀圖片內容，造成使用者觸發按鈕後聽到兩次相同資訊的混淆。
+       圖片資訊只在切換完成後透過 live region 播報一次。 */
     _updateNavLabels(current) {
       if (this._prevBtn) {
         this._prevBtn.setAttribute('aria-label', this.opts.prevLabel);

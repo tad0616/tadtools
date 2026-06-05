@@ -40,30 +40,6 @@ class TadtoolsCorePreload extends XoopsPreloadItem
     {
         global $xoopsConfig, $xoopsTpl, $xoopsDB, $xoTheme, $xoopsUser;
 
-        // $ng_web = [];
-        // if (!isset($_SESSION['have_ng_web']) || !empty($_SESSION['have_ng_web'])) {
-        //     $json = "/var/www/xoops_data/all_web_modules.json";
-        //     if (file_exists($json)) {
-        //         $all_web_modules = json_decode(file_get_contents($json), true);
-        //         $server          = explode('.', $_SERVER['SERVER_NAME']);
-        //         foreach ($all_web_modules as $key => $value) {
-        //             if (strpos($key, $server[1] . '_') !== false) {
-        //                 $my_modules[$key] = $value;
-        //                 foreach ($value as $data) {
-        //                     if ($data['dirname'] == 'system' && $data['version'] != '20107') {
-        //                         list($domain, $sub) = explode('_', $key);
-        //                         $ng_web[]           = "{$sub}.{$domain}.tn.edu.tw";
-        //                     }
-        //                 }
-        //             }
-        //         }
-
-        //         $_SESSION['have_ng_web'] = count($ng_web);
-
-        //     }
-        // }
-        // $xoopsTpl->assign('ng_web', $ng_web);
-
         $theme_id           = 0;
         $theme_name         = isset($_SESSION['xoopsUserTheme']) ? $_SESSION['xoopsUserTheme'] : $xoopsConfig['theme_set'];
         $use_default_config = false;
@@ -127,7 +103,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
             $xoTheme->addScript('browse.php?Frameworks/jquery/plugins/jquery.ui.js');
 
             $xoTheme->addStylesheet('modules/tadtools/colorbox/colorbox.css');
-            $xoTheme->addStylesheet('modules/tadtools/css/xoops.css');
+            $xoTheme->addStylesheet('modules/tadtools/css/xoops.css?t=20260521');
             $xoTheme->addScript('modules/tadtools/colorbox/jquery.colorbox.js');
             $xoTheme->addStylesheet('modules/tadtools/css/fontawesome6/css/all.min.css');
             // $xoTheme->addStylesheet('media/font-awesome/css/font-awesome.min.css');
@@ -209,7 +185,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         $xoopsTpl->assign('user_menu_var', $user_menu);
 
         // 自訂選單
-        $my_menu           = Tools::get_theme_menu_items(0, $theme_config['menu_var_kind']);
+        $my_menu           = Tools::get_theme_menu_items(0, $theme_config['menu_var_kind'], true);
         $i                 = sizeof($my_menu);
         $SchoolXoopsModule = $moduleHandler->getByDirname("school");
         $def_mod_menu      = ($SchoolXoopsModule && $SchoolXoopsModule->getVar('isactive') == 1) ? Tools::get_module_menu_item($i, 'school') : [];

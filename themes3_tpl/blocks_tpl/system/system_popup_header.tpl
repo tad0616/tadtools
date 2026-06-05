@@ -8,7 +8,7 @@
     <{$headItems[item]}>
     <{/section}>
     <link rel="stylesheet" type="text/css" href="<{$themeUrl|default:''}>css/reset.css">
-    <link rel="stylesheet" type="text/css" href="<{$themeUrl|default:''}>css/xoops.css">
+    <link rel="stylesheet" type="text/css" href="<{$themeUrl|default:''}>css/xoops.css?t=20260521">
     <link rel="stylesheet" type="text/css" href="<{$themeUrl|default:''}>css/bootstrap.min.css">
     <script src="<{$xoops_url}>/browse.php?Frameworks/jquery/jquery.js"></script>
     <script src="<{$themeUrl|default:''}>js/bootstrap.min.js"></script>

@@ -10,7 +10,7 @@
     </legend>
 
     <!-- 無障礙提示區 -->
-    <div id="loginMsg" class="bg-danger text-white mb-2 p-2" role="alert" aria-live="assertive"></div>
+    <div id="loginMsg" class="text-white mb-2 p-2" role="alert" aria-live="assertive" style="background-color:#910613;"></div>
 
     <form id="loginForm" action="<{$xoops_url}>/user.php" method="post" role="form">
       <div class="form-group row mb-3">
@@ -44,7 +44,7 @@
       <input type="hidden" name="xoops_redirect" value="<{$redirect_page|default:''}>">
 
       <div class="text-center">
-        <button type="submit" id="submit" class="btn btn-primary btn-lg">
+        <button type="submit" id="submit" class="btn btn-primary btn-lg" style="background-color: #03347c;">
           <i class="fa-solid fa-user-lock" aria-hidden="true"></i> <{$lang_login|default:''}>
         </button>
       </div>
@@ -92,11 +92,30 @@ document.addEventListener("DOMContentLoaded", function() {
 
   });
 
-  // 若頁面重新載入且帳密被清空，視為登入失敗
-  if(uname.value === "" && pass.value === "" && document.referrer.includes("user.php")){
-      msg.textContent = "帳號或密碼錯誤，請重新輸入";
-      msg.classList.add("active");
-      uname.focus();
+  // 伺服器端登入失敗（redirect_header → SweetAlert2 顯示訊息後重導回此頁）
+  // 帳密欄位被清空且 referrer 為 user.php，代表剛完成一次失敗的登入
+  // 或者是當來源網址包含「user.php?xoops_redirect=」時
+  if(
+    (uname.value === "" && pass.value === "" && document.referrer.includes("user.php")) ||
+    window.location.href.includes("user.php?xoops_redirect=") ||
+    document.referrer.includes("user.php?xoops_redirect=")
+  ){
+    console.log('此處僅需移動焦點');
+      // 錯誤訊息已由 system_redirect.tpl 的 SweetAlert2 顯示，此處僅需移動焦點
+      // 延遲執行 focus()，確保 display:none → block 轉換完成後再移動焦點
+      // https://accessibility.moda.gov.tw/Applications/DetectLog/190750
+      setTimeout(function() {
+          uname.focus();
+      }, 100);
+
+      // 監聽 jGrowl 關閉事件，確保使用者按下關閉按鈕時，焦點回到帳號欄位
+      if (typeof $ !== "undefined") {
+          $(document).on('jGrowl.close', function() {
+              setTimeout(function() {
+                  if (uname) uname.focus();
+              }, 50);
+          });
+      }
   }
 
 });

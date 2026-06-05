@@ -71,6 +71,14 @@
   /* WCAG 2.5.5：最小目標尺寸 44×36px 已由 JS 設定 */
 }
 
+.tad-marquee-container.tad-marquee-has-inside-pause-left .tad-marquee-wrapper {
+  margin-left: 32px;
+}
+
+.tad-marquee-container.tad-marquee-has-inside-pause-right .tad-marquee-wrapper {
+  padding-right: 32px;
+}
+
 /* 暫停按鈕預設不顯示 outline，由焦點狀態動態設定 */
 .tad-marquee-pause-btn {
   outline: none;
@@ -151,12 +159,12 @@
 }
 
 .tad-marquee-item:focus {
-  outline: 4px solid #d93025 !important; 
+  outline: 4px solid #d93025 !important;
   outline-offset: -4px !important; /* 改為向內畫框，避免被父元素 overflow: hidden 切斷 */
   background-color: #ffdd00 !important; /* 極高對比度的聚焦背景色 */
   color: #000000 !important;
   z-index: 10 !important;
-  text-decoration: underline !important; 
+  text-decoration: underline !important;
   box-shadow: inset 0 0 0 3px #ffffff, inset 0 0 0 7px #d93025 !important; /* 陰影也改為向內 */
 }
 
@@ -303,4 +311,9 @@
 
 .tad-marquee-container:focus .tad-marquee-keyboard-focus {
   transform: translateY(0);
+}
+@media (pointer: coarse) {
+  .tad-marquee-pause-btn {
+    min-height: 44px; /* 觸控裝置維持 WCAG 2.5.5 目標尺寸 */
+  }
 }

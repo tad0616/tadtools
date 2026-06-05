@@ -20,7 +20,9 @@ if (!class_exists('XoopsModules\Tadtools\Utility')) {
 use XoopsModules\Tad_login\Tools as TadLoginTools;
 
 if (!class_exists('XoopsModules\Tad_login\Tools')) {
-    require XOOPS_ROOT_PATH . '/modules/tad_login/preloads/autoloader.php';
+    if (file_exists(XOOPS_ROOT_PATH . '/modules/tad_login/preloads/autoloader.php')) {
+        require XOOPS_ROOT_PATH . '/modules/tad_login/preloads/autoloader.php';
+    }
 }
 
 /*
@@ -122,8 +124,6 @@ class Tools
     public static function import_theme_json($theme_name, $def_config = [])
     {
         global $xoopsDB;
-
-        // $theme_json_file = XOOPS_VAR_PATH . "/data/theme_{$theme_name}.json";
 
         $theme_json_file = XOOPS_VAR_PATH . "/data/{$theme_name}_setup.json";
 
@@ -594,7 +594,6 @@ class Tools
 
     public static function theme_config($theme_name, $def_config = [])
     {
-        // $theme_json_file = XOOPS_VAR_PATH . "/data/theme_{$theme_name}.json";
         $theme_json_file = XOOPS_VAR_PATH . "/data/{$theme_name}_setup.json";
 
         if (!file_exists($theme_json_file)) {
@@ -636,7 +635,6 @@ class Tools
     public static function get_theme_menu_items($id = "", $menu_var_kind = 'my_menu', $only_enable = true)
     {
         global $xoopsDB, $xoopsUser;
-
         // 使用靜態快取來儲存菜單項目
         static $menu_cache = [];
         $cache_key         = $id . '_' . $menu_var_kind;
@@ -779,13 +777,15 @@ class Tools
                 $page         = School_page::get(['id' => $link_cate_sn, 'enable' => 1], ['all_content']);
                 // Utility::dd($page);
                 foreach ($page['all_content'] as $content) {
-                    $sub_menu[$link_cate_name . $i]['id']      = $content['id'];
-                    $sub_menu[$link_cate_name . $i]['title']   = $content['title'];
-                    $sub_menu[$link_cate_name . $i]['url']     = XOOPS_URL . "/modules/school/index.php?department_id={$page['department_id']}&zone_id={$page['zone_id']}&page_id={$link_cate_sn}&content_id={$content['id']}&type={$page['type']}";
-                    $sub_menu[$link_cate_name . $i]['target']  = "_self";
-                    $sub_menu[$link_cate_name . $i]['icon']    = $content['info']['icon'];
-                    $sub_menu[$link_cate_name . $i]['submenu'] = "";
-                    $i++;
+                    if (is_array($content) and isset($content['enable']) and $content['enable'] == 1) {
+                        $sub_menu[$link_cate_name . $i]['id']      = $content['id'];
+                        $sub_menu[$link_cate_name . $i]['title']   = $content['title'];
+                        $sub_menu[$link_cate_name . $i]['url']     = XOOPS_URL . "/modules/school/index.php?department_id={$page['department_id']}&zone_id={$page['zone_id']}&page_id={$link_cate_sn}&content_id={$content['id']}&type={$page['type']}";
+                        $sub_menu[$link_cate_name . $i]['target']  = "_self";
+                        $sub_menu[$link_cate_name . $i]['icon']    = $content['info']['icon'];
+                        $sub_menu[$link_cate_name . $i]['submenu'] = "";
+                        $i++;
+                    }
                 }
                 break;
 

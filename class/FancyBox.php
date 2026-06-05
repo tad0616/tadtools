@@ -54,9 +54,23 @@ class FancyBox
 
         $beforeShow = ",
         beforeShow: function () {
-        var alt = this.element.data('alt');
-        this.inner.find('img')
-        .attr('alt', alt);
+            // 將 data-alt 的內容設定到圖片的 alt 屬性
+            var alt = this.element.data('alt');
+            this.inner.find('img').attr('alt', alt);
+        },
+        afterShow: function () {
+            // 取得圖片說明文字：優先用 data-alt，其次用 title，最後用索引提示
+            var speakText = this.element.data('alt')
+                         || this.element.attr('title')
+                         || ('第 ' + ($.fancybox.current.index + 1) + ' 張，共 ' + $.fancybox.current.group.length + ' 張');
+
+            // 透過 Web Speech API 朗讀圖片說明
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                var utterance = new SpeechSynthesisUtterance(speakText);
+                utterance.lang = 'zh-TW';
+                window.speechSynthesis.speak(utterance);
+            }
         }";
 
         $type_opt  = $this->type ? "type: '{$this->type}'," : '';
@@ -67,8 +81,8 @@ class FancyBox
 
         if ($xoTheme and !$return) {
             $xoTheme->addScript('modules/tadtools/fancyBox/lib/jquery.mousewheel.pack.js');
-            $xoTheme->addScript('modules/tadtools/fancyBox/source/jquery.fancybox.js?t=20260320');
-            $xoTheme->addStylesheet('modules/tadtools/fancyBox/source/jquery.fancybox.css?t=20260317');
+            $xoTheme->addScript('modules/tadtools/fancyBox/source/jquery.fancybox.js?t=20260525');
+            $xoTheme->addStylesheet('modules/tadtools/fancyBox/source/jquery.fancybox.css?t=20260525');
 
             $xoTheme->addScript('', null, "
                 jQuery(document).ready(function(){
@@ -91,8 +105,8 @@ class FancyBox
             ");
         } else {
             $js = $this->show_js ? "<script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/fancyBox/lib/jquery.mousewheel.pack.js'></script>
-            <script type='text/javascript' language='javascript' src='" . XOOPS_URL . "/modules/tadtools/fancyBox/source/jquery.fancybox.js?t=20260320'></script>
-            <link rel='stylesheet' href='" . XOOPS_URL . "/modules/tadtools/fancyBox/source/jquery.fancybox.css?t=20260317' type='text/css' media='screen' />" : '';
+            <script type='text/javascript' language='javascript' src='" . XOOPS_URL . "/modules/tadtools/fancyBox/source/jquery.fancybox.js?t=20260525'></script>
+            <link rel='stylesheet' href='" . XOOPS_URL . "/modules/tadtools/fancyBox/source/jquery.fancybox.css?t=20260525' type='text/css' media='screen' />" : '';
 
             $fancybox = "
             {$jquery}
@@ -184,8 +198,8 @@ class FancyBox
             ");
         } else {
             $js = $this->show_js ? "<script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/fancyBox/lib/jquery.mousewheel-3.0.6.pack.js'></script>
-            <script type='text/javascript' language='javascript' src='" . XOOPS_URL . "/modules/tadtools/fancyBox/source/jquery.fancybox.js?t=20260320'></script>
-            <link rel='stylesheet' href='" . XOOPS_URL . "/modules/tadtools/fancyBox/source/jquery.fancybox.css?t=20260317' type='text/css' media='screen' />
+            <script type='text/javascript' language='javascript' src='" . XOOPS_URL . "/modules/tadtools/fancyBox/source/jquery.fancybox.js?t=20260525'></script>
+            <link rel='stylesheet' href='" . XOOPS_URL . "/modules/tadtools/fancyBox/source/jquery.fancybox.css?t=20260525' type='text/css' media='screen' />
             <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/fancyBox/source/helpers/jquery.fancybox-buttons.css?v=1.0.5' />
             <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/fancyBox/source/helpers/jquery.fancybox-buttons.js?v=1.0.5'></script>
             <link rel='stylesheet' type='text/css' href='" . XOOPS_URL . "/modules/tadtools/fancyBox/source/helpers/jquery.fancybox-thumbs.css?v=1.0.7' />

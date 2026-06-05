@@ -366,8 +366,8 @@ class AccessibilityFixer
                 if (mb_strpos($title, $this->newWindowLabel, 0, 'UTF-8') === false) {
                     // 組合基礎 title（先加「另開新視窗」）
                     $newTitle = empty(trim($title))
-                        ? $this->newWindowLabel
-                        : trim($title) . '（' . $this->newWindowLabel . '）';
+                    ? $this->newWindowLabel
+                    : trim($title) . '（' . $this->newWindowLabel . '）';
 
                     // Rule 3 延伸：若同時也是檔案，附加「(xxx格式)」
                     if ($fileExt !== false) {
@@ -397,14 +397,14 @@ class AccessibilityFixer
                 }
             } elseif ($fileExt !== false) {
                 // Rule 3（單獨）：非另開視窗、但目的地是檔案 → title 加上格式說明
-                $title = $link->getAttribute('title');
+                $title       = $link->getAttribute('title');
                 $formatLabel = mb_strtoupper($fileExt, 'UTF-8') . '格式';
 
                 // 若 title 尚未含格式說明才補上
                 if (mb_strpos($title, $formatLabel, 0, 'UTF-8') === false) {
                     $newTitle = empty(trim($title))
-                        ? '（' . $formatLabel . '）'
-                        : trim($title) . '（' . $formatLabel . '）';
+                    ? '（' . $formatLabel . '）'
+                    : trim($title) . '（' . $formatLabel . '）';
 
                     $link->setAttribute('title', $newTitle);
                     $this->log(self::RULE_LINKS, "連結目的地為 {$fileExt} 格式，title 補上格式說明：{$href}");
@@ -520,10 +520,10 @@ class AccessibilityFixer
             $hasAriaLabel    = $table->hasAttribute('aria-label');
             $hasAriaLabelled = $table->hasAttribute('aria-labelledby');
 
-            if (!$hasCaption && !$hasAriaLabel && !$hasAriaLabelled) {
-                $table->setAttribute('aria-label', '資料表格（請補充表格說明，符合 WCAG 1.3.1）');
-                $this->log(self::RULE_TABLES, '表格缺少標題，補上 aria-label 提示');
-            }
+            // if (!$hasCaption && !$hasAriaLabel && !$hasAriaLabelled) {
+            //     $table->setAttribute('aria-label', '資料表格（請補充表格說明，符合 WCAG 1.3.1）');
+            //     $this->log(self::RULE_TABLES, '表格缺少標題，補上 aria-label 提示');
+            // }
 
             foreach ($xpath->query('.//thead//th', $table) ?: [] as $th) {
                 /** @var DOMElement $th */

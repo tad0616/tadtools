@@ -689,7 +689,7 @@ class Utility
     {
         global $xoTheme;
         if (is_object($xoTheme)) {
-            $xoTheme->addStylesheet('modules/tadtools/css/xoops.css');
+            $xoTheme->addStylesheet('modules/tadtools/css/xoops.css?t=20260521');
         }
         $item = '';
         if (is_array($cate_path_array)) {
@@ -861,7 +861,7 @@ class Utility
         }
 
         $main = "<!DOCTYPE html>\n";
-        $main .= "<html lang='zh-TW'>\n";
+        $main .= "<html lang='zh-Hant-TW'>\n";
         $main .= "<head>\n";
         $main .= "  <meta charset='utf-8'>\n";
         $main .= "  <title>{$title}</title>\n";
@@ -1490,15 +1490,16 @@ class Utility
         global $xoTheme, $xoopsUser, $xoopsModule;
 
         if (is_object($xoTheme)) {
-            $xoTheme->addStylesheet('modules/tadtools/css/xoops.css?t=20250304');
+            $xoTheme->addStylesheet('modules/tadtools/css/xoops.css?t=20260521');
         }
         xoops_loadLanguage('main', 'tadtools');
-        $op = Request::getString('op');
-
+        $op       = Request::getString('op');
+        $hasadmin = false;
         if ($xoopsModule) {
             $module_id  = $xoopsModule->mid();
             $mod_name   = $xoopsModule->name();
             $moduleName = $xoopsModule->dirname();
+            $hasadmin   = $xoopsModule->hasadmin();
         } else {
             $mod_name = $moduleName = '';
         }
@@ -1562,7 +1563,7 @@ class Utility
             }
 
             if ($isAdmin and $module_id) {
-                $options .= "<li><a href='admin/index.php' title='" . sprintf(_TAD_ADMIN, $mod_name) . "'><i class='fa fa-wrench'></i></a></li>";
+                $options .= $hasadmin ? "<li><a href='admin/index.php' title='" . sprintf(_TAD_ADMIN, $mod_name) . "'><i class='fa fa-wrench'></i></a></li>" : '';
                 $options .= "<li><a href='" . XOOPS_URL . "/modules/system/admin.php?fct=preferences&op=showmod&mod={$module_id}' title='" . sprintf(_TAD_CONFIG, $mod_name) . "'><i class='fa fa-edit'></i></a></li>";
                 $options .= "<li><a href='" . XOOPS_URL . "/modules/system/admin.php?fct=modulesadmin&op=update&module={$moduleName}' title='" . sprintf(_TAD_UPDATE, $mod_name) . "'><i class='fa fa-refresh'></i></a></li>";
                 $options .= "<li><a href='" . XOOPS_URL . "/modules/system/admin.php?fct=blocksadmin&op=list&filter=1&selgen={$module_id}&selmod=-2&selgrp=-1&selvis=-1' title='" . sprintf(_TAD_BLOCKS, $mod_name) . "'><i class='fa fa-th'></i></a></li>";

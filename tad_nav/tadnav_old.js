@@ -1,9 +1,49 @@
 /**
- * TadNav v1.8.7
+ * TadNav v1.9.3
  * 修正：
  *   1. 桌機版：hover/click 開啟子選單前先關閉同層其他子選單（互斥）
  *   2. 手機版：強制單欄手風琴，同層互斥
  *   3. WCAG 1.4.10：focusin 時 scrollIntoView
+ *   4. Alt+U 便捷鍵：將焦點目標改為 #main-nav-skip，
+ *      避免焦點落在 nav 容器導致 AT 朗讀整個導覽列；
+ *      同時在焦點離開選單後清空 live region，防止殘留文字被重播
+ *   5. _openSubmenu 同步修正左側溢出：
+ *      wrap 換行模式下（平板），靠右登入按鈕在第二行靠左時，
+ *      子選單開啟的當下立即以 getBoundingClientRect() 同步取得位置，
+ *      用 margin-left 推回視窗範圍，瀏覽器首次繪製前就已修正完成
+ *   ★ v1.9.1 修正：
+ *   6. _markRightItems 移除 spacer early-return：改以實際位置判斷
+ *      是否需要 is-right，修正 spacer 後的項目換行至第二行左側時
+ *      仍被標記 is-right、子選單往左飛出視窗的問題
+ *   7. 修正 is-right 子選單的左側溢出補正：
+ *      is-right 使用 right:0 定位，margin-left 對其無效甚至反效果；
+ *      改為動態切換成 left:0 定位，並在關閉時清除 inline style
+ *   ★ v1.9.2 修正（無障礙）：
+ *   8. 移除 aria-haspopup：
+ *      aria-haspopup="true" 等同 aria-haspopup="menu"，告知 JAWS 等
+ *      AT 切入「應用程式模式」並期待 role="menu" 的子元件；
+ *      但本導覽列子選單的 <ul> 無此 role，導致 JAWS 不監聽 aria-live
+ *      播報，NVDA 也因互動模式不符而忽略展開狀態通知。
+ *      導覽列揭露模式（disclosure navigation）只需 aria-expanded 即可。
+ *   9. _announce 改用 setTimeout(50ms) 取代 requestAnimationFrame：
+ *      rAF 仍在按鈕點擊的同一繪製週期執行，NVDA + Chrome 會優先
+ *      處理點擊系統反饋，導致 aria-live 被忽略；
+ *      setTimeout 讓播報延至下一個 task，螢幕報讀器先完成點擊處理
+ *      後再接收 live region 更新，確保「已展開／已收合」正確播報。
+ *   ★ v1.9.3 修正（無障礙）：
+ *  10. 漢堡按鈕改用靜態 aria-label：
+ *      原策略隨狀態切換 aria-label（「開啟…」／「關閉…」），
+ *      違反 ARIA APG「可及名稱應保持穩定」原則，並造成語音控制
+ *      使用者必須記住兩個按鈕名稱；「已展開／已收合」資訊已由
+ *      aria-expanded 單獨承擔，無需在名稱中重複傳達。
+ *      修正：統一使用固定 aria-label="導覽列選單"，
+ *      移除 _handleToggle、_closeMobileMenu、_checkBreakpoint
+ *      三處的 aria-label 動態更新邏輯。
+ *  11. _setupARIA 補充漢堡按鈕初始化：
+ *      原本未對 toggleBtn 設置任何 ARIA 屬性，
+ *      若 HTML 模板未預設，AT 在首次互動前無法得知按鈕狀態。
+ *      修正：在 _setupARIA 中初始化 aria-expanded、aria-label、
+ *      aria-controls，確保頁面載入時狀態即已正確揭露。
  */
 (function (root, factory) {
   if (typeof define === "function" && define.amd) { define([], factory); }
@@ -13,46 +53,46 @@
   "use strict";
 
   const THEME_MAP = {
-    fontFamily:           "--tadnav-font-family",
-    innerMaxWidth:        "--tadnav-inner-max-width",
-    navMinHeight:         "--tadnav-nav-min-height",
-    navBg:                "--tadnav-nav-bg",
-    navShadow:            "--tadnav-nav-shadow",
-    brandColor:           "--tadnav-brand-color",
-    focusColor:           "--tadnav-focus-color",
-    focusShadowColor:     "--tadnav-focus-shadow-color",
-    focusWidth:           "--tadnav-focus-width",
-    itemColor:            "--tadnav-item-color",
-    itemBg:               "--tadnav-item-bg",
-    itemFontSize:         "--tadnav-item-font-size",
-    itemPaddingX:         "--tadnav-item-padding-x",
-    itemPaddingY:         "--tadnav-item-padding-y",
-    itemHoverBg:          "--tadnav-item-hover-bg",
-    itemHoverColor:       "--tadnav-item-hover-color",
-    itemAccent:           "--tadnav-item-accent",
-    subBg:                "--tadnav-sub-bg",
-    subShadow:            "--tadnav-sub-shadow",
-    subBorder:            "--tadnav-sub-border",
-    subDivider:           "--tadnav-sub-divider",
-    subDividerWidth:      "--tadnav-sub-divider-width",
-    subMinWidth:          "--tadnav-sub-min-width",
-    subScrollBtnBg:       "--tadnav-scroll-btn-bg",
-    subScrollBtnHoverBg:  "--tadnav-scroll-btn-hover-bg",
-    subScrollBtnColor:    "--tadnav-scroll-btn-color",
-    subScrollBtnHeight:   "--tadnav-scroll-btn-height",
-    subItemColor:         "--tadnav-sub-item-color",
-    subItemBg:            "--tadnav-sub-item-bg",
-    subItemFontSize:      "--tadnav-sub-item-font-size",
-    subItemPaddingX:      "--tadnav-sub-item-padding-x",
-    subItemPaddingY:      "--tadnav-sub-item-padding-y",
-    subItemHoverBg:       "--tadnav-sub-item-hover-bg",
-    subItemHoverColor:    "--tadnav-sub-item-hover-color",
-    toggleColor:          "--tadnav-toggle-color",
-    toggleHoverBg:        "--tadnav-toggle-hover-bg",
-    mobileSubBg:          "--tadnav-mobile-bg",
-    mobileSubBorder:      "--tadnav-mobile-sub-border",
-    mobileSubColor:       "--tadnav-mobile-sub-color",
-    mobileItemBorder:     "--tadnav-mobile-item-border",
+    fontFamily: "--tadnav-font-family",
+    innerMaxWidth: "--tadnav-inner-max-width",
+    navMinHeight: "--tadnav-nav-min-height",
+    navBg: "--tadnav-nav-bg",
+    navShadow: "--tadnav-nav-shadow",
+    brandColor: "--tadnav-brand-color",
+    focusColor: "--tadnav-focus-color",
+    focusShadowColor: "--tadnav-focus-shadow-color",
+    focusWidth: "--tadnav-focus-width",
+    itemColor: "--tadnav-item-color",
+    itemBg: "--tadnav-item-bg",
+    itemFontSize: "--tadnav-item-font-size",
+    itemPaddingX: "--tadnav-item-padding-x",
+    itemPaddingY: "--tadnav-item-padding-y",
+    itemHoverBg: "--tadnav-item-hover-bg",
+    itemHoverColor: "--tadnav-item-hover-color",
+    itemAccent: "--tadnav-item-accent",
+    subBg: "--tadnav-sub-bg",
+    subShadow: "--tadnav-sub-shadow",
+    subBorder: "--tadnav-sub-border",
+    subDivider: "--tadnav-sub-divider",
+    subDividerWidth: "--tadnav-sub-divider-width",
+    subMinWidth: "--tadnav-sub-min-width",
+    subScrollBtnBg: "--tadnav-scroll-btn-bg",
+    subScrollBtnHoverBg: "--tadnav-scroll-btn-hover-bg",
+    subScrollBtnColor: "--tadnav-scroll-btn-color",
+    subScrollBtnHeight: "--tadnav-scroll-btn-height",
+    subItemColor: "--tadnav-sub-item-color",
+    subItemBg: "--tadnav-sub-item-bg",
+    subItemFontSize: "--tadnav-sub-item-font-size",
+    subItemPaddingX: "--tadnav-sub-item-padding-x",
+    subItemPaddingY: "--tadnav-sub-item-padding-y",
+    subItemHoverBg: "--tadnav-sub-item-hover-bg",
+    subItemHoverColor: "--tadnav-sub-item-hover-color",
+    toggleColor: "--tadnav-toggle-color",
+    toggleHoverBg: "--tadnav-toggle-hover-bg",
+    mobileSubBg: "--tadnav-mobile-bg",
+    mobileSubBorder: "--tadnav-mobile-sub-border",
+    mobileSubColor: "--tadnav-mobile-sub-color",
+    mobileItemBorder: "--tadnav-mobile-item-border",
   };
 
   class TadNav {
@@ -71,34 +111,36 @@
       }
 
       this.options = Object.assign({
-        trigger:             "hover",
-        hoverClose:          true,
-        hoverDelay:          200,
-        hideDelay:           300,
-        breakpoint:          768,
-        collisionDetection:  true,
+        trigger: "hover",
+        hoverClose: true,
+        hoverDelay: 200,
+        hideDelay: 300,
+        breakpoint: 768,
+        collisionDetection: true,
         closeOnOutsideClick: true,
-        closeOnEsc:          true,
-        subScrollItems:      "auto",
-        subScrollStep:       3,
-        subScrollMargin:     16,
-        topOverflow:         "wrap",
-        theme:               {},
-        onInit:              null,
-        onOpen:              null,
-        onClose:             null,
-        onBreakpointChange:  null,
-        onDestroy:           null,
+        closeOnEsc: true,
+        subScrollItems: "auto",
+        subScrollStep: 3,
+        subScrollMargin: 16,
+        topOverflow: "wrap",
+        theme: {},
+        onInit: null,
+        onOpen: null,
+        onClose: null,
+        onBreakpointChange: null,
+        onDestroy: null,
       }, options);
 
-      this._hoverTimers      = new Map();
-      this._eventListeners   = [];
-      this._customListeners  = {};
-      this._isMobile         = false;
-      this._destroyed        = false;
-      this._scrollStates     = new Map();
+      this._hoverTimers = new Map();
+      this._eventListeners = [];
+      this._customListeners = {};
+      this._isMobile = false;
+      this._destroyed = false;
+      this._scrollStates = new Map();
       this._focusTrapHandler = null;
       this._lastInteractionWasKeyboard = false;
+      // 程式化批次操作時暫停 aria-live 播報，避免干擾鍵盤導覽
+      this._suppressAnnounce = false;
 
       this._wrapper =
         this.menu.closest(".tadnav-wrapper") || this.menu.parentElement;
@@ -156,9 +198,9 @@
       if (this._isMobile) return;
       if (this._scrollStates.has(sub)) return;
 
-      const subRect   = sub.getBoundingClientRect();
-      const vh        = window.innerHeight;
-      const margin    = this.options.subScrollMargin;
+      const subRect = sub.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const margin = this.options.subScrollMargin;
       const overflows = subRect.bottom > vh - margin;
 
       if (this.options.subScrollItems === "auto") {
@@ -218,28 +260,28 @@
         this._applySubScroll(sub);
       };
 
-      const onUpClick   = () => scroll("up");
+      const onUpClick = () => scroll("up");
       const onDownClick = () => scroll("down");
-      const onUpKey     = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); scroll("up"); } };
-      const onDownKey   = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); scroll("down"); } };
-      const onWheel     = e => {
+      const onUpKey = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); scroll("up"); } };
+      const onDownKey = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); scroll("down"); } };
+      const onWheel = e => {
         if (this._isMobile) return;
         e.preventDefault(); e.stopPropagation();
         scroll(e.deltaY > 0 ? "down" : "up");
       };
 
-      upBtn.addEventListener("click",    onUpClick);
-      downBtn.addEventListener("click",  onDownClick);
-      upBtn.addEventListener("keydown",  onUpKey);
+      upBtn.addEventListener("click", onUpClick);
+      downBtn.addEventListener("click", onDownClick);
+      upBtn.addEventListener("keydown", onUpKey);
       downBtn.addEventListener("keydown", onDownKey);
-      sub.addEventListener("wheel",      onWheel, { passive: false });
+      sub.addEventListener("wheel", onWheel, { passive: false });
 
       state.scrollListeners.push(
-        { el: upBtn,   ev: "click",   fn: onUpClick },
-        { el: downBtn, ev: "click",   fn: onDownClick },
-        { el: upBtn,   ev: "keydown", fn: onUpKey },
+        { el: upBtn, ev: "click", fn: onUpClick },
+        { el: downBtn, ev: "click", fn: onDownClick },
+        { el: upBtn, ev: "keydown", fn: onUpKey },
         { el: downBtn, ev: "keydown", fn: onDownKey },
-        { el: sub,     ev: "wheel",   fn: onWheel },
+        { el: sub, ev: "wheel", fn: onWheel },
       );
       this._applySubScroll(sub);
     }
@@ -256,12 +298,12 @@
 
     _calcVisibleItems(sub, itemH, totalItems) {
       if (itemH <= 0) return 5;
-      const vh      = window.innerHeight;
-      const subTop  = sub.getBoundingClientRect().top;
+      const vh = window.innerHeight;
+      const subTop = sub.getBoundingClientRect().top;
       const btnHStr = getComputedStyle(this._wrapper || document.documentElement)
-                        .getPropertyValue("--tadnav-scroll-btn-height").trim();
-      const btnH    = parseFloat(btnHStr) || 28;
-      const margin  = this.options.subScrollMargin;
+        .getPropertyValue("--tadnav-scroll-btn-height").trim();
+      const btnH = parseFloat(btnHStr) || 28;
+      const margin = this.options.subScrollMargin;
       if (this.options.subScrollItems !== "auto")
         return Math.min(this.options.subScrollItems, totalItems);
       const available = vh - subTop - (btnH * 2) - margin;
@@ -275,7 +317,7 @@
       items.forEach((li, i) => {
         li.style.display = (i >= currentIndex && i < currentIndex + visibleN) ? "" : "none";
       });
-      upBtn.setAttribute("aria-disabled",   currentIndex <= 0                     ? "true" : "false");
+      upBtn.setAttribute("aria-disabled", currentIndex <= 0 ? "true" : "false");
       downBtn.setAttribute("aria-disabled", currentIndex >= totalItems - visibleN ? "true" : "false");
     }
 
@@ -288,15 +330,25 @@
       el.setAttribute("role", "status");
       el.setAttribute("aria-live", "polite");
       el.setAttribute("aria-atomic", "true");
+      // aria-relevant="additions" 限制僅新增內容才播報，
+      // 清空文字（刪除）時不觸發 AT"空白”播報
+      el.setAttribute("aria-relevant", "additions");
       el.style.cssText = "position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;";
       document.body.appendChild(el);
       this._liveRegion = el;
     }
 
     _announce(message) {
-      if (!this._liveRegion) return;
+      // 程式化批次操作期間（互斥關閉、focusout 觸發）暫停播報，
+      // 避免 Alt+U 跳到導覽列時螢幕報讀器持續播報子選單狀態
+      if (!this._liveRegion || this._suppressAnnounce) return;
+      // ★ 改用 setTimeout 取代 requestAnimationFrame：
+      //   rAF 仍在按鈕點擊的同一繪製週期內執行，NVDA + Chrome 會優先
+      //   處理點擊事件的系統反饋，導致 aria-live 變更被忽略。
+      //   setTimeout(0) 確保播報在瀏覽器事件佇列的下一個 task 執行，
+      //   讓螢幕報讀器先處理完點擊反饋，再接收 live region 更新。
       this._liveRegion.textContent = "";
-      requestAnimationFrame(() => { this._liveRegion.textContent = message; });
+      setTimeout(() => { this._liveRegion.textContent = message; }, 50);
     }
 
     // =============================================
@@ -338,16 +390,15 @@
     _markRightItems() {
       const items = Array.from(this.menu.querySelectorAll(":scope > li"));
       items.forEach(li => li.classList.remove("is-right"));
-      const idx = items.findIndex(li => li.classList.contains("tadnav-spacer"));
-      if (idx !== -1) {
-        items.slice(idx + 1).forEach(li => li.classList.add("is-right"));
-        return;
-      }
-      const vw          = window.innerWidth;
-      const margin      = 8;
+      const vw = window.innerWidth;
+      const margin = 8;
       const cssMinWidth = getComputedStyle(this._wrapper || document.documentElement)
         .getPropertyValue("--tadnav-sub-min-width").trim();
       const subMinWidth = parseFloat(cssMinWidth) || 220;
+      // ★ 修正：無論有無 spacer，一律以「實際位置」判斷是否需要 is-right。
+      //   舊版在偵測到 spacer 後直接 return，不管 li 的實際位置，
+      //   導致 wrap 換行後跑到第二行左側的項目仍被標記 is-right，
+      //   子選單以 right:0 定位，往左飛出視窗。
       items.forEach(li => {
         if (li.classList.contains("tadnav-spacer")) return;
         if (!li.querySelector(":scope > .tadnav-submenu")) return;
@@ -361,6 +412,22 @@
       this.menu.querySelectorAll(".tadnav-submenu").forEach(sub => {
         if (!sub.hasAttribute("data-open")) sub.setAttribute("data-open", "false");
       });
+
+      // ★ 初始化漢堡按鈕的 ARIA 屬性：
+      //   _setupARIA 在 _init 與 refresh 時都會呼叫；
+      //   若 HTML 模板未預設這些屬性，AT 在首次互動前不知道按鈕狀態。
+      //   aria-label 使用固定的「導覽列選單」，不隨展開／收合變動
+      //   （狀態語意由 aria-expanded 單獨承擔，符合 ARIA APG）。
+      if (this.toggleBtn) {
+        if (!this.toggleBtn.hasAttribute("aria-expanded"))
+          this.toggleBtn.setAttribute("aria-expanded", "false");
+        if (!this.toggleBtn.hasAttribute("aria-label"))
+          this.toggleBtn.setAttribute("aria-label", "導覽列選單");
+        // aria-controls 指向選單，讓 AT 可直接跳轉至受控元件
+        if (!this.menu.id)
+          this.menu.id = "tadnav-menu-" + Math.random().toString(36).slice(2, 9);
+        this.toggleBtn.setAttribute("aria-controls", this.menu.id);
+      }
 
       // ★ 移除所有 <a role="menuitem"> 的 role：
       //   role="menuitem" 會覆蓋 <a> 的原生連結語義，
@@ -380,7 +447,16 @@
         toggle.removeAttribute("role");
 
         if (!toggle.hasAttribute("aria-expanded")) toggle.setAttribute("aria-expanded", "false");
-        if (!toggle.hasAttribute("aria-haspopup")) toggle.setAttribute("aria-haspopup", "true");
+        // ★ 移除 aria-haspopup（或不再加入）：
+        //   aria-haspopup="true" 等同於 aria-haspopup="menu"，告知螢幕報讀器
+        //   此按鈕會彈出一個 role="menu" 的元件。但本導覽列子選單的 <ul>
+        //   並無 role="menu"，造成 JAWS 切入「應用程式模式」後不監聽
+        //   aria-live 播報；NVDA 也因 haspopup 期待的互動模式不同而
+        //   忽略展開狀態的 live region 通知。
+        //   對導覽列揭露模式（disclosure navigation），aria-expanded 已足夠
+        //   讓 AT 得知狀態；移除 aria-haspopup 可確保 AT 維持「瀏覽模式」
+        //   並正常播報「[名稱] 按鈕 已展開／已收合」。
+        toggle.removeAttribute("aria-haspopup");
         const sub = toggle.nextElementSibling;
         if (sub?.classList.contains("tadnav-submenu")) {
           const id = sub.id || "tadnav-sub-" + Math.random().toString(36).slice(2, 9);
@@ -408,11 +484,11 @@
         this._bindHoverEvents();
 
       this._bindClickEvents();
-      this._on(this.menu, "keydown",  e => this._handleKeydown(e));
+      this._on(this.menu, "keydown", e => this._handleKeydown(e));
       this._on(this.menu, "focusout", e => this._handleFocusOut(e));
-      this._on(this.menu, "focusin",  e => this._handleFocusIn(e));
+      this._on(this.menu, "focusin", e => this._handleFocusIn(e));
 
-      this._on(document, "keydown",   () => { this._lastInteractionWasKeyboard = true; });
+      this._on(document, "keydown", () => { this._lastInteractionWasKeyboard = true; });
       this._on(document, "mousedown", () => { this._lastInteractionWasKeyboard = false; });
 
       this._resizeObserver = new ResizeObserver(() => {
@@ -433,7 +509,7 @@
       // ★ 原以 role="menuitem" 判斷，但 <a> 的 role 已在 _setupARIA 移除，
       //   改為：凡是 menu 內的 <a>、submenu-toggle 按鈕、漢堡按鈕，
       //   取得焦點時均確保捲動可見（WCAG 1.4.10）。
-      const isMenuLink  = target.tagName === "A" && this.menu.contains(target);
+      const isMenuLink = target.tagName === "A" && this.menu.contains(target);
       const isToggleBtn = target.classList.contains("tadnav-submenu-toggle");
       const isHamburger = target === this.toggleBtn;
       if (!isMenuLink && !isToggleBtn && !isHamburger) return;
@@ -454,21 +530,32 @@
           if (!this.menu.contains(active) && active !== this.toggleBtn) {
             // ★ 改用 data-mobile-open（而非 _isMobile）判斷選單是否展開，
             //   確保 200-400% 縮放時仍能正確關閉。
+            // ★ 焦點因 Alt+U 等便捷鍵離開選單時，程式化關閉不需播報，
+            //   以免 aria-live 的播報蓋過焦點目標的播報
+            this._suppressAnnounce = true;
             if (this.menu.getAttribute("data-mobile-open") === "true") {
               this._closeMobileMenu();
             } else {
               this.closeAll();
             }
+            // ★ 關閉完成後立即清空 live region 殘留文字，
+            //   防止 AT 在焦點移到新目標（如 #main-nav-skip）時
+            //   重新播報 live region 中的削除前殘留內容
+            if (this._liveRegion) this._liveRegion.textContent = "";
+            this._suppressAnnounce = false;
           } else if (active) {
             // 焦點還在選單內，檢查所有已展開的子選單
             // 若焦點不在該子選單及其所屬的 <li> 內（亦即離開了該項目層級），則將其收合
+            // 同樣靜音，避免焦點在選單內移動時觸發不必要的播報
+            this._suppressAnnounce = true;
             this.menu.querySelectorAll('.tadnav-submenu[data-open="true"]').forEach(sub => {
               const parentLi = sub.parentElement;
-              // 當焦點從子選單離開時，自動收合該子選單，避免遮擋網頁內容
+              // 當焦點從子選單離開時，自動收合該子選單，避免遺擋網頁內容
               if (parentLi && !parentLi.contains(active)) {
                 this._closeSubmenu(sub);
               }
             });
+            this._suppressAnnounce = false;
           }
         }, 10);
       }
@@ -544,9 +631,11 @@
       const isOpen = this.toggleBtn.getAttribute("aria-expanded") === "true";
       if (isOpen) {
         this.toggleBtn.setAttribute("aria-expanded", "false");
-        // ★ 收合後 aria-label 改回「開啟」動作描述，
-        //   讓螢幕報讀器播報「開啟導覽列選單 按鈕」
-        this.toggleBtn.setAttribute("aria-label", "開啟導覽列選單");
+        // ★ 不更動 aria-label：
+        //   aria-label 是按鈕的「可及名稱（accessible name）」，
+        //   ARIA APG 要求其保持穩定，狀態語意應由 aria-expanded 單獨承擔。
+        //   動態改名稱會造成語音控制使用者無法穩定呼叫，
+        //   且 "開啟/已收合" 與 "關閉/已展開" 的雙重播報製造資訊冗餘。
         this.menu.setAttribute("data-mobile-open", "false");
         this.closeAll();
         this._deactivateFocusTrap();
@@ -554,9 +643,6 @@
         this._announce("選單已收合");
       } else {
         this.toggleBtn.setAttribute("aria-expanded", "true");
-        // ★ 展開後 aria-label 改為「關閉」動作描述，
-        //   讓螢幕報讀器播報「關閉導覽列選單 按鈕」
-        this.toggleBtn.setAttribute("aria-label", "關閉導覽列選單");
         this.menu.setAttribute("data-mobile-open", "true");
         this._announce("選單已展開");
         // ★ 焦點保留在 toggleBtn（而非立即跳到第一個選單項）：
@@ -571,12 +657,15 @@
     // =============================================
     // Public API
     // =============================================
-    open(sub)  { this._openSubmenu(sub); }
+    open(sub) { this._openSubmenu(sub); }
     close(sub) { this._closeSubmenu(sub); }
 
     closeAll() {
+      // 批次關閉時靜音，避免每個子選單各自觸發 aria-live 播報
+      this._suppressAnnounce = true;
       this.menu.querySelectorAll('.tadnav-submenu[data-open="true"]')
         .forEach(s => this._closeSubmenu(s));
+      this._suppressAnnounce = false;
     }
 
     setTrigger(mode) {
@@ -622,12 +711,34 @@
       const toggle = sub.previousElementSibling;
       sub.classList.remove("tadnav-flip-x", "tadnav-flip-y", "tadnav-flip-x-root", "tadnav-flip-y-root");
       sub.style.removeProperty("max-width");
+      // ★ 先清除上次殘留的左側補正，才能取得真實初始位置
+      sub.style.removeProperty("margin-left");
       sub.setAttribute("data-open", "true");
       if (toggle?.hasAttribute("aria-expanded"))
         toggle.setAttribute("aria-expanded", "true");
 
       if (!this._isMobile) {
-        // 桌機版：碰撞偵測 + 捲動包裝
+        // ★ 左側溢出：同步立即修正（在首次 paint 之前執行）
+        //   getBoundingClientRect() 強制同步 layout，
+        //   確保瀏覽器不會先畫出溢出的狀態再修正。
+        //   適用情境：wrap 換行模式下，靠右登入按鈕在第二行靠左，
+        //   其子選單以 right:0 對齊 li 右緣，整個面板往左飛出視窗。
+        const r = sub.getBoundingClientRect();
+        if (r.left < 4) {
+          // ★ 修正：is-right 使用 right:0 定位，margin-left 對其無效
+          //   （CSS 規格：margin-left 加在 right:0 絕對定位元素上，
+          //    不會往右推，反而讓元素往左偏更遠）。
+          //   正確做法：切換成 left 定位，讓子選單從 li 左緣展開。
+          const parentLi = sub.parentElement;
+          if (parentLi?.classList.contains("is-right")) {
+            sub.style.setProperty("right", "auto");
+            sub.style.setProperty("left", "0");
+          } else {
+            sub.style.setProperty("margin-left", (4 - r.left) + "px");
+          }
+        }
+
+        // 桌機版：碰撞偵測（右側 / 下方翻轉）+ 捲動包裝（RAF 異步即可）
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
             this._checkSubOverflow(sub);
@@ -660,6 +771,11 @@
       sub.setAttribute("data-open", "false");
       sub.classList.remove("tadnav-flip-x", "tadnav-flip-y", "tadnav-flip-x-root", "tadnav-flip-y-root");
       sub.style.removeProperty("max-width");
+      // ★ 清除左側碰撞補正，確保下次開啟時重新計算
+      sub.style.removeProperty("margin-left");
+      // ★ 清除 is-right 換行補正（切換成 left 定位的 inline style）
+      sub.style.removeProperty("left");
+      sub.style.removeProperty("right");
 
       if (toggle?.hasAttribute("aria-expanded")) {
         toggle.setAttribute("aria-expanded", "false");
@@ -668,7 +784,7 @@
 
       // 遞迴關閉所有巢狀子選單
       sub.querySelectorAll('.tadnav-submenu[data-open="true"]')
-         .forEach(n => this._closeSubmenu(n));
+        .forEach(n => this._closeSubmenu(n));
 
       // ★ 收合後同步 tabindex 與 aria-hidden
       sub.setAttribute("aria-hidden", "true");
@@ -688,8 +804,11 @@
       if (!parentLi) return;
       const parentUl = parentLi.parentElement;   // 直屬 ul（同層容器）
       if (!parentUl) return;
+      // 互斥關閉同層選單時靜音，使用者正在開啟的選單才需要播報
+      this._suppressAnnounce = true;
       parentUl.querySelectorAll(':scope > li > .tadnav-submenu[data-open="true"]')
         .forEach(s => { if (s !== sub) this._closeSubmenu(s); });
+      this._suppressAnnounce = false;
     }
 
     // =============================================
@@ -755,8 +874,8 @@
         if (e.key !== "Tab") return;
         const focusable = this._getFocusableInMenu();
         if (focusable.length === 0) return;
-        const first  = focusable[0];
-        const last   = focusable[focusable.length - 1];
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
         const active = document.activeElement;
 
         // ★ 手機版：完全接管 Tab 焦點順序。
@@ -786,7 +905,7 @@
         if (e.shiftKey) {
           if (active === first || !this.menu.contains(active)) { e.preventDefault(); last.focus(); }
         } else {
-          if (active === last  || !this.menu.contains(active)) { e.preventDefault(); first.focus(); }
+          if (active === last || !this.menu.contains(active)) { e.preventDefault(); first.focus(); }
         }
       };
       document.addEventListener("keydown", this._focusTrapHandler, true);
@@ -806,8 +925,7 @@
       if (!this.toggleBtn) return;
       if (this.toggleBtn.getAttribute("aria-expanded") !== "true") return;
       this.toggleBtn.setAttribute("aria-expanded", "false");
-      // ★ 程式化關閉（Esc、焦點逃逸）時同樣重設 aria-label
-      this.toggleBtn.setAttribute("aria-label", "開啟導覽列選單");
+      // ★ 不更動 aria-label（理由同 _handleToggle）
       this.menu.setAttribute("data-mobile-open", "false");
       this.closeAll();
       this._deactivateFocusTrap();
@@ -820,14 +938,35 @@
     // =============================================
     _detectCollision(sub) {
       if (!sub || this._isMobile) return;
+
+      // ★ 先重設左側偏移補正，再取得最新位置
+      sub.style.removeProperty("margin-left");
+
       const rect = sub.getBoundingClientRect();
-      const vw   = window.innerWidth;
-      const vh   = window.innerHeight;
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
       const isRootLevel = sub.parentElement?.parentElement === this.menu;
 
-      // 水平翻轉
+      // 水平右側翻轉
       if (rect.right > vw - 4)
         sub.classList.add(isRootLevel ? "tadnav-flip-x-root" : "tadnav-flip-x");
+
+      // ★ 左側溢出修正：
+      //   wrap 換行模式下，is-right 子選單以 right:0 對齊 li 右邊緣，
+      //   但 li 在第二行靠左時，子選單可能超出視窗左側。
+      //   ★ 修正：is-right 使用 right:0 定位，margin-left 無效，
+      //   改為切換成 left:0 定位，讓子選單從 li 左緣展開。
+      const rect2 = sub.getBoundingClientRect(); // 翻轉後重新取得
+      if (rect2.left < 4) {
+        const parentLi = sub.parentElement;
+        if (parentLi?.classList.contains("is-right")) {
+          sub.style.setProperty("right", "auto");
+          sub.style.setProperty("left", "0");
+        } else {
+          const shift = 4 - rect2.left;
+          sub.style.setProperty("margin-left", shift + "px");
+        }
+      }
 
       // 垂直翻轉
       if (rect.bottom > vh - 4)
@@ -843,7 +982,7 @@
     // =============================================
     _handleKeydown(e) {
       const target = e.target;
-      const key    = e.key;
+      const key = e.key;
 
       // ESC：關閉最近的開啟子選單，或收合手機選單
       if (key === "Escape" && this.options.closeOnEsc) {
@@ -873,9 +1012,9 @@
     }
 
     _handleDesktopKeydown(e, target, key) {
-      const li     = target.closest("li");
-      const sub    = li?.querySelector(":scope > .tadnav-submenu");
-      const inSub  = !!target.closest(".tadnav-submenu");
+      const li = target.closest("li");
+      const sub = li?.querySelector(":scope > .tadnav-submenu");
+      const inSub = !!target.closest(".tadnav-submenu");
       const isRoot = li?.parentElement === this.menu;
 
       // 頂層：左右鍵切換項目
@@ -887,7 +1026,7 @@
               ":scope > li > a[href], :scope > li > button.tadnav-submenu-toggle"
             )
           );
-          const idx  = items.indexOf(target);
+          const idx = items.indexOf(target);
           const next = key === "ArrowRight"
             ? items[(idx + 1) % items.length]
             : items[(idx - 1 + items.length) % items.length];
@@ -910,7 +1049,7 @@
               ':scope > li:not(.tadnav-scroll-btn):not([style*="display: none"]) > button.tadnav-submenu-toggle'
             )
           );
-          const idx  = items.indexOf(target);
+          const idx = items.indexOf(target);
           const next = key === "ArrowDown"
             ? items[(idx + 1) % items.length]
             : items[(idx - 1 + items.length) % items.length];
@@ -951,7 +1090,7 @@
       if (key === "ArrowDown" || key === "ArrowUp") {
         e.preventDefault();
         const allItems = this._getFocusableInMenu();
-        const idx  = allItems.indexOf(target);
+        const idx = allItems.indexOf(target);
         const next = key === "ArrowDown"
           ? allItems[(idx + 1) % allItems.length]
           : allItems[(idx - 1 + allItems.length) % allItems.length];
@@ -964,7 +1103,7 @@
     // =============================================
     _checkBreakpoint() {
       const wasMobile = this._isMobile;
-      this._isMobile  = window.innerWidth < this.options.breakpoint;
+      this._isMobile = window.innerWidth < this.options.breakpoint;
 
       if (wasMobile !== this._isMobile) {
         // 切換模式時關閉所有子選單並清除捲動包裝
@@ -974,8 +1113,10 @@
         if (!this._isMobile) {
           // 切回桌機：重設手機選單狀態
           this.menu.setAttribute("data-mobile-open", "false");
-          if (this.toggleBtn)
+          if (this.toggleBtn) {
             this.toggleBtn.setAttribute("aria-expanded", "false");
+            // ★ 不更動 aria-label（理由同 _handleToggle）
+          }
           this._deactivateFocusTrap();
         }
 
@@ -1008,7 +1149,7 @@
             //   可能仍大於 breakpoint，使 _isMobile 為 false，
             //   但漢堡選單仍可見，ESC 應能關閉。
             if (inst.options.closeOnEsc &&
-                inst.menu.getAttribute("data-mobile-open") === "true") {
+              inst.menu.getAttribute("data-mobile-open") === "true") {
               inst._closeMobileMenu();
             }
           });

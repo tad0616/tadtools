@@ -79,7 +79,11 @@
          * 1. 寬屏 (Desktop / xl 以上)：左 (Left) -> 中 (Center) -> 右 (Right)
          * 2. 窄屏 (Mobile / 1200px 以下)：中 (Center) -> 左 (Left) -> 右 (Right)
          */
-        function adjustTabOrder() {
+        
+        // 記錄目前的螢幕類別，避免重複操作 DOM
+        let isLastDesktop = null;
+
+        function adjustTabOrder(e) {
             const container = document.getElementById('xoops_theme_content_zone');
             if (!container) return;
 
@@ -88,7 +92,11 @@
             const right = document.getElementById('xoops_theme_right_zone');
 
             // 判斷是否為 xl 以上的寬屏 (1200px 為 Bootstrap 5 的 xl 斷點)
-            const isDesktop = window.matchMedia('(min-width: 1200px)').matches;
+            const isDesktop = e ? e.matches : window.matchMedia('(min-width: 1200px)').matches;
+
+            // 如果寬度分類沒有改變，就不要觸發 DOM 操作，避免手機版 Chrome 因虛擬鍵盤彈出觸發 resize 導致輸入框失去焦點
+            if (isLastDesktop === isDesktop) return;
+            isLastDesktop = isDesktop;
 
             if (isDesktop) {
                 // 桌機版：左 -> 中 -> 右
@@ -113,10 +121,20 @@
             }
         }
 
-        // 監聽視窗縮放與載入事件
-        window.addEventListener('resize', adjustTabOrder);
-        document.addEventListener('DOMContentLoaded', adjustTabOrder);
-        // 如果是 AJAX 載入或某些特殊情況，立即執行一次
-        adjustTabOrder();
+        const mediaQuery = window.matchMedia('(min-width: 1200px)');
+
+        // 監聽媒體查詢的變更事件，只有在跨越 1200px 斷點時才觸發，這在手機上彈出虛擬鍵盤時不會被觸發
+        if (mediaQuery.addEventListener) {
+            mediaQuery.addEventListener('change', adjustTabOrder);
+        } else if (mediaQuery.addListener) {
+            mediaQuery.addListener(adjustTabOrder);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            adjustTabOrder(mediaQuery);
+        });
+
+        // 立即執行一次
+        adjustTabOrder(mediaQuery);
     })();
 </script>

@@ -152,8 +152,14 @@
       //   el.setAttribute('aria-label', '圖片展示');
       // }
 
-      /* 確保唯一一張投影片正確顯示 */
+      /* 移除 <ul>/<li> 的清單語意，避免螢幕閱讀器朗讀「清單有一項」。
+         role="none" 讓元素保留視覺結構，但不產生任何 ARIA 角色語意。 */
+      const list = el.querySelector('.tad-slide__list');
+      if (list) list.setAttribute('role', 'none');
+
+      /* 確保唯一一張投影片正確顯示，同時移除 <li> 的清單項目語意 */
       if (this.items[0]) {
+        this.items[0].setAttribute('role', 'none');
         this.items[0].classList.add('is-active');
         this.items[0].setAttribute('aria-hidden', 'false');
       }
@@ -425,27 +431,16 @@
     }
 
     /* 更新上一張 / 下一張按鈕的 aria-label。
-       將目標投影片的描述文字附加於方向語意後，
-       例如「上一張，校園生活」/「下一張，運動會」，
-       讓使用者在尚未切換前即可預知目標投影片內容（WCAG AAA）。
-       若無描述則退回預設的 prevLabel / nextLabel。 */
+       僅保留簡潔的方向語意（如「上一張投影片」/「下一張投影片」），
+       不附加目標投影片的圖片描述，避免螢幕閱讀器在聚焦按鈕時
+       就預先朗讀圖片內容，造成使用者觸發按鈕後聽到兩次相同資訊的混淆。
+       圖片資訊只在切換完成後透過 live region 播報一次。 */
     _updateNavLabels(current) {
-      const prevIdx = (current - 1 + this.total) % this.total;
-      const nextIdx = (current + 1) % this.total;
-
       if (this._prevBtn) {
-        const prevDesc = this._getSlideLabel(prevIdx);
-        this._prevBtn.setAttribute(
-          'aria-label',
-          prevDesc ? `${this.opts.prevLabel}，${prevDesc}` : this.opts.prevLabel
-        );
+        this._prevBtn.setAttribute('aria-label', this.opts.prevLabel);
       }
       if (this._nextBtn) {
-        const nextDesc = this._getSlideLabel(nextIdx);
-        this._nextBtn.setAttribute(
-          'aria-label',
-          nextDesc ? `${this.opts.nextLabel}，${nextDesc}` : this.opts.nextLabel
-        );
+        this._nextBtn.setAttribute('aria-label', this.opts.nextLabel);
       }
     }
 
@@ -585,6 +580,9 @@
         ['aria-hidden', 'role', 'aria-roledescription', 'aria-label', 'tabindex']
           .forEach(a => item.removeAttribute(a));
       });
+      /* 清除 single 模式對 <ul> 設置的 role="none" */
+      const list = this.el.querySelector('.tad-slide__list');
+      if (list) list.removeAttribute('role');
       this.el.classList.remove(
         `tad-slide--nav-${this.opts.navMode}`,
         'tad-slide--single',

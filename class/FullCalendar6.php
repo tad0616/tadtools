@@ -75,6 +75,10 @@ class FullCalendar6
         <script type='text/javascript'>
         document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('{$selector}');
+
+            // 用於判斷是否為首次渲染，避免頁面載入時自動朗讀
+            var isFirstRender = true;
+
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 locale: 'zh-tw',
                 buttonText:{today: '今天',prev:'上個月',next:'下個月'},
@@ -94,7 +98,32 @@ class FullCalendar6
                     right: ''
                 },
                 initialView: 'dayGridMonth',
-                eventDisplay: 'block'
+                eventDisplay: 'block',
+
+                // 每次月份切換後觸發，朗讀當前畫面之年月
+                datesSet: function(dateInfo) {
+                    // 跳過首次渲染，不在頁面載入時朗讀
+                    if (isFirstRender) {
+                        isFirstRender = false;
+                        return;
+                    }
+
+                    // 取得當前顯示月份的年與月
+                    var currentDate = calendar.getDate();
+                    var year = currentDate.getFullYear();
+                    var month = currentDate.getMonth() + 1;
+
+                    // 組合朗讀文字（例：「2026年5月」）
+                    var speakText = year + '年' + month + '月';
+
+                    // 使用 Web Speech API 朗讀
+                    if ('speechSynthesis' in window) {
+                        window.speechSynthesis.cancel(); // 取消前次語音避免重疊
+                        var utterance = new SpeechSynthesisUtterance(speakText);
+                        utterance.lang = 'zh-TW';
+                        window.speechSynthesis.speak(utterance);
+                    }
+                }
             });
             calendar.render();
         });

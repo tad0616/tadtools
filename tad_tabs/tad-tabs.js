@@ -246,13 +246,19 @@ function () {
         tab.classList.add('tad-tab');
 
         // Panel
-        // ★ 面板本身不設 tabindex，避免成為鍵盤焦點停點；
-        //   Tab 鍵應直接跳至面板內第一個可聚焦元素（連結等）
+        // ★ tabindex は _activate() で動的に付与する（APG Tab Pattern 準拠）：
+        //   ・面板內有可聚焦子元素 → 不設 tabindex，Tab 直接跳至子元素
+        //   ・面板內無可聚焦子元素 → 設 tabindex="0"，面板本身可聚焦
+        //
+        // ★ aria-label：直接文字標籤，確保所有 SR 皆能朗讀面板標題，
+        //   避免部分 SR 跨 role="tab" 解析 aria-labelledby 時靜默。
         if (panel) {
+          const labelText = tab.textContent.trim();
           setAttrs(panel, {
             role              : 'tabpanel',
             id                : panelId,
-            'aria-labelledby' : tabId,   // may be updated to accBtn id in accordion mode
+            'aria-labelledby' : tabId,      // may be updated to accBtn id in accordion mode
+            'aria-label'      : labelText,  // 直接標籤，SR 播報用替代文字
             'aria-hidden'     : 'true',
           });
           panel.classList.add('tad-panel');
@@ -373,6 +379,17 @@ function () {
         });
         panel.classList.add('tad-panel--active');
         panel.hidden = false;
+
+        // ★ APG Tab Pattern：動態管理面板 tabindex
+        //   面板內無可聚焦子元素 → 設 tabindex="0"，面板本身加入 Tab 序列，
+        //     SR 聚焦時讀取 aria-label（面板標題），確保鍵盤可及性。
+        //   面板內有可聚焦子元素 → 移除 tabindex，Tab 鍵由 _tabKeydown
+        //     直接跳至第一個子元素，面板容器不成為額外的焦點停點。
+        if (this._firstFocusableIn(panel)) {
+          panel.removeAttribute('tabindex');
+        } else {
+          panel.setAttribute('tabindex', '0');
+        }
       }
 
       // Update URL hash
@@ -406,6 +423,7 @@ function () {
         setAttrs(panel, { 'aria-hidden': 'true' });
         panel.classList.remove('tad-panel--active');
         panel.hidden = true;
+        panel.removeAttribute('tabindex'); // ★ 隱藏後清除 tabindex，離開 Tab 序列
       }
 
       this._active = -1;
@@ -625,6 +643,12 @@ function () {
         });
         this.panels.forEach((panel, i) => {
           panel.setAttribute('aria-labelledby', `${this._id}-acc-${i}`);
+          // ★ 同步更新 aria-label（accordion 按鈕與 tab 文字相同，維持朗讀一致性）
+          const btn = this.accBtns[i];
+          if (btn) {
+            const label = btn.querySelector('.tad-acc-label');
+            if (label) panel.setAttribute('aria-label', label.textContent.trim());
+          }
         });
         setAttrs(this.list, { 'aria-hidden': 'true' });
 

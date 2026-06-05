@@ -246,13 +246,14 @@ function () {
         tab.classList.add('tad-tab');
 
         // Panel
+        // ★ 面板本身不設 tabindex，避免成為鍵盤焦點停點；
+        //   Tab 鍵應直接跳至面板內第一個可聚焦元素（連結等）
         if (panel) {
           setAttrs(panel, {
             role              : 'tabpanel',
             id                : panelId,
             'aria-labelledby' : tabId,   // may be updated to accBtn id in accordion mode
             'aria-hidden'     : 'true',
-            tabindex          : '-1',    // managed by Tab-key interception logic
           });
           panel.classList.add('tad-panel');
           panel.hidden = true;
@@ -326,11 +327,6 @@ function () {
         this._on(btn, 'click',   ()  => this._activate(i));
         this._on(btn, 'keydown', (e) => this._accKeydown(e, i));
       });
-
-      // Panel Tab-key interception (for correct Tab order in tab mode)
-      this.panels.forEach((panel, i) => {
-        this._on(panel, 'keydown', (e) => this._panelKeydown(e, i));
-      });
     }
 
     /* ──────────────────────────────────────────────────────────────
@@ -374,7 +370,6 @@ function () {
       if (panel) {
         setAttrs(panel, {
           'aria-hidden': 'false',
-          tabindex     : '0',   // makes panel focusable for Tab-key interception
         });
         panel.classList.add('tad-panel--active');
         panel.hidden = false;
@@ -408,7 +403,7 @@ function () {
       btn.classList.remove('tad-acc-btn--active');
 
       if (panel) {
-        setAttrs(panel, { 'aria-hidden': 'true', tabindex: '-1' });
+        setAttrs(panel, { 'aria-hidden': 'true' });
         panel.classList.remove('tad-panel--active');
         panel.hidden = true;
       }
@@ -427,7 +422,8 @@ function () {
      *   • Left/Right (or Up/Down for vertical): cycle through tabs
      *   • Home / End: jump to first / last tab
      *   • Enter / Space: activate focused tab
-     *   • Tab: move focus into the active panel content (Tab-order fix)
+     *   • Tab: 直接將焦點移至當前已啟用頁籤的面板內第一個可聚焦元素，
+     *           略過面板容器本身，避免螢幕報讀器選取整個頁籤內容
      */
     _tabKeydown(e, index) {
       const total = this.count;
@@ -463,16 +459,24 @@ function () {
           return;
 
         case KEY.TAB:
-          // ══ Tab-order fix (Tab mode only) ══
-          // Natural DOM order: [tab1][tab2][tab3][panel1][panel2][panel3]
-          // Expected order  : [tab1]…[active-tab] → [active-panel] → [tab-after-active]…
-          //
-          // Rule ①: Tab forward from the ACTIVE tab → jump to active panel
-          if (!e.shiftKey && !this._isAccordion() && index === this._active) {
-            const panel = this.panels[index];
+          // ★ Tab 鍵：略過面板容器，直接將焦點移至面板內第一個可聚焦元素
+          //   若焦點所在頁籤尚未啟用，先啟用它再移焦（確保面板可見）
+          if (!e.shiftKey) {
+            // 決定目標面板索引：優先使用已啟用的頁籤，否則使用當前頁籤
+            const targetIdx = (this._active !== -1) ? this._active : index;
+            const panel = this.panels[targetIdx];
             if (panel) {
-              e.preventDefault();
-              panel.focus();
+              // 若目標面板尚未啟用，先啟用（使 panel.hidden = false）
+              if (targetIdx !== this._active) {
+                this._activate(targetIdx);
+              }
+              const firstFocusable = this._firstFocusableIn(panel);
+              if (firstFocusable) {
+                e.preventDefault();
+                firstFocusable.focus();
+                return;
+              }
+              // 面板內無可聚焦元素，讓瀏覽器繼續自然 Tab 順序
             }
           }
           return;
@@ -484,52 +488,6 @@ function () {
           this._activate(next);
         }
       }
-    }
-
-    /**
-     * Keyboard navigation for panel elements.
-     *
-     * Tab-order rules (Tab mode only):
-     *   Rule ②: Tab forward  from ACTIVE panel → jump to tab AFTER active (or exit widget)
-     *   Rule ③: Shift+Tab    from ACTIVE panel → return to active tab
-     *   Rule ④: Shift+Tab    from the tab immediately AFTER active → return to active panel
-     */
-    _panelKeydown(e, panelIndex) {
-      if (e.key !== KEY.TAB || this._isAccordion()) return;
-
-      const activeIdx = this._active;
-      const total     = this.count;
-
-      if (!e.shiftKey) {
-        // ── Rule ②: Tab forward from active panel ──
-        if (panelIndex === activeIdx) {
-          const nextTabIdx = activeIdx + 1;
-          if (nextTabIdx < total) {
-            e.preventDefault();
-            this.tabs[nextTabIdx].focus();
-          }
-          // If active is the LAST tab, do NOT preventDefault.
-          // Let the browser Tab naturally past the panel and exit the widget.
-        }
-      } else {
-        // ── Rule ③: Shift+Tab from active panel → back to active tab ──
-        if (panelIndex === activeIdx) {
-          e.preventDefault();
-          this.tabs[activeIdx]?.focus();
-        }
-      }
-    }
-
-    /**
-     * Keyboard navigation for the (active-tab + 1) tab item.
-     * Rule ④: Shift+Tab on the first tab AFTER the active tab → jump to active panel.
-     *
-     * This is bound on tab items alongside _tabKeydown, so we re-check here.
-     */
-    _tabKeydown_shiftTabRule4(e, index) {
-      // Already handled inline in _tabKeydown; this note documents Rule ④.
-      // See _tabKeydown: case KEY.TAB, !e.shiftKey branch handles Rule ①.
-      // Rule ④ is handled in the same keydown handler below via an extra check.
     }
 
     /**
@@ -590,6 +548,35 @@ function () {
       if (next !== -1) {
         this.accBtns[next].focus();
       }
+    }
+
+    /* ──────────────────────────────────────────────────────────────
+       Focus helpers
+    ────────────────────────────────────────────────────────────── */
+
+    /**
+     * 取得指定面板容器內第一個可聚焦元素。
+     * 可聚焦元素包含：a[href]、button、input、select、textarea、[tabindex]:not([tabindex="-1"])
+     * 排除隱藏（display:none / visibility:hidden）及 disabled 的元素。
+     *
+     * @param {Element} panel — 面板容器元素
+     * @returns {Element|null} 第一個可聚焦元素，無則回傳 null
+     */
+    _firstFocusableIn(panel) {
+      const selector = [
+        'a[href]',
+        'button:not([disabled])',
+        'input:not([disabled])',
+        'select:not([disabled])',
+        'textarea:not([disabled])',
+        '[tabindex]:not([tabindex="-1"])',
+      ].join(',');
+      const candidates = Array.from(panel.querySelectorAll(selector));
+      return candidates.find(el => {
+        // 排除視覺上隱藏的元素（display:none 或 visibility:hidden）
+        const style = getComputedStyle(el);
+        return style.display !== 'none' && style.visibility !== 'hidden';
+      }) || null;
     }
 
     /* ──────────────────────────────────────────────────────────────

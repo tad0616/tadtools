@@ -3,14 +3,34 @@ use Xmf\Request;
 use XoopsModules\Tadtools\Utility;
 
 require_once dirname(dirname(dirname(dirname(__DIR__)))) . '/mainfile.php';
+
+// =============================================
+// 安全防護：必須登入才能使用此 connector
+// =============================================
+global $xoopsUser;
+if (!isset($xoopsUser) || !is_object($xoopsUser)) {
+    header('HTTP/1.1 403 Forbidden');
+    die(json_encode(['error' => 'Access denied. Please login first.']));
+}
+
 header('HTTP/1.1 200 OK');
 
 $type   = Request::getString('type');
 $subDir = Request::getString('subDir');
-$mdir   = Request::getString('mod_dir', $_SESSION['xoops_mod_name']);
+$mdir   = Request::getString('mod_dir', $_SESSION['xoops_mod_name'] ?? '');
 
 if (empty($mdir)) {
     die('畫面靜止操作過久，已無法讀取檔案，請關閉視窗，並重新整理畫面再繼續操作。');
+}
+
+// 防止路徑穿越攻擊（Path Traversal）
+$mdir   = basename(preg_replace('/[^a-zA-Z0-9_\-]/', '', $mdir));
+$type   = basename(preg_replace('/[^a-zA-Z0-9_\-]/', '', $type));
+$subDir = preg_replace('/\.\.|[^a-zA-Z0-9_\-\/]/', '', $subDir);
+
+if (empty($mdir)) {
+    header('HTTP/1.1 400 Bad Request');
+    die(json_encode(['error' => 'Invalid mod_dir parameter.']));
 }
 
 $TadToolsModuleConfig = Utility::getXoopsModuleConfig('tadtools');

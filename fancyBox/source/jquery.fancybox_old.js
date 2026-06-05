@@ -138,12 +138,12 @@
 			// HTML templates
 			tpl: {
 				wrap     : '<div class="fancybox-wrap" tabIndex="-1" role="dialog" aria-modal="true"><div class="fancybox-skin"><div class="fancybox-outer"><div class="fancybox-inner"></div></div></div></div>',
-				image    : '<img class="fancybox-image" src="{href}" alt="{alt}" />',
+				image    : '<img class="fancybox-image" src="{href}" alt="" />',
 				iframe   : '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen' + (IE ? ' allowtransparency="true"' : '') + '></iframe>',
 				error    : '<p class="fancybox-error">The requested content cannot be loaded.<br/>Please try again later.</p>',
 				closeBtn : '<a role="button" aria-label="關閉" title="關閉" class="fancybox-item fancybox-close" href="javascript:;"></a>',
-				next     : '<a role="button" aria-label="下一頁" title="下一頁" class="fancybox-nav fancybox-next" href="javascript:;"><span></span></a>',
-				prev     : '<a role="button" aria-label="上一頁" title="上一頁" class="fancybox-nav fancybox-prev" href="javascript:;"><span></span></a>',
+				next     : '<a role="button" title="下一頁" class="fancybox-nav fancybox-next" href="javascript:;"><span></span></a>',
+				prev     : '<a role="button" title="上一頁" class="fancybox-nav fancybox-prev" href="javascript:;"><span></span></a>',
 				loading  : '<div id="fancybox-loading"><div></div></div>'
 			},
 
@@ -720,9 +720,7 @@
 					}
 
 					// Ignore key combinations and key events within form elements
-					// Also ignore when focus is on nav/close buttons (let native click handle it)
-					var isNavFocused = $(target).closest('.fancybox-nav, .fancybox-item').length > 0;
-					if (!isNavFocused && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey && !(target && (target.type || $(target).is('[contenteditable]')))) {
+					if (!e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey && !(target && (target.type || $(target).is('[contenteditable]')))) {
 						$.each(keys, function(i, val) {
 							if (current.group.length > 1 && val[ code ] !== undefined) {
 								F[ i ]( val[ code ] );
@@ -1104,14 +1102,6 @@
 			if (previous) {
 				F.trigger('beforeChange', previous);
 
-				// If focus is currently inside the previous wrap (e.g. on a nav button),
-				// move it to the incoming wrap BEFORE removing nav/close buttons.
-				// Without this, the browser drops focus back to the original page trigger
-				// and the screen reader announces it (e.g. "連結開啟米飯(主食)圖片").
-				if (coming.wrap && previous.wrap.length && $.contains(previous.wrap[0], document.activeElement)) {
-					coming.wrap.attr('tabindex', '-1').focus();
-				}
-
 				previous.wrap.stop(true).removeClass('fancybox-opened')
 					.find('.fancybox-item, .fancybox-nav')
 					.remove();
@@ -1158,7 +1148,7 @@
 				break;
 
 				case 'image':
-					content = current.tpl.image.replace(/\{href\}/g, href).replace(/\{alt\}/g, (current.title || '').replace(/<[^>]*>/g, ''));
+					content = current.tpl.image.replace(/\{href\}/g, href);
 				break;
 
 				case 'swf':
@@ -1504,40 +1494,9 @@
 
 			F.trigger('afterShow');
 
-			// Auto-focus and screen reader announcement
+			// Auto-focus: move focus into the modal after opening (WCAG 2.4.3)
 			if (F.wrap) {
-				var label = (current.title || '').replace(/<[^>]*>/g, '') || '圖片';
-				var idx   = current.index + 1;
-				var total = current.group.length;
-				var announcement = total > 1 ? label + '，第' + idx + '張，共' + total + '張' : label;
-
-				// Update aria-label on dialog wrapper
-				F.wrap.attr('aria-label', announcement);
-
-				// Announce to screen readers via persistent aria-live region
-				// (created once, reused across image changes)
-				var $announcer = $('#fancybox-aria-live');
-				if (!$announcer.length) {
-					$announcer = $('<div id="fancybox-aria-live" role="status" aria-live="polite" aria-atomic="true"></div>').css({
-						position  : 'absolute',
-						width     : '1px',
-						height    : '1px',
-						overflow  : 'hidden',
-						clip      : 'rect(0,0,0,0)',
-						whiteSpace: 'nowrap',
-						border    : '0',
-						margin    : '-1px',
-						padding   : '0'
-					}).appendTo('body');
-				}
-				// Clear first so the same text re-triggers announcement on repeated visits
-				$announcer.text('');
-				setTimeout(function() {
-					$announcer.text(announcement);
-				}, 50);
-
-				// Move focus to first focusable element in the modal
-				var $closeBtn   = F.wrap.find('.fancybox-close').first();
+				var $closeBtn = F.wrap.find('.fancybox-close').first();
 				var $firstFocus = $closeBtn.length ? $closeBtn : F.wrap.find(
 					'a[href], button:not([disabled]), [tabindex]:not([tabindex^="-"])'
 				).first();
@@ -1546,6 +1505,9 @@
 				} else {
 					F.wrap.focus();
 				}
+				// Set aria-label from title/caption for screen readers
+				var label = (current.title || '').replace(/<[^>]*>/g, '') || '圖片';
+				F.wrap.attr('aria-label', label);
 			}
 
 			// Stop the slideshow if this is the last item
@@ -1568,9 +1530,6 @@
 			if ($trigger && $trigger.length && $trigger.is(':visible')) {
 				$trigger.focus();
 			}
-
-			// Remove aria-live announcer
-			$('#fancybox-aria-live').remove();
 
 			$('.fancybox-wrap').trigger('onReset').remove();
 

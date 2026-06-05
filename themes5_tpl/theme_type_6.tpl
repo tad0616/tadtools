@@ -62,14 +62,22 @@
          * 調整 Tab 焦點順序的邏輯：
          * 依據元件目前的 order (行動版) 或 order-xl (桌機版) 類別進行 DOM 重新排序
          */
-        function adjustTabOrder() {
+
+        // 記錄目前的螢幕類別，避免重複操作 DOM
+        let isLastDesktop = null;
+
+        function adjustTabOrder(e) {
             const container = document.getElementById('xoops_theme_content_zone');
             if (!container) return;
 
             const zones = Array.from(container.children).filter(el => el.id && el.id.endsWith('_zone'));
             if (zones.length <= 1) return;
 
-            const isDesktop = window.matchMedia('(min-width: 1200px)').matches;
+            const isDesktop = e ? e.matches : window.matchMedia('(min-width: 1200px)').matches;
+
+            // 如果寬度分類沒有改變，就不要觸發 DOM 操作，避免手機版 Chrome 因虛擬鍵盤彈出觸發 resize 導致輸入框失去焦點
+            if (isLastDesktop === isDesktop) return;
+            isLastDesktop = isDesktop;
 
             zones.sort((a, b) => {
                 const getOrder = (el) => {
@@ -89,9 +97,21 @@
             zones.forEach(zone => container.appendChild(zone));
         }
 
-        window.addEventListener('resize', adjustTabOrder);
-        document.addEventListener('DOMContentLoaded', adjustTabOrder);
-        adjustTabOrder();
+        const mediaQuery = window.matchMedia('(min-width: 1200px)');
+
+        // 監聽媒體查詢的變更事件，只有在跨越 1200px 斷點時才觸發，這在手機上彈出虛擬鍵盤時不會被觸發
+        if (mediaQuery.addEventListener) {
+            mediaQuery.addEventListener('change', adjustTabOrder);
+        } else if (mediaQuery.addListener) {
+            mediaQuery.addListener(adjustTabOrder);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            adjustTabOrder(mediaQuery);
+        });
+
+        // 立即執行一次
+        adjustTabOrder(mediaQuery);
     })();
 </script>
 

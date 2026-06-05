@@ -1,6 +1,6 @@
 /**
  * TadMarquee - 無障礙跑馬燈套件
- * 版本: 2.0.8
+ * 版本: 2.0.9
  * 符合 WCAG 2.2 AA / AAA 無障礙標準
  *
  * 功能特色:
@@ -18,6 +18,7 @@
  * ✓ WCAG 2.2.2 AA：暫停按鈕預設置於頂部控制列（焦點順序第 1 位）
  * ✓ WCAG 2.4.3 AA：焦點順序「暫停按鈕 → 內容項目」，上至下、左至右
  * ✓ pauseButtonPosition 支援 'top'（預設）/ left / right（並排）/ 四角落模式
+ * ✓ itemHoverStyle / itemActiveStyle：可由 options 覆蓋 :hover / :active 偽類樣式
  */
 
 (function(global, factory) {
@@ -54,6 +55,17 @@
 
     function applyStyle(el, style) {
         Object.assign(el.style, parseStyle(style));
+    }
+
+    /**
+     * 將 camelCase 屬性物件轉為 CSS 宣告字串
+     * 例：{ backgroundColor: '#fff', fontSize: '1rem' }
+     *   → 'background-color: #fff; font-size: 1rem;'
+     */
+    function styleObjToCSSText(obj) {
+        return Object.entries(obj)
+            .map(([k, v]) => `${k.replace(/([A-Z])/g, '-$1').toLowerCase()}: ${v};`)
+            .join(' ');
     }
 
     function isVertical(dir) {
@@ -94,10 +106,15 @@
                 className: options.className || '',
                 containerStyle: options.containerStyle || {},
                 itemStyle: options.itemStyle || {},
+                // ── 新增：hover / active 偽類樣式覆蓋 ──────────────
+                // 支援物件或 CSS 字串，null 表示使用 CSS 預設值
+                itemHoverStyle:  options.itemHoverStyle  ?? null,
+                itemActiveStyle: options.itemActiveStyle ?? null,
+                // ────────────────────────────────────────────────────
                 itemClassName: options.itemClassName || '',
                 ariaLabel: options.ariaLabel || '跑馬燈內容',
-                ariaLive: options.ariaLive || 'off', // 從 'polite' 改為 'off'
-                respectReducedMotion: options.respectReducedMotion === true, // 預設改為 false，避免 Chrome 因為作業系統設定而預設不播放
+                ariaLive: options.ariaLive || 'off',
+                respectReducedMotion: options.respectReducedMotion === true,
                 announceItems: options.announceItems !== false,
                 keyboardControl: options.keyboardControl !== false,
                 minContrastRatio: options.minContrastRatio || 7,
@@ -106,7 +123,6 @@
                     mobile: 480, tablet: 768, desktop: 1024
                 },
                 showPauseButton: options.showPauseButton !== false,
-                // 支援：'top'（預設，WCAG 2.2.2/2.4.3 AA 建議）| 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left' | 'left' | 'right'
                 pauseButtonPosition: options.pauseButtonPosition || 'top',
                 pauseButtonLabel: options.pauseButtonLabel || {
                     pause:  '已繼續播放，按下可暫停',
@@ -122,8 +138,8 @@
             this.animationId       = null;
             this.wrapper           = null;
             this.pauseBtn          = null;
-            this.rootEl            = null;   // ← input-group 外層容器
-            this.marqueeEl         = null;   // ← 跑馬燈實際捲動區域
+            this.rootEl            = null;
+            this.marqueeEl         = null;
             this.currentPosition   = 0;
             this.isSingleItem      = false;
             this.bounceDirection   = 1;
@@ -131,6 +147,7 @@
             this.prefersReducedMotion = false;
             this.currentBreakpoint = null;
             this._loopSize         = 0;
+            this._dynamicStyleEl   = null;   // ← 動態注入的 <style> 元素
 
             this.callbacks = {
                 onStart: options.onStart || null,
@@ -148,11 +165,12 @@
 
         init() {
             this.checkReducedMotion();
-            this.buildLayout();           // ← 先建立 root / marqueeEl 結構
+            this.buildLayout();
             this.setupContainer();
             this.setupAccessibility();
             this.createWrapper();
             this.renderItems();
+            this._injectDynamicStyles();   // ← 注入 hover/active 動態樣式
             this.setupPauseButton();
             this.setupEventListeners();
             this.setupKeyboardNavigation();
@@ -164,6 +182,98 @@
                 this.announceToScreenReader('跑馬燈已暫停以尊重您的動畫偏好設定');
             }
         }
+
+        // ── 動態樣式注入（:hover / :active 偽類）─────────────────
+
+        /**
+         * 以 containerId 為 scope，動態產生 <style> 覆蓋偽類樣式。
+         * 每次呼叫都會重新產生（供 setItemHoverStyle / setItemActiveStyle 公開 API 使用）。
+         *
+         * 優先順序（高 → 低）：
+         *   JS options 動態注入（specificity: 0,2,0）
+         *   > tad_marquee.css 規則（specificity: 0,1,1 ~ 0,2,0）
+         *
+         * 為確保覆蓋成功，選擇器加上容器 ID 提升優先度：
+         *   #containerId .tad-marquee-item:hover { ... }
+         */
+        _injectDynamicStyles() {
+            // 移除舊的動態樣式標籤（重新呼叫時刷新）
+            if (this._dynamicStyleEl) {
+                this._dynamicStyleEl.remove();
+                this._dynamicStyleEl = null;
+            }
+
+            const hoverObj  = this.options.itemHoverStyle  ? parseStyle(this.options.itemHoverStyle)  : null;
+            const activeObj = this.options.itemActiveStyle ? parseStyle(this.options.itemActiveStyle) : null;
+
+            // 兩者皆未設定時，不注入，直接使用 CSS 檔的預設值
+            if (!hoverObj && !activeObj) return;
+
+            const scope = `#${CSS.escape(this.containerId)}`;
+            let css = '';
+
+            if (hoverObj && Object.keys(hoverObj).length > 0) {
+                css += `${scope} .tad-marquee-item:hover { ${styleObjToCSSText(hoverObj)} }\n`;
+            }
+            if (activeObj && Object.keys(activeObj).length > 0) {
+                css += `${scope} .tad-marquee-item:active { ${styleObjToCSSText(activeObj)} }\n`;
+            }
+
+            if (!css) return;
+
+            const style = document.createElement('style');
+            style.id = `tad-marquee-dynamic-${this.containerId}`;
+            style.textContent = css;
+            document.head.appendChild(style);
+            this._dynamicStyleEl = style;
+        }
+
+        // ==================== 公開樣式 API ====================
+
+        /**
+         * 動態更新 :hover 偽類樣式
+         * @param {object|string} style  - 新樣式（物件或 CSS 字串）
+         * @param {boolean}       merge  - true（預設）合併舊值；false 完全取代
+         * @returns {TadMarquee}
+         *
+         * 使用範例：
+         *   marquee.setItemHoverStyle({ backgroundColor: '#ffeeba', color: '#333' });
+         *   marquee.setItemHoverStyle('background-color: #ffeeba; color: #333;');
+         *   marquee.setItemHoverStyle(null);  // 清除，恢復 CSS 預設
+         */
+        setItemHoverStyle(style, merge = true) {
+            if (style === null || style === undefined) {
+                this.options.itemHoverStyle = null;
+            } else {
+                const parsed = parseStyle(style);
+                this.options.itemHoverStyle = merge
+                    ? { ...parseStyle(this.options.itemHoverStyle || {}), ...parsed }
+                    : parsed;
+            }
+            this._injectDynamicStyles();
+            return this;
+        }
+
+        /**
+         * 動態更新 :active 偽類樣式
+         * @param {object|string} style  - 新樣式（物件或 CSS 字串）
+         * @param {boolean}       merge  - true（預設）合併舊值；false 完全取代
+         * @returns {TadMarquee}
+         */
+        setItemActiveStyle(style, merge = true) {
+            if (style === null || style === undefined) {
+                this.options.itemActiveStyle = null;
+            } else {
+                const parsed = parseStyle(style);
+                this.options.itemActiveStyle = merge
+                    ? { ...parseStyle(this.options.itemActiveStyle || {}), ...parsed }
+                    : parsed;
+            }
+            this._injectDynamicStyles();
+            return this;
+        }
+
+        // ── 以下與原版相同，未更動 ────────────────────────────────
 
         checkReducedMotion() {
             if (!this.options.respectReducedMotion) return;
@@ -180,25 +290,10 @@
             }
         }
 
-        // ── 版面結構 ──────────────────────────────────────────────
-
-        /**
-         * 根據 pauseButtonPosition 決定版面結構：
-         *
-         * ■ 角落模式（top-left / top-right / bottom-left / bottom-right）
-         *   container（原始元素）直接作為跑馬燈區域，按鈕 absolute 疊加其上
-         *   DOM：container > [wrapper, pauseBtn]
-         *
-         * ■ 並排模式（left / right）
-         *   在 container 外插入 rootEl（flex 橫排），
-         *   container 縮為 marqueeEl（flex:1），按鈕為 flex item 並排
-         *   DOM：rootEl > [pauseBtn?, marqueeEl, pauseBtn?]
-         */
         buildLayout() {
             const pos = this.options.pauseButtonPosition;
 
             if (isInlineMode(pos)) {
-                // ── 並排模式：建立外層 rootEl ──────────────────────
                 this.rootEl = document.createElement('div');
                 this.rootEl.className = 'tad-marquee-root tad-marquee-inline';
                 Object.assign(this.rootEl.style, {
@@ -206,25 +301,18 @@
                     flexDirection: 'row',
                     alignItems: 'stretch',
                     width:      '100%'
-                    // overflow: hidden 不設在 rootEl 層，以免焦點外框被裁切
-                    // 實際裁切由 marqueeEl 自身的 overflow: hidden 負責
                 });
-
-                // 將 container 的父節點插入 rootEl，container 移入 rootEl
                 this.container.parentNode.insertBefore(this.rootEl, this.container);
                 this.rootEl.appendChild(this.container);
-
-                // container 本身作為 marqueeEl（捲動區域）
                 this.marqueeEl = this.container;
                 Object.assign(this.marqueeEl.style, {
                     flex:     '1 1 0%',
-                    minWidth: '0',          // 防止 flex item 撐破
+                    minWidth: '0',
                     overflow: 'hidden',
                     position: 'relative'
                 });
 
             } else if (isTopMode(pos)) {
-                // ── 頂部模式：外層 rootEl（column flex），控制列在上、捲動區在下 ──
                 this.rootEl = document.createElement('div');
                 this.rootEl.className = 'tad-marquee-root tad-marquee-top';
                 Object.assign(this.rootEl.style, {
@@ -232,10 +320,8 @@
                     flexDirection: 'column',
                     width:         '100%'
                 });
-
                 this.container.parentNode.insertBefore(this.rootEl, this.container);
                 this.rootEl.appendChild(this.container);
-
                 this.marqueeEl = this.container;
                 Object.assign(this.marqueeEl.style, {
                     flex:     '1 1 auto',
@@ -244,7 +330,6 @@
                 });
 
             } else {
-                // ── 角落模式：container 直接作為跑馬燈區域 ─────────
                 this.rootEl    = null;
                 this.marqueeEl = this.container;
             }
@@ -253,13 +338,10 @@
         setupContainer() {
             this.marqueeEl.style.position = 'relative';
             this.marqueeEl.style.overflow = 'hidden';
-
-            // 防止瀏覽器原生 focus 會將 overflow: hidden 容器強制捲動，破壞排版能力
             this.marqueeEl.addEventListener('scroll', () => {
                 if (this.marqueeEl.scrollLeft !== 0) this.marqueeEl.scrollLeft = 0;
                 if (this.marqueeEl.scrollTop !== 0) this.marqueeEl.scrollTop = 0;
             });
-
             if (!this.container.classList.contains('tad-marquee-container'))
                 this.container.classList.add('tad-marquee-container');
             if (this.options.className) this.container.classList.add(this.options.className);
@@ -268,26 +350,15 @@
 
         setupAccessibility() {
             const top      = isTopMode(this.options.pauseButtonPosition);
-            // 頂部模式：role="region" 置於外層 rootEl，涵蓋控制列與捲動區
-            // 其他模式：role="region" 直接在 marqueeEl
             const regionEl = top ? this.rootEl : this.marqueeEl;
-
             regionEl.setAttribute('role',       'region');
             regionEl.setAttribute('aria-label', this.options.ariaLabel);
-            regionEl.setAttribute('aria-live',  'off'); // 從 this.options.ariaLive 改為固定值 'off'
-
-            // 頂部模式：Tab 焦點順序為「暫停按鈕 → 各項目」，容器本身不需成為 Tab 停靠點
-            // 其他模式：容器本身可接收鍵盤焦點（Space/Enter 觸發暫停）
-            // 讓焦點直接進入跑馬燈項目，避免整塊區域被選取導致報讀軟體重複報讀
-            // if (this.options.keyboardControl && !top) {
-            //     this.marqueeEl.setAttribute('tabindex', '0');
-            // }
-
+            regionEl.setAttribute('aria-live',  'off');
             if (!document.getElementById('tad-marquee-announcer')) {
                 const a = document.createElement('div');
                 a.id = 'tad-marquee-announcer';
                 a.setAttribute('role', 'status');
-                a.setAttribute('aria-live', 'polite'); // 這裡保留 polite，因為這是主動通知區
+                a.setAttribute('aria-live', 'polite');
                 a.setAttribute('aria-atomic', 'true');
                 a.className = 'tad-marquee-sr-only';
                 document.body.appendChild(a);
@@ -302,16 +373,12 @@
             setTimeout(() => { if (this.announcer) this.announcer.textContent = ''; }, 1000);
         }
 
-        // ── Wrapper ───────────────────────────────────────────────
-
         createWrapper() {
             if (this.wrapper) this.wrapper.remove();
-
             this.wrapper = document.createElement('div');
             this.wrapper.className = 'tad-marquee-wrapper';
             this.wrapper.setAttribute('role', 'list');
             this.wrapper.style.position = 'absolute';
-
             if (isVertical(this.options.direction)) {
                 this.wrapper.style.whiteSpace    = 'normal';
                 this.wrapper.style.width         = '100%';
@@ -325,11 +392,8 @@
                 this.wrapper.style.display    = 'flex';
                 this.wrapper.style.alignItems = 'center';
             }
-
             this.marqueeEl.appendChild(this.wrapper);
         }
-
-        // ── 暫停按鈕 ──────────────────────────────────────────────
 
         setupPauseButton() {
             if (!this.options.showPauseButton) return;
@@ -343,7 +407,6 @@
             btn.setAttribute('type', 'button');
             btn.setAttribute('aria-label', this.options.pauseButtonLabel.pause);
 
-            // ── 共用樣式 ──────────────────────────────────────────
             Object.assign(btn.style, {
                 flexShrink:     '0',
                 border:         'none',
@@ -353,37 +416,42 @@
                 justifyContent: 'center',
                 color:          '#ffffff',
                 transition:     'background 0.2s, box-shadow 0.2s',
-                // outline: 'none' 不設定，讓 CSS :focus-visible 規則在高對比模式下生效
                 lineHeight:     '1'
             });
 
             if (inline) {
-                // ── 並排模式：高度撐滿、寬度固定、無圓角（融入 input-group）
                 Object.assign(btn.style, {
-                    position:     'static',
-                    width:        '40px',
+                    position:     'absolute',
+                    top:          '0',
+                    bottom:       '0',
+                    left:         pos === 'left' ? '0' : 'auto',
+                    right:        pos === 'right' ? '0' : 'auto',
+                    zIndex:       '10',
+                    width:        '36px',
                     height:       '100%',
-                    minHeight:    '36px',
-                    background:   'rgba(0,0,0,0.55)',
-                    borderRadius: '0',
-                    // 左側按鈕：右邊有分隔線；右側按鈕：左邊有分隔線
-                    borderLeft:   pos === 'right' ? '1px solid rgba(255,255,255,0.25)' : 'none',
-                    borderRight:  pos === 'left'  ? '1px solid rgba(255,255,255,0.25)' : 'none',
-                    boxShadow:    'none'
+                    minHeight:    '100%',
+                    background:   'currentColor',
+                    borderRadius: pos === 'left' ? '4px 0 0 4px' : '0 4px 4px 0',
+                    borderLeft:   'none',
+                    borderRight:  'none',
+                    boxShadow:    'none',
+                    border: '1px solid currentColor'
                 });
             } else if (top) {
-                // ── 頂部模式：固定尺寸矩形按鈕，符合 WCAG 2.5.5 目標尺寸（44×36px）
                 Object.assign(btn.style, {
-                    position:     'static',
-                    width:        '44px',
-                    height:       '36px',
-                    minHeight:    '36px',
-                    background:   'rgba(0,0,0,0.65)',
-                    borderRadius: '4px',
+                    position:     'absolute',
+                    left:         '0',
+                    top:          '0',
+                    bottom:       '0',
+                    zIndex:       '10',
+                    width:        '36px',
+                    height:       '100%',
+                    minHeight:    '100%',
+                    background:   'currentColor',
+                    borderRadius: '4px 0 0 4px',
                     boxShadow:    'none'
                 });
             } else {
-                // ── 角落模式：圓形浮動按鈕 ────────────────────────
                 const posMap = {
                     'bottom-right': { bottom: '6px', right: '6px', top: 'auto',  left: 'auto'  },
                     'bottom-left':  { bottom: '6px', left:  '6px', top: 'auto',  right: 'auto' },
@@ -404,61 +472,45 @@
             }
 
             btn.innerHTML = this._pauseIcon(inline || top);
+            if (inline || top) {
+                this.pauseBtn = btn;
+                this._applyPauseButtonPalette();
+            }
 
-            // ── Hover ──────────────────────────────────────────────
             btn.addEventListener('mouseenter', () => {
-                btn.style.background = 'rgba(0,0,0,0.80)';
+                if (inline || top) {
+                    btn.style.filter = 'brightness(0.92)';
+                } else {
+                    btn.style.background = 'rgba(0,0,0,0.80)';
+                }
                 if (!inline && !top) btn.style.transform = 'scale(1.1)';
             });
             btn.addEventListener('mouseleave', () => {
-                btn.style.background = this.isPausedByUser
-                    ? 'rgba(30,120,30,0.75)'
-                    : (top ? 'rgba(0,0,0,0.65)' : 'rgba(0,0,0,0.55)');
+                if (inline || top) {
+                    btn.style.filter = 'none';
+                    this._applyPauseButtonPalette();
+                } else {
+                    btn.style.background = this.isPausedByUser
+                        ? 'rgba(30,120,30,0.75)'
+                        : 'rgba(0,0,0,0.55)';
+                }
                 if (!inline && !top) btn.style.transform = 'scale(1)';
             });
 
-            // ── Focus（WCAG 2.4.11 可見焦點）──────────────────────
-            // 焦點樣式已移至 tad_marquee.css 的 .tad-marquee-pause-btn:focus 中處理，
-            // 確保「取得游標焦點後...有顯著框線」
-
-            // ── Click（Enter/Space 由瀏覽器原生行為觸發按鈕點擊）─
             btn.addEventListener('click', () => this._togglePauseByUser());
-
             this.pauseBtn = btn;
 
-            // ── 插入位置 ──────────────────────────────────────────
             if (inline) {
-                // 並排模式：暫停按鈕一律插入 DOM 第一位，確保 Tab 先到達按鈕（WCAG 2.2.2）
-                // 視覺位置由 CSS flex order 控制：left = order 0（最左），right = order 2（最右）
-                if (pos === 'left') {
-                    btn.style.order = '0';
-                    this.rootEl.insertBefore(btn, this.rootEl.firstChild);
-                } else {
-                    // right 模式：DOM 排第一（Tab 最先到），視覺靠右（order: 2）
-                    btn.style.order = '2';
-                    this.rootEl.insertBefore(btn, this.rootEl.firstChild);
-                    // container（marqueeEl）預設 order: 0，視覺上排在按鈕左方
-                }
+                this.marqueeEl.classList.add('tad-marquee-has-inside-pause', `tad-marquee-has-inside-pause-${pos}`);
+                this.marqueeEl.insertBefore(btn, this.wrapper);
             } else if (top) {
-                // 頂部模式：建立控制列容器，置於 rootEl 最頂端（DOM 第一位）
-                // 焦點順序：暫停按鈕（第 1 位） → 各項目（第 2+ 位）
-                const ctrlBar = document.createElement('div');
-                ctrlBar.className = 'tad-marquee-controls';
-                ctrlBar.setAttribute('role', 'group');
-                ctrlBar.setAttribute('aria-label', '跑馬燈控制');
-                ctrlBar.appendChild(btn);
-                // 插入至 rootEl 第一個子節點之前（captive: container 之前）
-                this.rootEl.insertBefore(ctrlBar, this.rootEl.firstChild);
-                this._ctrlBar = ctrlBar;
+                this.marqueeEl.classList.add('tad-marquee-has-inside-pause', 'tad-marquee-has-inside-pause-left');
+                this.marqueeEl.insertBefore(btn, this.wrapper);
             } else {
-                // 角落模式：插入 marqueeEl 第一個子節點之前（即 wrapper 之前）
-                // 按鈕為 position: absolute，視覺位置不受 DOM 順序影響
-                // 但 Tab 焦點順序依 DOM 順序，因此暫停按鈕會先於跑馬燈項目被聚焦（WCAG 2.2.2）
                 this.marqueeEl.insertBefore(btn, this.wrapper);
             }
         }
 
-        /** 暫停圖示 SVG（▐▐） */
         _pauseIcon(large = false) {
             const s = large ? 16 : 14;
             return `<svg aria-hidden="true" focusable="false"
@@ -469,7 +521,6 @@
                     </svg>`;
         }
 
-        /** 播放圖示 SVG（▶） */
         _playIcon(large = false) {
             const s = large ? 16 : 14;
             return `<svg aria-hidden="true" focusable="false"
@@ -477,6 +528,23 @@
                         fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                       <path d="M3 1.5 L12 7 L3 12.5 Z"/>
                     </svg>`;
+        }
+
+        _pauseButtonPalette() {
+            const item = this.wrapper?.querySelector('.tad-marquee-item:not([aria-hidden="true"])');
+            const textColor = item ? getComputedStyle(item).color : getComputedStyle(this.marqueeEl).color;
+            let bgColor = getComputedStyle(this.marqueeEl).backgroundColor;
+            if (!bgColor || bgColor === 'transparent' || bgColor === 'rgba(0, 0, 0, 0)') {
+                bgColor = '#ffffff';
+            }
+            return { textColor, bgColor };
+        }
+
+        _applyPauseButtonPalette() {
+            if (!this.pauseBtn) return;
+            const { textColor, bgColor } = this._pauseButtonPalette();
+            this.pauseBtn.style.background = textColor;
+            this.pauseBtn.style.color = bgColor;
         }
 
         _togglePauseByUser() {
@@ -490,8 +558,6 @@
                 this.triggerCallback('onResume');
                 return;
             }
-
-            const inline = isInlineMode(this.options.pauseButtonPosition);
             if (this.isPaused) {
                 this.resume(true);
                 this.isPausedByUser = false;
@@ -518,29 +584,31 @@
             if (paused) {
                 this.pauseBtn.innerHTML = this._playIcon(inline || top);
                 this.pauseBtn.setAttribute('aria-label', this.options.pauseButtonLabel.resume);
-                // 暫停時背景改為深綠，提示目前狀態
-                this.pauseBtn.style.background = 'rgba(30,120,30,0.75)';
+                if (inline || top) {
+                    this._applyPauseButtonPalette();
+                } else {
+                    this.pauseBtn.style.background = 'rgba(30,120,30,0.75)';
+                }
             } else {
                 this.pauseBtn.innerHTML = this._pauseIcon(inline || top);
                 this.pauseBtn.setAttribute('aria-label', this.options.pauseButtonLabel.pause);
-                this.pauseBtn.style.background = top ? 'rgba(0,0,0,0.65)' : 'rgba(0,0,0,0.55)';
+                if (inline || top) {
+                    this._applyPauseButtonPalette();
+                } else {
+                    this.pauseBtn.style.background = 'rgba(0,0,0,0.55)';
+                }
             }
         }
-
-        // ── 渲染項目（含無縫複本）────────────────────────────────
 
         renderItems() {
             this.wrapper.innerHTML = '';
             this.isSingleItem = this.options.items.length === 1;
             this._loopSize = 0;
-
             if (this.options.items.length === 0) {
                 console.warn('TadMarquee: 沒有提供任何項目內容');
                 return;
             }
-
             const vertical = isVertical(this.options.direction);
-
             const buildGroup = (ariaHidden = false) => {
                 const frag = document.createDocumentFragment();
                 this.options.items.forEach((item, index) => {
@@ -557,7 +625,6 @@
                         el.style.wordBreak   = 'break-word';
                     }
                     frag.appendChild(el);
-
                     const gap = document.createElement('div');
                     gap.className = 'tad-marquee-gap';
                     gap.setAttribute('aria-hidden', 'true');
@@ -575,7 +642,6 @@
                 });
                 return frag;
             };
-
             this.wrapper.appendChild(buildGroup(false));
             requestAnimationFrame(() => this._measureAndClone(buildGroup, vertical));
             this.resetPosition();
@@ -583,27 +649,23 @@
 
         _measureAndClone(buildGroup, vertical) {
             if (!this.wrapper) return;
-
+            const userStyle = parseStyle(this.options.containerStyle);
+            const userHasMinHeight = userStyle.minHeight !== undefined;
+            const userHasMinWidth  = userStyle.minWidth  !== undefined;
             if (!vertical && this.wrapper.offsetHeight > 0) {
-                if (this.marqueeEl.offsetHeight < this.wrapper.offsetHeight) {
+                if (!userHasMinHeight &&
+                    this.marqueeEl.offsetHeight < this.wrapper.offsetHeight) {
                     this.marqueeEl.style.minHeight = Math.ceil(this.wrapper.offsetHeight) + 'px';
                 }
             } else if (vertical && this.wrapper.offsetWidth > 0) {
-                if (this.marqueeEl.offsetWidth < this.wrapper.offsetWidth) {
+                if (!userHasMinWidth &&
+                    this.marqueeEl.offsetWidth < this.wrapper.offsetWidth) {
                     this.marqueeEl.style.minWidth = Math.ceil(this.wrapper.offsetWidth) + 'px';
                 }
             }
-
-            const containerSize = vertical
-                ? this.marqueeEl.offsetHeight
-                : this.marqueeEl.offsetWidth;
-
-            this._loopSize = vertical
-                ? this.wrapper.offsetHeight
-                : this.wrapper.offsetWidth;
-
+            const containerSize = vertical ? this.marqueeEl.offsetHeight : this.marqueeEl.offsetWidth;
+            this._loopSize = vertical ? this.wrapper.offsetHeight : this.wrapper.offsetWidth;
             if (this._loopSize === 0) return;
-
             const copiesNeeded = Math.ceil((containerSize + this._loopSize) / this._loopSize);
             for (let i = 0; i < copiesNeeded; i++) {
                 this.wrapper.appendChild(buildGroup(true));
@@ -618,27 +680,22 @@
             el.style.display = 'inline-block';
             el.setAttribute('data-index', index);
             el.setAttribute('tabindex', '0');
-
             if (this.options.itemClassName)
                 this.options.itemClassName.split(/\s+/).forEach(c => { if (c) el.classList.add(c); });
             if (this.options.itemStyle) applyStyle(el, this.options.itemStyle);
             if (item.className)
                 item.className.split(/\s+/).forEach(c => { if (c) el.classList.add(c); });
             if (item.style) applyStyle(el, item.style);
-
             if (isLink) {
                 el.href   = item.link;
                 el.target = item.target || '_blank';
                 el.rel    = item.rel || 'noopener noreferrer';
                 el.setAttribute('aria-label',
                     item.ariaLabel || item.text || item.content || `連結 ${index + 1}`);
-
-                // 新增：當 target="_blank" 時加入 title 屬性，表明會在新視窗開啟
                 if (item.target === '_blank' || (!item.target && '_blank')) {
                     el.setAttribute('title', '於新視窗開啟此連結');
                 }
             }
-
             if (item.type === 'text') {
                 el.textContent = item.content;
             } else if (item.type === 'image') {
@@ -661,18 +718,13 @@
             } else if (item.type === 'html') {
                 el.innerHTML = item.content;
             }
-
             return el;
         }
-
-        // ── 位置重置 ──────────────────────────────────────────────
 
         resetPosition() {
             if (!this.wrapper) return;
             const cr = this.marqueeEl.getBoundingClientRect();
-
             const startVisible = !this.options.autoStart || this.prefersReducedMotion;
-
             switch (this.options.direction) {
                 case 'left':
                     this.currentPosition = startVisible ? 0 : cr.width;
@@ -699,11 +751,8 @@
                     this.wrapper.style.transform = 'none';
                     break;
             }
-
             this.bounceDirection = 1;
         }
-
-        // ── 動畫主迴圈 ────────────────────────────────────────────
 
         animate() {
             if (!this.isRunning) return;
@@ -711,23 +760,19 @@
                 this.animationId = requestAnimationFrame(() => this.animate());
                 return;
             }
-
             const cr   = this.marqueeEl.getBoundingClientRect();
             const dist = (this.options.speed * 16) / 1000;
-
             if (this.isSingleItem && !this.options.loop) {
                 this._animateSingleBounce(cr, dist);
             } else {
                 this._animateLoop(dist);
             }
-
             this.animationId = requestAnimationFrame(() => this.animate());
         }
 
         _animateLoop(dist) {
             const loopSize = this._loopSize;
             if (loopSize === 0) return;
-
             switch (this.options.direction) {
                 case 'left':
                     this.currentPosition -= dist;
@@ -757,7 +802,6 @@
             const vertical = isVertical(this.options.direction);
             const cSize    = vertical ? cr.height : cr.width;
             const wSize    = vertical ? wr.height : wr.width;
-
             if (vertical) {
                 this.currentPosition += dist * this.bounceDirection *
                     (this.options.direction === 'up' ? -1 : 1);
@@ -779,8 +823,6 @@
             }
         }
 
-        // ── 事件監聽 ──────────────────────────────────────────────
-
         setupEventListeners() {
             if (this.options.pauseOnHover) {
                 this.marqueeEl.addEventListener('mouseenter', this.handleMouseEnter.bind(this));
@@ -798,19 +840,13 @@
 
         setupKeyboardNavigation() {
             if (!this.options.keyboardControl) return;
-            // 監聽 rootEl（並排／頂部模式）或 marqueeEl（角落模式）
             const target = this.rootEl || this.marqueeEl;
             const top = isTopMode(this.options.pauseButtonPosition);
             target.addEventListener('keydown', (e) => {
                 if (e.target === this.pauseBtn) return;
                 switch (e.key) {
                     case ' ': case 'Enter':
-                        // 若焦點在跑馬燈項目上，Enter 應執行預設動作（如開啟連結）
-                        if (e.target.classList.contains('tad-marquee-item') && e.key === 'Enter') {
-                            break;
-                        }
-                        // 頂部模式：Space/Enter 由暫停按鈕原生行為處理，不在此攔截
-                        // 其他模式：Space 鍵可觸發暫停
+                        if (e.target.classList.contains('tad-marquee-item') && e.key === 'Enter') break;
                         if (!top && e.key === ' ') { e.preventDefault(); this._togglePauseByUser(); }
                         break;
                     case 'ArrowRight': case 'ArrowDown':
@@ -821,7 +857,6 @@
                     case 'End':    e.preventDefault(); this.focusLastItem();  break;
                     case 'Escape':
                         e.preventDefault();
-                        // 頂部模式：Escape 將焦點返回暫停按鈕（符合邏輯流向）
                         if (top && this.pauseBtn) { this.pauseBtn.focus(); }
                         else { target.blur(); }
                         break;
@@ -860,8 +895,6 @@
             const base = this.options.speed || 50;
             this.options.speed = ({ mobile: base*0.6, tablet: base*0.8, desktop: base, large: base*1.2 })[bp] || base;
         }
-
-        // ── 焦點管理 ──────────────────────────────────────────────
 
         focusNextItem() {
             const items = Array.from(
@@ -930,37 +963,28 @@
         }
 
         handleFocus(e) {
-            // 在處理焦點前，先重置由瀏覽器產生的原生捲動
-            // 確保我們以跑馬燈真實的 absolute 座標來計算及移動可視範圍
             if (this.marqueeEl.scrollLeft !== 0) this.marqueeEl.scrollLeft = 0;
             if (this.marqueeEl.scrollTop !== 0) this.marqueeEl.scrollTop = 0;
-
             if (e.target === this.pauseBtn) return;
             if (this.wrapper.contains(e.target)) {
                 if (!this.isPausedByUser) {
                     this.pause();
-                    // 僅在第一次因焦點觸發暫停時播報一次，避免 Tab 遊走時重複讀取相同訊息
                     if (!this._focusPauseAnnounced) {
                         this._focusPauseAnnounced = true;
                         this.announceToScreenReader('跑馬燈已暫停以便導航');
                     }
                 }
-
-                // 確保焦點項目出現在可視範圍內
                 const cr = this.marqueeEl.getBoundingClientRect();
                 const er = e.target.getBoundingClientRect();
                 const vertical = isVertical(this.options.direction);
-
                 if (vertical) {
                     if (er.top < cr.top) {
                         this.currentPosition -= (er.top - cr.top);
                         this.wrapper.style.top = this.currentPosition + 'px';
                     } else if (er.bottom > cr.bottom) {
-                        if (er.height > cr.height) {
-                            this.currentPosition -= (er.top - cr.top);
-                        } else {
-                            this.currentPosition -= (er.bottom - cr.bottom);
-                        }
+                        this.currentPosition -= er.height > cr.height
+                            ? (er.top - cr.top)
+                            : (er.bottom - cr.bottom);
                         this.wrapper.style.top = this.currentPosition + 'px';
                     }
                 } else {
@@ -968,11 +992,9 @@
                         this.currentPosition -= (er.left - cr.left);
                         this.wrapper.style.left = this.currentPosition + 'px';
                     } else if (er.right > cr.right) {
-                        if (er.width > cr.width) {
-                            this.currentPosition -= (er.left - cr.left);
-                        } else {
-                            this.currentPosition -= (er.right - cr.right);
-                        }
+                        this.currentPosition -= er.width > cr.width
+                            ? (er.left - cr.left)
+                            : (er.right - cr.right);
                         this.wrapper.style.left = this.currentPosition + 'px';
                     }
                 }
@@ -983,7 +1005,6 @@
             const root = this.rootEl || this.marqueeEl;
             if (!root.contains(e.relatedTarget)) {
                 if (!this.isPausedByUser && !this.prefersReducedMotion) this.resume();
-                // 焦點完全離開跑馬燈，重置播報旗標，以便下次重新進入時再播報一次
                 this._focusPauseAnnounced = false;
             }
         }
@@ -998,9 +1019,7 @@
             }
             this.isRunning = true;
             this.isPausedByUser = false;
-            if (this.prefersReducedMotion && force) {
-                this.prefersReducedMotion = false;
-            }
+            if (this.prefersReducedMotion && force) this.prefersReducedMotion = false;
             this._updatePauseButton(false);
             this.animate();
             this.triggerCallback('onStart');
@@ -1033,9 +1052,7 @@
                 return this;
             }
             this.isPaused = false;
-            if (this.prefersReducedMotion && force) {
-                this.prefersReducedMotion = false;
-            }
+            if (this.prefersReducedMotion && force) this.prefersReducedMotion = false;
             return this;
         }
 
@@ -1129,25 +1146,29 @@
 
         destroy() {
             this.stop();
+            // ── 清除動態注入的 <style> ─────────────────────────────
+            if (this._dynamicStyleEl) {
+                this._dynamicStyleEl.remove();
+                this._dynamicStyleEl = null;
+            }
             if (this.pauseBtn) { this.pauseBtn.remove(); this.pauseBtn = null; }
             if (this._ctrlBar) { this._ctrlBar.remove(); this._ctrlBar = null; }
             if (this.wrapper)  { this.wrapper.remove();  this.wrapper  = null; }
-
-            // 並排／頂部模式：將 container 移回原位，移除 rootEl
             if (this.rootEl) {
-                // 清除 rootEl 上設置的 ARIA 屬性
-                ['role','aria-label','aria-live'].forEach(a =>
-                    this.rootEl.removeAttribute(a));
+                ['role','aria-label','aria-live'].forEach(a => this.rootEl.removeAttribute(a));
                 this.rootEl.parentNode.insertBefore(this.container, this.rootEl);
                 this.rootEl.remove();
                 this.rootEl = null;
             }
-
-            ['role','aria-label','aria-live','tabindex'].forEach(a =>
-                this.container.removeAttribute(a));
-            this.container.classList.remove('tad-marquee-container', 'tad-marquee-paused');
+            ['role','aria-label','aria-live','tabindex'].forEach(a => this.container.removeAttribute(a));
+            this.container.classList.remove(
+                'tad-marquee-container',
+                'tad-marquee-paused',
+                'tad-marquee-has-inside-pause',
+                'tad-marquee-has-inside-pause-left',
+                'tad-marquee-has-inside-pause-right'
+            );
             if (this.options?.className) this.container.classList.remove(this.options.className);
-
             this.container = null;
             this.marqueeEl = null;
             this.options   = null;
