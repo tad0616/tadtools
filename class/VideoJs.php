@@ -23,7 +23,8 @@ class VideoJs
         $this->youtube_id = $this->getYTid($file);
         $this->image      = empty($image) ? "https://i3.ytimg.com/vi/{$this->youtube_id}/0.jpg" : strip_tags($image);
         $this->mode       = $mode;
-        $this->id         = \str_replace('#', '', $id);
+        $clean_id = \str_replace('#', '', $id);
+        $this->id         = preg_replace('/[^A-Za-z0-9_]/', '_', $clean_id);
         $this->player     = 'player_' . $this->id;
         $this->autoplay   = $autoplay !== 'true' ? 'false' : 'true';
         $this->loop       = $loop !== 'true' ? 'false' : 'true';
@@ -67,16 +68,16 @@ class VideoJs
 
         $poster = '';
         if (empty($this->start)) {
-            $poster = 'poster="' . $this->image . '"';
+            $poster = 'poster="' . htmlspecialchars($this->image, ENT_QUOTES) . '"';
         }
 
         $player = '
         <video
-            id="' . $this->id . '"  ' . $poster . '
+            id="' . htmlspecialchars($this->id, ENT_QUOTES) . '"  ' . $poster . '
             class="video-js vjs-fluid vjs-big-play-centered vjs-theme-fantasy" controls>
             ' . $vtt . '
         </video>
-        <div id="' . $this->id . 'timer" style="color: transparent"></div>
+        <div id="' . htmlspecialchars($this->id, ENT_QUOTES) . 'timer" style="color: transparent"></div>
         ';
 
         if ('playlist' === $this->mode) {
@@ -109,9 +110,9 @@ class VideoJs
             if ($this->position == 'right') {
                 $playlist .= "
                 $(document).ready(function(){
-                    var h=$('#" . $this->id . ">.vjs-poster').height();
+                    var h=$(" . json_encode('#' . $this->id . '>.vjs-poster') . ").height();
                     console.log('h:'+h);
-                    $('." . $this->id . ">.vjs-playlist').css('max-height', h).css('overflow', 'auto');
+                    $(" . json_encode('.' . $this->id . '>.vjs-playlist') . ").css('max-height', h).css('overflow', 'auto');
                 });
                 ";
             }
@@ -141,7 +142,7 @@ class VideoJs
                 sources: [
                     {
                         'type': '$type',
-                        'src': '{$this->file}'
+                        'src': " . json_encode($this->file) . "
                     }
                 ],";
         }
@@ -239,12 +240,12 @@ class VideoJs
                 liveui: true
             };
 
-            const  " . $this->player . " = videojs('{$this->id}', {$this->id}_options);
+            const  " . $this->player . " = videojs(" . json_encode($this->id) . ", {$this->id}_options);
 
             " . $this->player . ".ready(function () {
                 " . $this->player . ".on('timeupdate', function() {
                     const current = " . $this->player . ".currentTime();
-                    document.getElementById('" . $this->id . "timer').textContent = current.toFixed(1);
+                    document.getElementById(" . json_encode($this->id . 'timer') . ").textContent = current.toFixed(1);
                 });
             });
             $start_form

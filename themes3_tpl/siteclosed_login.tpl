@@ -16,7 +16,11 @@
       </div>
 
       <div class="col-sm-2">
-        <input type="hidden" name="xoops_redirect" value="<{$xoops_requesturi|default:''}>">
+        <{assign var="safe_redirect" value=$xoops_requesturi|default:''}>
+        <{if $safe_redirect|strstr:'//'}>
+          <{assign var="safe_redirect" value=""}>
+        <{/if}>
+        <input type="hidden" name="xoops_redirect" value="<{$safe_redirect}>">
         <input type="hidden" name="rememberme" value="On">
         <input type="hidden" name="op" value="login">
         <input type="hidden" name="xoops_login" value="1">

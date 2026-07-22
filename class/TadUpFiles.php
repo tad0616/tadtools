@@ -314,6 +314,7 @@ class TadUpFiles
 
     public function set_prefix($dir = '')
     {
+        // $this->dir = Utility::check_path($dir);
         $this->dir = $dir;
         $this->set_path();
     }
@@ -321,7 +322,8 @@ class TadUpFiles
     public function set_db_prefix($db_prefix = '')
     {
         global $xoopsDB;
-        $this->db_prefix = $db_prefix;
+        // 僅允許安全的 db_prefix（小寫英數與底線），避免注入資料表名稱
+        $this->db_prefix = Utility::check_string(strtolower($db_prefix));
         if ($this->mysqli) {
             $this->TadUpFilesTblName = "{$this->mysqli_prefix}_{$db_prefix}_files_center";
         } else {
@@ -357,6 +359,8 @@ class TadUpFiles
     private function prefix($TblName)
     {
         global $xoopsDB;
+
+        $TblName = Utility::check_string($TblName);
         return $this->mysqli ? "{$this->mysqli_prefix}_{$TblName}" : $xoopsDB->prefix($TblName);
     }
     private function query($sql)
@@ -382,6 +386,7 @@ class TadUpFiles
     //設定目錄
     public function set_dir($type, $dir = '')
     {
+        // $dir = Utility::check_path($dir);
         if ($type === 'subdir') {
             $this->subdir = $dir;
         } elseif ($type === 'file') {
@@ -401,8 +406,8 @@ class TadUpFiles
 
     public function set_col($col_name = '', $col_sn = '', $sort = '')
     {
-        $this->col_name = $col_name;
-        $this->col_sn   = $col_sn;
+        $this->col_name = Utility::check_string($col_name);
+        $this->col_sn   = Utility::check_string($col_sn);
         $this->sort     = $sort;
     }
 

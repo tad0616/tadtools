@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AccessiblePdfFlipbook 範例</title>
+
+  <!-- 套件樣式 -->
+  <link rel="stylesheet" href="accessible-pdf-flipbook.css" />
+
+  <!-- PDF.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+  <!-- StPageFlip(全域為 St.PageFlip)-->
+  <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
+
+  <!-- 本套件 -->
+  <script src="AccessiblePdfFlipbook.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      background: #fafafa;
+      font-family: system-ui, -apple-system, "Segoe UI", "Noto Sans TC", sans-serif;
+      color: #1a1a1a;
+    }
+
+    /* 跳至主要內容連結(WCAG 2.4.1)— 聚焦時才顯示 */
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      background: #123a63;
+      color: #fff;
+      padding: 0.75rem 1.25rem;
+      z-index: 100;
+      text-decoration: underline;
+      font-weight: 600;
+      border-radius: 0 0 6px 0;
+    }
+    .skip-link:focus {
+      left: 0;
+      top: 0;
+      outline: 3px solid #b35900;
+      outline-offset: 2px;
+    }
+
+    header, main, footer {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+
+    h1 { font-size: 1.6rem; margin: 0.5rem 0; }
+
+    .kbd-help {
+      background: #eef2f7;
+      border: 2px solid #5a5a5a;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1rem;
+    }
+    .kbd-help h2 { font-size: 1.1rem; margin-top: 0; }
+    kbd {
+      display: inline-block;
+      background: #ffffff;
+      border: 1px solid #5a5a5a;
+      border-bottom-width: 3px;
+      border-radius: 4px;
+      padding: 0.1rem 0.45rem;
+      font-family: inherit;
+      font-size: 0.95rem;
+    }
+
+    .demo-actions { margin: 1rem 0; }
+    .demo-actions button {
+      min-width: 44px;
+      min-height: 44px;
+      padding: 0 1rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #ffffff;
+      background: #123a63;
+      border: 2px solid transparent;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-right: 0.5rem;
+    }
+    .demo-actions button:hover { background: #0b2845; }
+    .demo-actions button:focus-visible {
+      outline: 3px solid #b35900;
+      outline-offset: 2px;
+    }
+
+    footer {
+      font-size: 0.95rem;
+      color: #3d3d3d;
+      border-top: 2px solid #d0d0d0;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- 1. 跳過導覽連結,鍵盤使用者第一個 Tab 即可看到 -->
+  <a class="skip-link" href="#main">跳至主要內容</a>
+
+  <header>
+    <h1>AccessiblePdfFlipbook 範例頁</h1>
+    <p>使用 PDF.js + StPageFlip 的無障礙 PDF 翻頁書,以 WCAG 2.2 AAA 為目標。</p>
+  </header>
+
+  <main id="main">
+    <!-- 2. 鍵盤操作說明:放在翻頁書之前,讓 SR 使用者先得知操作方式 -->
+    <section class="kbd-help" aria-labelledby="kbd-help-title">
+      <h2 id="kbd-help-title">鍵盤操作說明</h2>
+      <ul>
+        <li><kbd>Tab</kbd> / <kbd>Shift</kbd>+<kbd>Tab</kbd>:在控制項之間移動焦點</li>
+        <li><kbd>←</kbd> / <kbd>PageUp</kbd>:上一頁</li>
+        <li><kbd>→</kbd> / <kbd>PageDown</kbd>:下一頁</li>
+        <li><kbd>Home</kbd>:第一頁;<kbd>End</kbd>:最後一頁</li>
+        <li><kbd>Enter</kbd> / <kbd>Space</kbd>:焦點在內容區時翻至下一頁;焦點在按鈕上時啟動該按鈕</li>
+        <li>頁碼輸入框中按 <kbd>Enter</kbd> 可直接跳頁</li>
+      </ul>
+    </section>
+
+    <!-- 3. 翻頁書容器:所有內部結構由套件動態建立 -->
+    <div id="pdfFlipbook"></div>
+
+    <!-- 4. 額外的 API 示範按鈕 -->
+    <section class="demo-actions" aria-label="API 示範">
+      <button type="button" id="demoGoto3">goToPage(3)</button>
+      <button type="button" id="demoZoom2">setZoom(2)</button>
+      <button type="button" id="demoReload">load(另一份 PDF)</button>
+      <button type="button" id="demoDestroy">destroy()</button>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      本翻頁書以圖片呈現 PDF 頁面,螢幕閱讀器無法逐字讀取內文;
+      請使用翻頁書上方的「下載原始 PDF」連結取得完整文字版本。
+    </p>
+  </footer>
+
+  <script>
+    // PDF.js worker 設定(必要)
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    let flipbook;
+
+    async function start() {
+      flipbook = new AccessiblePdfFlipbook({
+        container: '#pdfFlipbook',
+        pdfUrl: '/files/sample.pdf',
+        language: 'zh-Hant',
+        enableKeyboard: true,
+        enableScreenReaderAnnouncements: true
+      });
+
+      try {
+        await flipbook.init();
+        console.log('總頁數:', flipbook.getTotalPages());
+      } catch (err) {
+        // init 失敗時,套件已透過 role="alert" 報讀錯誤
+        console.error(err);
+      }
+    }
+
+    // API 示範
+    document.getElementById('demoGoto3')
+      .addEventListener('click', () => flipbook && flipbook.goToPage(3));
+
+    document.getElementById('demoZoom2')
+      .addEventListener('click', () => flipbook && flipbook.setZoom(2));
+
+    document.getElementById('demoReload')
+      .addEventListener('click', () => flipbook && flipbook.load('/files/another.pdf'));
+
+    document.getElementById('demoDestroy')
+      .addEventListener('click', () => flipbook && flipbook.destroy());
+
+    start();
+  </script>
+</body>
+</html>

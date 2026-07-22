@@ -31,6 +31,14 @@ class TadtoolsCorePreload extends XoopsPreloadItem
             }
         }
 
+        if ($xoopsConfig['debug_mode'] == 1 || $xoopsConfig['debug_mode'] == 2) {
+            error_reporting(E_ALL);
+            ini_set('display_errors', 1);
+        } else {
+            error_reporting(0);
+            ini_set('display_errors', 0);
+        }
+
         if ($xoopsTpl) {
             $xoopsTpl->assign('bootstrap', $_SESSION['bootstrap']);
         }

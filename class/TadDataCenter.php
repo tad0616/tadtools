@@ -152,12 +152,7 @@ class TadDataCenter
     //設定模組名稱
     public function set_module_dirname($module_dirname = '')
     {
-        // SQL Injection 防護：驗證 module_dirname 只能包含字母、數字、下劃線
-        if (!empty($module_dirname) && !preg_match('/^[a-zA-Z0-9_]+$/', $module_dirname)) {
-            throw new \InvalidArgumentException('Invalid module_dirname: ' . htmlspecialchars($module_dirname, ENT_QUOTES, 'UTF-8'));
-        }
-
-        $this->module_dirname = $module_dirname;
+        $this->module_dirname = Utility::check_string($module_dirname);
         $this->set_mid();
     }
 
@@ -178,8 +173,8 @@ class TadDataCenter
 
     public function set_col($col_name = '', $col_sn = '')
     {
-        $this->col_name = $col_name;
-        $this->col_sn   = $col_sn;
+        $this->col_name = Utility::check_string($col_name);
+        $this->col_sn   = Utility::check_string($col_sn);
     }
 
     public function set_var($name = '', $val = '')
@@ -189,8 +184,8 @@ class TadDataCenter
 
     public function set_ans_col($ans_col_name = '', $ans_col_sn = '')
     {
-        $this->ans_col_name = $ans_col_name;
-        $this->ans_col_sn   = $ans_col_sn;
+        $this->ans_col_name = Utility::check_string($ans_col_name);
+        $this->ans_col_sn   = Utility::check_string($ans_col_sn);
     }
 
     //取得表單

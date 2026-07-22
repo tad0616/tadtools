@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>AccessiblePdfFlipbook</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <span id="markdown-mermaid" aria-hidden="true" data-config="{&quot;darkModeTheme&quot;:&quot;vscode&quot;,&quot;lightModeTheme&quot;:&quot;vscode&quot;,&quot;maxTextSize&quot;:50000,&quot;clickDrag&quot;:&quot;alt&quot;,&quot;showControls&quot;:&quot;onHoverOrFocus&quot;,&quot;resizable&quot;:true,&quot;maxHeight&quot;:&quot;&quot;}"></span>
+				<h1 id="accessiblepdfflipbook">AccessiblePdfFlipbook</h1>
+<p>無障礙 PDF 翻頁書套件 — <strong>PDF.js</strong> 渲染 + <strong>StPageFlip</strong> 翻頁效果。
+純前端、無框架、無後端,以 <strong>WCAG 2.2 AAA</strong> 為對齊目標。</p>
+<hr>
+<h2 id="-特色">✨ 特色</h2>
+<ul>
+<li>📖 PDF 自動渲染為翻頁書,支援滑鼠、觸控、鍵盤</li>
+<li>♿ 完整鍵盤操作、ARIA 語意、NVDA 即時報讀</li>
+<li>🎬 尊重 <code>prefers-reduced-motion</code>(自動停用翻頁動畫)</li>
+<li>🔗 永遠提供原始 PDF 連結作為等效替代內容</li>
+<li>🌐 內建 <code>zh-Hant</code> / <code>en</code>,訊息可完全覆寫</li>
+</ul>
+<hr>
+<h2 id="-安裝">📦 安裝</h2>
+<p>無建置工具,直接以 <code>&lt;script&gt;</code> 引入三個相依:</p>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;stylesheet&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;/src/accessible-pdf-flipbook.css&quot;</span> /&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/src/AccessiblePdfFlipbook.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript">
+  pdfjsLib.<span class="hljs-property">GlobalWorkerOptions</span>.<span class="hljs-property">workerSrc</span> =
+    <span class="hljs-string">&#x27;https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js&#x27;</span>;
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</code></pre>
+<hr>
+<h2 id="-快速開始">🚀 快速開始</h2>
+<pre><code class="language-html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;pdfFlipbook&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript">
+  <span class="hljs-keyword">const</span> flipbook = <span class="hljs-keyword">new</span> <span class="hljs-title class_">AccessiblePdfFlipbook</span>({
+    <span class="hljs-attr">container</span>: <span class="hljs-string">&#x27;#pdfFlipbook&#x27;</span>,
+    <span class="hljs-attr">pdfUrl</span>: <span class="hljs-string">&#x27;/files/sample.pdf&#x27;</span>,
+    <span class="hljs-attr">language</span>: <span class="hljs-string">&#x27;zh-Hant&#x27;</span>,
+    <span class="hljs-attr">enableKeyboard</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">enableScreenReaderAnnouncements</span>: <span class="hljs-literal">true</span>
+  });
+  <span class="hljs-keyword">await</span> flipbook.<span class="hljs-title function_">init</span>();
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</code></pre>
+<blockquote>
+<p>⚠️ PDF 必須與頁面<strong>同源</strong>,或伺服器設定正確的 CORS 標頭。
+本機測試請使用靜態伺服器(如 <code>npx serve</code>),勿直接以 <code>file://</code> 開啟。</p>
+</blockquote>
+<hr>
+<h2 id="️-選項">⚙️ 選項</h2>
+<table>
+<thead>
+<tr>
+<th>選項</th>
+<th>型別</th>
+<th>預設</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>container</code></td>
+<td>string | Element</td>
+<td>(必填)</td>
+<td>容器選擇器或元素</td>
+</tr>
+<tr>
+<td><code>pdfUrl</code></td>
+<td>string</td>
+<td>(必填)</td>
+<td>PDF 檔案 URL</td>
+</tr>
+<tr>
+<td><code>language</code></td>
+<td>string</td>
+<td><code>'zh-Hant'</code></td>
+<td><code>'zh-Hant'</code> 或 <code>'en'</code></td>
+</tr>
+<tr>
+<td><code>enableKeyboard</code></td>
+<td>boolean</td>
+<td><code>true</code></td>
+<td>啟用鍵盤導覽</td>
+</tr>
+<tr>
+<td><code>enableScreenReaderAnnouncements</code></td>
+<td>boolean</td>
+<td><code>true</code></td>
+<td>啟用 aria-live 報讀</td>
+</tr>
+<tr>
+<td><code>zoom</code></td>
+<td>number</td>
+<td><code>1.5</code></td>
+<td>PDF.js 渲染倍率(0.25–4)</td>
+</tr>
+<tr>
+<td><code>messages</code></td>
+<td>object</td>
+<td>—</td>
+<td>覆寫任何 i18n 訊息</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-api">🧰 API</h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>回傳</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>init()</code></td>
+<td><code>Promise&lt;this&gt;</code></td>
+<td>建構 DOM、掛事件、載入 PDF</td>
+</tr>
+<tr>
+<td><code>destroy()</code></td>
+<td><code>void</code></td>
+<td>完整清理,焦點不遺失</td>
+</tr>
+<tr>
+<td><code>load(pdfUrl)</code></td>
+<td><code>Promise&lt;void&gt;</code></td>
+<td>載入新 PDF</td>
+</tr>
+<tr>
+<td><code>nextPage()</code> / <code>previousPage()</code></td>
+<td><code>void</code></td>
+<td>翻頁(邊界時報讀提示)</td>
+</tr>
+<tr>
+<td><code>goToPage(n)</code></td>
+<td><code>void</code></td>
+<td>跳至第 n 頁(1-based)</td>
+</tr>
+<tr>
+<td><code>getCurrentPage()</code></td>
+<td><code>number</code></td>
+<td>目前頁碼</td>
+</tr>
+<tr>
+<td><code>getTotalPages()</code></td>
+<td><code>number</code></td>
+<td>總頁數</td>
+</tr>
+<tr>
+<td><code>setZoom(scale)</code></td>
+<td><code>Promise&lt;void&gt;</code></td>
+<td>重新渲染並保留目前頁碼</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="️-鍵盤對照表">⌨️ 鍵盤對照表</h2>
+<table>
+<thead>
+<tr>
+<th>按鍵</th>
+<th>動作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Tab</code> / <code>Shift+Tab</code></td>
+<td>移動焦點</td>
+</tr>
+<tr>
+<td><code>→</code> / <code>PageDown</code></td>
+<td>下一頁</td>
+</tr>
+<tr>
+<td><code>←</code> / <code>PageUp</code></td>
+<td>上一頁</td>
+</tr>
+<tr>
+<td><code>Home</code> / <code>End</code></td>
+<td>第一頁 / 最後一頁</td>
+</tr>
+<tr>
+<td><code>Enter</code> / <code>Space</code></td>
+<td>焦點在內容區時:下一頁</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-專案結構">📁 專案結構</h2>
+<pre><code>/src/AccessiblePdfFlipbook.js     套件主體(UMD)
+/src/accessible-pdf-flipbook.css  AAA 取向樣式
+/examples/index.html              範例頁
+/README.md                        本文件
+/ACCESSIBILITY.md                 無障礙符合性說明
+</code></pre>
+<h2 id="-授權">📄 授權</h2>
+<p>MIT</p>
+
+            
+            
+        </body>
+        </html>

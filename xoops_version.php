@@ -1,4 +1,7 @@
 <?php
+if (!defined('XOOPS_ROOT_PATH')) {
+    die('Restricted access');
+}
 $modversion = [];
 global $xoopsConfig;
 
@@ -18,7 +21,7 @@ $modversion['icons32']        = '../../Frameworks/moduleclasses/icons/32';
 
 //about
 $modversion['module_status']       = 'Final';
-$modversion['release_date']        = '2025-10-30';
+$modversion['release_date']        = '2026-06-05';
 $modversion['module_website_url']  = 'https://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=1';
 $modversion['module_website_name'] = 'XOOPS EZGO';
 $modversion['author_website_url']  = 'https://www.tad0616.net';

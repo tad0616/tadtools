@@ -126,24 +126,29 @@ class Utility
     public static function test($var, $v = 1, $mode = 'dd', $key = 'test', $force = false)
     {
         global $xoopsUser, $xoopsModuleConfig;
+        if (!isset($xoopsModuleConfig['test_mode'])) {
+            $xoopsTadtoolsConfig = self::TadToolsXoopsModuleConfig();
+            $testMode            = $xoopsTadtoolsConfig['test_mode'];
+        } else {
+            $testMode = $xoopsModuleConfig['test_mode'];
+        }
 
-        // if ((isset($xoopsModuleConfig['test_mode']) && $xoopsModuleConfig['test_mode'] == 1) && ($xoopsUser && !$xoopsUser->isAdmin())) {
-        //     return;
-        // }
-
-        if (isset($_GET[$key]) && $_GET[$key] == $v) {
-            if ($mode == 'die') {
-                die($var);
-            } elseif ($mode == 'echo') {
-                echo "<div>$var</div>";
-            } elseif ($mode == 'var_dump') {
-                echo "<pre>" . var_dump($var) . "</pre>";
-            } elseif ($mode == 'var_export') {
-                echo "<pre>" . var_export($var) . "</pre>";
-            } else {
-                self::dd($var);
+        if (!$testMode || ($testMode && ($xoopsUser && $xoopsUser->isAdmin()))) {
+            if (isset($_GET[$key]) && $_GET[$key] == $v) {
+                if ($mode == 'die') {
+                    die($var);
+                } elseif ($mode == 'echo') {
+                    echo "<div>$var</div>";
+                } elseif ($mode == 'var_dump') {
+                    echo "<pre>" . var_dump($var) . "</pre>";
+                } elseif ($mode == 'var_export') {
+                    echo "<pre>" . var_export($var) . "</pre>";
+                } else {
+                    self::dd($var);
+                }
             }
         }
+
     }
 
     // 在中文和英文之間自動加入空格
@@ -381,12 +386,28 @@ class Utility
     }
 
     // XOOPS表單安全檢查
-    public static function xoops_security_check($file = '', $line = '')
+    public static function xoops_security_check($file = '', $line = '', $redirect_to = '')
     {
-        $where = $file ? "( $file $line )" : "";
+        if (empty($file) || empty($line)) {
+            $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+            $caller    = $backtrace[1] ?? [];
+
+            if (empty($file) && isset($caller['file'])) {
+                $file = $caller['file'];
+            }
+            if (empty($line) && isset($caller['line'])) {
+                $line = $caller['line'];
+            }
+        }
+
+        if (empty($redirect_to)) {
+            $redirect_to = $_SERVER['PHP_SELF'];
+        }
+
+        $where = (!empty($file) || !empty($line)) ? "( $file $line )" : '';
         if ($_SERVER['SERVER_ADDR'] != '127.0.0.1' && !$GLOBALS['xoopsSecurity']->check()) {
             $error = implode("<br>", $GLOBALS['xoopsSecurity']->getErrors());
-            redirect_header($_SERVER['PHP_SELF'], 3, $error . $where);
+            redirect_header($redirect_to, 3, $error . $where);
         }
     }
 
@@ -809,10 +830,53 @@ class Utility
 
         return $html;
     }
+    public static function check_string($string = '')
+    {
+        $string = trim((string) $string);
+        if ($string != '' && !preg_match('/^[a-zA-Z0-9_]{1,64}$/', $string)) {
+            $trace  = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+            $caller = $trace[1] ?? [];
+
+            $file = $caller['file'] ?? __FILE__;
+            $line = $caller['line'] ?? __LINE__;
+
+            throw new \InvalidArgumentException(
+                'Invalid string (' . $string . ') in ' . $file . ' on line ' . $line
+            );
+        }
+        return $string;
+    }
+
+    public static function check_path($string = '')
+    {
+        $string = trim((string) $string);
+
+        $string = str_replace('//', '', $string);
+        if (
+            $string != '' &&
+            (strlen($string) > 255 ||
+                !preg_match('#^/?(?!.*\.\.)[a-zA-Z0-9_.-]+(?:/[a-zA-Z0-9_.-]+)*$#', $string))
+        ) {
+            $trace  = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+            $caller = $trace[1] ?? [];
+
+            $file = $caller['file'] ?? __FILE__;
+            $line = $caller['line'] ?? __LINE__;
+
+            throw new \InvalidArgumentException(
+                'Invalid path (' . $string . ') in ' . $file . ' on line ' . $line
+            );
+        }
+
+        return $string;
+    }
 
     public static function setup_meta($title = '', $content = '', $image = '')
     {
         global $xoTheme, $xoopsTpl;
+        $title   = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
+        $content = htmlspecialchars($content, ENT_QUOTES, 'UTF-8');
+        $image   = htmlspecialchars($image, ENT_QUOTES, 'UTF-8');
         if (is_object($xoTheme)) {
             $xoTheme->addMeta('meta', 'keywords', $title);
             $xoTheme->addMeta('meta', 'description', strip_tags($content));

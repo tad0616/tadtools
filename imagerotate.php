@@ -5,39 +5,42 @@ require_once __DIR__ . '/tadtools_header.php';
 if (!function_exists('imagecreatetruecolor')) {
     die('imagecreatetruecolor functions are not available.');
 }
+if (!$xoopsUser) {
+    exit;
+}
 
-$op = Request::getString('op');
-$subdir = Request::getString('subdir');
-$image_dir = Request::getString('image_dir');
+$op         = Request::getString('op');
+$subdir     = Request::getString('subdir');
+$image_dir  = Request::getString('image_dir');
 $thumbs_dir = Request::getString('thumbs_dir');
-$filename = Request::getString('filename');
-$type = Request::getString('type');
+$filename   = Request::getString('filename');
+$type       = Request::getString('type');
 
-$pic = XOOPS_ROOT_PATH . "/uploads/{$subdir}{$image_dir}/{$filename}";
+$pic   = XOOPS_ROOT_PATH . "/uploads/{$subdir}{$image_dir}/{$filename}";
 $thumb = XOOPS_ROOT_PATH . "/uploads/{$subdir}{$thumbs_dir}/{$filename}";
 
 // 關閉除錯訊息
 header('HTTP/1.1 200 OK');
 $xoopsLogger->activated = false;
 if ('image/jpeg' === $type or 'image/jpg' === $type or 'image/pjpg' === $type or 'image/pjpeg' === $type) {
-    $pic_im = imagecreatefromjpeg($pic);
+    $pic_im   = imagecreatefromjpeg($pic);
     $thumb_im = imagecreatefromjpeg($thumb);
     header('Content-type: image/jpg');
 } elseif ('image/png' === $type) {
-    $pic_im = imagecreatefrompng($pic);
+    $pic_im   = imagecreatefrompng($pic);
     $thumb_im = imagecreatefrompng($thumb);
     header('Content-type: image/png');
 } elseif ('image/gif' === $type) {
-    $pic_im = imagecreatefromgif($pic);
+    $pic_im   = imagecreatefromgif($pic);
     $thumb_im = imagecreatefromgif($thumb);
     header('Content-type: image/gif');
 }
 
 if ('right' === $op) {
-    $pic_new_im = rotate_right90($pic_im);
+    $pic_new_im   = rotate_right90($pic_im);
     $thumb_new_im = rotate_right90($thumb_im);
 } elseif ('left' === $op) {
-    $pic_new_im = rotate_left90($pic_im);
+    $pic_new_im   = rotate_left90($pic_im);
     $thumb_new_im = rotate_left90($thumb_im);
 }
 

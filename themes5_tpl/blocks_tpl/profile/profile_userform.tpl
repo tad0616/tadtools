@@ -41,7 +41,11 @@
       <{/if}>
 
       <input type="hidden" name="op" value="login">
-      <input type="hidden" name="xoops_redirect" value="<{$redirect_page|default:''}>">
+      <{assign var="safe_redirect" value=$xoops_requesturi|default:''}>
+      <{if $safe_redirect|strstr:'//'}>
+        <{assign var="safe_redirect" value=""}>
+      <{/if}>
+      <input type="hidden" name="xoops_redirect" value="<{$safe_redirect}>">
 
       <div class="text-center">
         <button type="submit" id="submit" class="btn btn-primary btn-lg" style="background-color: #03347c;">

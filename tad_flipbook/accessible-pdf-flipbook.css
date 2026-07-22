@@ -1,0 +1,347 @@
+/* ====================================================================
+   AccessiblePdfFlipbook — WCAG 2.2 AAA 取向樣式
+   對比:#123a63 on #ffffff ≈ 10.4:1(> 7:1 AAA)
+   ==================================================================== */
+
+.apf-root {
+  --apf-primary: #123a63;
+  /* 白字對比 ≈ 10.4:1 */
+  --apf-primary-hover: #0b2845;
+  /* 更深,維持 AAA */
+  --apf-text: #1a1a1a;
+  /* 對白底 ≈ 17.4:1 */
+  --apf-bg: #ffffff;
+  --apf-focus: #b35900;
+  /* 高對比焦點環(對白底 ≈ 5.2:1,非文字 AA/AAA) */
+  --apf-border: #5a5a5a;
+
+  font-family: system-ui, -apple-system, "Segoe UI", "Noto Sans TC", sans-serif;
+  color: var(--apf-text);
+  background: var(--apf-bg);
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* ------- 螢幕閱讀器專用(視覺隱藏,但可被報讀)------- */
+.apf-sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* ------- 替代內容列 ------- */
+.apf-altbar {
+  margin-bottom: 0.75rem;
+}
+
+.apf-download {
+  display: inline-block;
+  color: var(--apf-primary);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 0.25rem 0;
+  /* 擴大可點擊範圍 */
+}
+
+.apf-download:hover {
+  color: var(--apf-primary-hover);
+}
+
+.apf-notice {
+  font-size: 0.95rem;
+  color: #3d3d3d;
+  /* 對白底 ≈ 10.9:1,AAA */
+  margin: 0.4rem 0 0;
+}
+
+/* ------- 工具列 ------- */
+.apf-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 2px solid var(--apf-border);
+  border-radius: 8px;
+  background: #f5f5f5;
+  margin-bottom: 0.75rem;
+}
+
+.apf-btn {
+  min-width: 44px;
+  /* WCAG 2.5.5 目標尺寸 AAA */
+  min-height: 44px;
+  padding: 0 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: var(--apf-primary);
+  border: 2px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.apf-btn:hover {
+  background: var(--apf-primary-hover);
+}
+
+.apf-btn[aria-disabled="true"] {
+  background: #6b6b6b;
+  /* 白字對比 ≈ 5.6:1,且非操作狀態 */
+  cursor: not-allowed;
+}
+
+/* ------- 焦點環:所有可聚焦元素,3px 高可見度 ------- */
+.apf-root :focus-visible {
+  outline: 3px solid var(--apf-focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ------- 頁碼跳轉 ------- */
+.apf-pagejump {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.apf-input {
+  width: 5rem;
+  min-height: 44px;
+  font-size: 1rem;
+  color: var(--apf-text);
+  border: 2px solid var(--apf-border);
+  border-radius: 6px;
+  padding: 0 0.5rem;
+  text-align: center;
+}
+
+.apf-status {
+  font-size: 1rem;
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 0 0.4rem;
+}
+
+/* ------- 舞台 ------- */
+.apf-stage {
+  position: relative;
+  border: 2px solid var(--apf-border);
+  border-radius: 8px;
+  background: #2b2b2b;
+  padding: 1rem;
+  min-height: 300px;
+  overflow: auto;
+  /* ← 改為 hidden，不讓書本溢出捲動 */
+}
+
+.apf-flip-mount {
+  display: block;
+  margin: 0 auto;
+  /* 不設固定寬高，由 _applyZoom() 動態控制 */
+}
+
+#pdfFlipbook {
+  width: 100%;
+  overflow-x: auto;
+  /* 書比容器寬時可橫向捲動，不被裁切 */
+}
+
+/* 載入中提示游標 */
+.apf-busy .apf-stage {
+  cursor: progress;
+}
+
+/* ------- 減少動態效果 ------- */
+@media (prefers-reduced-motion: reduce) {
+
+  .apf-root *,
+  .apf-root *::before,
+  .apf-root *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ------- 高對比模式(Windows)------- */
+@media (forced-colors: active) {
+  .apf-btn {
+    border: 2px solid ButtonText;
+  }
+
+  .apf-root :focus-visible {
+    outline: 3px solid Highlight;
+  }
+}
+
+/* ------- 響應式 ------- */
+@media (max-width: 600px) {
+  .apf-toolbar {
+    justify-content: center;
+  }
+
+  .apf-status {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* ------- 全螢幕模式 ------- */
+.apf-fullscreen {
+  display: flex;
+  flex-direction: column;
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  padding: 0.5rem !important;
+  box-sizing: border-box;
+  background: #1a1a1a;
+  overflow: hidden;
+}
+
+/* 全螢幕時隱藏說明文字列，節省垂直空間 */
+.apf-fullscreen .apf-altbar {
+  display: none;
+}
+
+/* 工具列縮緊 */
+.apf-fullscreen .apf-toolbar {
+  flex-shrink: 0;
+  margin-bottom: 0.5rem;
+  padding: 0.35rem 0.5rem;
+}
+
+/* 舞台填滿剩餘空間 */
+.apf-fullscreen .apf-stage {
+  flex: 1 1 0;
+  min-height: 0;
+  /* 關鍵：讓 flex 子元素可以縮小 */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+}
+
+/* 書本容器置中 */
+.apf-fullscreen .apf-flip-mount {
+  margin: 0 auto;
+}
+
+/* =========================================================
+   StPageFlip 尺寸穩定修正
+   目標：直式單頁圖片，以雙頁攤開顯示，Chrome / Firefox 尺寸一致
+   ========================================================= */
+
+.apf-root {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.apf-stage {
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+.apf-flip-mount {
+  position: relative;
+  display: block;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* PageFlip 掛載點必須明確吃滿外層，Chrome 尤其需要 */
+.apf-flip-mount>div {
+  width: 100%;
+  height: 100%;
+}
+
+/*
+  不要強制把圖片 width/height 都設成 100%。
+  Chrome 下這可能和 StPageFlip 的 transform / wrapper 尺寸互相干擾。
+  只保留等比例限制。
+*/
+.apf-flip-mount img,
+.apf-flip-mount canvas {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* StPageFlip 常見容器：只補 box-sizing，不硬改 transform/position */
+.apf-flip-mount .stf__parent,
+.apf-flip-mount .stf__wrapper,
+.apf-flip-mount .stf__block,
+.apf-flip-mount .stf__item,
+.apf-flip-mount .stf__page {
+  box-sizing: border-box;
+}
+
+/* 全螢幕時仍維持置中 */
+.apf-fullscreen .apf-stage {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: auto;
+  display: block;
+  padding: 0.5rem;
+}
+
+.apf-fullscreen .apf-flip-mount {
+  margin: 0 auto;
+}
+
+/* =========================================================
+   全螢幕切換穩定修正
+   ========================================================= */
+
+.apf-fullscreen {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.apf-fullscreen .apf-toolbar {
+  flex-shrink: 0;
+}
+
+.apf-fullscreen .apf-stage {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.apf-fullscreen .apf-flip-mount {
+  flex: 0 0 auto;
+  max-width: calc(100vw - 40px);
+  max-height: calc(100vh - 90px);
+  box-sizing: border-box;
+}
+
+.apf-zoom-status {
+  min-width: 3.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--apf-text);
+  text-align: center;
+}

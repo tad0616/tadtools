@@ -1471,6 +1471,15 @@
 
 			F.update();
 
+			// Hide background from NVDA virtual cursor: set aria-hidden on all body
+			// children except the modal wrap and the aria-live announcer.
+			// aria-modal="true" alone is insufficient for NVDA in Browse Mode.
+			$('body').children().not(F.wrap).not('#fancybox-aria-live').each(function () {
+				var $el = $(this);
+				$el.data('fb-aria-hidden', $el.attr('aria-hidden')); // remember original value
+				$el.attr('aria-hidden', 'true');
+			});
+
 			// Assign a click event
 			if ( current.closeClick || (current.nextClick && F.group.length > 1) ) {
 				F.inner.css('cursor', 'pointer').bind('click.fb', function(e) {
@@ -1562,6 +1571,19 @@
 
 		_afterZoomOut: function ( obj ) {
 			obj = obj || F.current;
+
+			// Restore aria-hidden state on background elements that were hidden when
+			// the modal opened (reverses the aria-hidden applied in _afterZoomIn).
+			$('body').children().each(function () {
+				var $el   = $(this);
+				var prev  = $el.data('fb-aria-hidden');
+				if (prev === undefined || prev === null || prev === false) {
+					$el.removeAttr('aria-hidden');
+				} else {
+					$el.attr('aria-hidden', prev);
+				}
+				$el.removeData('fb-aria-hidden');
+			});
 
 			// Back-focus: return focus to the element that triggered the modal (WCAG 2.4.3)
 			var $trigger = obj && obj.element;
