@@ -3,6 +3,11 @@ use Xmf\Request;
 use XoopsModules\Tadtools\Utility;
 
 require_once __DIR__ . '/tadtools_header.php';
+
+if (!$xoopsUser) {
+    exit;
+}
+
 $demo         = Request::getString('demo');
 $size         = Request::getFloat('size', '1.5');
 $font         = Request::getString('font');
@@ -10,7 +15,11 @@ $title_font   = Request::getString('title_font', $font);
 $demo_title   = Request::getString('demo_title', '台式麵包熱量排行榜曝光 最肥不是奶酥麵包…');
 $demo_content = Request::getString('demo_content', '台式麵包鬆軟好入口、組織細膩，內餡又豐富可口，讓不少人非常喜愛，不過營養師就公開了市面上常見販售的台式麵包熱量，第一名並非奶酥麵包或菠蘿麵包，而是由熱量高達565大卡的蔥花肉鬆捲奪得冠軍。');
 $otf_arr      = ['BoTa', 'Chalk', 'KingnamMaiyuan', 'Mamelon', 'MamelonHi', 'PangPangZhuRouTi', 'PoSuiLingHaoZi', 'TanugoTangGuoShouXieTiBold', 'TanugoTangGuoShouXieTiRegular', 'WuXinShouXieTi', 'YOzShouXieTi', 'YouZi'];
-$fonts        = Utility::$fonts;
+
+$demo_title   = htmlspecialchars($demo_title, ENT_QUOTES, 'UTF-8');
+$demo_content = htmlspecialchars($demo_content, ENT_QUOTES, 'UTF-8');
+
+$fonts = Utility::$fonts;
 
 // $fonts = [
 //     '851DianJiWenZiTi' => '851電機文字',

@@ -833,7 +833,8 @@ class Utility
     public static function check_string($string = '')
     {
         $string = trim((string) $string);
-        if ($string != '' && !preg_match('/^[a-zA-Z0-9_]{1,64}$/', $string)) {
+        // if ($string != '' && !preg_match('/^[a-zA-Z0-9_\p{Han}-]{1,64}$/u', $string)) {
+        if ($string != '' && !preg_match('/^[a-zA-Z0-9_\p{Han}-]{1,64}$/u', $string)) {
             $trace  = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
             $caller = $trace[1] ?? [];
 
@@ -844,6 +845,30 @@ class Utility
                 'Invalid string (' . $string . ') in ' . $file . ' on line ' . $line
             );
         }
+        return $string;
+    }
+
+    public static function check_path($string = '')
+    {
+        $string = trim((string) $string);
+
+        $string = str_replace('//', '', $string);
+        if (
+            $string != '' &&
+            (strlen($string) > 255 ||
+                !preg_match('#^/?(?!.*\.\.)[a-zA-Z0-9_.-]+(?:/[a-zA-Z0-9_.-]+)*$#', $string))
+        ) {
+            $trace  = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+            $caller = $trace[1] ?? [];
+
+            $file = $caller['file'] ?? __FILE__;
+            $line = $caller['line'] ?? __LINE__;
+
+            throw new \InvalidArgumentException(
+                'Invalid path (' . $string . ') in ' . $file . ' on line ' . $line
+            );
+        }
+
         return $string;
     }
 

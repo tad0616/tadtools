@@ -1,3 +1,8 @@
+TadTools 4.0.6 (Released on July 23, 2026)
+====================================
+1. Added the tad_flipbook accessible e-book package
+2. Made numerous security fixes, including to the following files: save_sort.php, upload.php, ajax_file.php, imagerotate.php, TadUpFiles.php, and TadDataCenter.php.
+
 TadTools 4.0.5 (Released 2026-06-05)
 ====================================
 1. Adjusted TadUpFiles to prevent download failures with special filenames

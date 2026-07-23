@@ -1,6 +1,7 @@
-TadTools 4.0.6 (尚未釋出)
+TadTools 4.0.6 (2026-07-23 釋出)
 ====================================
 1.新增 tad_flipbook 無障礙電子書套件
+2.進行許多的安全性修正，包括save_sort.php、upload.php、ajax_file.php、imagerotate.php、TadUpFiles.php、TadDataCenter.php等檔案。
 
 TadTools 4.0.5 (2026-06-05 釋出)
 ====================================
