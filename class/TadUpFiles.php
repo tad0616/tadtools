@@ -778,6 +778,10 @@ class TadUpFiles
     {
         global $xoopsUser;
 
+        if (!$xoopsUser) {
+            exit;
+        }
+
         $this->upname = $upname;
 
         if ($hash) {
@@ -1071,6 +1075,9 @@ class TadUpFiles
     {
         global $xoopsUser;
 
+        if (!$xoopsUser) {
+            exit;
+        }
         //取消上傳時間限制
         set_time_limit(0);
         //設置上傳大小
@@ -1305,6 +1312,9 @@ class TadUpFiles
     public function upload_one_file($name = '', $tmp_name = '', $type = '', $size = '', $main_width = '1280', $thumb_width = '120', $files_sn = '', $desc = '', $safe_name = false, $hash = false, $allow = 'pdf;jpg;jpeg;png;gif;bmp;webp;doc;docx;xls;xlsx;ppt;pptx;odt;ods;odp;txt;csv;zip;rar;7z;mp3;wav;mp4;m4v;mov;avi;webm', $deny = 'php;php3;php4;php5;php7;php8;phtml;pht;phar;inc;cgi;pl;py;rb;sh;bash;exe;dll;com;bat;cmd;msi;ps1;vbs;js;jse;jar;class;war;asp;aspx;jsp;htaccess;htpasswd;shtml;html;htm;xhtml;svg;swf;eml;msg;reg;scr')
     {
         global $xoopsUser;
+        if (!$xoopsUser) {
+            exit;
+        }
         if (empty($main_width)) {
             $main_width = '1280';
         }
@@ -1543,6 +1553,9 @@ class TadUpFiles
     {
         global $xoopsUser;
 
+        if (!$xoopsUser) {
+            exit;
+        }
         $modhandler = xoops_getHandler('module');
         $theModule  = $modhandler->getByDirname($this->dir);
         $mod_id     = $theModule->mid();
