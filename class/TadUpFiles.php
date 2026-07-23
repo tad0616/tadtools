@@ -314,7 +314,6 @@ class TadUpFiles
 
     public function set_prefix($dir = '')
     {
-        // $this->dir = Utility::check_path($dir);
         $this->dir = $dir;
         $this->set_path();
     }
@@ -386,7 +385,6 @@ class TadUpFiles
     //設定目錄
     public function set_dir($type, $dir = '')
     {
-        // $dir = Utility::check_path($dir);
         if ($type === 'subdir') {
             $this->subdir = $dir;
         } elseif ($type === 'file') {
@@ -776,7 +774,7 @@ class TadUpFiles
     }
 
     //上傳圖檔，$this->col_name=對應欄位名稱,$col_sn=對應欄位編號,$種類：img,file,$sort=圖片排序,$files_sn="更新編號"
-    public function upload_file($upname = 'upfile', $main_width = '1920', $thumb_width = '240', $files_sn = '', $desc = null, $safe_name = false, $hash = false, $return_col = 'file_name', $allow = '', $deny = 'php')
+    public function upload_file($upname = 'upfile', $main_width = '1920', $thumb_width = '240', $files_sn = '', $desc = null, $safe_name = false, $hash = false, $return_col = 'file_name', $allow = 'pdf;jpg;jpeg;png;gif;bmp;webp;doc;docx;xls;xlsx;ppt;pptx;odt;ods;odp;txt;csv;zip;rar;7z;mp3;wav;mp4;m4v;mov;avi;webm', $deny = 'php;php3;php4;php5;php7;php8;phtml;pht;phar;inc;cgi;pl;py;rb;sh;bash;exe;dll;com;bat;cmd;msi;ps1;vbs;js;jse;jar;class;war;asp;aspx;jsp;htaccess;htpasswd;shtml;html;htm;xhtml;svg;swf;eml;msg;reg;scr')
     {
         global $xoopsUser;
 
@@ -1304,10 +1302,9 @@ class TadUpFiles
     }
 
     //上傳單一檔案，$this->col_name=對應欄位名稱,$col_sn=對應欄位編號,$種類：img,file,$sort=圖片排序,$files_sn="更新編號"
-    public function upload_one_file($name = '', $tmp_name = '', $type = '', $size = '', $main_width = '1280', $thumb_width = '120', $files_sn = '', $desc = '', $safe_name = false, $hash = false, $allow = '', $deny = 'php')
+    public function upload_one_file($name = '', $tmp_name = '', $type = '', $size = '', $main_width = '1280', $thumb_width = '120', $files_sn = '', $desc = '', $safe_name = false, $hash = false, $allow = 'pdf;jpg;jpeg;png;gif;bmp;webp;doc;docx;xls;xlsx;ppt;pptx;odt;ods;odp;txt;csv;zip;rar;7z;mp3;wav;mp4;m4v;mov;avi;webm', $deny = 'php;php3;php4;php5;php7;php8;phtml;pht;phar;inc;cgi;pl;py;rb;sh;bash;exe;dll;com;bat;cmd;msi;ps1;vbs;js;jse;jar;class;war;asp;aspx;jsp;htaccess;htpasswd;shtml;html;htm;xhtml;svg;swf;eml;msg;reg;scr')
     {
         global $xoopsUser;
-
         if (empty($main_width)) {
             $main_width = '1280';
         }

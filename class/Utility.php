@@ -847,46 +847,22 @@ class Utility
         return $string;
     }
 
-    public static function check_path($string = '')
-    {
-        $string = trim((string) $string);
-
-        $string = str_replace('//', '', $string);
-        if (
-            $string != '' &&
-            (strlen($string) > 255 ||
-                !preg_match('#^/?(?!.*\.\.)[a-zA-Z0-9_.-]+(?:/[a-zA-Z0-9_.-]+)*$#', $string))
-        ) {
-            $trace  = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-            $caller = $trace[1] ?? [];
-
-            $file = $caller['file'] ?? __FILE__;
-            $line = $caller['line'] ?? __LINE__;
-
-            throw new \InvalidArgumentException(
-                'Invalid path (' . $string . ') in ' . $file . ' on line ' . $line
-            );
-        }
-
-        return $string;
-    }
-
     public static function setup_meta($title = '', $content = '', $image = '')
     {
         global $xoTheme, $xoopsTpl;
         $title   = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
-        $content = htmlspecialchars($content, ENT_QUOTES, 'UTF-8');
+        $content = htmlspecialchars(str_replace(["\r\n", "\t"], ['', ''], xoops_substr(strip_tags($content), 0, 200)), ENT_QUOTES, 'UTF-8');
         $image   = htmlspecialchars($image, ENT_QUOTES, 'UTF-8');
         if (is_object($xoTheme)) {
             $xoTheme->addMeta('meta', 'keywords', $title);
-            $xoTheme->addMeta('meta', 'description', strip_tags($content));
+            $xoTheme->addMeta('meta', 'description', $content);
         } else {
             $xoopsTpl->assign('xoops_meta_keywords', 'keywords', $title);
-            $xoopsTpl->assign('xoops_meta_description', strip_tags($content));
+            $xoopsTpl->assign('xoops_meta_description', $content);
         }
 
         $xoopsTpl->assign('fb_title', $title);
-        $xoopsTpl->assign('fb_description', strip_tags($content));
+        $xoopsTpl->assign('fb_description', $content);
         $xoopsTpl->assign('fb_image', $image);
         $xoopsTpl->assign('xoops_pagetitle', $title);
     }
@@ -2194,105 +2170,6 @@ class Utility
             }
         }
     }
-
-    // /**
-    //  * 參數化資料庫查詢
-    //  *
-    //  * @param string $sql The SQL query to execute
-    //  * @param string $types The types of the parameters
-    //  * @param array $params The parameters to bind
-    //  * @param bool $throwExceptions Whether to throw exceptions or return false on error
-    //  * @param bool $debug Whether to enable debug mode
-    //  * @return mixed The query result or boolean indicating success/failure
-    //  * @throws Exception
-    //  */
-    // public static function query($sql, $types = '', array $params = array(), $throwExceptions = true, $debug = true)
-    // {
-    //     global $xoopsDB;
-
-    //     $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0];
-    //     $callerInfo = $backtrace['file'] . ' on line ' . $backtrace['line'];
-
-    //     try {
-    //         // 驗證參數
-    //         $placeholderCount = substr_count($sql, '?');
-    //         if ($placeholderCount !== count($params)) {
-    //             throw new \Exception(sprintf(_NUMBER_PARAMETER_NOT_MATCH, count($params), $placeholderCount));
-    //         }
-
-    //         if (strlen($types) !== count($params)) {
-    //             throw new \Exception(sprintf(_TYPES_LENGTH_NOT_MATCH, strlen($types), count($params)));
-    //         }
-
-    //         $stmt = $xoopsDB->conn->prepare($sql);
-    //         if ($stmt === false) {
-    //             throw new \Exception(_SQL_PREPARE_FAILED . $xoopsDB->conn->error);
-    //         }
-
-    //         if (!empty($params)) {
-    //             $bindParams = array($types);
-    //             foreach ($params as $i => $param) {
-    //                 $bindParams[] = &$params[$i];
-    //             }
-
-    //             if ($debug) {
-    //                 error_log("Debug: SQL = " . $sql);
-    //                 error_log("Debug: Types = " . $types);
-    //                 error_log("Debug: Params = " . print_r($params, true));
-    //                 error_log("Debug: BindParams = " . print_r($bindParams, true));
-    //             }
-
-    //             // 使用 Reflection 來檢查 bind_param 方法
-    //             $method = new \ReflectionMethod('mysqli_stmt', 'bind_param');
-    //             $paramCount = $method->getNumberOfParameters();
-    //             if ($debug) {
-    //                 error_log("Debug: bind_param expects {$paramCount} parameters");
-    //                 error_log("Debug: We are providing " . count($bindParams) . " parameters");
-    //             }
-
-    //             if (!call_user_func_array(array($stmt, 'bind_param'), $bindParams)) {
-    //                 throw new \Exception(_PARAMETER_BINDING_FAILED . $stmt->error);
-    //             }
-    //         }
-
-    //         if (!$stmt->execute()) {
-    //             throw new \Exception(_SQL_EXECUTION_FAILED . $stmt->error);
-    //         }
-
-    //         if (stripos(trim($sql), 'SELECT') === 0 || stripos(trim($sql), 'SHOW') === 0 || stripos(trim($sql), 'DESCRIBE') === 0 || stripos(trim($sql), 'EXPLAIN') === 0 || stripos(trim($sql), 'PRAGMA') === 0) {
-    //             $result = $stmt->get_result();
-    //             if ($result === false) {
-    //                 throw new \Exception(_FAILED_TO_GET_RESULT . $stmt->error);
-    //             }
-    //             return $result;
-    //         }
-    //         return true;
-
-    //     } catch (\Exception $e) {
-    //         if ($throwExceptions) {
-    //             throw new \Exception($e->getMessage() . " in $callerInfo");
-    //         }
-    //         error_log("Database query error: " . $e->getMessage() . " in $callerInfo");
-    //         return false;
-    //     } finally {
-    //         if (isset($stmt) && $stmt instanceof \mysqli_stmt) {
-    //             $stmt->close();
-    //         }
-    //     }
-    // }
-
-    // private static function getDefaultValue($type)
-    // {
-    //     switch ($type) {
-    //         case 'i':
-    //             return 0;
-    //         case 'd':
-    //             return 0.0;
-    //         case 's':
-    //         default:
-    //             return '';
-    //     }
-    // }
 
     //製作logo圖
     public static function mkTitlePic($save_path = '/uploads/', $filename = 'logo', $title = '', $size = 24, $border_size = 2, $color = '#00a3a8', $border_color = '#FFFFFF', $font_file_sn = 0, $shadow_color = '#000000', $shadow_x = 1, $shadow_y = 1, $shadow_size = 3, $margin_top = 0, $margin_bottom = 0, $echo = true, $pic_width = 0, $pic_height = 0)
