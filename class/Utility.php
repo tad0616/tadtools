@@ -2177,7 +2177,7 @@ class Utility
                 return $result;
             }
 
-            return true;
+            return $stmt->affected_rows; // UPDATE/INSERT/DELETE 回傳影響列數（int），0 表示無資料被影響，-1 表示錯誤
         } catch (\Exception $e) {
             if ($debug) {
                 error_log(_DATABASE_ERROR . $e->getMessage() . ($callerInfo ? " in $callerInfo" : ''));
