@@ -2100,7 +2100,7 @@ class Utility
      * @return mixed 查詢結果或布林值
      * @throws Exception
      */
-    public static function query($sql, $types = '', array $params = [], $throwExceptions = true, $debug = false, $mysqli = null)
+    public static function query($sql, $types = '', array $params = [], $throwExceptions = true, $debug = false, $mysqli = null, $return_affected_rows = false)
     {
         global $xoopsDB;
 
@@ -2177,7 +2177,18 @@ class Utility
                 return $result;
             }
 
-            return $stmt->affected_rows; // UPDATE/INSERT/DELETE 回傳影響列數（int），0 表示無資料被影響，-1 表示錯誤
+            // affected_rows = -1 表示錯誤
+            if ($stmt->affected_rows === -1) {
+                throw new \Exception(_SQL_EXECUTION_FAILED . $stmt->error);
+            }
+
+            // 回傳影響列數（>= 0 表示成功）
+            if ($return_affected_rows) {
+                return $stmt->affected_rows;
+            } else {
+                return true;
+            }
+
         } catch (\Exception $e) {
             if ($debug) {
                 error_log(_DATABASE_ERROR . $e->getMessage() . ($callerInfo ? " in $callerInfo" : ''));

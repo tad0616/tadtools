@@ -1540,8 +1540,7 @@ class TadUpFiles
     //更新某個欄位值
     public function update_col_val($files_sn = '', $col = '', $val = '')
     {
-        $myts = \MyTextSanitizer::getInstance();
-        $col  = $myts->addSlashes($col);
+        $col = Utility::check_string($col);
 
         $sql = 'UPDATE `' . $this->TadUpFilesTblName . '` SET `' . $col . '` = ? WHERE `files_sn` = ?';
         Utility::query($sql, 'si', [$val, $files_sn], null, null, $this->mysqli) or Utility::web_error($sql, __FILE__, __LINE__);
