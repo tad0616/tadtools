@@ -410,12 +410,13 @@ class TadDataCenter
     }
 
     //儲存資料 $data[]=['name'=>$name, 'value'=>$value, 'sort'=>$sort] 需修改
-    public function saveData()
+    public function saveData($TDC = [])
     {
         global $xoopsDB;
-        $myts = \MyTextSanitizer::getInstance();
 
-        $TDC = $_POST['TDC'];
+        if (empty($TDC)) {
+            $TDC = $_POST['TDC'];
+        }
 
         $dc_op = Request::getString('dc_op');
         $sort  = 0;

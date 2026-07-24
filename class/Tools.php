@@ -778,10 +778,18 @@ class Tools
                 // Utility::dd($page);
                 foreach ($page['all_content'] as $content) {
                     if (is_array($content) and isset($content['enable']) and $content['enable'] == 1) {
-                        $sub_menu[$link_cate_name . $i]['id']      = $content['id'];
-                        $sub_menu[$link_cate_name . $i]['title']   = $content['title'];
-                        $sub_menu[$link_cate_name . $i]['url']     = XOOPS_URL . "/modules/school/index.php?department_id={$page['department_id']}&zone_id={$page['zone_id']}&page_id={$link_cate_sn}&content_id={$content['id']}&type={$page['type']}";
-                        $sub_menu[$link_cate_name . $i]['target']  = "_self";
+                        $sub_menu[$link_cate_name . $i]['id']    = $content['id'];
+                        $sub_menu[$link_cate_name . $i]['title'] = $content['title'];
+                        if ($page['type'] == 'links') {
+                            $sub_menu[$link_cate_name . $i]['url']    = $content['info']['url'];
+                            $sub_menu[$link_cate_name . $i]['target'] = "_blank";
+                        } elseif ($page['type'] == 'url') {
+                            $sub_menu[$link_cate_name . $i]['url']    = $page['info']['url'];
+                            $sub_menu[$link_cate_name . $i]['target'] = "_blank";
+                        } else {
+                            $sub_menu[$link_cate_name . $i]['url']    = XOOPS_URL . "/modules/school/index.php?department_id={$page['department_id']}&zone_id={$page['zone_id']}&page_id={$link_cate_sn}&content_id={$content['id']}&type={$page['type']}";
+                            $sub_menu[$link_cate_name . $i]['target'] = "_self";
+                        }
                         $sub_menu[$link_cate_name . $i]['icon']    = $content['info']['icon'];
                         $sub_menu[$link_cate_name . $i]['submenu'] = "";
                         $i++;
@@ -801,10 +809,18 @@ class Tools
                             if (isset($content['enable']) and $content['enable']) {
                                 $content_icon = isset($content['info']['icon']) ? $content['info']['icon'] : $page_icon;
 
-                                $submenu[$link_cate_name . $j]['id']      = $j;
-                                $submenu[$link_cate_name . $j]['title']   = $content['title'];
-                                $submenu[$link_cate_name . $j]['url']     = XOOPS_URL . "/modules/school/index.php?department_id=0&zone_id=$link_cate_sn&page_id={$page['id']}&content_id={$content['id']}&type={$page['type']}";
-                                $submenu[$link_cate_name . $j]['target']  = "_self";
+                                $submenu[$link_cate_name . $j]['id']    = $j;
+                                $submenu[$link_cate_name . $j]['title'] = $content['title'];
+                                if ($page['type'] == 'links') {
+                                    $submenu[$link_cate_name . $j]['url']    = $content['info']['url'];
+                                    $submenu[$link_cate_name . $j]['target'] = "_blank";
+                                } elseif ($page['type'] == 'url') {
+                                    $submenu[$link_cate_name . $j]['url']    = $page['info']['url'];
+                                    $submenu[$link_cate_name . $j]['target'] = "_blank";
+                                } else {
+                                    $submenu[$link_cate_name . $j]['url']    = XOOPS_URL . "/modules/school/index.php?department_id=0&zone_id=$link_cate_sn&page_id={$page['id']}&content_id={$content['id']}&type={$page['type']}";
+                                    $submenu[$link_cate_name . $j]['target'] = "_self";
+                                }
                                 $submenu[$link_cate_name . $j]['icon']    = $content_icon;
                                 $submenu[$link_cate_name . $j]['submenu'] = "";
                                 $j++;
