@@ -388,25 +388,20 @@ class Utility
     // XOOPS表單安全檢查
     public static function xoops_security_check($file = '', $line = '', $redirect_to = '')
     {
-        if (empty($file) || empty($line)) {
-            $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-            $caller    = $backtrace[1] ?? [];
+        $trace  = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+        $caller = $trace[0] ?? [];
 
-            if (empty($file) && isset($caller['file'])) {
-                $file = $caller['file'];
-            }
-            if (empty($line) && isset($caller['line'])) {
-                $line = $caller['line'];
-            }
-        }
-
+        $file = $caller['file'] ?? $file;
+        $line = $caller['line'] ?? $line;
+        $file = \str_replace('\\', '/', $file);
         if (empty($redirect_to)) {
             $redirect_to = $_SERVER['PHP_SELF'];
         }
-
-        $where = (!empty($file) || !empty($line)) ? "( $file $line )" : '';
-        if ($_SERVER['SERVER_ADDR'] != '127.0.0.1' && !$GLOBALS['xoopsSecurity']->check()) {
-            $error = implode("<br>", $GLOBALS['xoopsSecurity']->getErrors());
+        $where = (!empty($file) || !empty($line)) ? "( $file @ $line )" : '';
+        // if ($_SERVER['SERVER_ADDR'] != '127.0.0.1' && !$GLOBALS['xoopsSecurity']->check()) {
+        if (!$GLOBALS['xoopsSecurity']->check()) {
+            // $error = implode("<br>", $GLOBALS['xoopsSecurity']->getErrors());
+            $error = 'Token Validation Error ';
             redirect_header($redirect_to, 3, $error . $where);
         }
     }
@@ -836,7 +831,7 @@ class Utility
         // if ($string != '' && !preg_match('/^[a-zA-Z0-9_\p{Han}-]{1,64}$/u', $string)) {
         if ($string != '' && !preg_match('/^[a-zA-Z0-9_\p{Han}-]{1,64}$/u', $string)) {
             $trace  = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-            $caller = $trace[1] ?? [];
+            $caller = $trace[0] ?? [];
 
             $file = $caller['file'] ?? __FILE__;
             $line = $caller['line'] ?? __LINE__;
@@ -859,7 +854,7 @@ class Utility
                 !preg_match('#^/?(?!.*\.\.)[a-zA-Z0-9_.-]+(?:/[a-zA-Z0-9_.-]+)*$#', $string))
         ) {
             $trace  = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-            $caller = $trace[1] ?? [];
+            $caller = $trace[0] ?? [];
 
             $file = $caller['file'] ?? __FILE__;
             $line = $caller['line'] ?? __LINE__;

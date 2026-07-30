@@ -631,8 +631,8 @@ class TadDataCenter
         global $xoopsDB;
         $name      = Utility::check_string($name);
         $data_sort = (int) $data_sort;
-        $col_name  = Utility::check_string($col_name);
-        $col_sn    = Utility::check_string($col_sn);
+        $col_name  = $col_name ? Utility::check_string($col_name) : $this->col_name;
+        $col_sn    = $col_sn ? Utility::check_string($col_sn) : $this->col_sn;
         $and_name  = ('' != $name) ? "and `data_name`='{$name}'" : '';
         $and_sort  = ('' != $data_sort) ? "and `data_sort`='{$data_sort}'" : '';
         $col_name  = !is_null($col_name) ? $col_name : $this->col_name;
