@@ -17,7 +17,7 @@
         <div class="col-sm-12">
           <div class="input-group">
               <label for="uname" class="input-group-text"><{$lang_username|default:''}></label>
-              <input type="text" name="uname" id="uname" class="form-control" maxlength="25" value="" aria-required="true">
+              <input type="text" name="uname" id="uname" class="form-control" maxlength="25" value="" aria-required="true" placeholder="帳號必填">
           </div>
         </div>
       </div>
@@ -26,7 +26,7 @@
         <div class="col-sm-12">
           <div class="input-group">
             <label for="pass" class="input-group-text"><{$lang_password|default:''}></label>
-            <input type="password" name="pass" id="pass" class="form-control" maxlength="32" aria-required="true">
+            <input type="password" name="pass" id="pass" class="form-control" maxlength="32" aria-required="true" placeholder="密碼必填">
           </div>
         </div>
       </div>

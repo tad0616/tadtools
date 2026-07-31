@@ -16,13 +16,13 @@
 
                     <!-- 使用 Bootstrap 5 的 Floating labels -->
                     <div class="form-floating mb-3">
-                        <input type="text" name="uname" id="menu_uname" class="form-control" placeholder="<{$smarty.const.TF_USER_ID}>" required aria-required="true">
-                        <label for="menu_uname"><{$smarty.const.TF_USER_S_ID}></label>
+                        <input type="text" name="uname" id="menu_uname" class="form-control" placeholder="<{$smarty.const.TF_USER_ID}>" required aria-required="true" data-bs-toggle="tooltip" data-bs-title="帳號為必填">
+                        <label for="menu_uname"><{$smarty.const.TF_USER_S_ID}> (必填) </label>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="password" name="pass" id="menu_pass" class="form-control" placeholder="<{$smarty.const.TF_USER_PASS}>" required aria-required="true">
-                        <label for="menu_pass"><{$smarty.const.TF_USER_S_PASS}></label>
+                        <input type="password" name="pass" id="menu_pass" class="form-control" placeholder="<{$smarty.const.TF_USER_PASS}>" required aria-required="true" data-bs-toggle="tooltip" data-bs-title="密碼為必填">
+                        <label for="menu_pass"><{$smarty.const.TF_USER_S_PASS}> (必填) </label>
                     </div>
 
                     <div class="mb-3">

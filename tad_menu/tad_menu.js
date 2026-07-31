@@ -91,6 +91,15 @@ class TadMenu {
             highlight: { bgColor: '#e9ecef', borderColor: '#6c757d' },
             borderColor: '#dee2e6'
         },
+        'transparent-dark': {
+            name: '透明黑',
+            level1: { textColor: '#212529', bgColor: 'transparent', hoverBg: '#f8f9fa', fontSize: '1.1em' },
+            level2: { textColor: '#212529', bgColor: 'transparent', hoverBg: '#e9ecef', fontSize: '1em' },
+            level3: { textColor: '#495057', bgColor: 'transparent', hoverBg: '#f8f9fa', fontSize: '0.95em' },
+            accent: '#6c757d',
+            highlight: { bgColor: '#e9ecef', borderColor: '#6c757d' },
+            borderColor: '#dee2e6'
+        },
 
         'aaa-ocean-blue': {
             name: '海洋藍 AAA',
