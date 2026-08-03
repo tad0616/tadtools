@@ -10,14 +10,14 @@
     </legend>
 
     <!-- 無障礙提示區 -->
-    <div id="loginMsg" class="text-white mb-2 p-2" role="alert" aria-live="assertive" style="background-color:#910613;"></div>
+    <div id="loginMsg" class="text-white mb-2 p-2" role="alert" aria-live="assertive" aria-atomic="true" aria-relevant="text" tabindex="-1" style="background-color:#910613;"></div>
 
     <form id="loginForm" action="<{$xoops_url}>/user.php" method="post" role="form">
       <div class="form-group row mb-3">
         <div class="col-sm-12">
           <div class="input-group">
               <label for="uname" class="input-group-text"><{$lang_username|default:''}></label>
-              <input type="text" name="uname" id="uname" class="form-control" maxlength="25" value="" aria-required="true">
+              <input type="text" name="uname" id="uname" class="form-control" maxlength="25" value="" aria-required="true" aria-describedby="loginMsg" aria-invalid="false">
           </div>
         </div>
       </div>
@@ -26,7 +26,7 @@
         <div class="col-sm-12">
           <div class="input-group">
             <label for="pass" class="input-group-text"><{$lang_password|default:''}></label>
-            <input type="password" name="pass" id="pass" class="form-control" maxlength="32" aria-required="true">
+            <input type="password" name="pass" id="pass" class="form-control" maxlength="32" aria-required="true" aria-describedby="loginMsg" aria-invalid="false">
           </div>
         </div>
       </div>
@@ -63,34 +63,39 @@ document.addEventListener("DOMContentLoaded", function() {
   const form = document.getElementById("loginForm");
   const msg  = document.getElementById("loginMsg");
 
+  function showLoginMessage(text, targetField) {
+    msg.textContent = "";
+    msg.classList.remove("active");
+    msg.setAttribute("aria-hidden", "true");
+
+    window.setTimeout(function () {
+      msg.textContent = text;
+      msg.classList.add("active");
+      msg.removeAttribute("aria-hidden");
+      window.setTimeout(function () {
+        if (targetField) {
+          targetField.focus();
+        }
+      }, 80);
+    }, 60);
+  }
+
   form.addEventListener("submit", function(e){
 
-    msg.textContent = "";
-
-    // 確保沒有舊的錯誤訊息
-    msg.classList.remove("active");
+    uname.setAttribute("aria-invalid", "false");
+    pass.setAttribute("aria-invalid", "false");
 
     if(uname.value.trim() === ""){
         e.preventDefault();
-        msg.textContent = "請輸入帳號";
-        // 添加active類以確保讀屏軟體識別變化
-        msg.classList.add("active");
-        // 短暫延遲以確保讀屏軟體能識別到內容變化
-        setTimeout(() => {
-            uname.focus();
-        }, 100);
+        uname.setAttribute("aria-invalid", "true");
+        showLoginMessage("請輸入帳號", uname);
         return false;
     }
 
     if(pass.value.trim() === ""){
         e.preventDefault();
-        msg.textContent = "請輸入密碼";
-        // 添加active類以確保讀屏軟體識別變化
-        msg.classList.add("active");
-        // 短暫延遲以確保讀屏軟體能識別到內容變化
-        setTimeout(() => {
-            pass.focus();
-        }, 100);
+        pass.setAttribute("aria-invalid", "true");
+        showLoginMessage("請輸入密碼", pass);
         return false;
     }
 

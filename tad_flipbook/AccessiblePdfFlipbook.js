@@ -107,6 +107,7 @@
 
       this._containerRef = options.container;
       this._pdfUrl = options.pdfUrl;
+      this._downloadFileName = options.downloadFileName || options.filename || options.downloadName || options.attachmentTitle || options.attachmentName || options.fileName || options.title || options.pdfFileName || null;
       this._language = options.language || 'zh-Hant';
       this._enableKeyboard = options.enableKeyboard !== false;
       this._enableSR = options.enableScreenReaderAnnouncements !== false;
@@ -207,7 +208,7 @@
 
       this._setBusy(true);
       this._announce(this._msg.loading);
-      this._downloadLink.href = pdfUrl;
+      this._setDownloadLink(pdfUrl);
       this._pageSize = { width: 0, height: 0 };
 
       try {
@@ -473,6 +474,67 @@
      * DOM 建構
      * ================================================================ */
 
+    _setDownloadLink(pdfUrl) {
+      if (!this._downloadLink) return;
+      this._downloadLink.href = pdfUrl;
+      const fileName = this._getDownloadFileName(pdfUrl);
+      this._downloadLink.setAttribute('download', fileName);
+      this._downloadLink.setAttribute('data-download-name', fileName);
+    }
+
+    _getDownloadFileName(pdfUrl) {
+      const explicit = this._downloadFileName
+        || this._container?.dataset?.downloadName
+        || this._container?.dataset?.fileName
+        || this._container?.dataset?.attachmentName
+        || this._container?.dataset?.attachmentTitle
+        || this._container?.getAttribute?.('data-download-name')
+        || this._container?.getAttribute?.('data-file-name')
+        || this._container?.getAttribute?.('data-attachment-name')
+        || this._container?.getAttribute?.('data-attachment-title');
+      if (explicit) {
+        return this._sanitizeDownloadFileName(explicit);
+      }
+
+      const titleCandidate = (typeof document !== 'undefined' && document.title)
+        ? document.title.trim()
+        : '';
+      const attachmentCandidate = this._container?.dataset?.title
+        || this._container?.getAttribute?.('data-title')
+        || this._container?.dataset?.name
+        || this._container?.getAttribute?.('data-name')
+        || '';
+      const urlCandidate = this._getUrlBaseName(pdfUrl);
+      const source = attachmentCandidate || titleCandidate || urlCandidate || 'document';
+      const baseName = source.replace(/\.(pdf)$/i, '').trim();
+      return this._sanitizeDownloadFileName(baseName || 'document');
+    }
+
+    _getUrlBaseName(url) {
+      if (!url) return '';
+      try {
+        const parsed = new URL(url, window.location.href);
+        const pathname = parsed.pathname || '';
+        const parts = pathname.split('/').filter(Boolean);
+        return parts.length ? parts[parts.length - 1] : '';
+      } catch (_) {
+        return String(url).split('/').filter(Boolean).pop() || '';
+      }
+    }
+
+    _sanitizeDownloadFileName(name) {
+      const clean = String(name || 'document')
+        .replace(/[\\/]+/g, '-')
+        .replace(/[\s]+/g, '-')
+        .replace(/[^\w\u4e00-\u9fff\-\.]+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '')
+        .trim();
+
+      const base = clean || 'document';
+      return /\.pdf$/i.test(base) ? base : `${base}.pdf`;
+    }
+
     _buildDom() {
       const c = this._container;
       const msg = this._msg;
@@ -492,7 +554,7 @@
       /* --- 替代內容:原始 PDF 連結 --- */
       const altBar = el('div', { class: 'apf-altbar' });
       this._downloadLink = el('a', {
-        class: 'apf-download', href: this._pdfUrl, download: ''
+        class: 'apf-download', href: this._pdfUrl, download: this._getDownloadFileName(this._pdfUrl)
       }, msg.downloadLink);
       const notice = el('p', { class: 'apf-notice' }, msg.canvasNotice);
       altBar.append(this._downloadLink, notice);
