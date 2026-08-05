@@ -1,4 +1,4 @@
-﻿CKEDITOR.plugins.setLang( 'syntaxhighlight', 'zh-cn', {
+CKEDITOR.plugins.setLang( 'syntaxhighlight', 'zh-cn', {
 	title:'插入代码',
 	contextTitle:'编辑源代码',
 	sourceTab:'源代码',

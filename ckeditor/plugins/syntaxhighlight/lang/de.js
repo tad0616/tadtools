@@ -1,4 +1,4 @@
-﻿CKEDITOR.plugins.setLang('syntaxhighlight', 'de', {
+CKEDITOR.plugins.setLang('syntaxhighlight', 'de', {
 	title:'Einen Quelltextabschnitt einfügen oder aktualisieren',
 	contextTitle:'Quelltext bearbeiten',
 	sourceTab:'Quelltext',

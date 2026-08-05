@@ -1,4 +1,4 @@
-﻿/*
+/*
  * My97 DatePicker 4.8.5
  * License: http://www.my97.net/license.asp
  */

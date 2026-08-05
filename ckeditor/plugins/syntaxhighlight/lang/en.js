@@ -1,4 +1,4 @@
-﻿CKEDITOR.plugins.setLang('syntaxhighlight', 'en', {
+CKEDITOR.plugins.setLang('syntaxhighlight', 'en', {
 	title:'Add or update a code snippet',
 	contextTitle:'Edit source code',
 	sourceTab:'Source code',
