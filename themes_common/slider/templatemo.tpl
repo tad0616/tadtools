@@ -25,7 +25,8 @@ $(function(){
             <div id="nivoSlider" class="nivoSlider">
                 <{foreach from=$slider_var item=slide}>
                     <{if $slide.slide_url|default:false}>
-                        <a href="<{$slide.slide_url}>" <{$slide.slide_target}>>
+                        <a href="<{$slide.slide_url}>" <{$slide.slide_target}> <{$slide.slide_title}> <{if $slide.slide_url==$xoops_url}>title="點此回首頁"<{/if}>
+                        >
                             <img src="<{$slide.file_url}>" alt="Slider" title="<{$slide.description}>">
                         </a>
                     <{else}>

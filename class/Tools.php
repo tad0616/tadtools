@@ -774,7 +774,7 @@ class Tools
 
             case "school_page":
                 $link_cate_sn = (int) $link_cate_sn;
-                $page         = School_page::get(['id' => $link_cate_sn, 'enable' => 1], ['all_content']);
+                $page         = School_page::get(['id' => $link_cate_sn, 'enable' => 1], ['all_content', 'no-file']);
                 // Utility::dd($page);
                 foreach ($page['all_content'] as $content) {
                     if (is_array($content) and isset($content['enable']) and $content['enable'] == 1) {
@@ -800,40 +800,42 @@ class Tools
             case "school_zone":
                 $zone     = School_zone::get(['enable' => 1, 'id' => $link_cate_sn], ['all_page']);
                 $sub_menu = [];
-                foreach ($zone['all_page'] as $page) {
-                    if ($page['enable'] == 1) {
-                        $page_icon = isset($page['info']['icon']) ? $page['info']['icon'] : "fa-solid fa-caret-right";
-                        $submenu   = [];
-                        $j         = 0;
-                        foreach ($page['all_content'] as $content) {
-                            if (isset($content['enable']) and $content['enable']) {
-                                $content_icon = isset($content['info']['icon']) ? $content['info']['icon'] : $page_icon;
+                if (isset($zone['all_page']) && is_array($zone['all_page'])) {
+                    foreach ($zone['all_page'] as $page) {
+                        if ($page['enable'] == 1) {
+                            $page_icon = isset($page['info']['icon']) ? $page['info']['icon'] : "fa-solid fa-caret-right";
+                            $submenu   = [];
+                            $j         = 0;
+                            foreach ($page['all_content'] as $content) {
+                                if (isset($content['enable']) and $content['enable']) {
+                                    $content_icon = isset($content['info']['icon']) ? $content['info']['icon'] : $page_icon;
 
-                                $submenu[$link_cate_name . $j]['id']    = $j;
-                                $submenu[$link_cate_name . $j]['title'] = $content['title'];
-                                if ($page['type'] == 'links') {
-                                    $submenu[$link_cate_name . $j]['url']    = $content['info']['url'];
-                                    $submenu[$link_cate_name . $j]['target'] = "_blank";
-                                } elseif ($page['type'] == 'url') {
-                                    $submenu[$link_cate_name . $j]['url']    = $page['info']['url'];
-                                    $submenu[$link_cate_name . $j]['target'] = "_blank";
-                                } else {
-                                    $submenu[$link_cate_name . $j]['url']    = XOOPS_URL . "/modules/school/index.php?department_id=0&zone_id=$link_cate_sn&page_id={$page['id']}&content_id={$content['id']}&type={$page['type']}";
-                                    $submenu[$link_cate_name . $j]['target'] = "_self";
+                                    $submenu[$link_cate_name . $j]['id']    = $j;
+                                    $submenu[$link_cate_name . $j]['title'] = $content['title'];
+                                    if ($page['type'] == 'links') {
+                                        $submenu[$link_cate_name . $j]['url']    = $content['info']['url'];
+                                        $submenu[$link_cate_name . $j]['target'] = "_blank";
+                                    } elseif ($page['type'] == 'url') {
+                                        $submenu[$link_cate_name . $j]['url']    = $page['info']['url'];
+                                        $submenu[$link_cate_name . $j]['target'] = "_blank";
+                                    } else {
+                                        $submenu[$link_cate_name . $j]['url']    = XOOPS_URL . "/modules/school/index.php?department_id=0&zone_id=$link_cate_sn&page_id={$page['id']}&content_id={$content['id']}&type={$page['type']}";
+                                        $submenu[$link_cate_name . $j]['target'] = "_self";
+                                    }
+                                    $submenu[$link_cate_name . $j]['icon']    = $content_icon;
+                                    $submenu[$link_cate_name . $j]['submenu'] = "";
+                                    $j++;
                                 }
-                                $submenu[$link_cate_name . $j]['icon']    = $content_icon;
-                                $submenu[$link_cate_name . $j]['submenu'] = "";
-                                $j++;
                             }
-                        }
 
-                        $sub_menu[$link_cate_name . $i]['id']      = $j;
-                        $sub_menu[$link_cate_name . $i]['title']   = $page['title'];
-                        $sub_menu[$link_cate_name . $i]['url']     = XOOPS_URL . "/modules/school/index.php?department_id=0&zone_id=$link_cate_sn&page_id={$page['id']}&type={$page['type']}";
-                        $sub_menu[$link_cate_name . $i]['target']  = "_self";
-                        $sub_menu[$link_cate_name . $i]['icon']    = $page_icon;
-                        $sub_menu[$link_cate_name . $i]['submenu'] = $submenu;
-                        $i++;
+                            $sub_menu[$link_cate_name . $i]['id']      = $j;
+                            $sub_menu[$link_cate_name . $i]['title']   = $page['title'];
+                            $sub_menu[$link_cate_name . $i]['url']     = XOOPS_URL . "/modules/school/index.php?department_id=0&zone_id=$link_cate_sn&page_id={$page['id']}&type={$page['type']}";
+                            $sub_menu[$link_cate_name . $i]['target']  = "_self";
+                            $sub_menu[$link_cate_name . $i]['icon']    = $page_icon;
+                            $sub_menu[$link_cate_name . $i]['submenu'] = $submenu;
+                            $i++;
+                        }
                     }
                 }
 
@@ -1310,9 +1312,15 @@ class Tools
                     $url = XOOPS_URL;
                 }
 
+                $slide_title = "";
+                if ($url == XOOPS_URL) {
+
+                    $slide_title = "點此回首頁";
+                }
                 if (strpos($description, 'url_blank') !== false) {
                     $description = str_replace("[url_blank]{$url}[/url_blank]", "", $description);
                     $target      = "target='_blank'";
+                    $slide_title .= " (另開新視窗)";
                 } else {
                     $description = str_replace("[url]{$url}[/url]", "", $description);
                     $target      = "";
@@ -1329,6 +1337,7 @@ class Tools
                 $slider_var[$i]['file_thumb_url']    = XOOPS_URL . "/uploads/tad_themes{$sub_dir}/thumbs/{$file_name}";
                 $slider_var[$i]['slide_url']         = $url;
                 $slider_var[$i]['slide_target']      = $target;
+                $slider_var[$i]['slide_title']       = $slide_title;
                 $i++;
             }
         }

@@ -19,7 +19,7 @@ $(function(){
         <ul class="slider-holder">
             <{foreach from=$slider_var item=slide}>
                 <li id="a<{$slide.sort}>">
-                    <a href="<{$slide.slide_url}>" <{$slide.slide_target}>>
+                    <a href="<{$slide.slide_url}>" <{$slide.slide_target}> rel="noopener noreferrer" <{if $slide.slide_title}>title="<{$slide.slide_title}>"<{/if}>>
                         <img src="<{$slide.file_url}>" alt="<{$slide.text_description}>">
                     </a>
                 </li>

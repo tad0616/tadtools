@@ -83,13 +83,13 @@
         <{foreach from=$slider_var key=i item=slide}>
         <li>
             <{if $slide.slide_url|default:false}>
-                <a href="<{$slide.slide_url}>" <{$slide.slide_target}>><img src="<{$slide.file_url}>" alt="<{$slide.description|default:''}>"></a>
+                 <a href="<{$slide.slide_url}>" <{$slide.slide_target}> rel="noopener noreferrer" <{if $slide.slide_title}>title="<{$slide.slide_title}>"<{/if}>><img src="<{$slide.file_url}>" alt="<{$slide.description|default:''}>"></a>
             <{else}>
                 <img src="<{$slide.file_url}>" alt="<{$slide.description|default:''}>">
             <{/if}>
             <{if $slide.description|default:false}>
                 <div class="caption">
-                    <a href="<{$slide.slide_url}>" <{$slide.slide_target}>>
+                     <a href="<{$slide.slide_url}>" <{$slide.slide_target}> rel="noopener noreferrer" <{if $slide.slide_title}>title="<{$slide.slide_title}>"<{/if}>>
                         <div class="caption">
                             <div style="font-size:1rem;"><{$slide.description}></div>
                         </div>

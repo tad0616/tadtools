@@ -4,7 +4,7 @@
 <div style="padding:0px;margin:0px;">
     <div id="SliderName_3" class="SliderName_3" style="padding:0px;margin:0px; width: 100%;">
         <{foreach from=$slider_var item=slide}>
-            <a href="<{$slide.slide_url}>" <{$slide.slide_target}>><img src="<{$slide.file_url}>" alt="<{$slide.text_description}>" title="<{$slide.text_description}>"></a>
+             <a href="<{$slide.slide_url}>" <{$slide.slide_target}> rel="noopener noreferrer" <{if $slide.slide_title}>title="<{$slide.slide_title}>"<{/if}>><img src="<{$slide.file_url}>" alt="<{$slide.text_description}>" title="<{$slide.text_description}>"></a>
             <div class="SliderName_3Description"><{$slide.description}></div>
         <{/foreach}>
     </div>

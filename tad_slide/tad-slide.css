@@ -579,14 +579,6 @@
     padding: 0.25rem 0.5rem;
   }
 
-  /* 確保加粗 */
-  .tad-slide--nav-sides .tad-slide__arrow {
-    width: 52px;
-    height: 52px;
-    background-size: 40px 40px;
-    background-color: rgba(0, 0, 0, 0.6);
-    /* 確保小屏幕上也有足夠對比度 */
-  }
 }
 
 /* ── 螢幕閱讀器專用隱藏 ── */
@@ -600,6 +592,78 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+/* ============================================
+   高倍放大／窄視口重排（WCAG 1.4.10 Reflow）
+   視口 ≤ 480px（含 400% 縮放後的等效寬度）時，
+   浮動控制元件改為文件流排版，不再覆蓋圖片
+   ============================================ */
+@media (max-width: 480px) {
+
+  /* ── 暫停／播放鈕：改為圖片上方整幅按鈕列 ── */
+  .tad-slide--nav-sides .tad-slide__pause-float,
+  .tad-slide--nav-none .tad-slide__pause-float {
+    position: static;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 44px;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    background: #121212;
+    color: #ffffff;
+    opacity: 1;
+  }
+
+  .tad-slide--nav-sides .tad-slide__pause-float[data-playing="false"],
+  .tad-slide--nav-none .tad-slide__pause-float[data-playing="false"] {
+    background: #1a7740;
+    color: #ffffff;
+  }
+
+  /* ── 左右箭頭：改為圖片下方並排按鈕列，且恆常可見 ── */
+  .tad-slide--nav-sides .tad-slide__arrow {
+    position: static;
+    transform: none;
+    opacity: 1;              /* 不再依賴 hover 顯示 */
+    width: 50%;
+    min-width: 0;
+    height: 56px;
+    min-height: 44px;
+    margin: 0;
+    border-radius: 0;
+    background-color: #121212;
+    background-size: 40px 40px;
+    filter: none;
+  }
+
+  /* 靜態排版下取消 hover 位移，避免版面跳動 */
+  .tad-slide--nav-sides .tad-slide__arrow--prev:hover,
+  .tad-slide--nav-sides .tad-slide__arrow--next:hover {
+    transform: none;
+    background-color: #2a2a2a;
+  }
+
+  /* 容器 overflow:hidden 會裁掉外擴 outline，改為內縮 */
+  .tad-slide--nav-sides .tad-slide__arrow:focus-visible {
+    outline-offset: -4px;
+  }
+
+  /* ── 說明文字：脫離圖片，改為靜態排版 ── */
+  .tad-slide__caption {
+    position: static;
+    background: #121212;
+  }
+
+  /* ── bottom 模式：控制列允許換行，避免水平捲軸 ── */
+  .tad-slide--nav-bottom .tad-slide__controls-bar,
+  .tad-slide--nav-bottom .tad-slide__pager {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }
 
 /* ============================================

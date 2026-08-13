@@ -46,7 +46,8 @@
             slideText: '第 %d 張，共 %t 張',
             pauseText: '暫停自動播放',
             playText: '開始自動播放',
-            carouselLabel: '輪播區域'
+            carouselLabel: '輪播區域',
+            dotsHint: '使用左右方向鍵可切換不同輪播頁'  // ← 新增
         },
 
         // 回呼函式
@@ -256,12 +257,24 @@
             dotsContainer.className = 'tad-carousel__dots';
             dotsContainer.setAttribute('aria-label', '投影片選擇');
 
+            // ── 新增：建立操作說明（視覺隱藏，讀屏可讀）─────────────
+            var hintId = 'tad-carousel-dots-hint-' +
+                Math.random().toString(36).slice(2, 9);
+            var hint = document.createElement('span');
+            hint.className = 'tad-carousel__live-region'; // 沿用既有的視覺隱藏樣式
+            hint.id = hintId;
+            hint.textContent = options.a11y.dotsHint;
+            element.appendChild(hint);
+            this.dom.dotsHint = hint;
+            // ────────────────────────────────────────────────────────
+
             for (var i = 0; i < pageCount; i++) {
                 var dot = document.createElement('button');
                 dot.type = 'button';
                 dot.className = 'tad-carousel__dot';
                 dot.setAttribute('aria-current', i === state.currentIndex ? 'true' : 'false');
                 dot.setAttribute('aria-label', formatText(options.a11y.dotText, i + 1));
+                dot.setAttribute('aria-describedby', hintId); // ← 每顆圓點都關聯說明
                 dot.setAttribute('tabindex', i === state.currentIndex ? '0' : '-1');
                 dot.setAttribute('data-index', i);
                 dotsContainer.appendChild(dot);
@@ -515,13 +528,13 @@
                 case 'ArrowLeft':
                 case 'ArrowUp':
                     e.preventDefault();
-                    e.stopPropagation(); // 阻止冒泡至 _handleKeydown，避免再次呼叫 prev() 造成多跳一頁
+                    e.stopPropagation();
                     newIndex = index > 0 ? index - 1 : dots.length - 1;
                     break;
                 case 'ArrowRight':
                 case 'ArrowDown':
                     e.preventDefault();
-                    e.stopPropagation(); // 阻止冒泡至 _handleKeydown，避免再次呼叫 next() 造成多跳一頁
+                    e.stopPropagation();
                     newIndex = index < dots.length - 1 ? index + 1 : 0;
                     break;
                 case 'Home':
@@ -538,8 +551,13 @@
                     return;
             }
 
-            dots[newIndex].focus();
+            // ── 修正重點 ──────────────────────────────────────────────
+            // 1. 先切換頁面 → _updateDotsState 會把 newIndex 的圓點設為 tabindex="0"
+            // 2. 再將焦點移至該圓點（此時它已是可聚焦狀態）
+            // 若順序相反，focus() 會落在仍為 tabindex="-1" 的元素上而靜默失敗。
             this.goTo(newIndex);
+            this.dom.dots[newIndex].focus();
+            // ──────────────────────────────────────────────────────────
         },
 
         // ----- 響應式 -----
@@ -617,6 +635,10 @@
                             dot.setAttribute('aria-current', index === state.currentIndex ? 'true' : 'false');
                             dot.setAttribute('aria-label', formatText(options.a11y.dotText, index + 1));
                             dot.setAttribute('tabindex', index === state.currentIndex ? '0' : '-1');
+                            if (self.dom.dotsHint) {
+                                dot.setAttribute('aria-describedby', self.dom.dotsHint.id);
+                            }
+
                             dot.addEventListener('click', function () {
                                 self.goTo(index);
                             });

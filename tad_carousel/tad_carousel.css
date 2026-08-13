@@ -151,7 +151,7 @@
     outline-offset: var(--tad-carousel-focus-offset);
 }
 
-.tad-carousel__dot[aria-selected="true"],
+.tad-carousel__dot[aria-current="true"],
 .tad-carousel__dot.is-active {
     background: var(--tad-carousel-dot-active);
 }
@@ -172,7 +172,7 @@
 /* ===== 暫停/播放按鈕 =====
  * WCAG 2.4.3 焦點順序：此按鈕為輪播內第一個焦點位置，
  * 視覺位置移至右上角，與「由上而下」的鍵盤遊走順序一致。
- */ 
+ */
 .tad-carousel__autoplay-toggle {
     position: absolute;
     top: 0.5rem;

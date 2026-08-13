@@ -185,6 +185,7 @@ class TadUpFiles
     public $desc_height     = 140;
     public $background_size = 'contain';
     public $show_number     = false;
+    public $album_title;
 
     public $showFancyBox = true;
     public $download_url = '';
@@ -2119,7 +2120,9 @@ class TadUpFiles
                         $show_description_txt = (string) ($show_dl_txt);
                     }
 
-                    $description = $this->show_number ? "{$this->thumb_title}圖{$i}/{$file_arr_amount}" : $description;
+                    $wcag_txt = $i == 1 ? " ({$this->album_title}照片，共{$file_arr_amount}張)" : '';
+
+                    $description = $this->show_number ? "{$this->thumb_title}圖{$i}/{$file_arr_amount}{$wcag_txt}" : $description;
 
                     $w   = (int) $this->show_width;
                     $h   = (int) $this->show_height;
@@ -2800,7 +2803,7 @@ class TadUpFiles
             'mp2'          => ['audio/mpeg', 'audio/x-mpeg', 'video/mpeg', 'video/x-mpeg', 'video/x-mpeq2a'],
             'mp21'         => ['application/mp21'],
             'mp2a'         => ['audio/mpeg'],
-            'mp3'          => ['audio/mpeg3', 'audio/x-mpeg-3', 'video/mpeg', 'video/x-mpeg'],
+            'mp3'          => ['audio/mpeg', 'audio/mpeg3', 'audio/x-mpeg-3', 'video/mpeg', 'video/x-mpeg'],
             'mp4'          => ['video/mp4'],
             'mp4a'         => ['audio/mp4'],
             'mp4s'         => ['application/mp4'],
