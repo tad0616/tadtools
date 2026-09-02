@@ -288,7 +288,7 @@
 			o.log.apply(this.element, [this.element, message, o]);
 		},
 
-				render: function (n) {
+		render: function (n) {
 			var self = this;
 			var message = n.message;
 			var o = n.options;
@@ -320,17 +320,19 @@
 					'role': o.sticky ? 'alertdialog' : 'status',
 					'aria-live': o.sticky ? 'assertive' : 'polite',
 					'aria-modal': o.sticky ? 'true' : 'false',
-					'tabindex': o.sticky ? '-1' : '0',
+					'tabindex': '-1',
 					'aria-labelledby': o.header ? headerId : undefined,
 					// ✅ aria-describedby 同時串接訊息區塊與鍵盤提示，讓螢幕報讀器一次唸出
 					'aria-describedby': messageId + ' ' + keyHintId,
 					'aria-label': (!o.header && o.sticky) ? '系統訊息' : undefined
 				})
 				.append($('<button/>').addClass('jGrowl-close').attr({
+					'type': 'button',
 					'aria-label': '關閉通知',
 					'tabindex': '0',
 					'title': '關閉通知'
 				}).html(o.closeTemplate))
+
 				.append($('<div/>').addClass('jGrowl-header').attr('id', headerId).html(o.header))
 				.append($('<div/>').addClass('jGrowl-message').attr('id', messageId).html(message))
 				// ✅ 將鍵盤提示區塊插入通知框（視覺隱藏，螢幕報讀器可讀）
@@ -419,24 +421,76 @@
 
 					var first = focusable.first();
 					var last = focusable.last();
+					var trapTarget = first.length ? first : $notif;
+					trapTarget.focus();
 
-					(first.length ? first : $notif).focus();
+					var trapHandler = function (e) {
+						// Esc 關閉對話框
+						if (e.key === 'Escape' || e.keyCode === 27) {
+							e.preventDefault();
+							$notif.trigger('jGrowl.beforeClose');
+							return;
+						}
 
-					$notif.on('keydown.jGrowlTrap', function (e) {
-						if (e.key === 'Tab') {
-							if (e.shiftKey) {
-								if (document.activeElement === first[0]) {
-									e.preventDefault();
-									last.focus();
-								}
-							} else {
-								if (document.activeElement === last[0]) {
-									e.preventDefault();
-									first.focus();
-								}
+						// 只處理 Tab / Shift + Tab
+						if (e.key !== 'Tab' && e.keyCode !== 9) {
+							return;
+						}
+
+						var activeElement = document.activeElement;
+
+						// 取得對話框內可用 Tab 聚焦的可見元素
+						var $focusable = $notif.find(
+							'a[href]:not([tabindex="-1"]), ' +
+							'button:not(:disabled):not([tabindex="-1"]), ' +
+							'input:not(:disabled):not([type="hidden"]):not([tabindex="-1"]), ' +
+							'select:not(:disabled):not([tabindex="-1"]), ' +
+							'textarea:not(:disabled):not([tabindex="-1"]), ' +
+							'[tabindex]:not([tabindex="-1"])'
+						).filter(':visible');
+
+						// 避免把對話框本身重複加入
+						$focusable = $focusable.not($notif);
+
+						// 只讓真正可操作元素進入 Tab 循環；
+						// 若沒有任何可操作元素，才讓對話框本身接焦點
+						var focusableNodes = $focusable.length ? $focusable : $notif;
+
+						if (!focusableNodes.length) {
+							e.preventDefault();
+							$notif.focus();
+							return;
+						}
+
+						var first = focusableNodes.first()[0];
+						var last = focusableNodes.last()[0];
+
+						// 如果目前焦點已經跑出對話框，拉回第一個焦點
+						if (activeElement !== $notif[0] && !$.contains($notif[0], activeElement)) {
+							e.preventDefault();
+							$(first).focus();
+							return;
+						}
+
+						// Shift + Tab：第一個往前時，回到最後一個
+						if (e.shiftKey) {
+							if (activeElement === first) {
+								e.preventDefault();
+								$(last).focus();
 							}
 						}
-					});
+						// Tab：最後一個往後時，回到第一個
+						else {
+							if (activeElement === last) {
+								e.preventDefault();
+								$(first).focus();
+							}
+						}
+					};
+
+					$notif.on('keydown.jGrowlTrap', trapHandler);
+					$notif.data('jGrowlTrapHandler', trapHandler);
+					document.addEventListener('keydown', trapHandler, true);
 
 					$notif.data("jGrowl.pause", true);
 				} else {
@@ -451,6 +505,11 @@
 			}).bind('jGrowl.close', function () {
 				// ⭐ 移除 focus trap
 				$(this).off('keydown.jGrowlTrap');
+				var trapHandler = $(this).data('jGrowlTrapHandler');
+				if (trapHandler) {
+					document.removeEventListener('keydown', trapHandler, true);
+					$(this).removeData('jGrowlTrapHandler');
+				}
 				// Pause the notification, lest during the course of animation another close event gets called.
 				$(this).data('jGrowl.pause', true);
 				$(this).animate(o.animateClose, o.closeDuration, o.easing, function () {

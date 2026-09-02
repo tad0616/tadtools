@@ -15,16 +15,16 @@
         <{foreach from=$submenu item=sub}>
             <li role="none">
                 <{if $sub.submenu|default:false}>
-                    <{include file="$xoops_rootpath/modules/tadtools/themes5_tpl/tad_menu_sub.tpl" sub_title=$sub.title submenu=$sub.submenu}>
+                    <{include file="$xoops_rootpath/modules/tadtools/themes5_tpl/tad_menu_sub.tpl" icon=$sub.icon img=$sub.img sub_title=$sub.title submenu=$sub.submenu}>
                 <{else}>
                     <a href="<{if $sub.url != ''}><{if $sub.target == 'popup'}>javascript:tad_themes_popup('<{$sub.url}>');<{else}><{$sub.url}><{/if}><{else}>#<{/if}>"
-                       role="menuitem"
-                       <{if $sub.url != '' && $sub.target != 'popup'}>
-                           target="<{$sub.target}>"
-                           <{if $sub.target == '_blank'}>
-                               title="另開新視窗<{if $sub.url|substr:-4 == '.pdf'}>(PDF格式)<{/if}>"
-                           <{/if}>
-                       <{/if}>>
+                        role="menuitem"
+                        <{if $sub.url != '' && $sub.target != 'popup'}>
+                            target="<{$sub.target}>"
+                            <{if $sub.target == '_blank'}>
+                                title="另開新視窗<{if $sub.url|substr:-4 == '.pdf'}>(PDF格式)<{/if}>"
+                            <{/if}>
+                        <{/if}>>
                         <{if $sub.img|default:false}>
                             <img src="<{$sub.img}>" alt="">
                         <{elseif $sub.icon|default:false}>

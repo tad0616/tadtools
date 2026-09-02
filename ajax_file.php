@@ -30,9 +30,11 @@ switch ($op) {
         Utility::del_theme_json();
         $referer = $_SERVER['HTTP_REFERER'] ?? '';
         if (strpos($referer, XOOPS_URL) === 0) {
-            header("location:{$referer}");
+            // header("location:{$referer}");
+            redirect_header($referer, 3, "已重取佈景設定！");
         } else {
-            header("location:" . XOOPS_URL);
+            // header("location:" . XOOPS_URL);
+            redirect_header(XOOPS_URL, 3, "已重取佈景設定！");
         }
         exit;
 

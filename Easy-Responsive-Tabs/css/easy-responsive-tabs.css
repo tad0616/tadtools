@@ -7,8 +7,8 @@ ul.resp-tabs-list, p {
     font-weight: 600;
     font-size: 0.8125em;
     display: inline-block;
-    padding: 13px 15px;
-    margin: 0px;
+    padding: 10px 15px;
+    margin: 0px 2px;
     list-style: none;
     cursor: pointer;
 }

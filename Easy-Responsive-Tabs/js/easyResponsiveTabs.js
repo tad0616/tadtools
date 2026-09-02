@@ -13,9 +13,9 @@
                 closed: false,
                 tabidentify: '',
                 activetab_bg: 'white',
-                inactive_bg: '#F5F5F5',
-                active_border_color: '#c1c1c1',
-                active_content_border_color: '#c1c1c1',
+                inactive_bg: '#d0d2d4',
+                active_border_color: '#20356e',
+                active_content_border_color: '#661414',
                 activate: function () {
                 }
             };

@@ -1,19 +1,16 @@
-<link rel="stylesheet" href="<{$xoops_url}>/modules/tadtools/tad_nav/tadnav.css?t=20260528">
+<link rel="stylesheet" href="<{$xoops_url}>/modules/tadtools/tad_nav/tadnav.css?t=20260818">
 
 <script>
     function tad_themes_popup(URL) {
         $.colorbox({iframe:true, width:"80%", height:"90%",href : URL});
     }
 </script>
+
 <!-- <{$navbar_pos|default:''}> -->
+<{if !$hide_accesskey|default:false}>
+<a accesskey="U" href="#main-menu" id="xoops_theme_nav_key" class="tadnav-skip" aria-label="跳到導覽工具列">:::</a>
+<{/if}>
 <nav class="tadnav-wrapper" role="navigation" id="main-nav" aria-label="<{$smarty.const._TAD_O_NAV_ZONE|default:'導覽工具列'}>">
-    <{if !$hide_accesskey|default:false}>
-    <a accesskey="U" href="#main-nav-skip" id="xoops_theme_nav_key" class="sr-only-focusable" aria-label="跳到<{$smarty.const._TAD_O_NAV_ZONE|default:'導覽工具列'}>">:::</a>
-    <{/if}>
-    <{* 便捷鍵定位點：tabindex="-1" 讓焦點可程式化移入，
-        aria-label 提供簡短說明供螢幕報讀器播報，
-        避免焦點落在 nav 容器而導致 AT 朗讀整個導覽列 *}>
-    <span id="main-nav-skip" tabindex="-1" aria-label="<{$smarty.const._TAD_O_NAV_ZONE|default:'導覽工具列'}>" style="position:absolute;width:0;height:0;overflow:hidden;"></span>
     <div class="tadnav-inner">
         <{if $show_sitename !='2' }>
             <div class="tadnav-brand">
@@ -81,8 +78,9 @@
                 </li>
             <{else}>
                 <li role="none">
-                    <a href="<{$xoops_url}>/modules/tadtools/ajax_file.php?op=remove_json" role="menuitem" title="重取佈景設定">
-                        <i class="fa fa-refresh" aria-hidden="true"></i><span class="sr-only visually-hidden">重新取得佈景設定</span>
+                    <a href="<{$xoops_url}>/modules/tadtools/ajax_file.php?op=remove_json" role="menuitem">
+                        <i class="fa fa-refresh" aria-hidden="true"></i>
+                        重取佈景設定
                     </a>
                 </li>
             <{/if}>
@@ -90,7 +88,7 @@
     </div>
 </nav>
 
-<script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/tad_nav/tadnav.js?t=20260528"></script>
+<script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/tad_nav/tadnav.js?t=2026082708"></script>
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function () {
         // 或指定 click 模式

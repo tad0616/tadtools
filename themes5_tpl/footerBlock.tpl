@@ -3,7 +3,7 @@
     <h3 class="sr-only visually-hidden">頁尾區域內容</h3>
     <div class="row">
         <{if $xoBlocks.footer_left|default:false}>
-            <div class="col-xl footerLeftBlock" id="footerLeftBlock">
+            <div class="col-xl footerLeftBlock" id="footerLeftBlock dont-print">
                 <{foreach from=$xoBlocks.footer_left item=block}>
                     <{include file="$xoops_rootpath/modules/tadtools/themes_common/blockTitle.tpl"}>
                     <div class="blockContent">
@@ -15,7 +15,7 @@
 
 
         <{if $xoBlocks.footer_center|default:false}>
-            <div class="col-xl footerCenterBlock" id="footerCenterBlock">
+            <div class="col-xl footerCenterBlock" id="footerCenterBlock dont-print">
                 <{foreach from=$xoBlocks.footer_center item=block}>
                     <{include file="$xoops_rootpath/modules/tadtools/themes_common/blockTitle.tpl"}>
                     <div class="blockContent">
@@ -26,7 +26,7 @@
         <{/if}>
 
         <{if $xoBlocks.footer_right|default:false}>
-            <div class="col-xl footerRightBlock" id="footerRightBlock">
+            <div class="col-xl footerRightBlock" id="footerRightBlock dont-print">
                 <{foreach from=$xoBlocks.footer_right item=block}>
                     <{include file="$xoops_rootpath/modules/tadtools/themes_common/blockTitle.tpl"}>
                     <div class="blockContent">

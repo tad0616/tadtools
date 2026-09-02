@@ -3494,10 +3494,6 @@ class TadUpFiles
     {
         global $xoopsUser;
 
-        // if (\strpos($_SERVER['HTTP_REFERER'], XOOPS_URL) === false) {
-        //     die('請從 ' . XOOPS_URL . ' 下載檔案');
-        // }
-
         if (empty($fn)) {
             $fn = Request::getString('fn');
         }
@@ -3519,14 +3515,14 @@ class TadUpFiles
                 $groups = $xoopsUser ? $xoopsUser->getGroups() : [XOOPS_GROUP_ANONYMOUS];
 
                 if (!array_intersect($groups, $gperm_groupid_arr)) {
-                    redirect_header(XOOPS_URL, 3, _TAD_PERMISSION_DENIED);
+                    redirect_header(XOOPS_URL, 3, '無權限，不在可讀群組中');
                 }
             }
         } elseif (!empty($can_groupid)) {
         } elseif (!empty($can_uid)) {
             $now_uid = $xoopsUser ? $xoopsUser->uid() : 0;
             if (!in_array($now_uid, $can_uid)) {
-                redirect_header(XOOPS_URL, 3, _TAD_PERMISSION_DENIED);
+                redirect_header(XOOPS_URL, 3, '無權限，不在可讀使用者中');
             }
         }
         $file = $this->get_one_file($files_sn);

@@ -53,46 +53,46 @@
   "use strict";
 
   const THEME_MAP = {
-    fontFamily: "--tadnav-font-family",
-    innerMaxWidth: "--tadnav-inner-max-width",
-    navMinHeight: "--tadnav-nav-min-height",
-    navBg: "--tadnav-nav-bg",
-    navShadow: "--tadnav-nav-shadow",
-    brandColor: "--tadnav-brand-color",
-    focusColor: "--tadnav-focus-color",
-    focusShadowColor: "--tadnav-focus-shadow-color",
-    focusWidth: "--tadnav-focus-width",
-    itemColor: "--tadnav-item-color",
-    itemBg: "--tadnav-item-bg",
-    itemFontSize: "--tadnav-item-font-size",
-    itemPaddingX: "--tadnav-item-padding-x",
-    itemPaddingY: "--tadnav-item-padding-y",
-    itemHoverBg: "--tadnav-item-hover-bg",
-    itemHoverColor: "--tadnav-item-hover-color",
-    itemAccent: "--tadnav-item-accent",
-    subBg: "--tadnav-sub-bg",
-    subShadow: "--tadnav-sub-shadow",
-    subBorder: "--tadnav-sub-border",
-    subDivider: "--tadnav-sub-divider",
-    subDividerWidth: "--tadnav-sub-divider-width",
-    subMinWidth: "--tadnav-sub-min-width",
-    subScrollBtnBg: "--tadnav-scroll-btn-bg",
-    subScrollBtnHoverBg: "--tadnav-scroll-btn-hover-bg",
-    subScrollBtnColor: "--tadnav-scroll-btn-color",
-    subScrollBtnHeight: "--tadnav-scroll-btn-height",
-    subItemColor: "--tadnav-sub-item-color",
-    subItemBg: "--tadnav-sub-item-bg",
-    subItemFontSize: "--tadnav-sub-item-font-size",
-    subItemPaddingX: "--tadnav-sub-item-padding-x",
-    subItemPaddingY: "--tadnav-sub-item-padding-y",
-    subItemHoverBg: "--tadnav-sub-item-hover-bg",
-    subItemHoverColor: "--tadnav-sub-item-hover-color",
-    toggleColor: "--tadnav-toggle-color",
-    toggleHoverBg: "--tadnav-toggle-hover-bg",
-    mobileSubBg: "--tadnav-mobile-bg",
-    mobileSubBorder: "--tadnav-mobile-sub-border",
-    mobileSubColor: "--tadnav-mobile-sub-color",
-    mobileItemBorder: "--tadnav-mobile-item-border",
+    fontFamily:           "--tadnav-font-family",
+    innerMaxWidth:        "--tadnav-inner-max-width",
+    navMinHeight:         "--tadnav-nav-min-height",
+    navBg:                "--tadnav-nav-bg",
+    navShadow:            "--tadnav-nav-shadow",
+    brandColor:           "--tadnav-brand-color",
+    focusColor:           "--tadnav-focus-color",
+    focusShadowColor:     "--tadnav-focus-shadow-color",
+    focusWidth:           "--tadnav-focus-width",
+    itemColor:            "--tadnav-item-color",
+    itemBg:               "--tadnav-item-bg",
+    itemFontSize:         "--tadnav-item-font-size",
+    itemPaddingX:         "--tadnav-item-padding-x",
+    itemPaddingY:         "--tadnav-item-padding-y",
+    itemHoverBg:          "--tadnav-item-hover-bg",
+    itemHoverColor:       "--tadnav-item-hover-color",
+    itemAccent:           "--tadnav-item-accent",
+    subBg:                "--tadnav-sub-bg",
+    subShadow:            "--tadnav-sub-shadow",
+    subBorder:            "--tadnav-sub-border",
+    subDivider:           "--tadnav-sub-divider",
+    subDividerWidth:      "--tadnav-sub-divider-width",
+    subMinWidth:          "--tadnav-sub-min-width",
+    subScrollBtnBg:       "--tadnav-scroll-btn-bg",
+    subScrollBtnHoverBg:  "--tadnav-scroll-btn-hover-bg",
+    subScrollBtnColor:    "--tadnav-scroll-btn-color",
+    subScrollBtnHeight:   "--tadnav-scroll-btn-height",
+    subItemColor:         "--tadnav-sub-item-color",
+    subItemBg:            "--tadnav-sub-item-bg",
+    subItemFontSize:      "--tadnav-sub-item-font-size",
+    subItemPaddingX:      "--tadnav-sub-item-padding-x",
+    subItemPaddingY:      "--tadnav-sub-item-padding-y",
+    subItemHoverBg:       "--tadnav-sub-item-hover-bg",
+    subItemHoverColor:    "--tadnav-sub-item-hover-color",
+    toggleColor:          "--tadnav-toggle-color",
+    toggleHoverBg:        "--tadnav-toggle-hover-bg",
+    mobileSubBg:          "--tadnav-mobile-bg",
+    mobileSubBorder:      "--tadnav-mobile-sub-border",
+    mobileSubColor:       "--tadnav-mobile-sub-color",
+    mobileItemBorder:     "--tadnav-mobile-item-border",
   };
 
   class TadNav {
@@ -111,32 +111,34 @@
       }
 
       this.options = Object.assign({
-        trigger: "hover",
-        hoverClose: true,
-        hoverDelay: 200,
-        hideDelay: 300,
-        breakpoint: 768,
-        collisionDetection: true,
+        trigger:             "hover",
+        hoverClose:          true,
+        hoverDelay:          200,
+        hideDelay:           300,
+        breakpoint:          768,
+        collisionDetection:  true,
         closeOnOutsideClick: true,
-        closeOnEsc: true,
-        subScrollItems: "auto",
-        subScrollStep: 3,
-        subScrollMargin: 16,
-        topOverflow: "wrap",
-        theme: {},
-        onInit: null,
-        onOpen: null,
-        onClose: null,
-        onBreakpointChange: null,
-        onDestroy: null,
+        closeOnEsc:          true,
+        subScrollItems:      "auto",
+        subScrollStep:       3,
+        subScrollMargin:     16,
+        topOverflow:         "wrap",
+        // 手機版導覽列底色深淺設定：'dark' 用半透明黑色疊加（預設），'light' 用半透明白色疊加
+        mobileNavTheme:      "dark",
+        theme:               {},
+        onInit:              null,
+        onOpen:              null,
+        onClose:             null,
+        onBreakpointChange:  null,
+        onDestroy:           null,
       }, options);
 
-      this._hoverTimers = new Map();
-      this._eventListeners = [];
-      this._customListeners = {};
-      this._isMobile = false;
-      this._destroyed = false;
-      this._scrollStates = new Map();
+      this._hoverTimers      = new Map();
+      this._eventListeners   = [];
+      this._customListeners  = {};
+      this._isMobile         = false;
+      this._destroyed        = false;
+      this._scrollStates     = new Map();
       this._focusTrapHandler = null;
       this._lastInteractionWasKeyboard = false;
       // 程式化批次操作時暫停 aria-live 播報，避免干擾鍵盤導覽
@@ -159,6 +161,7 @@
     // =============================================
     _init() {
       this._applyTheme(this.options.theme);
+      this._applyNavTheme();           // 根據 mobileNavTheme 設定 data-nav-theme 屬性
       this._createLiveRegion();
       this._markRightItems();
       this._setupARIA();
@@ -198,9 +201,9 @@
       if (this._isMobile) return;
       if (this._scrollStates.has(sub)) return;
 
-      const subRect = sub.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const margin = this.options.subScrollMargin;
+      const subRect   = sub.getBoundingClientRect();
+      const vh        = window.innerHeight;
+      const margin    = this.options.subScrollMargin;
       const overflows = subRect.bottom > vh - margin;
 
       if (this.options.subScrollItems === "auto") {
@@ -260,28 +263,28 @@
         this._applySubScroll(sub);
       };
 
-      const onUpClick = () => scroll("up");
+      const onUpClick   = () => scroll("up");
       const onDownClick = () => scroll("down");
-      const onUpKey = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); scroll("up"); } };
-      const onDownKey = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); scroll("down"); } };
-      const onWheel = e => {
+      const onUpKey     = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); scroll("up"); } };
+      const onDownKey   = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); scroll("down"); } };
+      const onWheel     = e => {
         if (this._isMobile) return;
         e.preventDefault(); e.stopPropagation();
         scroll(e.deltaY > 0 ? "down" : "up");
       };
 
-      upBtn.addEventListener("click", onUpClick);
-      downBtn.addEventListener("click", onDownClick);
-      upBtn.addEventListener("keydown", onUpKey);
+      upBtn.addEventListener("click",    onUpClick);
+      downBtn.addEventListener("click",  onDownClick);
+      upBtn.addEventListener("keydown",  onUpKey);
       downBtn.addEventListener("keydown", onDownKey);
-      sub.addEventListener("wheel", onWheel, { passive: false });
+      sub.addEventListener("wheel",      onWheel, { passive: false });
 
       state.scrollListeners.push(
-        { el: upBtn, ev: "click", fn: onUpClick },
-        { el: downBtn, ev: "click", fn: onDownClick },
-        { el: upBtn, ev: "keydown", fn: onUpKey },
+        { el: upBtn,   ev: "click",   fn: onUpClick },
+        { el: downBtn, ev: "click",   fn: onDownClick },
+        { el: upBtn,   ev: "keydown", fn: onUpKey },
         { el: downBtn, ev: "keydown", fn: onDownKey },
-        { el: sub, ev: "wheel", fn: onWheel },
+        { el: sub,     ev: "wheel",   fn: onWheel },
       );
       this._applySubScroll(sub);
     }
@@ -298,12 +301,12 @@
 
     _calcVisibleItems(sub, itemH, totalItems) {
       if (itemH <= 0) return 5;
-      const vh = window.innerHeight;
-      const subTop = sub.getBoundingClientRect().top;
+      const vh      = window.innerHeight;
+      const subTop  = sub.getBoundingClientRect().top;
       const btnHStr = getComputedStyle(this._wrapper || document.documentElement)
-        .getPropertyValue("--tadnav-scroll-btn-height").trim();
-      const btnH = parseFloat(btnHStr) || 28;
-      const margin = this.options.subScrollMargin;
+                        .getPropertyValue("--tadnav-scroll-btn-height").trim();
+      const btnH    = parseFloat(btnHStr) || 28;
+      const margin  = this.options.subScrollMargin;
       if (this.options.subScrollItems !== "auto")
         return Math.min(this.options.subScrollItems, totalItems);
       const available = vh - subTop - (btnH * 2) - margin;
@@ -317,7 +320,7 @@
       items.forEach((li, i) => {
         li.style.display = (i >= currentIndex && i < currentIndex + visibleN) ? "" : "none";
       });
-      upBtn.setAttribute("aria-disabled", currentIndex <= 0 ? "true" : "false");
+      upBtn.setAttribute("aria-disabled",   currentIndex <= 0                     ? "true" : "false");
       downBtn.setAttribute("aria-disabled", currentIndex >= totalItems - visibleN ? "true" : "false");
     }
 
@@ -357,6 +360,7 @@
     _applyTheme(theme) {
       if (!theme || typeof theme !== "object" || !this._wrapper) return;
       Object.entries(theme).forEach(([key, value]) => {
+        if (key === "mobileNavTheme") return; // 特殊屬性，不作為 CSS 變數寫入
         const cssVar = THEME_MAP[key];
         if (!cssVar) { console.warn(`TadNav: 未知的 theme 屬性 "${key}"`); return; }
         if (value !== null && value !== undefined)
@@ -364,10 +368,24 @@
       });
     }
 
+    /**
+     * 依據 options.mobileNavTheme 在 wrapper 元素上設定 data-nav-theme 屬性。
+     * 支援 options.mobileNavTheme 與 options.theme.mobileNavTheme 兩種傳參方式。
+     * 'light' → 手機版子選單改用半透明白色疊加（適合淡色底深色文字的導覽列）
+     * 'dark' （預設） → 手機版子選單繼續使用半透明黑色疊加
+     */
+    _applyNavTheme() {
+      if (!this._wrapper) return;
+      const themeVal = this.options.mobileNavTheme || (this.options.theme && this.options.theme.mobileNavTheme);
+      const scheme = themeVal === "light" ? "light" : "dark";
+      this._wrapper.setAttribute("data-nav-theme", scheme);
+    }
+
     setTheme(newTheme, merge = true) {
       if (!merge) this._clearTheme();
       this.options.theme = merge ? Object.assign({}, this.options.theme, newTheme) : newTheme;
       this._applyTheme(this.options.theme);
+      this._applyNavTheme();
       this._emit("themeChange", { theme: this.options.theme });
     }
 
@@ -379,6 +397,7 @@
     resetTheme() {
       this._clearTheme();
       this.options.theme = {};
+      this._applyNavTheme();
       this._emit("themeChange", { theme: {} });
     }
 
@@ -390,8 +409,8 @@
     _markRightItems() {
       const items = Array.from(this.menu.querySelectorAll(":scope > li"));
       items.forEach(li => li.classList.remove("is-right"));
-      const vw = window.innerWidth;
-      const margin = 8;
+      const vw          = window.innerWidth;
+      const margin      = 8;
       const cssMinWidth = getComputedStyle(this._wrapper || document.documentElement)
         .getPropertyValue("--tadnav-sub-min-width").trim();
       const subMinWidth = parseFloat(cssMinWidth) || 220;
@@ -484,11 +503,11 @@
         this._bindHoverEvents();
 
       this._bindClickEvents();
-      this._on(this.menu, "keydown", e => this._handleKeydown(e));
+      this._on(this.menu, "keydown",  e => this._handleKeydown(e));
       this._on(this.menu, "focusout", e => this._handleFocusOut(e));
-      this._on(this.menu, "focusin", e => this._handleFocusIn(e));
+      this._on(this.menu, "focusin",  e => this._handleFocusIn(e));
 
-      this._on(document, "keydown", () => { this._lastInteractionWasKeyboard = true; });
+      this._on(document, "keydown",   () => { this._lastInteractionWasKeyboard = true; });
       this._on(document, "mousedown", () => { this._lastInteractionWasKeyboard = false; });
 
       this._resizeObserver = new ResizeObserver(() => {
@@ -509,7 +528,7 @@
       // ★ 原以 role="menuitem" 判斷，但 <a> 的 role 已在 _setupARIA 移除，
       //   改為：凡是 menu 內的 <a>、submenu-toggle 按鈕、漢堡按鈕，
       //   取得焦點時均確保捲動可見（WCAG 1.4.10）。
-      const isMenuLink = target.tagName === "A" && this.menu.contains(target);
+      const isMenuLink  = target.tagName === "A" && this.menu.contains(target);
       const isToggleBtn = target.classList.contains("tadnav-submenu-toggle");
       const isHamburger = target === this.toggleBtn;
       if (!isMenuLink && !isToggleBtn && !isHamburger) return;
@@ -657,7 +676,7 @@
     // =============================================
     // Public API
     // =============================================
-    open(sub) { this._openSubmenu(sub); }
+    open(sub)  { this._openSubmenu(sub); }
     close(sub) { this._closeSubmenu(sub); }
 
     closeAll() {
@@ -784,7 +803,7 @@
 
       // 遞迴關閉所有巢狀子選單
       sub.querySelectorAll('.tadnav-submenu[data-open="true"]')
-        .forEach(n => this._closeSubmenu(n));
+         .forEach(n => this._closeSubmenu(n));
 
       // ★ 收合後同步 tabindex 與 aria-hidden
       sub.setAttribute("aria-hidden", "true");
@@ -874,8 +893,8 @@
         if (e.key !== "Tab") return;
         const focusable = this._getFocusableInMenu();
         if (focusable.length === 0) return;
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
+        const first  = focusable[0];
+        const last   = focusable[focusable.length - 1];
         const active = document.activeElement;
 
         // ★ 手機版：完全接管 Tab 焦點順序。
@@ -905,7 +924,7 @@
         if (e.shiftKey) {
           if (active === first || !this.menu.contains(active)) { e.preventDefault(); last.focus(); }
         } else {
-          if (active === last || !this.menu.contains(active)) { e.preventDefault(); first.focus(); }
+          if (active === last  || !this.menu.contains(active)) { e.preventDefault(); first.focus(); }
         }
       };
       document.addEventListener("keydown", this._focusTrapHandler, true);
@@ -943,8 +962,8 @@
       sub.style.removeProperty("margin-left");
 
       const rect = sub.getBoundingClientRect();
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
+      const vw   = window.innerWidth;
+      const vh   = window.innerHeight;
       const isRootLevel = sub.parentElement?.parentElement === this.menu;
 
       // 水平右側翻轉
@@ -982,7 +1001,7 @@
     // =============================================
     _handleKeydown(e) {
       const target = e.target;
-      const key = e.key;
+      const key    = e.key;
 
       // ESC：關閉最近的開啟子選單，或收合手機選單
       if (key === "Escape" && this.options.closeOnEsc) {
@@ -1012,9 +1031,9 @@
     }
 
     _handleDesktopKeydown(e, target, key) {
-      const li = target.closest("li");
-      const sub = li?.querySelector(":scope > .tadnav-submenu");
-      const inSub = !!target.closest(".tadnav-submenu");
+      const li     = target.closest("li");
+      const sub    = li?.querySelector(":scope > .tadnav-submenu");
+      const inSub  = !!target.closest(".tadnav-submenu");
       const isRoot = li?.parentElement === this.menu;
 
       // 頂層：左右鍵切換項目
@@ -1026,7 +1045,7 @@
               ":scope > li > a[href], :scope > li > button.tadnav-submenu-toggle"
             )
           );
-          const idx = items.indexOf(target);
+          const idx  = items.indexOf(target);
           const next = key === "ArrowRight"
             ? items[(idx + 1) % items.length]
             : items[(idx - 1 + items.length) % items.length];
@@ -1049,7 +1068,7 @@
               ':scope > li:not(.tadnav-scroll-btn):not([style*="display: none"]) > button.tadnav-submenu-toggle'
             )
           );
-          const idx = items.indexOf(target);
+          const idx  = items.indexOf(target);
           const next = key === "ArrowDown"
             ? items[(idx + 1) % items.length]
             : items[(idx - 1 + items.length) % items.length];
@@ -1090,7 +1109,7 @@
       if (key === "ArrowDown" || key === "ArrowUp") {
         e.preventDefault();
         const allItems = this._getFocusableInMenu();
-        const idx = allItems.indexOf(target);
+        const idx  = allItems.indexOf(target);
         const next = key === "ArrowDown"
           ? allItems[(idx + 1) % allItems.length]
           : allItems[(idx - 1 + allItems.length) % allItems.length];
@@ -1103,7 +1122,7 @@
     // =============================================
     _checkBreakpoint() {
       const wasMobile = this._isMobile;
-      this._isMobile = window.innerWidth < this.options.breakpoint;
+      this._isMobile  = window.innerWidth < this.options.breakpoint;
 
       if (wasMobile !== this._isMobile) {
         // 切換模式時關閉所有子選單並清除捲動包裝
@@ -1133,6 +1152,14 @@
       TadNav._globalListenersAttached = true;
 
       document.addEventListener("click", e => {
+        const skipLink = e.target.closest("#xoops_theme_nav_key");
+        if (skipLink) {
+          e.preventDefault();
+          const firstItem = document.querySelector("#main-menu a[href], #main-menu button.tadnav-submenu-toggle");
+          firstItem?.focus();
+          firstItem?.scrollIntoView({ block: "nearest", inline: "nearest" });
+          return;
+        }
         TadNav._instances.forEach(inst => {
           if (!inst.options.closeOnOutsideClick) return;
           if (!inst.menu.contains(e.target) && !inst.toggleBtn?.contains(e.target)) {
@@ -1149,7 +1176,7 @@
             //   可能仍大於 breakpoint，使 _isMobile 為 false，
             //   但漢堡選單仍可見，ESC 應能關閉。
             if (inst.options.closeOnEsc &&
-              inst.menu.getAttribute("data-mobile-open") === "true") {
+                inst.menu.getAttribute("data-mobile-open") === "true") {
               inst._closeMobileMenu();
             }
           });

@@ -5,7 +5,7 @@
         <{$smarty.const.TF_USER_S_ID}>
       </label>
       <div class="col-md-8">
-        <input type="text" name="uname"  id="uname" placeholder="<{$smarty.const.TF_USER_ID}>"  class="form-control">
+        <input type="text" name="uname"  id="block_uname" placeholder="<{$smarty.const.TF_USER_ID}>"  class="form-control">
       </div>
     </div>
 
@@ -14,7 +14,7 @@
         <{$smarty.const.TF_USER_S_PASS}>
       </label>
       <div class="col-md-8">
-      <input type="password" name="pass" id="pass" placeholder="<{$smarty.const.TF_USER_PASS}>" class="form-control">
+      <input type="password" name="pass" id="block_pass" placeholder="<{$smarty.const.TF_USER_PASS}>" class="form-control">
       </div>
     </div>
 

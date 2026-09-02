@@ -743,7 +743,7 @@ class Tools
                 'submenu'        => $submenu,
             ];
         }
-
+        Utility::test($menu, 'menu', 'dd');
         return $menu;
     }
 

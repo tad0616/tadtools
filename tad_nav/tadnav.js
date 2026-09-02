@@ -1,5 +1,14 @@
 /**
- * TadNav v1.9.3
+ * TadNav v1.9.4
+ * ★ v1.9.4 修正（無障礙／WCAG 2.4.3 焦點順序）：
+ *  12. _wrapSubScroll 的 scroll()：捲動按鈕在 DOM 中固定位於子選單
+ *      頭尾，捲動只切換項目 display，不搬動 DOM 順序；鍵盤使用者
+ *      按下「向下捲動」後，焦點停留在 downBtn 上，往前 Tab 會跳過
+ *      新出現、其實位於 downBtn 之前的項目，須改按 Shift+Tab 才能
+ *      到達，焦點順序與畫面呈現順序不一致。
+ *      修正：鍵盤觸發（Enter/Space）捲動時，捲動後自動將焦點移至
+ *      新可視範圍的第一個項目，使 Tab 順序與內容順序一致；滑鼠點擊
+ *      與滾輪捲動則維持原焦點，不做搬移。
  * 修正：
  *   1. 桌機版：hover/click 開啟子選單前先關閉同層其他子選單（互斥）
  *   2. 手機版：強制單欄手風琴，同層互斥
@@ -248,7 +257,17 @@
       };
       this._scrollStates.set(sub, state);
 
-      const scroll = dir => {
+      // ★ 修正（WCAG 2.4.3 焦點順序）：
+      //   upBtn／downBtn 在 DOM 中固定放在子選單的最前／最後，捲動只是
+      //   切換項目的 display，並不會搬動 DOM 順序。因此按下「向下捲動」
+      //   後，新出現的項目在 DOM 中仍位於 downBtn 之前；若焦點停留在
+      //   downBtn 上，往前 Tab 會直接跳出子選單，鍵盤使用者必須改按
+      //   Shift+Tab 才能碰到剛顯示出來的內容，導致取得焦點的順序與畫面
+      //   呈現順序不一致。
+      //   修正方式：鍵盤觸發（Enter/Space）捲動後，將焦點移至捲動後可視
+      //   範圍內的第一個項目，讓 Tab 順序自然銜接新內容；滑鼠點擊與滾輪
+      //   捲動則不搬移焦點，避免無預期地打斷視覺焦點所在位置。
+      const scroll = (dir, moveFocus) => {
         if (this._isMobile) return;
         const s = this._scrollStates.get(sub);
         if (!s) return;
@@ -257,20 +276,29 @@
           const nested = li.querySelector(':scope > .tadnav-submenu[data-open="true"]');
           if (nested) this._closeSubmenu(nested);
         });
+        const prevIndex = s.currentIndex;
         s.currentIndex = dir === "up"
           ? Math.max(0, s.currentIndex - this.options.subScrollStep)
           : Math.min(max, s.currentIndex + this.options.subScrollStep);
         this._applySubScroll(sub);
+
+        if (moveFocus && s.currentIndex !== prevIndex) {
+          const firstVisible = s.items[s.currentIndex];
+          const focusTarget = firstVisible?.querySelector(
+            'a[href], button.tadnav-submenu-toggle'
+          );
+          focusTarget?.focus();
+        }
       };
 
-      const onUpClick   = () => scroll("up");
-      const onDownClick = () => scroll("down");
-      const onUpKey     = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); scroll("up"); } };
-      const onDownKey   = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); scroll("down"); } };
+      const onUpClick   = () => scroll("up", false);
+      const onDownClick = () => scroll("down", false);
+      const onUpKey     = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); scroll("up", true); } };
+      const onDownKey   = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); scroll("down", true); } };
       const onWheel     = e => {
         if (this._isMobile) return;
         e.preventDefault(); e.stopPropagation();
-        scroll(e.deltaY > 0 ? "down" : "up");
+        scroll(e.deltaY > 0 ? "down" : "up", false);
       };
 
       upBtn.addEventListener("click",    onUpClick);
@@ -1152,6 +1180,14 @@
       TadNav._globalListenersAttached = true;
 
       document.addEventListener("click", e => {
+        const skipLink = e.target.closest("#xoops_theme_nav_key");
+        if (skipLink) {
+          e.preventDefault();
+          const firstItem = document.querySelector("#main-menu a[href], #main-menu button.tadnav-submenu-toggle");
+          firstItem?.focus();
+          firstItem?.scrollIntoView({ block: "nearest", inline: "nearest" });
+          return;
+        }
         TadNav._instances.forEach(inst => {
           if (!inst.options.closeOnOutsideClick) return;
           if (!inst.menu.contains(e.target) && !inst.toggleBtn?.contains(e.target)) {

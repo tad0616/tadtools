@@ -7,7 +7,7 @@
         <{$lang_username|default:''}>
       </label>
       <div class="col-sm-10">
-        <input type="text" name="uname" id="uname" class="form-control" maxlength="25" value="">
+        <input type="text" name="uname" id="block_uname" class="form-control" maxlength="25" value="">
       </div>
     </div>
 
@@ -16,7 +16,7 @@
         <{$lang_password|default:''}>
       </label>
       <div class="col-sm-10">
-        <input type="password" name="pass" id="pass"  class="form-control" maxlength="32">
+        <input type="password" name="pass" id="block_pass"  class="form-control" maxlength="32">
       </div>
     </div>
 
