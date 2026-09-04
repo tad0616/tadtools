@@ -53,3 +53,6 @@ define('_MI_TADTOOLS_FACEBOOK_APP_ID_DESC', 'Is the development test mode open t
 
 define('_MI_TADTOOLS_CK_WCAG', 'CK editor complies with accessibility regulations when affixed.');
 define('_MI_TADTOOLS_CK_WCAG_DESC', 'It is recommended to select "Yes", when posting, it will be posted in plain text to avoid violating the accessibility regulations.');
+
+define('_MI_TADTOOLS_JQUERY_MIGRATE', 'Whether to Use jQuery Migrate');
+define('_MI_TADTOOLS_JQUERY_MIGRATE_DESC', 'jQuery Migrate can help resolve compatibility issues caused by jQuery version updates.');

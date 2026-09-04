@@ -52,3 +52,6 @@ define('_MI_TADTOOLS_FACEBOOK_APP_ID_DESC', '可至 https://developers.facebook.
 
 define('_MI_TADTOOLS_CK_WCAG', 'CK編輯器貼上時符合無障礙規範');
 define('_MI_TADTOOLS_CK_WCAG_DESC', '<span style="color:red">若要符合無障礙，請選「是」</span>，選「是」，貼上時，會以純文字貼上，避免違反無障礙規範');
+
+define('_MI_TADTOOLS_JQUERY_MIGRATE', '是否使用 jQuery Migrate');
+define('_MI_TADTOOLS_JQUERY_MIGRATE_DESC', '若有jquery功能不正常，可試著開啟 jQuery Migrate 看是否有效，一般不需要開啟。');

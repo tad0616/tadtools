@@ -13,9 +13,9 @@
                 closed: false,
                 tabidentify: '',
                 activetab_bg: 'white',
-                inactive_bg: '#F5F5F5',
-                active_border_color: '#c1c1c1',
-                active_content_border_color: '#c1c1c1',
+                inactive_bg: '#d0d2d4',
+                active_border_color: '#20356e',
+                active_content_border_color: '#661414',
                 activate: function () {
                 }
             };
@@ -200,20 +200,32 @@
 
                     if (titleIndex !== -1) {
                         // 狀態 1：目前焦點在「標題」上
+                        var $targetTab = $titles.eq(titleIndex);
+
                         if (!isShift) {
-                            // Tab: 移動到對應的內容區域
+                            // Tab: 往後導航
+                            if (inAccordion && !$targetTab.hasClass('resp-tab-active')) {
+                                // 💡 關鍵修改：手風琴模式且未展開時，不攔截，讓瀏覽器原生 Tab 走到下一個標題
+                                return;
+                            }
+
                             e.preventDefault();
-                            var $targetTab = $titles.eq(titleIndex);
-                            // 若目標頁籤未激活，先激活它以顯示內容，否則無法 focus
+                            // 頁籤模式，或手風琴模式且已展開：進入內容區域
                             if (!$targetTab.hasClass('resp-tab-active')) {
                                 activateTab($targetTab);
                             }
                             $contents.eq(titleIndex).focus();
                         } else {
-                            // Shift+Tab: 移動到上一個內容區域的最後一個可聚焦元素
+                            // Shift+Tab: 往前導航
                             if (titleIndex > 0) {
-                                e.preventDefault();
                                 var $prevTab = $titles.eq(titleIndex - 1);
+
+                                if (inAccordion && !$prevTab.hasClass('resp-tab-active')) {
+                                    // 💡 關鍵修改：手風琴模式且上一個未展開時，不攔截，讓瀏覽器原生 Shift+Tab 走到上一個標題
+                                    return;
+                                }
+
+                                e.preventDefault();
                                 if (!$prevTab.hasClass('resp-tab-active')) {
                                     activateTab($prevTab);
                                 }

@@ -2,6 +2,27 @@
 // Author: Samson.Onna <Email : samson3d@gmail.com>
 // Modified for WCAG 2.3 AAA compliance with keyboard navigation
 // Fixed Tab key navigation order - Tab1Title → Tab1Content → Tab2Title → Tab2Content...
+
+// jQuery 4.0+ compatibility shim — restores .bind() and the
+// click/focus/blur/keydown/resize event shorthand methods that
+// jQuery 4.0 removed, so the code below (originally written for
+// older jQuery) keeps working unchanged. Only applies when the
+// method is missing, so it's safe alongside jQuery < 4.0 too.
+(function ($) {
+    "use strict";
+    if (!$) { return; }
+    $.fn.bind = $.fn.bind || function (types, data, fn) { return this.on(types, null, data, fn); };
+    $.each(("blur focus focusin focusout resize scroll click dblclick " +
+        "mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave " +
+        "change select submit keydown keypress keyup contextmenu").split(" "), function (i, name) {
+        if (!$.fn[name]) {
+            $.fn[name] = function (data, fn) {
+                return arguments.length > 0 ? this.on(name, null, data, fn) : this.trigger(name);
+            };
+        }
+    });
+})(jQuery);
+
 (function ($) {
     $.fn.extend({
         easyResponsiveTabs: function (options) {

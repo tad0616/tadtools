@@ -4,18 +4,18 @@
     <{/if}>
 
     <a href="<{$xoops_url}>/index.php"
-       class="logo-link"
-       style="<{if $logo_position=="slide"}>position: absolute; z-index: <{$logo_zindex|default:''}>; <{$logo_place|default:''}><{else}>position: relative; z-index: 10;<{/if}>"
+        class="logo-link"
+        style="<{if $logo_position=="slide"}>position: absolute; z-index: <{$logo_zindex|default:''}>; <{$logo_place|default:''}><{else}>position: relative; z-index: 10;<{/if}>"
     ><img id="website_logo"
-          src="<{$logo_img|default:''}>"
-          style="<{if $logo_full!='1'}>max-<{/if}>width: 100%; display: block;"
-          alt="<{$xoops_sitename|default:''}>"
-          title="點擊可回首頁"
-          class="img-fluid"></a>
+        src="<{$logo_img|default:''}>"
+        style="<{if $logo_full!='1'}>max-<{/if}>width: 100%; display: block;"
+        alt="<{$xoops_sitename|default:''}>"
+        title="點擊可回首頁"
+        class="img-fluid"></a>
 <{else}>
     <a href="<{$xoops_url}>/index.php"
-       class="logo-link"
-       title="點擊可回首頁"><{$xoops_sitename|default:''}></a>
+        class="logo-link"
+        title="點擊可回首頁"><{$xoops_sitename|default:''}></a>
 <{/if}>
 
 <style>

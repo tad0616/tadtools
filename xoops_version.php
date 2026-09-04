@@ -6,7 +6,7 @@ $modversion = [];
 global $xoopsConfig;
 
 $modversion['name']           = _MI_TADTOOLS_NAME;
-$modversion['version']        = $_SESSION['xoops_version'] >= 20511 ? '4.0.6-Stable' : '4.06';
+$modversion['version']        = $_SESSION['xoops_version'] >= 20511 ? '4.0.7-Stable' : '4.07';
 $modversion['description']    = _MI_TADTOOLS_DESC;
 $modversion['author']         = 'Tad (tad0616@gmail.com)';
 $modversion['credits']        = '';
@@ -21,7 +21,7 @@ $modversion['icons32']        = '../../Frameworks/moduleclasses/icons/32';
 
 //about
 $modversion['module_status']       = 'Final';
-$modversion['release_date']        = '2026-07-27';
+$modversion['release_date']        = '2026-09-04';
 $modversion['module_website_url']  = 'https://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=1';
 $modversion['module_website_name'] = 'XOOPS EZGO';
 $modversion['author_website_url']  = 'https://www.tad0616.net';
@@ -77,6 +77,7 @@ $modversion['config']                       = [
     ['name' => 'test_mode', 'title' => '_MI_TADTOOLS_TEST_MODE', 'description' => '_MI_TADTOOLS_TEST_MODE_DESC', 'formtype' => 'yesno', 'valuetype' => 'int', 'default' => 1],
     ['name' => 'facebook_app_id', 'title' => '_MI_TADTOOLS_FACEBOOK_APP_ID', 'description' => '_MI_TADTOOLS_FACEBOOK_APP_ID_DESC', 'formtype' => 'textbox', 'valuetype' => 'text', 'default' => ''],
     ['name' => 'ck_wcag', 'title' => '_MI_TADTOOLS_CK_WCAG', 'description' => '_MI_TADTOOLS_CK_WCAG_DESC', 'formtype' => 'yesno', 'valuetype' => 'int', 'default' => 0],
+    ['name' => 'jquery_migrate', 'title' => '_MI_TADTOOLS_JQUERY_MIGRATE', 'description' => '_MI_TADTOOLS_JQUERY_MIGRATE_DESC', 'formtype' => 'yesno', 'valuetype' => 'int', 'default' => 0],
 ];
 
 //---區塊設定 (索引為固定值，若欲刪除區塊記得補上索引，避免區塊重複)---//

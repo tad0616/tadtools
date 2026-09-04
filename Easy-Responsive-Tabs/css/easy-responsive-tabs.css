@@ -5,10 +5,10 @@ ul.resp-tabs-list, p {
 
 .resp-tabs-list li {
     font-weight: 600;
-    font-size: 0.8125em;
+    font-size: 0.9125em;
     display: inline-block;
-    padding: 10px 15px;
-    margin: 0px 2px;
+    padding: 12px 18px 12px;
+    margin: 0px 2px 0px 0px;
     list-style: none;
     cursor: pointer;
 }
@@ -32,15 +32,11 @@ h2.resp-accordion {
 
 .resp-tab-active {
 	border: 1px solid #5AB1D0;
-	border-bottom: none;
-	margin-bottom: -1px !important;
-	padding: 12px 14px 14px 14px !important;
+	margin-bottom: -2px !important;
+	padding: 16px 14px 12px 14px !important;
 	border-top: 4px solid #5AB1D0;
-    border-bottom: 0px #fff solid;
-}
-
-.resp-tab-active {
-    border-bottom: none;
+    border-bottom: 1px solid rgb(255, 255, 255) !important;
+    z-index: 2;
     background-color: #fff;
 }
 

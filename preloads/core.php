@@ -99,13 +99,12 @@ class TadtoolsCorePreload extends XoopsPreloadItem
             $xoopsTpl->assign('xoops_version', $_SESSION['xoops_version']);
             $xoTheme->addScript('browse.php?Frameworks/jquery/jquery.js');
 
-            // $ver = intval(str_replace('.', '', substr(XOOPS_VERSION, 6, 5)));
+            $TadToolsConfig = Utility::getXoopsModuleConfig('tadtools');
 
-            // if ($_SESSION['xoops_version'] < 20509) {
-            //     $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-1.4.1.min.js');
-            // } else {
-            $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.5.2.js');
-            // }
+            if ($TadToolsConfig['jquery_migrate']) {
+                $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.6.0.js');
+            }
+
             $xoTheme->addStylesheet('modules/tadtools/jquery/themes/base/jquery.ui.all.css');
             // $xoTheme->addScript('modules/tadtools/jquery/ui/jquery-ui.js');
             $xoTheme->addScript('browse.php?Frameworks/jquery/plugins/jquery.ui.js');

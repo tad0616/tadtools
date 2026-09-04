@@ -2,6 +2,67 @@
 * In-place editing with Twitter Bootstrap, jQuery UI or pure jQuery
 * http://github.com/vitalets/x-editable
 * Copyright (c) 2018 Vitaliy Potapov; Licensed MIT */
+
+/**
+ * jQuery 4.0+ compatibility shim
+ * Restores utility methods and event shorthand methods that jQuery 4.0
+ * removed, so the rest of this file (written for jQuery 1.x/2.x/3.x)
+ * keeps working unchanged. Each shim only applies if the method is
+ * actually missing, so this is also safe to load alongside jQuery < 4.0.
+ */
+(function ($) {
+    "use strict";
+
+    if (!$) { return; }
+
+    // $.isArray was removed in 4.0
+    $.isArray = $.isArray || Array.isArray;
+
+    // $.isFunction was removed in 4.0
+    $.isFunction = $.isFunction || function (obj) {
+        return typeof obj === 'function';
+    };
+
+    // $.trim was removed in 4.0
+    $.trim = $.trim || function (text) {
+        return text == null ? '' : (text + '').trim();
+    };
+
+    // $.type was removed in 4.0
+    if (!$.type) {
+        var class2type = {};
+        'Boolean Number String Function Array Date RegExp Object Error Symbol'.split(' ').forEach(function (name) {
+            class2type['[object ' + name + ']'] = name.toLowerCase();
+        });
+        $.type = function (obj) {
+            if (obj == null) { return obj + ''; }
+            return typeof obj === 'object' || typeof obj === 'function' ?
+                class2type[Object.prototype.toString.call(obj)] || 'object' :
+                typeof obj;
+        };
+    }
+
+    // $.fn.size() was removed in 4.0 (use .length instead)
+    $.fn.size = $.fn.size || function () {
+        return this.length;
+    };
+
+    // Event shorthand methods (.click(fn), .submit(), .change(), etc.)
+    // were removed in 4.0. Re-add any that are missing, matching the
+    // behavior jQuery itself used before removal.
+    $.each(('blur focus focusin focusout resize scroll click dblclick ' +
+        'mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave ' +
+        'change select submit keydown keypress keyup contextmenu').split(' '), function (i, name) {
+        if (!$.fn[name]) {
+            $.fn[name] = function (data, fn) {
+                return arguments.length > 0 ?
+                    this.on(name, null, data, fn) :
+                    this.trigger(name);
+            };
+        }
+    });
+}(window.jQuery));
+
 /**
 Form with single input element, two buttons and two states: normal/loading.
 Applied as jQuery method to DIV tag (not to form tag!). This is because form can be in loading state when spinner shown.
