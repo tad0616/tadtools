@@ -132,14 +132,20 @@ class AccessibilityFixer
      * 等同於 (new AccessibilityFixer())->fix($content)
      * 適合不需要客製設定的簡單場景。
      *
-     * @param  string $content  WYSIWYG 輸出的 HTML 片段
-     * @return string           修正後的 HTML 片段
+     * @param  string|null $content  WYSIWYG 輸出的 HTML 片段（允許傳入 null）
+     * @return string                修正後的 HTML 片段
      *
      * @example
      *   $fixed = AccessibilityFixer::of($content);
      */
-    public static function of(string $content)
+    public static function of(?string $content = null)
     {
+        // null 或空字串皆直接回傳空字串，不進行任何處理
+        $content = $content ?? '';
+
+        if (empty($content)) {
+            return '';
+        }
         return (new static())->fix($content);
     }
 

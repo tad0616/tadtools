@@ -208,6 +208,7 @@ class TadUpFiles
     public $show_path          = false;
     public $dl_function_name   = 'downloadFile';
     public $showDownloadFileJs = true;
+    public $allow_guest        = false;
 
     public function __construct($dir = '', $subdir = '', $file = '/file', $image = '/image', $thumbs = '/image/.thumbs')
     {
@@ -570,7 +571,7 @@ class TadUpFiles
                         </div>";
 
                         //有編輯框
-                        $thumb_style = "<div style='text-align: center;'><a href='{$_SERVER['PHP_SELF']}?op=tufdl&fn={$original_filename}&files_sn=$files_sn'><img src='{$thumb_pic}' alt='{$file_name}'></a></div>";
+                        $thumb_style = "<div style='text-align: center;'><a href='{$_SERVER['PHP_SELF']}?op=tufdl&files_sn=$files_sn&fn={$original_filename}'><img src='{$thumb_pic}' alt='{$file_name}'></a></div>";
                         //無編輯框
                         $thumb_style2 = "<a class='thumbnail $fext' style='display:inline-block; width:{$this->thumb_width};height:{$this->thumb_height};overflow:hidden;background-color: transparent; background-image:url({$thumb_pic});background-position:{$this->thumb_position};background-repeat:{$this->thumb_repeat};background-size:{$this->thumb_size}; margin-bottom: 4px;' title='{$description}'></a>";
                     } else {
@@ -779,7 +780,7 @@ class TadUpFiles
     {
         global $xoopsUser;
 
-        if (!$xoopsUser) {
+        if (!$xoopsUser && !$this->allow_guest) {
             exit;
         }
 
@@ -1076,7 +1077,7 @@ class TadUpFiles
     {
         global $xoopsUser;
 
-        if (!$xoopsUser) {
+        if (!$xoopsUser && !$this->allow_guest) {
             exit;
         }
         //取消上傳時間限制
@@ -1313,7 +1314,7 @@ class TadUpFiles
     public function upload_one_file($name = '', $tmp_name = '', $type = '', $size = '', $main_width = '1280', $thumb_width = '120', $files_sn = '', $desc = '', $safe_name = false, $hash = false, $allow = 'pdf;jpg;jpeg;png;gif;bmp;webp;doc;docx;xls;xlsx;ppt;pptx;odt;ods;odp;txt;csv;zip;rar;7z;mp3;wav;mp4;m4v;mov;avi;webm', $deny = 'php;php3;php4;php5;php7;php8;phtml;pht;phar;inc;cgi;pl;py;rb;sh;bash;exe;dll;com;bat;cmd;msi;ps1;vbs;js;jse;jar;class;war;asp;aspx;jsp;htaccess;htpasswd;shtml;html;htm;xhtml;svg;swf;eml;msg;reg;scr')
     {
         global $xoopsUser;
-        if (!$xoopsUser) {
+        if (!$xoopsUser && !$this->allow_guest) {
             exit;
         }
         if (empty($main_width)) {
@@ -1553,7 +1554,7 @@ class TadUpFiles
     {
         global $xoopsUser;
 
-        if (!$xoopsUser) {
+        if (!$xoopsUser && !$this->allow_guest) {
             exit;
         }
         $modhandler = xoops_getHandler('module');
@@ -1754,8 +1755,8 @@ class TadUpFiles
             // 2025/09/25 為無障礙修改
             $js_dl_url = empty($this->download_url) ? "javascript:void(0)" : $this->download_url . "&files_sn=$files_sn";
 
-            $dl_url      = empty($this->download_url) ? "{$link_path}{$mark}op=tufdl&fn=$original_filename&files_sn=$files_sn" : $this->download_url . "&fn=$original_filename&files_sn=$files_sn";
-            $full_dl_url = empty($this->download_url) ? "{$link_path}{$mark}op=tufdl&fn=$original_filename&files_sn=$files_sn" : $this->download_url . "&fn=$original_filename&files_sn=$files_sn";
+            $dl_url      = empty($this->download_url) ? "{$link_path}{$mark}op=tufdl&files_sn=$files_sn&fn=$original_filename" : $this->download_url . "&files_sn=$files_sn&fn=$original_filename";
+            $full_dl_url = empty($this->download_url) ? "{$link_path}{$mark}op=tufdl&files_sn=$files_sn&fn=$original_filename" : $this->download_url . "&files_sn=$files_sn&fn=$original_filename";
 
             if ($kind === 'img') {
                 $fancyboxset = "fancybox_{$this->col_name} fancybox_{$this->col_name}{$this->col_sn}";
@@ -1886,7 +1887,7 @@ class TadUpFiles
             $files[$i]['original_filename'] = $original_filename;
 
             // 2025/09/25 為無障礙修改
-            $dl_url = empty($this->download_url) ? "{$link_path}?op=tufdl&fn=$original_filename&files_sn=$files_sn" : $this->download_url . "&fn=$original_filename&files_sn=$files_sn";
+            $dl_url = empty($this->download_url) ? "{$link_path}?op=tufdl&files_sn=$files_sn&fn=$original_filename" : $this->download_url . "&files_sn=$files_sn&fn=$original_filename";
             // $dl_url = empty($this->download_url) ? "{$link_path}?files_sn=$files_sn&mod_name=" . $this->dir : $this->download_url . "&files_sn=$files_sn";
 
             if ($kind === 'img') {
@@ -2190,7 +2191,7 @@ class TadUpFiles
                 // 後端給 filname（已 urlencode）
                 // 前端用 decodeURIComponent() 還原成人類可讀的檔名
                 const decodedName = decodeURIComponent(filname);
-                link.href = '{$download_url}op=tufdl&fn='+filname+'&files_sn='+sn;
+                link.href = '{$download_url}op=tufdl&files_sn='+sn+'&fn='+filname;
                 link.download = decodedName;
                 document.body.appendChild(link);
                 link.click();
@@ -2223,13 +2224,10 @@ class TadUpFiles
         ];
 
         $bytes = (float) $str;
-
         if (preg_match('#([KMGTP]?)$#si', $str, $matches) && !empty($bytes_array[$matches[1]])) {
             $bytes *= $bytes_array[$matches[1]];
         }
-
         $bytes = (int) round($bytes, 2);
-
         return $bytes;
     }
 
