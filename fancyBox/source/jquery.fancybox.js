@@ -27,7 +27,7 @@
 			return obj && obj.hasOwnProperty && obj instanceof $;
 		},
 		isString = function(str) {
-			return str && $.type(str) === "string";
+			return str && typeof str === "string";
 		},
 		isPercentage = function(str) {
 			return isString(str) && str.indexOf('%') > 0;
@@ -238,7 +238,7 @@
 			}
 
 			// Normalize group
-			if (!$.isArray(group)) {
+			if (!Array.isArray(group)) {
 				group = isQuery(group) ? $(group).get() : [group];
 			}
 
@@ -253,7 +253,7 @@
 					hrefParts,
 					selector;
 
-				if ($.type(element) === "object") {
+				if (element !== null && typeof element === "object" && !Array.isArray(element)) {
 					// Check if is DOM element
 					if (element.nodeType) {
 						element = $(element);
@@ -333,6 +333,18 @@
 					} else if (!type && !href && obj.isDom) {
 						type    = 'inline';
 						content = element;
+					}
+				}
+
+				// When showing an image and no explicit title/data-fancybox-title was
+				// given, fall back to the triggering <img>'s own alt attribute so
+				// screen readers (aria-live announcement and the rendered <img alt>)
+				// can read it out.
+				if (type === 'image' && !title && obj.isDom) {
+					var $imgAlt = element.is('img') ? element : element.find('img').first();
+
+					if ($imgAlt.length && $imgAlt.attr('alt')) {
+						title = $imgAlt.attr('alt').trim();
 					}
 				}
 
@@ -591,7 +603,7 @@
 		// Shrink content to fit inside viewport or restore if resized
 		toggle: function ( action ) {
 			if (F.isOpen) {
-				F.current.fitToView = $.type(action) === "boolean" ? action : !F.current.fitToView;
+				F.current.fitToView = typeof action === "boolean" ? action : !F.current.fitToView;
 
 				// Help browser to restore document dimensions
 				if (isTouch) {
@@ -777,7 +789,7 @@
 			var ret, obj = o || F.coming || F.current;
 
 			if (obj) {
-				if ($.isFunction( obj[event] )) {
+				if (typeof obj[event] === 'function') {
 					ret = obj[event].apply(obj, Array.prototype.slice.call(arguments, 1));
 				}
 
@@ -787,7 +799,7 @@
 
 				if (obj.helpers) {
 					$.each(obj.helpers, function (helper, opts) {
-						if (opts && F.helpers[helper] && $.isFunction(F.helpers[helper][event])) {
+						if (opts && F.helpers[helper] && typeof F.helpers[helper][event] === 'function') {
 							F.helpers[helper][event]($.extend(true, {}, F.helpers[helper].defaults, opts), obj);
 						}
 					});
@@ -826,11 +838,11 @@
 			margin  = coming.margin;
 			padding = coming.padding;
 
-			if ($.type(margin) === 'number') {
+			if (typeof margin === 'number') {
 				coming.margin = [margin, margin, margin, margin];
 			}
 
-			if ($.type(padding) === 'number') {
+			if (typeof padding === 'number') {
 				coming.padding = [padding, padding, padding, padding];
 			}
 
@@ -1990,11 +2002,11 @@
 				title,
 				target;
 
-			if ($.isFunction(text)) {
+			if (typeof text === 'function') {
 				text = text.call(current.element, current);
 			}
 
-			if (!isString(text) || $.trim(text) === '') {
+			if (!isString(text) || text.trim() === '') {
 				return;
 			}
 

@@ -50,7 +50,7 @@
   --tadnav-toggle-color: #ffffff;
   --tadnav-toggle-hover-bg: rgba(255, 255, 255, 0.15);
 
-  /* 手機版各層背景色 */
+  /* 手機版各層背景色（深色主題預設） */
   --tadnav-mobile-bg: rgba(0, 0, 0, 0.55);
   --tadnav-mobile-sub-l1-bg: rgba(0, 0, 0, 0.18);
   --tadnav-mobile-sub-l2-bg: rgba(0, 0, 0, 0.28);
@@ -58,6 +58,15 @@
   --tadnav-mobile-sub-border: rgba(255, 255, 255, 0.30);
   --tadnav-mobile-sub-color: rgba(255, 255, 255, 0.92);
   --tadnav-mobile-item-border: rgba(255, 255, 255, 0.10);
+
+  /* 手機版各層縮排邊線色（深色主題預設） */
+  --tadnav-mobile-sub-l1-border: rgba(255, 255, 255, 0.25);
+  --tadnav-mobile-sub-l2-border: rgba(255, 255, 255, 0.18);
+  --tadnav-mobile-sub-l3-border: rgba(255, 255, 255, 0.12);
+
+  /* 手機版 focus-visible 樣式（深色主題預設） */
+  --tadnav-mobile-focus-bg: rgba(255, 255, 255, 0.15);
+  --tadnav-mobile-focus-color: #ffffff;
 
   --tadnav-accordion-max-height: 9999px;
 }
@@ -80,9 +89,49 @@
 }
 
 /* ── 全局鍵盤焦點強化 ───────────────────────── */
-.tadnav-wrapper :where(a, button, input, select, textarea):focus-visible {
+/* 平時完全隱藏（視覺上不可見，但螢幕閱讀器仍可讀取）；
+   鍵盤 Tab 聚焦時滑入畫面並顯示明顯焦點外框。           */
+.tadnav-skip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100000;
+  padding: 0.5rem 1.25rem;
+  background: #000000;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 0 0 6px 0;
+
+  /* ── 隱藏技術：clip-path 裁切至零尺寸，不影響排版也不佔空間 ── */
+  clip: rect(0 0 0 0);
+  /* 舊版瀏覽器備援 */
+  clip-path: inset(50%);
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+
+  /* 焦點出現時的滑入動畫 */
+  transition: clip-path 0.15s ease, width 0.15s ease,
+    height 0.15s ease, outline-color 0.15s ease;
+}
+
+.tadnav-skip:focus,
+.tadnav-skip:focus-visible {
+  /* 還原尺寸，讓元素完整顯示 */
+  clip: auto;
+  clip-path: none;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  white-space: normal;
+
+  /* 明顯焦點外框：黃框 + 黑色陰影雙層，確保任何底色都清晰可見 */
   outline: var(--tadnav-focus-width) solid var(--tadnav-focus-color);
-  outline-offset: -3px;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 calc(var(--tadnav-focus-width) + 3px) var(--tadnav-focus-shadow-color);
 }
 
 /* ── Inner ──────────────────────────────────── */
@@ -606,7 +655,7 @@ button[aria-expanded="true"]>.tadnav-arrow {
   /* ══ 第一層子選單（L1）：淺色背景 ══ */
   .tadnav-menu>li>.tadnav-submenu {
     background: var(--tadnav-mobile-sub-l1-bg) !important;
-    border-left: 3px solid rgba(255, 255, 255, 0.25) !important;
+    border-left: 3px solid var(--tadnav-mobile-sub-l1-border) !important;
     margin-left: 0.75rem !important;
   }
 
@@ -619,7 +668,7 @@ button[aria-expanded="true"]>.tadnav-arrow {
   /* ══ 第二層子選單（L2）：中色背景 ══ */
   .tadnav-menu>li>.tadnav-submenu>li>.tadnav-submenu {
     background: var(--tadnav-mobile-sub-l2-bg) !important;
-    border-left: 3px solid rgba(255, 255, 255, 0.18) !important;
+    border-left: 3px solid var(--tadnav-mobile-sub-l2-border) !important;
     margin-left: 0.75rem !important;
   }
 
@@ -632,7 +681,7 @@ button[aria-expanded="true"]>.tadnav-arrow {
   /* ══ 第三層子選單（L3）：深色背景 ══ */
   .tadnav-menu>li>.tadnav-submenu>li>.tadnav-submenu>li>.tadnav-submenu {
     background: var(--tadnav-mobile-sub-l3-bg) !important;
-    border-left: 3px solid rgba(255, 255, 255, 0.12) !important;
+    border-left: 3px solid var(--tadnav-mobile-sub-l3-border) !important;
     margin-left: 0.75rem !important;
   }
 
@@ -684,8 +733,8 @@ button[aria-expanded="true"]>.tadnav-arrow {
     outline: var(--tadnav-focus-width) solid var(--tadnav-focus-color) !important;
     outline-offset: -3px !important;
     box-shadow: none !important;
-    background-color: rgba(255, 255, 255, 0.15) !important;
-    color: #ffffff !important;
+    background-color: var(--tadnav-mobile-focus-bg) !important;
+    color: var(--tadnav-mobile-focus-color) !important;
   }
 
   /* ── is-right 在手機模式下重設 ── */
@@ -694,4 +743,37 @@ button[aria-expanded="true"]>.tadnav-arrow {
     left: auto !important;
     right: auto !important;
   }
+}
+
+/* ══════════════════════════════════════════════
+ * 手機版淺色主題（mobileNavTheme: 'light'）
+ * 當導覽列底色為淡色系、文字為深色系時，
+ * 子選單改用半透明白色疊加，避免文字難以辨識。
+ * ══════════════════════════════════════════════ */
+.tadnav-wrapper[data-nav-theme="light"] {
+  /* 主選單展開背景 */
+  --tadnav-mobile-bg: rgba(255, 255, 255, 0.88);
+
+  /* 各層子選單背景（白色疊加，層層加深） */
+  --tadnav-mobile-sub-l1-bg: rgba(255, 255, 255, 0.20);
+  --tadnav-mobile-sub-l2-bg: rgba(255, 255, 255, 0.30);
+  --tadnav-mobile-sub-l3-bg: rgba(255, 255, 255, 0.38);
+
+  /* 縮排邊線色（黑色半透明） */
+  --tadnav-mobile-sub-l1-border: rgba(0, 0, 0, 0.20);
+  --tadnav-mobile-sub-l2-border: rgba(0, 0, 0, 0.14);
+  --tadnav-mobile-sub-l3-border: rgba(0, 0, 0, 0.09);
+
+  /* 分隔線與文字色 */
+  --tadnav-mobile-sub-border: rgba(0, 0, 0, 0.18);
+  --tadnav-mobile-sub-color: rgba(0, 0, 0, 0.88);
+  --tadnav-mobile-item-border: rgba(0, 0, 0, 0.10);
+
+  /* focus-visible 高亮（淺色底用深色疊加） */
+  --tadnav-mobile-focus-bg: rgba(0, 0, 0, 0.09);
+  --tadnav-mobile-focus-color: var(--tadnav-item-color);
+
+  /* 漢堡按鈕顏色（淺色主題下改為深灰色/半透明黑，避免在淡色底上看不清） */
+  --tadnav-toggle-color: rgba(0, 0, 0, 0.70);
+  --tadnav-toggle-hover-bg: rgba(0, 0, 0, 0.06);
 }

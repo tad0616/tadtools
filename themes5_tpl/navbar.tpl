@@ -1,5 +1,4 @@
-<link rel="stylesheet" href="<{$xoops_url}>/modules/tadtools/tad_nav/tadnav.css?t=20260818">
-
+<link rel="stylesheet" href="<{$xoops_url}>/modules/tadtools/tad_nav/tadnav.css?t=20261001">
 <script>
     function tad_themes_popup(URL) {
         $.colorbox({iframe:true, width:"80%", height:"90%",href : URL});
@@ -88,7 +87,7 @@
     </div>
 </nav>
 
-<script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/tad_nav/tadnav.js?t=2026082708"></script>
+<script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/tad_nav/tadnav.js?t=20261014"></script>
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function () {
         // 或指定 click 模式

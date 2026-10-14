@@ -36,7 +36,7 @@
 <{/if}>
 <{if !empty($showallbyuser)}>
 	<h3><{$smarty.const._SR_SEARCHRESULTS}></h3>
-	<{if isset($nomatch) && $nomatch != true}>
+	<{if !empty($results_arr) || (isset($nomatch) && $nomatch != true)}>
 		<{if isset($showall)}>
 			<{$smarty.const._SR_KEYWORDS}>: <strong><{$keywords|default:''}></strong>
 			<br>

@@ -1,5 +1,52 @@
 /**
- * TadNav v1.9.4
+ * TadNav v1.9.6
+ * ★ v1.9.6 修正（無障礙／WCAG 2.1.1 鍵盤、2.4.3 焦點順序、2.4.7 焦點可見）：
+ *  14. 子選單項目過多而啟用捲動包裝（_wrapSubScroll）時，鍵盤使用者
+ *      無法依序聚焦並操作所有項目。審核回報的現象與原因：
+ *      (a) 捲動後焦點未同步：v1.9.4 的鍵盤捲動會把焦點移到「捲動後可視
+ *          範圍的第一項」，但那一項多半是剛才已經走過的項目，使用者必須
+ *          重複 Tab 好幾次才會碰到新出現的項目。
+ *          → 改為移到「緊接在原可視範圍之後（向上時為之前）的第一個新
+ *            項目」，與不捲動時 Tab 自然會到達的位置一致。
+ *      (b) 已停用（aria-disabled=true）的捲動按鈕仍在 Tab 順序內：
+ *          剛展開時第一個 Tab 會停在「向上捲動」，螢幕報讀器唸出
+ *          「無法使用」；捲到底後「向下捲動」同理，按 Enter 沒有任何作用，
+ *          焦點也不會移動。
+ *          → 停用中的捲動按鈕 tabindex=-1，移出 Tab 順序。
+ *      (c) Tab 走到可視範圍最後一項時，只能停在「向下捲動」按鈕上，須
+ *          再按 Enter 才會捲動；往回走亦然（須 Shift+Tab 至「向上捲動」）。
+ *          → 在捲動包裝的子選單內，Tab 於可視範圍最後一項（Shift+Tab 於
+ *            第一項）且尚有隱藏項目時，自動捲動並把焦點移到下一個（上一個）
+ *            項目，焦點始終落在可見項目上，不需經過按鈕。
+ *      (d) 方向鍵、Home／End 只在「目前可視」項目間循環，隱藏項目永遠
+ *          按不到；End 甚至對 display:none 的項目呼叫 focus()，焦點原地
+ *          不動。
+ *          → 方向鍵、Home／End 改以「全部項目」為範圍，必要時自動捲動
+ *            使目標項目進入可視範圍後再聚焦。
+ *      (e) 滑鼠滾輪捲動時若焦點所在項目被捲出可視範圍，焦點會掉到 body，
+ *          觸發 focusout 而誤把整個子選單關閉。
+ *          → 捲動後若焦點項目已被隱藏，改移到最接近的可視項目。
+ *      (f) subScrollStep 大於可視項目數時，中間項目永遠無法被按鈕捲到。
+ *          → 單次捲動量上限為可視項目數。
+ * ★ v1.9.5 修正（無障礙／WCAG 2.4.3 焦點順序）：
+ *  13. _openSubmenu 的桌機版捲動包裝／碰撞偵測：改為同步執行，
+ *      不再延遲兩個 requestAnimationFrame。
+ *      現象：Tab 遊走至含多層子選單的項目（如「行政處室」）並展開／
+ *      收合後，鍵盤焦點有時會直接跳過緊接在後的幾個選單項目，
+ *      且並非每次重現。
+ *      原因：_wrapSubScroll 判定子選單內容溢出時，會用 display:none
+ *      隱藏超出可視範圍的項目，直接影響原生 Tab 順序；但這個判斷被
+ *      延後在子選單「已經可被 Tab 進入」之後的第二個 RAF 才執行。
+ *      若使用者（尤其是螢幕報讀器使用者）按 Tab 的速度快過這兩個
+ *      畫面更新週期，就會在溢出隱藏「定案前」開始導覽，隱藏動作於
+ *      導覽途中才發生，使瀏覽器依當下 DOM 狀態重新計算下一個可聚焦
+ *      元素，導致一次跳過比預期更多的項目。項目愈多、愈容易觸發
+ *      捲動包裝的子選單愈容易命中，這也是回報現象集中在特定選單的
+ *      原因。
+ *      修正：getBoundingClientRect() 本身即會強制觸發同步版面配置，
+ *      無需等待 RAF；改為子選單標記 data-open="true" 的同一時刻就
+ *      同步完成溢出判斷與捲動包裝，確保使用者開始鍵盤導覽時
+ *      Tab 順序已經穩定、不會中途改變。
  * ★ v1.9.4 修正（無障礙／WCAG 2.4.3 焦點順序）：
  *  12. _wrapSubScroll 的 scroll()：捲動按鈕在 DOM 中固定位於子選單
  *      頭尾，捲動只切換項目 display，不搬動 DOM 順序；鍵盤使用者
@@ -257,48 +304,19 @@
       };
       this._scrollStates.set(sub, state);
 
-      // ★ 修正（WCAG 2.4.3 焦點順序）：
-      //   upBtn／downBtn 在 DOM 中固定放在子選單的最前／最後，捲動只是
-      //   切換項目的 display，並不會搬動 DOM 順序。因此按下「向下捲動」
-      //   後，新出現的項目在 DOM 中仍位於 downBtn 之前；若焦點停留在
-      //   downBtn 上，往前 Tab 會直接跳出子選單，鍵盤使用者必須改按
-      //   Shift+Tab 才能碰到剛顯示出來的內容，導致取得焦點的順序與畫面
-      //   呈現順序不一致。
-      //   修正方式：鍵盤觸發（Enter/Space）捲動後，將焦點移至捲動後可視
-      //   範圍內的第一個項目，讓 Tab 順序自然銜接新內容；滑鼠點擊與滾輪
-      //   捲動則不搬移焦點，避免無預期地打斷視覺焦點所在位置。
-      const scroll = (dir, moveFocus) => {
-        if (this._isMobile) return;
-        const s = this._scrollStates.get(sub);
-        if (!s) return;
-        const max = s.totalItems - s.visibleN;
-        s.items.forEach(li => {
-          const nested = li.querySelector(':scope > .tadnav-submenu[data-open="true"]');
-          if (nested) this._closeSubmenu(nested);
-        });
-        const prevIndex = s.currentIndex;
-        s.currentIndex = dir === "up"
-          ? Math.max(0, s.currentIndex - this.options.subScrollStep)
-          : Math.min(max, s.currentIndex + this.options.subScrollStep);
-        this._applySubScroll(sub);
-
-        if (moveFocus && s.currentIndex !== prevIndex) {
-          const firstVisible = s.items[s.currentIndex];
-          const focusTarget = firstVisible?.querySelector(
-            'a[href], button.tadnav-submenu-toggle'
-          );
-          focusTarget?.focus();
-        }
-      };
-
-      const onUpClick   = () => scroll("up", false);
-      const onDownClick = () => scroll("down", false);
-      const onUpKey     = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); scroll("up", true); } };
-      const onDownKey   = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); scroll("down", true); } };
+      // ★ v1.9.6：捲動邏輯移到 _scrollSub()，供按鈕、滾輪、Tab 邊界、
+      //   方向鍵共用；此處只負責綁定事件。
+      //   鍵盤（Enter/Space）觸發時 moveFocus=true：捲動後焦點移到
+      //   「緊接在原可視範圍之後／之前的第一個新項目」，並播報目前顯示範圍。
+      //   滑鼠點擊與滾輪捲動不搬移焦點（但若焦點項目被捲出範圍，見 _scrollSub）。
+      const onUpClick   = () => this._scrollSub(sub, "up",   { focus: false });
+      const onDownClick = () => this._scrollSub(sub, "down", { focus: false });
+      const onUpKey     = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this._scrollSub(sub, "up",   { focus: true, announce: true }); } };
+      const onDownKey   = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this._scrollSub(sub, "down", { focus: true, announce: true }); } };
       const onWheel     = e => {
         if (this._isMobile) return;
         e.preventDefault(); e.stopPropagation();
-        scroll(e.deltaY > 0 ? "down" : "up", false);
+        this._scrollSub(sub, e.deltaY > 0 ? "down" : "up", { focus: false });
       };
 
       upBtn.addEventListener("click",    onUpClick);
@@ -327,6 +345,121 @@
       this._scrollStates.delete(sub);
     }
 
+    // ★ v1.9.6：取得項目 li 內可聚焦的控制項（連結或子選單按鈕）
+    _itemControl(li) {
+      return li
+        ? li.querySelector(":scope > a[href], :scope > button.tadnav-submenu-toggle")
+        : null;
+    }
+
+    /**
+     * ★ v1.9.6：子選單捲動（按鈕、滾輪、Tab 邊界共用）
+     * @param {HTMLElement} sub
+     * @param {"up"|"down"} dir
+     * @param {{focus?:boolean, announce?:boolean}} opt
+     *   focus    捲動後將焦點移到「緊接在原可視範圍之後（向上時為之前）」的新項目
+     *   announce 播報目前顯示範圍（供螢幕報讀器確認捲動結果）
+     * @returns {boolean} 是否真的捲動了
+     */
+    _scrollSub(sub, dir, opt = {}) {
+      if (this._isMobile) return false;
+      const s = this._scrollStates.get(sub);
+      if (!s) return false;
+      const max  = s.totalItems - s.visibleN;
+      // 單次捲動量不可大於可視項目數，否則中間項目永遠捲不到
+      const step = Math.max(1, Math.min(this.options.subScrollStep, s.visibleN));
+      const prev = s.currentIndex;
+      const next = dir === "up" ? Math.max(0, prev - step) : Math.min(max, prev + step);
+      if (next === prev) return false;
+
+      const active   = document.activeElement;
+      const activeLi = active ? s.items.find(li => li.contains(active)) : null;
+
+      // 巢狀子選單於捲動前先收合（靜音，避免連續播報）
+      const wasSuppressed = this._suppressAnnounce;
+      this._suppressAnnounce = true;
+      s.items.forEach(li => {
+        const nested = li.querySelector(':scope > .tadnav-submenu[data-open="true"]');
+        if (nested) this._closeSubmenu(nested);
+      });
+      this._suppressAnnounce = wasSuppressed;
+
+      s.currentIndex = next;
+      this._applySubScroll(sub);
+
+      if (opt.focus) {
+        // 向下：原可視範圍的下一項；向上：原可視範圍的上一項
+        const idx = dir === "down" ? prev + s.visibleN : prev - 1;
+        const target = this._itemControl(s.items[idx]) || this._itemControl(s.items[next]);
+        target?.focus();
+      } else if (activeLi && activeLi.style.display === "none") {
+        // 焦點所在項目被捲出可視範圍：移到最接近的可視項目，
+        // 避免焦點掉到 body 觸發 focusout 而誤關閉整個子選單
+        const idx = dir === "down" ? next : next + s.visibleN - 1;
+        this._itemControl(s.items[idx])?.focus();
+      }
+
+      if (opt.announce) {
+        this._announce(`顯示第 ${next + 1} 至 ${next + s.visibleN} 項，共 ${s.totalItems} 項`);
+      }
+      return true;
+    }
+
+    /**
+     * ★ v1.9.6：確保第 index 個項目位於可視範圍（必要時捲動），
+     * 供方向鍵、Home／End 使用。不處理焦點，由呼叫端 focus()。
+     */
+    _revealSubItem(sub, index) {
+      const s = this._scrollStates.get(sub);
+      if (!s) return;
+      const max = s.totalItems - s.visibleN;
+      let cur = s.currentIndex;
+      if (index < cur) cur = index;
+      else if (index >= cur + s.visibleN) cur = index - s.visibleN + 1;
+      cur = Math.max(0, Math.min(max, cur));
+      if (cur === s.currentIndex) return;
+      const wasSuppressed = this._suppressAnnounce;
+      this._suppressAnnounce = true;
+      s.items.forEach(li => {
+        const nested = li.querySelector(':scope > .tadnav-submenu[data-open="true"]');
+        if (nested) this._closeSubmenu(nested);
+      });
+      this._suppressAnnounce = wasSuppressed;
+      s.currentIndex = cur;
+      this._applySubScroll(sub);
+    }
+
+    /**
+     * ★ v1.9.6：Tab / Shift+Tab 走到可視範圍邊界時自動捲動。
+     * 僅在子選單已啟用捲動包裝、目標為該子選單「直屬項目」的控制項、
+     * 且該方向仍有隱藏項目時介入；其餘情況一律交還瀏覽器原生 Tab。
+     * @returns {boolean} 是否已處理（已 preventDefault）
+     */
+    _handleSubScrollTab(e, target) {
+      if (e.ctrlKey || e.altKey || e.metaKey) return false;
+      const sub = target.closest(".tadnav-submenu");
+      if (!sub) return false;
+      const s = this._scrollStates.get(sub);
+      if (!s) return false;
+      const li = target.closest("li");
+      if (!li || li.parentElement !== sub) return false;
+      const idx = s.items.indexOf(li);
+      if (idx === -1) return false;                       // 捲動按鈕本身
+      if (target !== this._itemControl(li)) return false;
+      // 該項目自己的巢狀子選單已展開時，Tab 應先進入巢狀子選單
+      if (!e.shiftKey && li.querySelector(':scope > .tadnav-submenu[data-open="true"]')) return false;
+
+      if (!e.shiftKey) {
+        const lastVisible = s.currentIndex + s.visibleN - 1;
+        if (idx !== lastVisible || s.currentIndex >= s.totalItems - s.visibleN) return false;
+        e.preventDefault();
+        return this._scrollSub(sub, "down", { focus: true });
+      }
+      if (idx !== s.currentIndex || s.currentIndex <= 0) return false;
+      e.preventDefault();
+      return this._scrollSub(sub, "up", { focus: true });
+    }
+
     _calcVisibleItems(sub, itemH, totalItems) {
       if (itemH <= 0) return 5;
       const vh      = window.innerHeight;
@@ -348,8 +481,13 @@
       items.forEach((li, i) => {
         li.style.display = (i >= currentIndex && i < currentIndex + visibleN) ? "" : "none";
       });
-      upBtn.setAttribute("aria-disabled",   currentIndex <= 0                     ? "true" : "false");
-      downBtn.setAttribute("aria-disabled", currentIndex >= totalItems - visibleN ? "true" : "false");
+      const upOff   = currentIndex <= 0;
+      const downOff = currentIndex >= totalItems - visibleN;
+      upBtn.setAttribute("aria-disabled",   upOff   ? "true" : "false");
+      downBtn.setAttribute("aria-disabled", downOff ? "true" : "false");
+      // ★ v1.9.6：停用中的捲動按鈕移出 Tab 順序，避免 Tab 停在「無法使用」的按鈕上
+      upBtn.setAttribute("tabindex",   upOff   ? "-1" : "0");
+      downBtn.setAttribute("tabindex", downOff ? "-1" : "0");
     }
 
     // =============================================
@@ -785,13 +923,30 @@
           }
         }
 
-        // 桌機版：碰撞偵測（右側 / 下方翻轉）+ 捲動包裝（RAF 異步即可）
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            this._checkSubOverflow(sub);
-            if (this.options.collisionDetection) this._detectCollision(sub);
-          });
-        });
+        // ★ v1.9.5 修正（無障礙／WCAG 2.4.3 焦點順序）：
+        //   捲動包裝（_checkSubOverflow → _wrapSubScroll）與碰撞偵測改為
+        //   「子選單開啟當下」同步執行，不再延遲兩個 requestAnimationFrame。
+        //   問題：_wrapSubScroll 一旦判定內容溢出，會動態插入捲動按鈕，
+        //   並用 _applySubScroll 把超出可視範圍的 <li> 設成 display:none，
+        //   這會直接影響瀏覽器原生 Tab 順序。原本延後兩個 RAF（約兩個畫面
+        //   更新週期）才執行這項判斷，等於子選單一開啟、data-open="true"
+        //   且已可被 Tab 進入，卻要再等一小段時間後 DOM 才會真正定案。
+        //   若鍵盤／螢幕報讀器使用者的按鍵速度快過這兩個 RAF（NVDA 使用者
+        //   很常見一聽到「已展開」就立刻連續按 Tab），就會在還沒溢出隱藏
+        //   的當下開始 Tab 遊走；等 _wrapSubScroll 稍後才把子選單尾端項目
+        //   隱藏，瀏覽器會依「當下」DOM 狀態重新計算下一個可聚焦元素，
+        //   於是原本要 Tab 到的項目忽然消失，一次多跳過好幾項，直接落到
+        //   子選單外、甚至外層下一個選單項目上。由於是否命中取決於使用者
+        //   按鍵時機與畫面更新時機是否重疊，因此並非每次都會重現。
+        //   項目愈多、愈容易觸發捲動包裝的選單（例如本檔案內巢狀項目最多
+        //   的「行政處室」）愈容易命中；項目少、不會觸發捲動包裝的選單則
+        //   幾乎不會發生，這與回報的現象吻合。
+        //   修正：getBoundingClientRect() 本身就會強制觸發同步版面配置，
+        //   不需要等待 RAF；改為在子選單標記為 data-open="true"、開始可被
+        //   Tab 進入之前，就同步完成溢出判斷與捲動包裝，確保鍵盤使用者
+        //   一開始導覽時，DOM／Tab 順序就已經穩定，不會中途改變。
+        this._checkSubOverflow(sub);
+        if (this.options.collisionDetection) this._detectCollision(sub);
       } else {
         // 手機版：展開後捲動到 toggle 確保可見（WCAG 1.4.10）
         requestAnimationFrame(() => {
@@ -1052,6 +1207,8 @@
       }
 
       if (!this._isMobile) {
+        // ★ v1.9.6：捲動包裝子選單內，Tab 走到可視範圍邊界時自動捲動並移動焦點
+        if (key === "Tab" && this._handleSubScrollTab(e, target)) return;
         this._handleDesktopKeydown(e, target, key);
       } else {
         this._handleMobileKeydown(e, target, key);
@@ -1090,16 +1247,39 @@
         if (key === "ArrowDown" || key === "ArrowUp") {
           e.preventDefault();
           const parentSub = target.closest(".tadnav-submenu");
+          const st = this._scrollStates.get(parentSub);
+
+          // ★ v1.9.6：焦點在捲動按鈕上時的方向鍵
+          //   ↓ 於「向上捲動」→ 第一個可視項目；↑ 於「向下捲動」→ 最後一個可視項目
+          //   ↑ 於「向上捲動」／↓ 於「向下捲動」→ 繼續捲動並將焦點移到新項目
+          if (st && target.classList.contains("tadnav-scroll-btn")) {
+            const isUp = target === st.upBtn;
+            if (key === "ArrowDown" && isUp)
+              this._itemControl(st.items[st.currentIndex])?.focus();
+            else if (key === "ArrowUp" && !isUp)
+              this._itemControl(st.items[st.currentIndex + st.visibleN - 1])?.focus();
+            else
+              this._scrollSub(parentSub, isUp ? "up" : "down", { focus: true, announce: true });
+            return;
+          }
+
+          // ★ v1.9.6：有捲動包裝時，以「全部項目」為範圍（含目前被隱藏者），
+          //   必要時自動捲動，讓方向鍵可以走完整個子選單；
+          //   原本只在可視項目間循環，隱藏項目永遠按不到。
           const items = Array.from(
             parentSub.querySelectorAll(
-              ':scope > li:not(.tadnav-scroll-btn):not([style*="display: none"]) > a[href], ' +
-              ':scope > li:not(.tadnav-scroll-btn):not([style*="display: none"]) > button.tadnav-submenu-toggle'
+              st
+                ? ':scope > li:not(.tadnav-scroll-btn) > a[href], ' +
+                  ':scope > li:not(.tadnav-scroll-btn) > button.tadnav-submenu-toggle'
+                : ':scope > li:not(.tadnav-scroll-btn):not([style*="display: none"]) > a[href], ' +
+                  ':scope > li:not(.tadnav-scroll-btn):not([style*="display: none"]) > button.tadnav-submenu-toggle'
             )
           );
           const idx  = items.indexOf(target);
           const next = key === "ArrowDown"
             ? items[(idx + 1) % items.length]
             : items[(idx - 1 + items.length) % items.length];
+          if (st && next) this._revealSubItem(parentSub, items.indexOf(next));
           next?.focus();
         }
         // 右鍵：展開巢狀子選單
@@ -1127,8 +1307,12 @@
             ':scope > li:not(.tadnav-scroll-btn) > button.tadnav-submenu-toggle'
           )
         );
-        if (key === "Home") items[0]?.focus();
-        else items[items.length - 1]?.focus();
+        const dest = key === "Home" ? items[0] : items[items.length - 1];
+        // ★ v1.9.6：目標項目可能被捲動包裝隱藏（display:none 無法 focus），
+        //   先捲動到可視範圍再聚焦
+        if (parentSub && dest && this._scrollStates.has(parentSub))
+          this._revealSubItem(parentSub, items.indexOf(dest));
+        dest?.focus();
       }
     }
 

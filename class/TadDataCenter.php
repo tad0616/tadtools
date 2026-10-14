@@ -218,7 +218,6 @@ class TadDataCenter
             }
         } else {
             $value = $myts->htmlSpecialChars($value);
-
         }
 
         if (in_array($type, ['radio', 'checkbox', 'checkbox-radio'])) {
@@ -536,16 +535,12 @@ class TadDataCenter
     public function getData($name = '', $data_sort = null, $ans_col_name = '', $ans_col_sn = '', $data_value = '')
     {
         global $xoopsDB;
-        $myts      = \MyTextSanitizer::getInstance();
         $and_name  = ('' != $name) ? "and `data_name`='{$name}'" : '';
         $and_sort  = ('' != $data_sort) ? "and `data_sort`='{$data_sort}'" : '';
         $and_value = ('' != $data_value) ? "and `data_value`='{$data_value}'" : '';
 
         $def_col_name = !empty($ans_col_name) ? $ans_col_name : $this->col_name;
         $def_col_sn   = !empty($ans_col_name) ? $ans_col_sn : $this->col_sn;
-
-        // $and_col_name = ('' != $def_col_name) ? "and `col_name`='{$def_col_name}'" : '';
-        // $and_col_sn   = ('' != $def_col_sn) ? "and `col_sn`='{$def_col_sn}'" : '';
 
         $and_col_name = "and `col_name`='{$def_col_name}'";
         $and_col_sn   = "and `col_sn`='{$def_col_sn}'";

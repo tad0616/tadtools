@@ -1,5 +1,33 @@
 /**
- * TadNav v1.9.3
+ * TadNav v1.9.5
+ * ★ v1.9.5 修正（無障礙／WCAG 2.4.3 焦點順序）：
+ *  13. _openSubmenu 的桌機版捲動包裝／碰撞偵測：改為同步執行，
+ *      不再延遲兩個 requestAnimationFrame。
+ *      現象：Tab 遊走至含多層子選單的項目（如「行政處室」）並展開／
+ *      收合後，鍵盤焦點有時會直接跳過緊接在後的幾個選單項目，
+ *      且並非每次重現。
+ *      原因：_wrapSubScroll 判定子選單內容溢出時，會用 display:none
+ *      隱藏超出可視範圍的項目，直接影響原生 Tab 順序；但這個判斷被
+ *      延後在子選單「已經可被 Tab 進入」之後的第二個 RAF 才執行。
+ *      若使用者（尤其是螢幕報讀器使用者）按 Tab 的速度快過這兩個
+ *      畫面更新週期，就會在溢出隱藏「定案前」開始導覽，隱藏動作於
+ *      導覽途中才發生，使瀏覽器依當下 DOM 狀態重新計算下一個可聚焦
+ *      元素，導致一次跳過比預期更多的項目。項目愈多、愈容易觸發
+ *      捲動包裝的子選單愈容易命中，這也是回報現象集中在特定選單的
+ *      原因。
+ *      修正：getBoundingClientRect() 本身即會強制觸發同步版面配置，
+ *      無需等待 RAF；改為子選單標記 data-open="true" 的同一時刻就
+ *      同步完成溢出判斷與捲動包裝，確保使用者開始鍵盤導覽時
+ *      Tab 順序已經穩定、不會中途改變。
+ * ★ v1.9.4 修正（無障礙／WCAG 2.4.3 焦點順序）：
+ *  12. _wrapSubScroll 的 scroll()：捲動按鈕在 DOM 中固定位於子選單
+ *      頭尾，捲動只切換項目 display，不搬動 DOM 順序；鍵盤使用者
+ *      按下「向下捲動」後，焦點停留在 downBtn 上，往前 Tab 會跳過
+ *      新出現、其實位於 downBtn 之前的項目，須改按 Shift+Tab 才能
+ *      到達，焦點順序與畫面呈現順序不一致。
+ *      修正：鍵盤觸發（Enter/Space）捲動時，捲動後自動將焦點移至
+ *      新可視範圍的第一個項目，使 Tab 順序與內容順序一致；滑鼠點擊
+ *      與滾輪捲動則維持原焦點，不做搬移。
  * 修正：
  *   1. 桌機版：hover/click 開啟子選單前先關閉同層其他子選單（互斥）
  *   2. 手機版：強制單欄手風琴，同層互斥
@@ -248,7 +276,17 @@
       };
       this._scrollStates.set(sub, state);
 
-      const scroll = dir => {
+      // ★ 修正（WCAG 2.4.3 焦點順序）：
+      //   upBtn／downBtn 在 DOM 中固定放在子選單的最前／最後，捲動只是
+      //   切換項目的 display，並不會搬動 DOM 順序。因此按下「向下捲動」
+      //   後，新出現的項目在 DOM 中仍位於 downBtn 之前；若焦點停留在
+      //   downBtn 上，往前 Tab 會直接跳出子選單，鍵盤使用者必須改按
+      //   Shift+Tab 才能碰到剛顯示出來的內容，導致取得焦點的順序與畫面
+      //   呈現順序不一致。
+      //   修正方式：鍵盤觸發（Enter/Space）捲動後，將焦點移至捲動後可視
+      //   範圍內的第一個項目，讓 Tab 順序自然銜接新內容；滑鼠點擊與滾輪
+      //   捲動則不搬移焦點，避免無預期地打斷視覺焦點所在位置。
+      const scroll = (dir, moveFocus) => {
         if (this._isMobile) return;
         const s = this._scrollStates.get(sub);
         if (!s) return;
@@ -257,20 +295,29 @@
           const nested = li.querySelector(':scope > .tadnav-submenu[data-open="true"]');
           if (nested) this._closeSubmenu(nested);
         });
+        const prevIndex = s.currentIndex;
         s.currentIndex = dir === "up"
           ? Math.max(0, s.currentIndex - this.options.subScrollStep)
           : Math.min(max, s.currentIndex + this.options.subScrollStep);
         this._applySubScroll(sub);
+
+        if (moveFocus && s.currentIndex !== prevIndex) {
+          const firstVisible = s.items[s.currentIndex];
+          const focusTarget = firstVisible?.querySelector(
+            'a[href], button.tadnav-submenu-toggle'
+          );
+          focusTarget?.focus();
+        }
       };
 
-      const onUpClick   = () => scroll("up");
-      const onDownClick = () => scroll("down");
-      const onUpKey     = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); scroll("up"); } };
-      const onDownKey   = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); scroll("down"); } };
+      const onUpClick   = () => scroll("up", false);
+      const onDownClick = () => scroll("down", false);
+      const onUpKey     = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); scroll("up", true); } };
+      const onDownKey   = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); scroll("down", true); } };
       const onWheel     = e => {
         if (this._isMobile) return;
         e.preventDefault(); e.stopPropagation();
-        scroll(e.deltaY > 0 ? "down" : "up");
+        scroll(e.deltaY > 0 ? "down" : "up", false);
       };
 
       upBtn.addEventListener("click",    onUpClick);
@@ -757,13 +804,30 @@
           }
         }
 
-        // 桌機版：碰撞偵測（右側 / 下方翻轉）+ 捲動包裝（RAF 異步即可）
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            this._checkSubOverflow(sub);
-            if (this.options.collisionDetection) this._detectCollision(sub);
-          });
-        });
+        // ★ v1.9.5 修正（無障礙／WCAG 2.4.3 焦點順序）：
+        //   捲動包裝（_checkSubOverflow → _wrapSubScroll）與碰撞偵測改為
+        //   「子選單開啟當下」同步執行，不再延遲兩個 requestAnimationFrame。
+        //   問題：_wrapSubScroll 一旦判定內容溢出，會動態插入捲動按鈕，
+        //   並用 _applySubScroll 把超出可視範圍的 <li> 設成 display:none，
+        //   這會直接影響瀏覽器原生 Tab 順序。原本延後兩個 RAF（約兩個畫面
+        //   更新週期）才執行這項判斷，等於子選單一開啟、data-open="true"
+        //   且已可被 Tab 進入，卻要再等一小段時間後 DOM 才會真正定案。
+        //   若鍵盤／螢幕報讀器使用者的按鍵速度快過這兩個 RAF（NVDA 使用者
+        //   很常見一聽到「已展開」就立刻連續按 Tab），就會在還沒溢出隱藏
+        //   的當下開始 Tab 遊走；等 _wrapSubScroll 稍後才把子選單尾端項目
+        //   隱藏，瀏覽器會依「當下」DOM 狀態重新計算下一個可聚焦元素，
+        //   於是原本要 Tab 到的項目忽然消失，一次多跳過好幾項，直接落到
+        //   子選單外、甚至外層下一個選單項目上。由於是否命中取決於使用者
+        //   按鍵時機與畫面更新時機是否重疊，因此並非每次都會重現。
+        //   項目愈多、愈容易觸發捲動包裝的選單（例如本檔案內巢狀項目最多
+        //   的「行政處室」）愈容易命中；項目少、不會觸發捲動包裝的選單則
+        //   幾乎不會發生，這與回報的現象吻合。
+        //   修正：getBoundingClientRect() 本身就會強制觸發同步版面配置，
+        //   不需要等待 RAF；改為在子選單標記為 data-open="true"、開始可被
+        //   Tab 進入之前，就同步完成溢出判斷與捲動包裝，確保鍵盤使用者
+        //   一開始導覽時，DOM／Tab 順序就已經穩定，不會中途改變。
+        this._checkSubOverflow(sub);
+        if (this.options.collisionDetection) this._detectCollision(sub);
       } else {
         // 手機版：展開後捲動到 toggle 確保可見（WCAG 1.4.10）
         requestAnimationFrame(() => {

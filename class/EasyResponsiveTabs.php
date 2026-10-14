@@ -34,7 +34,7 @@ class EasyResponsiveTabs
         $jquery          = Utility::get_jquery();
         $responsive_tabs = '';
         if ($xoTheme) {
-            $xoTheme->addScript('modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js?v=20260904');
+            $xoTheme->addScript('modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js?v=20260924');
             $xoTheme->addScript('modules/tadtools/jqueryCookie/js.cookie.min.js');
             $xoTheme->addStylesheet('modules/tadtools/Easy-Responsive-Tabs/css/easy-responsive-tabs.css');
             $cookie_name = mb_substr($this->name, 1) . '_baseURI';
@@ -70,7 +70,7 @@ class EasyResponsiveTabs
         } else {
             $responsive_tabs = "
                 {$jquery}
-                <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js?v=20260904'></script>
+                <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js?v=20260924'></script>
                 <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='" . XOOPS_URL . "/modules/tadtools/Easy-Responsive-Tabs/css/easy-responsive-tabs.css' >
                 ";
 
@@ -116,9 +116,9 @@ class EasyResponsiveTabs
         $jquery          = Utility::get_jquery();
         $responsive_tabs = '';
         if ($xoTheme && $mode != 'return') {
-            $xoTheme->addScript('modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js?v=20260904');
+            $xoTheme->addScript('modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js?v=20260924');
             $xoTheme->addScript('modules/tadtools/jqueryCookie/js.cookie.min.js');
-            $xoTheme->addStylesheet('modules/tadtools/Easy-Responsive-Tabs/css/easy-responsive-tabs.css?v=20260904');
+            $xoTheme->addStylesheet('modules/tadtools/Easy-Responsive-Tabs/css/easy-responsive-tabs.css?v=20260924');
             $cookie_name = mb_substr($this->name, 1) . '_baseURI';
             $xoTheme->addScript('', null, "
                 $(document).ready(function(){
@@ -151,8 +151,8 @@ class EasyResponsiveTabs
         } else {
             $responsive_tabs = "
                 {$jquery}
-                <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js?v=20260904'></script>
-                <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='" . XOOPS_URL . "/modules/tadtools/Easy-Responsive-Tabs/css/easy-responsive-tabs.css?v=20260904' >
+                <script type='text/javascript' src='" . XOOPS_URL . "/modules/tadtools/Easy-Responsive-Tabs/js/easyResponsiveTabs.js?v=20260924'></script>
+                <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='" . XOOPS_URL . "/modules/tadtools/Easy-Responsive-Tabs/css/easy-responsive-tabs.css?v=20260924' >
                 ";
 
             $cookie_name = mb_substr($this->name, 1) . '_baseURI';

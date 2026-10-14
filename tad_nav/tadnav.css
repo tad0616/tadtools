@@ -42,8 +42,8 @@
   --tadnav-sub-item-hover-bg: #eaf4fd;
   --tadnav-sub-item-hover-color: #1a5276;
 
-  --tadnav-scroll-btn-bg: #f0f4f8;
-  --tadnav-scroll-btn-hover-bg: #dbeaf7;
+  --tadnav-scroll-btn-bg: rgba(0, 0, 0, 0.12);
+  --tadnav-scroll-btn-hover-bg: rgba(0, 0, 0, 0.25);
   --tadnav-scroll-btn-color: #1a5276;
   --tadnav-scroll-btn-height: 28px;
 

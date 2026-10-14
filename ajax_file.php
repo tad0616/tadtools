@@ -20,6 +20,7 @@ $files_sn    = Request::getInt('files_sn');
 $sort_arr    = Request::getArray('sort_arr');
 $db_prefix   = Request::getString('db_prefix');
 $thumbs_dir  = Request::getString('thumbs_dir');
+$allow_guest = Request::getInt('allow_guest', 0);
 
 // 關閉除錯訊息
 header('HTTP/1.1 200 OK');
@@ -41,6 +42,7 @@ switch ($op) {
     case 'remove_file':
         $TadUpFiles = new TadUpFiles($mod_name);
         $TadUpFiles->set_db_prefix($db_prefix);
+        $TadUpFiles->set_var('allow_guest', $allow_guest);
         $result = $TadUpFiles->del_files($files_sn, '', true, $thumbs_dir);
         if (is_int($result)) {
             echo '1';

@@ -14,14 +14,17 @@ class BootstrapTable
 
     }
 
-    public static function render($editable = true, $fixed = true, $sticky = true)
+    public static function render($editable = true, $fixed = true, $sticky = true, $remove_tab_index = false)
     {
         global $xoTheme;
-        $jquery = Utility::get_jquery();
+        $jquery          = Utility::get_jquery();
         $bootstrap_table = '';
         if ($xoTheme) {
             $xoTheme->addStylesheet('modules/tadtools/bootstrap-table/bootstrap-table.min.css');
-            $xoTheme->addScript('modules/tadtools/bootstrap-table/bootstrap-table.min.js');
+            $xoTheme->addScript('modules/tadtools/bootstrap-table/bootstrap-table.min.js?t=20260924');
+            if ($remove_tab_index) {
+                $xoTheme->addScript('modules/tadtools/bootstrap-table/remove_tab_index.js');
+            }
             $xoTheme->addScript('modules/tadtools/bootstrap-table/locale/bootstrap-table-' . _LANGCODE . '.min.js');
             $xoTheme->addScript('modules/tadtools/bootstrap-table/extensions/mobile/bootstrap-table-mobile.min.js');
             $xoTheme->addStylesheet('modules/tadtools/bootstrap-table/extensions/filter-control/bootstrap-table-filter-control.min.css');
@@ -42,10 +45,14 @@ class BootstrapTable
             }
 
         } else {
+
+            $remove_tab_index_js = $remove_tab_index ? "<script type='text/javascript' src='" . TADTOOLS_URL . "/bootstrap-table/bootstrap-table.min.js?t=20260924'></script>" : '';
+
             $bootstrap_table = "
             {$jquery}
             <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='" . TADTOOLS_URL . "/bootstrap-table/bootstrap-table.min.css'>
-            <script type='text/javascript' src='" . TADTOOLS_URL . "/bootstrap-table/bootstrap-table.min.js'></script>
+            <script type='text/javascript' src='" . TADTOOLS_URL . "/bootstrap-table/bootstrap-table.min.js?t=20260924'></script>
+            $remove_tab_index_js
             <script type='text/javascript' src='" . TADTOOLS_URL . "/bootstrap-table/locale/bootstrap-table-" . _LANGCODE . ".min.js'></script>
             <script type='text/javascript' src='" . TADTOOLS_URL . "/bootstrap-table/extensions/mobile/bootstrap-table-mobile.min.js'></script>
             <script type='text/javascript' src='" . TADTOOLS_URL . "/bootstrap-table/extensions/filter-control/bootstrap-table-filter-control.min.js'></script>

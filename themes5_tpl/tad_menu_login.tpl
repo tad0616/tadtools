@@ -35,7 +35,7 @@
                             <input type="hidden" name="rememberme" value="On">
                             <input type="hidden" name="op" value="login">
                             <input type="hidden" name="xoops_login" value="1">
-                            <button type="submit" class="btn btn-primary btn-block py-2 btn-lg" aria-label="<{$smarty.const.TF_USER_ENTER}>">
+                            <button type="submit" class="btn btn-warning btn-block py-2 btn-lg" aria-label="<{$smarty.const.TF_USER_ENTER}>">
                                 <{$smarty.const.TF_USER_ENTER}>
                             </button>
                         </div>

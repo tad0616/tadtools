@@ -150,7 +150,7 @@
                     $tabContent.attr('data-content-index', tabcount); // 添加索引標記
                     $tabContent.attr('role', 'tabpanel');
                     $tabContent.attr('aria-hidden', 'true');
-                    $tabContent.attr('tabindex', '0'); // 保持可被 Tab 訪問（供交錯順序使用）
+                    // $tabContent.attr('tabindex', '0'); // 保持可被 Tab 訪問（供交錯順序使用）
                     $tabContent.css({
                         'border-color': options.active_border_color
                     });
@@ -235,7 +235,17 @@
                             if (!$targetTab.hasClass('resp-tab-active')) {
                                 activateTab($targetTab);
                             }
-                            $contents.eq(titleIndex).focus();
+                            // 💡 修正：優先將焦點移至內容區內第一個可互動元件，
+                            // 避免焦點停留在整個內容區塊（大範圍容器）上，
+                            // 導致語音報讀軟體一次朗讀整個區塊內容。
+                            // 僅當內容區內沒有任何可聚焦元件時，才退回聚焦容器本身。
+                            var $nextContent = $contents.eq(titleIndex);
+                            var $nextFocusables = getFocusables($nextContent);
+                            if ($nextFocusables.length > 0) {
+                                $nextFocusables.first().focus();
+                            } else {
+                                $nextContent.focus();
+                            }
                         } else {
                             // Shift+Tab: 往前導航
                             if (titleIndex > 0) {

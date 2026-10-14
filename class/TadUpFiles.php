@@ -701,7 +701,8 @@ class TadUpFiles
 
         $reload = $this->reload ? "location.reload();" : '';
 
-        $files = "
+        $allow_guest_js = $this->allow_guest ? ', allow_guest: 1' : '';
+        $files          = "
         <script type='text/javascript'>
             $(document).ready(function(){
                 $('#list_del_file_sort_{$this->col_name}').sortable({ opacity: 0.6, cursor: 'move', update: function() {
@@ -717,7 +718,7 @@ class TadUpFiles
                 if (!sure){
                     return;
                 } else{
-                    $.post('" . XOOPS_URL . "/modules/tadtools/ajax_file.php', {op: 'remove_file', mod_name: '{$this->dir}', db_prefix: '{$this->db_prefix}', files_sn: files_sn, thumbs_dir: thumbs_dir}, function(data){
+                    $.post('" . XOOPS_URL . "/modules/tadtools/ajax_file.php', {op: 'remove_file', mod_name: '{$this->dir}', db_prefix: '{$this->db_prefix}', files_sn: files_sn, thumbs_dir: thumbs_dir{$allow_guest_js}}, function(data){
                         if(data=='1'){
                             $('#fdtr_' + files_sn).html('<li>已刪除</li>');
                             $('#fdtr_' + files_sn).remove();

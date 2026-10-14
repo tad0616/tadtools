@@ -1111,9 +1111,9 @@ class Utility
     }
 
     //推文工具
-    public static function push_url($enable = 1)
+    public static function push_url($enable = 1, $mode = '')
     {
-        global $xoopsModuleConfig;
+        global $xoopsModuleConfig, $xoTheme;
         if ($enable) {
             if (!isset($xoopsModuleConfig['facebook_app_id'])) {
                 $xoopsTadtoolsConfig = self::TadToolsXoopsModuleConfig();
@@ -1122,10 +1122,16 @@ class Utility
                 $facebookAppId = $xoopsModuleConfig['facebook_app_id'];
             }
 
-            $GLOBALS['xoTheme']->addStylesheet('modules/tadtools/css/fontawesome6/css/all.min.css');
-            $GLOBALS['xoTheme']->addStylesheet('modules/tadtools/social-likes/social-likes.css');
+            if (!$xoTheme || $mode == 'embed') {
+                $main = "<link href='" . XOOPS_URL . "/modules/tadtools/css/fontawesome6/css/all.min.css' rel='stylesheet' type='text/css' media='all'>";
+                $main .= "<link href='" . XOOPS_URL . "/modules/tadtools/social-likes/social-likes.css' rel='stylesheet' type='text/css' media='all'>";
+            } else {
+                $xoTheme->addStylesheet('modules/tadtools/css/fontawesome6/css/all.min.css');
+                $xoTheme->addStylesheet('modules/tadtools/social-likes/social-likes.css');
+                $main = '';
+            }
 
-            $main = "
+            $main .= "
             <div class='share-buttons'>
                 <button onclick=\"share('facebook')\" class=\"facebook\"><i class=\"fa-brands fa-facebook-f\"></i></button>
                 <button onclick=\"share('x')\" class=\"x\"><i class=\"fa-brands fa-x-twitter\"></i></button>
@@ -1305,11 +1311,11 @@ class Utility
     }
 
     //根據名稱找群組編號
-    public static function group_id_from_name($name = "")
+    public static function group_id_from_name($name = '')
     {
         global $xoopsDB;
-        $sql           = "SELECT `groupid` FROM `" . $xoopsDB->prefix('groups') . "` WHERE `name`='{$name}'";
-        $result        = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql           = 'SELECT `groupid` FROM `' . $xoopsDB->prefix('groups') . '` WHERE `name`=?';
+        $result        = Utility::query($sql, 's', [$name]) or Utility::web_error($sql, __FILE__, __LINE__);
         list($groupid) = $xoopsDB->fetchRow($result);
         return $groupid;
     }
@@ -1318,8 +1324,8 @@ class Utility
     public static function get_group_from_name($name = "")
     {
         global $xoopsDB;
-        $sql    = "SELECT * FROM `" . $xoopsDB->prefix('groups') . "` WHERE `name`='{$name}'";
-        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql    = 'SELECT * FROM `' . $xoopsDB->prefix('groups') . '` WHERE `name`=?';
+        $result = Utility::query($sql, 's', [$name]) or Utility::web_error($sql, __FILE__, __LINE__);
         $group  = $xoopsDB->fetchArray($result);
         return $group;
     }
@@ -1328,8 +1334,8 @@ class Utility
     public static function get_group($groupid = "")
     {
         global $xoopsDB;
-        $sql    = "SELECT * FROM `" . $xoopsDB->prefix('groups') . "` WHERE `groupid`='{$groupid}'";
-        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql    = 'SELECT * FROM `' . $xoopsDB->prefix('groups') . '` WHERE `groupid`=?';
+        $result = Utility::query($sql, 'i', [$groupid]) or Utility::web_error($sql, __FILE__, __LINE__);
         $group  = $xoopsDB->fetchArray($result);
         return $group;
     }
@@ -2446,6 +2452,56 @@ class Utility
                 throw new \Exception(sprintf(TADTOOLS_CANT_DELETE, $theme_json_file));
             }
         }
+    }
+
+    /**
+     * 產生安全且適合 FTP 使用的強密碼。
+     *
+     * 預設字元集：
+     * - 大寫英文字母
+     * - 小寫英文字母
+     * - 數字
+     *
+     * 不含容易混淆的字元：O、0、I、l、1
+     * 不含可能在 FTP / Shell / URL 中需要跳脫的特殊符號。
+     *
+     * @param int $length 密碼長度，最低 12 碼
+     * @return string
+     * @throws InvalidArgumentException
+     * @throws Exception
+     */
+    public static function generateStrongPassword(int $length = 20): string
+    {
+        if ($length < 12) {
+            throw new InvalidArgumentException('密碼長度至少必須為 12 碼。');
+        }
+
+        // 移除 O/0、I/l/1，降低人工輸入或口頭傳遞時的混淆機率
+        $upper   = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+        $lower   = 'abcdefghijkmnopqrstuvwxyz';
+        $numbers = '23456789';
+
+        $allChars = $upper . $lower . $numbers;
+
+        // 先確保每一種類型至少出現一次
+        $password = [
+            $upper[random_int(0, strlen($upper) - 1)],
+            $lower[random_int(0, strlen($lower) - 1)],
+            $numbers[random_int(0, strlen($numbers) - 1)],
+        ];
+
+        // 補足其餘字元
+        for ($i = count($password); $i < $length; $i++) {
+            $password[] = $allChars[random_int(0, strlen($allChars) - 1)];
+        }
+
+        // Fisher–Yates shuffle，避免密碼前 3 碼固定為大寫、小寫、數字的模式
+        for ($i = count($password) - 1; $i > 0; $i--) {
+            $j                             = random_int(0, $i);
+            [$password[$i], $password[$j]] = [$password[$j], $password[$i]];
+        }
+
+        return implode('', $password);
     }
 
 }
