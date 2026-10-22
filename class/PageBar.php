@@ -92,7 +92,7 @@ class PageBar
         $this->next2     = "<img src='" . XOOPS_URL . "/modules/tadtools/images/1rightarrow_g.png' alt='" . _TAD_NEXT_PAGE . "' align='absmiddle' hspace=3>";
         $this->first2    = "<img src='" . XOOPS_URL . "/modules/tadtools/images/2leftarrow_g.png' alt='" . _TAD_FIRST_PAGE . "' align='absmiddle' hspace=3>";
         $this->last2     = "<img src='" . XOOPS_URL . "/modules/tadtools/images/2rightarrow_g.png' alt='" . _TAD_LAST_PAGE . "' align='absmiddle' hspace=3>";
-        $this->to_page   = $_SERVER['PHP_SELF'];
+        $this->to_page   = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8');
         $this->limit     = (int) $limit;
         $this->total     = $total;
         $this->pLimit    = $page_limit;
