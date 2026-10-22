@@ -67,6 +67,12 @@ if (strlen($subDir) > 1024) {
     $badRequest();
 }
 
+// elFinder 的目錄路徑可能以斜線開頭；只移除一個開頭斜線，
+// 讓 /1/22/54 可正常使用，同時讓 //1 仍會因為含有空路徑段而被拒絕。
+if (substr($subDir, 0, 1) === '/') {
+    $subDir = substr($subDir, 1);
+}
+
 if ($subDir !== '') {
     foreach (explode('/', $subDir) as $segment) {
         if (

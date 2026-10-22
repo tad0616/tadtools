@@ -101,7 +101,7 @@ if (!isset($xoopsUser) || !is_object($xoopsUser)) {
 // =============================================
 $cmdRaw = $_POST['cmd'] ?? ($_GET['cmd'] ?? '');
 if (!is_string($cmdRaw)) {
-    tadtools_elfinder_deny(400, '請求參數不合法。');
+    tadtools_elfinder_deny(400, 'cmd 參數格式錯誤：必須是文字。');
 }
 
 $readOnlyCommands = ['', 'open', 'ls', 'tree', 'parents', 'tmb', 'file', 'size', 'info', 'search', 'dim', 'get', 'ping', 'subdirs', 'zipdl', 'url', 'netmount'];
@@ -116,7 +116,7 @@ if (!in_array($cmdRaw, $readOnlyCommands, true) && !tadtools_elfinder_is_same_or
 // =============================================
 foreach (['type', 'mod_dir', 'subDir'] as $name) {
     if (isset($_GET[$name]) && !is_string($_GET[$name])) {
-        tadtools_elfinder_deny(400, '請求參數不合法。');
+        tadtools_elfinder_deny(400, $name . ' 參數格式錯誤：必須是單一文字值。');
     }
 }
 
@@ -133,23 +133,26 @@ if (!is_string($mdir) || $mdir === '') {
 }
 
 if (!in_array($type, ['image', 'file'], true)) {
-    tadtools_elfinder_deny(400, '請求參數不合法。');
+    tadtools_elfinder_deny(400, 'type 參數值錯誤：只允許 image 或 file。');
 }
 
 if (!preg_match('/\A[A-Za-z0-9_][A-Za-z0-9_-]{0,63}\z/', $mdir)) {
-    tadtools_elfinder_deny(400, '請求參數不合法。');
+    tadtools_elfinder_deny(400, 'mod_dir 參數格式錯誤：只能使用英文字母、數字、底線及連字號，且長度為 1 至 64 個字元。');
 }
 
 $subDir      = trim($subDir, '/');
 $subSegments = [];
 if ($subDir !== '') {
     $subSegments = explode('/', $subDir);
-    if (count($subSegments) > 10 || strlen($subDir) > 512) {
-        tadtools_elfinder_deny(400, '請求參數不合法。');
+    if (count($subSegments) > 10) {
+        tadtools_elfinder_deny(400, 'subDir 參數層級過深：最多只能包含 10 層資料夾。');
+    }
+    if (strlen($subDir) > 512) {
+        tadtools_elfinder_deny(400, 'subDir 參數過長：長度不可超過 512 個字元。');
     }
     foreach ($subSegments as $segment) {
         if (!preg_match('/\A[A-Za-z0-9_-]{1,64}\z/', $segment)) {
-            tadtools_elfinder_deny(400, '請求參數不合法。');
+            tadtools_elfinder_deny(400, 'subDir 參數格式錯誤：每層資料夾名稱只能使用英文字母、數字、底線及連字號，且長度為 1 至 64 個字元。');
         }
     }
 }
