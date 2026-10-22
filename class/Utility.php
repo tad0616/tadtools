@@ -487,9 +487,15 @@ class Utility
 
                     list($ver) = $xoopsDB->fetchRow($result);
                     if (!empty($ver) && strpos($ver, '-') === false) {
-                        if (strpos($ver, '.') !== false) {
-                            for ($i = 0; $i < strlen($ver); $i++) {
-                                $version[] = substr($ver, $i, 1);
+                        if (substr_count($ver, '.') > 1) {
+                            // 4.0.7
+                            $version = explode('.', $ver);
+                        } elseif (strpos($ver, '.') !== false) {
+                            // 4.07
+                            $v         = explode('.', $ver);
+                            $version[] = $v[0];
+                            for ($i = 0; $i < strlen($v[1]); $i++) {
+                                $version[] = substr($v[1], $i, 1);
                             }
                         } else {
 
@@ -507,7 +513,9 @@ class Utility
                     }
                 } else {
                     if (strpos($ver, '-') === false) {
-                        if (strpos($ver, '.') !== false) {
+                        if (substr_count($ver, '.') > 1) {
+                            $version = explode('.', $ver);
+                        } elseif (strpos($ver, '.') !== false) {
                             $v         = explode('.', $ver);
                             $version[] = $v[0];
                             for ($i = 0; $i < strlen($v[1]); $i++) {
