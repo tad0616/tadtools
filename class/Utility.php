@@ -838,8 +838,7 @@ class Utility
     public static function check_string($string = '')
     {
         $string = trim((string) $string);
-        // if ($string != '' && !preg_match('/^[a-zA-Z0-9_\.\p{Han}-]{1,64}$/u', $string)) {
-        if ($string != '' && !preg_match('/^[a-zA-Z0-9_\.\p{Han}-]{1,64}$/u', $string)) {
+        if ($string != '' && !preg_match('/^[a-zA-Z0-9_\.\p{Han} -]{1,64}$/u', $string)) {
             $trace  = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
             $caller = $trace[0] ?? [];
 
