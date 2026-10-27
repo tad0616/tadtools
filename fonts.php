@@ -188,7 +188,8 @@ if ($font) {
         $sql    = 'SELECT `title` FROM `' . $xoopsDB->prefix('newblocks') . '` WHERE `title` != ? AND `visible` = ?';
         $result = Utility::query($sql, 'si', ['', 1]) or Utility::web_error($sql, __FILE__, __LINE__);
 
-        while (list($title) = $xoopsDB->fetchRow($result)) {
+        while ($fetch_row = $xoopsDB->fetchRow($result)) {
+            list($title) = $fetch_row;
             $title_arr[] = $title;
         }
     }

@@ -32,13 +32,14 @@ function web_info()
     $sql    = 'SELECT `conf_value` FROM `' . $xoopsDB->prefix('config') . '` WHERE `conf_name`=?';
     $result = Utility::query($sql, 's', ['meta_description']);
 
-    list($meta_description)  = $xoopsDB->fetchRow($result);
+    $meta_description  = $xoopsDB->fetchRow($result)[0] ?? null;
     $web['meta_description'] = $meta_description;
 
     $sql    = 'SELECT `file_name`, `sub_dir` FROM `' . $xoopsDB->prefix('tad_themes_files_center') . '` WHERE `col_name` = ? AND `col_sn` != ? AND sub_dir LIKE ? ORDER BY `sort`';
     $result = Utility::query($sql, 'sis', ['slide', 0, '/' . $xoopsConfig['theme_set'] . '%']);
 
-    while (list($file_name, $sub_dir) = $xoopsDB->fetchRow($result)) {
+    while ($fetch_row = $xoopsDB->fetchRow($result)) {
+        list($file_name, $sub_dir) = $fetch_row;
         $web['slide'][] = XOOPS_URL . '/uploads/tad_themes' . $sub_dir . '/' . $file_name;
     }
 

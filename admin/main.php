@@ -14,7 +14,8 @@ function tadtools_setup()
     $sql    = 'SELECT * FROM `' . $xoopsDB->prefix('tadtools_setup') . '`';
     $result = Utility::query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     //$tt_theme,$tt_use_bootstrap,$tt_bootstrap_color
-    while (list($tt_theme, $tt_use_bootstrap, $tt_bootstrap_color, $tt_theme_kind) = $xoopsDB->fetchRow($result)) {
+    while ($fetch_row = $xoopsDB->fetchRow($result)) {
+        list($tt_theme, $tt_use_bootstrap, $tt_bootstrap_color, $tt_theme_kind) = $fetch_row;
         // $setup[$tt_theme]=array();
         $use_bootstrap[$tt_theme]     = $tt_use_bootstrap;
         $bootstrap_color[$tt_theme]   = $tt_bootstrap_color;
@@ -53,18 +54,18 @@ function tadtools_setup()
                 }
             } else {
                 $themes[$i]['theme_kind']      = 'html';
-                $themes[$i]['use_bootstrap']   = '' === $use_bootstrap[$theme] ? 1 : $use_bootstrap[$theme];
+                $themes[$i]['use_bootstrap']   = '' === ($use_bootstrap[$theme] ?? '') ? 1 : $use_bootstrap[$theme];
                 $themes[$i]['tad_theme']       = '0';
                 $themes[$i]['bootstrap_theme'] = mk_bootstrap_menu($theme_kind, $theme_color);
             }
         } else {
             $theme_kind                    = search_bootstrap(XOOPS_ROOT_PATH . "/themes/{$theme}");
             $themes[$i]['theme_kind']      = $theme_kind;
-            $themes[$i]['use_bootstrap']   = '' === $use_bootstrap[$theme] ? 1 : $use_bootstrap[$theme];
+            $themes[$i]['use_bootstrap']   = '' === ($use_bootstrap[$theme] ?? '') ? 1 : $use_bootstrap[$theme];
             $themes[$i]['tad_theme']       = '0';
             $themes[$i]['bootstrap_theme'] = mk_bootstrap_menu($theme_kind);
         }
-        $themes[$i]['bootstrap_color'] = basename($bootstrap_color[$theme]);
+        $themes[$i]['bootstrap_color'] = basename($bootstrap_color[$theme] ?? '');
         // var_export($themes[$i]);
         $i++;
     }
@@ -132,13 +133,10 @@ function mk_bootstrap_menu_options($theme_kind = '', $mode = 'light')
 //列出目錄檔案
 function directory_list($directory_base_path = '')
 {
-    $myts                = \MyTextSanitizer::getInstance();
-    $directory_base_path = $myts->addSlashes($directory_base_path);
     $directory_base_path = rtrim($directory_base_path, '/') . '/';
     $result_list         = [];
-    $allfile             = glob($directory_base_path . '*');
+    $allfile             = glob($directory_base_path . '*') ?: [];
     foreach ($allfile as $filename) {
-        $filename     = $myts->addSlashes($filename);
         $basefilename = str_replace($directory_base_path, '', $filename);
         if (is_dir($filename)) {
             $result_list[$basefilename] = directory_list($filename);
@@ -165,14 +163,14 @@ function save()
     $sql = 'DELETE FROM `' . $xoopsDB->prefix('tadtools_setup') . "`";
     Utility::query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
-    $myts               = \MyTextSanitizer::getInstance();
     $tt_use_bootstrap   = Request::getArray('tt_use_bootstrap');
     $tt_bootstrap_color = Request::getArray('tt_bootstrap_color');
     $tt_theme_kind      = Request::getArray('tt_theme_kind');
 
+    // 以 prepared statement 綁定，不需再跳脫
     foreach ($tt_use_bootstrap as $tt_theme => $use_bootstrap) {
-        $bootstrap_color = $myts->addSlashes($tt_bootstrap_color[$tt_theme]);
-        $theme_kind      = $myts->addSlashes($tt_theme_kind[$tt_theme]);
+        $bootstrap_color = $tt_bootstrap_color[$tt_theme] ?? '';
+        $theme_kind      = $tt_theme_kind[$tt_theme] ?? '';
 
         $sql = 'REPLACE INTO `' . $xoopsDB->prefix('tadtools_setup') . '` (`tt_theme`, `tt_use_bootstrap`, `tt_bootstrap_color`, `tt_theme_kind`) VALUES (?, ?, ?, ?)';
         Utility::query($sql, 'ssss', [$tt_theme, $use_bootstrap, $bootstrap_color, $theme_kind]) or Utility::web_error($sql, __FILE__, __LINE__);

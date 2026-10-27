@@ -103,7 +103,8 @@ class CategoryHelper
         $sql        = 'SELECT `' . $this->idField . '`,count(*) FROM ' . $xoopsDB->prefix($countTable) . ' GROUP BY `' . $this->idField . '`';
         Utility::test($sql, 'getCategoryCount', 'die');
         $result = Utility::query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-        while (list($cate_id, $count) = $xoopsDB->fetchRow($result)) {
+        while ($fetch_row = $xoopsDB->fetchRow($result)) {
+            list($cate_id, $count) = $fetch_row;
             $all[$cate_id] = (int) $count;
         }
         Utility::test($all, 'count', 'dd');
