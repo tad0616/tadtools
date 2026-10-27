@@ -2,7 +2,7 @@
 define('_TAD_HOME', '回首頁');
 define('_TAD_NO_DIRNAME', '無目錄名稱');
 define('_TAD_MKDIR_ERROR', ' 無法建立 %s 目錄，請手動建立，並開啟匿名寫入權限（777）');
-define('_TAD_MKFILE_ERROR', ' 無法建立 %s 檔案，請確定目錄有寫入權限（777）');
+defined('_TAD_MKFILE_ERROR') || define('_TAD_MKFILE_ERROR', ' 無法建立 %s 檔案，請確定目錄有寫入權限（777）');
 define('_TAD_TO_MOD', '回模組首頁');
 define('_TAD_TO_ADMIN', '管理介面');
 define('_TAD_BACK_PAGE', '上一頁');

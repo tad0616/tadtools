@@ -549,10 +549,11 @@ class TadUpFiles
                 // $fileidname = str_replace('.', '', $file_name);
                 $file_name = $this->hash ? $hash_filename : $file_name;
                 $img_size  = '';
+                // 檔案與圖片分支都會用到副檔名
+                $fext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
 
                 if ($thumb) {
                     if ($kind === 'file') {
-                        $fext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
                         if (file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/images/mimetype/{$fext}.png")) {
                             $thumb_pic = XOOPS_URL . "/modules/tadtools/images/mimetype/{$fext}.png";
                         } else {
@@ -628,7 +629,8 @@ class TadUpFiles
                         $result2 = Utility::query($sql, 'si', ['dl_group', $files_sn], null, null, $this->mysqli) or Utility::web_error($sql, __FILE__, __LINE__);
 
                         $gperm_groupid_arr = [];
-                        while (list($gperm_groupid) = $this->fetchRow($result2)) {
+                        while ($fetch_row = $this->fetchRow($result2)) {
+                            list($gperm_groupid) = $fetch_row;
                             $gperm_groupid_arr[] = $gperm_groupid;
                         }
                         $permission = _TUF_PERMISSION_NOTE;
@@ -1202,7 +1204,7 @@ class TadUpFiles
                     //取得最後新增資料的流水編號
                     $files_sn = $this->getInsertId();
                 } else {
-                    $sql = 'REPLACE INTO `' . $this->TadUpFilesTblName . '` (`files_sn`, `col_name`, `col_sn`, `sort`, `kind`, `file_name`, `file_type`, `file_size`, `description`, `counter`, `original_filename`, `sub_dir`, `hash_filename`, `upload_date`, `uid`, `tag`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                    $sql = 'REPLACE INTO `' . $this->TadUpFilesTblName . '` (`files_sn`, `col_name`, `col_sn`, `sort`, `kind`, `file_name`, `file_type`, `file_size`, `description`, `counter`, `original_filename`, `sub_dir`, `hash_filename`, `upload_date`, `uid`, `tag`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
                     Utility::query($sql, 'ississsisissssis', [$files_sn, $this->col_name, $this->col_sn, $this->sort, $kind, $new_filename, $type, $size, $description, 0, $filename, $this->subdir, $hash_name . '.' . $ext, $upload_date, $uid, $this->tag], true, false, $this->mysqli) or Utility::web_error($sql, __FILE__, __LINE__);
                 }
                 $this->sort = '';
@@ -1330,8 +1332,6 @@ class TadUpFiles
             $this->set_hash($hash);
         }
 
-        $myts = \MyTextSanitizer::getInstance();
-
         //引入上傳物件
         include_once XOOPS_ROOT_PATH . '/modules/tadtools/upload/class.upload.php';
 
@@ -1381,7 +1381,8 @@ class TadUpFiles
             }
         }
 
-        $file['name']     = $myts->addSlashes($name);
+        // 寫入資料庫時已用 prepared statement 綁定，不可再跳脫（否則含引號的檔名會多出反斜線）
+        $file['name']     = $name;
         $file['tmp_name'] = $tmp_name;
         $file['type']     = $type;
         $file['size']     = $size;
@@ -1535,7 +1536,7 @@ class TadUpFiles
         $sql    = 'SELECT MAX(sort) FROM `' . $this->TadUpFilesTblName . '` WHERE `col_name` = ? AND `col_sn` = ?';
         $result = Utility::query($sql, 'ss', [$this->col_name, $this->col_sn], null, null, $this->mysqli) or Utility::web_error($sql, __FILE__, __LINE__);
 
-        list($max) = $this->fetchRow($result);
+        $max = $this->fetchRow($result)[0] ?? null;
 
         return ++$max;
     }
@@ -1974,7 +1975,7 @@ class TadUpFiles
         $sql    = 'SELECT COUNT(*) FROM `' . $this->TadUpFilesTblName . '` WHERE `col_name` = ? AND `col_sn` = ?';
         $result = Utility::query($sql, 'ss', [$this->col_name, $this->col_sn], null, null, $this->mysqli) or Utility::web_error($sql, __FILE__, __LINE__);
 
-        list($amount) = $this->fetchRow($result);
+        $amount = $this->fetchRow($result)[0] ?? null;
 
         return $amount;
     }
@@ -3505,7 +3506,8 @@ class TadUpFiles
             $result   = $this->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
             $gperm_groupid_arr = [];
-            while (list($gperm_groupid) = $this->fetchRow($result)) {
+            while ($fetch_row = $this->fetchRow($result)) {
+                list($gperm_groupid) = $fetch_row;
                 $gperm_groupid_arr[] = $gperm_groupid;
             }
 

@@ -485,7 +485,7 @@ class Utility
                     $sql    = 'SELECT `version` FROM `' . $xoopsDB->prefix('modules') . "` WHERE `dirname` = '$dirname'";
                     $result = $xoopsDB->query($sql) or self::web_error($sql, __FILE__, __LINE__);
 
-                    list($ver) = $xoopsDB->fetchRow($result);
+                    $ver = $xoopsDB->fetchRow($result)[0] ?? null;
                     if (!empty($ver) && strpos($ver, '-') === false) {
                         if (substr_count($ver, '.') > 1) {
                             // 4.0.7
@@ -978,7 +978,7 @@ class Utility
         $sql    = 'SELECT `tt_theme_kind` FROM `' . $xoopsDB->prefix('tadtools_setup') . "` WHERE `tt_theme` = '$theme_set'";
         $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error() . '<br>' . __FILE__ . ':' . __LINE__);
 
-        list($tt_theme_kind) = $xoopsDB->fetchRow($result);
+        $tt_theme_kind = $xoopsDB->fetchRow($result)[0] ?? null;
 
         $_SESSION['theme_kind']                    = $tt_theme_kind;
         $_SESSION[$theme_set]['bootstrap_version'] = $tt_theme_kind;
@@ -1292,7 +1292,8 @@ class Utility
         global $xoopsDB;
         $sql    = 'SELECT `groupid`,`name` FROM `' . $xoopsDB->prefix('groups') . '`';
         $result = $xoopsDB->query($sql);
-        while (list($groupid, $name) = $xoopsDB->fetchRow($result)) {
+        while ($fetch_row = $xoopsDB->fetchRow($result)) {
+            list($groupid, $name) = $fetch_row;
             $data[$groupid] = $name;
         }
 
@@ -1306,7 +1307,7 @@ class Utility
         $sql    = 'SELECT `groupid` FROM `' . $xoopsDB->prefix('groups') . '` WHERE `name`=?';
         $result = Utility::query($sql, 's', [$name]) or Utility::web_error($sql, __FILE__, __LINE__, true);
 
-        list($group_id) = $xoopsDB->fetchRow($result);
+        $group_id = $xoopsDB->fetchRow($result)[0] ?? null;
 
         if (empty($group_id)) {
             $sql = 'INSERT INTO `' . $xoopsDB->prefix('groups') . '` (`name`) VALUES(?)';
@@ -1324,7 +1325,7 @@ class Utility
         global $xoopsDB;
         $sql           = 'SELECT `groupid` FROM `' . $xoopsDB->prefix('groups') . '` WHERE `name`=?';
         $result        = Utility::query($sql, 's', [$name]) or Utility::web_error($sql, __FILE__, __LINE__);
-        list($groupid) = $xoopsDB->fetchRow($result);
+        $groupid = $xoopsDB->fetchRow($result)[0] ?? null;
         return $groupid;
     }
 
@@ -2012,7 +2013,8 @@ class Utility
         $sql    = 'SELECT `gperm_itemid` FROM `' . $xoopsDB->prefix('group_permission') . "` WHERE `gperm_modid`='$module_id' AND `gperm_name`='$gperm_name' AND `gperm_groupid` IN ($user_groupid)";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
-        while (list($gperm_itemid) = $xoopsDB->fetchRow($result)) {
+        while ($fetch_row = $xoopsDB->fetchRow($result)) {
+            list($gperm_itemid) = $fetch_row;
             $ok_cate_arr[] = $gperm_itemid;
         }
 

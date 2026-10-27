@@ -44,7 +44,8 @@ class Update
         //找出目前所有的樣板檔
         $sql = 'SELECT bid,name,visible,show_func,template FROM `' . $xoopsDB->prefix('newblocks') . '`  WHERE `dirname` = "tadtools" ORDER BY `func_num`';
         $result = $xoopsDB->query($sql);
-        while (list($bid, $name, $visible, $show_func, $template) = $xoopsDB->fetchRow($result)) {
+        while ($fetch_row = $xoopsDB->fetchRow($result)) {
+            list($bid, $name, $visible, $show_func, $template) = $fetch_row;
             //假如現有的區塊和樣板對不上就刪掉
             if ($template != $tpl_file_arr[$show_func]) {
                 $sql = 'delete from ' . $xoopsDB->prefix('newblocks') . " where bid='{$bid}'";
@@ -123,7 +124,7 @@ class Update
         if ($mod_id) {
             $sql = 'select count(*) from ' . $xoopsDB->prefix('group_permission') . " where gperm_itemid='$mod_id' and `gperm_modid`='1' gperm_name='module_read'";
             $result = $xoopsDB->query($sql);
-            list($count) = $xoopsDB->fetchRow($result);
+            $count = $xoopsDB->fetchRow($result)[0] ?? null;
             if (empty($count)) {
                 return true;
             }

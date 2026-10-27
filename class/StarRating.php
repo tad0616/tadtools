@@ -98,7 +98,7 @@ class StarRating
         $sql = 'SELECT AVG(`rank`) FROM `' . $xoopsDB->prefix("{$this->mod_name}_rank") . '` WHERE `col_name` = ? AND `col_sn` = ?';
         $result = Utility::query($sql, 'si', [$col_name, $col_sn]) or Utility::web_error($sql);
 
-        list($main) = $xoopsDB->fetchRow($result);
+        $main = $xoopsDB->fetchRow($result)[0] ?? null;
         $main = round($main, 0);
 
         return $main;

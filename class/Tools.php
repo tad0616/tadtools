@@ -761,7 +761,8 @@ class Tools
                 $sql          = 'SELECT `nsn`, `news_title` FROM `' . $xoopsDB->prefix('tad_news') . "` WHERE `ncsn` = '$link_cate_sn' ORDER BY `page_sort`";
                 $result       = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
-                while (list($nsn, $news_title) = $xoopsDB->fetchRow($result)) {
+                while ($fetch_row = $xoopsDB->fetchRow($result)) {
+                    list($nsn, $news_title) = $fetch_row;
                     $sub_menu[$link_cate_name . $i]['id']      = $i;
                     $sub_menu[$link_cate_name . $i]['title']   = $news_title;
                     $sub_menu[$link_cate_name . $i]['url']     = XOOPS_URL . "/modules/tadnews/page.php?ncsn={$link_cate_sn}&nsn={$nsn}";
@@ -1166,7 +1167,7 @@ class Tools
             $sql    = 'SELECT `conf_value` FROM `' . $xoopsDB->prefix('config') . "` WHERE `conf_title` = '_MD_AM_DEBUGMODE'";
             $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error());
 
-            list($debug) = $xoopsDB->fetchRow($result);
+            $debug = $xoopsDB->fetchRow($result)[0] ?? null;
             if ($debug == 0) {
                 $debug = 1;
             } else {

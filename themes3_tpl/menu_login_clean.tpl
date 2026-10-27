@@ -67,7 +67,7 @@
 
     <{/if}>
 
-
+    <{if $tlogin && ($openid_login==1 || $openid_login==2)}>
       <{assign var="i" value=0}>
       <{assign var="total" value=1}>
       <{foreach from=$tlogin item=login}>

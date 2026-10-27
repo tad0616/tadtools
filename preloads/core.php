@@ -64,7 +64,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         /****檢查是否開放註冊****/
         $sql                  = 'SELECT `conf_value` FROM `' . $xoopsDB->prefix('config') . "` WHERE `conf_name` = 'allow_register'";
         $result               = $xoopsDB->query($sql);
-        list($allow_register) = $xoopsDB->fetchRow($result);
+        $allow_register = $xoopsDB->fetchRow($result)[0] ?? null;
         $xoopsTpl->assign('allow_register', $allow_register);
 
         /****檢查是否有廣播檔（會放到左區塊最上方）****/
@@ -140,7 +140,8 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         $sql       = 'SELECT `mid`, `name`, `dirname` FROM `' . $xoopsDB->prefix('modules') . '` WHERE `isactive` = 1 AND `hasmain` = 1 AND `weight` != 0 ORDER BY `weight`';
         $result    = $xoopsDB->query($sql);
 
-        while (list($mid, $name, $dirname) = $xoopsDB->fetchRow($result)) {
+        while ($fetch_row = $xoopsDB->fetchRow($result)) {
+            list($mid, $name, $dirname) = $fetch_row;
             $main_menu[$i]['id']     = $mid;
             $main_menu[$i]['title']  = $name;
             $main_menu[$i]['url']    = XOOPS_URL . "/modules/{$dirname}/";
@@ -161,7 +162,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
 
         $sql         = 'SELECT `conf_value` FROM `' . $xoopsDB->prefix('config') . "` WHERE `conf_title` = '_MD_AM_DEBUGMODE'";
         $result      = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error());
-        list($debug) = $xoopsDB->fetchRow($result);
+        $debug = $xoopsDB->fetchRow($result)[0] ?? null;
         if ($debug == 0) {
             $debug = 1;
         } else {
@@ -196,7 +197,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         $uid                     = $xoopsUser ? $xoopsUser->uid() : 0;
         $sql                     = 'SELECT COUNT(*) FROM `' . $xoopsDB->prefix('priv_msgs') . "` WHERE `to_userid` = $uid AND `read_msg`=0 GROUP BY `to_userid`";
         $result                  = $xoopsDB->query($sql);
-        list($xoops_inbox_count) = $xoopsDB->fetchRow($result);
+        $xoops_inbox_count = $xoopsDB->fetchRow($result)[0] ?? null;
 
         if ($xoops_inbox_count) {
             $user_menu[] = ['title' => sprintf(_TAD_TF_USER_NEWMSG, $xoops_inbox_count), 'url' => XOOPS_URL . '/viewpmsg.php', 'icon' => 'fa-envelope', 'target' => '_self'];
@@ -328,7 +329,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         } else {
             $sql                                                                    = 'SELECT `tt_theme`,`tt_use_bootstrap`,`tt_bootstrap_color`,`tt_theme_kind` FROM `' . $xoopsDB->prefix('tadtools_setup') . "` WHERE `tt_theme` = '$theme_set'";
             $result                                                                 = $xoopsDB->query($sql);
-            list($tt_theme, $tt_use_bootstrap, $tt_bootstrap_color, $tt_theme_kind) = $xoopsDB->fetchRow($result);
+            list($tt_theme, $tt_use_bootstrap, $tt_bootstrap_color, $tt_theme_kind) = $xoopsDB->fetchRow($result) ?: [null, null, null, null];
             if (empty($tt_theme_kind)) {
                 if (file_exists(XOOPS_ROOT_PATH . "/themes/{$theme_set}/config.php")) {
                     require_once XOOPS_ROOT_PATH . "/themes/{$theme_set}/config.php";

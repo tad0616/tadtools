@@ -163,7 +163,7 @@ class TadDataCenter
         if ('' != $this->module_dirname) {
             $sql             = 'SELECT `mid` FROM `' . $xoopsDB->prefix('modules') . '` WHERE `dirname` = ?';
             $result          = Utility::query($sql, 's', [$this->module_dirname]) or Utility::web_error($sql, __FILE__, __LINE__);
-            list($this->mid) = $xoopsDB->fetchRow($result);
+            $this->mid = $xoopsDB->fetchRow($result)[0] ?? null;
         } elseif ($xoopsModule) {
             $this->mid = $xoopsModule->mid();
         }
@@ -488,7 +488,7 @@ class TadDataCenter
 
                 $result = Utility::query($sql, 'isis', [$this->mid, $this->col_name, $this->col_sn, $name]) or Utility::web_error($sql, __FILE__, __LINE__);
 
-                list($old_data_sort) = $xoopsDB->fetchRow($result);
+                $old_data_sort = $xoopsDB->fetchRow($result)[0] ?? null;
                 $old_data_sort++;
             }
             $values = [];
@@ -554,11 +554,12 @@ class TadDataCenter
 
         $result = $xoopsDB->queryF($sql);
         if (isset($data_sort)) {
-            list($col_sn, $data_name, $data_sort, $data_value) = $xoopsDB->fetchRow($result);
-            return $data_value;
+            // 欄位順序：col_sn, data_name, data_sort, data_value
+            return $xoopsDB->fetchRow($result)[3] ?? null;
         }
         $values = [];
-        while (list($col_sn, $data_name, $data_sort, $data_value) = $xoopsDB->fetchRow($result)) {
+        while ($fetch_row = $xoopsDB->fetchRow($result)) {
+            list($col_sn, $data_name, $data_sort, $data_value) = $fetch_row;
 
             if (empty($def_col_sn) and ('' != $name)) {
                 $values[$col_sn][$data_sort] = $data_value;
@@ -1251,7 +1252,8 @@ class TadDataCenter
                     WHERE `mid`= ? AND `data_name`=? ' . $and_col_name . ' ' . $and_col_sn . ' ORDER BY `col_sn`';
                 $result = Utility::query($sql, str_repeat('s', count($params)), $params) or Utility::web_error($sql, __FILE__, __LINE__);
 
-                while (list($col_sn, $data_sort, $data_value) = $xoopsDB->fetchRow($result)) {
+                while ($fetch_row = $xoopsDB->fetchRow($result)) {
+                    list($col_sn, $data_sort, $data_value) = $fetch_row;
                     $values[$col_sn][$name][$data_sort] = $data_value;
                 }
                 $params = []; // Reset params for the next iteration
@@ -1271,7 +1273,8 @@ class TadDataCenter
                 WHERE `mid`= ? AND `data_name`=? ' . $and_col_name . ' ' . $and_col_sn . ' ORDER BY `col_sn`';
             $result = Utility::query($sql, str_repeat('s', count($params)), $params) or Utility::web_error($sql, __FILE__, __LINE__);
 
-            while (list($col_sn, $data_sort, $data_value) = $xoopsDB->fetchRow($result)) {
+            while ($fetch_row = $xoopsDB->fetchRow($result)) {
+                list($col_sn, $data_sort, $data_value) = $fetch_row;
                 $values[$col_sn][$data_name][$data_sort] = $data_value;
             }
         }
