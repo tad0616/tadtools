@@ -8,7 +8,7 @@
         <button type="button" class="btn btn-warning" onclick="location='user.php?op=delete'"><{$lang_deleteaccount|default:''}></button>
     <{/if}>
 
-    <button type="button" class="btn btn-danger" onclick="location='user.php?op=logout'"><{$lang_logout|default:''}></button>
+    <button type="button" class="btn btn-danger" onclick="location='<{$logout_url|default:"`$xoops_url`/user.php?op=logout"}>'"><{$lang_logout|default:''}></button>
 
 
 <{elseif $xoops_isadmin != false}>

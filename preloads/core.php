@@ -53,6 +53,15 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         }
     }
 
+    // 區塊在 addmeta 之前渲染，登出鈕要的 token 網址只能在這裡給（事件名含 theme_blocks，底線要保留）
+    public static function eventCoreClassTheme_blocksRetrieveBlocks($args)
+    {
+        global $xoopsUser;
+        if ($xoopsUser && is_object($args[1])) {
+            $args[1]->assign('logout_url', Tools::logout_url());
+        }
+    }
+
     public static function eventCoreHeaderAddmeta($args)
     {
         global $xoopsConfig, $xoopsTpl, $xoopsDB, $xoTheme, $xoopsUser;
@@ -206,7 +215,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         }
         $user_menu[] = ['title' => _TAD_TF_USER_NOTICE, 'url' => XOOPS_URL . '/notifications.php', 'icon' => 'fa-bell', 'target' => '_self'];
         $user_menu[] = ['title' => _TAD_TF_USER_PROFILE, 'url' => XOOPS_URL . '/user.php', 'icon' => 'fa-user', 'target' => '_self'];
-        $user_menu[] = ['title' => _TAD_TF_USER_EXIT, 'url' => XOOPS_URL . '/user.php?op=logout', 'icon' => 'fa-share', 'target' => '_self'];
+        $user_menu[] = ['title' => _TAD_TF_USER_EXIT, 'url' => $xoopsUser ? Tools::logout_url() : XOOPS_URL . '/user.php?op=logout', 'icon' => 'fa-share', 'target' => '_self'];
 
         $xoopsTpl->assign('user_menu_var', $user_menu);
 

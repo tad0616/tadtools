@@ -32,7 +32,7 @@
 
                 <a class="btn btn-info me-2"  href="edituser.php?op=avatarform"><{$lang_avatar|default:''}></a>
                 <{*<a class="btn btn-success me-2"  href="<{$xoops_url}>/viewpmsg.php"><{$lang_inbox|default:''}></button>*}>
-                <a class="btn btn-secondary"  href="<{$xoops_url}>/modules/profile/user.php?op=logout"><{$lang_logout|default:''}></a>
+                <a class="btn btn-secondary"  href="<{$logout_url|default:"`$xoops_url`/user.php?op=logout"}>"><{$lang_logout|default:''}></a>
             </form>
 
         <{elseif $xoops_isadmin != false}>

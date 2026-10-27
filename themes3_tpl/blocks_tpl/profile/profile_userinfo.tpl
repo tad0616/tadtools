@@ -40,7 +40,7 @@
 
         <input class="btn btn-success btn-xs btn-block" type="button" value="<{$lang_avatar|default:''}>" onclick="location='edituser.php?op=avatarform'">
         <input class="btn btn-success btn-xs btn-block" type="button" value="<{$lang_inbox|default:''}>" onclick="location='<{$xoops_url}>/viewpmsg.php'">
-        <input class="btn btn-success btn-xs btn-block" type="button" value="<{$lang_logout|default:''}>" onclick="location='<{$xoops_url}>/modules/<{$xoops_dirname|default:''}>/user.php?op=logout'">
+        <input class="btn btn-success btn-xs btn-block" type="button" value="<{$lang_logout|default:''}>" onclick="location='<{$logout_url|default:"`$xoops_url`/user.php?op=logout"}>'">
     </form>
 
 <{elseif $xoops_isadmin != false}>

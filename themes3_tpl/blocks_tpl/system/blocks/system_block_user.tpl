@@ -55,7 +55,7 @@
     <{/if}>
 
     <li>
-        <a href="<{$xoops_url}>/user.php?op=logout" title="<{$block.lang_logout}>">
+        <a href="<{$logout_url|default:"`$xoops_url`/user.php?op=logout"}>" title="<{$block.lang_logout}>">
             <i class="fa fa-sign-out"></i>
             <{$block.lang_logout}>
         </a>

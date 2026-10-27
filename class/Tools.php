@@ -1158,6 +1158,18 @@ class Tools
         return $my_menu;
     }
 
+    // 帶 token 的登出網址：XOOPS 2.7.3+ 無 token 的登出會先停在確認頁
+    // ponytail: 同一請求共用一個 token，避免每個選單各塞一筆進 session
+    public static function logout_url()
+    {
+        static $url = null;
+        if (null === $url) {
+            $url = XOOPS_URL . '/user.php?op=logout&XOOPS_TOKEN_REQUEST=' . $GLOBALS['xoopsSecurity']->createToken();
+        }
+
+        return $url;
+    }
+
     //取得使用者選單子項目
     public static function get_user_submenu_item()
     {
@@ -1282,7 +1294,7 @@ class Tools
 
         $my_menu[$i]['id']      = $i;
         $my_menu[$i]['title']   = _TAD_TF_USER_EXIT;
-        $my_menu[$i]['url']     = XOOPS_URL . "/user.php?op=logout";
+        $my_menu[$i]['url']     = self::logout_url();
         $my_menu[$i]['target']  = "_self";
         $my_menu[$i]['icon']    = "fa-share";
         $my_menu[$i]['submenu'] = "";
