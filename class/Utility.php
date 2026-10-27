@@ -475,7 +475,9 @@ class Utility
 
             case 'adm_tpl':
                 if (empty($ver)) {
-                    $ver = file_get_contents(XOOPS_ROOT_PATH . "/modules/system/themes/{$dirname}/version.txt");
+                    // 尚未安裝的後台佈景沒有 version.txt
+                    $version_file = XOOPS_ROOT_PATH . "/modules/system/themes/{$dirname}/version.txt";
+                    $ver          = file_exists($version_file) ? file_get_contents($version_file) : '';
                 }
                 $version = explode('.', $ver);
                 break;
