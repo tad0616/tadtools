@@ -1,3 +1,25 @@
+TadTools 4.0.8 (Released October 27, 2026)
+====================================
+1. Adjusted the method for checking $_SESSION['bootstrap']
+2. Removed the outdated FullCalendar package
+3. Upgraded elfinder to 2.1.70
+4. Added support for XOOPS 2.7.4
+5. Added support for PHP 8.5
+
+TadTools 4.0.7 (Released on September 4, 2026)
+====================================
+1. Added a POST method to SweetAlert2.php
+2. Fixed an issue where MP3 files could not be uploaded
+3. Fixed the button positioning for the slider on mobile devices
+4. Modified the carousel to comply with accessibility standards
+5. Fixed an issue with incorrect dropdown menu icons
+6. Upgraded Bootstrap to 5.4.8
+7. Upgraded jQuery to 4.0
+8. Upgraded jQuery UI to 1.14.0
+9. Upgraded jQuery Migrate to 3.6.0
+10. Modified easyResponsiveTabs.js, jquery.upload.min.js, and jquery.qtip2.js to support jQuery 4
+
+
 TadTools 4.0.6 (Released 2026-07-27)
 ====================================
 1. Added the tad_flipbook accessible e-book package

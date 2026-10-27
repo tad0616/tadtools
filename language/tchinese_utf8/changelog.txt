@@ -1,3 +1,24 @@
+TadTools 4.0.8 (2026-10-27 釋出)
+====================================
+1.調整 $_SESSION['bootstrap'] 的判斷方法
+2.移除 FullCalendar 舊版套件
+3.升級 elfinder 為 2.1.70
+4.支援 XOOPS 2.7.4
+5.支援 PHP 8.5
+
+TadTools 4.0.7 (2026-09-04 釋出)
+====================================
+1.SweetAlert2.php 加入 post 方法
+2.修正mp3無法上傳的情況
+3.修正滑動圖在手機上的按鈕位置
+4.修改輪播圖已符合無障礙
+5.選正選單圖示不正確問題
+6.升級 Bootstrap 為 5.4.8
+7.升級 Jquery 為 4.0
+8.升級 Jquery UI 為 1.14.0
+9.升級 Jquery Migrate 為 3.6.0
+10.調整 easyResponsiveTabs.js、jquery.upload.min.js、jquery.qtip2.js 使之支援 Jquery 4
+
 TadTools 4.0.6 (2026-07-27 釋出)
 ====================================
 1.新增 tad_flipbook 無障礙電子書套件

@@ -6,7 +6,7 @@ $modversion = [];
 global $xoopsConfig;
 
 $modversion['name']           = _MI_TADTOOLS_NAME;
-$modversion['version']        = $_SESSION['xoops_version'] >= 20511 ? '4.0.7-Stable' : '4.07';
+$modversion['version']        = $_SESSION['xoops_version'] >= 20511 ? '4.0.8-Stable' : '4.08';
 $modversion['description']    = _MI_TADTOOLS_DESC;
 $modversion['author']         = 'Tad (tad0616@gmail.com)';
 $modversion['credits']        = '';
@@ -21,13 +21,13 @@ $modversion['icons32']        = '../../Frameworks/moduleclasses/icons/32';
 
 //about
 $modversion['module_status']       = 'Final';
-$modversion['release_date']        = '2026/09/04';
+$modversion['release_date']        = '2026/10/27';
 $modversion['module_website_url']  = 'https://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=1';
 $modversion['module_website_name'] = 'XOOPS EZGO';
 $modversion['author_website_url']  = 'https://www.tad0616.net';
 $modversion['author_website_name'] = 'Tad';
-$modversion['min_php']             = '7.3';
-$modversion['min_xoops']           = '2.5.10';
+$modversion['min_php']             = '8.3';
+$modversion['min_xoops']           = '2.5.11';
 $modversion['min_db']              = [
     'mysql'  => '5.0.7',
     'mysqli' => '5.0.7',
