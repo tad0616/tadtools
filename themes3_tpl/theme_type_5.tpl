@@ -60,7 +60,7 @@
             </div>
         <{else}>
             <!-- 若模式是 BootStrap -->
-            <{assign var="center_width" value=$center_width+$rb_width}>
+            <{assign var="center_width" value=$center_width|intval+$rb_width|intval}>
 
             <div id="xoops_theme_center_zone" class="col-sm-<{$center_width|default:''}> col-sm-push-<{$lb_width|default:''}>" style="<{$centerBlocks|default:''}>">
                 <{include file="$xoops_rootpath/modules/tadtools/themes3_tpl/centerZone.tpl"}>
@@ -76,7 +76,7 @@
 
     <{elseif !$xoBlocks.canvas_left|default:null and $xoBlocks.canvas_right|default:null}>
         <!-- 若是只有右區塊 -->
-        <{assign var="center_width" value=$center_width+$lb_width}>
+        <{assign var="center_width" value=$center_width|intval+$lb_width|intval}>
 
         <div id="xoops_theme_center_zone" <{if $theme_kind!="html"}>class="col-sm-<{$center_width|default:''}>"<{/if}> style="<{$centerBlocks|default:''}>">
             <{include file="$xoops_rootpath/modules/tadtools/themes3_tpl/centerZone.tpl"}>

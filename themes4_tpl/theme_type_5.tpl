@@ -24,14 +24,14 @@
         <{if $rb_width=="auto" and $lb_width=="auto"}>
             <{assign var="center_width" value=9}>
         <{elseif $rb_width!="auto" and $cb_width!="auto"}>
-            <{assign var="center_width" value=$cb_width+$rb_width}>
+            <{assign var="center_width" value=$cb_width|default:6|intval+$rb_width|default:3|intval}>
         <{elseif $lb_width!="auto"}>
-            <{assign var="center_width" value=12-$lb_width}>
+            <{assign var="center_width" value=12-$lb_width|default:3|intval}>
         <{else}>
-            <{assign var="center_width" value=$cb_width|default:''}>
+            <{assign var="center_width" value=$cb_width|default:6}>
         <{/if}>
 
-        <div id="xoops_theme_center_zone" class="col-xl-<{$center_width|default:''}> order-lg-2" style="<{$centerBlocks|default:''}>">
+        <div id="xoops_theme_center_zone" class="col-xl-<{$center_width|default:6}> order-lg-2" style="<{$centerBlocks|default:''}>">
             <{include file="$xoops_rootpath/modules/tadtools/themes4_tpl/centerZone.tpl"}>
         </div>
 
@@ -46,13 +46,13 @@
         <{if $rb_width=="auto" and $lb_width=="auto"}>
             <{assign var="center_width" value=9}>
         <{elseif $lb_width!="auto" and $cb_width!="auto"}>
-            <{assign var="center_width" value=$cb_width+$lb_width}>
+            <{assign var="center_width" value=$cb_width|default:6|intval+$lb_width|default:3|intval}>
         <{elseif $rb_width!="auto"}>
-            <{assign var="center_width" value=12-$rb_width}>
+            <{assign var="center_width" value=12-$rb_width|default:3|intval}>
         <{else}>
-            <{assign var="center_width" value=$cb_width|default:''}>
+            <{assign var="center_width" value=$cb_width|default:6}>
         <{/if}>
-        <div id="xoops_theme_center_zone" class="col-xl-<{$center_width|default:''}> order-lg-1" style="<{$centerBlocks|default:''}>">
+        <div id="xoops_theme_center_zone" class="col-xl-<{$center_width|default:6}> order-lg-1" style="<{$centerBlocks|default:''}>">
             <{include file="$xoops_rootpath/modules/tadtools/themes4_tpl/centerZone.tpl"}>
         </div>
 

@@ -288,7 +288,7 @@ class Tools
                 } elseif ($def_config['theme_kind'] == "bootstrap4" || $def_config['theme_kind'] == "bootstrap5") {
                     $center_width = $def_config['cb_width'];
                 } else {
-                    $center_width = $theme_width - $def_config['lb_width'] - $def_config['rb_width'];
+                    $center_width = (int) $theme_width - (int) $def_config['lb_width'] - (int) $def_config['rb_width'];
                 }
 
                 //TYPE6:三欄式（左右區域皆在左邊）
@@ -311,7 +311,7 @@ class Tools
                 } elseif ($def_config['theme_kind'] == "bootstrap4" || $def_config['theme_kind'] == "bootstrap5") {
                     $center_width = $def_config['cb_width'];
                 } else {
-                    $center_width = $theme_width - $def_config['lb_width'] - $def_config['rb_width'];
+                    $center_width = $theme_width - (int) $def_config['lb_width'] - (int) $def_config['rb_width'];
                 }
 
                 //TYPE7:三欄式（左右區域皆在右邊）
@@ -332,7 +332,7 @@ class Tools
                 } elseif ($def_config['theme_kind'] == "bootstrap4" || $def_config['theme_kind'] == "bootstrap5") {
                     $center_width = $def_config['cb_width'];
                 } else {
-                    $center_width = $theme_width - $def_config['lb_width'] - $def_config['rb_width'];
+                    $center_width = $theme_width - (int) $def_config['lb_width'] - (int) $def_config['rb_width'];
                 }
 
                 //TYPE8:單欄式（左區域在上方，右區域在下方）
