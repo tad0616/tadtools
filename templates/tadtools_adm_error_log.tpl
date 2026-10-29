@@ -1,4 +1,7 @@
 <h2><{$smarty.const._MA_TT_ERRLOG_TITLE}></h2>
+<{if !$logger_patched}>
+    <div class="alert alert-danger"><{$smarty.const._MA_TT_ERRLOG_NOT_PATCHED}></div>
+<{/if}>
 <form action="error_log.php" method="get" class="row g-2 mb-3">
     <div class="col-auto">
         <label for="error_id" class="visually-hidden"><{$smarty.const._MA_TT_ERRLOG_ID}></label>

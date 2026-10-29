@@ -14,6 +14,7 @@ define('_MA_TT_THEMES_KIND', '佈景種類');
 define('_MA_TT_TAD_THEMES', '支援 tad themes，已內建 BootStrap');
 define('_MA_TT_THEMES_NOTE', '若發現有重複佈景，請至<a href="' . XOOPS_URL . '/modules/system/admin.php?fct=preferences&op=show&confcat_id=1">一般設定</a>，重新按一下儲存即可');
 define('_MA_TT_ERRLOG_TITLE', '錯誤查詢');
+define('_MA_TT_ERRLOG_NOT_PATCHED', '偵測到 XOOPS 核心的 class/logger/xoopslogger.php 尚未套用 tadtools 的修改，因此「隱藏錯誤訊息」與本頁的錯誤紀錄功能都不會生效。請參考該檔案內標示「tadtools 客製」的段落（handleError() 與 writeTadtoolsErrorLog()）重新套用。');
 define('_MA_TT_ERRLOG_ID', '錯誤代碼');
 define('_MA_TT_ERRLOG_ID_PLACEHOLDER', '請輸入 16 碼錯誤代碼');
 define('_MA_TT_ERRLOG_SEARCH', '查詢');

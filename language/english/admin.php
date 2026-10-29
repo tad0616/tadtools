@@ -13,6 +13,7 @@ define('_TT_COLOR_DEFAULT', 'Default');
 define('_MA_TT_THEMES_KIND', 'Theme kind');
 define('_MA_TT_TAD_THEMES', 'Bootstrap inside');
 define('_MA_TT_ERRLOG_TITLE', 'Error lookup');
+define('_MA_TT_ERRLOG_NOT_PATCHED', 'The XOOPS core file class/logger/xoopslogger.php does not contain the tadtools modification, so "Hide error messages" and the error records on this page will not work. Please re-apply the sections marked as tadtools customizations (handleError() and writeTadtoolsErrorLog()).');
 define('_MA_TT_ERRLOG_ID', 'Error ID');
 define('_MA_TT_ERRLOG_ID_PLACEHOLDER', 'Enter the 16-character error ID');
 define('_MA_TT_ERRLOG_SEARCH', 'Search');

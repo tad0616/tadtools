@@ -22,6 +22,8 @@ function show_error_log($error_id = '')
     $xoopsTpl->assign('invalid_id', $invalid_id);
     $xoopsTpl->assign('records', $records);
     $xoopsTpl->assign('log_path', ErrorLog::path());
+    // 偵測 XOOPS 核心 logger 是否已套用 tadtools 修改（有 writeTadtoolsErrorLog 方法才算）
+    $xoopsTpl->assign('logger_patched', class_exists('XoopsLogger') && method_exists('XoopsLogger', 'writeTadtoolsErrorLog'));
     $xoopsTpl->assign('token_html', $GLOBALS['xoopsSecurity']->getTokenHTML());
 }
 
