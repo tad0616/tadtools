@@ -10,6 +10,11 @@ class TadtoolsCorePreload extends XoopsPreloadItem
     public static function eventCoreIncludeCommonAuthSuccess()
     {
         global $xoopsConfig, $xoopsTpl;
+        $TadToolsConfig = Utility::getXoopsModuleConfig('tadtools');
+        // XOOPS logger 在決定是否顯示致命錯誤的詳細資訊時，會讀取此設定。
+        $GLOBALS['tadtools_hide_error_messages'] = is_array($TadToolsConfig) && !empty($TadToolsConfig['hide_error_messages']);
+        $hideErrorMessages                       = $GLOBALS['tadtools_hide_error_messages'];
+
         $_SESSION['xoops_version'] = Utility::get_version('xoops');
 
         if (!isset($_SESSION['bootstrap'])) {
@@ -40,7 +45,7 @@ class TadtoolsCorePreload extends XoopsPreloadItem
 
         if ($xoopsConfig['debug_mode'] == 1 || $xoopsConfig['debug_mode'] == 2) {
             error_reporting(E_ALL);
-            ini_set('display_errors', 1);
+            ini_set('display_errors', $hideErrorMessages ? 0 : 1);
         } else {
             error_reporting(0);
             ini_set('display_errors', 0);
