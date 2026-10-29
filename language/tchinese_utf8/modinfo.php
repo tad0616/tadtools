@@ -4,6 +4,7 @@ require_once __DIR__ . '/modinfo_common.php';
 
 define('_MI_TADTOOLS_ADMENU1', '初始設定');
 define('_MI_TADTOOLS_ADMENU1_DESC', '佈景是否引入bootstrap的設定');
+define('_MI_TADTOOLS_ADMENU_ERROR_LOG', '錯誤查詢');
 
 define('_MI_TADTOOLS_NAME', 'Tad Tools 工具包');
 define('_MI_TADTOOLS_DESC', 'Tad Tools 工具包只是一個常用工具的集合，可以讓其他的模組引用相同工具');
@@ -49,6 +50,11 @@ define('_MI_TADTOOLS_TEST_MODE_DESC', '建議選「是」，此選項一般使�
 
 define('_MI_TADTOOLS_HIDE_ERROR_MESSAGES', '是否隱藏錯誤訊息');
 define('_MI_TADTOOLS_HIDE_ERROR_MESSAGES_DESC', '選「是」時，include/defines.php 的錯誤訊息將不顯示。');
+
+define('_MI_TADTOOLS_ERROR_LOG_MAX_SIZE', '錯誤紀錄檔大小上限（MB）');
+define('_MI_TADTOOLS_ERROR_LOG_MAX_SIZE_DESC', '超過此大小就會輪替成新檔，可填 1～50，預設 2。');
+define('_MI_TADTOOLS_ERROR_LOG_MAX_FILES', '錯誤紀錄保留的舊檔份數');
+define('_MI_TADTOOLS_ERROR_LOG_MAX_FILES_DESC', '輪替後保留幾份舊檔，超過的最舊檔會被刪除，可填 1～20，預設 3。總用量約為「大小上限 × (舊檔份數 + 1)」。');
 
 define('_MI_TADTOOLS_FACEBOOK_APP_ID', 'FaceBook 的 App ID（推文工具會用到）');
 define('_MI_TADTOOLS_FACEBOOK_APP_ID_DESC', '可至 https://developers.facebook.com/apps 申請並取得 App ID');

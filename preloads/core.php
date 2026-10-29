@@ -14,6 +14,11 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         // XOOPS logger 在決定是否顯示致命錯誤的詳細資訊時，會讀取此設定。
         $GLOBALS['tadtools_hide_error_messages'] = is_array($TadToolsConfig) && !empty($TadToolsConfig['hide_error_messages']);
         $hideErrorMessages                       = $GLOBALS['tadtools_hide_error_messages'];
+        // 錯誤紀錄檔輪替設定，供 XOOPS logger 的 writeTadtoolsErrorLog() 使用
+        if (is_array($TadToolsConfig)) {
+            $GLOBALS['tadtools_error_log_max_size']  = (int) ($TadToolsConfig['error_log_max_size'] ?? 2);
+            $GLOBALS['tadtools_error_log_max_files'] = (int) ($TadToolsConfig['error_log_max_files'] ?? 3);
+        }
 
         $_SESSION['xoops_version'] = Utility::get_version('xoops');
 

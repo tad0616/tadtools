@@ -4,6 +4,7 @@ require_once __DIR__ . '/modinfo_common.php';
 
 define('_MI_TADTOOLS_ADMENU1', 'Bootstrap setup');
 define('_MI_TADTOOLS_ADMENU1_DESC', 'Bootstrap setup');
+define('_MI_TADTOOLS_ADMENU_ERROR_LOG', 'Error lookup');
 
 define('_MI_TADTOOLS_NAME', 'Tad Tools Framework');
 define('_MI_TADTOOLS_DESC', 'Tad Tools is a set of common code used by Tad Modules.');
@@ -50,6 +51,11 @@ define('_MI_TADTOOLS_TEST_MODE_DESC', 'It is recommended to select "Yes", this o
 
 define('_MI_TADTOOLS_HIDE_ERROR_MESSAGES', 'Hide error messages?');
 define('_MI_TADTOOLS_HIDE_ERROR_MESSAGES_DESC', 'If set to "Yes", error messages from include/defines.php will be hidden.');
+
+define('_MI_TADTOOLS_ERROR_LOG_MAX_SIZE', 'Maximum size of the error log file (MB)');
+define('_MI_TADTOOLS_ERROR_LOG_MAX_SIZE_DESC', 'The log is rotated to a new file when it exceeds this size. 1-50, default 2.');
+define('_MI_TADTOOLS_ERROR_LOG_MAX_FILES', 'Number of rotated error log files to keep');
+define('_MI_TADTOOLS_ERROR_LOG_MAX_FILES_DESC', 'Older rotated files beyond this number are deleted. 1-20, default 3. Total disk usage is about (max size x (files + 1)).');
 
 define('_MI_TADTOOLS_FACEBOOK_APP_ID', 'Is the development test mode open to administrators only?');
 define('_MI_TADTOOLS_FACEBOOK_APP_ID_DESC', 'Is the development test mode open to administrators only?');

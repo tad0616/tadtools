@@ -65,6 +65,9 @@ $modversion['onUninstall'] = 'include/onUninstall.php';
 $i                                          = 1;
 $modversion['templates'][$i]['file']        = 'tadtools_adm_index.tpl';
 $modversion['templates'][$i]['description'] = 'tadtools_adm_index.tpl';
+$i++;
+$modversion['templates'][$i]['file']        = 'tadtools_adm_error_log.tpl';
+$modversion['templates'][$i]['description'] = 'tadtools_adm_error_log.tpl';
 $modversion['config']                       = [
     ['name' => 'auto_charset', 'title' => '_MI_TADTOOLS_TITLE5', 'description' => '_MI_TADTOOLS_DESC5', 'formtype' => 'yesno', 'valuetype' => 'int', 'default' => 1],
     ['name' => 'uploadcare_publickey', 'title' => '_MI_TADTOOLS_TITLE8', 'description' => '_MI_TADTOOLS_DESC8', 'formtype' => 'textbox', 'valuetype' => 'text', 'default' => ''],
@@ -76,6 +79,8 @@ $modversion['config']                       = [
     ['name' => 'pdf_force_dl', 'title' => '_MI_TADTOOLS_PDF_FORCE_DL', 'description' => '_MI_TADTOOLS_PDF_FORCE_DL_DESC', 'formtype' => 'yesno', 'valuetype' => 'int', 'default' => 0],
     ['name' => 'test_mode', 'title' => '_MI_TADTOOLS_TEST_MODE', 'description' => '_MI_TADTOOLS_TEST_MODE_DESC', 'formtype' => 'yesno', 'valuetype' => 'int', 'default' => 1],
     ['name' => 'hide_error_messages', 'title' => '_MI_TADTOOLS_HIDE_ERROR_MESSAGES', 'description' => '_MI_TADTOOLS_HIDE_ERROR_MESSAGES_DESC', 'formtype' => 'yesno', 'valuetype' => 'int', 'default' => 0],
+    ['name' => 'error_log_max_size', 'title' => '_MI_TADTOOLS_ERROR_LOG_MAX_SIZE', 'description' => '_MI_TADTOOLS_ERROR_LOG_MAX_SIZE_DESC', 'formtype' => 'textbox', 'valuetype' => 'int', 'default' => 2],
+    ['name' => 'error_log_max_files', 'title' => '_MI_TADTOOLS_ERROR_LOG_MAX_FILES', 'description' => '_MI_TADTOOLS_ERROR_LOG_MAX_FILES_DESC', 'formtype' => 'textbox', 'valuetype' => 'int', 'default' => 3],
     ['name' => 'facebook_app_id', 'title' => '_MI_TADTOOLS_FACEBOOK_APP_ID', 'description' => '_MI_TADTOOLS_FACEBOOK_APP_ID_DESC', 'formtype' => 'textbox', 'valuetype' => 'text', 'default' => ''],
     ['name' => 'ck_wcag', 'title' => '_MI_TADTOOLS_CK_WCAG', 'description' => '_MI_TADTOOLS_CK_WCAG_DESC', 'formtype' => 'yesno', 'valuetype' => 'int', 'default' => 0],
     ['name' => 'jquery_migrate', 'title' => '_MI_TADTOOLS_JQUERY_MIGRATE', 'description' => '_MI_TADTOOLS_JQUERY_MIGRATE_DESC', 'formtype' => 'yesno', 'valuetype' => 'int', 'default' => 0],
