@@ -47,6 +47,9 @@ define('_MI_TADTOOLS_PDF_FORCE_DL_DESC', '<span style="color:red">若要符合�
 define('_MI_TADTOOLS_TEST_MODE', '開發測試模式是否僅開放給管理者');
 define('_MI_TADTOOLS_TEST_MODE_DESC', '建議選「是」，此選項一般使用者用不到，僅開發者會使用');
 
+define('_MI_TADTOOLS_HIDE_ERROR_MESSAGES', '是否隱藏錯誤訊息');
+define('_MI_TADTOOLS_HIDE_ERROR_MESSAGES_DESC', '選「是」時，include/defines.php 的錯誤訊息將不顯示。');
+
 define('_MI_TADTOOLS_FACEBOOK_APP_ID', 'FaceBook 的 App ID（推文工具會用到）');
 define('_MI_TADTOOLS_FACEBOOK_APP_ID_DESC', '可至 https://developers.facebook.com/apps 申請並取得 App ID');
 

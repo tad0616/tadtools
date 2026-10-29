@@ -37,7 +37,7 @@
                     child.addClass('nivo-imageLink');
                     link = child;
                 }
-                child = child.find('img:first');
+                child = child.find('img').first();
             }
             // Get img width & height
             var childWidth = (childWidth === 0) ? child.attr('width') : child.width(),
@@ -65,7 +65,7 @@
         if($(kids[vars.currentSlide]).is('img')){
             vars.currentImage = $(kids[vars.currentSlide]);
         } else {
-            vars.currentImage = $(kids[vars.currentSlide]).find('img:first');
+            vars.currentImage = $(kids[vars.currentSlide]).find('img').first();
         }
 
         // Show initial link
@@ -82,7 +82,7 @@
         slider.append(sliderImg);
 
         // Detect Window Resize
-        $(window).resize(function() {
+        $(window).on('resize', function() {
             slider.children('img').width(slider.width());
             sliderImg.attr({
                 src : vars.currentImage.attr('src'),
@@ -154,7 +154,7 @@
                     vars.controlNavEl.addClass('nivo-thumbs-enabled');
                     var child = kids.eq(i);
                     if(!child.is('img')){
-                        child = child.find('img:first');
+                        child = child.find('img').first();
                     }
                     if(child.attr('data-thumb')) vars.controlNavEl.append('<a class="nivo-control" rel="'+ i +'"><img src="'+ child.attr('data-thumb') +'" alt="" /></a>');
                 } else {
@@ -163,9 +163,9 @@
             }
 
             //Set initial active link
-            $('a:eq('+ vars.currentSlide +')', vars.controlNavEl).addClass('active');
+            $('a', vars.controlNavEl).eq(vars.currentSlide).addClass('active');
 
-            $('a', vars.controlNavEl).bind('click', function(){
+            $('a', vars.controlNavEl).on('click', function(){
                 if(vars.running) return false;
                 if($(this).hasClass('active')) return false;
                 clearInterval(timer);
@@ -181,11 +181,11 @@
 
         //For pauseOnHover setting
         if(settings.pauseOnHover){
-            slider.hover(function(){
+            slider.on('mouseenter', function(){
                 vars.paused = true;
                 clearInterval(timer);
                 timer = '';
-            }, function(){
+            }).on('mouseleave', function(){
                 vars.paused = false;
                 // Restart the timer
                 if(timer === '' && !settings.manualAdvance){
@@ -195,7 +195,7 @@
         }
 
         // Event when Animation finishes
-        slider.bind('nivo:animFinished', function(){
+        slider.on('nivo:animFinished', function(){
             sliderImg.attr({
                     src :  vars.currentImage.attr('src'),
                     alt :  vars.currentImage.attr('alt')
@@ -336,13 +336,13 @@
             if($(kids[vars.currentSlide]).is('img')){
                 vars.currentImage = $(kids[vars.currentSlide]);
             } else {
-                vars.currentImage = $(kids[vars.currentSlide]).find('img:first');
+                vars.currentImage = $(kids[vars.currentSlide]).find('img').first();
             }
 
             // Set active links
             if(settings.controlNav){
                 $('a', vars.controlNavEl).removeClass('active');
-                $('a:eq('+ vars.currentSlide +')', vars.controlNavEl).addClass('active');
+                $('a', vars.controlNavEl).eq(vars.currentSlide).addClass('active');
             }
 
             // Process caption
@@ -484,7 +484,7 @@
             } else if(currentEffect === 'fade'){
                 createSlices(slider, settings, vars);
 
-                firstSlice = $('.nivo-slice:first', slider);
+                firstSlice = $('.nivo-slice', slider).first();
                 firstSlice.css({
                     'width': slider.width() + 'px'
                 });
@@ -493,7 +493,7 @@
             } else if(currentEffect === 'slideInRight'){
                 createSlices(slider, settings, vars);
 
-                firstSlice = $('.nivo-slice:first', slider);
+                firstSlice = $('.nivo-slice', slider).first();
                 firstSlice.css({
                     'width': '0px',
                     'opacity': '1'
@@ -503,7 +503,7 @@
             } else if(currentEffect === 'slideInLeft'){
                 createSlices(slider, settings, vars);
 
-                firstSlice = $('.nivo-slice:first', slider);
+                firstSlice = $('.nivo-slice', slider).first();
                 firstSlice.css({
                     'width': '0px',
                     'opacity': '1',

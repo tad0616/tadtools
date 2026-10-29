@@ -7,8 +7,6 @@ use XoopsModules\Tad_login\Tools as TadLoginTools;
 
 class TadtoolsCorePreload extends XoopsPreloadItem
 {
-    // to add PSR-4 autoloader
-
     public static function eventCoreIncludeCommonAuthSuccess()
     {
         global $xoopsConfig, $xoopsTpl;
@@ -71,8 +69,8 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         $use_default_config = false;
 
         /****檢查是否開放註冊****/
-        $sql                  = 'SELECT `conf_value` FROM `' . $xoopsDB->prefix('config') . "` WHERE `conf_name` = 'allow_register'";
-        $result               = $xoopsDB->query($sql);
+        $sql            = 'SELECT `conf_value` FROM `' . $xoopsDB->prefix('config') . "` WHERE `conf_name` = 'allow_register'";
+        $result         = $xoopsDB->query($sql);
         $allow_register = $xoopsDB->fetchRow($result)[0] ?? null;
         $xoopsTpl->assign('allow_register', $allow_register);
 
@@ -151,12 +149,12 @@ class TadtoolsCorePreload extends XoopsPreloadItem
 
         while ($fetch_row = $xoopsDB->fetchRow($result)) {
             list($mid, $name, $dirname) = $fetch_row;
-            $main_menu[$i]['id']     = $mid;
-            $main_menu[$i]['title']  = $name;
-            $main_menu[$i]['url']    = XOOPS_URL . "/modules/{$dirname}/";
-            $main_menu[$i]['target'] = '_self';
-            $main_menu[$i]['icon']   = 'fa-th-list';
-            $main_menu[$i]['img']    = '';
+            $main_menu[$i]['id']        = $mid;
+            $main_menu[$i]['title']     = $name;
+            $main_menu[$i]['url']       = XOOPS_URL . "/modules/{$dirname}/";
+            $main_menu[$i]['target']    = '_self';
+            $main_menu[$i]['icon']      = 'fa-th-list';
+            $main_menu[$i]['img']       = '';
             $i++;
         }
         $xoopsTpl->assign('main_menu_var', $main_menu);
@@ -169,9 +167,9 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         $TadThemesModule = $moduleHandler->getByDirname("tad_themes");
         $TadThemesMid    = ($TadThemesModule) ? $TadThemesModule->mid() : 0;
 
-        $sql         = 'SELECT `conf_value` FROM `' . $xoopsDB->prefix('config') . "` WHERE `conf_title` = '_MD_AM_DEBUGMODE'";
-        $result      = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error());
-        $debug = $xoopsDB->fetchRow($result)[0] ?? null;
+        $sql    = 'SELECT `conf_value` FROM `' . $xoopsDB->prefix('config') . "` WHERE `conf_title` = '_MD_AM_DEBUGMODE'";
+        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, $xoopsDB->error());
+        $debug  = $xoopsDB->fetchRow($result)[0] ?? null;
         if ($debug == 0) {
             $debug = 1;
         } else {
@@ -203,9 +201,9 @@ class TadtoolsCorePreload extends XoopsPreloadItem
         $xoopsTpl->assign('admin_menu_var', $admin_menu);
 
         //製作使用者選單
-        $uid                     = $xoopsUser ? $xoopsUser->uid() : 0;
-        $sql                     = 'SELECT COUNT(*) FROM `' . $xoopsDB->prefix('priv_msgs') . "` WHERE `to_userid` = $uid AND `read_msg`=0 GROUP BY `to_userid`";
-        $result                  = $xoopsDB->query($sql);
+        $uid               = $xoopsUser ? $xoopsUser->uid() : 0;
+        $sql               = 'SELECT COUNT(*) FROM `' . $xoopsDB->prefix('priv_msgs') . "` WHERE `to_userid` = $uid AND `read_msg`=0 GROUP BY `to_userid`";
+        $result            = $xoopsDB->query($sql);
         $xoops_inbox_count = $xoopsDB->fetchRow($result)[0] ?? null;
 
         if ($xoops_inbox_count) {

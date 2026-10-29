@@ -422,22 +422,6 @@ class Utility
 
     public static function add_migrate($mode = "")
     {
-        // global $xoTheme;
-        // self::get_jquery();
-        // // $ver = self::get_version('xoops');
-        // if ($mode == "return") {
-        //     if ($_SESSION['xoops_version'] < 20509) {
-        //         return "<script src='" . XOOPS_URL . "/modules/tadtools/jquery/jquery-migrate-1.4.1.min.js'></script>";
-        //     } else {
-        //         return "<script src='" . XOOPS_URL . "/modules/tadtools/jquery/jquery-migrate-3.0.0.min.js'></script>";
-        //     }
-        // } else {
-        //     if ($_SESSION['xoops_version'] < 20509) {
-        //         $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-1.4.1.min.js');
-        //     } else {
-        //         $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
-        //     }
-        // }
     }
 
     //版本判斷
@@ -1295,7 +1279,7 @@ class Utility
         $result = $xoopsDB->query($sql);
         while ($fetch_row = $xoopsDB->fetchRow($result)) {
             list($groupid, $name) = $fetch_row;
-            $data[$groupid] = $name;
+            $data[$groupid]       = $name;
         }
 
         return $data;
@@ -1324,8 +1308,8 @@ class Utility
     public static function group_id_from_name($name = '')
     {
         global $xoopsDB;
-        $sql           = 'SELECT `groupid` FROM `' . $xoopsDB->prefix('groups') . '` WHERE `name`=?';
-        $result        = Utility::query($sql, 's', [$name]) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql     = 'SELECT `groupid` FROM `' . $xoopsDB->prefix('groups') . '` WHERE `name`=?';
+        $result  = Utility::query($sql, 's', [$name]) or Utility::web_error($sql, __FILE__, __LINE__);
         $groupid = $xoopsDB->fetchRow($result)[0] ?? null;
         return $groupid;
     }
@@ -2016,7 +2000,7 @@ class Utility
 
         while ($fetch_row = $xoopsDB->fetchRow($result)) {
             list($gperm_itemid) = $fetch_row;
-            $ok_cate_arr[] = $gperm_itemid;
+            $ok_cate_arr[]      = $gperm_itemid;
         }
 
         return $ok_cate_arr;

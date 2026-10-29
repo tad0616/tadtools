@@ -1,5 +1,4 @@
 <link rel="stylesheet" type="text/css" media="all"  href="<{$xoops_url}>/modules/tadtools/themes_common/slider/templatemo/nivo-slider.css">
-<script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/jquery/jquery-migrate-1.4.1.min.js"></script>
 <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/themes_common/slider/templatemo/jquery.nivo.slider.pack.js"></script>
 
 <script type='text/javascript'>
