@@ -10,7 +10,7 @@ $adminmenu = [
     [
         'title' => _MI_TADTOOLS_ADMENU_ERROR_LOG,
         'link'  => 'admin/error_log.php',
-        'icon'  => 'images/admin/folder_txt.png',
+        'icon'  => 'images/admin/log.png',
     ],
     [
         'title' => _MI_TAD_ADMIN_ABOUT,
