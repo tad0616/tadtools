@@ -1,12 +1,15 @@
-TadTools 4.0.8 (Released October 27, 2026)
+TadTools 4.0.8 (Released 2026-10-29)
 ====================================
 1. Adjusted the method for checking $_SESSION['bootstrap']
 2. Removed the outdated FullCalendar package
 3. Upgraded elfinder to 2.1.70
 4. Added support for XOOPS 2.7.4
 5. Added support for PHP 8.5
+6. Added a "Hide Error Messages" preference setting; when enabled, the fatal error page displays only a generic message and the error code (requires modifying XOOPS core class/logger/xoopslogger.php)
+7. Added an “Error Query” feature in the admin panel, allowing users to search error logs by error code; the default displays the most recent 50 entries (the log file is located at XOOPS_VAR_PATH/logs/tadtools_error.log)
+8. Added settings for the maximum log file size and the number of old files to retain, to prevent the log file from growing indefinitely
 
-TadTools 4.0.7 (Released on September 4, 2026)
+TadTools 4.0.7 (Released 2026-09-04)
 ====================================
 1. Added a POST method to SweetAlert2.php
 2. Fixed an issue where MP3 files could not be uploaded
