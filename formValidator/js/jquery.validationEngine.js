@@ -14,6 +14,11 @@
 
 	"use strict";
 
+	// jQuery 4 removed $.trim; native String#trim with the same null-safety
+	var trim = function(value) {
+		return value == null ? "" : String(value).trim();
+	};
+
 	var methods = {
 
 		/**
@@ -58,7 +63,7 @@
 				form.on(options.validationEventTrigger,"["+options.validateAttribute+"*=validate][class*=datepicker]", {"delay": 300}, methods._onFieldEvent);
 			}
 			if (options.autoPositionUpdate) {
-				$(window).bind("resize", {
+				$(window).on("resize", {
 					"noAnimation": true,
 					"formElem": form
 				}, methods.updatePromptsPosition);
@@ -423,20 +428,20 @@
 						var scrollContainer = $(options.overflownDIV).filter(":not(:animated)");
 
 						scrollContainer.animate({ scrollTop: destination }, 1100, function(){
-							if(options.focusFirstField) first_err.focus();
+							if(options.focusFirstField) first_err.trigger("focus");
 						});
 
 					} else {
 						$("html, body").animate({
 							scrollTop: destination
 						}, 1100, function(){
-							if(options.focusFirstField) first_err.focus();
+							if(options.focusFirstField) first_err.trigger("focus");
 						});
 						$("html, body").animate({scrollLeft: fixleft},1100)
 					}
 
 				} else if(options.focusFirstField)
-					first_err.focus();
+					first_err.trigger("focus");
 				return false;
 			}
 			return true;
@@ -763,9 +768,9 @@
 
 			if ((fieldType == "radio" || fieldType == "checkbox") && form.find("input[name='" + fieldName + "']").length > 1) {
 				if(positionType === 'inline') {
-					field = $(form.find("input[name='" + fieldName + "'][type!=hidden]:last"));
+					field = $(form.find("input[name='" + fieldName + "']:not([type=hidden])").last());
 				} else {
-				field = $(form.find("input[name='" + fieldName + "'][type!=hidden]:first"));
+				field = $(form.find("input[name='" + fieldName + "']:not([type=hidden])").first());
 				}
 				options.showArrow = options.showArrowOnRadioAndCheckbox;
 			}
@@ -974,9 +979,9 @@
 				case "select-one":
 				case "select-multiple":
 				default:
-					var field_val      = $.trim( field.val()                               );
-					var dv_placeholder = $.trim( field.attr("data-validation-placeholder") );
-					var placeholder    = $.trim( field.attr("placeholder")                 );
+					var field_val      = trim( field.val()                               );
+					var dv_placeholder = trim( field.attr("data-validation-placeholder") );
+					var placeholder    = trim( field.attr("placeholder")                 );
 					if (
 						   ( !field_val                                    )
 						|| ( dv_placeholder && field_val == dv_placeholder )
@@ -1518,7 +1523,7 @@
 
 								 // If a submit form triggered this, we want to re-submit the form
 								 if (options.eventTrigger == "submit")
-									field.closest("form").submit();
+									field.closest("form").trigger("submit");
 							 }
 						 }
 						 errorField.trigger("jqv.field.result", [errorField, options.isError, msg]);
@@ -1586,7 +1591,7 @@
 			 // Because no error was found befor submitting
 			 if(ajaxform) prompt = false;
 			 // Check that there is indded text
-			 if($.trim(promptText)){
+			 if(trim(promptText)){
 				 if (prompt)
 					methods._updatePrompt(field, prompt, promptText, type, ajaxed, options);
 				 else
