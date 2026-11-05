@@ -234,6 +234,7 @@ $fileMimes = array_merge($imageMimes, [
     'text/csv',
     'application/zip',
     'application/x-zip-compressed',
+    'application/x-7z-compressed',
     'application/msword',
     'application/vnd.ms-excel',
     'application/vnd.ms-powerpoint',
