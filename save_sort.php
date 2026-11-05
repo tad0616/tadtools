@@ -27,6 +27,13 @@ $fdtr      = Request::getArray('fdtr');
 $db_prefix = Utility::check_string(strtolower($db_prefix));
 $col_name  = Utility::check_string($col_name);
 
+// 嚴格限制 db_prefix 僅能是合法的模組目錄名稱格式，避免組出非預期的資料表名稱
+if (!preg_match('/^[a-z][a-z0-9_]{0,63}$/', $db_prefix)) {
+    http_response_code(400);
+    echo 'Invalid table';
+    exit;
+}
+
 // 組出完整資料表名稱並確認存在
 $filesTable = $xoopsDB->prefix($db_prefix . '_files_center');
 $checkSql   = "SELECT 1 FROM `{$filesTable}` LIMIT 1";
