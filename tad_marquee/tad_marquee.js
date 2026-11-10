@@ -1,6 +1,6 @@
 /**
  * TadMarquee - 無障礙跑馬燈套件
- * 版本: 2.0.10
+ * 版本: 2.0.11
  * 符合 WCAG 2.2 AA / AAA 無障礙標準
  *
  * 功能特色:
@@ -19,6 +19,8 @@
  * ✓ WCAG 2.4.3 AA：焦點順序「暫停按鈕 → 內容項目」，上至下、左至右
  * ✓ pauseButtonPosition 支援 'top'（預設）/ left / right（並排）/ 四角落模式
  * ✓ itemHoverStyle / itemActiveStyle：可由 options 覆蓋 :hover / :active 偽類樣式
+ * ✓ WCAG 2.2.2：使用者按下暫停後，滑鼠／焦點離開、換頁或重新整理皆維持暫停，
+ *   直到使用者明確按下播放（rememberPause / storageKey，存於 localStorage）
  */
 
 (function(global, factory) {
@@ -128,6 +130,9 @@
                     pause:  '已繼續播放，按下可暫停',
                     resume: '已暫停，按下播放繼續'
                 },
+                // 記住使用者按下的暫停狀態（換頁、上一頁／下一頁、重新整理後仍維持暫停）
+                rememberPause: options.rememberPause !== false,
+                storageKey: options.storageKey || 'tad-marquee-paused',
                 ...options
             };
 
@@ -148,6 +153,8 @@
             this.currentBreakpoint = null;
             this._loopSize         = 0;
             this._dynamicStyleEl   = null;   // ← 動態注入的 <style> 元素
+            this._restorePaused    = false;  // ← 重建內容或載入頁面時需恢復使用者暫停
+            this._focusPauseAnnounced = false;
 
             this.callbacks = {
                 onStart: options.onStart || null,
@@ -164,6 +171,8 @@
         // ── 初始化 ────────────────────────────────────────────────
 
         init() {
+            // 須在 renderItems() 之前讀取，讓 resetPosition() 把內容放在可見位置
+            this._restorePaused = this.options.rememberPause && this._loadPausedState();
             this.checkReducedMotion();
             this.buildLayout();
             this.setupContainer();
@@ -178,6 +187,9 @@
 
             if (this.options.autoStart && !this.prefersReducedMotion) {
                 this.start();
+                // 使用者先前按過暫停且尚未按播放 → 維持暫停
+                if (this._restorePaused) this._setUserPaused(true);
+                this._restorePaused = false;
             } else if (this.prefersReducedMotion) {
                 this.announceToScreenReader('跑馬燈已暫停以尊重您的動畫偏好設定');
             }
@@ -574,22 +586,47 @@
 
             if (this.isPausedByUser) {
                 // 使用者先前已暫停 → 繼續播放
-                this.isPausedByUser = false;
-                this.isPaused       = false;
-                if (this.prefersReducedMotion) this.prefersReducedMotion = false;
-                this.marqueeEl.classList.remove('tad-marquee-paused');
-                this._updatePauseButton(false);
+                this._setUserPaused(false);
+                this._savePausedState(false);
                 announce(this.options.pauseButtonLabel.pause);
                 this.triggerCallback('onResume');
             } else {
                 // 播放中（或僅因懸停／焦點暫時停住）→ 由使用者鎖定暫停
-                this.isPausedByUser = true;
-                this.isPaused       = true;
-                this.marqueeEl.classList.add('tad-marquee-paused');
-                this._updatePauseButton(true);
+                this._setUserPaused(true);
+                this._savePausedState(true);
                 announce(this.options.pauseButtonLabel.resume);
                 this.triggerCallback('onPause');
             }
+        }
+
+        /**
+         * 設定「使用者鎖定暫停」狀態。
+         * 鎖定後，滑鼠移出、焦點離開都不會恢復播放，只有再次按下播放鍵才會繼續。
+         */
+        _setUserPaused(paused) {
+            this.isPausedByUser = paused;
+            this.isPaused       = paused;
+            if (!paused && this.prefersReducedMotion) this.prefersReducedMotion = false;
+            this.marqueeEl.classList.toggle('tad-marquee-paused', paused);
+            this._updatePauseButton(paused);
+        }
+
+        /** 讀取先前儲存的使用者暫停狀態（瀏覽器禁用儲存空間時視為未暫停） */
+        _loadPausedState() {
+            try {
+                return window.localStorage.getItem(this.options.storageKey) === '1';
+            } catch (_) {
+                return false;
+            }
+        }
+
+        /** 儲存使用者暫停狀態，供換頁或重新整理後恢復 */
+        _savePausedState(paused) {
+            if (!this.options.rememberPause) return;
+            try {
+                if (paused) window.localStorage.setItem(this.options.storageKey, '1');
+                else window.localStorage.removeItem(this.options.storageKey);
+            } catch (_) { /* 無法儲存時僅維持本頁狀態 */ }
         }
 
         _updatePauseButton(paused) {
@@ -739,7 +776,8 @@
         resetPosition() {
             if (!this.wrapper) return;
             const cr = this.marqueeEl.getBoundingClientRect();
-            const startVisible = !this.options.autoStart || this.prefersReducedMotion;
+            const startVisible = !this.options.autoStart || this.prefersReducedMotion ||
+                this.isPausedByUser || this._restorePaused;
             switch (this.options.direction) {
                 case 'left':
                     this.currentPosition = startVisible ? 0 : cr.width;
@@ -1079,11 +1117,17 @@
                 console.warn('TadMarquee: 無效的方向參數:', direction); return this;
             }
             const wasRunning = this.isRunning;
+            const wasPausedByUser = this.isPausedByUser;
             this.stop();
             this.options.direction = direction;
+            this._restorePaused = wasPausedByUser;
             this.createWrapper();
             this.renderItems();
-            if (wasRunning && !this.prefersReducedMotion) this.start();
+            if (wasRunning && !this.prefersReducedMotion) {
+                this.start();
+                if (wasPausedByUser) this._setUserPaused(true);
+            }
+            this._restorePaused = false;
             this.triggerCallback('onDirectionChange', direction);
             if (this.options.announceItems) {
                 const map = { left: '向左', right: '向右', up: '向上', down: '向下' };
@@ -1095,10 +1139,16 @@
         updateItems(items) {
             if (!Array.isArray(items)) { console.warn('TadMarquee: items 必須是陣列'); return this; }
             const wasRunning = this.isRunning;
+            const wasPausedByUser = this.isPausedByUser;
             this.stop();
             this.options.items = items;
+            this._restorePaused = wasPausedByUser;
             this.renderItems();
-            if (wasRunning && !this.prefersReducedMotion) this.start();
+            if (wasRunning && !this.prefersReducedMotion) {
+                this.start();
+                if (wasPausedByUser) this._setUserPaused(true);
+            }
+            this._restorePaused = false;
             if (this.options.announceItems)
                 this.announceToScreenReader(`內容已更新，共 ${items.length} 個項目`);
             return this;
