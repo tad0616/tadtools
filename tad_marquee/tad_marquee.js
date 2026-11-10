@@ -1,6 +1,6 @@
 /**
  * TadMarquee - 無障礙跑馬燈套件
- * 版本: 2.0.9
+ * 版本: 2.0.10
  * 符合 WCAG 2.2 AA / AAA 無障礙標準
  *
  * 功能特色:
@@ -547,32 +547,47 @@
             this.pauseBtn.style.color = bgColor;
         }
 
+        /**
+         * 使用者按下暫停／播放按鈕。
+         *
+         * 注意：isPaused 會被「滑鼠懸停／焦點停留」暫時設為 true，
+         * 因此不能以 isPaused 判斷使用者想做什麼（否則游標在跑馬燈上按下
+         * 「暫停」時，會被誤判成「繼續」而重新播放，看起來像按鈕無效）。
+         * 這裡改以 isPausedByUser 作為使用者意圖的唯一依據。
+         */
         _togglePauseByUser() {
+            const announce = (msg) => {
+                if (document.activeElement !== this.pauseBtn) this.announceToScreenReader(msg);
+            };
+
+            // 尚未啟動（例如 autoStart:false 或偏好減少動畫）→ 強制播放
             if (!this.isRunning) {
                 this.start(true);
+                this.isPaused       = false;
                 this.isPausedByUser = false;
+                this.marqueeEl.classList.remove('tad-marquee-paused');
                 this._updatePauseButton(false);
-                if (document.activeElement !== this.pauseBtn) {
-                    this.announceToScreenReader(this.options.pauseButtonLabel.pause);
-                }
+                announce(this.options.pauseButtonLabel.pause);
                 this.triggerCallback('onResume');
                 return;
             }
-            if (this.isPaused) {
-                this.resume(true);
+
+            if (this.isPausedByUser) {
+                // 使用者先前已暫停 → 繼續播放
                 this.isPausedByUser = false;
+                this.isPaused       = false;
+                if (this.prefersReducedMotion) this.prefersReducedMotion = false;
+                this.marqueeEl.classList.remove('tad-marquee-paused');
                 this._updatePauseButton(false);
-                if (document.activeElement !== this.pauseBtn) {
-                    this.announceToScreenReader(this.options.pauseButtonLabel.pause);
-                }
+                announce(this.options.pauseButtonLabel.pause);
                 this.triggerCallback('onResume');
             } else {
-                this.pause();
+                // 播放中（或僅因懸停／焦點暫時停住）→ 由使用者鎖定暫停
                 this.isPausedByUser = true;
+                this.isPaused       = true;
+                this.marqueeEl.classList.add('tad-marquee-paused');
                 this._updatePauseButton(true);
-                if (document.activeElement !== this.pauseBtn) {
-                    this.announceToScreenReader(this.options.pauseButtonLabel.resume);
-                }
+                announce(this.options.pauseButtonLabel.resume);
                 this.triggerCallback('onPause');
             }
         }
@@ -1018,6 +1033,7 @@
                 return this;
             }
             this.isRunning = true;
+            this.isPaused = false;
             this.isPausedByUser = false;
             if (this.prefersReducedMotion && force) this.prefersReducedMotion = false;
             this._updatePauseButton(false);
@@ -1030,7 +1046,9 @@
         stop() {
             if (!this.isRunning) return this;
             this.isRunning = false;
+            this.isPaused = false;
             this.isPausedByUser = false;
+            this.marqueeEl.classList.remove('tad-marquee-paused');
             if (this.animationId) { cancelAnimationFrame(this.animationId); this.animationId = null; }
             this._updatePauseButton(false);
             this.triggerCallback('onStop');
