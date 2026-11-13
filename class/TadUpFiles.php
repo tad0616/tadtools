@@ -915,6 +915,12 @@ class TadUpFiles
             $file_handle = new \Verot\Upload\Upload($file, 'zh_TW');
 
             if ($file_handle->uploaded) {
+                //檢查副檔名（不可只依賴 MIME 判斷，避免上傳可執行檔）
+                if (!$this->is_allowed_upload_name($file['name'], $allow, $deny)) {
+                    redirect_header($_SERVER['HTTP_REFERER'] ?? $_SERVER['PHP_SELF'], 3, 'Error: 不允許上傳此類型的檔案 (' . htmlspecialchars((string) $file['name'], ENT_QUOTES, 'UTF-8') . ')');
+                    exit;
+                }
+
                 //取得副檔名
                 $file_ext = $file_handle->file_src_name_ext;
                 $ext      = mb_strtolower($file_ext);
@@ -1391,6 +1397,12 @@ class TadUpFiles
         $file_handle = new \Verot\Upload\Upload($file, 'zh_TW');
 
         if ($file_handle->uploaded) {
+            //檢查副檔名（不可只依賴 MIME 判斷，避免上傳可執行檔）
+            if (!$this->is_allowed_upload_name($name, $allow, $deny)) {
+                redirect_header($_SERVER['HTTP_REFERER'] ?? $_SERVER['PHP_SELF'], 3, 'Error: 不允許上傳此類型的檔案 (' . htmlspecialchars((string) $name, ENT_QUOTES, 'UTF-8') . ')');
+                exit;
+            }
+
             //取得副檔名
             $ext = mb_strtolower($file_handle->file_src_name_ext);
             //判斷檔案種類
@@ -2231,6 +2243,51 @@ class TadUpFiles
         }
         $bytes = (int) round($bytes, 2);
         return $bytes;
+    }
+
+    // 檢查上傳檔名的副檔名是否允許：須在允許清單內、不可在禁止清單內，主檔名也不可夾帶可執行副檔名（如 shell.php.jpg）
+    protected function is_allowed_upload_name($filename, $allow = '', $deny = '')
+    {
+        $filename = (string) $filename;
+        if ($filename === '' || preg_match('/[\x00-\x1f:\/\\\\]/', $filename)) {
+            return false;
+        }
+
+        // Windows 會自動去除結尾的點與空白（如 shell.php.），直接拒絕
+        if ($filename !== rtrim($filename, " .")) {
+            return false;
+        }
+
+        $ext = mb_strtolower((string) pathinfo($filename, PATHINFO_EXTENSION));
+        if ($ext === '') {
+            return false;
+        }
+
+        // 伺服器可能執行的副檔名，無論呼叫端怎麼設定都禁止
+        $exec_exts = ['php', 'php2', 'php3', 'php4', 'php5', 'php6', 'php7', 'php8', 'phps', 'phtml', 'pht', 'phar', 'pgif', 'inc', 'shtml', 'shtm', 'stm', 'cgi', 'pl', 'py', 'rb', 'sh', 'asp', 'aspx', 'asa', 'cer', 'ashx', 'asmx', 'jsp', 'jspx', 'htaccess', 'htpasswd', 'user.ini'];
+
+        $deny_arr = array_filter(array_map('trim', explode(';', mb_strtolower((string) $deny))));
+        if (in_array($ext, $exec_exts, true) || in_array($ext, $deny_arr, true) || in_array(mb_strtolower($filename), ['.htaccess', '.user.ini', 'web.config'], true)) {
+            return false;
+        }
+
+        // 主檔名中夾帶可執行副檔名（例如 shell.php.jpg 在某些 Apache 設定下仍會被執行）
+        $parts = explode('.', mb_strtolower((string) pathinfo($filename, PATHINFO_FILENAME)));
+        array_shift($parts);
+        foreach ($parts as $part) {
+            if (in_array(trim($part), $exec_exts, true)) {
+                return false;
+            }
+        }
+
+        if (!empty($allow)) {
+            $allow_arr = array_filter(array_map('trim', explode(';', mb_strtolower((string) $allow))));
+            if (!in_array($ext, $allow_arr, true)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     protected function ext2mime($ext)
