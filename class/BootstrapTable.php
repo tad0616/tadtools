@@ -14,7 +14,10 @@ class BootstrapTable
 
     }
 
-    public static function render($editable = true, $fixed = true, $sticky = true, $remove_tab_index = false)
+    /**
+     * @param bool $reorder 是否可拖拉調整欄位順序（載入 jQuery UI、dragtable 與 reorder-columns 擴充，表格需加 data-reorderable-columns="true"）
+     */
+    public static function render($editable = true, $fixed = true, $sticky = true, $remove_tab_index = false, $reorder = false)
     {
         global $xoTheme;
         $jquery          = Utility::get_jquery();
@@ -44,6 +47,13 @@ class BootstrapTable
                 $xoTheme->addScript('modules/tadtools/bootstrap-table/extensions/editable/bootstrap-table-editable.min.js');
             }
 
+            if ($reorder) {
+                Utility::get_jquery(true);
+                $xoTheme->addStylesheet('modules/tadtools/bootstrap-table/extensions/reorder-columns/dragtable/dragtable.css');
+                $xoTheme->addScript('modules/tadtools/bootstrap-table/extensions/reorder-columns/dragtable/jquery.dragtable.js');
+                $xoTheme->addScript('modules/tadtools/bootstrap-table/extensions/reorder-columns/bootstrap-table-reorder-columns.min.js');
+            }
+
         } else {
 
             $remove_tab_index_js = $remove_tab_index ? "<script type='text/javascript' src='" . TADTOOLS_URL . "/bootstrap-table/bootstrap-table.min.js?t=20260924'></script>" : '';
@@ -68,6 +78,12 @@ class BootstrapTable
             }
             if ($editable) {
                 $bootstrap_table .= "<script type='text/javascript' src='" . TADTOOLS_URL . "/bootstrap-table/extensions/editable/bootstrap-table-editable.min.js'></script>";
+            }
+            if ($reorder) {
+                $bootstrap_table .= Utility::get_jquery(true, 'return') . "
+                <link rel='stylesheet' type='text/css' media='all' title='Style sheet' href='" . TADTOOLS_URL . "/bootstrap-table/extensions/reorder-columns/dragtable/dragtable.css'>
+                <script type='text/javascript' src='" . TADTOOLS_URL . "/bootstrap-table/extensions/reorder-columns/dragtable/jquery.dragtable.js'></script>
+                <script type='text/javascript' src='" . TADTOOLS_URL . "/bootstrap-table/extensions/reorder-columns/bootstrap-table-reorder-columns.min.js'></script>";
             }
 
         }
