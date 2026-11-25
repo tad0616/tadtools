@@ -1,3 +1,15 @@
+TadTools 4.0.9 (2026-11-25 釋出)
+====================================
+1.BootstrapTable 新增可拖拉調整欄位順序的選項（加入 dragtable 2.0.15，已相容 jQuery 4）
+2.新增 GLightbox 燈箱元件（v3.3.1，MIT 授權，介面與方法參數相容 FancyBox，並內建無障礙支援）
+3.修正 Bootstrap 4/5 二欄式版型（theme_type_1 ~ theme_type_4）未依側欄寬度重算 cb_width，導致中間區塊寬度誤沿用三欄式設定值（如 6）的問題
+4.修正 Utility::rrmdir() 在 PHP 8 無法刪除目錄的問題
+5.TadUpFiles 新增上傳檔案副檔名檢查，強化上傳安全性
+6.修正 save_sort.php 資料庫前綴安全性漏洞（CWE-89）
+7.修正 formValidator（jquery.validationEngine.js）取代 $.trim 以相容 jQuery 4，並改善焦點觸發與表單驗證邏輯
+8.升級 tad_marquee 至 2.0.11，改善暫停／播放按鈕判斷邏輯並新增使用者暫停狀態記憶功能
+9.elFinder 允許上傳類型新增 7z 格式
+
 TadTools 4.0.8 (2026-10-29 釋出)
 ====================================
 1.調整 $_SESSION['bootstrap'] 的判斷方法
