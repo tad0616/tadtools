@@ -1,0 +1,214 @@
+/* GLightbox FancyBox 2 style skin for tadtools */
+.glightbox-container.glightbox-fancybox2 .goverlay {
+    background: rgba(0, 0, 0, 0.72);
+}
+
+.glightbox-container.glightbox-fancybox2 .gslide-inner-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 100vh;
+    max-width: 100vw;
+    padding: 1.5rem 1rem;
+    box-sizing: border-box;
+}
+
+.glightbox-container.glightbox-fancybox2 .ginner-container {
+    width: auto;
+    height: auto;
+    max-height: calc(100vh - 3rem);
+    max-width: calc(100vw - 2rem);
+    align-items: center;
+}
+
+.glightbox-container.glightbox-fancybox2 .gslide-media {
+    background: #f9f9f9;
+    padding: 0.9375rem;
+    border-radius: 0.25rem;
+    box-shadow: 0 0.625rem 1.5625rem rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+    max-width: 100%;
+    flex: 0 1 auto;
+}
+
+.glightbox-container.glightbox-fancybox2 .gslide-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.glightbox-container.glightbox-fancybox2 .gslide-image img {
+    display: block;
+    max-height: calc(100vh - 8.5rem);
+    max-width: calc(100vw - 9rem);
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    margin: 0 auto;
+    border-radius: 0.125rem;
+}
+
+.glightbox-container.glightbox-fancybox2 .gslide-external {
+    background: #ffffff;
+    border: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-height: calc(100vh - 5rem);
+}
+
+.glightbox-container.glightbox-fancybox2 .gslide-inline {
+    background: #f9f9f9;
+    color: #333333;
+    padding: 0.9375rem;
+    border-radius: 0.25rem;
+    box-shadow: 0 0.625rem 1.5625rem rgba(0, 0, 0, 0.5);
+    max-width: 95vw;
+    max-height: calc(100vh - 4rem);
+    overflow: auto;
+    box-sizing: border-box;
+}
+
+.glightbox-container.glightbox-fancybox2 .ginlined-content {
+    padding: 0;
+}
+
+/* FancyBox 2 floating dark pill caption style */
+.glightbox-container.glightbox-fancybox2 .gslide-description {
+    flex: 0 0 auto;
+}
+
+.glightbox-container.glightbox-fancybox2 .gslide-description.description-bottom {
+    background: rgba(0, 0, 0, 0.82);
+    color: #ffffff;
+    border-radius: 0.9375rem;
+    margin: 0.625rem auto 0;
+    max-width: 90%;
+    width: fit-content;
+    text-align: center;
+    box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.35);
+}
+
+.glightbox-container.glightbox-fancybox2 .gslide-description .gdesc-inner {
+    padding: 0.35rem 1.25rem;
+}
+
+.glightbox-container.glightbox-fancybox2 .gslide-description .gslide-title {
+    margin: 0;
+    color: #ffffff;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.glightbox-container.glightbox-fancybox2 .gslide-description .gslide-desc {
+    margin: 0.25rem 0 0;
+    color: #f0f0f0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+/* High-contrast circular controls with WCAG AAA focus ring */
+.glightbox-container.glightbox-fancybox2 .gclose,
+.glightbox-container.glightbox-fancybox2 .gnext,
+.glightbox-container.glightbox-fancybox2 .gprev {
+    position: absolute;
+    z-index: 999999;
+    padding: 0;
+    background-color: rgba(24, 24, 24, 0.85);
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    width: 2.75rem;
+    height: 2.75rem;
+    box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.45);
+    opacity: 0.95;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.glightbox-container.glightbox-fancybox2 .gclose {
+    top: 1rem;
+    right: 1.25rem;
+}
+
+.glightbox-container.glightbox-fancybox2 .gprev {
+    top: 50%;
+    left: 1.25rem;
+    transform: translateY(-50%);
+}
+
+.glightbox-container.glightbox-fancybox2 .gnext {
+    top: 50%;
+    right: 1.25rem;
+    transform: translateY(-50%);
+}
+
+.glightbox-container.glightbox-fancybox2 .gclose.glightbox-button-hidden,
+.glightbox-container.glightbox-fancybox2 .gnext.glightbox-button-hidden,
+.glightbox-container.glightbox-fancybox2 .gprev.glightbox-button-hidden {
+    display: none;
+}
+
+.glightbox-container.glightbox-fancybox2 .gnext.disabled,
+.glightbox-container.glightbox-fancybox2 .gprev.disabled {
+    opacity: 0.2;
+    cursor: default;
+}
+
+.glightbox-container.glightbox-fancybox2 .gclose:hover,
+.glightbox-container.glightbox-fancybox2 .gnext:hover,
+.glightbox-container.glightbox-fancybox2 .gprev:hover {
+    background-color: #000000;
+    opacity: 1;
+}
+
+.glightbox-container.glightbox-fancybox2 .gclose:focus-visible,
+.glightbox-container.glightbox-fancybox2 .gnext:focus-visible,
+.glightbox-container.glightbox-fancybox2 .gprev:focus-visible {
+    outline: 3px solid #ffdd00;
+    outline-offset: 2px;
+    background-color: #000000;
+    opacity: 1;
+}
+
+.glightbox-container.glightbox-fancybox2 .gclose svg,
+.glightbox-container.glightbox-fancybox2 .gnext svg,
+.glightbox-container.glightbox-fancybox2 .gprev svg {
+    width: 1.125rem;
+    height: 1.125rem;
+}
+
+.glightbox-container.glightbox-fancybox2 .gclose path,
+.glightbox-container.glightbox-fancybox2 .gnext path,
+.glightbox-container.glightbox-fancybox2 .gprev path {
+    fill: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .glightbox-container.glightbox-fancybox2 .gslide-inner-content {
+        padding: 1rem 0.5rem;
+    }
+
+    .glightbox-container.glightbox-fancybox2 .gslide-media,
+    .glightbox-container.glightbox-fancybox2 .gslide-inline {
+        padding: 0.5rem;
+    }
+
+    .glightbox-container.glightbox-fancybox2 .gslide-image img {
+        max-height: calc(100vh - 7.5rem);
+        max-width: calc(100vw - 2rem);
+    }
+
+    .glightbox-container.glightbox-fancybox2 .gclose {
+        top: 0.75rem;
+        right: 0.75rem;
+    }
+
+    .glightbox-container.glightbox-fancybox2 .gprev {
+        left: 0.5rem;
+    }
+
+    .glightbox-container.glightbox-fancybox2 .gnext {
+        right: 0.5rem;
+    }
+}

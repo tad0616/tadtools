@@ -191,10 +191,13 @@ class Tools
                     $center_block_content = "width:{$center_content_width}px;";
                     $right_block .= " width:{$def_config['rb_width']}px;";
                 } elseif ($def_config['theme_kind'] == "bootstrap4" || $def_config['theme_kind'] == "bootstrap5") {
-                    $center_width = $def_config['cb_width'];
-                    if ($def_config['lb_width'] == 'auto') {
+                    if ($def_config['lb_width'] == 'auto' || empty($def_config['lb_width']) || (int) $def_config['lb_width'] >= 12) {
+                        $def_config['cb_width'] = (empty($def_config['cb_width']) || (int) $def_config['cb_width'] >= 12) ? 9 : (int) $def_config['cb_width'];
                         $def_config['lb_width'] = 12 - $def_config['cb_width'];
+                    } else {
+                        $def_config['cb_width'] = 12 - (int) $def_config['lb_width'];
                     }
+                    $center_width = $def_config['cb_width'];
                 } else {
                     $center_width = $theme_width - $def_config['lb_width'];
                 }
@@ -213,10 +216,13 @@ class Tools
                     $center_block_content = $center_block;
                     $right_block .= "width:{$def_config['rb_width']}px;";
                 } elseif ($def_config['theme_kind'] == "bootstrap4" || $def_config['theme_kind'] == "bootstrap5") {
-                    $center_width = $def_config['cb_width'];
-                    if ($def_config['rb_width'] == 'auto') {
+                    if ($def_config['rb_width'] == 'auto' || empty($def_config['rb_width']) || (int) $def_config['rb_width'] >= 12) {
+                        $def_config['cb_width'] = (empty($def_config['cb_width']) || (int) $def_config['cb_width'] >= 12) ? 9 : (int) $def_config['cb_width'];
                         $def_config['rb_width'] = 12 - $def_config['cb_width'];
+                    } else {
+                        $def_config['cb_width'] = 12 - (int) $def_config['rb_width'];
                     }
+                    $center_width = $def_config['cb_width'];
                 } else {
                     $center_width = $theme_width - $def_config['rb_width'];
                 }
@@ -236,10 +242,13 @@ class Tools
                     $right_block .= "float:none;  width:{$theme_width}px; clear:both;";
                     $right_block2 .= "float:left; padding-left: 15px;";
                 } elseif ($def_config['theme_kind'] == "bootstrap4" || $def_config['theme_kind'] == "bootstrap5") {
-                    $center_width = $def_config['cb_width'];
-                    if ($def_config['lb_width'] == 'auto') {
+                    if ($def_config['lb_width'] == 'auto' || empty($def_config['lb_width']) || (int) $def_config['lb_width'] >= 12) {
+                        $def_config['cb_width'] = (empty($def_config['cb_width']) || (int) $def_config['cb_width'] >= 12) ? 9 : (int) $def_config['cb_width'];
                         $def_config['lb_width'] = 12 - $def_config['cb_width'];
+                    } else {
+                        $def_config['cb_width'] = 12 - (int) $def_config['lb_width'];
                     }
+                    $center_width           = $def_config['cb_width'];
                     $def_config['rb_width'] = "12";
                 } else {
                     $def_config['rb_width'] = "12";
@@ -260,10 +269,13 @@ class Tools
                     $right_block .= "float:none; width:{$theme_width}px; clear:both;";
                     $right_block2 .= "float:left; padding-left: 15px;";
                 } elseif ($def_config['theme_kind'] == "bootstrap4" || $def_config['theme_kind'] == "bootstrap5") {
-                    $center_width = $def_config['cb_width'];
-                    if ($def_config['lb_width'] == 'auto') {
+                    if ($def_config['lb_width'] == 'auto' || empty($def_config['lb_width']) || (int) $def_config['lb_width'] >= 12) {
+                        $def_config['cb_width'] = (empty($def_config['cb_width']) || (int) $def_config['cb_width'] >= 12) ? 9 : (int) $def_config['cb_width'];
                         $def_config['lb_width'] = 12 - $def_config['cb_width'];
+                    } else {
+                        $def_config['cb_width'] = 12 - (int) $def_config['lb_width'];
                     }
+                    $center_width           = $def_config['cb_width'];
                     $def_config['rb_width'] = "12";
                 } else {
                     $def_config['rb_width'] = "12";

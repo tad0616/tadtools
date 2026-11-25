@@ -1487,7 +1487,51 @@ class Utility
     //刪除整個目錄
     public static function rrmdir($path)
     {
-        return is_file($path) ? @unlink($path) : array_map('rrmdir', glob($path . '/*')) == @rmdir($path);
+        if (!is_string($path) || '' === $path) {
+            return false;
+        }
+
+        // 去掉結尾的斜線，讓 is_link() 能正確判斷
+        $trimmed = rtrim($path, '/\\');
+        if ('' !== $trimmed) {
+            $path = $trimmed;
+        }
+
+        // 符號連結只移除連結本身，不跟進去刪除目標內容
+        if (is_link($path)) {
+            return @unlink($path) || @rmdir($path);
+        }
+
+        if (is_file($path)) {
+            return @unlink($path);
+        }
+
+        if (!is_dir($path)) {
+            return false;
+        }
+
+        // 不允許刪除檔案系統根目錄
+        $real = realpath($path);
+        if (false === $real || dirname($real) === $real) {
+            return false;
+        }
+
+        $items = scandir($path);
+        if (false === $items) {
+            return false;
+        }
+
+        $ok = true;
+        foreach ($items as $item) {
+            if ('.' === $item || '..' === $item) {
+                continue;
+            }
+            if (!self::rrmdir($path . DIRECTORY_SEPARATOR . $item)) {
+                $ok = false;
+            }
+        }
+
+        return @rmdir($path) && $ok;
     }
 
     //取得分頁工具
