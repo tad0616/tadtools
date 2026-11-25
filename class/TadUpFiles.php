@@ -3,7 +3,7 @@
 namespace XoopsModules\Tadtools;
 
 use Xmf\Request;
-use XoopsModules\Tadtools\FancyBox;
+use XoopsModules\Tadtools\GLightbox;
 use XoopsModules\Tadtools\Utility;
 
 // declare (strict_types = 1);
@@ -698,8 +698,8 @@ class TadUpFiles
             return;
         }
 
-        $fancybox = new FancyBox('.fancybox_demo', '1200', '800');
-        $fancybox->render(false, null, false);
+        $glightbox = new GLightbox('.fancybox_demo', '1200', '800', true);
+        $glightbox->render(false, false, false);
 
         $reload = $this->reload ? "location.reload();" : '';
 
@@ -2020,8 +2020,8 @@ class TadUpFiles
         $autoPlay  = empty($playSpeed) ? false : true;
 
         if ($this->showFancyBox) {
-            $fancybox = new FancyBox(".fancybox_{$this->col_name}", '1920', '1080');
-            $all_files .= ($show_mode === 'file_text_url' or $show_mode === 'file_url') ? '' : $fancybox->render(false, null, $autoPlay, $playSpeed);
+            $glightbox = new GLightbox(".fancybox_{$this->col_name}", '1920', '1080');
+            $all_files .= ($show_mode === 'file_text_url' or $show_mode === 'file_url') ? '' : $glightbox->render(false, false, $autoPlay, $playSpeed);
         }
 
         $file_arr = $this->get_file(null, $limit, $path, $hash, $desc_as_name, $keyword, $only_keyword, $target);

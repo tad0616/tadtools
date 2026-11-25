@@ -1,7 +1,7 @@
 TadTools 4.0.9 (Released 2026-11-25)
 ====================================
 1. Added drag-and-drop column reordering option to BootstrapTable (bundled dragtable 2.0.15 with jQuery 4 compatibility)
-2. Added new GLightbox component (v3.3.1, MIT license) with FancyBox-compatible API/styling and built-in accessibility support
+2. Added new GLightbox component (v3.3.1, MIT license) with FancyBox-compatible API/styling and built-in accessibility support, and migrated TadUpFiles to use GLightbox
 3. Fixed Bootstrap 4/5 two-column layouts (theme_type_1 ~ theme_type_4) not recalculating cb_width based on sidebar width
 4. Fixed Utility::rrmdir() failing to remove directories in PHP 8
 5. Added uploaded file extension validation in TadUpFiles to improve upload security
