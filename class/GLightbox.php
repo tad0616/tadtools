@@ -134,9 +134,9 @@ class GLightbox
     private function addAssetsToTheme($xoTheme)
     {
         $xoTheme->addStylesheet('modules/tadtools/glightbox/css/glightbox.min.css?v=3.3.1');
-        $xoTheme->addStylesheet('modules/tadtools/glightbox/css/glightbox-fancybox.css?v=1.0.2');
+        $xoTheme->addStylesheet('modules/tadtools/glightbox/css/glightbox-fancybox.css?v=1.0.3');
         $xoTheme->addScript('modules/tadtools/glightbox/js/glightbox.min.js?v=3.3.1');
-        $xoTheme->addScript('modules/tadtools/glightbox/js/glightbox-adapter.js?v=1.0.2');
+        $xoTheme->addScript('modules/tadtools/glightbox/js/glightbox-adapter.js?v=1.0.3');
     }
 
     private function getAssetsHtml()
@@ -144,9 +144,9 @@ class GLightbox
         $base = XOOPS_URL . '/modules/tadtools/glightbox';
 
         return "<link rel='stylesheet' href='{$base}/css/glightbox.min.css?v=3.3.1' type='text/css' media='screen' />
-        <link rel='stylesheet' href='{$base}/css/glightbox-fancybox.css?v=1.0.2' type='text/css' media='screen' />
+        <link rel='stylesheet' href='{$base}/css/glightbox-fancybox.css?v=1.0.3' type='text/css' media='screen' />
         <script type='text/javascript' src='{$base}/js/glightbox.min.js?v=3.3.1'></script>
-        <script type='text/javascript' src='{$base}/js/glightbox-adapter.js?v=1.0.2'></script>";
+        <script type='text/javascript' src='{$base}/js/glightbox-adapter.js?v=1.0.3'></script>";
     }
 }
 

@@ -102,7 +102,7 @@
         var children = document.body.children;
         for (var i = 0; i < children.length; i++) {
             var node = children[i];
-            if (node === modal || node.id === 'glightbox-body') {
+            if (node === modal || node.id === 'glightbox-body' || node.id === 'glightbox-aria-live') {
                 continue;
             }
             hiddenBodyNodes.push({
@@ -110,6 +110,85 @@
                 prev: node.getAttribute('aria-hidden')
             });
             node.setAttribute('aria-hidden', 'true');
+        }
+    }
+
+    function ensureAriaLiveRegion() {
+        var announcer = document.getElementById('glightbox-aria-live');
+        if (!announcer) {
+            announcer = document.createElement('div');
+            announcer.id = 'glightbox-aria-live';
+            announcer.setAttribute('role', 'status');
+            announcer.setAttribute('aria-live', 'polite');
+            announcer.setAttribute('aria-atomic', 'true');
+            announcer.style.position = 'absolute';
+            announcer.style.width = '1px';
+            announcer.style.height = '1px';
+            announcer.style.overflow = 'hidden';
+            announcer.style.clip = 'rect(0, 0, 0, 0)';
+            announcer.style.whiteSpace = 'nowrap';
+            announcer.style.border = '0';
+            announcer.style.margin = '-1px';
+            announcer.style.padding = '0';
+            document.body.appendChild(announcer);
+        }
+        return announcer;
+    }
+
+    function removeAriaLiveRegion() {
+        var announcer = document.getElementById('glightbox-aria-live');
+        if (announcer && announcer.parentNode) {
+            announcer.parentNode.removeChild(announcer);
+        }
+    }
+
+    var lastAnnouncedKey = '';
+    var lastAnnouncedAt = 0;
+
+    function announceToScreenReader(announcement, index) {
+        if (!announcement) {
+            return;
+        }
+        var modal = document.getElementById('glightbox-body');
+        if (modal) {
+            modal.setAttribute('aria-label', announcement);
+        }
+        var now = Date.now();
+        var key = String(index) + ':' + announcement;
+        if (key === lastAnnouncedKey && now - lastAnnouncedAt < 350) {
+            return;
+        }
+        lastAnnouncedKey = key;
+        lastAnnouncedAt = now;
+
+        var announcer = ensureAriaLiveRegion();
+        announcer.textContent = '';
+        window.setTimeout(function () {
+            var currentAnnouncer = document.getElementById('glightbox-aria-live');
+            if (currentAnnouncer) {
+                currentAnnouncer.textContent = announcement;
+            }
+        }, 50);
+    }
+
+    function focusInitialModalElement() {
+        var modal = document.getElementById('glightbox-body');
+        if (!modal) {
+            return;
+        }
+        var closeBtn = modal.querySelector('.gclose');
+        if (closeBtn && window.getComputedStyle(closeBtn).display !== 'none') {
+            closeBtn.focus();
+            return;
+        }
+        var firstFocusable = modal.querySelector(
+            'a[href], button:not([disabled]), [tabindex]:not([tabindex^="-"])'
+        );
+        if (firstFocusable) {
+            firstFocusable.focus();
+        } else {
+            modal.setAttribute('tabindex', '-1');
+            modal.focus();
         }
     }
 
@@ -293,7 +372,7 @@
         var slideConfig = current.slideConfig || {};
         var slideType = (slideConfig.type || '').toLowerCase();
 
-        // Sync data-alt to displayed image alt attribute
+        // Sync alt attribute to displayed image (data-alt -> img[alt] -> title -> aria-label)
         if (slideNode && triggerEl) {
             var altText = triggerEl.getAttribute('data-alt') || '';
             if (!altText) {
@@ -302,6 +381,14 @@
                     altText = innerImg.getAttribute('alt') || '';
                 }
             }
+            if (!altText) {
+                altText = (triggerEl.getAttribute('title') || '').replace(/<[^>]*>/g, '');
+            }
+            if (!altText) {
+                var triggerAria = triggerEl.getAttribute('aria-label') || '';
+                altText = triggerAria.replace(/^於彈跳視窗觀看：/, '');
+            }
+            altText = (altText || '').trim();
             var shownImg = slideNode.querySelector('.gslide-image img');
             if (shownImg && altText) {
                 shownImg.setAttribute('alt', altText);
@@ -313,6 +400,14 @@
             scheduleFitImageSlide(slideNode);
         }
 
+        var total = instance && instance.elements ? instance.elements.length : 0;
+        var index = typeof current.index === 'number' ? current.index : 0;
+
+        // Update dialog aria-label & aria-live announcement for screen readers (NVDA / VoiceOver)
+        var label = extractSpeakText(triggerEl, index, 0).replace(/<[^>]*>/g, '').trim() || '圖片';
+        var announcement = total > 1 ? label + '，第' + (index + 1) + '張，共' + total + '張' : label;
+        announceToScreenReader(announcement, index);
+
         // Skip speech for iframe / external / inline / ajax slides
         if (config.speech === false) {
             return;
@@ -321,8 +416,6 @@
             return;
         }
 
-        var total = instance && instance.elements ? instance.elements.length : 0;
-        var index = typeof current.index === 'number' ? current.index : 0;
         var speakText = extractSpeakText(triggerEl, index, total);
         speakImageDescription(speakText, index);
     }
@@ -332,8 +425,10 @@
             activeInstance = instance;
             lastActiveElement = document.activeElement;
             localizeModalControls();
+            ensureAriaLiveRegion();
             applyAriaHiddenBackground();
             enableFocusTrap();
+            window.setTimeout(focusInitialModalElement, 60);
 
             if (activeResizeHandler) {
                 window.removeEventListener('resize', activeResizeHandler);
@@ -391,6 +486,7 @@
             stopAutoPlay();
             disableFocusTrap();
             restoreAriaHiddenBackground();
+            removeAriaLiveRegion();
             if (activeResizeHandler) {
                 window.removeEventListener('resize', activeResizeHandler);
                 activeResizeHandler = null;

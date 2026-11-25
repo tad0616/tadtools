@@ -21,6 +21,12 @@
     align-items: center;
 }
 
+/* 外部 iframe 與 inline 內容沒有固有寬度，需撐滿至 GLightbox 設定的 max-width */
+.glightbox-container.glightbox-fancybox2 .ginner-container:has(.gslide-external),
+.glightbox-container.glightbox-fancybox2 .ginner-container:has(.gslide-inline) {
+    width: 100%;
+}
+
 .glightbox-container.glightbox-fancybox2 .gslide-media {
     background: #f9f9f9;
     padding: 0.9375rem;
