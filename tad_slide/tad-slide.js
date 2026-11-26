@@ -1,5 +1,5 @@
 /*!
- * tad-slide.js v1.1.0
+ * tad-slide.js v1.2.0
  * WCAG 2.3 AAA Compliant Responsive Carousel
  * navMode: 'bottom' | 'sides' | 'none'
  */
@@ -39,6 +39,8 @@
     playLabel: '播放輪播',
     prevLabel: '上一張投影片',
     nextLabel: '下一張投影片',
+    pausedMsg: '輪播已暫停',
+    playingMsg: '輪播已開始播放',
 
     /* 回呼 */
     before: null,
@@ -96,6 +98,13 @@
         el.setAttribute('aria-label', '圖片輪播');
       }
 
+      /* 投影片清單 id：供上一張／下一張／分頁點的 aria-controls 指向 */
+      const list = el.querySelector('.tad-slide__list');
+      if (list) {
+        if (!list.id) list.id = 'tad-slide-list-' + (++TadSlide._uid);
+        this._listId = list.id;
+      }
+
       /* 投影片 ARIA */
       this.items.forEach((item, i) => {
         item.setAttribute('role', 'group');
@@ -112,10 +121,11 @@
       el.classList.add(`tad-slide--nav-${opts.navMode}`);
 
       /* 建立各元件 */
+      /* live region 需在內容變動前就存在於 DOM，螢幕閱讀器才會播報 */
+      if (opts.announceSlide) this._buildLiveRegion();
       this._buildProgress();
       this._buildNav();
       this._updateNavLabels(0);
-      if (opts.announceSlide) this._buildLiveRegion();
 
       /* 事件 */
       if (opts.pauseOnHover) {
@@ -183,7 +193,7 @@
       /* ── 暫停按鈕：獨立插入容器最頂部，焦點第一順位 ── */
       this._pauseBtn = this._makeBtn(opts.pauseText, 'tad-slide__btn tad-slide__pause', opts.pauseLabel);
       this._pauseBtn.setAttribute('data-playing', 'true');
-      this._pauseBtn.addEventListener('click', () => this._togglePause());
+      this._pauseBtn.addEventListener('click', () => this._togglePause(true));
       this.el.insertBefore(this._pauseBtn, this.el.firstChild);
 
       /* ── 下方控制列（進度條之後插入）：上一張 → 下一張 → 分頁點 ── */
@@ -208,14 +218,16 @@
       if (opts.pager) {
         const pagerList = document.createElement('ul');
         pagerList.className = 'tad-slide__pager';
-        pagerList.setAttribute('role', 'tablist');
+        /* 分頁點使用一般按鈕 + aria-current 表示目前張數
+           （未搭配 tabpanel 時不使用 tablist/tab 角色，避免語意錯誤） */
         pagerList.setAttribute('aria-label', '投影片選擇');
 
         this._pagerBtns = this.items.map((_, i) => {
           const li = document.createElement('li');
-          li.setAttribute('role', 'presentation');
-          const btn = this._makeBtn('', 'tad-slide__pager-btn', `第 ${i + 1} 張投影片`);
-          btn.setAttribute('role', 'tab');
+          const desc = this._getSlideLabel(i);
+          const label = `第 ${i + 1} 張投影片` + (desc ? `：${desc}` : '');
+          const btn = this._makeBtn('', 'tad-slide__pager-btn', label);
+          if (this._listId) btn.setAttribute('aria-controls', this._listId);
           btn.setAttribute('aria-current', i === 0 ? 'true' : 'false');
           btn.addEventListener('click', () => {
             this._isManual = true;
@@ -245,7 +257,7 @@
        */
       this._pauseBtn = this._makeBtn(opts.pauseText, 'tad-slide__btn tad-slide__pause-float', opts.pauseLabel);
       this._pauseBtn.setAttribute('data-playing', 'true');
-      this._pauseBtn.addEventListener('click', () => this._togglePause());
+      this._pauseBtn.addEventListener('click', () => this._togglePause(true));
       this.el.insertBefore(this._pauseBtn, list);
 
       /* 左箭頭（圖片之後） */
@@ -271,7 +283,7 @@
        */
       this._pauseBtn = this._makeBtn(opts.pauseText, 'tad-slide__btn tad-slide__pause-float', opts.pauseLabel);
       this._pauseBtn.setAttribute('data-playing', 'true');
-      this._pauseBtn.addEventListener('click', () => this._togglePause());
+      this._pauseBtn.addEventListener('click', () => this._togglePause(true));
       this.el.insertBefore(this._pauseBtn, list);
     }
 
@@ -309,17 +321,31 @@
       ──────────────────────────────────────── */
     _buildLiveRegion() {
       this._liveRegion = document.createElement('div');
-      this._liveRegion.className = 'tad-sr-only';
+      this._liveRegion.className = 'tad-sr-only tad-slide__live';
+      this._liveRegion.setAttribute('role', 'status');
       this._liveRegion.setAttribute('aria-live', 'polite');
       this._liveRegion.setAttribute('aria-atomic', 'true');
       this.el.appendChild(this._liveRegion);
+    }
+
+    /* 透過 live region 播報訊息（先清空再寫入，確保相同文字也會重新播報） */
+    _announce(msg) {
+      if (!this._liveRegion) return;
+      clearTimeout(this._announceTimer);
+      this._liveRegion.textContent = '';
+      if (msg) {
+        this._announceTimer = setTimeout(() => { this._liveRegion.textContent = msg; }, 50);
+      }
     }
 
     /* ────────────────────────────────────────
        切換投影片
        ──────────────────────────────────────── */
     goTo(index) {
-      if (index === this.current || this.running) return;
+      if (index === this.current || this.running) {
+        this._isManual = false;
+        return;
+      }
 
       const opts = this.opts;
       const prev = this.current;
@@ -372,10 +398,14 @@
           msg = msg ? msg + '，' + captionText : captionText;
         }
 
-        this._liveRegion.textContent = '';
-        if (msg) {
-          setTimeout(() => { this._liveRegion.textContent = msg; }, 50);
+        /* 純文字投影片（無圖片、連結、caption）時，改用投影片文字內容 */
+        if (!msg) {
+          msg = (nextItem.textContent || '').replace(/\s+/g, ' ').trim();
         }
+
+        /* 一併播報切換狀態：目前張數／總張數 */
+        const status = `第 ${next + 1} 張，共 ${this.total} 張`;
+        this._announce(msg ? `${status}：${msg}` : status);
       }
       this._isManual = false;
 
@@ -427,7 +457,8 @@
         if (text) return text;
       }
 
-      return '';
+      // ④ 純文字投影片：使用投影片本身的文字內容
+      return (item.textContent || '').replace(/\s+/g, ' ').trim();
     }
 
     /* 更新上一張 / 下一張按鈕的 aria-label。
@@ -436,12 +467,12 @@
        就預先朗讀圖片內容，造成使用者觸發按鈕後聽到兩次相同資訊的混淆。
        圖片資訊只在切換完成後透過 live region 播報一次。 */
     _updateNavLabels(current) {
-      if (this._prevBtn) {
-        this._prevBtn.setAttribute('aria-label', this.opts.prevLabel);
-      }
-      if (this._nextBtn) {
-        this._nextBtn.setAttribute('aria-label', this.opts.nextLabel);
-      }
+      [[this._prevBtn, this.opts.prevLabel], [this._nextBtn, this.opts.nextLabel]].forEach(([btn, label]) => {
+        if (!btn) return;
+        btn.setAttribute('aria-label', label);
+        /* 指出此按鈕控制的投影片區域 */
+        if (this._listId) btn.setAttribute('aria-controls', this._listId);
+      });
     }
 
     /* ────────────────────────────────────────
@@ -465,8 +496,10 @@
       this._updatePauseBtn();
     }
 
-    _togglePause() {
+    /* @param {boolean} announce 使用者手動操作時，播報播放／暫停狀態 */
+    _togglePause(announce = false) {
       this.paused ? this.play() : this.pause();
+      if (announce) this._announce(this.paused ? this.opts.pausedMsg : this.opts.playingMsg);
     }
 
     _updatePauseBtn() {
@@ -514,14 +547,16 @@
         case ' ':
           if (onPauseBtn) break;
           e.preventDefault();
-          this._togglePause();
+          this._togglePause(true);
           break;
         case 'Home':
           e.preventDefault();
+          this._isManual = true;
           this.goTo(0);
           break;
         case 'End':
           e.preventDefault();
+          this._isManual = true;
           this.goTo(this.total - 1);
           break;
       }
@@ -572,6 +607,7 @@
        ──────────────────────────────────────── */
     destroy() {
       this.pause();
+      clearTimeout(this._announceTimer);
       [this._bar, this._prevBtn, this._nextBtn, this._pauseBtn,
       this._progressBar, this._liveRegion].forEach(el => el?.remove());
       if (this._pagerBtns) this._pagerBtns.forEach(b => b.closest('li')?.remove());
@@ -590,6 +626,9 @@
       );
     }
   } // end class TadSlide
+
+  /* 自動產生 id 用的流水號 */
+  TadSlide._uid = 0;
 
   /* ============================================
      工廠函式

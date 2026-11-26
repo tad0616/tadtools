@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tad-slide v1.1 — 使用說明文件</title>
+    <title>tad-slide v1.2 — 使用說明文件</title>
     <style>
       /* ══════════════════════════════════════════
        tad-slide.css
@@ -1092,7 +1092,7 @@
           <li><a href="#section-wcag">無障礙</a></li>
         </ul>
       </nav>
-      <span class="doc-header__badge">v1.1.0</span>
+      <span class="doc-header__badge">v1.2.0</span>
     </header>
 
     <div class="doc-layout">
@@ -1856,6 +1856,8 @@
   <span class="tok-attr">playLabel</span>     : <span class="tok-string">'播放輪播'</span>,   <span class="tok-comment">// 暫停按鈕 aria-label（已暫停）</span>
   <span class="tok-attr">prevLabel</span>     : <span class="tok-string">'上一張投影片'</span>, <span class="tok-comment">// 上一張按鈕 aria-label</span>
   <span class="tok-attr">nextLabel</span>     : <span class="tok-string">'下一張投影片'</span>, <span class="tok-comment">// 下一張按鈕 aria-label</span>
+  <span class="tok-attr">pausedMsg</span>     : <span class="tok-string">'輪播已暫停'</span>,   <span class="tok-comment">// 手動暫停時播報的訊息</span>
+  <span class="tok-attr">playingMsg</span>    : <span class="tok-string">'輪播已開始播放'</span>, <span class="tok-comment">// 手動播放時播報的訊息</span>
 
   <span class="tok-comment">// ── 無障礙 ────────────────────────────────────</span>
   <span class="tok-attr">announceSlide</span> : <span class="tok-keyword">true</span>,        <span class="tok-comment">// 切換時透過 Live Region 通知螢幕閱讀器</span>
@@ -1991,6 +1993,18 @@
                   <td class="opt-type">String</td>
                   <td class="opt-default">'下一張投影片'</td>
                   <td>下一張按鈕的 <code>aria-label</code></td>
+                </tr>
+                <tr>
+                  <td class="opt-name">pausedMsg</td>
+                  <td class="opt-type">String</td>
+                  <td class="opt-default">'輪播已暫停'</td>
+                  <td>使用者手動暫停時，透過 Live Region 播報的訊息</td>
+                </tr>
+                <tr>
+                  <td class="opt-name">playingMsg</td>
+                  <td class="opt-type">String</td>
+                  <td class="opt-default">'輪播已開始播放'</td>
+                  <td>使用者手動恢復播放時，透過 Live Region 播報的訊息</td>
                 </tr>
                 <tr>
                   <td class="opt-name">before</td>
@@ -2288,17 +2302,20 @@ sliders[<span class="tok-number">1</span>].<span class="tok-fn">goTo</span>(<spa
               <span class="wcag-tag wcag-tag--aa">4.1.2 A</span>
               <div>
                 <strong>名稱、角色、值</strong> — 暫停按鈕使用
-                <code>aria-pressed</code> 表達狀態；分頁點使用
-                <code>aria-current</code>；隱藏投影片設定
+                <code>aria-pressed</code> 表達狀態；上一張、下一張與分頁點皆為
+                <code>&lt;button&gt;</code>，並以 <code>aria-controls</code>
+                指向投影片區域；分頁點名稱含該張內容（如「第 3 張投影片：運動會」），目前張數以
+                <code>aria-current="true"</code> 標示；隱藏投影片設定
                 <code>aria-hidden="true"</code>。
               </div>
             </li>
             <li>
               <span class="wcag-tag wcag-tag--aa">4.1.3 AA</span>
               <div>
-                <strong>狀態訊息</strong> — 每次切換透過
-                <code>aria-live="polite"</code> Live Region 向螢幕閱讀器播報「第
-                N 張，共 M 張：說明文字」。
+                <strong>狀態訊息</strong> —
+                以上一張、下一張、分頁點、方向鍵、Home／End 或觸控滑動切換時，透過
+                <code>role="status"</code>、<code>aria-live="polite"</code>
+                Live Region 向螢幕閱讀器播報「第 N 張，共 M 張：說明文字」（純文字投影片播報其文字內容）；手動暫停／播放時播報「輪播已暫停」／「輪播已開始播放」。自動輪播時不主動播報，避免干擾。
               </div>
             </li>
           </ul>
@@ -2320,7 +2337,7 @@ sliders[<span class="tok-number">1</span>].<span class="tok-fn">goTo</span>(<spa
     <!-- 頁尾 -->
     <footer class="doc-footer" role="contentinfo">
       <p>
-        tad-slide v1.1.0 &nbsp;·&nbsp; Vanilla JS &nbsp;·&nbsp; WCAG 2.3 AAA
+        tad-slide v1.2.0 &nbsp;·&nbsp; Vanilla JS &nbsp;·&nbsp; WCAG 2.3 AAA
         &nbsp;·&nbsp; MIT License
       </p>
     </footer>
@@ -2330,7 +2347,7 @@ sliders[<span class="tok-number">1</span>].<span class="tok-fn">goTo</span>(<spa
      ══════════════════════════════════════════ -->
     <script>
       /*!
-       * tad-slide.js v1.1.0
+       * tad-slide.js v1.2.0
        * WCAG 2.3 AAA Compliant Responsive Carousel
        * navMode: 'bottom' | 'sides' | 'none'
        * Single-slide: auto static mode
@@ -2357,6 +2374,8 @@ sliders[<span class="tok-number">1</span>].<span class="tok-fn">goTo</span>(<spa
           playLabel: "播放輪播",
           prevLabel: "上一張投影片",
           nextLabel: "下一張投影片",
+          pausedMsg: "輪播已暫停",
+          playingMsg: "輪播已開始播放",
           before: null,
           after: null,
         };
@@ -2371,6 +2390,7 @@ sliders[<span class="tok-number">1</span>].<span class="tok-fn">goTo</span>(<spa
             this.timer = null;
             this.running = false;
             this.paused = false;
+            this._isManual = false;
             this._init();
           }
 
@@ -2400,6 +2420,13 @@ sliders[<span class="tok-number">1</span>].<span class="tok-fn">goTo</span>(<spa
               el.setAttribute("aria-label", "圖片輪播");
             }
 
+            /* 投影片清單 id：供上一張／下一張／分頁點的 aria-controls 指向 */
+            const list = el.querySelector(".tad-slide__list");
+            if (list) {
+              if (!list.id) list.id = "tad-slide-list-" + ++TadSlide._uid;
+              this._listId = list.id;
+            }
+
             this.items.forEach((item, i) => {
               item.setAttribute("role", "group");
               item.setAttribute("aria-roledescription", "slide");
@@ -2413,9 +2440,11 @@ sliders[<span class="tok-number">1</span>].<span class="tok-fn">goTo</span>(<spa
 
             el.classList.add(`tad-slide--nav-${opts.navMode}`);
 
+            /* live region 需在內容變動前就存在於 DOM，螢幕閱讀器才會播報 */
+            if (opts.announceSlide) this._buildLiveRegion();
             this._buildProgress();
             this._buildNav();
-            if (opts.announceSlide) this._buildLiveRegion();
+            this._setControls();
 
             if (opts.pauseOnHover) {
               el.addEventListener("mouseenter", () => this._hoverPause(true));
@@ -2467,26 +2496,27 @@ sliders[<span class="tok-number">1</span>].<span class="tok-fn">goTo</span>(<spa
                 "tad-slide__btn tad-slide__arrow--prev",
                 opts.prevLabel,
               );
-              this._prevBtn.addEventListener("click", () => this.prev());
+              this._prevBtn.addEventListener("click", () => this.prev(true));
               bar.appendChild(this._prevBtn);
             }
 
             if (opts.pager) {
               const pagerList = document.createElement("ul");
               pagerList.className = "tad-slide__pager";
-              pagerList.setAttribute("role", "tablist");
+              /* 分頁點使用一般按鈕 + aria-current 表示目前張數
+                 （未搭配 tabpanel 時不使用 tablist/tab 角色，避免語意錯誤） */
               pagerList.setAttribute("aria-label", "投影片選擇");
               this._pagerBtns = this.items.map((_, i) => {
                 const li = document.createElement("li");
-                li.setAttribute("role", "presentation");
+                const desc = this._getSlideLabel(i);
                 const btn = this._makeBtn(
                   "",
                   "tad-slide__pager-btn",
-                  `第 ${i + 1} 張投影片`,
+                  `第 ${i + 1} 張投影片` + (desc ? `：${desc}` : ""),
                 );
-                btn.setAttribute("role", "tab");
                 btn.setAttribute("aria-current", i === 0 ? "true" : "false");
                 btn.addEventListener("click", () => {
+                  this._isManual = true;
                   this.goTo(i);
                   this.items[i].setAttribute("tabindex", "-1");
                   this.items[i].focus({ preventScroll: true });
@@ -2504,7 +2534,7 @@ sliders[<span class="tok-number">1</span>].<span class="tok-fn">goTo</span>(<spa
                 "tad-slide__btn tad-slide__arrow--next",
                 opts.nextLabel,
               );
-              this._nextBtn.addEventListener("click", () => this.next());
+              this._nextBtn.addEventListener("click", () => this.next(true));
               bar.appendChild(this._nextBtn);
             }
 
@@ -2514,7 +2544,7 @@ sliders[<span class="tok-number">1</span>].<span class="tok-fn">goTo</span>(<spa
               opts.pauseLabel,
             );
             this._pauseBtn.setAttribute("aria-pressed", "true");
-            this._pauseBtn.addEventListener("click", () => this._togglePause());
+            this._pauseBtn.addEventListener("click", () => this._togglePause(true));
             bar.appendChild(this._pauseBtn);
 
             this.el.appendChild(bar);
@@ -2536,7 +2566,7 @@ sliders[<span class="tok-number">1</span>].<span class="tok-fn">goTo</span>(<spa
               opts.pauseLabel,
             );
             this._pauseBtn.setAttribute("aria-pressed", "true");
-            this._pauseBtn.addEventListener("click", () => this._togglePause());
+            this._pauseBtn.addEventListener("click", () => this._togglePause(true));
             this.el.insertBefore(this._pauseBtn, list);
 
             /* 左箭頭（圖片之後） */
@@ -2545,7 +2575,7 @@ sliders[<span class="tok-number">1</span>].<span class="tok-fn">goTo</span>(<spa
               "tad-slide__btn tad-slide__arrow tad-slide__arrow--prev",
               opts.prevLabel,
             );
-            this._prevBtn.addEventListener("click", () => this.prev());
+            this._prevBtn.addEventListener("click", () => this.prev(true));
             this.el.appendChild(this._prevBtn);
 
             /* 右箭頭（左箭頭之後） */
@@ -2554,7 +2584,7 @@ sliders[<span class="tok-number">1</span>].<span class="tok-fn">goTo</span>(<spa
               "tad-slide__btn tad-slide__arrow tad-slide__arrow--next",
               opts.nextLabel,
             );
-            this._nextBtn.addEventListener("click", () => this.next());
+            this._nextBtn.addEventListener("click", () => this.next(true));
             this.el.appendChild(this._nextBtn);
           }
 
@@ -2573,7 +2603,7 @@ sliders[<span class="tok-number">1</span>].<span class="tok-fn">goTo</span>(<spa
               opts.pauseLabel,
             );
             this._pauseBtn.setAttribute("aria-pressed", "true");
-            this._pauseBtn.addEventListener("click", () => this._togglePause());
+            this._pauseBtn.addEventListener("click", () => this._togglePause(true));
             this.el.insertBefore(this._pauseBtn, list);
           }
 
@@ -2606,15 +2636,57 @@ sliders[<span class="tok-number">1</span>].<span class="tok-fn">goTo</span>(<spa
           /* ── Live Region ── */
           _buildLiveRegion() {
             this._liveRegion = document.createElement("div");
-            this._liveRegion.className = "tad-sr-only";
+            this._liveRegion.className = "tad-sr-only tad-slide__live";
+            this._liveRegion.setAttribute("role", "status");
             this._liveRegion.setAttribute("aria-live", "polite");
             this._liveRegion.setAttribute("aria-atomic", "true");
             this.el.appendChild(this._liveRegion);
           }
 
+          /* 透過 live region 播報訊息（先清空再寫入，確保相同文字也會重新播報） */
+          _announce(msg) {
+            if (!this._liveRegion) return;
+            clearTimeout(this._announceTimer);
+            this._liveRegion.textContent = "";
+            if (msg) {
+              this._announceTimer = setTimeout(() => {
+                this._liveRegion.textContent = msg;
+              }, 50);
+            }
+          }
+
+          /* 上一張／下一張按鈕指向其控制的投影片區域 */
+          _setControls() {
+            if (!this._listId) return;
+            [this._prevBtn, this._nextBtn, ...(this._pagerBtns || [])].forEach(
+              (btn) => btn && btn.setAttribute("aria-controls", this._listId),
+            );
+          }
+
+          /* 取得投影片描述：圖片 alt → 連結 aria-label/title → caption → 文字內容 */
+          _getSlideLabel(index) {
+            const item = this.items[index];
+            if (!item) return "";
+            const img = item.querySelector("img");
+            const alt = img ? (img.getAttribute("alt") || "").trim() : "";
+            if (alt) return alt;
+            const link = item.querySelector("a");
+            const linkLabel = link
+              ? (link.getAttribute("aria-label") || link.getAttribute("title") || "").trim()
+              : "";
+            if (linkLabel) return linkLabel;
+            const caption = item.querySelector(".tad-slide__caption");
+            const captionText = caption ? caption.textContent.trim() : "";
+            if (captionText) return captionText;
+            return (item.textContent || "").replace(/\s+/g, " ").trim();
+          }
+
           /* ── 切換投影片 ── */
           goTo(index) {
-            if (index === this.current || this.running) return;
+            if (index === this.current || this.running) {
+              this._isManual = false;
+              return;
+            }
             const opts = this.opts;
             const prev = this.current;
             const next = (index + this.total) % this.total;
@@ -2638,16 +2710,13 @@ sliders[<span class="tok-number">1</span>].<span class="tok-fn">goTo</span>(<spa
               this._pagerBtns[next].setAttribute("aria-current", "true");
             }
 
-            if (this._liveRegion) {
-              const caption = nextItem.querySelector(".tad-slide__caption");
-              const msg = caption
-                ? `第 ${next + 1} 張，共 ${this.total} 張：${caption.textContent.trim()}`
-                : `第 ${next + 1} 張，共 ${this.total} 張`;
-              this._liveRegion.textContent = "";
-              setTimeout(() => {
-                this._liveRegion.textContent = msg;
-              }, 50);
+            /* 使用者手動切換時，播報切換狀態與內容；自動輪播時不播報，避免干擾 */
+            if (this._liveRegion && this._isManual) {
+              const desc = this._getSlideLabel(next);
+              const status = `第 ${next + 1} 張，共 ${this.total} 張`;
+              this._announce(desc ? `${status}：${desc}` : status);
             }
+            this._isManual = false;
 
             setTimeout(() => {
               prevItem.classList.remove("is-prev");
@@ -2657,10 +2726,12 @@ sliders[<span class="tok-number">1</span>].<span class="tok-fn">goTo</span>(<spa
             }, opts.speed + 50);
           }
 
-          next() {
+          next(manual = false) {
+            if (manual) this._isManual = true;
             this.goTo(this.current + 1);
           }
-          prev() {
+          prev(manual = false) {
+            if (manual) this._isManual = true;
             this.goTo(this.current - 1);
           }
 
@@ -2683,8 +2754,14 @@ sliders[<span class="tok-number">1</span>].<span class="tok-fn">goTo</span>(<spa
             this._updatePauseBtn();
           }
 
-          _togglePause() {
+          /* announce：使用者手動操作時，播報播放／暫停狀態 */
+          _togglePause(announce = false) {
             this.paused ? this.play() : this.pause();
+            if (announce) {
+              this._announce(
+                this.paused ? this.opts.pausedMsg : this.opts.playingMsg,
+              );
+            }
           }
 
           _updatePauseBtn() {
@@ -2718,24 +2795,26 @@ sliders[<span class="tok-number">1</span>].<span class="tok-fn">goTo</span>(<spa
               case "ArrowLeft":
               case "ArrowUp":
                 e.preventDefault();
-                this.prev();
+                this.prev(true);
                 break;
               case "ArrowRight":
               case "ArrowDown":
                 e.preventDefault();
-                this.next();
+                this.next(true);
                 break;
               case " ":
                 if (onPauseBtn) break;
                 e.preventDefault();
-                this._togglePause();
+                this._togglePause(true);
                 break;
               case "Home":
                 e.preventDefault();
+                this._isManual = true;
                 this.goTo(0);
                 break;
               case "End":
                 e.preventDefault();
+                this._isManual = true;
                 this.goTo(this.total - 1);
                 break;
             }
@@ -2759,7 +2838,7 @@ sliders[<span class="tok-number">1</span>].<span class="tok-fn">goTo</span>(<spa
                 const dx = e.changedTouches[0].clientX - startX;
                 const dy = e.changedTouches[0].clientY - startY;
                 if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
-                  dx < 0 ? this.next() : this.prev();
+                  dx < 0 ? this.next(true) : this.prev(true);
                 }
               },
               { passive: true },
@@ -2788,6 +2867,7 @@ sliders[<span class="tok-number">1</span>].<span class="tok-fn">goTo</span>(<spa
           /* ── 銷毀 ── */
           destroy() {
             this.pause();
+            clearTimeout(this._announceTimer);
             [
               this._bar,
               this._prevBtn,
@@ -2815,6 +2895,9 @@ sliders[<span class="tok-number">1</span>].<span class="tok-fn">goTo</span>(<spa
             );
           }
         }
+
+        /* 自動產生 id 用的流水號 */
+        TadSlide._uid = 0;
 
         /* ── 工廠函式 ── */
         function tadSlide(selector, options) {

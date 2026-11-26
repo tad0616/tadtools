@@ -6,7 +6,7 @@ $modversion = [];
 global $xoopsConfig;
 
 $modversion['name']           = _MI_TADTOOLS_NAME;
-$modversion['version']        = $_SESSION['xoops_version'] >= 20511 ? '4.0.9-Stable' : '4.09';
+$modversion['version']        = $_SESSION['xoops_version'] >= 20511 ? '4.1.0-Stable' : '4.10';
 $modversion['description']    = _MI_TADTOOLS_DESC;
 $modversion['author']         = 'Tad (tad0616@gmail.com)';
 $modversion['credits']        = '';
