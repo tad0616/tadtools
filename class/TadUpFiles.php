@@ -538,6 +538,10 @@ class TadUpFiles
                 foreach ($all as $k => $v) {
                     $$k = $v;
                 }
+                $_SESSION['tadupfiles_acl'][$this->TadUpFilesTblName][(int) $files_sn] = true;
+                if ($this->allow_guest) {
+                    $_SESSION['tadupfiles_guest_acl'][$this->TadUpFilesTblName][(int) $files_sn] = true;
+                }
                 $show_file_name = $$filename_col;
 
                 //以uid取得使用者名稱
@@ -697,6 +701,7 @@ class TadUpFiles
         if (empty($all_file)) {
             return;
         }
+        $_SESSION['tadupfiles_sort_acl'][$this->TadUpFilesTblName]["{$this->col_name}:{$this->col_sn}"] = true;
 
         $fancybox = new FancyBox('.fancybox_demo', '1200', '800');
         $fancybox->render(false, null, false);
@@ -1610,7 +1615,7 @@ class TadUpFiles
             foreach ($all as $k => $v) {
                 $$k = $v;
             }
-            if ($isAdmin or $uid == $my_uid or empty($uid) or $force) {
+            if ($isAdmin or ($my_uid > 0 && (int) $uid === (int) $my_uid) or ($this->allow_guest && empty($uid)) or $force) {
                 $this->set_col($col_name, $col_sn, $sort);
 
                 if (!empty($trash_can_table)) {

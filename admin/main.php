@@ -35,7 +35,8 @@ function tadtools_setup()
         $themes[$i]['theme_name'] = $theme;
 
         if (file_exists(XOOPS_ROOT_PATH . "/themes/{$theme}/config.php")) {
-            $theme_kind = '';
+            $theme_kind  = '';
+            $theme_color = 'bootstrap5';
             require_once XOOPS_ROOT_PATH . "/themes/{$theme}/config.php";
             if (!empty($theme_kind)) {
                 if (empty($tt_theme_kind_arr[$theme]) or 0 === $theme_change) {
