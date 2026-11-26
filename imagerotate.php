@@ -13,11 +13,33 @@ $op         = Request::getString('op');
 $subdir     = Request::getString('subdir');
 $image_dir  = Request::getString('image_dir');
 $thumbs_dir = Request::getString('thumbs_dir');
-$filename   = Request::getString('filename');
+$filename   = basename(Request::getString('filename'));
 $type       = Request::getString('type');
 
-$pic   = XOOPS_ROOT_PATH . "/uploads/{$subdir}{$image_dir}/{$filename}";
-$thumb = XOOPS_ROOT_PATH . "/uploads/{$subdir}{$thumbs_dir}/{$filename}";
+foreach ([$subdir, $image_dir, $thumbs_dir, $filename] as $part) {
+    if (strpos($part, '..') !== false || strpos($part, "\0") !== false) {
+        http_response_code(400);
+        exit('Invalid path');
+    }
+}
+if ($filename === '') {
+    http_response_code(400);
+    exit('Invalid filename');
+}
+
+$uploadsRoot = realpath(XOOPS_ROOT_PATH . '/uploads');
+$pic         = XOOPS_ROOT_PATH . "/uploads/{$subdir}{$image_dir}/{$filename}";
+$thumb       = XOOPS_ROOT_PATH . "/uploads/{$subdir}{$thumbs_dir}/{$filename}";
+$realPic     = realpath($pic);
+$realThumb   = realpath($thumb);
+if ($uploadsRoot === false || $realPic === false || $realThumb === false
+    || strpos($realPic, $uploadsRoot . DIRECTORY_SEPARATOR) !== 0
+    || strpos($realThumb, $uploadsRoot . DIRECTORY_SEPARATOR) !== 0) {
+    http_response_code(403);
+    exit('Invalid target');
+}
+$pic   = $realPic;
+$thumb = $realThumb;
 
 // 關閉除錯訊息
 header('HTTP/1.1 200 OK');
@@ -68,7 +90,7 @@ function rotate_right90($im)
     for ($i = 0; $i < $wid; $i++) {
         for ($j = 0; $j < $hei; $j++) {
             $ref = imagecolorat($im, $i, $j);
-            imagesetpixel($im2, $hei - $j, $i, $ref);
+            imagesetpixel($im2, $hei - 1 - $j, $i, $ref);
         }
     }
 
@@ -84,7 +106,7 @@ function rotate_left90($im)
     for ($i = 0; $i < $wid; $i++) {
         for ($j = 0; $j < $hei; $j++) {
             $ref = imagecolorat($im, $i, $j);
-            imagesetpixel($im2, $j, $wid - $i, $ref);
+            imagesetpixel($im2, $j, $wid - 1 - $i, $ref);
         }
     }
 
@@ -100,7 +122,7 @@ function mirror($im)
     for ($i = 0; $i < $wid; $i++) {
         for ($j = 0; $j < $hei; $j++) {
             $ref = imagecolorat($im, $i, $j);
-            imagesetpixel($im2, $wid - $i, $j, $ref);
+            imagesetpixel($im2, $wid - 1 - $i, $j, $ref);
         }
     }
 

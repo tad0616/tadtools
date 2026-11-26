@@ -24,8 +24,6 @@ $photo = filter_var($photo, FILTER_SANITIZE_SPECIAL_CHARS);
             margin: 0px;
         }
 
-        }font-family:
-
         #panorama {
           width: 100%;
           height: 100%;

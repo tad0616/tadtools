@@ -695,6 +695,7 @@ class TadDataCenter
     public function getCustomSetupForm($action = "", $use_form = true, $id = "dcq_sort", $theme = 'vtable')
     {
         global $xoTheme;
+        $_SESSION['tdc_setup_acl'][$this->module_dirname]["{$this->col_name}:{$this->col_sn}"] = true;
         $action  = empty($action) ? $_SERVER['PHP_SELF'] : $action;
         $DcqData = $this->getDcqData();
         $sort    = 0;
@@ -1033,6 +1034,7 @@ class TadDataCenter
     public function getCustomForm($use_form = true, $use_submit = false, $action = '', $lw = 3, $rw = 9, $muti_sort = null)
     {
         global $xoTheme;
+        $_SESSION['tdc_form_acl'][$this->module_dirname]["{$this->ans_col_name}:{$this->ans_col_sn}"] = true;
         $action  = empty($action) ? $_SERVER['PHP_SELF'] : $action;
         $DcqData = $this->getDcqData();
 
@@ -1202,6 +1204,7 @@ class TadDataCenter
         }
 
         if ($del_col_name) {
+            $_SESSION['tdc_ans_del_acl'][$this->module_dirname][(string) $del_col_name] = true;
             $data_name  = implode('|', $data_name_arr);
             $SweetAlert = new SweetAlert();
             $SweetAlert->render('del_dcq_ans', XOOPS_URL . "/modules/tadtools/ajax_file.php?dcq_op=del_dcq_ans&data_name={$data_name}&dirname={$this->module_dirname}&col_name={$del_col_name}&col_sn=", 'col_ans_sn');

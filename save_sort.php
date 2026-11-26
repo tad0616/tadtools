@@ -24,8 +24,14 @@ $col_sn    = Request::getInt('col_sn');
 $fdtr      = Request::getArray('fdtr');
 
 // 僅允許安全的 db_prefix（小寫英數與底線），避免注入資料表名稱
-$db_prefix = Utility::check_string(strtolower($db_prefix));
-$col_name  = Utility::check_string($col_name);
+try {
+    $db_prefix = Utility::check_string(strtolower($db_prefix));
+    $col_name  = Utility::check_string($col_name);
+} catch (\InvalidArgumentException $e) {
+    http_response_code(400);
+    echo 'Invalid table';
+    exit;
+}
 
 // 嚴格限制 db_prefix 僅能是合法的模組目錄名稱格式，避免組出非預期的資料表名稱
 if (!preg_match('/^[a-z][a-z0-9_]{0,63}$/', $db_prefix)) {
@@ -43,13 +49,28 @@ if ($xoopsDB->queryF($checkSql) === false) {
     exit;
 }
 
+$hasPerm = $xoopsUser->isAdmin()
+    || !empty($_SESSION['tadupfiles_sort_acl'][$filesTable]["{$col_name}:{$col_sn}"]);
+if (!$hasPerm) {
+    $ownerSql = 'SELECT COUNT(*) FROM `' . $filesTable . '` WHERE `col_name` = ? AND `col_sn` = ? AND `uid` = ?';
+    $ownerRes = Utility::query($ownerSql, 'sii', [$col_name, $col_sn, (int) $xoopsUser->uid()]);
+    if ($ownerRes && ($ownerRow = $xoopsDB->fetchRow($ownerRes)) && (int) $ownerRow[0] > 0) {
+        $hasPerm = true;
+    }
+}
+if (!$hasPerm) {
+    http_response_code(403);
+    echo 'Forbidden';
+    exit;
+}
+
 $sql = 'UPDATE `' . $filesTable . '` SET `sort`=`sort` + ? WHERE `col_name` = ? AND `col_sn` = ?';
 Utility::query($sql, 'isi', [100, $col_name, $col_sn]) or die(_TAD_SORT_FAIL . ' (' . $sql . ')');
 
 $sort = 1;
 foreach ($fdtr as $files_sn) {
-    $sql = 'UPDATE `' . $filesTable . '` SET `sort` = ? WHERE `files_sn` = ?';
-    Utility::query($sql, 'ii', [$sort, $files_sn]) or die(_TAD_SORT_FAIL . ' (' . $sql . ')');
+    $sql = 'UPDATE `' . $filesTable . '` SET `sort` = ? WHERE `files_sn` = ? AND `col_name` = ? AND `col_sn` = ?';
+    Utility::query($sql, 'iisi', [$sort, (int) $files_sn, $col_name, $col_sn]) or die(_TAD_SORT_FAIL . ' (' . $sql . ')');
     $sort++;
 }
 

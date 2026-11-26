@@ -253,9 +253,9 @@ if (!function_exists('getPageBar')) {
 }
 
 if (!function_exists('toolbar_bootstrap')) {
-    function toolbar_bootstrap($interface_menu = [])
+    function toolbar_bootstrap($interface_menu = [], $force = false, $interface_icon = [])
     {
-        return Utility::toolbar_bootstrap($interface_menu, false, $interface_icon);
+        return Utility::toolbar_bootstrap($interface_menu, $force, $interface_icon);
     }
 }
 
